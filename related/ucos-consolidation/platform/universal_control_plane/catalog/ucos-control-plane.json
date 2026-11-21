@@ -1,0 +1,200 @@
+{
+  "manifest_id": "ucos.control-plane.discovery",
+  "version": "1.0.0",
+  "description": "Declared discovery manifest for UCOS-CTRL-000001. This document is the ONLY place repository-specific names appear: platform/universal_control_plane hardcodes no repository path, no capability name, no artifact identifier and no engine list. Replace this document to specialise the same control plane for any other repository.",
+  "universe": {
+    "universe_id": "UCOS-CTRL-000001",
+    "name": "Universal Control Plane",
+    "description": "The constitutional Engineering Operating System of the repository.",
+    "vision": "Every engineering object in the repository carries identity, registration, lineage, ownership, governance and certification, discovered from repository state rather than declared in code."
+  },
+  "truth_sources": {
+    "registry": {
+      "kind": "REGISTRY",
+      "description": "The read-only 00-BOOK registry substrate, reached through engine.registry.RegistrySource. Filenames only — the directory is resolved by the reused adapter.",
+      "documents": {
+        "artifacts": { "filename": "artifacts.json", "root_key": "artifacts" },
+        "relationships": { "filename": "relationships.json", "root_key": "relationships" },
+        "volumes": { "filename": "volumes.json", "root_key": "volumes" },
+        "certification": { "filename": "certification.json", "root_key": null },
+        "change_ledger": { "filename": "change-ledger.json", "root_key": null }
+      }
+    },
+    "capability_catalog": {
+      "kind": "DERIVED",
+      "description": "The sealed capability catalogue produced by UCOS-RIE-001 and consumed by platform.repository_intelligence. Read as an artifact so control-plane discovery costs no repository-wide AST pass.",
+      "locator": "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+      "root_key": "capabilities"
+    }
+  },
+  "artifact_classes": [
+    {
+      "class_id": "governance",
+      "description": "Governance records: artifacts whose registered category places them under the governance programme.",
+      "categories": ["GOV", "CMG", "CEP", "CEPMOD"],
+      "programs": ["GOV", "CMG", "CEP"]
+    },
+    {
+      "class_id": "certification",
+      "description": "Certification artifacts: certificates, certification determinations and certification readiness records.",
+      "categories": ["CERTIF", "FINALC", "FRZ"],
+      "programs": ["CERTIF", "FRZ"]
+    },
+    {
+      "class_id": "determination",
+      "description": "Determination artifacts: recorded verdicts with rationale.",
+      "categories": [
+        "FINALD",
+        "NEWKNO",
+        "READIN",
+        "GAPCLA",
+        "REALIZ",
+        "REPOSI",
+        "P0CLOS",
+        "P0DECL",
+        "P0REGI",
+        "UCOSUC",
+        "UNAF00",
+        "CANONI",
+        "DUPLIC",
+        "HIDDEN",
+        "FOUNDA",
+        "FINALA",
+        "FINALI",
+        "FINALR",
+        "DRRAT1"
+      ],
+      "programs": []
+    },
+    {
+      "class_id": "evidence",
+      "description": "Evidence artifacts: measurement, verification and traceability records.",
+      "categories": ["EES", "TRACEA", "VALIDA", "VERIFI", "INCREM", "UNREAL", "BLOCKE"],
+      "programs": ["EES"]
+    },
+    {
+      "class_id": "registration",
+      "description": "Registration artifacts: the registry, index and catalogue records that register other artifacts.",
+      "categories": ["REG", "IDX", "CAT", "MASTER", "BOOK"],
+      "programs": ["UKB", "REG"]
+    }
+  ],
+  "engine_taxonomy": {
+    "description": "How a discovered control-plane class is classified. Suffix decides membership; module decides layer. No engine is named here — membership is measured by introspecting the package.",
+    "class_suffixes": ["Engine", "Registry", "Scheduler", "Journal"],
+    "module_layers": {
+      "truth": "REPOSITORY-TRUTH",
+      "registry": "REGISTRATION",
+      "state": "LIFECYCLE",
+      "plan": "PLANNING",
+      "execution": "EXECUTION",
+      "prompt": "INTELLIGENCE",
+      "intelligence": "INTELLIGENCE",
+      "trace": "TRACEABILITY",
+      "governance": "GOVERNANCE",
+      "certification": "CERTIFICATION",
+      "version": "VERSION",
+      "evolution": "EVOLUTION",
+      "durable": "REPLAY",
+      "registration": "REGISTRATION",
+      "consumption": "CONSUMPTION",
+      "linkage": "CONSTITUTION"
+    },
+    "layer_dependencies": {
+      "REPOSITORY-TRUTH": [],
+      "REGISTRATION": ["REPOSITORY-TRUTH"],
+      "LIFECYCLE": ["REGISTRATION"],
+      "PLANNING": ["REGISTRATION"],
+      "EXECUTION": ["PLANNING", "LIFECYCLE"],
+      "INTELLIGENCE": ["EXECUTION"],
+      "TRACEABILITY": ["EXECUTION"],
+      "GOVERNANCE": ["TRACEABILITY", "REPOSITORY-TRUTH"],
+      "CERTIFICATION": ["GOVERNANCE"],
+      "VERSION": ["REPOSITORY-TRUTH"],
+      "EVOLUTION": ["VERSION"],
+      "REPLAY": ["TRACEABILITY"],
+      "CONSUMPTION": ["INTELLIGENCE", "CERTIFICATION"],
+      "CONSTITUTION": ["CONSUMPTION", "EVOLUTION", "REPLAY"]
+    }
+  },
+  "governance_rules": [
+    {
+      "rule_id": "GOV-OWNED",
+      "severity": "CRITICAL",
+      "requires": "owner",
+      "message": "every governed object must declare an owner"
+    },
+    {
+      "rule_id": "GOV-REGISTERED",
+      "severity": "CRITICAL",
+      "requires": "registration",
+      "message": "every governed object must be registered"
+    },
+    {
+      "rule_id": "GOV-VERSIONED",
+      "severity": "HIGH",
+      "requires": "version",
+      "message": "every governed object must carry a resolvable version"
+    },
+    {
+      "rule_id": "GOV-CANONICAL-HOME",
+      "severity": "HIGH",
+      "requires": "canonical_home",
+      "message": "an object may only be homed in a truth class eligible to own it"
+    },
+    {
+      "rule_id": "GOV-EVIDENCED",
+      "severity": "MEDIUM",
+      "requires": "evidence",
+      "message": "every governed object must carry at least one evidence record"
+    }
+  ],
+  "certification_criteria": [
+    {
+      "criterion_id": "CERT-GOVERNED",
+      "severity": "BLOCKING",
+      "requires": "governed",
+      "message": "certification requires a GOVERNED governance state"
+    },
+    {
+      "criterion_id": "CERT-NO-CRITICAL-VIOLATION",
+      "severity": "BLOCKING",
+      "requires": "no_critical_violation",
+      "message": "certification requires zero CRITICAL governance violations"
+    },
+    {
+      "criterion_id": "CERT-VERSION-PINNED",
+      "severity": "BLOCKING",
+      "requires": "version",
+      "message": "certification requires a pinned version"
+    },
+    {
+      "criterion_id": "CERT-EVIDENCE-PRESENT",
+      "severity": "BLOCKING",
+      "requires": "evidence",
+      "message": "certification requires at least one evidence record"
+    },
+    {
+      "criterion_id": "CERT-LINEAGE-PRESENT",
+      "severity": "ADVISORY",
+      "requires": "lineage",
+      "message": "certification prefers a resolvable lineage"
+    }
+  ],
+  "linkage_dimensions": [
+    "constitution",
+    "ontology",
+    "registry",
+    "runtime",
+    "governance",
+    "certification",
+    "replay",
+    "version",
+    "evidence"
+  ],
+  "replay": {
+    "journal_dirname": "control-plane",
+    "journal_filename": "journal.ndjson",
+    "description": "Durable replay journal location, resolved beneath the caller's declared runtime root. The control plane never assumes a repository directory."
+  }
+}

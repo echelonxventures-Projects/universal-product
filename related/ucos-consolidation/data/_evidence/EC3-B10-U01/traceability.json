@@ -1,0 +1,35 @@
+{
+  "backward": [
+    "DMC-01",
+    "DATA-005",
+    "DATA-001",
+    "ARCH-DATA-001",
+    "10-DATA@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-DATUM-ucos.data.datum.foundation-c621c48e0935e255",
+    "EC3-B10-U01-VALIDATION-EVIDENCE",
+    "EC3-B10-U01-CCE-CERTIFICATION",
+    "EC3-B10-U01-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "30a2a02",
+  "meta_class": "DMC-01",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004"
+  ],
+  "substrate_reuse": {
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the datum)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity, no parallel model)",
+    "ENG-004": "data.meta.DatumKind + type_tag (ENG-004 typing discipline, by reference)"
+  },
+  "target_id": "UCOS-DATUM-ucos.data.datum.foundation-c621c48e0935e255",
+  "trace_format": "ucos-data-traceability/1.0.0",
+  "unit": "EC3-B10-U01"
+}

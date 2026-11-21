@@ -1,0 +1,193 @@
+{
+  "generated_at": "2026-09-24T11:49:29+00:00",
+  "generator_version": "1.0.0-adv",
+  "standard": "UMB-017 Digital Twin Certification (non-terminal; AUTH-INF-001 CR-INF-011)",
+  "verdict": "CERTIFIED",
+  "domains_total": 10,
+  "domains_passed": 10,
+  "domains": {
+    "identity": {
+      "pass": true,
+      "checks": [
+        {
+          "name": "no duplicate Universal IDs",
+          "pass": true,
+          "detail": "1691 unique"
+        },
+        {
+          "name": "no overlapping page ranges",
+          "pass": true,
+          "detail": "append-only pages intact"
+        },
+        {
+          "name": "ledger page cursor >= max page",
+          "pass": true,
+          "detail": "cursor=13197 max_end=13197"
+        }
+      ]
+    },
+    "registry": {
+      "pass": true,
+      "checks": [
+        {
+          "name": "every artifact present in id-ledger",
+          "pass": true,
+          "detail": "1691 artifacts ledgered"
+        },
+        {
+          "name": "every artifact carries name+volume+program",
+          "pass": true,
+          "detail": "all classified"
+        }
+      ]
+    },
+    "traceability": {
+      "pass": true,
+      "checks": [
+        {
+          "name": "no orphan (every non-root has a parent)",
+          "pass": true,
+          "detail": "all parented"
+        },
+        {
+          "name": "all reachable from BOOK root",
+          "pass": true,
+          "detail": "fully reachable"
+        },
+        {
+          "name": "spine external markers recorded (not dangling edges)",
+          "pass": true,
+          "detail": "16 evidence-bound external markers (by design, UMB-007 §5)"
+        }
+      ]
+    },
+    "knowledge_graph": {
+      "pass": true,
+      "checks": [
+        {
+          "name": "no dangling edge endpoints",
+          "pass": true,
+          "detail": "13815 edges resolve"
+        },
+        {
+          "name": "Depends-On graph acyclic",
+          "pass": true,
+          "detail": "acyclic"
+        }
+      ]
+    },
+    "change_intelligence": {
+      "pass": true,
+      "checks": [
+        {
+          "name": "every change event bound to a real subject",
+          "pass": true,
+          "detail": "1837 events node-bound"
+        },
+        {
+          "name": "change ids unique",
+          "pass": true,
+          "detail": "unique"
+        },
+        {
+          "name": "snapshot history seq monotonic (append-only)",
+          "pass": true,
+          "detail": "1722 histories append-only"
+        }
+      ]
+    },
+    "version": {
+      "pass": true,
+      "checks": [
+        {
+          "name": "current_version matches latest snapshot",
+          "pass": true,
+          "detail": "1691 version records consistent"
+        }
+      ]
+    },
+    "lineage": {
+      "pass": true,
+      "checks": [
+        {
+          "name": "lineage endpoints resolve + ancestry acyclic",
+          "pass": true,
+          "detail": "1691 lineage nodes intact"
+        }
+      ]
+    },
+    "synchronization": {
+      "pass": true,
+      "checks": [
+        {
+          "name": "every signal resolves to a subject",
+          "pass": true,
+          "detail": "15 signals resolve"
+        },
+        {
+          "name": "every signal carries provenance",
+          "pass": true,
+          "detail": "source+as_of present"
+        },
+        {
+          "name": "no secret in signal evidence (RR-07)",
+          "pass": true,
+          "detail": "secret-free"
+        },
+        {
+          "name": "synchronization audit present + last run PASS",
+          "pass": true,
+          "detail": "last sync run PASS"
+        }
+      ]
+    },
+    "twin_intelligence": {
+      "pass": true,
+      "checks": [
+        {
+          "name": "no MANUAL source among computed dimensions",
+          "pass": true,
+          "detail": "8 dimensions computed"
+        },
+        {
+          "name": "intelligence surface answerable + cited",
+          "pass": true,
+          "detail": "exists(UCOS-BOOK-000000) cited 1 ids"
+        }
+      ]
+    },
+    "execution": {
+      "pass": true,
+      "checks": [
+        {
+          "name": "every execution minted from the id-ledger identity authority (EXL-02)",
+          "pass": true,
+          "detail": "0 executions ledgered"
+        },
+        {
+          "name": "forward-only append-only lifecycle (RUNTIME-006 EXL-07/10)",
+          "pass": true,
+          "detail": "forward-only, append-only"
+        },
+        {
+          "name": "subjects + dependencies resolve (referential integrity)",
+          "pass": true,
+          "detail": "all resolve"
+        },
+        {
+          "name": "execution dependency graph acyclic (EXL-17)",
+          "pass": true,
+          "detail": "acyclic"
+        }
+      ]
+    }
+  },
+  "scope": {
+    "artifacts": 1691,
+    "edges": 13815,
+    "change_events": 1837,
+    "signals": 15,
+    "lineage_nodes": 1691,
+    "executions": 0
+  }
+}

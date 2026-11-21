@@ -1,0 +1,38 @@
+{
+  "backward": [
+    "DMC-03",
+    "DATA-007",
+    "DATA-005",
+    "DATA-001",
+    "ARCH-DATA-001",
+    "10-DATA@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-ATTR-ucos.data.attribute.foundation-e9d6fb905537bbb2",
+    "EC3-B10-U02-VALIDATION-EVIDENCE",
+    "EC3-B10-U02-CCE-CERTIFICATION",
+    "EC3-B10-U02-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "30a2a02",
+  "meta_class": "DMC-03",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005"
+  ],
+  "substrate_reuse": {
+    "DMC-01": "data.datum.Datum — the CERTIFIED values target (DMR-02); referenced, not redefined",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-003": "data.datum.Datum value (ENG-003 value carried via DMR-02; referenced, not copied)",
+    "ENG-004": "data.attribute_meta.AttributeKind + type_tag (ENG-004 typing discipline)",
+    "ENG-005": "bearing-entity + relational identity references (DMR-01/03; by reference)",
+    "founding_unit": "EC3-B10-U01 (DMC-01; UCOS-CERT-DMC-01-51e5964b38741e30) — values target, DMR-02"
+  },
+  "target_id": "UCOS-ATTR-ucos.data.attribute.foundation-e9d6fb905537bbb2",
+  "trace_format": "ucos-data-traceability/1.0.0",
+  "unit": "EC3-B10-U02"
+}

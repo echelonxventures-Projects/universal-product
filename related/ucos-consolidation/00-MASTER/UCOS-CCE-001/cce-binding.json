@@ -1,0 +1,91 @@
+{
+  "programme": "UCOS-CCE-001",
+  "title": "Constitutional Completeness Engine \u2014 Realization Binding",
+  "authority": "NONE \u2014 DERIVED TRUTH",
+  "specification": "02-MASTER/UCOS-COMP-000001-CONSTITUTIONAL-COMPLETENESS-ENGINE-CONSTITUTION.md",
+  "realization_mode": "REALIZE_BY_COMPOSITION",
+  "description": "Binds the CCE specification to the existing engines that compose to realize its mandated completeness behavior. Creates no new engine, store, or authority.",
+  "bindings": [
+    {
+      "spec_requirement": "Single authoritative completeness authority",
+      "implementor": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "evidence": "UCCEP is the aggregate constitutional gate; certification = completeness verdict",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Nothing certified complete until completeness proven",
+      "implementor": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "evidence": "gate_exit=1 blocks certification; CERTIFIED-PROVISIONAL until all pass",
+      "verified": true
+    },
+    {
+      "spec_requirement": "10 fail-closed completeness gates",
+      "implementor": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "evidence": "uccep-bindings.json declares 15 gates (G-01..G-15), each fail-closed",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Knowledge closure completeness",
+      "implementor": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "evidence": "CK-CLOSURE-P1 + CK-CLOSURE-P2 gates; determination=CLOSED, gaps=0",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Decision assimilation completeness",
+      "implementor": "00-MASTER/UCDA-000001/ucda_engine.py",
+      "evidence": "CK-DECISION-EVIDENCE gate; 89 decisions, undispositioned=0",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Registry completeness",
+      "implementor": "00-BOOK/tools/ukb.py",
+      "evidence": "CK-REG-ENFORCE + CK-REG-VALIDATE; 1193 artifacts, 0 unregistered",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Graph integrity completeness",
+      "implementor": "engine/graph",
+      "evidence": "CK-GRAPH gate; 1218 nodes, 12829 edges, acyclic, referential integrity",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Discovery completeness",
+      "implementor": "engine/discovery",
+      "evidence": "CK-DISCOVERY gate; zero-enumeration substrate coverage PASS",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Meta-constitutional completeness",
+      "implementor": "00-CMG/tools/cmg-gate.sh",
+      "evidence": "CK-CMG gate; 16 check groups over 12 invariants PASS",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Intelligence determinism completeness",
+      "implementor": "intelligence/rie",
+      "evidence": "CK-RIE-DETERMINISM gate; deterministic regeneration PASS",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Kernel constitutional compliance",
+      "implementor": "00-MASTER/UMK-000001/umk_engine.py",
+      "evidence": "UMK gate CONSTITUTIONALLY-COMPLIANT; 6 quality gates PASS",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Provider framework compliance",
+      "implementor": "00-MASTER/UPF-000001/upf_engine.py",
+      "evidence": "UPF gate CONSTITUTIONALLY-COMPLIANT; 7 quality gates PASS",
+      "verified": true
+    }
+  ],
+  "completeness": {
+    "total_requirements": 12,
+    "bound": 12,
+    "unbound": 0,
+    "coverage_percent": 100
+  },
+  "gate": "OPEN",
+  "gate_exit": 0,
+  "determination": "REALIZED-BY-COMPOSITION"
+}

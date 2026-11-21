@@ -1,0 +1,110 @@
+{
+  "declaration_id": "UZX-000001",
+  "name": "Zero-X — the register of declared zero-classes",
+  "version": "1.0",
+  "authority": "NONE — DERIVED TRUTH. This file DECLARES NO STAGE AS REACHED. It names the classes, the detector each is measured by, and the cases that prove the detector can fail in both directions. Every stage below is COMPUTED by engine/zero_class/measure.py from the code as it stands. A field asserting a class had reached a stage would be the claim this instrument exists to replace.",
+  "$why_this_exists": [
+    "adr/0021 stated a principle and disclosed that nothing enforced it; it kept none for fourteen",
+    "days until engine/conformance was built. adr/0041 named the recurring shape: a rule that is",
+    "right, with a measurement that does not reach where it applies.",
+    "",
+    "The Zero-X programme reproduced that structure one level up. Twelve residue classes were",
+    "governed by a plan document with no gate: nothing would refuse a class declared with no",
+    "detector, a detector shipped with no failing case, a ratchet with one ceiling where two are",
+    "needed, or a class quietly regressing a stage. This register is the enforcement, and it is",
+    "subject to its own rule — ZX-SELF below measures this instrument by the same stages."
+  ],
+  "$stage_comment": [
+    "1 DECLARED   — the class is named here with a definition. Not hidden.",
+    "2 DETECTED   — a detector resolves, runs, AND proves it can fail in both directions.",
+    "3 ATTRIBUTED — every instance carries the path it was found at.",
+    "4 RATCHETED  — a ceiling exists and the measurement does not exceed it.",
+    "5 REMEDIATED — the remedy disposition is declared: AUTOMATIC or PROPOSED."
+  ],
+  "$both_directions_comment": [
+    "STAGE 2 REQUIRES CASES IN BOTH DIRECTIONS, and the reason is measured rather than theoretical.",
+    "The first bypass detector counted a DECLARATION naming a tool as an INVOCATION of it. A",
+    "detector with false positives can never honestly reach its floor: the last entries are",
+    "unremovable by any migration, and the only way to close the count is to declare modules that",
+    "never had a defect. Narrowing it then let an argv assigned to a variable escape entirely.",
+    "",
+    "So `must_catch` and `must_not_catch` are SOURCE SNIPPETS this engine feeds to the detector's",
+    "predicate and checks the verdict of. A detector that cannot demonstrate both is at stage 1,",
+    "however well it is written."
+  ],
+  "classes": [
+    {
+      "class_id": "ZX-01",
+      "name": "zero bypassing",
+      "definition": "A module reaching past a declared provider for a question that provider answers.",
+      "detector": "engine.omega_infinite.direct_callers.direct_callers",
+      "predicate": "engine.omega_infinite.direct_callers._invokes_tool_directly",
+      "ceiling": "engine.omega_infinite.direct_callers.DIRECT_CALLER_CEILING",
+      "second_ceiling": "engine.omega_infinite.direct_callers.DECLARED_DIRECT_CEILING",
+      "$second_ceiling_why": "Declaring a caller lowers the direct count without changing a line of behaviour, so a ratchet on that count alone can be satisfied by writing a paragraph.",
+      "must_catch": [
+        "import subprocess\nsubprocess.run([\"git\", \"status\"])\n",
+        "import subprocess\nc = [\"git\", \"s\"]\nsubprocess.run(c)\n"
+      ],
+      "must_not_catch": [
+        "PersistenceBinding(\"git\", \"p\", False)\n",
+        "\"\"\"this module does not run git.\"\"\"\n"
+      ],
+      "remedy": "PROPOSED",
+      "$remedy_why": "Routing a call through a provider changes behaviour and must be proven population-identical first; a machine doing it silently would be a regression accepted automatically."
+    },
+    {
+      "class_id": "ZX-SELF",
+      "name": "zero classes governed without enforcement",
+      "definition": "A zero-class declared in this register whose detector cannot be resolved, cannot be run, or cannot demonstrate failure in both directions.",
+      "detector": "engine.zero_class.measure.unenforced",
+      "predicate": null,
+      "ceiling": "engine.zero_class.measure.UNENFORCED_CEILING",
+      "second_ceiling": null,
+      "$self_application": "The instrument that measures whether a class is enforced is itself a class in this register. adr/0021 disclosed it had no enforcement and kept none; a register that exempted itself would repeat that exactly, one level up.",
+      "must_catch": [],
+      "must_not_catch": [],
+      "remedy": "PROPOSED"
+    },
+    {
+      "class_id": "ZX-02",
+      "name": "zero type decisions made by filename",
+      "definition": "A module deciding what an artifact IS by testing its filename suffix, when engine/omega_infinite/classification.py already types it by four declared rules with the suffix consulted last.",
+      "detector": "engine.zero_class.entity_derivation.type_decisions",
+      "predicate": "engine.zero_class.entity_derivation.asks_the_filename",
+      "ceiling": "engine.zero_class.entity_derivation.TYPE_DECISION_CEILING",
+      "second_ceiling": null,
+      "$no_second_ceiling": "Nothing is declared away here: a type decision is either derived or it is not, and there is no lawful exemption to grant. Conventions and declared scopes are excluded BY THE PREDICATE, not by a table, so no paragraph can lower this count.",
+      "must_catch": [
+        "def f(p):\n    if p.endswith(\".py\"):\n        return 1\n    return 0\n",
+        "def f(paths):\n    return [p for p in paths if p.endswith(\".py\")]\n"
+      ],
+      "must_not_catch": [
+        "def f(n):\n    return n.startswith(\"test_\") and n.endswith(\".py\")\n",
+        "def f(n):\n    return n.endswith((\".yml\", \".yaml\", \".sh\", \".mk\"))\n",
+        "def f(artifact):\n    return artifact.artifact_type.name == \"PYTHON\"\n"
+      ],
+      "remedy": "PROPOSED",
+      "$remedy_why": "Routing a decision through the classifier changes what a module measures and must be proven population-identical first, as the edge deriver was across 5,447 objects. A machine rewriting these would be a regression accepted automatically."
+    }
+  ],
+  "$not_yet_detected_comment": [
+    "Classes below are DECLARED and not yet DETECTED. They are listed rather than omitted, because",
+    "an undeclared residue is the silence this register exists to end — and because a class that is",
+    "honestly at stage 1 is a different thing from one nobody has thought of.",
+    "",
+    "Each names why no detector exists yet, and none carries a stage it has not reached."
+  ],
+  "declared_not_detected": [
+    {
+      "class_id": "ZX-03",
+      "name": "zero unprovable gates",
+      "why": "130 invariants are declared and no sound method exists to measure which can refuse. Two text-based audits were attempted and both were invalid: invariant ids never appear in tests, because gates are exercised through their engines with synthetic fixtures. Mutation is the only sound method and it is one test per invariant."
+    },
+    {
+      "class_id": "ZX-04",
+      "name": "zero descriptions exceeding delivery",
+      "why": "Found by reading, not by a gate: a capability declared 'additions AND modifications' and delivered only additions. engine/conformance measures whether a contract CAN FAIL; it does not measure whether a DESCRIPTION IS HONEST. Comparing declared prose to delivered behaviour is not mechanically obvious."
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "NetworkResource",
+  "target_id": "UCOS-INFRA-NETWORK-ucos.infrastructure.network.foundation-7dd7e556add9c97b",
+  "verdict": "pass"
+}

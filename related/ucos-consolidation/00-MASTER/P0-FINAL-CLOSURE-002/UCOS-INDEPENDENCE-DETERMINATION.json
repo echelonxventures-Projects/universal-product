@@ -1,0 +1,28 @@
+{
+  "authority": "NONE — DERIVED TRUTH. Measurement only; this file certifies nothing and creates no authority.",
+  "phase": 3,
+  "question": "Does unconditional certification require EXTERNAL authority or merely INDEPENDENT authority?",
+  "verdict": "EXTERNAL — and the repository decided this explicitly, not by conflation",
+  "rule_declared_by_repository_truth": "EXTERNAL AUTHORITY for finality; INDEPENDENT authority is necessary but not sufficient.",
+  "proof": [
+    "CEP-006 XII.2 distinguishes the two cases in one sentence: FINALIZED is reachable 'upon in-corpus finality authority' for an ACCEPTED determination, but 'only upon the act of the out-of-corpus finality authority' for a PROVISIONAL one. The corpus rests at PROVISIONAL because T1 is vacant.",
+    "CEP-000 §5.4 forbids the Program granting itself authority over constitutional content — so an in-corpus authority minted by the corpus cannot confer T1 standing on the corpus.",
+    "09-DR-RAT-11-ASSESSMENT.md §2: 'a system cannot be the sole author of its own founding legitimacy.'"
+  ],
+  "can_independent_authority_exist_inside_repository": {
+    "answer": "YES for certification, NO for constituent finality",
+    "evidence": "P0-ULTIMATE-CLOSURE-001 built exactly such independence for certification: uccep_engine's per-constituent independent_view strikes each home's own checks, satisfying CMG LI.6 in-corpus. That mechanism cannot be lifted to T1 because the striking authority would itself be corpus-authored."
+  },
+  "can_independence_emerge_through_governance_evolution": {
+    "answer": "NO for T1",
+    "governing_law": "CEP-000 §5.4 (no self-elevation); CEP-006 I.5 (never self-conferred)"
+  },
+  "can_independence_be_measured_objectively": {
+    "answer": "YES",
+    "realization": "uccep_engine independent_view; constituency read from declaration (delegated_to / check owner)"
+  },
+  "can_independence_be_certified_objectively": {
+    "answer": "YES in-corpus for certification; NO for finality",
+    "evidence": "urat.json::finality_ceiling.unreachable_in_corpus == ['FINALIZED']"
+  }
+}

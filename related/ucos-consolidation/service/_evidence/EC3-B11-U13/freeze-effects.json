@@ -1,0 +1,19 @@
+{
+  "declared": true,
+  "definitions": {
+    "FE-1": "Immutability — no in-place modification of any frozen unit U01…U12.",
+    "FE-2": "Reuse mandate — downstream bands consume the Band-11 realization by reference.",
+    "FE-3": "Redefinition prohibition — no frozen construct, meta-class, or law is redefined.",
+    "FE-4": "Additive extension — new service concerns extend above, never inside, the baseline.",
+    "FE-5": "Supersession-only change — breaking change is a new artifact under ENG-000 control."
+  },
+  "determination": "FROZEN",
+  "freeze_effects": {
+    "FE-1": true,
+    "FE-2": true,
+    "FE-3": true,
+    "FE-4": true,
+    "FE-5": true
+  },
+  "unit": "EC3-B11-U13"
+}

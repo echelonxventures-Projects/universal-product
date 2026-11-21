@@ -1,0 +1,978 @@
+{
+  "artifact": "EC3-B13-U02-REALIZATION-EVIDENCE",
+  "authority": "ENGINEERING-EXECUTION-ONLY",
+  "certification": {
+    "cce_gates": {
+      "advisory_failures": [],
+      "blocking_failures": [],
+      "blueprint_id": "ComputeResource",
+      "certification_class": "engineering-readiness",
+      "certification_id": "UCOS-CERT-ComputeResource-19b828466e974044",
+      "certified": true,
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 10,
+        "total": 10
+      },
+      "findings": [
+        {
+          "criterion_id": "CC-1",
+          "details": {
+            "gate": "architecture"
+          },
+          "message": "CC-1 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-10",
+          "details": {
+            "gate": "completeness"
+          },
+          "message": "CC-10 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-2",
+          "details": {
+            "gate": "dependencies"
+          },
+          "message": "CC-2 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-3",
+          "details": {
+            "gate": "coverage"
+          },
+          "message": "CC-3 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-4",
+          "details": {
+            "gate": "validation",
+            "verdict": "pass"
+          },
+          "message": "CC-4 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-5",
+          "details": {
+            "gate": "traceability"
+          },
+          "message": "CC-5 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-6",
+          "details": {
+            "evidence_sha256": "e4fff2915095aaa2ba8db23df06fa8655e4db569a54fe00d830e6198b92a5965",
+            "gate": "evidence"
+          },
+          "message": "CC-6 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-7",
+          "details": {
+            "gate": "certification-ready"
+          },
+          "message": "CC-7 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-8",
+          "details": {
+            "gate": "readiness"
+          },
+          "message": "CC-8 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-9",
+          "details": {
+            "gate": "gap-zero"
+          },
+          "message": "CC-9 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "record": {
+        "authority": "ENGINEERING-EXECUTION-ONLY",
+        "blueprint_id": "ComputeResource",
+        "certification_class": "engineering-readiness",
+        "certification_id": "UCOS-CERT-ComputeResource-19b828466e974044",
+        "certified": true,
+        "content_sha256": "19b828466e97404434c4a69b545b05e68245a6105c758cd5982358a8f3f6c792",
+        "criteria": [
+          {
+            "criterion_id": "CC-1",
+            "details": {
+              "gate": "architecture"
+            },
+            "message": "CC-1 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-10",
+            "details": {
+              "gate": "completeness"
+            },
+            "message": "CC-10 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-2",
+            "details": {
+              "gate": "dependencies"
+            },
+            "message": "CC-2 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-3",
+            "details": {
+              "gate": "coverage"
+            },
+            "message": "CC-3 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-4",
+            "details": {
+              "gate": "validation",
+              "verdict": "pass"
+            },
+            "message": "CC-4 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-5",
+            "details": {
+              "gate": "traceability"
+            },
+            "message": "CC-5 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-6",
+            "details": {
+              "evidence_sha256": "e4fff2915095aaa2ba8db23df06fa8655e4db569a54fe00d830e6198b92a5965",
+              "gate": "evidence"
+            },
+            "message": "CC-6 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-7",
+            "details": {
+              "gate": "certification-ready"
+            },
+            "message": "CC-7 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-8",
+            "details": {
+              "gate": "readiness"
+            },
+            "message": "CC-8 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-9",
+            "details": {
+              "gate": "gap-zero"
+            },
+            "message": "CC-9 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          }
+        ],
+        "disclosure": {
+          "asserts_constitutional_finality": false,
+          "authority": "ENGINEERING-EXECUTION-ONLY",
+          "disclosure_id": "EC-1-PROVISIONAL-STATE",
+          "gate": "EC-1",
+          "gate_open": true,
+          "standard": "DE-05",
+          "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+        },
+        "evidence_ref": "e4fff2915095aaa2ba8db23df06fa8655e4db569a54fe00d830e6198b92a5965",
+        "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+        "standard_version": "1.0.0",
+        "status": "certified",
+        "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+        "version": "1.0.0"
+      },
+      "status": "certified",
+      "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+      "version": "1.0.0"
+    },
+    "evidence": {
+      "blocking_failures": [],
+      "blueprint_id": "ComputeResource",
+      "certification_class": "engineering-readiness",
+      "certification_id": "UCOS-CERT-ComputeResource-19b828466e974044",
+      "certified": true,
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 10,
+        "total": 10
+      },
+      "criteria_evaluated": [
+        "CC-1",
+        "CC-10",
+        "CC-2",
+        "CC-3",
+        "CC-4",
+        "CC-5",
+        "CC-6",
+        "CC-7",
+        "CC-8",
+        "CC-9"
+      ],
+      "evidence_format": "ucos-certification-evidence/1.0.0",
+      "findings": [
+        {
+          "criterion_id": "CC-1",
+          "details": {
+            "gate": "architecture"
+          },
+          "message": "CC-1 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-10",
+          "details": {
+            "gate": "completeness"
+          },
+          "message": "CC-10 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-2",
+          "details": {
+            "gate": "dependencies"
+          },
+          "message": "CC-2 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-3",
+          "details": {
+            "gate": "coverage"
+          },
+          "message": "CC-3 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-4",
+          "details": {
+            "gate": "validation",
+            "verdict": "pass"
+          },
+          "message": "CC-4 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-5",
+          "details": {
+            "gate": "traceability"
+          },
+          "message": "CC-5 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-6",
+          "details": {
+            "evidence_sha256": "e4fff2915095aaa2ba8db23df06fa8655e4db569a54fe00d830e6198b92a5965",
+            "gate": "evidence"
+          },
+          "message": "CC-6 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-7",
+          "details": {
+            "gate": "certification-ready"
+          },
+          "message": "CC-7 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-8",
+          "details": {
+            "gate": "readiness"
+          },
+          "message": "CC-8 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-9",
+          "details": {
+            "gate": "gap-zero"
+          },
+          "message": "CC-9 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "record_sha256": "19b828466e97404434c4a69b545b05e68245a6105c758cd5982358a8f3f6c792",
+      "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+      "standard_version": "1.0.0",
+      "status": "certified",
+      "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+      "validation_evidence_ref": "e4fff2915095aaa2ba8db23df06fa8655e4db569a54fe00d830e6198b92a5965",
+      "version": "1.0.0"
+    },
+    "ledger": {
+      "count": 1,
+      "entries": [
+        {
+          "blueprint_id": "ComputeResource",
+          "certification_id": "UCOS-CERT-ComputeResource-19b828466e974044",
+          "entry_hash": "7653185f131306ebba6e19552501bacfa89382475f07d1383de929e288118cb8",
+          "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "record_sha256": "19b828466e97404434c4a69b545b05e68245a6105c758cd5982358a8f3f6c792",
+          "sequence": 0,
+          "status": "certified",
+          "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+          "version": "1.0.0"
+        }
+      ],
+      "head_hash": "7653185f131306ebba6e19552501bacfa89382475f07d1383de929e288118cb8",
+      "ledger_format": "ucos-certification-ledger/1.0.0"
+    }
+  },
+  "criteria": {
+    "acceptance": {
+      "AC-1": true,
+      "AC-2": true,
+      "AC-3": true,
+      "AC-4": true,
+      "AC-5": true,
+      "AC-6": true,
+      "AC-7": true
+    },
+    "certification_gates": {
+      "CC-1": true,
+      "CC-10": true,
+      "CC-2": true,
+      "CC-3": true,
+      "CC-4": true,
+      "CC-5": true,
+      "CC-6": true,
+      "CC-7": true,
+      "CC-8": true,
+      "CC-9": true
+    },
+    "infrastructure_compliance": {
+      "C1": true,
+      "C2": true,
+      "C3": true,
+      "C4": true,
+      "C5": true,
+      "C6": true,
+      "C7": true
+    },
+    "validation": {
+      "VC-1": true,
+      "VC-2": true,
+      "VC-3": true,
+      "VC-4": true,
+      "VC-5": true
+    }
+  },
+  "determination": "COMPLETE",
+  "infrastructure_compliance_C1_C7": {
+    "compliance_format": "ucos-infrastructure-compliance/1.0.0",
+    "compliant": true,
+    "conditions": [
+      {
+        "backed_by": [
+          "infra-compute-typed",
+          "infra-compute-identified-objectbound"
+        ],
+        "id": "C1",
+        "requirement": "Typed (UIL-03), identified and objecthood-bound (UIL-04/05).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "foundation-reuse-integrity"
+        ],
+        "id": "C2",
+        "requirement": "Reuses frozen foundations by reference without redefinition (UIL-02).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "infra-compute-hosts-execution-by-reference",
+          "hosting-by-reference"
+        ],
+        "id": "C3",
+        "note": "PL-F2/SF-2/AF-3 delivery + DF-2 data-hosting scoped to the Distribution/Storage-Hosting units (INFRASTRUCTURE-008/009/010); a Compute Resource hosts the frozen RL-F2 execution concern by reference (ICMP-01 / UIL-10)",
+        "requirement": "Hosts/delivers PL-F2/SF-2/AF-3 by reference; hosted data DF-2 by ref (UIL-06/11).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "infra-compute-declares-capacity-locality",
+          "infra-compute-typed"
+        ],
+        "id": "C4",
+        "requirement": "Environments bounded/isolated, resources explicit, distribution typed (UIL-07/08/12).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "founding-acyclic",
+          "meta-relationships-closed"
+        ],
+        "id": "C5",
+        "requirement": "Topology uses ENG-005 references; founding structure is acyclic (UIL-09).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "infra-compute-hosts-execution-by-reference",
+          "scaling-unbounded"
+        ],
+        "id": "C6",
+        "requirement": "Provisioning/scaling bind RL-F2/DF-2 by ref; no artificial ceiling (UIL-10/11/13).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "non-constitutive",
+          "technology-independence"
+        ],
+        "id": "C7",
+        "requirement": "Selects no technology, confers no authority, embeds no secret (UIL-15).",
+        "status": "pass"
+      }
+    ],
+    "standard": "INFRASTRUCTURE-001 §12",
+    "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8"
+  },
+  "meta_class": "ComputeResource",
+  "meta_validity_WF": {
+    "WF-1": true,
+    "WF-11": true,
+    "WF-12": true,
+    "WF-2": true,
+    "WF-3": true,
+    "WF-5": true
+  },
+  "resource": {
+    "capacity": {
+      "amount": 1,
+      "unit": "compute-unit"
+    },
+    "execution_host_ref": "ENG-005:RL-F2:runtime.execution",
+    "locality_ref": "ENG-005:INFRASTRUCTURE-011:locality.foundation",
+    "meta_class": "ComputeResource",
+    "relationships": [
+      "hosts",
+      "locatedAt"
+    ],
+    "resource_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+    "state": "DEFINED",
+    "substrate_refs": [
+      "ENG-001",
+      "ENG-002",
+      "ENG-003",
+      "ENG-004",
+      "ENG-005",
+      "RL-F2"
+    ],
+    "type_tag": "ucos.infrastructure.compute.foundation",
+    "value_digest": "65f6fb3c45c52cd84520e92ecfa6a8c07a401be09c58693845bcf979a8bdab56"
+  },
+  "traceability": {
+    "backward": [
+      "ComputeResource",
+      "INFRASTRUCTURE-007",
+      "INFRASTRUCTURE-005",
+      "INFRASTRUCTURE-001",
+      "ARCH-INFRASTRUCTURE-001",
+      "13-INFRASTRUCTURE@b7e7657"
+    ],
+    "closed": true,
+    "constitutional_anchor": "b7e7657",
+    "forward": [
+      "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+      "EC3-B13-U02-VALIDATION-EVIDENCE",
+      "EC3-B13-U02-CCE-CERTIFICATION",
+      "EC3-B13-U02-COMPLETION-REPORT"
+    ],
+    "implementation_anchor": "ce7d5d0",
+    "meta_class": "ComputeResource",
+    "rooted": true,
+    "substrate": [
+      "ENG-001",
+      "ENG-002",
+      "ENG-003",
+      "ENG-004",
+      "ENG-005",
+      "RL-F2"
+    ],
+    "substrate_reuse": {
+      "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+      "ENG-002": "python frozen object (immutable objecthood bearing the compute resource)",
+      "ENG-003": "engine.certification.contracts.canonical_json (capacity + value fidelity)",
+      "ENG-004": "infrastructure.compute type_tag Compute Class (typing)",
+      "ENG-005": "reference identifiers (hosts/locatedAt refs; no new construct)",
+      "RL-F2": "hosted execution bound by reference (ICMP-01 / UIL-10); no runtime concern redefined"
+    },
+    "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+    "trace_format": "ucos-infrastructure-traceability/1.0.0",
+    "unit": "EC3-B13-U02"
+  },
+  "uil_conformance": {
+    "UIL-01": true,
+    "UIL-02": true,
+    "UIL-03": true,
+    "UIL-04": true,
+    "UIL-05": true,
+    "UIL-08": true,
+    "UIL-09": true,
+    "UIL-10": true,
+    "UIL-13": true,
+    "UIL-15": true
+  },
+  "unit": "EC3-B13-U02",
+  "validation": {
+    "acceptance": {
+      "accepted": true,
+      "advisory_failures": [],
+      "blocking_failures": [],
+      "blueprint_id": "ComputeResource",
+      "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+      "verdict": "pass"
+    },
+    "evidence": {
+      "accepted": true,
+      "blocking_failures": [],
+      "blueprint_id": "ComputeResource",
+      "checks_run": [
+        "foundation-reuse-integrity",
+        "founding-acyclic",
+        "hosting-by-reference",
+        "infra-compute-declares-capacity-locality",
+        "infra-compute-hosts-execution-by-reference",
+        "infra-compute-identified-objectbound",
+        "infra-compute-is-resource",
+        "infra-compute-typed",
+        "infra-compute-value-fidelity",
+        "lifecycle-valid",
+        "meta-class-single",
+        "meta-constraints",
+        "meta-relationships-closed",
+        "non-constitutive",
+        "provisional-state-disclosure",
+        "scaling-unbounded",
+        "technology-independence",
+        "traceability-rooted"
+      ],
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 18,
+        "total": 18
+      },
+      "evidence_format": "ucos-validation-evidence/1.0.0",
+      "findings": [
+        {
+          "check_id": "foundation-reuse-integrity",
+          "details": {
+            "substrate": [
+              "ENG-001",
+              "ENG-002",
+              "ENG-003",
+              "ENG-004",
+              "ENG-005",
+              "RL-F2"
+            ]
+          },
+          "message": "foundation-reuse-integrity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "founding-acyclic",
+          "details": {},
+          "message": "founding-acyclic satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "hosting-by-reference",
+          "details": {
+            "execution_host_ref": "ENG-005:RL-F2:runtime.execution",
+            "locality_ref": "ENG-005:INFRASTRUCTURE-011:locality.foundation"
+          },
+          "message": "hosting-by-reference satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-declares-capacity-locality",
+          "details": {
+            "capacity_amount": 1,
+            "capacity_unit": "compute-unit",
+            "locality_ref": "ENG-005:INFRASTRUCTURE-011:locality.foundation"
+          },
+          "message": "infra-compute-declares-capacity-locality satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-hosts-execution-by-reference",
+          "details": {
+            "execution_host_ref": "ENG-005:RL-F2:runtime.execution"
+          },
+          "message": "infra-compute-hosts-execution-by-reference satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-identified-objectbound",
+          "details": {
+            "resource_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8"
+          },
+          "message": "infra-compute-identified-objectbound satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-is-resource",
+          "details": {},
+          "message": "infra-compute-is-resource satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-typed",
+          "details": {
+            "type_tag": "ucos.infrastructure.compute.foundation"
+          },
+          "message": "infra-compute-typed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-value-fidelity",
+          "details": {
+            "value_digest": "65f6fb3c45c52cd84520e92ecfa6a8c07a401be09c58693845bcf979a8bdab56"
+          },
+          "message": "infra-compute-value-fidelity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "lifecycle-valid",
+          "details": {
+            "state": "DEFINED"
+          },
+          "message": "lifecycle-valid satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-class-single",
+          "details": {
+            "meta_class": "ComputeResource"
+          },
+          "message": "meta-class-single satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-constraints",
+          "details": {
+            "constraints": [
+              "WF-1",
+              "WF-2"
+            ]
+          },
+          "message": "meta-constraints satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-relationships-closed",
+          "details": {
+            "relationships": [
+              "hosts",
+              "locatedAt"
+            ]
+          },
+          "message": "meta-relationships-closed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "non-constitutive",
+          "details": {},
+          "message": "non-constitutive satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "provisional-state-disclosure",
+          "details": {
+            "disclosure_id": "EC-1-PROVISIONAL-STATE"
+          },
+          "message": "provisional-state-disclosure satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "scaling-unbounded",
+          "details": {},
+          "message": "scaling-unbounded satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "technology-independence",
+          "details": {},
+          "message": "technology-independence satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "traceability-rooted",
+          "details": {
+            "links": 6
+          },
+          "message": "traceability-rooted satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+      "verdict": "pass"
+    },
+    "report": {
+      "accepted": true,
+      "blueprint_id": "ComputeResource",
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 18,
+        "total": 18
+      },
+      "findings": [
+        {
+          "check_id": "foundation-reuse-integrity",
+          "details": {
+            "substrate": [
+              "ENG-001",
+              "ENG-002",
+              "ENG-003",
+              "ENG-004",
+              "ENG-005",
+              "RL-F2"
+            ]
+          },
+          "message": "foundation-reuse-integrity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "founding-acyclic",
+          "details": {},
+          "message": "founding-acyclic satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "hosting-by-reference",
+          "details": {
+            "execution_host_ref": "ENG-005:RL-F2:runtime.execution",
+            "locality_ref": "ENG-005:INFRASTRUCTURE-011:locality.foundation"
+          },
+          "message": "hosting-by-reference satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-declares-capacity-locality",
+          "details": {
+            "capacity_amount": 1,
+            "capacity_unit": "compute-unit",
+            "locality_ref": "ENG-005:INFRASTRUCTURE-011:locality.foundation"
+          },
+          "message": "infra-compute-declares-capacity-locality satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-hosts-execution-by-reference",
+          "details": {
+            "execution_host_ref": "ENG-005:RL-F2:runtime.execution"
+          },
+          "message": "infra-compute-hosts-execution-by-reference satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-identified-objectbound",
+          "details": {
+            "resource_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8"
+          },
+          "message": "infra-compute-identified-objectbound satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-is-resource",
+          "details": {},
+          "message": "infra-compute-is-resource satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-typed",
+          "details": {
+            "type_tag": "ucos.infrastructure.compute.foundation"
+          },
+          "message": "infra-compute-typed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "infra-compute-value-fidelity",
+          "details": {
+            "value_digest": "65f6fb3c45c52cd84520e92ecfa6a8c07a401be09c58693845bcf979a8bdab56"
+          },
+          "message": "infra-compute-value-fidelity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "lifecycle-valid",
+          "details": {
+            "state": "DEFINED"
+          },
+          "message": "lifecycle-valid satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-class-single",
+          "details": {
+            "meta_class": "ComputeResource"
+          },
+          "message": "meta-class-single satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-constraints",
+          "details": {
+            "constraints": [
+              "WF-1",
+              "WF-2"
+            ]
+          },
+          "message": "meta-constraints satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-relationships-closed",
+          "details": {
+            "relationships": [
+              "hosts",
+              "locatedAt"
+            ]
+          },
+          "message": "meta-relationships-closed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "non-constitutive",
+          "details": {},
+          "message": "non-constitutive satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "provisional-state-disclosure",
+          "details": {
+            "disclosure_id": "EC-1-PROVISIONAL-STATE"
+          },
+          "message": "provisional-state-disclosure satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "scaling-unbounded",
+          "details": {},
+          "message": "scaling-unbounded satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "technology-independence",
+          "details": {},
+          "message": "technology-independence satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "traceability-rooted",
+          "details": {
+            "links": 6
+          },
+          "message": "traceability-rooted satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+      "verdict": "pass"
+    }
+  },
+  "version": "1.0.0"
+}

@@ -1,0 +1,109 @@
+{
+  "declaration_id": "ULP-FAMILIES-001",
+  "name": "Universal Lineage Projection — family classification",
+  "version": "1.0",
+  "authority": "NONE — DERIVED TRUTH. This file DECLARES NO RELATIONSHIP TYPE. Every type named here is owned and declared by 00-BOOK/tools/config.py RELATIONSHIP_TYPES (UCOS-UKB-TOOLING); this is a CLASSIFICATION over that vocabulary, checked against it at load time. A type named here that the owner does not declare is refused, so this file cannot invent a relation, rename one, or become a second vocabulary.",
+
+  "$why_this_exists": "engine/knowledge/ukip/relationships.py ACYCLIC_FAMILIES already classifies the KNOWLEDGE-layer RelationType space into dependency, structure, supersession and derivation. Measured against the corpus graph, only 4 of the 16 live corpus edge types appear in that vocabulary at all, so it cannot classify the 12,899 edges where corpus lineage actually lives. The same four family names are reused deliberately — the taxonomy is not re-invented, only applied to the second vocabulary.",
+
+  "$not_a_vocabulary": "A vocabulary declares which relations may exist. This declares which of the ALREADY-DECLARED relations carry ancestry, and in which direction ancestry flows. Deleting this file removes a classification and changes no relation, no edge and no verdict.",
+
+  "$direction_comment": "`ancestor` names the endpoint that came FIRST. For Parent the ancestor is the edge target (a child points at its parent); for Depends-On the ancestor is the dependency. Recorded per type so a traversal never has to guess which way an edge points.",
+
+  "families": [
+    {
+      "family": "structure",
+      "question": "What contains this?",
+      "acyclic": true,
+      "types": [
+        { "type": "Parent", "ancestor": "to" },
+        { "type": "Child", "ancestor": "from" }
+      ]
+    },
+    {
+      "family": "dependency",
+      "question": "What requires this?",
+      "acyclic": true,
+      "types": [
+        { "type": "Depends-On", "ancestor": "to" },
+        { "type": "Required-By", "ancestor": "from" },
+        { "type": "Consumes", "ancestor": "to" },
+        { "type": "Consumed-By", "ancestor": "from" }
+      ]
+    },
+    {
+      "family": "derivation",
+      "question": "What produced this?",
+      "acyclic": true,
+      "types": [
+        { "type": "Derived-From", "ancestor": "to" },
+        { "type": "Derived-Into", "ancestor": "from" },
+        { "type": "Created-From", "ancestor": "to" },
+        { "type": "Created-Into", "ancestor": "from" },
+        { "type": "Forked-From", "ancestor": "to" },
+        { "type": "Forked-Into", "ancestor": "from" },
+        { "type": "Produces", "ancestor": "from" },
+        { "type": "Produced-By", "ancestor": "to" }
+      ]
+    },
+    {
+      "family": "supersession",
+      "question": "What replaced this?",
+      "acyclic": true,
+      "types": [
+        { "type": "Supersedes", "ancestor": "from" },
+        { "type": "Superseded-By", "ancestor": "to" },
+        { "type": "Replaces", "ancestor": "from" },
+        { "type": "Replaced-By", "ancestor": "to" },
+        { "type": "Merged-From", "ancestor": "to" },
+        { "type": "Merged-Into", "ancestor": "from" },
+        { "type": "Evolves-From", "ancestor": "to" },
+        { "type": "Evolves-From-Inverse", "ancestor": "from" },
+        { "type": "Evolves-To", "ancestor": "from" },
+        { "type": "Evolved-From", "ancestor": "to" }
+      ]
+    }
+  ],
+
+  "$non_lineage_comment": "Declared relations that are NOT ancestry. Every one carries a MEASURED reason, and an entry without one is refused: listing a type prevents it from being silently ignored, but a bare list still leaves the classification asserted rather than argued. Acyclicity is deliberately not the test — all four live pairs below measure acyclic at this commit, and three of them are still not ancestry, because 'this graph happens not to loop' and 'this edge says which object came first' are different claims.",
+  "non_lineage": [
+    {
+      "type": "Authorized-By",
+      "reason": "Authority GROUNDS an object; it does not produce, contain, require or replace one. Measured over 100 live edges (86 metadata:AUTHORITY, 14 metadata:GOVERNED-BY) the chain is acyclic, and acyclic by law rather than by luck, since a cycle here would be self-ratification and CMG-000001 XLIV.5 prohibits it. That still does not make it ancestry: promoting it would open a fifth lineage question and would traverse a second time the chain UCOS-CAA-001 owns and engine.graph.architecture RELATION_FAMILIES already walks."
+    },
+    { "type": "Authorizes", "reason": "The inverse of Authorized-By, and non-lineage for the same reason. A classification that admitted one direction and refused the other would make ancestry depend on which way a record happened to be written." },
+
+    {
+      "type": "Implements",
+      "reason": "Conformance, not production. Measured fan-in reaches 31 implementers on a single specification, and a specification does not produce the thing that satisfies it. Answering 'what produced this?' with the contract an implementation was written against would return a different fact under the same name."
+    },
+    { "type": "Implemented-By", "reason": "The inverse of Implements, non-lineage for the same reason." },
+
+    {
+      "type": "References",
+      "reason": "Citation, which orders nothing. All six live edges leave one document, and A may cite B while B cites A without either preceding the other — so the relation cannot answer which came first even when its graph happens to be acyclic."
+    },
+    { "type": "Referenced-By", "reason": "The inverse of References, non-lineage for the same reason." },
+
+    {
+      "type": "Traces-To",
+      "reason": "A coverage overlay, and a measurably redundant one: all five live Traces-To edges are also Implements edges, with no endpoint pair carried by Traces-To alone. Promoting it would lay a second ancestry path over edges another relation already carries, which UCKP-ART-03 makes void rather than merely duplicative."
+    },
+    { "type": "Traced-From", "reason": "The inverse of Traces-To, non-lineage for the same reason." },
+
+    { "type": "Certifies", "reason": "An act performed ON an object by an actor, not an object this one came from — the same event-versus-edge distinction that keeps TRANSFORMATION out of the family list. No edge of this type exists in the corpus at this commit, so the classification is declared ahead of the population rather than after it." },
+    { "type": "Certified-By", "reason": "The inverse of Certifies, non-lineage for the same reason." },
+    { "type": "Registers", "reason": "An act performed ON an object by an actor. Registration records that an object was admitted, not that it descended from the register. No edge of this type exists in the corpus at this commit." },
+    { "type": "Registered-By", "reason": "The inverse of Registers, non-lineage for the same reason." },
+    { "type": "Publishes", "reason": "An act performed ON an object by an actor. Publication changes an object's reach, not its ancestry. No edge of this type exists in the corpus at this commit." },
+    { "type": "Published-By", "reason": "The inverse of Publishes, non-lineage for the same reason." },
+    { "type": "Secures", "reason": "An act performed ON an object by an actor, and one this repository declares it does not enact. Nothing descends from its control. No edge of this type exists in the corpus at this commit." },
+    { "type": "Secured-By", "reason": "The inverse of Secures, non-lineage for the same reason." },
+    { "type": "Tests", "reason": "An act performed ON an object by an actor. A test measures an object; the object did not come from it. No edge of this type exists in the corpus at this commit." },
+    { "type": "Tested-By", "reason": "The inverse of Tests, non-lineage for the same reason." },
+    { "type": "Deploys", "reason": "An act performed ON an object by an actor. Deployment moves an object into an environment and originates nothing. No edge of this type exists in the corpus at this commit." },
+    { "type": "Deployed-By", "reason": "The inverse of Deploys, non-lineage for the same reason." }
+  ],
+
+  "$transformation_comment": "TRANSFORMATION IS DELIBERATELY NOT A FAMILY. change-ledger change_events answer 'what happened to this object', which is an event stream, not an edge to another object. Forcing it into an edge family would collapse two different questions into one — the meaning-collapse the architecture determination forbids (P-2). The projection exposes events alongside edges, never as edges."
+}

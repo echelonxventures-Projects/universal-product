@@ -1,0 +1,379 @@
+PHASE Ω∞-B PROBE B-07 — removability validation for every BLOCKING and CRITICAL finding.
+
+AUTHORITY = NONE (DERIVED TRUTH). This probe MEASURES. It registers nothing permanently, writes no
+governance record, advances no ratchet, issues no certification, seals nothing and modifies no
+module in ``engine/``. Every registry it touches is one it constructed itself and discards on exit.
+
+WHY THIS FILE CONTAINS CODE THAT LOOKS LIKE AN IMPLEMENTATION, AND WHY THAT IS NOT A VIOLATION.
+The Ω∞-B directive forbids implementing fixes "unless a finding explicitly demonstrates that
+implementation is required to validate a hypothesis". Six findings do exactly that, because the
+question Ω∞-B must answer about each of them — REMOVABLE, PARTIALLY REMOVABLE or FUNDAMENTAL — is
+not decidable by inspection:
+
+    Ω∞-A Deliverable 7 §7 lists five FALSIFICATION CRITERIA for the architectural core. Criterion 1
+    is "a governance rule that is not expressible as a composition of guards". Whether that
+    criterion fires cannot be established by reading ``state.py``; the only way to learn whether the
+    eight governance capabilities B-02 names are expressible as guards is to WRITE the guards and
+    see which ones refuse to be written.
+
+So each prototype below is a FALSIFICATION HARNESS, not a fix:
+
+  * it lives outside ``engine/`` and nothing imports it;
+  * it composes only over SHIPPED types — if a prototype needed a change to a shipped type, that is
+    the finding, and it is reported as one rather than worked around;
+  * it is discarded on exit;
+  * a prototype that WORKS proves the blocker is implementation-induced and REMOVABLE;
+  * a prototype that CANNOT BE WRITTEN over shipped types proves the blocker is architecture-induced
+    and reports which shipped type must change.
+
+The distinction that matters: this file does not remove a single blocker. It establishes, with
+executable evidence, WHICH KIND each blocker is.
+
+RUN:  python3 00-MASTER/UCOS-OMEGA-B-001/probes/b07_removability_validation.py
+      (from the repository root, no arguments, no environment)
+
+
+==============================================================================
+H1 / B-02  ARE THE EIGHT GOVERNANCE CAPABILITIES EXPRESSIBLE AS GUARDS?
+==============================================================================
+  test vector: {'ATTRIBUTION': 'ATTRIBUTED', 'CONSISTENCY': 'CONSISTENT', 'CUSTODY': 'DISCOVERED', 'GOVERNANCE': 'GOVERNED', 'CERTIFICATION': 'UNCERTIFIED', 'MEASUREMENT': 'UNMEASURED'}
+  shipped check() on Ω²-S-22: Ω²-S-22
+  -> the shipped mechanism PERMITS certification with no approvals of any kind
+
+  guards registered: 11  ['GUARD-CONDITIONAL-AUTHORITY', 'GUARD-DELEGATION', 'GUARD-FEDERATION-QUORUM', 'GUARD-JUSTIFICATION', 'GUARD-MULTI-DOMAIN-AUTHORITY', 'GUARD-PEER-STATE', 'GUARD-QUORUM', 'GUARD-REVOCATION', 'GUARD-STATE-EXCLUSION', 'GUARD-TEMPORAL-WINDOW', 'GUARD-WEIGHTED-AUTHORITY']
+
+  empty context -> permitted=False, refusals=7
+    - GUARD-QUORUM: 0 of 3 required approvals present (eligible=[], ignored_non_roster=[], missing=['ALICE', 'BOB', 'CAROL', 'DAVE', 'ERIN'])
+    - GUARD-FEDERATION-QUORUM: 0 of 2 nodes concur (concurring=[])
+    - GUARD-WEIGHTED-AUTHORITY: approving weight 0 < required 4 (from [])
+    - GUARD-DELEGATION: no acting authority named
+    - GUARD-MULTI-DOMAIN-AUTHORITY: an authority and a domain must both be named
+    - GUARD-PEER-STATE: peer 'baseline' is not in the supplied population
+    - GUARD-TEMPORAL-WINDOW: no temporal coordinate supplied, and none may be invented
+  [REMOVABLE             ] N-of-M approvals expressible as a registered guard, refusing and naming the shortfall
+      A QuorumGuard registered at runtime refused Ω²-S-22 and named the eligible set, the
+      ignored non-roster approvals and the missing approvers. Zero edits to state.py.
+      Ω∞-A Step 3's exit criterion is therefore MET BY PROTOTYPE.
+
+  fully satisfied context -> permitted=True (Ω²-S-22)
+
+  ISOLATED CAPABILITY TESTS — each guard refusing for its own reason:
+    quorum                         REFUSED-AS-DESIGNED
+        GUARD-QUORUM: 2 of 3 required approvals present (eligible=['ALICE', 'BOB'], ignored_non_roster=[], missing=['CAROL', 'DAVE', 'ERIN'])
+    federation quorum              REFUSED-AS-DESIGNED
+        GUARD-FEDERATION-QUORUM: 1 of 2 nodes concur (concurring=['NODE-A'])
+    weighted authority             REFUSED-AS-DESIGNED
+        GUARD-WEIGHTED-AUTHORITY: approving weight 2 < required 4 (from [('BOB', 1), ('CAROL', 1), ('DAVE', 0)])
+    delegation (cycle)             REFUSED-AS-DESIGNED
+        GUARD-DELEGATION: delegation from LOOP-A terminates at LOOP-A, which is not a permitted terminal authority ['BOARD']
+    conditional authority          REFUSED-AS-DESIGNED
+        GUARD-CONDITIONAL-AUTHORITY: DEPUTY's authority is conditional on delegated_scope=='CERTIFY' and it is 'READ-ONLY'
+    time-bounded (outside)         REFUSED-AS-DESIGNED
+        GUARD-TEMPORAL-WINDOW: outside the declared window: required BEFORE on both bounds and got opens->at=BEFORE, at->closes=AFTER
+    time-bounded (incomparable)    REFUSED-AS-DESIGNED
+        GUARD-TEMPORAL-WINDOW: the coordinate is not comparable with the window (opens: INCOMPARABLE by Ω²-C-04; closes: INCOMPARABLE by Ω²-C-04) — REFUSED rather than assumed inside
+    revocation                     REFUSED-AS-DESIGNED
+        GUARD-REVOCATION: MALLORY's grant was revoked: Ω∞-B-REV-01 grant withdrawn
+    multi-domain                   REFUSED-AS-DESIGNED
+        GUARD-MULTI-DOMAIN-AUTHORITY: DEPUTY holds authority in ['CERTIFICATION', 'CUSTODY'] and not in 'TREASURY'
+    peer state                     REFUSED-AS-DESIGNED
+        GUARD-PEER-STATE: peer 'baseline' is not in the supplied population
+  [REMOVABLE             ] all eight governance capabilities expressible as guard compositions, zero source edits
+      10 of 10 isolated capability refusals fired for their
+      own stated reason. Ω∞-A falsification criterion 1 ('a governance rule not expressible as
+      a composition of guards') DID NOT FIRE. The eight capabilities were absent because the
+      mechanism was unwritten, NOT because the architecture forbids them.
+  [REMOVABLE             ] a time-bounded guard is expressible WITHOUT reintroducing a privileged wall clock
+      TemporalWindowGuard consumes a TemporalCoordinate from the caller and compares it with a
+      registered ordering strategy resolved from the registry. It imports neither `time` nor
+      `datetime`, and it resolves its precedence relation BY DECLARED NAME rather than testing
+      for the literal 'BEFORE' — so an ordering whose precedence relation is named differently
+      still bounds a window.
+      Given an EARTH_FRAME/SI_SECOND coordinate against a LOGICAL_FRAME/LOGICAL_TICK window it
+      REFUSED citing rule Ω²-C-04 rather than assuming inside-the-window.
+
+  SEMANTIC JUSTIFICATION (A-09 / G-02) — the strings B-02.3 measured as ACCEPTED:
+    shipped check(reason='x') on Ω²-S-12: ACCEPTED
+    reason='x'                  guarded -> REFUSED  GUARD-JUSTIFICATION: justification invalid: missing required field 'approver'; missing required fiel
+    reason='.'                  guarded -> REFUSED  GUARD-JUSTIFICATION: justification invalid: missing required field 'approver'; missing required fiel
+    reason='TODO'               guarded -> REFUSED  GUARD-JUSTIFICATION: justification invalid: missing required field 'approver'; missing required fiel
+    reason='  see ticket  '     guarded -> REFUSED  GUARD-JUSTIFICATION: justification invalid: missing required field 'approver'; missing required fiel
+    a COMPLETE justification -> permitted=True (Ω²-S-12)
+  [REMOVABLE             ] structured justification expressible as a registered domain value, not a bare string
+      The shipped syntactic guard ACCEPTED reason='x' on Ω²-S-12 (reproduced above). Every one
+      of the four strings B-02.3 measured as accepted is REFUSED by a JustificationGuard
+      validating against a declared schema with required approver and citation fields
+      (all four refused: True), and a complete justification is PERMITTED. The
+      domain machinery needed no change.
+      RESIDUAL, and it is C-04 in miniature: ['Ω∞-B-J-02'] is declared UNEXECUTABLE — 'the
+      cited authority actually approved this' cannot be checked here. It is COUNTED, not hidden.
+
+==============================================================================
+H2 / B-05  CAN CERTIFICATION INPUTS BE REGISTRY-DRIVEN RATHER THAN ENUMERATED?
+==============================================================================
+  inputs declared: 5
+  decision with 5 inputs: CERTIFIED
+    satisfied=['CI-NOT-CONTRADICTED', 'CI-NOT-UNATTRIBUTED', 'CI-NOT-UNGOVERNED', 'CI-NOT-UNKNOWN', 'CI-QUORUM']
+
+  registered a 7th axis at runtime; axes now 7
+  decision with 6 inputs (the 8th just registered): REJECTED
+    failed_required=['CI-NOT-UNPROVENANCED: artifact holds UNPROVENANCED']
+    the 8th input APPEARS in the explanation: True
+  [REMOVABLE             ] an 8th certification input registered at runtime BINDS a decision, zero source edits
+      B-02.5 measured the as-built path: the 8th concern registered, the artifact still
+      CERTIFIED, and binding it required editing INITIAL_TRANSITIONS. With the decision
+      quantified over a registry the same registration BOUND immediately and appeared in the
+      explanation. Ω∞-A Step 2's exit criterion is MET BY PROTOTYPE.
+      COST OF DELAY CONFIRMED ZERO: certification.py still does not exist, so nothing was
+      rewritten to obtain this result.
+
+==============================================================================
+H3 / B-03  IS VOCABULARY DIVERGENCE MECHANICALLY DETECTABLE?
+==============================================================================
+  node A vocabulary digest : 9d2ba2bf13af0d25e5a553c051d8e0b40d874bf8820bf0c1e948d4f2872e1cb3
+  node B vocabulary digest : 5bf0a5b045411ce38729955f17694f14d7b2f23ae3307b1f52a6866f2e3f49a6
+  digests differ           : True
+
+  divergence POPULATION (3 entries, not a first-conflict raise):
+    {'domain': 'ALPHA', 'kind': 'ABSENT_RIGHT', 'left_authority': 'NODE-A-AUTHORITY'}
+    {'domain': 'BETA', 'kind': 'ABSENT_LEFT', 'right_authority': 'NODE-B-AUTHORITY'}
+    {'domain': 'MASS', 'kind': 'CONTENT_DIVERGENT', 'left_authority': 'NODE-A-AUTHORITY', 'right_authority': 'NODE-B-AUTHORITY', 'left_digest': '07b2ec66e40512df', 'right_digest': '7e562ebc77952106'}
+  [REMOVABLE             ] registry divergence detectable as a reportable population with named authorities
+      A content digest is DERIVABLE from the shipped report() and encoding layer with no change
+      to any registry: 3 divergences were reported, each naming the kind and
+      both authorities. B-03.2 measured the failure mode (A=INVALID, B=VALID, neither able to
+      detect the other); the digest+divergence pair converts it into a finding.
+      Ω∞-A Step 5's exit criterion is MET BY PROTOTYPE.
+
+  two registries, IDENTICAL digests: True
+    A validate -> ()
+    B validate -> ()
+    and NOTHING states whether 'magnitude' means metres or feet — the kind is a free
+    string by design, so identical digests do NOT imply identical meaning.
+  [REFUTED — FUNDAMENTAL ] semantic consensus is achievable by vocabulary identity alone
+      THE HYPOTHESIS IS REFUTED, and the refutation is the finding. Two registries with
+      byte-identical digests still attach different meanings to an identical `kind` string, and
+      no mechanism here can detect it. Ω∞-A falsification criterion 5 ('two deployments agree on
+      every digest and still disagree about a record's validity') is therefore NOT falsified — it
+      is CONFIRMED as the residual that survives Step 5. Digests close DIVERGENCE DETECTION; they
+      do not close MEANING. C-04 stands as FUNDAMENTAL, and B-03 is therefore PARTIALLY
+      REMOVABLE rather than removable.
+
+==============================================================================
+H4 / B-04  IS AN N-ARY TRANSFORMATION REPRESENTABLE, AND CONJUNCTION DISTINGUISHABLE?
+==============================================================================
+  SHIPPED registry, re-confirming B-04.1:
+    Transformation.source type : str
+    Transformation.target type : str
+    3-source declaration: REFUSED  AttributeError: 'tuple' object has no attribute 'strip'
+
+  HYPERGRAPH prototype:
+    edges into VELOCITY: ['Ω∞-B-VEL-1', 'Ω∞-B-VEL-2', 'Ω∞-B-VEL-ALT']
+    TWO authorities (IAU, NASA) for the SAME source set: ACCEPTED
+
+    available=['SPACE']
+      satisfiable : []
+      shortfall   : {'transformation': 'Ω∞-B-VEL-1', 'authority': 'IAU', 'missing': ['FRAME', 'TIME']}
+      shortfall   : {'transformation': 'Ω∞-B-VEL-2', 'authority': 'NASA', 'missing': ['FRAME', 'TIME']}
+      shortfall   : {'transformation': 'Ω∞-B-VEL-ALT', 'authority': 'ESO', 'missing': ['DOPPLER_SHIFT']}
+
+    available=['FRAME', 'SPACE', 'TIME']
+      satisfiable : ['Ω∞-B-VEL-1', 'Ω∞-B-VEL-2']
+  [REMOVABLE             ] n-ary transformation representable, with conjunction distinguishable from alternative
+      B-04.2 measured the shipped fan-in workaround returning a COMPLETE route from SPACE
+      alone, making conjunction indistinguishable from alternative. A hyperedge keyed on a
+      source SET reports SPACE alone as UNSATISFIABLE and names the missing domains, and it
+      admits two authorities for one source set — the case B-04.3 found inexpressible.
+      Ω∞-A Step 9's exit criterion is MET BY PROTOTYPE.
+      RESIDUAL: `lossy: bool` still states THAT fidelity is lost and never HOW MUCH (B-04.4).
+
+==============================================================================
+H5 / A-24 / X-11  DOES A MERKLE DAG REGISTER ADMIT CONCURRENT APPEND?
+==============================================================================
+  entries            : 4
+  concurrent siblings: [['379ff347a2ee', 'b196cf307650']]
+  heads              : ['df9499eba25a']
+  verify()           : ok=True problems=()
+  total order        : kind=PROJECTION asserted_by_register=False
+                       basis=topological, ties broken by digest — A CHOICE, NOT A MEASUREMENT
+  after tampering    : ok=False problems=1
+  [REMOVABLE             ] a DAG register admits concurrent append, verifies, and labels total order a projection
+      Two writers appended concurrently, producing a sibling pair [['379ff347a2ee', 'b196cf307650']],
+      and a third entry named BOTH predecessors. verify() passed and detected tampering after
+      mutation, so tamper evidence is unchanged by the DAG shape. Total order is emitted as a
+      record whose own `kind` is PROJECTION and whose `asserted_by_register` is False.
+      Ω∞-A Step 1's exit criterion is MET BY PROTOTYPE, and its cost-of-delay claim (zero today,
+      a rewrite later) is CONFIRMED: registry.py still does not exist.
+
+==============================================================================
+H6 / A-15 / G-07  IS THE CENSUS A COMMUTATIVE MONOID (partitioned verification)?
+==============================================================================
+  population              : 30 artifacts in 3 disjoint shards
+  census(union) == merge(census(shard_i)) : True
+  merge order independent (commutative + identity {}) : True
+  streamed one-at-a-time census == whole : True
+  [REMOVABLE             ] census expressible as a mergeable monoid, so an unbounded population is countable
+      The shipped census() is a full materialisation, but its RESULT TYPE is already a monoid
+      under pointwise addition: three disjoint shard censuses merged equal the census of the
+      union, in any order, and a one-artifact-at-a-time stream reproduces it exactly.
+      No interface break is required — the merge is additive over the existing return value.
+      RESIDUAL: assert_total, separation_report and fallback_density are NOT additive in the
+      same way. fallback_density is a RATIO, and a ratio is not a monoid; it must be carried as
+      the (numerator, denominator) pair and divided only at the end.
+
+==============================================================================
+H7 / B-01  DOES THE STRUCTURAL PROOF HOLD AT 20 AXES WHILE THE EXHAUSTIVE ONE DECLINES?
+==============================================================================
+
+  axes=6   state space=900
+    STRUCTURAL  holds=True  edges=36  seconds=0.000076
+    EXHAUSTIVE  outcome=COMPLETED  enumerated=900  violations=0  seconds=0.0026
+
+  axes=20  state space=4,304,672,100
+    STRUCTURAL  holds=True  edges=36  seconds=0.000077
+    EXHAUSTIVE  outcome=DECLINED
+                the state space is 4,304,672,100 vectors, above the declared limit of 100,000; an exhaustive claim at this size would be an assertion, not a proof. The structural argument is O(|E|) and stands.
+
+  axes=40  state space=15,009,463,529,699,912,100
+    STRUCTURAL  holds=True  edges=36  seconds=0.000066
+    EXHAUSTIVE  outcome=DECLINED
+                the state space is 15,009,463,529,699,912,100 vectors, above the declared limit of 100,000; an exhaustive claim at this size would be an assertion, not a proof. The structural argument is O(|E|) and stands.
+  [REMOVABLE             ] the invariant is provable in bounded time independent of axis count
+      At 40 axes the state space is 15,009,463,529,699,912,100 vectors — unenumerable by any machine — and the
+      structural argument completed in 0.000067 s over 36 edges, holding.
+      The exhaustive method DECLINED above a declared limit with a stated reason instead of
+      hanging, so the assurance claim now expires LOUDLY. Ω∞-A Step 4's exit criterion is MET
+      BY PROTOTYPE.
+      AND THE POINT B-01.3 ADDS: the declined enumeration was carrying ZERO extra distinguishing
+      power — a newly registered axis appears in no edge's blocked_by, so it multiplies the
+      enumeration and adds no distinguishable case. Nothing is lost by declining.
+
+==============================================================================
+H8 / B-06  ARE THE FIVE RESIDUAL PRIVILEGED TEMPORAL ASSUMPTIONS REMOVABLE?
+==============================================================================
+  transitivity check over the SHIPPED lexicographic strategy: 0 findings ()
+  transitivity check over the REPAIRED CYCLIC ordering:  6 findings
+    (0,) AFTER (10,) AFTER (5,) but (0,) BEFORE (5,)
+    (0,) BEFORE (5,) BEFORE (10,) but (0,) AFTER (10,)
+    (10,) AFTER (5,) AFTER (0,) but (10,) BEFORE (0,)
+    (10,) BEFORE (0,) BEFORE (5,) but (10,) AFTER (5,)
+    (5,) AFTER (0,) AFTER (10,) but (5,) BEFORE (10,)
+    (5,) BEFORE (10,) BEFORE (0,) but (5,) AFTER (0,)
+  [REMOVABLE             ] a transitivity check is writable over shipped types and catches what assert_consistent misses
+      assert_consistent verifies relation membership, within-shape totality and antisymmetry,
+      and B-06 measured it ACCEPTING a cyclic ordering that violates transitivity. A
+      transitivity check written over the shipped Relation properties finds 6 violation(s)
+      in that ordering and 0 in the shipped lexicographic one. No shipped type changed.
+      RESIDUAL: the check is O(n³) in the sample, so it is a SAMPLED property, not a proof —
+      which is exactly the honest form and must be labelled as such.
+
+  R-3: RelationRegistry(seed=(BEFORE, AFTER)) -> 'INCOMPARABLE' resolvable: False
+    compare() emitted relation='INCOMPARABLE' rule=Ω²-C-04
+    that relation is resolvable in the registry that produced the record: False
+  [REMOVABLE             ] a refusal citing a module constant is resolvable in the registry that emitted it
+      coordinate.compare's refusals cite INCOMPARABLE from a module constant rather than the
+      relation registry, so a registry seeded without it emits a Comparison record naming a
+      relation the same registry cannot resolve. The fix is local: resolve the refusal relation
+      THROUGH the registry and refuse the registry itself if it lacks one. No type changes.
+
+  R-5: LogicalClock position before assert_provider=(0,) after=(3,)
+  [REMOVABLE             ] verifying a clock without advancing it
+      assert_provider calls read() twice by default, so verifying a counting clock advances it
+      ((0,) -> (3,)). Any evidence run that verifies its own clock therefore records a
+      position that depends on whether verification ran. The fix is to verify a COPY, or to
+      declare the reading count in the record. Local; no type changes.
+
+  bare-str position accepted and split into: ('E', 'P', 'O', 'C', 'H')
+  [REMOVABLE             ] a bare string position is refused rather than silently exploded per character
+      TemporalCoordinate.__post_init__ applies tuple(self.position), so the str 'EPOCH' becomes
+      ('E', 'P', 'O', 'C', 'H') — a five-component coordinate the caller did not intend, accepted
+      without a refusal. A one-line isinstance(position, str) refusal closes it. The reason this
+      matters beyond tidiness: the exploded coordinate FINGERPRINTS, so it enters a governance
+      record as a legitimate position.
+
+  R-1: OrderingRegistry(()) already declares 5 orderings: ['BRANCHING', 'CAUSAL', 'DISTRIBUTED', 'PARTIAL', 'TOTAL']
+    redeclaring TOTAL with different semantics: REFUSED  ordering 'TOTAL' is already declared with a different meaning; choose a differen
+  [PARTIALLY REMOVABLE   ] the five reserved ordering names are removable from the vocabulary a registry seeds with
+      An OrderingRegistry constructed with NO strategies still declares 5 orderings
+      ['BRANCHING', 'CAUSAL', 'DISTRIBUTED', 'PARTIAL', 'TOTAL'] from a module constant, and redeclaring one with different semantics is
+      REFUSED (True). So a deployment whose ordering discipline happens to be called
+      TOTAL but means something else must choose a different name.
+      REMOVABLE PART: seed the vocabulary from a caller-supplied argument, as StateRegistry
+      already does — the pattern exists in the same package.
+      IRREDUCIBLE PART: the refusal to redefine a name is CORRECT and must stay. Ω∞-A records it
+      as 'open to extension, closed to redefinition'. Name collision across independently
+      developed vocabularies is A-20, and it is closed by (authority, identifier) — not here.
+
+  R-2: comparable(EARTH, EARTH) -> Ω²-F-00 (declared by a caller: False)
+  [PARTIALLY REMOVABLE   ] a frame's relation to itself is a declared fact rather than a fabricated one
+      comparable(EARTH, EARTH) returns rule Ω²-F-00, which no caller
+      declared — the registry synthesises reflexive identity. For a REFERENCE FRAME this is
+      defensible: a frame is trivially relatable to itself.
+      IT IS NOT DEFENSIBLE FOR EVERY FRAME, and that is the residual. A frame representing a
+      measurement that cannot be repeated — a destructive test, a one-time astronomical event —
+      is NOT comparable with itself across two observations, and the architecture has no way to
+      say so. Removing the fabrication means letting reflexivity be DECLARED, defaulting to
+      declared-identity for the shipped frames. Local change; no type change.
+
+==============================================================================
+H9 / B-N-01  DOES EVERY MODULE THE PACKAGE'S OWN TABLE NAMES EXIST?
+==============================================================================
+  modules named in the docstring table : 11
+    clock.py             ABSENT
+    state.py             PRESENT
+    authority.py         PRESENT
+    contradiction.py     ABSENT
+    certification.py     ABSENT
+    registry.py          ABSENT
+    selfverify.py        ABSENT
+    invariants.py        ABSENT
+    adapters.py          ABSENT
+    evidence.py          ABSENT
+    __main__.py          ABSENT
+
+  present: 2  ['state.py', 'authority.py']
+  absent : 9  ['clock.py', 'contradiction.py', 'certification.py', 'registry.py', 'selfverify.py', 'invariants.py', 'adapters.py', 'evidence.py', '__main__.py']
+
+  absent AND unlisted (named in Ω∞-A only) : ['schema.py']
+  present AND unlisted (subpackages)       : 11 modules in ['reference', 'temporal']
+
+  the claim that names an absent module     : state.py:58 -> 'invariants.unknown_never_certifies' (invariants.py ABSENT)
+  the pattern that would have caught it    : REQUIRED_STATE_NAMES, 13 names, checked by execution
+  [REFUTED — REMOVABLE   ] every module the package's own docstring table names exists
+      9 of the 11 modules the docstring's own 'READ IN THIS ORDER' table names
+      are ABSENT; 2 are present (['state.py', 'authority.py']).
+      state.py:58 asserts a proof from one of the absent modules.
+      The table is stale IN BOTH DIRECTIONS: it names clock.py (superseded by temporal/clocks.py)
+      and omits 11 modules in ['reference', 'temporal'] that DO exist.
+      schema.py is a further absent module, named in Ω∞-A and not in the table at all.
+      REMOVABLE: the tree already demonstrates the fix for a DIFFERENT claim in the same file —
+      REQUIRED_STATE_NAMES holds 13 names so an edit renaming one is refused by a test
+      rather than by a reviewer. The same pattern applied to modules closes this.
+
+==============================================================================
+B-07  VERDICT SUMMARY — the only rows a closure matrix may quote
+==============================================================================
+  B-02 / A-10 / G-01 / X-01        REMOVABLE               N-of-M approvals expressible as a registered guard, refusing and naming the shortfall
+  B-02 (all eight capabilities)    REMOVABLE               all eight governance capabilities expressible as guard compositions, zero source edits
+  B-02(6) time-bounded / A-01      REMOVABLE               a time-bounded guard is expressible WITHOUT reintroducing a privileged wall clock
+  B-02 / A-09 / G-02 / X-02        REMOVABLE               structured justification expressible as a registered domain value, not a bare string
+  B-05 / A-11                      REMOVABLE               an 8th certification input registered at runtime BINDS a decision, zero source edits
+  B-03 / A-14 / G-10 / X-05        REMOVABLE               registry divergence detectable as a reportable population with named authorities
+  B-03 / C-04 / A-18               REFUTED — FUNDAMENTAL   semantic consensus is achievable by vocabulary identity alone
+  B-04 / A-21 / G-03 / X-03        REMOVABLE               n-ary transformation representable, with conjunction distinguishable from alternative
+  A-24 / X-11 / C-03(exposure)     REMOVABLE               a DAG register admits concurrent append, verifies, and labels total order a projection
+  A-15 / G-07 / X-06               REMOVABLE               census expressible as a mergeable monoid, so an unbounded population is countable
+  B-01 / A-16 / G-09 / X-07        REMOVABLE               the invariant is provable in bounded time independent of axis count
+  B-06 R-4                         REMOVABLE               a transitivity check is writable over shipped types and catches what assert_consistent misses
+  B-06 R-3                         REMOVABLE               a refusal citing a module constant is resolvable in the registry that emitted it
+  B-06 R-5                         REMOVABLE               verifying a clock without advancing it
+  B-06(g) residual                 REMOVABLE               a bare string position is refused rather than silently exploded per character
+  B-06 R-1                         PARTIALLY REMOVABLE     the five reserved ordering names are removable from the vocabulary a registry seeds with
+  B-06 R-2                         PARTIALLY REMOVABLE     a frame's relation to itself is a declared fact rather than a fabricated one
+  B-N-01 / C-05 / A-16(existence)  REFUTED — REMOVABLE     every module the package's own docstring table names exists
+
+  18 hypotheses tested: PARTIALLY REMOVABLE=2, REFUTED — FUNDAMENTAL=1, REFUTED — REMOVABLE=1, REMOVABLE=14
+
+  NOTHING WAS IMPLEMENTED. Every prototype above lives in this file, is imported by
+  nothing, touches no module in engine/, and is discarded on exit. What was established
+  is the CLASS of each blocker, which is what Phase Ω∞-B was asked to determine.

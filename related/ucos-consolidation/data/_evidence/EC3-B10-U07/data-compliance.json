@@ -1,0 +1,73 @@
+{
+  "compliance_format": "ucos-data-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "governance-typed",
+        "governance-identified"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UDL-03), identified and objecthood-bound (UDL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UDL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "data-value-fidelity"
+      ],
+      "id": "C3",
+      "requirement": "Value is ENG-003 value (UDL-06).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "governance-governs-subject",
+        "governance-conformance-recorded",
+        "governance-classified"
+      ],
+      "id": "C4",
+      "requirement": "Entity/attribute/schema structure is explicit (UDL-07/08/10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-relationships-closed",
+        "founding-acyclic",
+        "governance-binds-policy-by-reference"
+      ],
+      "id": "C5",
+      "requirement": "Relationships are ENG-005 references; founding structure acyclic (UDL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "governance-independence",
+        "governance-non-enforcing",
+        "governance-no-access"
+      ],
+      "id": "C6",
+      "materially_exercised": true,
+      "note": "governance is a declarative, non-enforcing evaluative record: it evaluates conformance and binds policy by reference to RUNTIME, granting no access and naming no policy/rules engine, access-control/IAM system, or enforcement point (UDL-13 Governance as Declarative Constraint; DGA-09 / DGA-K5)",
+      "requirement": "Selects no technology; describes storage abstractly (UDL-11/15).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive"
+      ],
+      "id": "C7",
+      "requirement": "Confers no authority and embeds no secret (UDL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "DATA-001 §12",
+  "target_id": "UCOS-GOVERNANCE-ucos.data.governance.foundation-6a68734d3da22a22"
+}

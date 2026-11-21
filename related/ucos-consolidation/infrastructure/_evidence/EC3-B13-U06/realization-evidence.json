@@ -1,0 +1,4316 @@
+{
+  "artifact": "EC3-B13-U06-REALIZATION-EVIDENCE",
+  "authority": "ENGINEERING-EXECUTION-ONLY",
+  "certification_ids": {
+    "Distribution": "UCOS-CERT-Topology-f255195c4116db97",
+    "Topology": "UCOS-CERT-Topology-8e008858f3116da5"
+  },
+  "certification_ledger": {
+    "count": 5,
+    "entries": [
+      {
+        "blueprint_id": "Topology",
+        "certification_id": "UCOS-CERT-Topology-22f58d75a6ab846a",
+        "entry_hash": "80fef408879428e10a885cc9ba772320979cdbe906157513ef30a199bb5d6ccd",
+        "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "record_sha256": "22f58d75a6ab846a9bf65cc5a87917bf3c5d0c957db904f1bd901e456cb592b8",
+        "sequence": 0,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Topology",
+        "certification_id": "UCOS-CERT-Topology-0ee1d7f976ddb5cc",
+        "entry_hash": "7006e0ad0d4ce0c736d9e79fdfedf8ae6fc3178cf5c64d5f6549ed95881f0101",
+        "prev_hash": "80fef408879428e10a885cc9ba772320979cdbe906157513ef30a199bb5d6ccd",
+        "record_sha256": "0ee1d7f976ddb5cc87512d23fff825ccba2b711f29858da99c35aaf5d1848c09",
+        "sequence": 1,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Topology",
+        "certification_id": "UCOS-CERT-Topology-5d207fe59dd1afb5",
+        "entry_hash": "63a69b7c85d8a5a63b7cb1b8db6ebc56c5866037da5de269b832cf870778bd1e",
+        "prev_hash": "7006e0ad0d4ce0c736d9e79fdfedf8ae6fc3178cf5c64d5f6549ed95881f0101",
+        "record_sha256": "5d207fe59dd1afb50144876427d3e803e9791c3dee6c01223b693d42b5611f84",
+        "sequence": 2,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Topology",
+        "certification_id": "UCOS-CERT-Topology-483555b5d233d75f",
+        "entry_hash": "ccb5abb613541f9d41ab052b37028c866f8822da56357dcbb531a9521f37db92",
+        "prev_hash": "63a69b7c85d8a5a63b7cb1b8db6ebc56c5866037da5de269b832cf870778bd1e",
+        "record_sha256": "483555b5d233d75f7a00c5d05e25441eddc42cfd51cc9fc416d61144696069f8",
+        "sequence": 3,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Topology",
+        "certification_id": "UCOS-CERT-Topology-ea8f117e99f74e5d",
+        "entry_hash": "e0f66304b79b6ad9ce9ab28c7449de3be1da4ab05436fd9e898d1e7f824ca47f",
+        "prev_hash": "ccb5abb613541f9d41ab052b37028c866f8822da56357dcbb531a9521f37db92",
+        "record_sha256": "ea8f117e99f74e5daedab7a02937a228925d0dbd9c94ab788325b21fd76013a0",
+        "sequence": 4,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c",
+        "version": "1.0.0"
+      }
+    ],
+    "head_hash": "e0f66304b79b6ad9ce9ab28c7449de3be1da4ab05436fd9e898d1e7f824ca47f",
+    "ledger_format": "ucos-certification-ledger/1.0.0"
+  },
+  "construct_ids": {
+    "Distribution": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c",
+    "Topology": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361"
+  },
+  "constructs": [
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Topology-814b838e7bdd335c",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "f0aa49089a48541df9a71e9a301ac1d85c1ed8bffdfd7ac6571a2ec50a5366ae",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Topology",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Topology-814b838e7bdd335c",
+            "certified": true,
+            "content_sha256": "814b838e7bdd335c22aea8ae8da70607318f7ab23bbee865d7f355dec7bd18fe",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "f0aa49089a48541df9a71e9a301ac1d85c1ed8bffdfd7ac6571a2ec50a5366ae",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "f0aa49089a48541df9a71e9a301ac1d85c1ed8bffdfd7ac6571a2ec50a5366ae",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Topology-814b838e7bdd335c",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "f0aa49089a48541df9a71e9a301ac1d85c1ed8bffdfd7ac6571a2ec50a5366ae",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "814b838e7bdd335c22aea8ae8da70607318f7ab23bbee865d7f355dec7bd18fe",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687",
+          "validation_evidence_ref": "f0aa49089a48541df9a71e9a301ac1d85c1ed8bffdfd7ac6571a2ec50a5366ae",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Topology-814b838e7bdd335c",
+      "construct": {
+        "composition_ref": "ENG-005:PL-F2:platform.composition.foundation",
+        "construct_id": "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687",
+        "contains": [],
+        "locality_map_refs": [],
+        "meta_class": "Topology",
+        "relationships": [
+          "contains",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "PL-F2",
+          "RL-F2",
+          "SF-2",
+          "AF-3"
+        ],
+        "type_tag": "ucos.infrastructure.topology.foundation",
+        "value_digest": "396563355dce86874a3df417362a7f6fd1fb065482db5d7da9a3f88aeca8c442"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-typed",
+              "infra-topology-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts",
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "Topology",
+          "INFRASTRUCTURE-010",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "forward": [
+          "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687",
+          "EC3-B13-U06-TOPOLOGY-VALIDATION-EVIDENCE",
+          "EC3-B13-U06-TOPOLOGY-CCE-CERTIFICATION",
+          "EC3-B13-U06-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "074ffb2",
+        "meta_class": "Topology",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "PL-F2",
+          "RL-F2",
+          "SF-2",
+          "AF-3"
+        ],
+        "substrate_reuse": {
+          "AF-3": "application experience delivered by reference (ITOP-03)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.topology type_tag (typed construct)",
+          "ENG-005": "reference identifiers (contains/hosts/dependsOn refs; no new connection construct)",
+          "PL-F2": "platform composition reused by reference (ITOP-01); topology re-founds none",
+          "RL-F2": "runtime workflow/state referenced by Distribution lifecycle",
+          "SF-2": "service capability hosted by reference (ITOP-03)"
+        },
+        "target_id": "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U06"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "target_id": "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "checks_run": [
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "infra-topology-construct-kind",
+            "infra-topology-distribution-hosts",
+            "infra-topology-identified-objectbound",
+            "infra-topology-typed",
+            "infra-topology-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 15,
+            "total": 15
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "PL-F2",
+                  "RL-F2",
+                  "SF-2",
+                  "AF-3"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {},
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-construct-kind",
+              "details": {},
+              "message": "infra-topology-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-distribution-hosts",
+              "details": {
+                "applies": false
+              },
+              "message": "infra-topology-distribution-hosts satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687"
+              },
+              "message": "infra-topology-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.topology.foundation"
+              },
+              "message": "infra-topology-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-value-fidelity",
+              "details": {
+                "value_digest": "396563355dce86874a3df417362a7f6fd1fb065482db5d7da9a3f88aeca8c442"
+              },
+              "message": "infra-topology-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "Topology"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "contains",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "Topology",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 15,
+            "total": 15
+          },
+          "findings": [
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "PL-F2",
+                  "RL-F2",
+                  "SF-2",
+                  "AF-3"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {},
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-construct-kind",
+              "details": {},
+              "message": "infra-topology-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-distribution-hosts",
+              "details": {
+                "applies": false
+              },
+              "message": "infra-topology-distribution-hosts satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687"
+              },
+              "message": "infra-topology-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.topology.foundation"
+              },
+              "message": "infra-topology-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-value-fidelity",
+              "details": {
+                "value_digest": "396563355dce86874a3df417362a7f6fd1fb065482db5d7da9a3f88aeca8c442"
+              },
+              "message": "infra-topology-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "Topology"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "contains",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-TOPOLOGY-ucos.infrastructure.topology.foundation-396563355dce8687",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Topology-3445086cdc811f9e",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "1b5ec8423a5839e1714c5ab9a8341d186016e33d3471ebf0288f118dc0efff8b",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Topology",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Topology-3445086cdc811f9e",
+            "certified": true,
+            "content_sha256": "3445086cdc811f9e1c100111944e87bfe5690f31160e55d5f81966e5421b0ce7",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "1b5ec8423a5839e1714c5ab9a8341d186016e33d3471ebf0288f118dc0efff8b",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "1b5ec8423a5839e1714c5ab9a8341d186016e33d3471ebf0288f118dc0efff8b",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Topology-3445086cdc811f9e",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "1b5ec8423a5839e1714c5ab9a8341d186016e33d3471ebf0288f118dc0efff8b",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "3445086cdc811f9e1c100111944e87bfe5690f31160e55d5f81966e5421b0ce7",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c",
+          "validation_evidence_ref": "1b5ec8423a5839e1714c5ab9a8341d186016e33d3471ebf0288f118dc0efff8b",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Topology-3445086cdc811f9e",
+      "construct": {
+        "construct_id": "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c",
+        "locality_type": "region",
+        "mapping_refs": [],
+        "meta_class": "Topology",
+        "relationships": [
+          "contains",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "PL-F2",
+          "RL-F2",
+          "SF-2",
+          "AF-3"
+        ],
+        "type_tag": "ucos.infrastructure.localitymap.foundation",
+        "value_digest": "75898ae4ff8d121cab8e0dd5181d3ffd6631d4b2a9a743dd40a55d9cf5f4fd8b"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-typed",
+              "infra-topology-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts",
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "Topology",
+          "INFRASTRUCTURE-010",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "forward": [
+          "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c",
+          "EC3-B13-U06-LOCALITYMAP-VALIDATION-EVIDENCE",
+          "EC3-B13-U06-LOCALITYMAP-CCE-CERTIFICATION",
+          "EC3-B13-U06-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "074ffb2",
+        "meta_class": "Topology",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "PL-F2",
+          "RL-F2",
+          "SF-2",
+          "AF-3"
+        ],
+        "substrate_reuse": {
+          "AF-3": "application experience delivered by reference (ITOP-03)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.topology type_tag (typed construct)",
+          "ENG-005": "reference identifiers (contains/hosts/dependsOn refs; no new connection construct)",
+          "PL-F2": "platform composition reused by reference (ITOP-01); topology re-founds none",
+          "RL-F2": "runtime workflow/state referenced by Distribution lifecycle",
+          "SF-2": "service capability hosted by reference (ITOP-03)"
+        },
+        "target_id": "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U06"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "target_id": "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "checks_run": [
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "infra-topology-construct-kind",
+            "infra-topology-distribution-hosts",
+            "infra-topology-identified-objectbound",
+            "infra-topology-typed",
+            "infra-topology-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 15,
+            "total": 15
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "PL-F2",
+                  "RL-F2",
+                  "SF-2",
+                  "AF-3"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {},
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-construct-kind",
+              "details": {},
+              "message": "infra-topology-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-distribution-hosts",
+              "details": {
+                "applies": false
+              },
+              "message": "infra-topology-distribution-hosts satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c"
+              },
+              "message": "infra-topology-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.localitymap.foundation"
+              },
+              "message": "infra-topology-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-value-fidelity",
+              "details": {
+                "value_digest": "75898ae4ff8d121cab8e0dd5181d3ffd6631d4b2a9a743dd40a55d9cf5f4fd8b"
+              },
+              "message": "infra-topology-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "Topology"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "contains",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "Topology",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 15,
+            "total": 15
+          },
+          "findings": [
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "PL-F2",
+                  "RL-F2",
+                  "SF-2",
+                  "AF-3"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {},
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-construct-kind",
+              "details": {},
+              "message": "infra-topology-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-distribution-hosts",
+              "details": {
+                "applies": false
+              },
+              "message": "infra-topology-distribution-hosts satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c"
+              },
+              "message": "infra-topology-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.localitymap.foundation"
+              },
+              "message": "infra-topology-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-value-fidelity",
+              "details": {
+                "value_digest": "75898ae4ff8d121cab8e0dd5181d3ffd6631d4b2a9a743dd40a55d9cf5f4fd8b"
+              },
+              "message": "infra-topology-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "Topology"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "contains",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-LOCALITYMAP-ucos.infrastructure.localitymap.foundation-75898ae4ff8d121c",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Topology-8e008858f3116da5",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "953e4708bc99b8f809adf91a7a7ef468f4271e5d7adcfcd3a6c712afebc3a1a5",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Topology",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Topology-8e008858f3116da5",
+            "certified": true,
+            "content_sha256": "8e008858f3116da5fd3be351f5d5aff4894a28719858a2a0e0cca76b155fded2",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "953e4708bc99b8f809adf91a7a7ef468f4271e5d7adcfcd3a6c712afebc3a1a5",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "953e4708bc99b8f809adf91a7a7ef468f4271e5d7adcfcd3a6c712afebc3a1a5",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Topology-8e008858f3116da5",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "953e4708bc99b8f809adf91a7a7ef468f4271e5d7adcfcd3a6c712afebc3a1a5",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "8e008858f3116da5fd3be351f5d5aff4894a28719858a2a0e0cca76b155fded2",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361",
+          "validation_evidence_ref": "953e4708bc99b8f809adf91a7a7ef468f4271e5d7adcfcd3a6c712afebc3a1a5",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Topology-8e008858f3116da5",
+      "construct": {
+        "constraint_refs": [],
+        "construct_id": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361",
+        "meta_class": "Topology",
+        "relationships": [
+          "contains",
+          "dependsOn"
+        ],
+        "rule_kind": "affinity",
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "PL-F2",
+          "RL-F2",
+          "SF-2",
+          "AF-3"
+        ],
+        "target_refs": [],
+        "type_tag": "ucos.infrastructure.placementrule.foundation",
+        "value_digest": "ed7315ae9b3cf361efb3ea7ba8e1c9bb5f7fffde8dbf4b77b3f8ace14faddf4e"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-typed",
+              "infra-topology-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts",
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "Topology",
+          "INFRASTRUCTURE-010",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "forward": [
+          "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361",
+          "EC3-B13-U06-PLACEMENTRULE-VALIDATION-EVIDENCE",
+          "EC3-B13-U06-PLACEMENTRULE-CCE-CERTIFICATION",
+          "EC3-B13-U06-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "074ffb2",
+        "meta_class": "Topology",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "PL-F2",
+          "RL-F2",
+          "SF-2",
+          "AF-3"
+        ],
+        "substrate_reuse": {
+          "AF-3": "application experience delivered by reference (ITOP-03)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.topology type_tag (typed construct)",
+          "ENG-005": "reference identifiers (contains/hosts/dependsOn refs; no new connection construct)",
+          "PL-F2": "platform composition reused by reference (ITOP-01); topology re-founds none",
+          "RL-F2": "runtime workflow/state referenced by Distribution lifecycle",
+          "SF-2": "service capability hosted by reference (ITOP-03)"
+        },
+        "target_id": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U06"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "target_id": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "checks_run": [
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "infra-topology-construct-kind",
+            "infra-topology-distribution-hosts",
+            "infra-topology-identified-objectbound",
+            "infra-topology-typed",
+            "infra-topology-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 15,
+            "total": 15
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "PL-F2",
+                  "RL-F2",
+                  "SF-2",
+                  "AF-3"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {},
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-construct-kind",
+              "details": {},
+              "message": "infra-topology-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-distribution-hosts",
+              "details": {
+                "applies": false
+              },
+              "message": "infra-topology-distribution-hosts satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361"
+              },
+              "message": "infra-topology-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.placementrule.foundation"
+              },
+              "message": "infra-topology-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-value-fidelity",
+              "details": {
+                "value_digest": "ed7315ae9b3cf361efb3ea7ba8e1c9bb5f7fffde8dbf4b77b3f8ace14faddf4e"
+              },
+              "message": "infra-topology-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "Topology"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "contains",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "Topology",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 15,
+            "total": 15
+          },
+          "findings": [
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "PL-F2",
+                  "RL-F2",
+                  "SF-2",
+                  "AF-3"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {},
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-construct-kind",
+              "details": {},
+              "message": "infra-topology-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-distribution-hosts",
+              "details": {
+                "applies": false
+              },
+              "message": "infra-topology-distribution-hosts satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361"
+              },
+              "message": "infra-topology-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.placementrule.foundation"
+              },
+              "message": "infra-topology-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-value-fidelity",
+              "details": {
+                "value_digest": "ed7315ae9b3cf361efb3ea7ba8e1c9bb5f7fffde8dbf4b77b3f8ace14faddf4e"
+              },
+              "message": "infra-topology-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "Topology"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "contains",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-PLACEMENTRULE-ucos.infrastructure.placementrule.foundation-ed7315ae9b3cf361",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Topology-d36b8984192bd549",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "fd386e3d41cb47cb7ef2474c7c8787af34a3f68d0ccc71a30018cd33c844b356",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Topology",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Topology-d36b8984192bd549",
+            "certified": true,
+            "content_sha256": "d36b8984192bd5493a696f9588dc9b9e0189364a7607df32139a07768fdc964c",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "fd386e3d41cb47cb7ef2474c7c8787af34a3f68d0ccc71a30018cd33c844b356",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "fd386e3d41cb47cb7ef2474c7c8787af34a3f68d0ccc71a30018cd33c844b356",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Topology-d36b8984192bd549",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "fd386e3d41cb47cb7ef2474c7c8787af34a3f68d0ccc71a30018cd33c844b356",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "d36b8984192bd5493a696f9588dc9b9e0189364a7607df32139a07768fdc964c",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+          "validation_evidence_ref": "fd386e3d41cb47cb7ef2474c7c8787af34a3f68d0ccc71a30018cd33c844b356",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Topology-d36b8984192bd549",
+      "construct": {
+        "construct_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+        "depends_on": [],
+        "hosts": [
+          "ENG-005:AF-3:application.experience.foundation"
+        ],
+        "meta_class": "Distribution",
+        "relationships": [],
+        "state": "DEFINED",
+        "strategy": "standard",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "PL-F2",
+          "RL-F2",
+          "SF-2",
+          "AF-3"
+        ],
+        "type_tag": "ucos.infrastructure.distribution.foundation",
+        "value_digest": "ff98ab5a824045b2072fa70fedae6f990f215194c697ab81ad36f4aa181f8fe5"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-typed",
+              "infra-topology-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts",
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "Distribution",
+          "INFRASTRUCTURE-010",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "forward": [
+          "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+          "EC3-B13-U06-DISTRIBUTION-VALIDATION-EVIDENCE",
+          "EC3-B13-U06-DISTRIBUTION-CCE-CERTIFICATION",
+          "EC3-B13-U06-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "074ffb2",
+        "meta_class": "Distribution",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "PL-F2",
+          "RL-F2",
+          "SF-2",
+          "AF-3"
+        ],
+        "substrate_reuse": {
+          "AF-3": "application experience delivered by reference (ITOP-03)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.topology type_tag (typed construct)",
+          "ENG-005": "reference identifiers (contains/hosts/dependsOn refs; no new connection construct)",
+          "PL-F2": "platform composition reused by reference (ITOP-01); topology re-founds none",
+          "RL-F2": "runtime workflow/state referenced by Distribution lifecycle",
+          "SF-2": "service capability hosted by reference (ITOP-03)"
+        },
+        "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U06"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Distribution",
+          "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "Distribution",
+          "checks_run": [
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "infra-topology-construct-kind",
+            "infra-topology-distribution-hosts",
+            "infra-topology-identified-objectbound",
+            "infra-topology-typed",
+            "infra-topology-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 15,
+            "total": 15
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "PL-F2",
+                  "RL-F2",
+                  "SF-2",
+                  "AF-3"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {},
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-construct-kind",
+              "details": {},
+              "message": "infra-topology-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-distribution-hosts",
+              "details": {
+                "applies": true
+              },
+              "message": "infra-topology-distribution-hosts satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2"
+              },
+              "message": "infra-topology-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.distribution.foundation"
+              },
+              "message": "infra-topology-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-value-fidelity",
+              "details": {
+                "value_digest": "ff98ab5a824045b2072fa70fedae6f990f215194c697ab81ad36f4aa181f8fe5"
+              },
+              "message": "infra-topology-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "Distribution"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": []
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "Distribution",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 15,
+            "total": 15
+          },
+          "findings": [
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "PL-F2",
+                  "RL-F2",
+                  "SF-2",
+                  "AF-3"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {},
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-construct-kind",
+              "details": {},
+              "message": "infra-topology-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-distribution-hosts",
+              "details": {
+                "applies": true
+              },
+              "message": "infra-topology-distribution-hosts satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2"
+              },
+              "message": "infra-topology-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.distribution.foundation"
+              },
+              "message": "infra-topology-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-value-fidelity",
+              "details": {
+                "value_digest": "ff98ab5a824045b2072fa70fedae6f990f215194c697ab81ad36f4aa181f8fe5"
+              },
+              "message": "infra-topology-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "Distribution"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": []
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Topology-f255195c4116db97",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "7249727a9a46a90fd8b90f21a3e0cc00b923cb2e2db475812fea92c539092991",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Topology",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Topology-f255195c4116db97",
+            "certified": true,
+            "content_sha256": "f255195c4116db977b2a3dff8798ec26dfd6d3187f4a2011b7a1de05da9f2660",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "7249727a9a46a90fd8b90f21a3e0cc00b923cb2e2db475812fea92c539092991",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "7249727a9a46a90fd8b90f21a3e0cc00b923cb2e2db475812fea92c539092991",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Topology",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Topology-f255195c4116db97",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "7249727a9a46a90fd8b90f21a3e0cc00b923cb2e2db475812fea92c539092991",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "f255195c4116db977b2a3dff8798ec26dfd6d3187f4a2011b7a1de05da9f2660",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c",
+          "validation_evidence_ref": "7249727a9a46a90fd8b90f21a3e0cc00b923cb2e2db475812fea92c539092991",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Topology-f255195c4116db97",
+      "construct": {
+        "channel_refs": [],
+        "construct_id": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c",
+        "delivery_mode": "direct",
+        "depends_on": [],
+        "hosts": [
+          "ENG-005:AF-3:application.experience.foundation"
+        ],
+        "meta_class": "Distribution",
+        "relationships": [],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "PL-F2",
+          "RL-F2",
+          "SF-2",
+          "AF-3"
+        ],
+        "type_tag": "ucos.infrastructure.delivery.foundation",
+        "value_digest": "97b78f56764fc16c38e1767784e4de0b801895e5fd1ca1010db20b477e27a9f1"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-typed",
+              "infra-topology-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "infra-topology-distribution-hosts",
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "Distribution",
+          "INFRASTRUCTURE-010",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "forward": [
+          "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c",
+          "EC3-B13-U06-DELIVERY-VALIDATION-EVIDENCE",
+          "EC3-B13-U06-DELIVERY-CCE-CERTIFICATION",
+          "EC3-B13-U06-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "074ffb2",
+        "meta_class": "Distribution",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "PL-F2",
+          "RL-F2",
+          "SF-2",
+          "AF-3"
+        ],
+        "substrate_reuse": {
+          "AF-3": "application experience delivered by reference (ITOP-03)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.topology type_tag (typed construct)",
+          "ENG-005": "reference identifiers (contains/hosts/dependsOn refs; no new connection construct)",
+          "PL-F2": "platform composition reused by reference (ITOP-01); topology re-founds none",
+          "RL-F2": "runtime workflow/state referenced by Distribution lifecycle",
+          "SF-2": "service capability hosted by reference (ITOP-03)"
+        },
+        "target_id": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U06"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Distribution",
+          "target_id": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "Distribution",
+          "checks_run": [
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "infra-topology-construct-kind",
+            "infra-topology-distribution-hosts",
+            "infra-topology-identified-objectbound",
+            "infra-topology-typed",
+            "infra-topology-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 15,
+            "total": 15
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "PL-F2",
+                  "RL-F2",
+                  "SF-2",
+                  "AF-3"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {},
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-construct-kind",
+              "details": {},
+              "message": "infra-topology-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-distribution-hosts",
+              "details": {
+                "applies": true
+              },
+              "message": "infra-topology-distribution-hosts satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c"
+              },
+              "message": "infra-topology-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.delivery.foundation"
+              },
+              "message": "infra-topology-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-value-fidelity",
+              "details": {
+                "value_digest": "97b78f56764fc16c38e1767784e4de0b801895e5fd1ca1010db20b477e27a9f1"
+              },
+              "message": "infra-topology-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "Distribution"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": []
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "Distribution",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 15,
+            "total": 15
+          },
+          "findings": [
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "PL-F2",
+                  "RL-F2",
+                  "SF-2",
+                  "AF-3"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {},
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-construct-kind",
+              "details": {},
+              "message": "infra-topology-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-distribution-hosts",
+              "details": {
+                "applies": true
+              },
+              "message": "infra-topology-distribution-hosts satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c"
+              },
+              "message": "infra-topology-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.delivery.foundation"
+              },
+              "message": "infra-topology-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-topology-value-fidelity",
+              "details": {
+                "value_digest": "97b78f56764fc16c38e1767784e4de0b801895e5fd1ca1010db20b477e27a9f1"
+              },
+              "message": "infra-topology-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "Distribution"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": []
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-DELIVERY-ucos.infrastructure.delivery.foundation-97b78f56764fc16c",
+          "verdict": "pass"
+        }
+      }
+    }
+  ],
+  "criteria": {
+    "acceptance": {
+      "AC-1": true,
+      "AC-2": true,
+      "AC-3": true,
+      "AC-4": true,
+      "AC-5": true,
+      "AC-6": true,
+      "AC-7": true
+    },
+    "certification_gates": {
+      "CC-1": true,
+      "CC-10": true,
+      "CC-2": true,
+      "CC-3": true,
+      "CC-4": true,
+      "CC-5": true,
+      "CC-6": true,
+      "CC-7": true,
+      "CC-8": true,
+      "CC-9": true
+    },
+    "infrastructure_compliance": {
+      "C1": true,
+      "C2": true,
+      "C3": true,
+      "C4": true,
+      "C5": true,
+      "C6": true,
+      "C7": true
+    },
+    "validation": {
+      "VC-1": true,
+      "VC-2": true,
+      "VC-3": true,
+      "VC-4": true,
+      "VC-5": true
+    }
+  },
+  "determination": "COMPLETE",
+  "meta_classes": [
+    "Topology",
+    "Topology",
+    "Topology",
+    "Distribution",
+    "Distribution"
+  ],
+  "meta_validity_WF": {
+    "WF-1": true,
+    "WF-11": true,
+    "WF-12": true,
+    "WF-2": true,
+    "WF-3": true,
+    "WF-8": true
+  },
+  "uil_conformance": {
+    "UIL-01": true,
+    "UIL-02": true,
+    "UIL-03": true,
+    "UIL-04": true,
+    "UIL-05": true,
+    "UIL-07": true,
+    "UIL-09": true,
+    "UIL-12": true,
+    "UIL-13": true,
+    "UIL-15": true
+  },
+  "unit": "EC3-B13-U06",
+  "version": "1.0.0"
+}

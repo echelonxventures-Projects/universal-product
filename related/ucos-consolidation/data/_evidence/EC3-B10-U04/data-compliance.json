@@ -1,0 +1,73 @@
+{
+  "compliance_format": "ucos-data-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "schema-typed",
+        "schema-identified"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UDL-03), identified and objecthood-bound (UDL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UDL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "data-value-fidelity"
+      ],
+      "id": "C3",
+      "requirement": "Value is ENG-003 value (UDL-06).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "schema-named",
+        "schema-typed",
+        "schema-explicit-structure",
+        "schema-elements-typed",
+        "schema-conformance-decidable"
+      ],
+      "id": "C4",
+      "materially_exercised": true,
+      "note": "schema structure explicit: name (DSA-01) + type (DSA-03) + decidable, typed element set with decidable conformance (UDL-10 / DSA-02 / DSA-C3)",
+      "requirement": "Entity/attribute/schema structure is explicit (UDL-07/08/10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-relationships-closed",
+        "founding-acyclic",
+        "schema-composition-acyclic"
+      ],
+      "id": "C5",
+      "requirement": "Relationships are ENG-005 references; founding structure acyclic (UDL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "storage-independence"
+      ],
+      "id": "C6",
+      "requirement": "Selects no technology; describes storage abstractly (UDL-11/15).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive"
+      ],
+      "id": "C7",
+      "requirement": "Confers no authority and embeds no secret (UDL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "DATA-001 §12",
+  "target_id": "UCOS-SCHEMA-ucos.data.schema.foundation-9c2e6c6c67fee5d6"
+}

@@ -1,0 +1,48 @@
+{
+  "backward": [
+    "AMC-08",
+    "APPLICATION-012",
+    "APPLICATION-005",
+    "APPLICATION-001",
+    "ARCH-APPLICATION-001",
+    "12-APPLICATION@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-COMPOSITION-ucos.application.composition.foundation-ef71e0ec2e86b09e",
+    "EC3-B12-U08-VALIDATION-EVIDENCE",
+    "EC3-B12-U08-CCE-CERTIFICATION",
+    "EC3-B12-U08-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "8ed6781",
+  "meta_class": "AMC-08",
+  "referenced_units": [
+    "AMC-01",
+    "AMC-03",
+    "AMC-04",
+    "PL-F2"
+  ],
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "PL-F2"
+  ],
+  "substrate_reuse": {
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the composition)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity; no parallel model)",
+    "ENG-004": "application.composition_meta.CompositionKind + type_tag (ENG-004 typing, by ref)",
+    "ENG-005": "reference identifiers (member/assembled/composition refs; no new construct)",
+    "PL-F2": "experience composition bound by reference (AMR-12; PLATFORM-009/010); none redef",
+    "RL-F2": "composition-emit event behavior bound by reference (§7); none redefined"
+  },
+  "target_id": "UCOS-COMPOSITION-ucos.application.composition.foundation-ef71e0ec2e86b09e",
+  "trace_format": "ucos-application-composition-traceability/1.0.0",
+  "unit": "EC3-B12-U08"
+}

@@ -1,0 +1,69 @@
+{
+  "compliance_format": "ucos-service-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "band11-typed",
+        "band11-identified"
+      ],
+      "id": "C1",
+      "requirement": "Typed (USL-03), identified and objecthood-bound (USL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (USL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "service-value-fidelity"
+      ],
+      "id": "C3",
+      "requirement": "Carries ENG-003 value; operation I/O is DF-2 data by reference (USL-08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "band11-inventory-complete",
+        "band11-all-units-certified"
+      ],
+      "id": "C4",
+      "requirement": "Contract/interface/operation structure is explicit (USL-06/07/08).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-relationships-closed",
+        "founding-acyclic"
+      ],
+      "id": "C5",
+      "materially_exercised": true,
+      "note": "the Band-11 spine closes over exactly the thirteen meta-relationships SMR-01…13 via the CERTIFIED Universal Service Meta-Model (U11) and the eleven-unit founding graph is acyclic and downward-only — each relationship being an ENG-005 reference (USL-09 at band level)",
+      "requirement": "Composition/orchestration uses ENG-005 references; founding acyclic (USL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "band11-independence"
+      ],
+      "id": "C6",
+      "requirement": "Execution binds to RL-F2 by reference (USL-10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (USL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "SERVICE-001 §12",
+  "target_id": "UCOS-BAND11-ucos.service.band11.completion-13ba9a8b6b721448"
+}

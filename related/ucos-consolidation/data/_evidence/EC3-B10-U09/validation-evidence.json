@@ -1,0 +1,265 @@
+{
+  "accepted": true,
+  "blocking_failures": [],
+  "blueprint_id": "DMC-10",
+  "checks_run": [
+    "data-value-fidelity",
+    "foundation-reuse-integrity",
+    "founding-acyclic",
+    "meta-class-single",
+    "meta-constraints",
+    "meta-relationships-closed",
+    "non-constitutive",
+    "provisional-state-disclosure",
+    "security-binds-policy-by-reference",
+    "security-classification-recorded",
+    "security-classified",
+    "security-classifies-subject",
+    "security-dimensioned",
+    "security-enforcement-by-reference",
+    "security-evaluative",
+    "security-identified",
+    "security-independence",
+    "security-named",
+    "security-non-enforcing",
+    "security-recorded",
+    "security-typed",
+    "security-valid",
+    "security-versioned",
+    "traceability-rooted"
+  ],
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 24,
+    "total": 24
+  },
+  "evidence_format": "ucos-validation-evidence/1.0.0",
+  "findings": [
+    {
+      "check_id": "data-value-fidelity",
+      "details": {
+        "value_digest": "ee2637ff1e457263365387c79bd3e46189ba32373e487bc9f091e83e38c96694"
+      },
+      "message": "data-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-004",
+          "ENG-005"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "DMC-10"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "DZA-K1",
+          "DZA-K2",
+          "DZA-K3",
+          "DZA-K4",
+          "DZA-K5"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "DMR-09",
+          "DMR-10",
+          "DMR-11"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-binds-policy-by-reference",
+      "details": {
+        "policy_ref": "UCOS-POLICY-REF:security.udl"
+      },
+      "message": "security-binds-policy-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-classification-recorded",
+      "details": {
+        "dimensions": [
+          "sensitivity"
+        ],
+        "verdict": "pass"
+      },
+      "message": "security-classification-recorded satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-classified",
+      "details": {
+        "kind": "Classification-Label"
+      },
+      "message": "security-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-classifies-subject",
+      "details": {
+        "classifies": "UCOS-ENTITY-ucos.data.entity.foundation-b014125ab4fbbe4f"
+      },
+      "message": "security-classifies-subject satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-dimensioned",
+      "details": {
+        "dimensions": [
+          "sensitivity"
+        ]
+      },
+      "message": "security-dimensioned satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-enforcement-by-reference",
+      "details": {},
+      "message": "security-enforcement-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-evaluative",
+      "details": {},
+      "message": "security-evaluative satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-identified",
+      "details": {
+        "security_id": "UCOS-SECURITY-ucos.data.security.foundation-ee2637ff1e457263"
+      },
+      "message": "security-identified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-independence",
+      "details": {},
+      "message": "security-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-named",
+      "details": {
+        "name": "ucos.data.security.foundation"
+      },
+      "message": "security-named satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-non-enforcing",
+      "details": {},
+      "message": "security-non-enforcing satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-recorded",
+      "details": {},
+      "message": "security-recorded satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-typed",
+      "details": {
+        "type_tag": "ucos.core.security"
+      },
+      "message": "security-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "security-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-versioned",
+      "details": {
+        "version": "1.0.0"
+      },
+      "message": "security-versioned satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 6
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-SECURITY-ucos.data.security.foundation-ee2637ff1e457263",
+  "verdict": "pass"
+}

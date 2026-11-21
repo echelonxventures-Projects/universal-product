@@ -1,0 +1,437 @@
+{
+  "artifact_id": "UCOS-EXCLUSION-REGISTER-001",
+  "title": "Repository Exclusion Register — the declared classification of every excluded path",
+  "authority": "AUTHORED REPOSITORY TRUTH, HELD SUBORDINATE UNDER UCKP-LAW-0001. This register legislates the classification of excluded filesystem state; it is not generated and must never be regenerated.",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "PERSISTENCE",
+    "relation": "PROJECTION",
+    "articles": [
+      "UCKP-ART-04",
+      "UCKP-ART-09"
+    ],
+    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+    "effect": "UCKP-ART-09 makes the repository one persistence mechanism among several, so exclusion from it is a statement about STORAGE and never about whether a thing exists. This register owns which bytes the version-control binding carries; it may never own existence."
+  },
+  "constitutional_basis": "UCKP-LAW-0001 (engine/uckp/law.py), UCOS-CAA-001, GOV-005 §5.1 / §5.3, UCOS-CL-001",
+  "schema": "ucos-exclusion-register",
+  "version": "1.0.0",
+  "why_this_exists": [
+    "UCOS-RIB-001 measured repository cleanliness as a count over `git status --porcelain`.",
+    "That command applies the ignore authority, so the exclusion rules were an INPUT to the",
+    "gate that polices excluded state. At be46a300 two lines added to .gitignore removed 41",
+    "physically-present contaminating files from the gate's observation surface, flipping",
+    "GATE-12 and GATE-04, opening rib.json:gate, satisfying AEE OBS-BLUEPRINT-GATE and",
+    "clearing CONV-02 — on a repository that still held every one of those files.",
+    "",
+    "The correction is not a better pattern. It is that EXCLUSION MUST COST A DECLARATION.",
+    "Repository cleanliness is now measured over the ignored-inclusive filesystem, and every",
+    "ignored path must resolve to a class declared HERE. An ignored path with no declared",
+    "class is `ignored_unclassified` and FAILS CLOSED. Adding an ignore rule therefore no",
+    "longer removes an observation; it adds a classification obligation. The metric cannot",
+    "be shrunk by editing .gitignore, which is the property that was missing."
+  ],
+  "classes": {
+    "GENERATED_DETERMINISTIC": "Deterministically re-derivable output of a declared producer. Regenerated each run, never hand-registered (GOV-005 §5.3). Byte-identical from the same tracked inputs.",
+    "GENERATED_ENVIRONMENTAL": "Output of a declared producer whose bytes depend on the execution environment. Never an input to canonical identity.",
+    "TEST_EXECUTION_ARTIFACT": "Produced by the test runner. Absent from every pristine clone because the bootstrap does not run the suite. Never an input to canonical identity (UCOS-CL-005).",
+    "CACHE": "Interpreter or tool cache. Reconstructible from source at any time; carries no information.",
+    "TOOL_OPERATIONAL": "Per-clone operational state of a development tool or environment. Not repository truth, not shared, not reproducible across machines.",
+    "TEMPORARY": "Transient lock or editor scratch file with a bounded lifetime, owned by the process that creates it.",
+    "EXPLICITLY_AUTHORIZED_EXTERNAL": "Present by explicit authorization and outside the governed corpus by declaration, not by accident."
+  },
+  "invariants": [
+    "Every ignored path resolves to exactly one entry here (`ignored_unclassified` = 0).",
+    "No tracked path is matched by any ignore rule (`git check-ignore --no-index` over `git ls-files` is empty).",
+    "No entry may be added for a path whose correct disposition is deletion — exclusion is not a disposal mechanism.",
+    "Adding a rule here does not reduce the contamination count unless the class is one this register declares."
+  ],
+  "entries": [
+    {
+      "rule": "__pycache__/",
+      "class": "CACHE",
+      "owner": "CPython",
+      "producer": "python interpreter",
+      "rationale": "Bytecode cache. Reconstructed on import; carries no information not in the .py source."
+    },
+    {
+      "rule": "*.pyc",
+      "class": "CACHE",
+      "owner": "CPython",
+      "producer": "python interpreter",
+      "rationale": "As above, for loose bytecode outside a __pycache__ directory."
+    },
+    {
+      "rule": ".pytest_cache/",
+      "class": "CACHE",
+      "owner": "pytest",
+      "producer": "pytest",
+      "rationale": "Test-run cache (last-failed, node ids). Rebuilt on the next run."
+    },
+    {
+      "rule": ".ruff_cache/",
+      "class": "CACHE",
+      "owner": "ruff",
+      "producer": "ruff",
+      "rationale": "Lint result cache keyed by file hash. Rebuilt on the next run."
+    },
+    {
+      "rule": ".mypy_cache/",
+      "class": "CACHE",
+      "owner": "mypy",
+      "producer": "mypy",
+      "rationale": "Type-check cache. Rebuilt on the next run. Ships its own nested .gitignore containing `*`, which is why a bare `*` rule appears in the in-force rule set."
+    },
+    {
+      "rule": "*",
+      "class": "CACHE",
+      "owner": "tool-authored nested .gitignore",
+      "producer": "mypy and peers",
+      "rationale": "Several caches write a nested `.gitignore` holding `*` to self-exclude. The rule is scoped to the cache directory that contains it, never to the repository root, and is admitted only in that scope."
+    },
+    {
+      "rule": ".coverage*",
+      "class": "TEST_EXECUTION_ARTIFACT",
+      "owner": "coverage.py",
+      "producer": "pytest-cov / coverage",
+      "rationale": "Coverage data files, including parallel-mode `.coverage.<host>.<pid>.<rand>` and combine-collision residue. Environmental; excluded from canonical identity by UCOS-CL-005."
+    },
+    {
+      "rule": "coverage.xml",
+      "class": "TEST_EXECUTION_ARTIFACT",
+      "owner": "coverage.py",
+      "producer": "pytest --cov-report=xml",
+      "rationale": "Cobertura report consumed by platform/repository_operations/coverage.py. Absent from every pristine clone; nothing reachable from RIE build_model may read it."
+    },
+    {
+      "rule": ".ec1-venv/",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "verify.sh / ucos-env.sh",
+      "producer": "ucos_ensure_venv",
+      "rationale": "The canonical virtual environment, self-healed by verify.sh. Machine-specific absolute paths make it non-portable by construction."
+    },
+    {
+      "rule": "build/",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "setuptools",
+      "producer": "python -m build",
+      "rationale": "Packaging intermediate."
+    },
+    {
+      "rule": "dist/",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "setuptools",
+      "producer": "python -m build",
+      "rationale": "Packaging output; belongs in a release artifact store, not the tree."
+    },
+    {
+      "rule": "*.egg-info/",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "setuptools",
+      "producer": "pip install -e",
+      "rationale": "Editable-install metadata, regenerated on every install."
+    },
+    {
+      "rule": ".runtime/",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "00-BOOK/tools/governance_telemetry.py",
+      "producer": "governance_telemetry.py",
+      "rationale": "EC3 Phase-3 per-clone runtime governance telemetry (enforcement / synchronization / certification audit logs). Operational runtime state, written by exactly one module. This is the permanent remediation for telemetry-induced non-determinism."
+    },
+    {
+      "rule": "**/.claude/settings.local.json",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Claude Code",
+      "rationale": "Per-developer editor/agent settings. Never shared, never repository truth."
+    },
+    {
+      "rule": "00-BOOK/tools/.register.lock",
+      "class": "TEMPORARY",
+      "owner": "00-BOOK/tools/register.sh",
+      "producer": "register.sh",
+      "rationale": "Registration re-entrancy lock, created and removed within a single run (UMB-IMP-001)."
+    },
+    {
+      "rule": "~$*",
+      "class": "TEMPORARY",
+      "owner": "Microsoft Office",
+      "producer": "Word / Excel",
+      "rationale": "Office owner/lock temp files, created beside an open document and removed on close."
+    },
+    {
+      "rule": "determinism-evidence/",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "engine.determinism",
+      "producer": "ec1-determinism",
+      "rationale": "Deterministically re-derivable evidence bundle, regenerated each run (GOV-005 §5.3)."
+    },
+    {
+      "rule": "/knowledge/",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "engine/knowledge/seed.py",
+      "producer": "ucos-knowledge init / docs",
+      "rationale": "Generated canonical knowledge store and handbooks. Authored source is the tracked seed module. Anchored with a leading slash so only the repo-root store is excluded; engine/knowledge/ stays tracked."
+    },
+    {
+      "rule": "/realization/",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "intelligence/realization/",
+      "producer": "python -m intelligence.realization realize",
+      "rationale": "Generated realization artifacts. Authored source is the tracked package plus the canonical knowledge store."
+    },
+    {
+      "rule": "data/_evidence/URI-000001/",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "intelligence/realization/",
+      "producer": "python -m intelligence.realization realize",
+      "rationale": "Consolidated evidence bundle for URI-000001, regenerated with the realization tree."
+    },
+    {
+      "rule": "intelligence/UCOS-URI-001/",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "intelligence/research/",
+      "producer": "make research",
+      "rationale": "Generated research corpus; the engine self-proves determinism via `research verify`."
+    },
+    {
+      "rule": "intelligence/UCOS-UPI-001/",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "intelligence/publication/",
+      "producer": "make publication",
+      "rationale": "Generated publication set; every publication carries a DO-NOT-EDIT provenance banner and the engine self-proves determinism via `publication verify`. The one authored descriptor inside the tree (publication-formats.json) is explicitly re-admitted in .gitignore."
+    },
+    {
+      "rule": "00-MASTER/UAKOS-CLOSURE-002/[0-9][0-9]-*.md",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "producer": "make closure / closure-phase2 / closure-phase3",
+      "rationale": "Numbered engine reports, regenerated each run. Stated at the genus so future engine output is bounded without a new rule; the 24 AUTHORED determinations in the same directory are re-admitted by name in .gitignore (P0-FINAL-CONVERGENCE-001)."
+    },
+    {
+      "rule": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "producer": "make closure",
+      "rationale": "Engine state for phase 1."
+    },
+    {
+      "rule": "00-MASTER/UAKOS-CLOSURE-002/phase2.json",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/phase2_engine.py",
+      "producer": "make closure-phase2",
+      "rationale": "Engine state for phase 2."
+    },
+    {
+      "rule": "00-MASTER/UAKOS-CLOSURE-002/phase3.json",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/phase3_engine.py",
+      "producer": "make closure-phase3",
+      "rationale": "Engine state for phase 3."
+    },
+    {
+      "rule": "00-MASTER/**/evidence/",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "00-MASTER programme phase engines",
+      "producer": "per-programme register/validate/certify/determinism runs",
+      "rationale": "Programme-lane execution evidence, regenerated each run (GPR-001 S1). Scoped to the 00-MASTER lane only: the tracked data/_evidence/ certification artifacts are a distinct registered family and are deliberately not matched."
+    },
+    {
+      "rule": "00-MASTER/UAKOS-PHASE-001B/provenance.json",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "00-MASTER/UAKOS-PHASE-001B",
+      "producer": "phase engine",
+      "rationale": "Engine provenance state."
+    },
+    {
+      "rule": "00-MASTER/UAKOS-PHASE-004/10-UNIVERSAL-GAP-DEPENDENCY-GRAPH.json",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "00-MASTER/UAKOS-PHASE-004",
+      "producer": "phase engine",
+      "rationale": "Engine gap-graph state."
+    },
+    {
+      "rule": "intelligence/die/",
+      "class": "EXPLICITLY_AUTHORIZED_EXTERNAL",
+      "owner": "RC-1 pre-sealing audit",
+      "producer": "none — unwired source",
+      "rationale": "imports.py was identified as an unverified orphan: no __init__.py, no importers, no tests, not packaged or covered. Excluded from the RC-1 baseline until it is wired and tested, so it is not sealed as verified implementation. This exclusion carries a disposition obligation, not a permanent licence."
+    },
+    {
+      "rule": ".archive/",
+      "class": "EXPLICITLY_AUTHORIZED_EXTERNAL",
+      "owner": "repository operator",
+      "producer": "manual",
+      "rationale": "Operator archive held outside the governed corpus by declaration."
+    },
+    {
+      "rule": "*.bundle",
+      "class": "EXPLICITLY_AUTHORIZED_EXTERNAL",
+      "owner": "git",
+      "producer": "git bundle create",
+      "rationale": "Version-control transport container — a serialization of the object database for backup or offline transfer, classified CLS-TRANSIENT by UCOS-RFP-001. Bundles belong in durable storage outside the repository; the rule exists so one written into the tree by accident is bounded rather than counted."
+    },
+    {
+      "rule": ".ucos-verification-evidence/",
+      "class": "CACHE",
+      "owner": "UVI-000001",
+      "producer": "engine/verification_intelligence",
+      "rationale": "The Verification Evidence Registry: a content-addressed cache of stage results, keyed by digests over content hashes UCOS-UGA-001 already publishes. Deleting the whole store changes no verdict, only the cost of reaching one, so it holds no information the tracked corpus does not. Its ignore rule predates this entry; the entry is what makes the rule resolve."
+    },
+    {
+      "rule": ".ucos/",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "UEG-000001",
+      "producer": "engine/execution_environment; scripts/ucos-env.sh (verify.lease)",
+      "rationale": "The execution-environment fingerprint cache and the per-run execution evidence. Both describe THIS MACHINE: an interpreter path, a venv prefix, an installed toolchain — none of which reproduces elsewhere, so committing either would publish a claim true only where it was written. The cache may skip exactly one measurement and never a verdict, and the evidence is emitted fresh by every certified run and bound into certification from there, not from git. It also holds verify.lease, the working-tree lease AEOS G-04 names (scripts/ucos-env.sh, acquired by verify.sh before any stage runs). The class is unchanged and correct: a lease records THIS MACHINE's pid, the HEAD it measured and the porcelain digest it measured, none of which reproduces elsewhere, and it is owned by the process that writes it for exactly the duration of one run. Committing it would publish a claim about a process that no longer exists."
+    },
+    {
+      "rule": ".uci-evidence/",
+      "class": "GENERATED_ENVIRONMENTAL",
+      "owner": "UCI-000001",
+      "producer": "engine/certification_integrity; the programme's own measurement drivers (driver_baseline.py, driver_equivalence.py, driver_subset.py)",
+      "rationale": "The measurement record of the certification-integrity programme: two whole-repository Cobertura reports, the full-suite and sharded pytest transcripts, the derived offender and equivalence tables, and one deliberately preserved corruption. Every byte of it is a property of the run that produced it — a coverage report names this machine's file paths and this interpreter's line arcs, a transcript carries wall-clock durations — so it is GENERATED_ENVIRONMENTAL and not GENERATED_DETERMINISTIC: re-running the drivers produces an equivalent measurement, never identical bytes. Nothing reachable from a canonical render reads it. It is retained rather than deleted because `coverage.xml.truncated-by-concurrent-run` is cited BY IDENTITY in 00-MASTER/UCI-000001/uci-declaration.json:false_green_recovered as the evidence for why that programme measures inside a frozen extraction, and a declaration that names a file is entitled to have it exist. Its ignore rule (.gitignore:247) predates this entry; the entry is what makes the rule resolve. Retention rather than deletion is the correct disposition precisely because the declaration cites a member by identity: this register may not be used as a disposal mechanism, and here it is not asked to be."
+    },
+    {
+      "rule": "coverage_gap_inventory.json",
+      "class": "GENERATED_ENVIRONMENTAL",
+      "owner": "engine/certification_integrity",
+      "producer": "make uci-inventory — `python -m engine.certification_integrity.gate --write-inventory coverage_gap_inventory.json`",
+      "rationale": "The per-line coverage-gap inventory: every unexecuted statement and untaken branch in the repository, named by module and line. Bytes are a function of the coverage measurement of one run on one machine, so the class is GENERATED_ENVIRONMENTAL. The producer's own Makefile note records the asymmetry that makes excluding it safe — `no law in the package reads it back, so regenerating it cannot turn a refusal into a pass` — which is the same property .ucos-verification-evidence/ relies on: the artifact is an output of a verdict and never an input to one. Its ignore rule (.gitignore:248) predates this entry; the entry is what makes the rule resolve."
+    },
+    {
+      "rule": "00-BOOK/CONTEXT/",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "UCOS-UCTX-001",
+      "producer": "00-BOOK/tools/ukctx.py",
+      "rationale": "Generated context projection — the canonical context root — index, sixteen domain pages and the projection manifest. Deterministically re-derived from the authored declaration at 00-BOOK/DATA/context-authority.json; byte-identical from the same tracked inputs (UCKP-ART-13). Under GOV-005 §5.3 a generated artifact is regenerated, never hand-registered, so it is not an eligible repository artifact and consumes no permanent identity. Regenerate: `python3 00-BOOK/tools/ukctx.py build`. Bootstrap: emitted by scripts/generate-prerequisites.sh at verify.sh stage 1b, so a pristine clone obtains it before any gate reads it. Fixed point proved by INV-CTX-11 and by the CI job 'Fixed point — a build over the committed tree writes no byte'; absence or drift is refused by INV-CTX-06 and INV-CTX-07. This entry is what makes the ignore rule lawful: exclusion here is a statement about STORAGE, never about whether the context exists."
+    },
+    {
+      "rule": "/AGENTS.md",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "UCOS-UCTX-001",
+      "producer": "00-BOOK/tools/ukctx.py",
+      "rationale": "Generated context projection — the cross-vendor agents.md surface, the one a future agent inherits without this register being edited. Deterministically re-derived from the authored declaration at 00-BOOK/DATA/context-authority.json; byte-identical from the same tracked inputs (UCKP-ART-13). Under GOV-005 §5.3 a generated artifact is regenerated, never hand-registered, so it is not an eligible repository artifact and consumes no permanent identity. Regenerate: `python3 00-BOOK/tools/ukctx.py build`. Bootstrap: emitted by scripts/generate-prerequisites.sh at verify.sh stage 1b, so a pristine clone obtains it before any gate reads it. Fixed point proved by INV-CTX-11 and by the CI job 'Fixed point — a build over the committed tree writes no byte'; absence or drift is refused by INV-CTX-06 and INV-CTX-07. This entry is what makes the ignore rule lawful: exclusion here is a statement about STORAGE, never about whether the context exists."
+    },
+    {
+      "rule": "/README.md",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "UCOS-UCTX-001",
+      "producer": "00-BOOK/tools/ukctx.py",
+      "rationale": "Generated context projection — the repository entry point, the door a human opens before any agent surface is read. It is POINTERS ONLY: every line is a command an operator types or a path read from the declaration, because a README that restates a rule is the second authoring UCKP-ART-03 voids. Deterministically re-derived from the authored declaration at 00-BOOK/DATA/context-authority.json; byte-identical from the same tracked inputs (UCKP-ART-13). Under GOV-005 §5.3 a generated artifact is regenerated, never hand-registered, so it is not an eligible repository artifact and consumes no permanent identity. Regenerate: `python3 00-BOOK/tools/ukctx.py build`. Bootstrap: emitted by scripts/generate-prerequisites.sh at verify.sh stage 1b, so a pristine clone obtains it before any gate reads it. Fixed point proved by INV-CTX-11 and by the CI job 'Fixed point — a build over the committed tree writes no byte'; absence or drift is refused by INV-CTX-06 and INV-CTX-07. This entry is what makes the ignore rule lawful: exclusion here is a statement about STORAGE, never about whether the context exists."
+    },
+    {
+      "rule": ".claude/CLAUDE.md",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "UCOS-UCTX-001",
+      "producer": "00-BOOK/tools/ukctx.py",
+      "rationale": "Generated context projection — the Claude Code surface. Deterministically re-derived from the authored declaration at 00-BOOK/DATA/context-authority.json; byte-identical from the same tracked inputs (UCKP-ART-13). Under GOV-005 §5.3 a generated artifact is regenerated, never hand-registered, so it is not an eligible repository artifact and consumes no permanent identity. Regenerate: `python3 00-BOOK/tools/ukctx.py build`. Bootstrap: emitted by scripts/generate-prerequisites.sh at verify.sh stage 1b, so a pristine clone obtains it before any gate reads it. Fixed point proved by INV-CTX-11 and by the CI job 'Fixed point — a build over the committed tree writes no byte'; absence or drift is refused by INV-CTX-06 and INV-CTX-07. This entry is what makes the ignore rule lawful: exclusion here is a statement about STORAGE, never about whether the context exists."
+    },
+    {
+      "rule": ".cursor/rules/ucos.mdc",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "UCOS-UCTX-001",
+      "producer": "00-BOOK/tools/ukctx.py",
+      "rationale": "Generated context projection — the Cursor rules surface. Deterministically re-derived from the authored declaration at 00-BOOK/DATA/context-authority.json; byte-identical from the same tracked inputs (UCKP-ART-13). Under GOV-005 §5.3 a generated artifact is regenerated, never hand-registered, so it is not an eligible repository artifact and consumes no permanent identity. Regenerate: `python3 00-BOOK/tools/ukctx.py build`. Bootstrap: emitted by scripts/generate-prerequisites.sh at verify.sh stage 1b, so a pristine clone obtains it before any gate reads it. Fixed point proved by INV-CTX-11 and by the CI job 'Fixed point — a build over the committed tree writes no byte'; absence or drift is refused by INV-CTX-06 and INV-CTX-07. This entry is what makes the ignore rule lawful: exclusion here is a statement about STORAGE, never about whether the context exists."
+    },
+    {
+      "rule": ".kiro/steering/ucos.md",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "UCOS-UCTX-001",
+      "producer": "00-BOOK/tools/ukctx.py",
+      "rationale": "Generated context projection — the Kiro steering surface. Deterministically re-derived from the authored declaration at 00-BOOK/DATA/context-authority.json; byte-identical from the same tracked inputs (UCKP-ART-13). Under GOV-005 §5.3 a generated artifact is regenerated, never hand-registered, so it is not an eligible repository artifact and consumes no permanent identity. Regenerate: `python3 00-BOOK/tools/ukctx.py build`. Bootstrap: emitted by scripts/generate-prerequisites.sh at verify.sh stage 1b, so a pristine clone obtains it before any gate reads it. Fixed point proved by INV-CTX-11 and by the CI job 'Fixed point — a build over the committed tree writes no byte'; absence or drift is refused by INV-CTX-06 and INV-CTX-07. This entry is what makes the ignore rule lawful: exclusion here is a statement about STORAGE, never about whether the context exists."
+    },
+    {
+      "rule": ".github/copilot-instructions.md",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "UCOS-UCTX-001",
+      "producer": "00-BOOK/tools/ukctx.py",
+      "rationale": "Generated context projection — the GitHub Copilot surface. Deterministically re-derived from the authored declaration at 00-BOOK/DATA/context-authority.json; byte-identical from the same tracked inputs (UCKP-ART-13). Under GOV-005 §5.3 a generated artifact is regenerated, never hand-registered, so it is not an eligible repository artifact and consumes no permanent identity. Regenerate: `python3 00-BOOK/tools/ukctx.py build`. Bootstrap: emitted by scripts/generate-prerequisites.sh at verify.sh stage 1b, so a pristine clone obtains it before any gate reads it. Fixed point proved by INV-CTX-11 and by the CI job 'Fixed point — a build over the committed tree writes no byte'; absence or drift is refused by INV-CTX-06 and INV-CTX-07. This entry is what makes the ignore rule lawful: exclusion here is a statement about STORAGE, never about whether the context exists."
+    },
+    {
+      "rule": "**/.claude/scheduled_tasks.lock",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Claude Code",
+      "rationale": "Per-developer operational state of the local agent runtime — the scheduled-task lock file. Never shared, never repository truth, and never an input to canonical identity. Declared here because it was previously excluded ONLY by .git/info/exclude, which no clone carries: the path was ignored on one machine and untracked-and-unignored on every other. UCOS-UCTX-001 INV-CTX-12 walks agent directories ignored-inclusive and refuses an unclassified file, so the missing declaration made the context gate fail for a reason that had nothing to do with governance. Same class the register already assigns to settings.local.json; distinct from GENERATED_DETERMINISTIC because nothing produces these from a declared input and no command reproduces them."
+    },
+    {
+      "rule": "**/.claude/scheduled_tasks.json",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Claude Code",
+      "rationale": "Per-developer operational state of the local agent runtime — the local scheduled-task list. Never shared, never repository truth, and never an input to canonical identity. Declared here because it was previously excluded ONLY by .git/info/exclude, which no clone carries: the path was ignored on one machine and untracked-and-unignored on every other. UCOS-UCTX-001 INV-CTX-12 walks agent directories ignored-inclusive and refuses an unclassified file, so the missing declaration made the context gate fail for a reason that had nothing to do with governance. Same class the register already assigns to settings.local.json; distinct from GENERATED_DETERMINISTIC because nothing produces these from a declared input and no command reproduces them."
+    },
+    {
+      "rule": "**/.claude/routines/.state/",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Claude Code",
+      "rationale": "Per-developer operational state of the local agent runtime — per-clone routine execution state. Never shared, never repository truth, and never an input to canonical identity. Declared here because it was previously excluded ONLY by .git/info/exclude, which no clone carries: the path was ignored on one machine and untracked-and-unignored on every other. UCOS-UCTX-001 INV-CTX-12 walks agent directories ignored-inclusive and refuses an unclassified file, so the missing declaration made the context gate fail for a reason that had nothing to do with governance. Same class the register already assigns to settings.local.json; distinct from GENERATED_DETERMINISTIC because nothing produces these from a declared input and no command reproduces them."
+    },
+    {
+      "rule": "**/.claude/worktrees/",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Claude Code",
+      "rationale": "Per-developer operational state of the local agent runtime — the agent's own record of worktrees it created. Never shared, never repository truth, and never an input to canonical identity. Declared here because it was previously excluded ONLY by .git/info/exclude, which no clone carries: the path was ignored on one machine and untracked-and-unignored on every other. UCOS-UCTX-001 INV-CTX-12 walks agent directories ignored-inclusive and refuses an unclassified file, so the missing declaration made the context gate fail for a reason that had nothing to do with governance. Same class the register already assigns to settings.local.json; distinct from GENERATED_DETERMINISTIC because nothing produces these from a declared input and no command reproduces them."
+    },
+    {
+      "rule": ".kilo/",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Kiro IDE",
+      "rationale": "Per-developer operational state of the Kiro IDE — worktrees it materialises under .kilo/worktrees/, agent-manager state and lockfiles. Never shared, never repository truth, never an input to canonical identity. Same defect and same fix as the .claude/worktrees/ entry directly above it: .kilo/worktrees/ was covered only by .git/info/exclude, which no clone carries, while the top-level .kilo/ directory matched no rule at all. UCOS-UCTX-001 INV-CTX-12 tests the directory itself with `git check-ignore -q .kilo`, so the un-ignored root was walked, instruction-shaped .md files inside the worktree copy were found, and the context gate refused on an undeclared agent surface (C-10) — closing the prerequisite-generation stage and with it ./verify.sh. Declaring the directory here and matching it in .gitignore makes the classification visible to the discovery leg. Distinct from GENERATED_DETERMINISTIC: nothing produces these from a declared input and no command reproduces them."
+    },
+    {
+      "rule": "**/.claude/checkpoints/",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Claude Code",
+      "rationale": "Per-developer operational state of the local agent runtime — per-clone session checkpoints. Never shared, never repository truth, and never an input to canonical identity. Declared here because it was previously excluded ONLY by .git/info/exclude, which no clone carries: the path was ignored on one machine and untracked-and-unignored on every other. UCOS-UCTX-001 INV-CTX-12 walks agent directories ignored-inclusive and refuses an unclassified file, so the missing declaration made the context gate fail for a reason that had nothing to do with governance. Same class the register already assigns to settings.local.json; distinct from GENERATED_DETERMINISTIC because nothing produces these from a declared input and no command reproduces them."
+    },
+    {
+      "rule": "**/.claude/mailbox/",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Claude Code",
+      "rationale": "Per-developer operational state of the local agent runtime — inter-session message spool. Never shared, never repository truth, and never an input to canonical identity. Declared here because it was previously excluded ONLY by .git/info/exclude, which no clone carries: the path was ignored on one machine and untracked-and-unignored on every other. UCOS-UCTX-001 INV-CTX-12 walks agent directories ignored-inclusive and refuses an unclassified file, so the missing declaration made the context gate fail for a reason that had nothing to do with governance. Same class the register already assigns to settings.local.json; distinct from GENERATED_DETERMINISTIC because nothing produces these from a declared input and no command reproduces them."
+    },
+    {
+      "rule": "**/.claude/agent-registry.json",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Claude Code",
+      "rationale": "Per-developer operational state of the local agent runtime — the local registry of running agents. Never shared, never repository truth, and never an input to canonical identity. Declared here because it was previously excluded ONLY by .git/info/exclude, which no clone carries: the path was ignored on one machine and untracked-and-unignored on every other. UCOS-UCTX-001 INV-CTX-12 walks agent directories ignored-inclusive and refuses an unclassified file, so the missing declaration made the context gate fail for a reason that had nothing to do with governance. Same class the register already assigns to settings.local.json; distinct from GENERATED_DETERMINISTIC because nothing produces these from a declared input and no command reproduces them."
+    },
+    {
+      "rule": "**/.claude/agent-memory-local",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Claude Code",
+      "rationale": "Per-developer operational state of the local agent runtime — per-developer agent memory. Never shared, never repository truth, and never an input to canonical identity. Declared here because it was previously excluded ONLY by .git/info/exclude, which no clone carries: the path was ignored on one machine and untracked-and-unignored on every other. UCOS-UCTX-001 INV-CTX-12 walks agent directories ignored-inclusive and refuses an unclassified file, so the missing declaration made the context gate fail for a reason that had nothing to do with governance. Same class the register already assigns to settings.local.json; distinct from GENERATED_DETERMINISTIC because nothing produces these from a declared input and no command reproduces them."
+    },
+    {
+      "rule": "**/.claude/first-run",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Claude Code",
+      "rationale": "Per-developer operational state of the local agent runtime — the first-run marker. Never shared, never repository truth, and never an input to canonical identity. Declared here because it was previously excluded ONLY by .git/info/exclude, which no clone carries: the path was ignored on one machine and untracked-and-unignored on every other. UCOS-UCTX-001 INV-CTX-12 walks agent directories ignored-inclusive and refuses an unclassified file, so the missing declaration made the context gate fail for a reason that had nothing to do with governance. Same class the register already assigns to settings.local.json; distinct from GENERATED_DETERMINISTIC because nothing produces these from a declared input and no command reproduces them."
+    },
+    {
+      "rule": "**/.claude/assistant-daemon-state.json",
+      "class": "TOOL_OPERATIONAL",
+      "owner": "developer workstation",
+      "producer": "Claude Code",
+      "rationale": "Per-developer operational state of the local agent runtime — the local daemon's record of itself. Never shared, never repository truth, and never an input to canonical identity. Declared here because it was previously excluded ONLY by .git/info/exclude, which no clone carries: the path was ignored on one machine and untracked-and-unignored on every other. UCOS-UCTX-001 INV-CTX-12 walks agent directories ignored-inclusive and refuses an unclassified file, so the missing declaration made the context gate fail for a reason that had nothing to do with governance. Same class the register already assigns to settings.local.json; distinct from GENERATED_DETERMINISTIC because nothing produces these from a declared input and no command reproduces them."
+    },
+    {
+      "rule": "/00-BOOK/CONTEXT-CERTIFICATION/",
+      "class": "GENERATED_DETERMINISTIC",
+      "owner": "UCOS-UCTX-001",
+      "producer": "python3 00-BOOK/tools/ukctx_certify.py",
+      "rationale": "Phase 10 context closure certification. Carries no clock, so it is byte-identical from identical tracked inputs and reaches a fixed point its own --check proves. It is a measurement ABOUT the context authority, never an input to one, so it is product rather than truth and is excluded under the same Model B decision that excludes the projections themselves."
+    }
+  ]
+}

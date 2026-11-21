@@ -1,0 +1,72 @@
+{
+  "compliance_format": "ucos-data-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "metamodel-typed",
+        "metamodel-identified"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UDL-03), identified and objecthood-bound (UDL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UDL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "data-value-fidelity"
+      ],
+      "id": "C3",
+      "requirement": "Value is ENG-003 value (UDL-06).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-class-single",
+        "meta-relationships-closed",
+        "metamodel-totality",
+        "metamodel-map-resolves"
+      ],
+      "id": "C4",
+      "requirement": "Entity/attribute/schema structure is explicit (UDL-07/08/10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-relationships-closed",
+        "founding-acyclic",
+        "metamodel-map-resolves"
+      ],
+      "id": "C5",
+      "materially_exercised": true,
+      "note": "the Universal Data Meta-Model closes over exactly the twelve meta-relationships DMR-01…12 (DMI-02), keeps the founding meta-graph (DMR-01/04) acyclic (DMI-04), and resolves every map edge within the closure or the frozen EL-1/RL-F2/PL-F2 foundations (§9) — each meta-relationship being an ENG-005 reference introducing no new connection construct (UDL-09 at the meta level)",
+      "requirement": "Relationships are ENG-005 references; founding structure acyclic (UDL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "metamodel-independence"
+      ],
+      "id": "C6",
+      "requirement": "Selects no technology; describes storage abstractly (UDL-11/15).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive"
+      ],
+      "id": "C7",
+      "requirement": "Confers no authority and embeds no secret (UDL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "DATA-001 §12",
+  "target_id": "UCOS-METAMODEL-ucos.data.metamodel.universal-09e277250f3892df"
+}

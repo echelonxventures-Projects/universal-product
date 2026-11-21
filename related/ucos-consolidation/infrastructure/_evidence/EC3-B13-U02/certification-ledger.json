@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "ComputeResource",
+      "certification_id": "UCOS-CERT-ComputeResource-19b828466e974044",
+      "entry_hash": "7653185f131306ebba6e19552501bacfa89382475f07d1383de929e288118cb8",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "19b828466e97404434c4a69b545b05e68245a6105c758cd5982358a8f3f6c792",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "7653185f131306ebba6e19552501bacfa89382475f07d1383de929e288118cb8",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

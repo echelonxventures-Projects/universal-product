@@ -1,0 +1,43 @@
+{
+  "backward": [
+    "SMC-10",
+    "SOE-10",
+    "SERVICE-014",
+    "SERVICE-005",
+    "SERVICE-001",
+    "ARCH-SERVICE-001",
+    "11-SERVICE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-SECURITY-ucos.service.security.foundation-97ee3cf549cbbddb",
+    "EC3-B11-U10-VALIDATION-EVIDENCE",
+    "EC3-B11-U10-CCE-CERTIFICATION",
+    "EC3-B11-U10-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "0595a91",
+  "meta_class": "SMC-10",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "confidentiality/integrity data bound by reference (SMR-13; DATA-014); not redefined",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the security record)",
+    "ENG-003": "engine.certification.contracts.canonical_json (structural value fidelity)",
+    "ENG-004": "service.security_meta.SecurityKind + type_tag (ENG-004 typing, by reference)",
+    "ENG-005": "reference identifiers (subject/policy/behavior/data refs; no new construct)",
+    "RL-F2": "security evaluation bound by reference (SMR-11; RUNTIME-010 evaluate / RUNTIME-008)"
+  },
+  "target_id": "UCOS-SECURITY-ucos.service.security.foundation-97ee3cf549cbbddb",
+  "trace_format": "ucos-service-traceability/1.0.0",
+  "unit": "EC3-B11-U10"
+}

@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "SMC-03",
+  "target_id": "UCOS-CONTRACT-ucos.service.contract.foundation-a171c40a5923bee0",
+  "verdict": "pass"
+}

@@ -1,0 +1,116 @@
+name: UAKOS-CLOSURE-009 Constitutional Assimilation Gate
+
+# UAKOS-CLOSURE-009 — Universal Constitutional Assimilation Programme.
+#
+# This workflow adds NO new engine, validator, catalogue, registry or capability. It runs
+# the engine that already exists at 00-MASTER/UAKOS-CLOSURE-009/requirement_engine.py,
+# which projects every constitutionally accepted concept already present in Repository
+# Truth into a governed Repository Requirement and MEASURES coverage, maturity, readiness,
+# traceability and gap. Every input is an existing repository register; the programme
+# introduces no new source of truth and creates no requirement identity of its own.
+#
+# Why this workflow exists
+# ------------------------
+# UCOS-RIB-001 measured this programme as a dead engine (VER-11 / GAP-DEAD-ENGINE) and an
+# orphan capability (VER-09) because no declared entry point named its engine.
+# REG-AUTO-001 P7 requires enforceability by tooling gates rather than author discipline:
+# at least one Makefile target, at least one workflow and at least one test. This file is
+# the workflow leg of that discharge. The failure it prevents is concrete — with nothing
+# re-running the engine, its committed registers were left rendered against a stale HEAD
+# and reported 89 inherited concept gaps that Repository Truth had already closed.
+#
+# Exit semantics of the gates below:
+#   0  gate OPEN
+#   1  gate CLOSED (assimilation below 100%, or a baseline precondition unproven)
+#   2  fail-closed abort — a required input register is absent or unparsable, so no
+#      verdict may be asserted
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: closure009-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  register-drift:
+    name: Register replay (committed registers are the product of the declared inputs)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # --render replays the HEAD recorded in requirements.json rather than re-reading it.
+      # A committed artifact can never carry the sha of the commit that carries it, so
+      # without the replayed head this diff would be red on every commit for a reason that
+      # has nothing to do with truth. Stdlib only — nothing is installed.
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Replay the registers and diff byte-for-byte
+        run: make closure009-replay
+
+  assimilation-gate:
+    name: Constitutional Assimilation Gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: register-drift
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Reported, not blocking. Assimilation is measured at 25.878% FULLY assimilated with
+      # 0 NOT assimilated: the gate is the standing measurement of how far realisation has
+      # to go, and marking it blocking today would only mean the workflow is permanently red
+      # while implementation continues. It becomes blocking when the measurement says it can.
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Assimilation gate (reported)
+        continue-on-error: true
+        run: python3 00-MASTER/UAKOS-CLOSURE-009/requirement_engine.py --gate
+
+      - name: Baseline precondition gate (reported)
+        continue-on-error: true
+        run: python3 00-MASTER/UAKOS-CLOSURE-009/requirement_engine.py --baseline-gate
+
+      - name: Publish the assimilation registers
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: closure009-registers
+          path: |
+            00-MASTER/UAKOS-CLOSURE-009/*.md
+            00-MASTER/UAKOS-CLOSURE-009/requirements.json
+          if-no-files-found: warn

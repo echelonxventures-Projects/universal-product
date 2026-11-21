@@ -1,0 +1,17 @@
+{
+  "$comment": "FROZEN BY BATCH B-01b (SessionStart Mutation Freeze). AUTHORITY = Repository Recovery Authority; this file confers no constitutional authority and legislates nothing. The active hook list is deliberately EMPTY so that session initialization performs NO automatic regeneration. MANUAL EXECUTION IS FULLY PRESERVED and is untouched by this batch: the Makefile targets remain exactly as they were (regenerate, -gate, and -self for every affected programme). Nothing is deleted; no engine, declaration or capability is modified. FAIL-CLOSED PROPERTY: if the hook loader ignores unknown keys, no hook fires because `hooks` is empty; if a loader were strict about unknown keys, this file fails to load and no hook fires either. Both outcomes satisfy the freeze. SCOPE: this batch does NOT touch CI (.github/workflows/**, which is batch B-01c), does NOT roll back any file, and does NOT repair registrations, namespaces or ownership. .kiro/hooks/uakos-closure-002.json is deliberately LEFT ARMED because its entire output is gitignored (.gitignore:52-56) and therefore produces no drift - it is the model this freeze aims to generalise. RESTORE: see $rollback_B01b.",
+  "$rationale_B01b": "This hook regenerated the 27 UNTRACKED files of the unregistered programme home 00-MASTER/UEI-000001/ on every session start, embedding the working-tree entry count. UEI-000001 is an UNADJUDICATED programme (0 occurrences in 00-MASTER/UCDA-000001/ucda-decisions.json) that constitutes a second derived home for a capability family already owned by UCCEP-000000/13 (PROGRAM-000013), both citing 00-CEP/CEP-009 as governing instrument. Automatic regeneration of an unadjudicated programme must not continue while its ownership is unresolved. This hook file is itself UNTRACKED: its original definition is preserved below and in the B-00 recovery package (UNTRACKED.tar), NOT in git.",
+  "$rollback_B01b": "UNTRACKED FILE - not restorable by git. Restore from the B-00 recovery package: tar -xf .runtime/recovery/B-00-20260727T132657Z/UNTRACKED.tar --exclude '._*' .kiro/hooks/uei-000001.json  (or re-arm by moving $frozen_hook_B01b back into the hooks array).",
+  "version": "v1",
+  "hooks": [],
+  "$frozen_hook_B01b": {
+    "name": "UEI-000001 Evolution Intelligence Gate",
+    "trigger": "SessionStart",
+    "description": "Runs the UEI-000001 Evolution Intelligence Gate at session start, so the evolution-intelligence posture of the platform (capability coverage, governance coverage, lifecycle and standing-loop binding, validations satisfied, exit criteria met, evidence references, gate outcome, seal) is surfaced from Repository Truth. This is the executable expression of UCOS Omega-Infinity Programme Ω∞-001B: observation, learning, optimization, recommendation, impact analysis, simulation, improvement discovery, evolution planning, evolution execution, continuous improvement, continuous optimization, future prediction, repository evolution, knowledge evolution and architecture evolution are bound to the homes that already realise them, and each is placed under a located governing instrument. Deterministic, stdlib-only, non-blocking at session start; fail-closed as a gate. AUTHORITY = NONE (DERIVED TRUTH).",
+    "action": {
+      "type": "command",
+      "command": "python3 00-MASTER/UEI-000001/uei_engine.py 2>/dev/null | grep '^UEI-000001:' || true",
+      "timeout": 120
+    }
+  }
+}

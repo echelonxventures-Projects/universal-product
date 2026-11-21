@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "UDM",
+      "certification_id": "UCOS-CERT-UDM-9f3f055879bb2b43",
+      "entry_hash": "152a3bb5e1aedf4f9acb63230c6de6208ddbd4e7b7b0e379509d8184bcc6aff3",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "9f3f055879bb2b43ed6d8030a78f9d931ea2fcbcfb778ff21bf4a91ca28c0099",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-METAMODEL-ucos.data.metamodel.universal-09e277250f3892df",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "152a3bb5e1aedf4f9acb63230c6de6208ddbd4e7b7b0e379509d8184bcc6aff3",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

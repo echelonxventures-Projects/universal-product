@@ -1,0 +1,973 @@
+{
+  "$comment": "UCMI-000001 — the DECLARED COMMERCIAL SURFACE of the UCOS Ω∞ platform. This is DATA, not code: the products, listings, licence grants, prices, packages, policies, approval chains, documentation sets, investment cases, customer accounts and business evidence the platform commercially asserts. platform/commercial_intelligence analyzes it fail-closed; ucmi_engine.py derives the Commercial Certification determination from the result. Extending the commercial surface is an edit to this file and requires NO code change. Every monetary amount is an integer count of minor units in one currency; every proportion is expressed in basis points. Negative cases are declared deliberately (expect_granted / expect_effect / expect_satisfied / expect_releasable false) so the governance refusals are proven, not assumed.",
+  "target_id": "UCMI-000001",
+  "facts": {
+    "marketplace_intelligence": {
+      "products": [
+        {
+          "product_id": "UCOS-PLATFORM",
+          "name": "UCOS Ω∞ Platform",
+          "sku": "UCOS-PLATFORM",
+          "version": "1.0.0",
+          "state": "general_availability",
+          "capabilities": ["certification", "knowledge-graph", "registry", "validation"]
+        },
+        {
+          "product_id": "UCOS-INTELLIGENCE",
+          "name": "UCOS Ω∞ Intelligence",
+          "sku": "UCOS-INTELLIGENCE",
+          "version": "1.0.0",
+          "state": "general_availability",
+          "capabilities": ["discovery", "measurement", "validation-intelligence"]
+        },
+        {
+          "product_id": "UCOS-RUNTIME",
+          "name": "UCOS Ω∞ Runtime",
+          "sku": "UCOS-RUNTIME",
+          "version": "0.9.0",
+          "state": "development",
+          "capabilities": ["runtime-execution"]
+        }
+      ],
+      "listings": [
+        {
+          "listing_id": "ucos-platform",
+          "product_id": "UCOS-PLATFORM",
+          "seller_id": "UCOS-COMMERCIAL-AUTHORITY",
+          "state": "published",
+          "package_id": "PKG-0001"
+        },
+        {
+          "listing_id": "ucos-intelligence",
+          "product_id": "UCOS-INTELLIGENCE",
+          "seller_id": "UCOS-COMMERCIAL-AUTHORITY",
+          "state": "published",
+          "package_id": "PKG-0002"
+        },
+        {
+          "listing_id": "ucos-runtime-preview",
+          "product_id": "UCOS-RUNTIME",
+          "seller_id": "UCOS-COMMERCIAL-AUTHORITY",
+          "state": "draft",
+          "package_id": ""
+        }
+      ]
+    },
+    "licensing_intelligence": {
+      "grants": [
+        {
+          "grant_id": "GRANT-0001",
+          "product_id": "UCOS-PLATFORM",
+          "customer_id": "CUST-0001",
+          "model": "subscription",
+          "seats": 50,
+          "term_days": 365,
+          "capabilities": ["knowledge-graph", "registry", "validation"]
+        },
+        {
+          "grant_id": "GRANT-0002",
+          "product_id": "UCOS-INTELLIGENCE",
+          "customer_id": "CUST-0002",
+          "model": "perpetual",
+          "seats": 10,
+          "term_days": 0,
+          "capabilities": ["discovery", "measurement"]
+        },
+        {
+          "grant_id": "GRANT-0003",
+          "product_id": "UCOS-RUNTIME",
+          "customer_id": "CUST-0003",
+          "model": "evaluation",
+          "seats": 5,
+          "term_days": 30,
+          "capabilities": ["runtime-execution"]
+        }
+      ],
+      "entitlement_requests": [
+        {
+          "customer_id": "CUST-0001",
+          "product_id": "UCOS-PLATFORM",
+          "capability": "registry",
+          "seats": 10,
+          "day": 30,
+          "expect_granted": true
+        },
+        {
+          "customer_id": "CUST-0002",
+          "product_id": "UCOS-INTELLIGENCE",
+          "capability": "discovery",
+          "seats": 10,
+          "day": 9999,
+          "expect_granted": true
+        },
+        {
+          "customer_id": "CUST-0001",
+          "product_id": "UCOS-PLATFORM",
+          "capability": "registry",
+          "seats": 100,
+          "day": 30,
+          "expect_granted": false
+        },
+        {
+          "customer_id": "CUST-0001",
+          "product_id": "UCOS-PLATFORM",
+          "capability": "certification",
+          "seats": 1,
+          "day": 30,
+          "expect_granted": false
+        },
+        {
+          "customer_id": "CUST-0001",
+          "product_id": "UCOS-PLATFORM",
+          "capability": "registry",
+          "seats": 1,
+          "day": 400,
+          "expect_granted": false
+        },
+        {
+          "customer_id": "CUST-0009",
+          "product_id": "UCOS-PLATFORM",
+          "capability": "registry",
+          "seats": 1,
+          "day": 1,
+          "expect_granted": false
+        }
+      ]
+    },
+    "product_intelligence": {
+      "products": [
+        {
+          "product_id": "UCOS-PLATFORM",
+          "name": "UCOS Ω∞ Platform",
+          "sku": "UCOS-PLATFORM",
+          "version": "1.0.0",
+          "state": "general_availability",
+          "capabilities": ["certification", "knowledge-graph", "registry", "validation"]
+        },
+        {
+          "product_id": "UCOS-INTELLIGENCE",
+          "name": "UCOS Ω∞ Intelligence",
+          "sku": "UCOS-INTELLIGENCE",
+          "version": "1.0.0",
+          "state": "general_availability",
+          "capabilities": ["discovery", "measurement", "validation-intelligence"]
+        },
+        {
+          "product_id": "UCOS-RUNTIME",
+          "name": "UCOS Ω∞ Runtime",
+          "sku": "UCOS-RUNTIME",
+          "version": "0.9.0",
+          "state": "development",
+          "capabilities": ["runtime-execution"]
+        }
+      ],
+      "transitions": [
+        { "product_id": "UCOS-RUNTIME", "to": "general_availability" },
+        { "product_id": "UCOS-PLATFORM", "to": "deprecated" },
+        { "product_id": "UCOS-INTELLIGENCE", "to": "deprecated" }
+      ]
+    },
+    "portfolio_intelligence": {
+      "portfolio_id": "UCOS-COMMERCIAL-PORTFOLIO",
+      "required_capabilities": [
+        "certification",
+        "discovery",
+        "knowledge-graph",
+        "measurement",
+        "registry",
+        "validation",
+        "validation-intelligence"
+      ],
+      "max_concentration_basis_points": 6000,
+      "products": [
+        {
+          "product_id": "UCOS-PLATFORM",
+          "name": "UCOS Ω∞ Platform",
+          "sku": "UCOS-PLATFORM",
+          "version": "1.0.0",
+          "state": "general_availability",
+          "capabilities": ["certification", "knowledge-graph", "registry", "validation"]
+        },
+        {
+          "product_id": "UCOS-INTELLIGENCE",
+          "name": "UCOS Ω∞ Intelligence",
+          "sku": "UCOS-INTELLIGENCE",
+          "version": "1.0.0",
+          "state": "general_availability",
+          "capabilities": ["discovery", "measurement", "validation-intelligence"]
+        },
+        {
+          "product_id": "UCOS-RUNTIME",
+          "name": "UCOS Ω∞ Runtime",
+          "sku": "UCOS-RUNTIME",
+          "version": "0.9.0",
+          "state": "development",
+          "capabilities": ["runtime-execution"]
+        }
+      ]
+    },
+    "business_documentation": {
+      "sets": [
+        {
+          "subject_id": "UCOS-PLATFORM",
+          "documents": [
+            {
+              "document_id": "DOC-UCOS-PLATFORM-OVERVIEW",
+              "kind": "overview",
+              "title": "UCOS Ω∞ Platform — Commercial Overview",
+              "version": "1.0.0",
+              "content_sha256": "9b72a028b89c2c32f5afb564229d09c5aad84ac71d6bfd07ee50267a2d11ddfb"
+            },
+            {
+              "document_id": "DOC-UCOS-PLATFORM-PRICING",
+              "kind": "pricing_sheet",
+              "title": "UCOS Ω∞ Platform — Pricing Sheet",
+              "version": "1.0.0",
+              "content_sha256": "dc0e4b5bd3a4dfb6e2e84d64eabe95276469974a69e6166d735b0c92569bcc8d"
+            },
+            {
+              "document_id": "DOC-UCOS-PLATFORM-LICENCE",
+              "kind": "licence_terms",
+              "title": "UCOS Ω∞ Platform — Licence Terms",
+              "version": "1.0.0",
+              "content_sha256": "f17536ae21c917f2210c70a0d824c0dfd6a67039302506f37cd22109fd5290db"
+            },
+            {
+              "document_id": "DOC-UCOS-PLATFORM-SUPPORT",
+              "kind": "support_policy",
+              "title": "UCOS Ω∞ Platform — Support Policy",
+              "version": "1.0.0",
+              "content_sha256": "818e1f9688292487e69c80638201c92ace872f500df8194580d4d575ecd18df4"
+            },
+            {
+              "document_id": "DOC-UCOS-PLATFORM-SECURITY",
+              "kind": "security_statement",
+              "title": "UCOS Ω∞ Platform — Security Statement",
+              "version": "1.0.0",
+              "content_sha256": "b0b2bab471eafa4847a76193820f5a2dde5d2c8caa39a09d270e0e4b36a9cb06"
+            },
+            {
+              "document_id": "DOC-UCOS-PLATFORM-ROADMAP",
+              "kind": "roadmap",
+              "title": "UCOS Ω∞ Platform — Commercial Roadmap",
+              "version": "1.0.0",
+              "content_sha256": "7140e16500796df708e6be3c2aac6cb9771e036d20e8d47d66f57e74ba0b0815"
+            }
+          ]
+        },
+        {
+          "subject_id": "UCOS-INTELLIGENCE",
+          "documents": [
+            {
+              "document_id": "DOC-UCOS-INTELLIGENCE-OVERVIEW",
+              "kind": "overview",
+              "title": "UCOS Ω∞ Intelligence — Commercial Overview",
+              "version": "1.0.0",
+              "content_sha256": "c6c18efe036dfbcd85843441dbeed734e9fff4abc208df7562d74308dd4dfdf1"
+            },
+            {
+              "document_id": "DOC-UCOS-INTELLIGENCE-PRICING",
+              "kind": "pricing_sheet",
+              "title": "UCOS Ω∞ Intelligence — Pricing Sheet",
+              "version": "1.0.0",
+              "content_sha256": "dd76a44fb2bdd6d2d5a102775b508aa3048edf3ef2361872066e2020d064b16c"
+            },
+            {
+              "document_id": "DOC-UCOS-INTELLIGENCE-LICENCE",
+              "kind": "licence_terms",
+              "title": "UCOS Ω∞ Intelligence — Licence Terms",
+              "version": "1.0.0",
+              "content_sha256": "34d024d9bce74444a0724f72605119d0ceafa10688ef43ba0bddcfdfaa44ac27"
+            },
+            {
+              "document_id": "DOC-UCOS-INTELLIGENCE-SUPPORT",
+              "kind": "support_policy",
+              "title": "UCOS Ω∞ Intelligence — Support Policy",
+              "version": "1.0.0",
+              "content_sha256": "5221809a7877eac6dd43067711b32843c275354ac09478267c8c4a220ebedb64"
+            },
+            {
+              "document_id": "DOC-UCOS-INTELLIGENCE-SECURITY",
+              "kind": "security_statement",
+              "title": "UCOS Ω∞ Intelligence — Security Statement",
+              "version": "1.0.0",
+              "content_sha256": "53c15c1d3333dda30a54dd70d5840a0f7eb0faafe0f4a4fa83211c67d3746fd5"
+            }
+          ]
+        }
+      ]
+    },
+    "commercial_packages": {
+      "packages": [
+        {
+          "package_id": "PKG-0001",
+          "expect_releasable": true,
+          "quote_id": "Q-PKG-0001",
+          "product": {
+            "product_id": "UCOS-PLATFORM",
+            "name": "UCOS Ω∞ Platform",
+            "sku": "UCOS-PLATFORM",
+            "version": "1.0.0",
+            "state": "general_availability",
+            "capabilities": ["certification", "knowledge-graph", "registry", "validation"]
+          },
+          "price_book": {
+            "book_id": "PB-0001",
+            "currency": "USD",
+            "max_discount_basis_points": 1500,
+            "prices": {
+              "UCOS-PLATFORM": { "currency": "USD", "minor_units": 1200000 },
+              "UCOS-INTELLIGENCE": { "currency": "USD", "minor_units": 800000 },
+              "UCOS-RUNTIME": { "currency": "USD", "minor_units": 400000 }
+            },
+            "discounts": [
+              { "rule_id": "DISC-PARTNER-05", "basis_points": 500, "min_quantity": 1 },
+              { "rule_id": "DISC-VOLUME-10", "basis_points": 1000, "min_quantity": 10 }
+            ]
+          },
+          "lines": [
+            { "sku": "UCOS-PLATFORM", "quantity": 10, "discount_ids": ["DISC-VOLUME-10"] }
+          ],
+          "grant": {
+            "grant_id": "GRANT-0001",
+            "product_id": "UCOS-PLATFORM",
+            "customer_id": "CUST-0001",
+            "model": "subscription",
+            "seats": 50,
+            "term_days": 365,
+            "capabilities": ["knowledge-graph", "registry", "validation"]
+          },
+          "documentation": {
+            "subject_id": "UCOS-PLATFORM",
+            "documents": [
+              {
+                "document_id": "DOC-UCOS-PLATFORM-OVERVIEW",
+                "kind": "overview",
+                "title": "UCOS Ω∞ Platform — Commercial Overview",
+                "version": "1.0.0",
+                "content_sha256": "9b72a028b89c2c32f5afb564229d09c5aad84ac71d6bfd07ee50267a2d11ddfb"
+              },
+              {
+                "document_id": "DOC-UCOS-PLATFORM-PRICING",
+                "kind": "pricing_sheet",
+                "title": "UCOS Ω∞ Platform — Pricing Sheet",
+                "version": "1.0.0",
+                "content_sha256": "dc0e4b5bd3a4dfb6e2e84d64eabe95276469974a69e6166d735b0c92569bcc8d"
+              },
+              {
+                "document_id": "DOC-UCOS-PLATFORM-LICENCE",
+                "kind": "licence_terms",
+                "title": "UCOS Ω∞ Platform — Licence Terms",
+                "version": "1.0.0",
+                "content_sha256": "f17536ae21c917f2210c70a0d824c0dfd6a67039302506f37cd22109fd5290db"
+              },
+              {
+                "document_id": "DOC-UCOS-PLATFORM-SUPPORT",
+                "kind": "support_policy",
+                "title": "UCOS Ω∞ Platform — Support Policy",
+                "version": "1.0.0",
+                "content_sha256": "818e1f9688292487e69c80638201c92ace872f500df8194580d4d575ecd18df4"
+              },
+              {
+                "document_id": "DOC-UCOS-PLATFORM-SECURITY",
+                "kind": "security_statement",
+                "title": "UCOS Ω∞ Platform — Security Statement",
+                "version": "1.0.0",
+                "content_sha256": "b0b2bab471eafa4847a76193820f5a2dde5d2c8caa39a09d270e0e4b36a9cb06"
+              }
+            ]
+          },
+          "policies": [
+            {
+              "policy_id": "POL-PKG-RELEASE",
+              "domain": "commercial_packages",
+              "action": "release",
+              "effect": "requires_approval",
+              "approval_role": "commercial-authority"
+            },
+            {
+              "policy_id": "POL-PRICING-DISCOUNT",
+              "domain": "pricing_intelligence",
+              "action": "discount",
+              "effect": "allow",
+              "max_magnitude": 1500,
+              "breach_effect": "deny"
+            }
+          ],
+          "policy_request": {
+            "domain": "commercial_packages",
+            "action": "release",
+            "magnitude": 0,
+            "subject_id": "PKG-0001"
+          },
+          "approval_chain": {
+            "chain_id": "CHAIN-PKG-0001",
+            "requested_by": "release-engineer",
+            "stages": [
+              { "stage_id": "S-COMMERCIAL", "role": "commercial-authority", "quorum": 1 }
+            ]
+          },
+          "approval_records": [
+            {
+              "record_id": "R-0001",
+              "stage_id": "S-COMMERCIAL",
+              "approver_id": "commercial-owner",
+              "role": "commercial-authority",
+              "decision": "approved"
+            }
+          ]
+        },
+        {
+          "package_id": "PKG-0002",
+          "expect_releasable": true,
+          "quote_id": "Q-PKG-0002",
+          "product": {
+            "product_id": "UCOS-INTELLIGENCE",
+            "name": "UCOS Ω∞ Intelligence",
+            "sku": "UCOS-INTELLIGENCE",
+            "version": "1.0.0",
+            "state": "general_availability",
+            "capabilities": ["discovery", "measurement", "validation-intelligence"]
+          },
+          "price_book": {
+            "book_id": "PB-0001",
+            "currency": "USD",
+            "max_discount_basis_points": 1500,
+            "prices": {
+              "UCOS-PLATFORM": { "currency": "USD", "minor_units": 1200000 },
+              "UCOS-INTELLIGENCE": { "currency": "USD", "minor_units": 800000 },
+              "UCOS-RUNTIME": { "currency": "USD", "minor_units": 400000 }
+            },
+            "discounts": [
+              { "rule_id": "DISC-PARTNER-05", "basis_points": 500, "min_quantity": 1 }
+            ]
+          },
+          "lines": [
+            { "sku": "UCOS-INTELLIGENCE", "quantity": 3, "discount_ids": ["DISC-PARTNER-05"] }
+          ],
+          "grant": {
+            "grant_id": "GRANT-0002",
+            "product_id": "UCOS-INTELLIGENCE",
+            "customer_id": "CUST-0002",
+            "model": "perpetual",
+            "seats": 10,
+            "term_days": 0,
+            "capabilities": ["discovery", "measurement"]
+          },
+          "documentation": {
+            "subject_id": "UCOS-INTELLIGENCE",
+            "documents": [
+              {
+                "document_id": "DOC-UCOS-INTELLIGENCE-OVERVIEW",
+                "kind": "overview",
+                "title": "UCOS Ω∞ Intelligence — Commercial Overview",
+                "version": "1.0.0",
+                "content_sha256": "c6c18efe036dfbcd85843441dbeed734e9fff4abc208df7562d74308dd4dfdf1"
+              },
+              {
+                "document_id": "DOC-UCOS-INTELLIGENCE-PRICING",
+                "kind": "pricing_sheet",
+                "title": "UCOS Ω∞ Intelligence — Pricing Sheet",
+                "version": "1.0.0",
+                "content_sha256": "dd76a44fb2bdd6d2d5a102775b508aa3048edf3ef2361872066e2020d064b16c"
+              },
+              {
+                "document_id": "DOC-UCOS-INTELLIGENCE-LICENCE",
+                "kind": "licence_terms",
+                "title": "UCOS Ω∞ Intelligence — Licence Terms",
+                "version": "1.0.0",
+                "content_sha256": "34d024d9bce74444a0724f72605119d0ceafa10688ef43ba0bddcfdfaa44ac27"
+              },
+              {
+                "document_id": "DOC-UCOS-INTELLIGENCE-SUPPORT",
+                "kind": "support_policy",
+                "title": "UCOS Ω∞ Intelligence — Support Policy",
+                "version": "1.0.0",
+                "content_sha256": "5221809a7877eac6dd43067711b32843c275354ac09478267c8c4a220ebedb64"
+              },
+              {
+                "document_id": "DOC-UCOS-INTELLIGENCE-SECURITY",
+                "kind": "security_statement",
+                "title": "UCOS Ω∞ Intelligence — Security Statement",
+                "version": "1.0.0",
+                "content_sha256": "53c15c1d3333dda30a54dd70d5840a0f7eb0faafe0f4a4fa83211c67d3746fd5"
+              }
+            ]
+          },
+          "policies": [
+            {
+              "policy_id": "POL-PKG-RELEASE",
+              "domain": "commercial_packages",
+              "action": "release",
+              "effect": "requires_approval",
+              "approval_role": "commercial-authority"
+            }
+          ],
+          "policy_request": {
+            "domain": "commercial_packages",
+            "action": "release",
+            "magnitude": 0,
+            "subject_id": "PKG-0002"
+          },
+          "approval_chain": {
+            "chain_id": "CHAIN-PKG-0002",
+            "requested_by": "release-engineer",
+            "stages": [
+              { "stage_id": "S-COMMERCIAL", "role": "commercial-authority", "quorum": 1 }
+            ]
+          },
+          "approval_records": [
+            {
+              "record_id": "R-0002",
+              "stage_id": "S-COMMERCIAL",
+              "approver_id": "commercial-owner",
+              "role": "commercial-authority",
+              "decision": "approved"
+            }
+          ]
+        },
+        {
+          "package_id": "PKG-0003",
+          "$comment": "Declared NEGATIVE case: a package for a product that is not offerable and whose policy-required approval was never obtained. It MUST NOT be releasable — this is how the fail-closed release path is proven from Repository Truth rather than assumed.",
+          "expect_releasable": false,
+          "quote_id": "Q-PKG-0003",
+          "product": {
+            "product_id": "UCOS-RUNTIME",
+            "name": "UCOS Ω∞ Runtime",
+            "sku": "UCOS-RUNTIME",
+            "version": "0.9.0",
+            "state": "development",
+            "capabilities": ["runtime-execution"]
+          },
+          "price_book": {
+            "book_id": "PB-0001",
+            "currency": "USD",
+            "max_discount_basis_points": 1500,
+            "prices": {
+              "UCOS-RUNTIME": { "currency": "USD", "minor_units": 400000 }
+            },
+            "discounts": []
+          },
+          "lines": [{ "sku": "UCOS-RUNTIME", "quantity": 1, "discount_ids": [] }],
+          "grant": {
+            "grant_id": "GRANT-0003",
+            "product_id": "UCOS-RUNTIME",
+            "customer_id": "CUST-0003",
+            "model": "evaluation",
+            "seats": 5,
+            "term_days": 30,
+            "capabilities": ["runtime-execution"]
+          },
+          "documentation": {
+            "subject_id": "UCOS-RUNTIME",
+            "documents": [
+              {
+                "document_id": "DOC-UCOS-PLATFORM-OVERVIEW",
+                "kind": "overview",
+                "title": "UCOS Ω∞ Runtime — Commercial Overview (provisional)",
+                "version": "0.9.0",
+                "content_sha256": "9b72a028b89c2c32f5afb564229d09c5aad84ac71d6bfd07ee50267a2d11ddfb"
+              }
+            ]
+          },
+          "policies": [
+            {
+              "policy_id": "POL-PKG-RELEASE",
+              "domain": "commercial_packages",
+              "action": "release",
+              "effect": "requires_approval",
+              "approval_role": "commercial-authority"
+            }
+          ],
+          "policy_request": {
+            "domain": "commercial_packages",
+            "action": "release",
+            "magnitude": 0,
+            "subject_id": "PKG-0003"
+          }
+        }
+      ]
+    },
+    "pricing_intelligence": {
+      "price_book": {
+        "book_id": "PB-0001",
+        "currency": "USD",
+        "max_discount_basis_points": 1500,
+        "prices": {
+          "UCOS-PLATFORM": { "currency": "USD", "minor_units": 1200000 },
+          "UCOS-INTELLIGENCE": { "currency": "USD", "minor_units": 800000 },
+          "UCOS-RUNTIME": { "currency": "USD", "minor_units": 400000 }
+        },
+        "discounts": [
+          { "rule_id": "DISC-PARTNER-05", "basis_points": 500, "min_quantity": 1 },
+          { "rule_id": "DISC-STRATEGIC-20", "basis_points": 2000, "min_quantity": 1 },
+          { "rule_id": "DISC-VOLUME-10", "basis_points": 1000, "min_quantity": 10 }
+        ]
+      },
+      "quotes": [
+        {
+          "quote_id": "Q-0001",
+          "expect_net_minor_units": 10800000,
+          "lines": [
+            { "sku": "UCOS-PLATFORM", "quantity": 10, "discount_ids": ["DISC-VOLUME-10"] }
+          ]
+        },
+        {
+          "quote_id": "Q-0002",
+          "expect_net_minor_units": 2280000,
+          "lines": [
+            { "sku": "UCOS-INTELLIGENCE", "quantity": 3, "discount_ids": ["DISC-PARTNER-05"] }
+          ]
+        },
+        {
+          "quote_id": "Q-0003",
+          "expect_net_minor_units": 2000000,
+          "lines": [
+            { "sku": "UCOS-PLATFORM", "quantity": 1, "discount_ids": [] },
+            { "sku": "UCOS-INTELLIGENCE", "quantity": 1, "discount_ids": [] }
+          ]
+        }
+      ],
+      "refusals": [
+        {
+          "quote_id": "R-QUANTITY-GATE",
+          "$comment": "claims the volume discount below its minimum quantity",
+          "lines": [
+            { "sku": "UCOS-PLATFORM", "quantity": 1, "discount_ids": ["DISC-VOLUME-10"] }
+          ]
+        },
+        {
+          "quote_id": "R-DISCOUNT-AUTHORITY",
+          "$comment": "claims a discount above the book's 1500 bp discount authority",
+          "lines": [
+            { "sku": "UCOS-PLATFORM", "quantity": 10, "discount_ids": ["DISC-STRATEGIC-20"] }
+          ]
+        },
+        {
+          "quote_id": "R-UNPRICED-SKU",
+          "$comment": "prices a SKU the book does not carry",
+          "lines": [{ "sku": "UCOS-UNPRICED", "quantity": 1, "discount_ids": [] }]
+        }
+      ]
+    },
+    "investment_intelligence": {
+      "cases": [
+        {
+          "case_id": "INV-0001",
+          "currency": "USD",
+          "require_recovered": true,
+          "min_return_basis_points": 2000,
+          "costs": [
+            { "currency": "USD", "minor_units": 5000000 },
+            { "currency": "USD", "minor_units": 500000 },
+            { "currency": "USD", "minor_units": 500000 }
+          ],
+          "returns": [
+            { "currency": "USD", "minor_units": 1000000 },
+            { "currency": "USD", "minor_units": 3000000 },
+            { "currency": "USD", "minor_units": 4000000 }
+          ]
+        },
+        {
+          "case_id": "INV-0002",
+          "$comment": "an unrecovered exploratory case, declared as such: require_recovered false, so the absence of payback is a stated position rather than a hidden one.",
+          "currency": "USD",
+          "require_recovered": false,
+          "costs": [{ "currency": "USD", "minor_units": 1000000 }],
+          "returns": [{ "currency": "USD", "minor_units": 0 }]
+        }
+      ]
+    },
+    "customer_intelligence": {
+      "currency": "USD",
+      "max_concentration_basis_points": 7000,
+      "accounts": [
+        {
+          "customer_id": "CUST-0001",
+          "name": "Reference Enterprise Account",
+          "segment": "active",
+          "contracted_value": { "currency": "USD", "minor_units": 6000000 },
+          "grant_ids": ["GRANT-0001"]
+        },
+        {
+          "customer_id": "CUST-0002",
+          "name": "Reference Renewal Account",
+          "segment": "renewal",
+          "contracted_value": { "currency": "USD", "minor_units": 4000000 },
+          "grant_ids": ["GRANT-0002"]
+        },
+        {
+          "customer_id": "CUST-0003",
+          "name": "Reference Evaluation Prospect",
+          "segment": "prospect",
+          "contracted_value": { "currency": "USD", "minor_units": 0 },
+          "grant_ids": []
+        }
+      ],
+      "grants": [
+        {
+          "grant_id": "GRANT-0001",
+          "product_id": "UCOS-PLATFORM",
+          "customer_id": "CUST-0001",
+          "model": "subscription",
+          "seats": 50,
+          "term_days": 365,
+          "capabilities": ["knowledge-graph", "registry", "validation"]
+        },
+        {
+          "grant_id": "GRANT-0002",
+          "product_id": "UCOS-INTELLIGENCE",
+          "customer_id": "CUST-0002",
+          "model": "perpetual",
+          "seats": 10,
+          "term_days": 0,
+          "capabilities": ["discovery", "measurement"]
+        }
+      ]
+    },
+    "policy_governance": {
+      "policies": [
+        {
+          "policy_id": "POL-LICENCE-GRANT",
+          "domain": "licensing_intelligence",
+          "action": "grant",
+          "effect": "allow",
+          "max_magnitude": 100,
+          "breach_effect": "requires_approval",
+          "approval_role": "licence-authority"
+        },
+        {
+          "policy_id": "POL-MARKETPLACE-PUBLISH",
+          "domain": "marketplace_intelligence",
+          "action": "publish",
+          "effect": "requires_approval",
+          "approval_role": "marketplace-authority"
+        },
+        {
+          "policy_id": "POL-PKG-RELEASE",
+          "domain": "commercial_packages",
+          "action": "release",
+          "effect": "requires_approval",
+          "approval_role": "commercial-authority"
+        },
+        {
+          "policy_id": "POL-PRICING-DISCOUNT",
+          "domain": "pricing_intelligence",
+          "action": "discount",
+          "effect": "allow",
+          "max_magnitude": 1500,
+          "breach_effect": "deny"
+        }
+      ],
+      "requests": [
+        {
+          "domain": "pricing_intelligence",
+          "action": "discount",
+          "magnitude": 1000,
+          "subject_id": "Q-0001",
+          "expect_effect": "allow"
+        },
+        {
+          "domain": "pricing_intelligence",
+          "action": "discount",
+          "magnitude": 2500,
+          "subject_id": "R-DISCOUNT-AUTHORITY",
+          "expect_effect": "deny"
+        },
+        {
+          "domain": "commercial_packages",
+          "action": "release",
+          "magnitude": 0,
+          "subject_id": "PKG-0001",
+          "expect_effect": "requires_approval"
+        },
+        {
+          "domain": "marketplace_intelligence",
+          "action": "publish",
+          "magnitude": 0,
+          "subject_id": "ucos-platform",
+          "expect_effect": "requires_approval"
+        },
+        {
+          "domain": "licensing_intelligence",
+          "action": "grant",
+          "magnitude": 50,
+          "subject_id": "GRANT-0001",
+          "expect_effect": "allow"
+        },
+        {
+          "domain": "licensing_intelligence",
+          "action": "grant",
+          "magnitude": 500,
+          "subject_id": "GRANT-UNBOUNDED",
+          "expect_effect": "requires_approval"
+        },
+        {
+          "domain": "investment_intelligence",
+          "action": "approve",
+          "magnitude": 0,
+          "subject_id": "INV-0001",
+          "expect_effect": "deny",
+          "$comment": "no policy governs this action — fail-closed governance must refuse it"
+        }
+      ]
+    },
+    "approval_intelligence": {
+      "chains": [
+        {
+          "chain_id": "CHAIN-PKG-0001",
+          "requested_by": "release-engineer",
+          "expect_satisfied": true,
+          "expect_irregularities": 0,
+          "stages": [
+            { "stage_id": "S-COMMERCIAL", "role": "commercial-authority", "quorum": 1 }
+          ],
+          "records": [
+            {
+              "record_id": "R-0001",
+              "stage_id": "S-COMMERCIAL",
+              "approver_id": "commercial-owner",
+              "role": "commercial-authority",
+              "decision": "approved"
+            }
+          ]
+        },
+        {
+          "chain_id": "CHAIN-QUORUM-0001",
+          "$comment": "a two-approver quorum with one approval — declared unsatisfied",
+          "requested_by": "release-engineer",
+          "expect_satisfied": false,
+          "expect_irregularities": 0,
+          "stages": [
+            { "stage_id": "S-COMMERCIAL", "role": "commercial-authority", "quorum": 2 }
+          ],
+          "records": [
+            {
+              "record_id": "R-0010",
+              "stage_id": "S-COMMERCIAL",
+              "approver_id": "commercial-owner",
+              "role": "commercial-authority",
+              "decision": "approved"
+            }
+          ]
+        },
+        {
+          "chain_id": "CHAIN-SELF-APPROVAL",
+          "$comment": "self-approval by the requesting principal — must be refused and recorded as an irregularity",
+          "requested_by": "commercial-owner",
+          "expect_satisfied": false,
+          "expect_irregularities": 1,
+          "stages": [
+            { "stage_id": "S-COMMERCIAL", "role": "commercial-authority", "quorum": 1 }
+          ],
+          "records": [
+            {
+              "record_id": "R-0020",
+              "stage_id": "S-COMMERCIAL",
+              "approver_id": "commercial-owner",
+              "role": "commercial-authority",
+              "decision": "approved"
+            }
+          ]
+        },
+        {
+          "chain_id": "CHAIN-ROLE-MISMATCH",
+          "$comment": "an approver who does not hold the stage role — must never count toward quorum",
+          "requested_by": "release-engineer",
+          "expect_satisfied": false,
+          "expect_irregularities": 1,
+          "stages": [
+            { "stage_id": "S-COMMERCIAL", "role": "commercial-authority", "quorum": 1 }
+          ],
+          "records": [
+            {
+              "record_id": "R-0030",
+              "stage_id": "S-COMMERCIAL",
+              "approver_id": "finance-analyst",
+              "role": "finance",
+              "decision": "approved"
+            }
+          ]
+        },
+        {
+          "chain_id": "CHAIN-REJECTED",
+          "$comment": "a rejection is terminal — the chain is refused, not merely pending",
+          "requested_by": "release-engineer",
+          "expect_satisfied": false,
+          "expect_irregularities": 0,
+          "stages": [
+            { "stage_id": "S-COMMERCIAL", "role": "commercial-authority", "quorum": 1 }
+          ],
+          "records": [
+            {
+              "record_id": "R-0040",
+              "stage_id": "S-COMMERCIAL",
+              "approver_id": "commercial-owner",
+              "role": "commercial-authority",
+              "decision": "rejected"
+            }
+          ]
+        }
+      ]
+    },
+    "business_evidence": {
+      "required_subjects": ["PKG-0001", "UCOS-INTELLIGENCE", "UCOS-PLATFORM"],
+      "entries": [
+        {
+          "evidence_id": "EV-UCOS-PLATFORM-CATALOG",
+          "subject_id": "UCOS-PLATFORM",
+          "kind": "product-catalog",
+          "sha256": "eecbdd171633f1d6908a12018d6307e82f5d71116c90c34c8fe7096ba5aa0086"
+        },
+        {
+          "evidence_id": "EV-UCOS-PLATFORM-QUOTE",
+          "subject_id": "UCOS-PLATFORM",
+          "kind": "quote",
+          "sha256": "4762589eadeebe568c62a01906bf692fe3be1c9463fb8a3f315426aca8fae3dd"
+        },
+        {
+          "evidence_id": "EV-UCOS-INTELLIGENCE-CATALOG",
+          "subject_id": "UCOS-INTELLIGENCE",
+          "kind": "product-catalog",
+          "sha256": "24ad5eea9dd55e2689fb6733285922d945e561d15e5a7e6b98dd9e2ba85d2859"
+        },
+        {
+          "evidence_id": "EV-PKG-0001-SEAL",
+          "subject_id": "PKG-0001",
+          "kind": "package-seal",
+          "sha256": "5d95b812aa4cfc73723199e789a777dde14bfe7e7d33dc3fa89ff8224d107192"
+        },
+        {
+          "evidence_id": "EV-PKG-0001-APPROVAL",
+          "subject_id": "PKG-0001",
+          "kind": "approval-outcome",
+          "sha256": "90a0044335e7f301a139ba0008a968610ff00d79e68720c924b70b95182943a1"
+        }
+      ]
+    },
+    "commercial_validation": {
+      "required_domains": [
+        "marketplace_intelligence",
+        "licensing_intelligence",
+        "product_intelligence",
+        "portfolio_intelligence",
+        "business_documentation",
+        "commercial_packages",
+        "pricing_intelligence",
+        "investment_intelligence",
+        "customer_intelligence",
+        "policy_governance",
+        "approval_intelligence",
+        "business_evidence",
+        "commercial_validation",
+        "commercial_certification"
+      ]
+    },
+    "commercial_certification": {
+      "subject_id": "UCMI-000001",
+      "authority": "ENGINEERING-EXECUTION-ONLY",
+      "exemptions": [],
+      "required_determination": "CERTIFIED"
+    }
+  }
+}

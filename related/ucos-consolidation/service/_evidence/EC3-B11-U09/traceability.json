@@ -1,0 +1,43 @@
+{
+  "backward": [
+    "SMC-09",
+    "SOE-09",
+    "SERVICE-013",
+    "SERVICE-005",
+    "SERVICE-001",
+    "ARCH-SERVICE-001",
+    "11-SERVICE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-POLICY-ucos.service.policy.foundation-2ca37fac49277007",
+    "EC3-B11-U09-VALIDATION-EVIDENCE",
+    "EC3-B11-U09-CCE-CERTIFICATION",
+    "EC3-B11-U09-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "0595a91",
+  "meta_class": "SMC-09",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "predicate data bound by reference (SMR-13); represented data not redefined",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the policy)",
+    "ENG-003": "engine.certification.contracts.canonical_json (structural value fidelity)",
+    "ENG-004": "service.policy_meta.PolicyKind + type_tag (ENG-004 typing, by reference)",
+    "ENG-005": "reference identifiers (contract/subject/behavior/data refs; no new construct)",
+    "RL-F2": "policy evaluation bound by reference (SMR-11; RUNTIME-010 evaluate / RUNTIME-008)"
+  },
+  "target_id": "UCOS-POLICY-ucos.service.policy.foundation-2ca37fac49277007",
+  "trace_format": "ucos-service-traceability/1.0.0",
+  "unit": "EC3-B11-U09"
+}

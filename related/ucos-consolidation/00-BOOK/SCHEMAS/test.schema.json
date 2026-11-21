@@ -1,0 +1,29 @@
+{
+  "title": "UCOS Ω∞ Test Intelligence Entity",
+  "description": "A test as a first-class Universal Artifact (UKB-004). Must trace to Requirement, Architecture, and Implementation (no orphan tests). last_result/coverage come from signals.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["universal_id", "name", "test_type", "targets"],
+  "properties": {
+    "universal_id": { "type": "string", "pattern": "^UCOS-TST-[0-9]{6}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "test_type": { "type": "string", "enum": ["UNIT", "COMPONENT", "CONTRACT", "INTEGRATION", "API", "FUNCTIONAL", "SYSTEM", "E2E", "REGRESSION", "LOAD", "STRESS", "SOAK", "CHAOS", "SECURITY", "PENETRATION", "UAT"] },
+    "suite": { "type": ["string", "null"], "default": null },
+    "case": { "type": ["string", "null"], "default": null },
+    "tool": { "type": ["string", "null"], "default": null },
+    "environment": { "type": ["string", "null"], "pattern": "^UCOS-ENV-[0-9]{6}$", "default": null },
+    "targets": {
+      "type": "object",
+      "description": "Mandatory traceability targets.",
+      "additionalProperties": false,
+      "properties": {
+        "requirement": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "architecture": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "implementation": { "type": "array", "items": { "type": "string" }, "default": [] }
+      }
+    },
+    "last_result": { "type": "string", "enum": ["PASS", "FAIL", "SKIP", "FLAKY", "UNKNOWN"], "default": "UNKNOWN" },
+    "coverage": { "type": ["number", "null"], "default": null },
+    "derived_status": { "type": "string", "default": "NOT_STARTED" }
+  }
+}

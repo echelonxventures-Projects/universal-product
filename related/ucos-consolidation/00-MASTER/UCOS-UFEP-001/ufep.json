@@ -1,0 +1,907 @@
+{
+  "authorizations": [
+    {
+      "acted_on": false,
+      "authorization": "Foundation freeze authorization recommendation on the satisfied in-corpus prerequisite ledger",
+      "id": "UFEP-AUTH-01",
+      "located": true,
+      "owner": "00-MASTER/UCOS-CRAT-001/07-FOUNDATION-FREEZE-AUTHORIZATION.md"
+    }
+  ],
+  "baselines": {
+    "UFEP-SUB-01": "5cb6b1cc78131c27937ba8541890fc92274495f9719410aa8e6793eeb0e90cb6",
+    "UFEP-SUB-02": "fe71b32d2afb1b071f41fc63cf63b7798cfa8588b670d3d96d73d7dc1bb2afef",
+    "UFEP-SUB-03": "42acbde9dd3c653f4821e40cd04af0d6bdc36ba33bd0ec5a0ea9c85741c2cd6e",
+    "UFEP-SUB-04": "2390e02ae665cf92a8a3fd20d7c4f1edc3a5faeb91607fa17bef75561bd11d05",
+    "UFEP-SUB-05": "169a912c8313cef063b63168110d20721e44c02359f4b1e353e43cccefabf360"
+  },
+  "blocking_failures": [
+    "UFEP-VAL-11"
+  ],
+  "clauses": [
+    {
+      "bound": true,
+      "key": "state_basis",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    },
+    {
+      "bound": true,
+      "key": "transition_basis",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    },
+    {
+      "bound": true,
+      "key": "eligibility_basis",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    },
+    {
+      "bound": true,
+      "key": "admission_basis",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    },
+    {
+      "bound": true,
+      "key": "decidability_basis",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    },
+    {
+      "bound": true,
+      "key": "unverifiable_basis",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    },
+    {
+      "bound": true,
+      "key": "finality_not_a_freeze_blocker_basis",
+      "owner": "00-MASTER/UCOS-CRAT-001/07-FOUNDATION-FREEZE-AUTHORIZATION.md"
+    },
+    {
+      "bound": true,
+      "key": "precondition_basis",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    },
+    {
+      "bound": true,
+      "key": "baseline_basis",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    },
+    {
+      "bound": true,
+      "key": "freeze_record_basis",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    },
+    {
+      "bound": true,
+      "key": "drift_basis",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    }
+  ],
+  "completion_criteria": [
+    {
+      "blocking": true,
+      "criterion": "no engineering blocker — the aggregate constitutional certifier reports a passing gate",
+      "id": "UFEP-CC-01",
+      "observed": 0,
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCCEP-000000/uccep.json",
+      "source": "UFEP-SRC-CERTIFICATION"
+    },
+    {
+      "blocking": true,
+      "criterion": "no certification blocker — the aggregate certifier reports no blocking failure",
+      "id": "UFEP-CC-02",
+      "observed": 0,
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCCEP-000000/uccep.json",
+      "source": "UFEP-SRC-CERTIFICATION-BLOCKING"
+    },
+    {
+      "blocking": true,
+      "criterion": "an active certification standing is recorded",
+      "id": "UFEP-CC-03",
+      "observed": "CERTIFIED-PROVISIONAL",
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCCEP-000000/uccep.json",
+      "source": "UFEP-SRC-CERTIFICATION-STANDING"
+    },
+    {
+      "blocking": true,
+      "criterion": "no authority blocker — the authority model is bound and its gate is open",
+      "id": "UFEP-CC-04",
+      "observed": "OPEN",
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCOS-UCAF-001/ucaf.json",
+      "source": "UFEP-SRC-AUTHORITY"
+    },
+    {
+      "blocking": true,
+      "criterion": "no undefined authority — every authority-shaped reference resolves to a registered authority",
+      "id": "UFEP-CC-05",
+      "observed": 0,
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCOS-UCAF-001/ucaf.json",
+      "source": "UFEP-SRC-AUTHORITY-UNDEFINED"
+    },
+    {
+      "blocking": true,
+      "criterion": "no ratification blocker — the ratification registry is bound and every record is valid",
+      "id": "UFEP-CC-06",
+      "observed": "OPEN",
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCOS-URAT-001/urat.json",
+      "source": "UFEP-SRC-RATIFICATION-GATE"
+    },
+    {
+      "blocking": true,
+      "criterion": "no traceability blocker — the constitutional traceability obligation is closed",
+      "id": "UFEP-CC-07",
+      "observed": true,
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCOS-UTCE-001/utce.json",
+      "source": "UFEP-SRC-TRACEABILITY"
+    },
+    {
+      "blocking": true,
+      "criterion": "the traceability programme's own gate is open",
+      "id": "UFEP-CC-08",
+      "observed": "OPEN",
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCOS-UTCE-001/utce.json",
+      "source": "UFEP-SRC-TRACEABILITY-GATE"
+    },
+    {
+      "blocking": true,
+      "criterion": "determinism is proven — the located reproducibility evidence reports byte-identical output",
+      "id": "UFEP-CC-09",
+      "observed": true,
+      "outcome": "SATISFIED",
+      "owner": "determinism-evidence/determinism-evidence.json",
+      "source": "UFEP-SRC-DETERMINISM"
+    },
+    {
+      "blocking": true,
+      "criterion": "no certification blocker stands other than the out-of-corpus finality condition, which CEP-006 I.4 makes permanent and CEP-007 III.2 makes non-blocking to freeze",
+      "id": "UFEP-CC-10",
+      "observed": 1,
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCCEP-000000/uccep.json",
+      "source": "UFEP-SRC-CERTIFICATION-CEILING"
+    },
+    {
+      "blocking": true,
+      "criterion": "the certification standing this determination rests on was produced by a full-tier certifier run, not a tier-limited one",
+      "id": "UFEP-CC-11",
+      "observed": "full",
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCCEP-000000/uccep.json",
+      "source": "UFEP-SRC-CERTIFICATION-TIER"
+    }
+  ],
+  "counts": {
+    "authorizations_located": 1,
+    "clauses": 11,
+    "clauses_bound": 11,
+    "completion_criteria": 11,
+    "completion_satisfied": 11,
+    "eligible": 5,
+    "frozen_drifted": 0,
+    "frozen_entries": 13,
+    "frozen_matched": 13,
+    "not_eligible": 0,
+    "preconditions": 5,
+    "subjects": 5
+  },
+  "determination": {
+    "constitutional_completion": false,
+    "finality": "unchanged — the in-corpus ceiling fixed by the located ratification constitution is preserved",
+    "freeze_eligibility": true,
+    "freeze_performed": false,
+    "scope": "the artifacts holding a valid canonical record in the located ratification registry"
+  },
+  "exit_criteria": [
+    {
+      "criterion": "freeze eligibility is machine-decidable per artifact, from located determinations, with the unsatisfied precondition named whenever it is not",
+      "id": "UFEP-EX-01"
+    },
+    {
+      "criterion": "the baseline a freeze would seal is computed and reproducible before any freeze occurs",
+      "id": "UFEP-EX-02"
+    },
+    {
+      "criterion": "the located frozen baseline is verified against its recorded manifest on every run",
+      "id": "UFEP-EX-03"
+    },
+    {
+      "criterion": "constitutional completion is determined from the machine models of the programmes that own each condition, never asserted",
+      "id": "UFEP-EX-04"
+    },
+    {
+      "criterion": "no freeze is performed, no state beyond eligibility is reached, and the finality ceiling is preserved",
+      "id": "UFEP-EX-05"
+    }
+  ],
+  "findings": [
+    {
+      "blocking": false,
+      "class": "MEASURED-GOVERNANCE-GAP",
+      "disposition": "IMPLEMENTED",
+      "evidence": [
+        "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+        "00-MASTER/UCOS-URAT-001/urat.json",
+        "00-MASTER/UCOS-UTCE-001/utce.json"
+      ],
+      "id": "UFEP-F-001",
+      "note": "CEP-007 IV.2 requires eligibility to be decidable and V.2 requires every precondition to be machine-verifiable. Nothing in the repository measured them together, and one of the five — an accepted ratification — could not be measured at all because the registry CEP-006 mandates did not exist. Closed by measuring all five from the located determinations and machine models that own them, and by treating an unreadable source as unsatisfied per V.4.",
+      "owner": "00-MASTER/UCOS-UFEP-001/ufep-declaration.json",
+      "title": "Freeze eligibility was undecidable because no programme measured the CEP-007 Article V preconditions"
+    },
+    {
+      "blocking": false,
+      "class": "DECLARED-SCOPE-BOUNDARY",
+      "disposition": "GOVERNED",
+      "evidence": [
+        "00-CEP/STAGE-04-S4-12-INFRASTRUCTURE-005-UIMM-INTEGRATION-PROVISIONAL-RATIFICATION.md",
+        "00-CEP/STAGE-04-S4-06-INFRASTRUCTURE-013-SECURITY-RATIFICATION-AND-INFRASTRUCTURE-014-NEXT-FRONTIER-DETERMINATION.md"
+      ],
+      "id": "UFEP-F-002",
+      "note": "Band freeze requires a band certification-of-certifications step that a located determination records as the next lawful frontier and as not yet performed. That is a different scope from the per-artifact eligibility CEP-007 Article IV defines, and it is owned by the Band-13 programme. This programme's determination is explicitly scoped to the artifacts holding canonical ratification records, and it neither absorbs nor contradicts the band-scope determination.",
+      "owner": "00-CEP/STAGE-04-S4-12-INFRASTRUCTURE-005-UIMM-INTEGRATION-PROVISIONAL-RATIFICATION.md",
+      "title": "A located determination records BAND-scope freeze as NOT READY; that scope is not closed here"
+    },
+    {
+      "blocking": false,
+      "class": "DECLARED-SCOPE-BOUNDARY",
+      "disposition": "GOVERNED",
+      "evidence": [
+        "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+        "00-MASTER/UCOS-CRAT-001/07-FOUNDATION-FREEZE-AUTHORIZATION.md"
+      ],
+      "id": "UFEP-F-003",
+      "note": "CEP-007 VII.1 reserves the freeze decision to Freeze Authority and I.5 forbids its self-conferral by Execution Authority. Every state past eligibility is declared unreachable by this programme and a self-guard fails closed if any subject is reported in one. The located freeze authorization is recorded as evidence that the authorization channel is occupied; it is not acted upon here.",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "title": "Eligibility is not a freeze, and this programme cannot become one"
+    },
+    {
+      "blocking": false,
+      "class": "DECLARED-SCOPE-BOUNDARY",
+      "disposition": "GOVERNED",
+      "evidence": [
+        "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+        "09-DR-RAT-11-ASSESSMENT.md",
+        "00-MASTER/UCOS-CRAT-001/07-FOUNDATION-FREEZE-AUTHORIZATION.md"
+      ],
+      "id": "UFEP-F-004",
+      "note": "CEP-006 I.4 caps every in-corpus determination at provisional acceptance pending an out-of-corpus finality authority, and the located freeze authorization records that this standing condition is carried forward and is not a freeze blocker. Constitutional completion as determined here therefore means: every constitutional condition the repository is competent to decide is decided, measured, owned and gated. It does not mean, and must never be read as, constitutional finality.",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "title": "Constitutional completion is completion of the machinery, not constitutional finality"
+    },
+    {
+      "blocking": false,
+      "class": "DECLARED-SCOPE-BOUNDARY",
+      "disposition": "GOVERNED",
+      "evidence": [
+        "00-MASTER/UCCEP-000000/uccep-bindings.json",
+        "00-MASTER/UCCEP-000000/uccep.json"
+      ],
+      "id": "UFEP-F-005",
+      "note": "This programme reads the aggregate certifier's sealed model to decide three of its completion criteria. Binding its determination as a check inside that certifier would make the certifier a component of its own input, reproducing the recursion topology this repository forbids elsewhere. Only this programme's SELF-guards are bound there, as G-21. The determination itself is gated by its own Makefile target and CI workflow, which run the certifier at full tier first — and criterion UFEP-CC-11 measures that the model it read was in fact a full-tier one, so a tier-limited model cannot silently produce a completion verdict.",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "title": "The completion determination is downstream of the aggregate certifier and is deliberately not one of its checks"
+    }
+  ],
+  "frozen_baselines": [
+    {
+      "drifted": [],
+      "entries": 13,
+      "id": "UFEP-FRZ-01",
+      "manifest": "99-FREEZE/SOURCE-HASHES.txt",
+      "matched": 13,
+      "missing": [],
+      "notice_located": true,
+      "readable": true
+    }
+  ],
+  "gate": "CLOSED",
+  "gate_exit": 1,
+  "preconditions": [
+    {
+      "id": "UFEP-PRE-01",
+      "owner": "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "precondition": "closed validation",
+      "scope": "subject"
+    },
+    {
+      "id": "UFEP-PRE-02",
+      "owner": "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "precondition": "active certification",
+      "scope": "subject"
+    },
+    {
+      "id": "UFEP-PRE-03",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "precondition": "accepted ratification",
+      "scope": "subject"
+    },
+    {
+      "id": "UFEP-PRE-04",
+      "owner": "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md",
+      "precondition": "rooted-and-closed traceability",
+      "scope": "repository"
+    },
+    {
+      "id": "UFEP-PRE-05",
+      "owner": "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md",
+      "precondition": "proven determinism",
+      "scope": "repository"
+    }
+  ],
+  "programme": {
+    "authority": "NONE — DERIVED TRUTH. This programme freezes nothing, seals no baseline, transitions no artifact and holds no Freeze Authority. It measures the CEP-007 Article V preconditions against located determinations and reports the Article IV eligibility they decide.",
+    "disclosure": "**DISCLOSURE.** CERTIFIED-PROVISIONAL. This programme determines freeze ELIGIBILITY under CEP-007 Article IV for the artifacts holding canonical ratification records. It performs no freeze, and it does not determine band-scope or programme-scope freeze readiness, which are owned elsewhere and disclosed as findings.",
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "00-BOOK/",
+      "00-CEP/",
+      "00-CMG/",
+      "01-WORKING/",
+      "02-MASTER/"
+    ],
+    "governing_instruments": [
+      "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md"
+    ],
+    "id": "UCOS-UFEP-001",
+    "name": "Universal Freeze Eligibility Programme",
+    "operational_home": "00-MASTER/UCOS-UFEP-001/",
+    "version": "1.0"
+  },
+  "seal_sha256": "9624de01e161334eab2c81fde3a7e4f297d074a30cc7b83524715bff76f5a6de",
+  "sources": [
+    {
+      "id": "UFEP-SRC-AUTHORITY",
+      "observed": "OPEN",
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCOS-UCAF-001/ucaf.json",
+      "readable": true,
+      "reason": null
+    },
+    {
+      "id": "UFEP-SRC-AUTHORITY-UNDEFINED",
+      "observed": 0,
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCOS-UCAF-001/ucaf.json",
+      "readable": true,
+      "reason": null
+    },
+    {
+      "id": "UFEP-SRC-CERTIFICATION",
+      "observed": 0,
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCCEP-000000/uccep.json",
+      "readable": true,
+      "reason": null
+    },
+    {
+      "id": "UFEP-SRC-CERTIFICATION-BLOCKING",
+      "observed": 0,
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCCEP-000000/uccep.json",
+      "readable": true,
+      "reason": null
+    },
+    {
+      "id": "UFEP-SRC-CERTIFICATION-CEILING",
+      "observed": 1,
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCCEP-000000/uccep.json",
+      "readable": true,
+      "reason": null
+    },
+    {
+      "id": "UFEP-SRC-CERTIFICATION-STANDING",
+      "observed": "CERTIFIED-PROVISIONAL",
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCCEP-000000/uccep.json",
+      "readable": true,
+      "reason": null
+    },
+    {
+      "id": "UFEP-SRC-CERTIFICATION-TIER",
+      "observed": "full",
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCCEP-000000/uccep.json",
+      "readable": true,
+      "reason": null
+    },
+    {
+      "id": "UFEP-SRC-DETERMINISM",
+      "observed": true,
+      "outcome": "SATISFIED",
+      "owner": "determinism-evidence/determinism-evidence.json",
+      "readable": true,
+      "reason": null
+    },
+    {
+      "id": "UFEP-SRC-RATIFICATION-GATE",
+      "observed": "OPEN",
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCOS-URAT-001/urat.json",
+      "readable": true,
+      "reason": null
+    },
+    {
+      "id": "UFEP-SRC-TRACEABILITY",
+      "observed": true,
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCOS-UTCE-001/utce.json",
+      "readable": true,
+      "reason": null
+    },
+    {
+      "id": "UFEP-SRC-TRACEABILITY-GATE",
+      "observed": "OPEN",
+      "outcome": "SATISFIED",
+      "owner": "00-MASTER/UCOS-UTCE-001/utce.json",
+      "readable": true,
+      "reason": null
+    }
+  ],
+  "states": [
+    {
+      "initial": true,
+      "reachable_by_this_programme": true,
+      "state": "NOT_ELIGIBLE"
+    },
+    {
+      "initial": false,
+      "reachable_by_this_programme": true,
+      "state": "ELIGIBLE"
+    },
+    {
+      "initial": false,
+      "reachable_by_this_programme": false,
+      "state": "FREEZING"
+    },
+    {
+      "initial": false,
+      "reachable_by_this_programme": false,
+      "state": "FROZEN"
+    },
+    {
+      "initial": false,
+      "reachable_by_this_programme": false,
+      "state": "SUPERSEDED"
+    }
+  ],
+  "subjects": [
+    {
+      "artifact": "The constitutional order of the repository — document supremacy, root ontology, invariant set, law canon and authority chain, as fixed by the exogenous constituent act EC-1",
+      "eligible": true,
+      "freeze_record": {
+        "artifact": "The constitutional order of the repository — document supremacy, root ontology, invariant set, law canon and authority chain, as fixed by the exogenous constituent act EC-1",
+        "baseline_digest": "5cb6b1cc78131c27937ba8541890fc92274495f9719410aa8e6793eeb0e90cb6",
+        "lineage": null,
+        "preconditions": [
+          "UFEP-PRE-01",
+          "UFEP-PRE-02",
+          "UFEP-PRE-03",
+          "UFEP-PRE-04",
+          "UFEP-PRE-05"
+        ],
+        "state": "ELIGIBLE",
+        "version": "5cb6b1cc7813"
+      },
+      "id": "UFEP-SUB-01",
+      "located_act": "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md",
+      "preconditions": {
+        "UFEP-PRE-01": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-CRAT-001/07-FOUNDATION-FREEZE-AUTHORIZATION.md",
+          "reason": null
+        },
+        "UFEP-PRE-02": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-CVER-001/07-GOVERNANCE-CERTIFICATION.md",
+          "reason": null
+        },
+        "UFEP-PRE-03": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-URAT-001/urat.json",
+          "reason": null
+        },
+        "UFEP-PRE-04": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-UTCE-001/utce.json",
+          "reason": null
+        },
+        "UFEP-PRE-05": {
+          "outcome": "SATISFIED",
+          "owner": "determinism-evidence/determinism-evidence.json",
+          "reason": null
+        }
+      },
+      "ratification_record": "URAT-REC-01",
+      "ratification_state": "PROVISIONAL",
+      "state": "ELIGIBLE",
+      "unsatisfied": []
+    },
+    {
+      "artifact": "The repository foundation — repository constitution, universal context assimilation law, knowledge-once principle, single canonical source of truth, canonical ownership model and repository governance",
+      "eligible": true,
+      "freeze_record": {
+        "artifact": "The repository foundation — repository constitution, universal context assimilation law, knowledge-once principle, single canonical source of truth, canonical ownership model and repository governance",
+        "baseline_digest": "fe71b32d2afb1b071f41fc63cf63b7798cfa8588b670d3d96d73d7dc1bb2afef",
+        "lineage": null,
+        "preconditions": [
+          "UFEP-PRE-01",
+          "UFEP-PRE-02",
+          "UFEP-PRE-03",
+          "UFEP-PRE-04",
+          "UFEP-PRE-05"
+        ],
+        "state": "ELIGIBLE",
+        "version": "fe71b32d2afb"
+      },
+      "id": "UFEP-SUB-02",
+      "located_act": "00-MASTER/UCOS-CRAT-001/09-RATIFICATION-CERTIFICATE.md",
+      "preconditions": {
+        "UFEP-PRE-01": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-CRAT-001/07-FOUNDATION-FREEZE-AUTHORIZATION.md",
+          "reason": null
+        },
+        "UFEP-PRE-02": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-CVER-001/07-GOVERNANCE-CERTIFICATION.md",
+          "reason": null
+        },
+        "UFEP-PRE-03": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-URAT-001/urat.json",
+          "reason": null
+        },
+        "UFEP-PRE-04": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-UTCE-001/utce.json",
+          "reason": null
+        },
+        "UFEP-PRE-05": {
+          "outcome": "SATISFIED",
+          "owner": "determinism-evidence/determinism-evidence.json",
+          "reason": null
+        }
+      },
+      "ratification_record": "URAT-REC-02",
+      "ratification_state": "PROVISIONAL",
+      "state": "ELIGIBLE",
+      "unsatisfied": []
+    },
+    {
+      "artifact": "INFRASTRUCTURE-013 Universal Infrastructure Security (U08, C15 SecurityFacet)",
+      "eligible": true,
+      "freeze_record": {
+        "artifact": "INFRASTRUCTURE-013 Universal Infrastructure Security (U08, C15 SecurityFacet)",
+        "baseline_digest": "42acbde9dd3c653f4821e40cd04af0d6bdc36ba33bd0ec5a0ea9c85741c2cd6e",
+        "lineage": null,
+        "preconditions": [
+          "UFEP-PRE-01",
+          "UFEP-PRE-02",
+          "UFEP-PRE-03",
+          "UFEP-PRE-04",
+          "UFEP-PRE-05"
+        ],
+        "state": "ELIGIBLE",
+        "version": "42acbde9dd3c"
+      },
+      "id": "UFEP-SUB-03",
+      "located_act": "00-CEP/STAGE-04-S4-06-INFRASTRUCTURE-013-SECURITY-RATIFICATION-AND-INFRASTRUCTURE-014-NEXT-FRONTIER-DETERMINATION.md",
+      "preconditions": {
+        "UFEP-PRE-01": {
+          "outcome": "SATISFIED",
+          "owner": "00-CEP/STAGE-04-S4-05-SECURITY-VALIDATION-CERTIFICATION-FREEZE-READINESS.md",
+          "reason": null
+        },
+        "UFEP-PRE-02": {
+          "outcome": "SATISFIED",
+          "owner": "00-CEP/STAGE-04-S4-05-SECURITY-VALIDATION-CERTIFICATION-FREEZE-READINESS.md",
+          "reason": null
+        },
+        "UFEP-PRE-03": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-URAT-001/urat.json",
+          "reason": null
+        },
+        "UFEP-PRE-04": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-UTCE-001/utce.json",
+          "reason": null
+        },
+        "UFEP-PRE-05": {
+          "outcome": "SATISFIED",
+          "owner": "determinism-evidence/determinism-evidence.json",
+          "reason": null
+        }
+      },
+      "ratification_record": "URAT-REC-03",
+      "ratification_state": "PROVISIONAL",
+      "state": "ELIGIBLE",
+      "unsatisfied": []
+    },
+    {
+      "artifact": "INFRASTRUCTURE-014 Universal Infrastructure Governance (EC3-B13-U09, C16 GovernanceFacet)",
+      "eligible": true,
+      "freeze_record": {
+        "artifact": "INFRASTRUCTURE-014 Universal Infrastructure Governance (EC3-B13-U09, C16 GovernanceFacet)",
+        "baseline_digest": "2390e02ae665cf92a8a3fd20d7c4f1edc3a5faeb91607fa17bef75561bd11d05",
+        "lineage": null,
+        "preconditions": [
+          "UFEP-PRE-01",
+          "UFEP-PRE-02",
+          "UFEP-PRE-03",
+          "UFEP-PRE-04",
+          "UFEP-PRE-05"
+        ],
+        "state": "ELIGIBLE",
+        "version": "2390e02ae665"
+      },
+      "id": "UFEP-SUB-04",
+      "located_act": "00-CEP/STAGE-04-S4-11-INFRASTRUCTURE-014-GOVERNANCE-PROVISIONAL-RATIFICATION.md",
+      "preconditions": {
+        "UFEP-PRE-01": {
+          "outcome": "SATISFIED",
+          "owner": "00-CEP/STAGE-04-S4-09-INFRASTRUCTURE-014-GOVERNANCE-VALIDATION.md",
+          "reason": null
+        },
+        "UFEP-PRE-02": {
+          "outcome": "SATISFIED",
+          "owner": "00-CEP/STAGE-04-S4-10-INFRASTRUCTURE-014-GOVERNANCE-CERTIFICATION.md",
+          "reason": null
+        },
+        "UFEP-PRE-03": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-URAT-001/urat.json",
+          "reason": null
+        },
+        "UFEP-PRE-04": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-UTCE-001/utce.json",
+          "reason": null
+        },
+        "UFEP-PRE-05": {
+          "outcome": "SATISFIED",
+          "owner": "determinism-evidence/determinism-evidence.json",
+          "reason": null
+        }
+      },
+      "ratification_record": "URAT-REC-04",
+      "ratification_state": "PROVISIONAL",
+      "state": "ELIGIBLE",
+      "unsatisfied": []
+    },
+    {
+      "artifact": "INFRASTRUCTURE-005 Universal Infrastructure Integration (UIMM, EC3-B13-U10)",
+      "eligible": true,
+      "freeze_record": {
+        "artifact": "INFRASTRUCTURE-005 Universal Infrastructure Integration (UIMM, EC3-B13-U10)",
+        "baseline_digest": "169a912c8313cef063b63168110d20721e44c02359f4b1e353e43cccefabf360",
+        "lineage": null,
+        "preconditions": [
+          "UFEP-PRE-01",
+          "UFEP-PRE-02",
+          "UFEP-PRE-03",
+          "UFEP-PRE-04",
+          "UFEP-PRE-05"
+        ],
+        "state": "ELIGIBLE",
+        "version": "169a912c8313"
+      },
+      "id": "UFEP-SUB-05",
+      "located_act": "00-CEP/STAGE-04-S4-12-INFRASTRUCTURE-005-UIMM-INTEGRATION-PROVISIONAL-RATIFICATION.md",
+      "preconditions": {
+        "UFEP-PRE-01": {
+          "outcome": "SATISFIED",
+          "owner": "00-CEP/STAGE-04-S4-12-INFRASTRUCTURE-005-UIMM-INTEGRATION-PROVISIONAL-RATIFICATION.md",
+          "reason": null
+        },
+        "UFEP-PRE-02": {
+          "outcome": "SATISFIED",
+          "owner": "00-CEP/STAGE-04-S4-12-INFRASTRUCTURE-005-UIMM-INTEGRATION-PROVISIONAL-RATIFICATION.md",
+          "reason": null
+        },
+        "UFEP-PRE-03": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-URAT-001/urat.json",
+          "reason": null
+        },
+        "UFEP-PRE-04": {
+          "outcome": "SATISFIED",
+          "owner": "00-MASTER/UCOS-UTCE-001/utce.json",
+          "reason": null
+        },
+        "UFEP-PRE-05": {
+          "outcome": "SATISFIED",
+          "owner": "determinism-evidence/determinism-evidence.json",
+          "reason": null
+        }
+      },
+      "ratification_record": "URAT-REC-05",
+      "ratification_state": "PROVISIONAL",
+      "state": "ELIGIBLE",
+      "unsatisfied": []
+    }
+  ],
+  "transitions": [
+    {
+      "from": "NOT_ELIGIBLE",
+      "requires_freeze_authority": false,
+      "to": "ELIGIBLE"
+    },
+    {
+      "from": "ELIGIBLE",
+      "requires_freeze_authority": true,
+      "to": "FREEZING"
+    },
+    {
+      "from": "FREEZING",
+      "requires_freeze_authority": true,
+      "to": "FROZEN"
+    },
+    {
+      "from": "FREEZING",
+      "requires_freeze_authority": true,
+      "to": "NOT_ELIGIBLE"
+    },
+    {
+      "from": "FROZEN",
+      "requires_freeze_authority": true,
+      "to": "SUPERSEDED"
+    }
+  ],
+  "validations": [
+    {
+      "blocking": true,
+      "dimension": "CLAUSES-BOUND",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-01",
+      "measured": true,
+      "obligation": "every declared clause basis binds to a located instrument whose text carries it",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "STATE-VOCABULARY-BOUND",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-02",
+      "measured": true,
+      "obligation": "every declared freeze state appears in the located state clause, and every transition names declared states",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "SUBJECTS-RATIFIED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-03",
+      "measured": true,
+      "obligation": "every subject resolves to a valid record of the located ratification registry whose state admits it to the freeze lifecycle",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "PRECONDITIONS-MEASURED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-04",
+      "measured": true,
+      "obligation": "every CEP-007 Article V precondition is measured for every subject, and an unreadable source yields UNSATISFIED rather than an assumption",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "ELIGIBILITY-DECIDABLE",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-05",
+      "measured": true,
+      "obligation": "every subject resolves to exactly one of eligible or not eligible, with no intermediate condition",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "BASELINE-REPRODUCIBLE",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-06",
+      "measured": true,
+      "obligation": "every eligible subject's baseline is computed from located material and recomputes byte-identically",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "FREEZE-RECORD-COMPLETE",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-07",
+      "measured": true,
+      "obligation": "every emitted eligibility record populates every field CEP-007 XVII.1 requires of a freeze record, other than the Freeze Authority this programme does not hold",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "NO-DRIFT",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-08",
+      "measured": true,
+      "obligation": "every digest of every located frozen baseline manifest recomputes identically",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "NO-FREEZE-PERFORMED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-09",
+      "measured": true,
+      "obligation": "no subject is reported in a state this programme cannot reach, and no authorization is acted upon",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "COMPLETION-CRITERIA-MEASURED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-10",
+      "measured": true,
+      "obligation": "every completion criterion is measured against the machine model that owns it",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "SUBJECT-COVERAGE",
+      "failure_count": 1,
+      "failures": [
+        "URAT-REC-06: a valid ratification record is not a declared freeze subject"
+      ],
+      "id": "UFEP-VAL-11",
+      "measured": true,
+      "obligation": "every valid record of the located ratification registry is a declared freeze subject",
+      "satisfied": false
+    },
+    {
+      "blocking": true,
+      "dimension": "AUTHORIZATION-LOCATED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-12",
+      "measured": true,
+      "obligation": "every declared authorization binds to a located instrument whose text carries it",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "FREEZE-ELIGIBILITY",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-13",
+      "measured": true,
+      "obligation": "every declared freeze subject is ELIGIBLE under CEP-007 Article IV",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "CONSTITUTIONAL-COMPLETION",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UFEP-VAL-14",
+      "measured": true,
+      "obligation": "every blocking completion criterion is satisfied",
+      "satisfied": true
+    }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "artifact_id": "UCOS-UFI-ADOPTION-UCTX-001",
+  "title": "Independence declaration — UCOS-UCTX-001",
+  "authority": "NONE — DERIVED TRUTH. This file confers no authority and states no rule. It names which instruments UCOS-UCTX-001's surfaces must be verified AGAINST, and where the reviewed templates for those surfaces live.",
+  "constitutional_superior": "UCKP-LAW-0001",
+  "schema": "ucos-independence-declaration",
+  "version": "1.0.0",
+  "owner": "UCOS-UCTX-001",
+  "framework": "00-BOOK/tools/ufi.py",
+  "$why_pointers": [
+    "Every field below is a POINTER into an instrument that already holds the list, never a",
+    "copy of it. UCKP-ART-03 makes a second authoring of the same knowledge void, so adopting",
+    "the framework may not require restating the input set or the surface set that",
+    "00-BOOK/DATA/context-authority.json already declares. Adding an agent surface there is",
+    "picked up here with no edit to this file."
+  ],
+  "authorities": {
+    "from": "00-BOOK/DATA/context-authority.json",
+    "json_path": "true_input_set.inputs"
+  },
+  "surfaces": [
+    { "glob": "00-BOOK/CONTEXT/*.md" },
+    { "from": "00-BOOK/DATA/context-authority.json", "json_path": "agent_surfaces[].surface" }
+  ],
+  "manifest": "00-BOOK/DATA/context-template-manifest.json"
+}

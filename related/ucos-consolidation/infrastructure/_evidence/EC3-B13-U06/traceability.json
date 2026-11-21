@@ -1,0 +1,46 @@
+{
+  "backward": [
+    "Distribution",
+    "INFRASTRUCTURE-010",
+    "INFRASTRUCTURE-005",
+    "INFRASTRUCTURE-001",
+    "ARCH-INFRASTRUCTURE-001",
+    "13-INFRASTRUCTURE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+    "EC3-B13-U06-DISTRIBUTION-VALIDATION-EVIDENCE",
+    "EC3-B13-U06-DISTRIBUTION-CCE-CERTIFICATION",
+    "EC3-B13-U06-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "074ffb2",
+  "meta_class": "Distribution",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "PL-F2",
+    "RL-F2",
+    "SF-2",
+    "AF-3"
+  ],
+  "substrate_reuse": {
+    "AF-3": "application experience delivered by reference (ITOP-03)",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+    "ENG-002": "python frozen object (immutable objecthood)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+    "ENG-004": "infrastructure.topology type_tag (typed construct)",
+    "ENG-005": "reference identifiers (contains/hosts/dependsOn refs; no new connection construct)",
+    "PL-F2": "platform composition reused by reference (ITOP-01); topology re-founds none",
+    "RL-F2": "runtime workflow/state referenced by Distribution lifecycle",
+    "SF-2": "service capability hosted by reference (ITOP-03)"
+  },
+  "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+  "trace_format": "ucos-infrastructure-traceability/1.0.0",
+  "unit": "EC3-B13-U06"
+}

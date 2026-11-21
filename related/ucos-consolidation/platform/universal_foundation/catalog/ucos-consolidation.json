@@ -1,0 +1,52 @@
+{
+  "project_id": "ucos-consolidation",
+  "description": "Declared specialisation of the Universal Foundation Platform for this repository. Every project-specific fact lives here: which Repository Truth policy governs the repository, where its governed ownership assignments are declared, how to project its existing population document into subjects, which locators are registered and eligible to hold ownership, at what grain ownership is held, and which locator roles carry constitutive evidence. No Foundation module contains any of these values. This document is the ONE place the repository's ownership determination is configured \u2014 there is no second ownership model to keep in step with it.",
+  "truth_policy": "packaged:ucos-repository-truth.json",
+  "ownership_declarations": "packaged:ucos-ownership-declarations.json",
+  "population_document": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+  "projection": {
+    "collection": "concepts",
+    "identity_field": "id",
+    "locator_fields": ["files", "def_homes", "exact_homes", "source_only_files"],
+    "attribute_fields": ["family", "disposition"],
+    "role_fields": {
+      "$comment": "ROLES REUSE A MEASUREMENT THIS REPOSITORY ALREADY OWNS. 'what is a definitional home' is measured by 00-MASTER/UAKOS-CLOSURE-002/closure_engine.py and recorded in these fields; the Foundation adopts that measurement verbatim as ownership evidence rather than re-deriving it (Knowledge Once, CMG-000001 VIII.1). An exact-basename home is a stronger declaration than a prefix home, which is why the two roles carry different precedences below.",
+      "definitional-exact-home": ["exact_homes"],
+      "definitional-home": ["def_homes"]
+    }
+  },
+  "registration_document": "00-BOOK/DATA/artifacts.json",
+  "registration_projection": {
+    "$comment": "CEP-002 Article 14.1 requires the canonical owner to be registered in the Governance Registry. The registered set is PROJECTED from the register this repository already keeps \u2014 produced by 00-BOOK/tools/register.sh applying 00-BOOK/tools/config.py \u2014 so registration is inherited, never re-implemented. That projection already excludes 00-MASTER/**, which config.py declares Operational Memory under UCOS-RECON-C1, so an enumerating programme register is ineligible by this repository's own configuration rather than by any Foundation judgement.",
+    "collection": "artifacts",
+    "identity_field": "path"
+  },
+  "eligibility": {
+    "ledger_id": "ucos.canonical-home.eligibility",
+    "description": "Which artifacts may hold canonical ownership, beyond their zone class. Registration is CEP-002 14.1; the Markdown requirement is because only Markdown carries constitutional declarations in this repository and a JSON projection is derived state; the excluded segments mirror the closure engine's derived-path set so the two measurements agree on what a home can be. Presence inside derived output is evidence, never ownership.",
+    "require_registration": true,
+    "admitted_suffixes": [".md"],
+    "excluded_segments": [
+      "_evidence/",
+      "/outputs/",
+      "outputs/",
+      "determinism-evidence/",
+      "CHECKPOINTS/",
+      "/__pycache__/",
+      ".egg-info/"
+    ]
+  },
+  "ownership_granularity": "locator",
+  "$granularity_note": "This repository holds ownership at the LOCATOR grain: the canonical home is one artifact, so two registered artifacts claiming one subject is a duplicate home requiring adjudication (CEP-002 14.3), never a contest absorbed by naming their shared authority as owner. CMG-000001 VIII.1 Knowledge Once is a statement about locations.",
+  "identity_labels": ["ARTIFACT ID", "ARTIFACT IDENTIFIER", "ARTIFACT-ID"],
+  "identity_head_bytes": 40000,
+  "evidence_roles": {
+    "$comment": "Provider precedence per declared role. An exact-basename home outranks a prefix home. Both are outranked by an artifact's own identity declaration (700) and by a governed assignment (900), because a declaration in words is stronger evidence than a filename, and an act of governance is stronger than either.",
+    "definitional-exact-home": 550,
+    "definitional-home": 500
+  },
+  "peer_attribute": "family",
+  "source_manifest": "00-SOURCE-MANIFEST/SOURCE-FILES.txt",
+  "registered_subjects": "",
+  "require_registration": false
+}

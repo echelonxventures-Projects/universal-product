@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "Environment",
+  "target_id": "UCOS-INFRA-ENVIRONMENT-ucos.infrastructure.environment.foundation-407ddc4ae587c6d6",
+  "verdict": "pass"
+}

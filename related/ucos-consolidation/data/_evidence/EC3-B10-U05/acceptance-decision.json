@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "DMC-06",
+  "target_id": "UCOS-STORAGE-ucos.data.storage.foundation-b63d474835e6f132",
+  "verdict": "pass"
+}

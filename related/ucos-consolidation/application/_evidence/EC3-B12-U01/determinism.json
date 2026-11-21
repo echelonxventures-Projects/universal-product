@@ -1,0 +1,7 @@
+{
+  "bundle_sha256_a": "6c556837c2310fbf3ba00d5ac63d38562551cfc501adb5ad595694d7007d8782",
+  "bundle_sha256_b": "6c556837c2310fbf3ba00d5ac63d38562551cfc501adb5ad595694d7007d8782",
+  "byte_identical": true,
+  "determinism_evidence": true,
+  "unit": "EC3-B12-U01"
+}

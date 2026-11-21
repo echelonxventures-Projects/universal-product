@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "BAND-11-FREEZE",
+  "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+  "verdict": "pass"
+}

@@ -1,0 +1,128 @@
+{
+  "blocking_failures": [],
+  "blueprint_id": "Security",
+  "certification_class": "engineering-readiness",
+  "certification_id": "UCOS-CERT-Security-da71a18983ec91f0",
+  "certified": true,
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 10,
+    "total": 10
+  },
+  "criteria_evaluated": [
+    "CC-1",
+    "CC-10",
+    "CC-2",
+    "CC-3",
+    "CC-4",
+    "CC-5",
+    "CC-6",
+    "CC-7",
+    "CC-8",
+    "CC-9"
+  ],
+  "evidence_format": "ucos-certification-evidence/1.0.0",
+  "findings": [
+    {
+      "criterion_id": "CC-1",
+      "details": {
+        "gate": "architecture"
+      },
+      "message": "CC-1 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-10",
+      "details": {
+        "gate": "completeness"
+      },
+      "message": "CC-10 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-2",
+      "details": {
+        "gate": "dependencies"
+      },
+      "message": "CC-2 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-3",
+      "details": {
+        "gate": "coverage"
+      },
+      "message": "CC-3 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-4",
+      "details": {
+        "gate": "validation",
+        "verdict": "pass"
+      },
+      "message": "CC-4 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-5",
+      "details": {
+        "gate": "traceability"
+      },
+      "message": "CC-5 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-6",
+      "details": {
+        "evidence_sha256": "0126e2c8f19bf2eb7f0d3d68107256c575ca94f572dd7662b1da7e1dbd731493",
+        "gate": "evidence"
+      },
+      "message": "CC-6 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-7",
+      "details": {
+        "gate": "certification-ready"
+      },
+      "message": "CC-7 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-8",
+      "details": {
+        "gate": "readiness"
+      },
+      "message": "CC-8 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-9",
+      "details": {
+        "gate": "gap-zero"
+      },
+      "message": "CC-9 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "record_sha256": "da71a18983ec91f087786081a02675af704e8913fa0ec5ed983c1ad6b0d70f38",
+  "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+  "standard_version": "1.0.0",
+  "status": "certified",
+  "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+  "validation_evidence_ref": "0126e2c8f19bf2eb7f0d3d68107256c575ca94f572dd7662b1da7e1dbd731493",
+  "version": "1.0.0"
+}

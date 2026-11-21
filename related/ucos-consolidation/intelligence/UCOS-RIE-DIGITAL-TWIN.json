@@ -1,0 +1,35 @@
+{
+  "artifact_id": "UCOS-RIE-DIGITAL-TWIN",
+  "authority": "NONE (derived truth)",
+  "automation_readiness": "READY",
+  "certification_health": "HEALTHY-ENGINEERING",
+  "classification": "ADDITIVE INTELLIGENCE (machine-readable) — derived, non-authoritative",
+  "constitutional_finality": "BLOCKED (DR-RAT-11)",
+  "content_hash": "6afc993ce6c5471d41170517cb3dafe392fdda750adbf8d714a92869ca6a6916",
+  "deployment_readiness": "IN_PROGRESS",
+  "dimension_index_reconciled_pct": 26.7,
+  "evidence_state": {
+    "evidence_files": {
+      "00-BOOK/DATA/artifacts.json": "aa096e10c9cc0b9ff0a04da62746892dea54153893b3f9633783072584fb4abe",
+      "00-BOOK/DATA/certification.json": "493c11ef1c1a084a7afad786296384857d8333160458e019fcfe3a3d132261a1",
+      "00-BOOK/DATA/control-tower.json": "3afbb9b010911fad12eaca81793e7039935140f58930fefb00784a04d48fdaec",
+      "00-BOOK/DATA/twin.json": "c50247cea005c7c40ce60e45bbcceca231cc9836efa24f263da03c2312da4128",
+      "00-BOOK/DATA/volumes.json": "bca13cfe0aaf66f50d10637463be8ab952bc2acdbecac66894c21018b6a897b5"
+    }
+  },
+  "evidence_timestamp": "2026-09-13T23:56:07+00:00",
+  "execution_readiness": "SUBSTRATE-READY · SPINE-NOT-IMPLEMENTED",
+  "generation": {
+    "anchor": "the containing commit — owned by version control, never restated here (UCOS-RFP-001 RFP-2)",
+    "generator": "UCOS-RIE-001 Repository Intelligence Engine",
+    "generator_version": "1.0.0",
+    "input_hash": "e90d065033a34cc1c4ef51c91909bef4a7edc840cdae3ce21a42ad2e453ad402",
+    "input_hash_basis": "sha256 over the canonical evidence fingerprint — every 00-BOOK/DATA evidence file hash, which together pin the tracked state these outputs derive from. Coverage measurement (TEST_EXECUTION_STATE) is excluded per UCOS-P0-FCL-002-FIX-001 — it is not canonical identity input.",
+    "output_hash_field": "content_hash"
+  },
+  "note": "Projection view; EXTENDS 00-BOOK/DATA/twin.json — no second twin store.",
+  "producer": "UCOS-RIE-001 Repository Intelligence Engine v1.0.0",
+  "repository_health": "HEALTHY",
+  "title": "Repository Digital Twin Snapshot",
+  "validation_health": "PARTIAL"
+}

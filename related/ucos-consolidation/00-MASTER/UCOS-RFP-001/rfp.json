@@ -1,0 +1,1273 @@
+{
+  "$measurement_comment": "This artifact records the DECLARATION only. No verdict, no commit identity and no working-tree observation is persisted (RFP-2, RFP-3): the gate's finding lives in its exit code.",
+  "artifact_classes": [
+    {
+      "authority": "00-BOOK/tools/config.py::REPOSITORY_ARTIFACT_DEFINITION",
+      "convergence": "INVARIANT — authored; no producer rewrites it, so it is trivially a fixed point.",
+      "definition": "A version-controlled, human-authored corpus file of an included type. The only registrable class.",
+      "id": "CLS-CANONICAL-SOURCE",
+      "name": "Canonical Source",
+      "registrable": true,
+      "tracked": true
+    },
+    {
+      "authority": "00-BOOK/tools/config.py::EXCLUDE_DIR_PREFIXES (corpus-internal excludes)",
+      "convergence": "REQUIRED — must be byte-reproducible from canonical source by its owner.",
+      "definition": "A deterministically re-derivable projection of the registered corpus: the emitted registries, DATA, control tower and portal. Regenerated, never hand-registered; the register must not list itself.",
+      "id": "CLS-GENERATED-PROJECTION",
+      "name": "Generated Projection",
+      "registrable": false,
+      "tracked": true
+    },
+    {
+      "authority": "00-MASTER/UCOS-RECON-C1-OPERATIONAL-MEMORY-EXCLUSION.md",
+      "convergence": "REQUIRED — a programme determination is evidence, and evidence that re-execution does not reproduce is Evidence Drift.",
+      "definition": "Execution and coordination state: programme lanes, determinations, dashboards and registers of the Master Context System. Knowledge state is corpus; execution state is memory; the two are never mixed.",
+      "id": "CLS-OPERATIONAL-MEMORY",
+      "name": "Operational Memory",
+      "registrable": false,
+      "tracked": true
+    },
+    {
+      "authority": "00-BOOK/tools/config.py::EXCLUDE_DIR_PREFIXES (UCOS-RECON-C2)",
+      "convergence": "REQUIRED — derived truth must be re-derivable, or it is not truth.",
+      "definition": "Repository-derived intelligence emitted by a located producer outside the projection zone, declaring AUTHORITY = NONE. Derived state is neither knowledge state nor execution state, and is never authoritative.",
+      "id": "CLS-DERIVED-INTELLIGENCE",
+      "name": "Derived Intelligence",
+      "registrable": false,
+      "tracked": true
+    },
+    {
+      "authority": ".gitignore (00-MASTER/**/evidence/, determinism-evidence/)",
+      "convergence": "REQUIRED-WHEN-TRACKED — per-run evidence is not tracked; where a family is tracked it carries the full obligation.",
+      "definition": "Per-run execution evidence and audit trails produced by a gate or engine as proof of a specific execution.",
+      "id": "CLS-EVIDENCE",
+      "name": "Evidence",
+      "registrable": false,
+      "tracked": false
+    },
+    {
+      "authority": "00-BOOK/tools/config.py::EXCLUDE_DIR_PREFIXES / .gitignore",
+      "convergence": "REQUIRED — a certification whose re-execution differs certifies nothing.",
+      "definition": "The verdict artifacts of a certification runtime: certification registers, gate registers and seals.",
+      "id": "CLS-CERTIFICATION",
+      "name": "Certification",
+      "registrable": false,
+      "tracked": true
+    },
+    {
+      "authority": ".gitignore",
+      "convergence": "EXEMPT — never tracked, so outside the fixed point by construction.",
+      "definition": "Build, cache, dependency, coverage, lock and editor outputs. Environment artifacts.",
+      "id": "CLS-TRANSIENT",
+      "name": "Transient Output",
+      "registrable": false,
+      "tracked": false
+    }
+  ],
+  "class_derivation": {
+    "$comment": "Totality without enumeration. Any present or future family is placed by these ordered questions; no family needs a new class and no path is listed.",
+    "invariant": "Exactly one class admits registration (CLS-CANONICAL-SOURCE). Every class that is tracked and has a producer carries the convergence obligation. There is no class that is both derived and registrable — which is the state that produced CK-REG-DRIFT.",
+    "ordered_questions": [
+      "Is it absent from version control (ignored or untracked)? → CLS-TRANSIENT if environment output, else CLS-EVIDENCE.",
+      "Does a located producer rewrite it? → NO: CLS-CANONICAL-SOURCE.",
+      "Is it emitted into the corpus-internal projection zone? → CLS-GENERATED-PROJECTION.",
+      "Is it a verdict of a certification runtime? → CLS-CERTIFICATION.",
+      "Is it programme execution or coordination state? → CLS-OPERATIONAL-MEMORY.",
+      "Otherwise it is producer output declaring AUTHORITY = NONE → CLS-DERIVED-INTELLIGENCE."
+    ]
+  },
+  "closure_criteria": [
+    {
+      "blocking": true,
+      "criterion": "the tree is clean before the fixed point is asserted",
+      "expect": 0,
+      "id": "CLO-01",
+      "measure": "initial_dirty_entries",
+      "note": "a fixed point cannot be asserted over an uncommitted tree; this fails closed rather than measuring the wrong state"
+    },
+    {
+      "blocking": true,
+      "criterion": "every required pipeline stage exits successfully",
+      "expect": 0,
+      "id": "CLO-02",
+      "measure": "stage_failures"
+    },
+    {
+      "blocking": true,
+      "criterion": "no tracked file is modified by any pass",
+      "expect": 0,
+      "id": "CLO-03",
+      "measure": "tracked_modifications"
+    },
+    {
+      "blocking": true,
+      "criterion": "no file is staged by any pass",
+      "expect": 0,
+      "id": "CLO-04",
+      "measure": "staged_entries"
+    },
+    {
+      "blocking": true,
+      "criterion": "no untracked entry appears outside a constitutionally excluded location",
+      "expect": 0,
+      "id": "CLO-05",
+      "measure": "untracked_outside_excluded"
+    },
+    {
+      "blocking": true,
+      "criterion": "the repository is byte-identical after every declared pass",
+      "expect": 0,
+      "id": "CLO-06",
+      "measure": "non_fixed_point_passes"
+    },
+    {
+      "blocking": true,
+      "criterion": "no self-reference cycle is detected",
+      "expect": 0,
+      "id": "CLO-07",
+      "measure": "cycles_detected"
+    },
+    {
+      "blocking": true,
+      "criterion": "all residue is attributable to a declared producer",
+      "expect": 0,
+      "id": "CLO-08",
+      "measure": "unattributed_paths"
+    },
+    {
+      "blocking": true,
+      "criterion": "every discovered producer is a declared pipeline stage",
+      "expect": 0,
+      "id": "CLO-09",
+      "measure": "undeclared_producers"
+    },
+    {
+      "blocking": true,
+      "criterion": "every path a producer writes lies inside a declared write zone",
+      "expect": 0,
+      "id": "CLO-10",
+      "measure": "producer_writes_outside_zones"
+    },
+    {
+      "blocking": true,
+      "criterion": "declared write zones are pairwise disjoint, so ownership is exactly one",
+      "expect": 0,
+      "id": "CLO-11",
+      "measure": "overlapping_write_zones"
+    },
+    {
+      "blocking": true,
+      "criterion": "no discovered producer candidate is left unprobed",
+      "expect": 0,
+      "id": "CLO-12",
+      "measure": "unprobed_producer_candidates"
+    },
+    {
+      "blocking": true,
+      "criterion": "no stage writes into another stage's declared write zone",
+      "expect": 0,
+      "id": "CLO-13",
+      "measure": "cross_zone_writes"
+    }
+  ],
+  "cycle_classes": [
+    {
+      "detector": "pass_instability",
+      "id": "CYC-OBSERVE",
+      "name": "Self-observation cycle",
+      "principle": "RFP-3",
+      "remediation": "Stop persisting the observation. Keep it as an input to the gate verdict and to standard output.",
+      "severity": "CRITICAL",
+      "signature": "The producer's output differs between two consecutive executions at ONE unchanged commit. Only an input the producer itself perturbs can do that; the working tree is the input it perturbs by writing."
+    },
+    {
+      "detector": "commit_token_in_delta",
+      "id": "CYC-COMMIT",
+      "name": "Commit-identity cycle",
+      "principle": "RFP-2",
+      "remediation": "Remove the commit identity from the emitted bytes. Version control already records it.",
+      "severity": "CRITICAL",
+      "signature": "The bytes a producer writes contain a hex token that this repository's object database resolves to a commit. Only `git rev-parse`-class input produces that, and the artifact is inside a commit it cannot name."
+    },
+    {
+      "detector": "mutual_hash_in_delta",
+      "id": "CYC-HASH",
+      "name": "Hash cycle",
+      "principle": "RFP-4",
+      "remediation": "Break the mutual embedding: one side must derive from the other, never both.",
+      "severity": "CRITICAL",
+      "signature": "Within one pipeline pass, artifact A's written bytes contain the content hash of artifact B while B's written bytes contain the content hash of A."
+    },
+    {
+      "detector": "foreign_projection_write",
+      "id": "CYC-REGISTER",
+      "name": "Registration cycle",
+      "principle": "RFP-5",
+      "remediation": "Withdraw the class from registration through the declared admission authority.",
+      "severity": "CRITICAL",
+      "signature": "A producer that does not own the registration projections nevertheless causes them to change — so a non-canonical artifact is carrying a registered identity."
+    },
+    {
+      "detector": "reentrancy",
+      "id": "CYC-RECURSE",
+      "name": "Recursive generator",
+      "principle": "RFP-6",
+      "remediation": "Declare the stage non-reentrant; the aggregate must exclude itself from its own pipeline.",
+      "severity": "CRITICAL",
+      "signature": "A producer re-enters itself, directly or through an aggregate that invokes it."
+    },
+    {
+      "detector": "unattributed_residue",
+      "id": "CYC-UNDECLARED",
+      "name": "Undeclared producer",
+      "principle": "RFP-6",
+      "remediation": "Declare the producer as a pipeline stage, or stop it from writing tracked content.",
+      "severity": "HIGH",
+      "signature": "Tracked content changed during a pipeline pass but no declared stage's write zone contains it."
+    },
+    {
+      "detector": "undeclared_producer",
+      "id": "CYC-PRODUCER",
+      "name": "Undiscovered producer",
+      "principle": "RFP-6",
+      "remediation": "Declare the producer as a pipeline stage with its write zone, positioned after the stages whose output it consumes; or stop it writing tracked content.",
+      "severity": "CRITICAL",
+      "signature": "An executable named by the repository's own Execution Surface writes tracked content when executed, yet is not a stage of the declared pipeline. The proof is behavioural: the candidate was run in isolation and its writes were measured, so the finding never rests on where the file lives or what it is called."
+    },
+    {
+      "detector": "producer_write_outside_zone",
+      "id": "CYC-UNGOVERNED",
+      "name": "Producer outside write governance",
+      "principle": "RFP-6",
+      "remediation": "Extend the owning stage's declared write zone to cover the path, or move the output inside the zone its producer already owns.",
+      "severity": "CRITICAL",
+      "signature": "A path a producer was OBSERVED to write lies inside no declared write zone. The artifact therefore has no constitutional owner and no pipeline coverage, whether or not the producer that wrote it is declared."
+    },
+    {
+      "detector": "overlapping_write_zones",
+      "id": "CYC-ZONE",
+      "name": "Ambiguous write scope",
+      "principle": "RFP-6",
+      "remediation": "Make the declared write zones pairwise disjoint: narrow the broader zone, or merge the stages that genuinely share an output surface.",
+      "severity": "HIGH",
+      "signature": "Two stages declare write zones where one is a prefix of the other, so a path inside the overlap belongs to more than one write scope and 'exactly one owner' is not well-defined. Attribution would then depend on the order zones happen to be read."
+    },
+    {
+      "detector": "unprobed_producer",
+      "id": "CYC-UNPROBED",
+      "name": "Unprobed producer candidate",
+      "principle": "RFP-6",
+      "remediation": "Make the candidate runnable from a clean checkout, declare it as a stage so the pipeline runs it, or give it the inputs its earlier stages owe it.",
+      "severity": "HIGH",
+      "signature": "A candidate the repository invokes ITSELF could not be executed and does not participate in the declared re-entrancy protocol, so whether it writes tracked content is unknown. Producer completeness may not be asserted over an executable the repository runs but cannot measure: an unprobed candidate is an undetermined verdict, and treating it as innocent would make the whole measurement fail open. A candidate that aborts BECAUSE the declared guard is armed is self-excluded, and one that nothing invokes and that cannot start unaided is unreachable; both are accounted for separately."
+    },
+    {
+      "detector": "cross_zone_write",
+      "id": "CYC-TRESPASS",
+      "name": "Write-scope trespass",
+      "principle": "RFP-6",
+      "remediation": "Stop the trespassing stage writing outside its own zone, or move the path into the zone of the stage that actually produces it. One artifact, one producer.",
+      "severity": "CRITICAL",
+      "signature": "A declared stage wrote a path that a DIFFERENT declared stage's write zone owns. Attributing the residue to some declared zone is not enough: if the writer is not the owner, the artifact has two producers and belongs to no single write scope, so regenerating it from its declared owner cannot reproduce it."
+    }
+  ],
+  "declaration_seal_sha256": "7b11aa44b2bd146d9158b458224b177e02aa2e695b07ff1d78600339ccfd7b7b",
+  "findings": [],
+  "lifecycle": [
+    {
+      "closure_relevant": false,
+      "stage": "Repository Discovery",
+      "step": 1
+    },
+    {
+      "closure_relevant": false,
+      "stage": "Context Assimilation",
+      "step": 2
+    },
+    {
+      "closure_relevant": false,
+      "stage": "Architecture Review",
+      "step": 3
+    },
+    {
+      "closure_relevant": false,
+      "stage": "Implementation",
+      "step": 4
+    },
+    {
+      "closure_relevant": true,
+      "gate": "G-10",
+      "stage": "Verification",
+      "step": 5
+    },
+    {
+      "closure_relevant": true,
+      "gate": "G-10",
+      "stage": "Validation",
+      "step": 6
+    },
+    {
+      "closure_relevant": true,
+      "gate": "G-12",
+      "stage": "Evidence Generation",
+      "step": 7
+    },
+    {
+      "closure_relevant": true,
+      "gate": "G-07",
+      "stage": "Registry Regeneration",
+      "step": 8
+    },
+    {
+      "closure_relevant": true,
+      "gate": "G-11",
+      "stage": "Certification",
+      "step": 9
+    },
+    {
+      "closure_relevant": true,
+      "stage": "Commit",
+      "step": 10
+    },
+    {
+      "closure_relevant": true,
+      "gate": "G-15",
+      "stage": "Fresh Repository Discovery",
+      "step": 11
+    },
+    {
+      "closure_relevant": true,
+      "gate": "G-15",
+      "stage": "Pipeline Re-execution",
+      "step": 12
+    },
+    {
+      "closure_relevant": true,
+      "gate": "G-15",
+      "stage": "Repository Fixed-Point Verification",
+      "step": 13
+    },
+    {
+      "closure_relevant": true,
+      "gate": "G-15",
+      "stage": "Programme Closure",
+      "step": 14
+    }
+  ],
+  "pipeline": {
+    "$stage_timeout_comment": "The execution budget one stage gets before it is reported as a failed stage. CLO-02 turns on this number, so it is declared here rather than decided inside rfp_engine.py: a budget the declaration cannot see is a limit no operator can govern, and PR-07 Zero Enumeration already puts the probe's own budget under declaration (probe.timeout_seconds). 3600 is the value the engine hardcoded before it was declared, carried over unchanged so that declaring it moved no verdict. A stage may override it with its own timeout_seconds, because a heavy stage and a two-second stage do not share a budget. NOTE: declaring the budget does not by itself resolve STAGE-VERIFY exceeding it — that is a real capacity question about running verify.sh twice inside the gate, and raising this number to hide the overrun would be exactly the weakening this instrument exists to refuse.",
+    "convergence_passes": 2,
+    "reentrancy_env": "UCOS_RFP_ACTIVE",
+    "stage_timeout_seconds": 3600,
+    "stages": [
+      {
+        "$discovery": "ADMITTED TO FIX CYC-UNPROBED AT ITS CAUSE RATHER THAN AT ITS SYMPTOM. The probe seeds a worktree by running the declared stages, and seed_skips_heavy drops the heavy ones — but STAGE-VERIFY is heavy and verify.sh is what invoked this script, so the seeded worktree had NO generated prerequisites and every candidate needing them failed for want of an input the pipeline owed it. 00-BOOK/tools/ufi.py was reported unprobed for exactly that reason (--all: exit 1), while the identical command exits 0 against a tree where these artifacts exist. The probe's own rationale names this case: 'a producer that consumes an earlier stage's output would otherwise fail for want of its input and be misread as harmless'. Declaring the generation as its own NON-heavy stage is what makes that sentence true for it. Measured before admission: exit 0, 82 seconds against a 900-second probe timeout, and zero tracked writes — it materialises only gitignored artifacts, so writes is empty and RFP-6 does not reach it.",
+        "argv": [
+          "bash",
+          "scripts/generate-prerequisites.sh"
+        ],
+        "heavy": false,
+        "id": "STAGE-PREREQUISITES",
+        "name": "Declared prerequisite generation (knowledge · determinism · closure 1-3)",
+        "owner": "scripts/generate-prerequisites.sh",
+        "purpose": "the generated inputs later stages and probed candidates read; FIRST because a prerequisite generated after the thing that consumes it is not a prerequisite",
+        "reentrant": true,
+        "required": true,
+        "writes": []
+      },
+      {
+        "$discovery": "ADMITTED AFTER CYC-UNPROBED, and the finding was an INVOCATION artefact rather than a defect. The probe executes a candidate by path, and a module run by path puts its own directory on sys.path instead of the repository root, so this gate died with ModuleNotFoundError: No module named 'engine' and whether it writes tracked content could not be determined. The canonical invocation is the one verify.sh uses for every engine gate — python -m — and declared here it runs clean. Measured: exit 0, zero tracked writes, so the classification is INERT and RFP-6 does not bind it.",
+        "argv": [
+          "$PY",
+          "-m",
+          "engine.certification_integrity.gate"
+        ],
+        "heavy": false,
+        "id": "STAGE-CERTIFICATION-INTEGRITY",
+        "name": "Certification integrity gate",
+        "owner": "engine/certification_integrity",
+        "purpose": "measures certification integrity and refuses; writes nothing, so it is declared to be RUN rather than to own a zone",
+        "reentrant": true,
+        "required": true,
+        "writes": []
+      },
+      {
+        "$discovery": "ADMITTED AFTER CYC-UNPROBED, same invocation artefact as STAGE-CERTIFICATION-INTEGRITY: run by path it died with ModuleNotFoundError before reaching its own code, so the probe could assert nothing about it and failed closed, correctly. Run as python -m it exits 0 and writes nothing. Measured before admission.",
+        "argv": [
+          "$PY",
+          "-m",
+          "engine.recursive_knowledge.gate"
+        ],
+        "heavy": false,
+        "id": "STAGE-RECURSIVE-KNOWLEDGE",
+        "name": "Recursive knowledge foundation gate",
+        "owner": "engine/recursive_knowledge",
+        "purpose": "measures the recursive-knowledge contract and refuses; writes nothing, so it is declared to be RUN rather than to own a zone",
+        "reentrant": true,
+        "required": true,
+        "writes": []
+      },
+      {
+        "argv": [
+          "bash",
+          "verify.sh"
+        ],
+        "heavy": true,
+        "id": "STAGE-VERIFY",
+        "name": "Verification and validation",
+        "owner": "verify.sh (CEP-004)",
+        "purpose": "lint, tests, coverage gate and pre-registration enforcement; also produces the coverage measurement later stages consume",
+        "reentrant": true,
+        "required": true,
+        "writes": []
+      },
+      {
+        "argv": [
+          "bash",
+          "00-BOOK/tools/register.sh"
+        ],
+        "heavy": false,
+        "id": "STAGE-REGISTER",
+        "name": "Atomic registration transaction",
+        "owner": "00-BOOK/tools/register.sh (REG-AUTO-001)",
+        "purpose": "registry, projections, twin, portal — the registration projection zone",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-BOOK/DATA/",
+          "00-BOOK/REGISTRIES/",
+          "00-BOOK/CONTROL-TOWER/",
+          "00-BOOK/PORTAL/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface (Makefile recipes uis / uis-gate / uis-self / uis-replay and .github/workflows/uis-gate.yml) and PROVED a producer by execution (RFP-6). It measures the identity architecture the repository already legislated (AIF, ENG-001, UMB-003/004/005/008/009/010, AUTH-INF-001) against the identity data the repository already recorded, so it must run AFTER STAGE-REGISTER, whose projections are the recorded identity ledger and the derived artifact registry it reads. It is positioned immediately after that stage because nothing else it reads is produced: every other input is canonical source or located code. Its write zone is its own programme home and nothing else — the engine's own --check-write-scope and --check-record-immutability require the write set to lie inside that home and to be disjoint from the located identity records, and --check-no-identity-minting additionally proves the emitted bytes carry no identifier the ledger does not already record, so this stage cannot become a second identity allocator.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UIS-001/uis_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UIS",
+        "name": "Universal identity conformance",
+        "owner": "00-MASTER/UIS-001",
+        "purpose": "identity conformance: the planes crosswalked, the identity laws measured, unbounded expansion probed",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UIS-001/"
+        ]
+      },
+      {
+        "argv": [
+          "$PY",
+          "-m",
+          "intelligence.rie",
+          "build"
+        ],
+        "heavy": false,
+        "id": "STAGE-RIE",
+        "name": "Repository intelligence",
+        "owner": "intelligence/rie (UCOS-RIE-001)",
+        "purpose": "derived intelligence: capability catalogue, dependency graph, frontier, health, baseline",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "intelligence/UCOS-RIE-",
+          "intelligence/UCOS-IMP-BASELINE-001."
+        ]
+      },
+      {
+        "$env_comment": "The repository-only pass. Without it the engine also scans a corpus directory OUTSIDE the repository, so its output becomes a function of the machine rather than of the tracked tree — and a stage whose output is not a function of the repository can have no fixed point in the repository. Measured consequence of omitting it: the closure reading was 89 gaps here and 0 gaps in the certifier's own closure checks, which declare this same env, so the blueprint recorded a gap count that the next stage immediately contradicted. This is the identical reading the session anchor records and the integration blueprint binds.",
+        "$scope": "CLOSURE_SKIP_CORPUS=1 IS A SCOPE DECLARATION, NOT A SPEED OPTION, AND THIS SITE WAS THE ONE THAT DID NOT MAKE IT. closure_engine bounds its population by the external corpus at ../UCOS, which exists in no clone; an undeclared run therefore records 'repo-only (undeclared — corpus absent)' with population_complete=False — the same concepts, bounded by accident rather than by a constituent act. scripts/generate-prerequisites.sh declares it and this stage did not, so one pipeline pass produced closure.json twice with two different substances and the registers that read it oscillated between them forever. That is the whole of the residual CLO-03/CLO-06: measured at two files moving on every pass, with cycles=0 and 11/13 criteria otherwise holding. The engine is idempotent — three consecutive runs give one digest; it was the two invocation MODES that disagreed.",
+        "argv": [
+          "env",
+          "CLOSURE_SKIP_CORPUS=1",
+          "$PY",
+          "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py"
+        ],
+        "env": {
+          "CLOSURE_SKIP_CORPUS": "1"
+        },
+        "heavy": false,
+        "id": "STAGE-CLOSURE",
+        "name": "Knowledge closure",
+        "owner": "00-MASTER/UAKOS-CLOSURE-002",
+        "purpose": "constitutional concept closure — knowledge-once evidence",
+        "reentrant": true,
+        "required": false,
+        "writes": [
+          "00-MASTER/UAKOS-CLOSURE-002/"
+        ]
+      },
+      {
+        "argv": [
+          "$PY",
+          "00-MASTER/UCDA-000001/ucda_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UCDA",
+        "name": "Decision assimilation",
+        "owner": "00-MASTER/UCDA-000001",
+        "purpose": "constitutional decision register and disposition",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCDA-000001/"
+        ]
+      },
+      {
+        "argv": [
+          "$PY",
+          "00-MASTER/UEI-000001/uei_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UEI",
+        "name": "Evolution intelligence",
+        "owner": "00-MASTER/UEI-000001",
+        "purpose": "capability bindings to governing instruments",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UEI-000001/"
+        ]
+      },
+      {
+        "argv": [
+          "$PY",
+          "00-MASTER/UER-000001/uer_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UER",
+        "name": "Execution resilience",
+        "owner": "00-MASTER/UER-000001",
+        "purpose": "execution-resilience capability bindings",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UER-000001/"
+        ]
+      },
+      {
+        "argv": [
+          "$PY",
+          "00-MASTER/URRC-000001/urrc_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-URRC",
+        "name": "Repository reality matrices",
+        "owner": "00-MASTER/URRC-000001",
+        "purpose": "reuse, duplication, conflict, gap, completeness, readiness, automation",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/URRC-000001/"
+        ]
+      },
+      {
+        "argv": [
+          "$PY",
+          "00-MASTER/UMK-000001/umk_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UMK",
+        "name": "Universal meta-kernel",
+        "owner": "00-MASTER/UMK-000001 (PROGRAM-002)",
+        "purpose": "frozen kernel determination",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UMK-000001/"
+        ]
+      },
+      {
+        "argv": [
+          "$PY",
+          "00-MASTER/UPF-000001/upf_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UPF",
+        "name": "Universal provider framework",
+        "owner": "00-MASTER/UPF-000001 (PROGRAM-003)",
+        "purpose": "provider framework determination",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UPF-000001/"
+        ]
+      },
+      {
+        "argv": [
+          "$PY",
+          "00-MASTER/MCOS-000001/mcos_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-MCOS",
+        "name": "Universal Meta-Civilization Platform deliverables (PROGRAM-004)",
+        "owner": "00-MASTER/MCOS-000001",
+        "purpose": "Regenerate the Meta-Civilization Platform deliverables and evidence from the DATA declaration, so every byte this programme contributes is attributable to a declared producer (CLO-08) and byte-identical across convergence passes (CLO-06).",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/MCOS-000001/"
+        ]
+      },
+      {
+        "argv": [
+          "$PY",
+          "00-MASTER/UCOS-RIB-001/rib_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-RIB",
+        "name": "Repository integration blueprint",
+        "owner": "00-MASTER/UCOS-RIB-001",
+        "purpose": "discovery, disposition, matrices, queue and the twelve integration gates",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCOS-RIB-001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface and PROVED a producer by execution (RFP-6). self-contained replay: re-derives currency from the committed corpus.json, so the stage is a function of tracked content and needs no corpus root.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UKAP-001/corpus_engine.py",
+          "--render"
+        ],
+        "heavy": false,
+        "id": "STAGE-UKAP",
+        "name": "Corpus currency",
+        "owner": "00-MASTER/UKAP-001",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UKAP-001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface and PROVED a producer by execution (RFP-6). self-contained replay: re-renders every register from the in-repo assimilation.json, so no external evidence tree is required. Ordered after the corpus stage it consumes.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py",
+          "--render"
+        ],
+        "heavy": false,
+        "id": "STAGE-ASSIMILATE",
+        "name": "Constitutional assimilation",
+        "owner": "00-MASTER/UAKOS-CLOSURE-008",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAKOS-CLOSURE-008/"
+        ]
+      },
+      {
+        "$discovery": "ADMITTED AFTER CYC-PRODUCER NAMED IT. The same gate's first verdict also proved the builder was NOT idempotent despite its docstring's claim: it emitted 32 laws where the declaration carried 33, silently deleting URKE-L-33, a blocking law. That is fixed, and admitting the stage is what keeps it fixed — the pipeline now runs the builder on every pass, so a builder that stops reproducing its own declaration refuses here instead of waiting for someone to run it by hand. Measured after the fix: two consecutive runs exit 0 and leave the tree byte-identical.",
+        "argv": [
+          "$PY",
+          "00-MASTER/URKE-000001/build-declaration.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-URKE",
+        "name": "Recursive knowledge declaration",
+        "owner": "00-MASTER/URKE-000001",
+        "purpose": "the recursive-knowledge declaration, authored by the script kept beside it so the shape asserted is readable rather than reverse-engineered",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/URKE-000001/"
+        ]
+      },
+      {
+        "$discovery": "ADMITTED AFTER UCOS-RFP-001 REPORTED IT AS CYC-UNGOVERNED, on the first verdict this gate has ever returned. repo-ops.sh was observed writing 00-MASTER/UCOS-NUCLEUS-001/UCOS-NUCLEUS-IDENTIFIER-DICTIONARY.json with identical bytes while no declared write zone covered the path, so a tracked output had no constitutional owner. The ARTIFACT was never homeless: engine/nucleus/cli.py names UCOS-NUCLEUS-001 as 'the programme home that owns it', stamps that owner into the document, and the document carries its own regeneration_command — which is the command declared here. What was missing is the STAGE, and every other programme in this pipeline has exactly one whose write zone is its own home, so this completes a uniform pattern rather than introducing a policy. Measured before admission: two consecutive runs exit 0 and leave the tree byte-identical, so the stage is reentrant and admitting it keeps the pipeline convergent.",
+        "argv": [
+          "$PY",
+          "-m",
+          "engine.nucleus.cli",
+          "dictionary",
+          "--write"
+        ],
+        "heavy": false,
+        "id": "STAGE-NUCLEUS",
+        "name": "Nucleus identifier dictionary",
+        "owner": "00-MASTER/UCOS-NUCLEUS-001",
+        "purpose": "the identifier dictionary, re-minted from the structural registry through the grammar UCKP-ART-05 already owns; it proves agreement rather than asserting it, so the pipeline regenerates it rather than trusting the committed bytes",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCOS-NUCLEUS-001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface and PROVED a producer by execution (RFP-6). regenerates the analysis registry from its declaration.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UCOS-UAR-001/uar_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UAR",
+        "name": "Analysis registry",
+        "owner": "00-MASTER/UCOS-UAR-001",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCOS-UAR-001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface and PROVED a producer by execution (RFP-6). authority is upstream of ratification, which is upstream of traceability and freeze eligibility; this is the order the convergence suite already asserts.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UCOS-UCAF-001/ucaf_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UCAF",
+        "name": "Constitutional authority",
+        "owner": "00-MASTER/UCOS-UCAF-001",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCOS-UCAF-001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface (Makefile recipes baseline / baseline-gate / baseline-self / baseline-replay and .github/workflows/baseline-gate.yml) and PROVED a producer by execution (RFP-6). It derives the certified baseline chain from the APPEND-ONLY records BASELINE-001 already holds, so it must run after STAGE-REGISTER, whose projections it reads for universal identity and version-increment events. Its write zone is the programme home and NOTHING inside that home that is a canonical record: the engine's own --check-record-immutability requires write set intersect canonical record set = empty, and the CI gate re-proves it with a git diff over the four records, so the zone declared here is wider than what the stage may actually write and the narrower bound is enforced by the owner.",
+        "argv": [
+          "$PY",
+          "00-MASTER/BASELINE-001/baseline_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-BASELINE",
+        "name": "Baseline inheritance",
+        "owner": "00-MASTER/BASELINE-001",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/BASELINE-001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface and PROVED a producer by execution (RFP-6). consumes the ratification instruments an earlier stage regenerates, so it must follow them; ordering here is what makes its output a function of tracked content.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UCOS-URAT-001/urat_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-URAT",
+        "name": "Ratification registry",
+        "owner": "00-MASTER/UCOS-URAT-001",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCOS-URAT-001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface and PROVED a producer by execution (RFP-6). reconciles against the certified corpus the earlier stages settle.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UCOS-UTCE-001/utce_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UTCE",
+        "name": "Traceability closure",
+        "owner": "00-MASTER/UCOS-UTCE-001",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCOS-UTCE-001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface and PROVED a producer by execution (RFP-6). consumes the ratification registry, so it follows it.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UCOS-UFEP-001/ufep_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UFEP",
+        "name": "Freeze eligibility",
+        "owner": "00-MASTER/UCOS-UFEP-001",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCOS-UFEP-001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface and PROVED a producer by execution (RFP-6). renders the capability binding register.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAEP-000001/uaep_engine.py",
+          "--render"
+        ],
+        "heavy": false,
+        "id": "STAGE-UAEP",
+        "name": "Platform capability binding",
+        "owner": "00-MASTER/UAEP-000001",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAEP-000001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface and PROVED a producer by execution (RFP-6). renders the faculty binding and register plane.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAIE-000001/uaie_engine.py",
+          "--render"
+        ],
+        "heavy": false,
+        "id": "STAGE-UAIE",
+        "name": "Architectural intelligence",
+        "owner": "00-MASTER/UAIE-000001",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAIE-000001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface and PROVED a producer by execution (RFP-6). renders the evolution law and lifecycle registers.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UCEF-000001/ucef_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UCEF",
+        "name": "Constitutional evolution",
+        "owner": "00-MASTER/UCEF-000001",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCEF-000001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered from the Execution Surface and PROVED a producer by execution (RFP-6). self-contained replay: re-renders 01..10 from the committed roadmap.json. Last of the added stages because it aggregates what the others settle.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UCOS-MXR-001/roadmap_engine.py",
+          "--render"
+        ],
+        "heavy": false,
+        "id": "STAGE-MXR",
+        "name": "Master execution roadmap",
+        "owner": "00-MASTER/UCOS-MXR-001",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCOS-MXR-001/"
+        ]
+      },
+      {
+        "$discovery": "Discovered by the tracked-tree candidate scope — the Execution Surface never named it — and PROVED a producer by execution (RFP-6). Its committed registers had drifted from what it re-derives, which is Evidence Drift in an operational-memory artifact: the artifact class whose convergence obligation is REQUIRED precisely because a determination that re-execution does not reproduce evidences nothing. Measured DETERMINISTIC over two runs at one commit, so admitting it keeps the pipeline convergent.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAKOS-PHASE-003/phase3_gap.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-PHASE3",
+        "name": "Implementation gap baseline (operational memory)",
+        "owner": "00-MASTER/UAKOS-PHASE-003",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAKOS-PHASE-003/"
+        ]
+      },
+      {
+        "$discovery": "Discovered by the tracked-tree candidate scope — the Execution Surface never named it — and PROVED a producer by execution (RFP-6). Its committed registers had drifted from what it re-derives, which is Evidence Drift in an operational-memory artifact: the artifact class whose convergence obligation is REQUIRED precisely because a determination that re-execution does not reproduce evidences nothing. Measured DETERMINISTIC over two runs at one commit, so admitting it keeps the pipeline convergent.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAKOS-PHASE-003R/phase3r_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-PHASE3R",
+        "name": "Realization correction (operational memory)",
+        "owner": "00-MASTER/UAKOS-PHASE-003R",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAKOS-PHASE-003R/"
+        ]
+      },
+      {
+        "$discovery": "Discovered by the tracked-tree candidate scope — the Execution Surface never named it — and PROVED a producer by execution (RFP-6). Its committed registers had drifted from what it re-derives, which is Evidence Drift in an operational-memory artifact: the artifact class whose convergence obligation is REQUIRED precisely because a determination that re-execution does not reproduce evidences nothing. Measured DETERMINISTIC over two runs at one commit, so admitting it keeps the pipeline convergent.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAKOS-PHASE-004/phase4_plan.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-PHASE4",
+        "name": "Implementation planning (operational memory)",
+        "owner": "00-MASTER/UAKOS-PHASE-004",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAKOS-PHASE-004/"
+        ]
+      },
+      {
+        "$discovery": "Discovered by the tracked-tree candidate scope — the Execution Surface never named it — and PROVED a producer by execution (RFP-6). Its committed registers had drifted from what it re-derives, which is Evidence Drift in an operational-memory artifact: the artifact class whose convergence obligation is REQUIRED precisely because a determination that re-execution does not reproduce evidences nothing. Measured DETERMINISTIC over two runs at one commit, so admitting it keeps the pipeline convergent.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAKOS-PHASE-005/phase5_gov.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-PHASE5",
+        "name": "Execution governance (operational memory)",
+        "owner": "00-MASTER/UAKOS-PHASE-005",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAKOS-PHASE-005/"
+        ]
+      },
+      {
+        "$discovery": "Discovered by the tracked-tree candidate scope — the Execution Surface never named it — and PROVED a producer by execution (RFP-6). Its committed registers had drifted from what it re-derives, which is Evidence Drift in an operational-memory artifact: the artifact class whose convergence obligation is REQUIRED precisely because a determination that re-execution does not reproduce evidences nothing. Measured DETERMINISTIC over two runs at one commit, so admitting it keeps the pipeline convergent.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAKOS-PHASE-006/phase6_certify.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-PHASE6",
+        "name": "Execution readiness certification (operational memory)",
+        "owner": "00-MASTER/UAKOS-PHASE-006",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAKOS-PHASE-006/"
+        ]
+      },
+      {
+        "$discovery": "Discovered by the tracked-tree candidate scope — the Execution Surface never named it — and PROVED a producer by execution (RFP-6). Its committed registers had drifted from what it re-derives, which is Evidence Drift in an operational-memory artifact: the artifact class whose convergence obligation is REQUIRED precisely because a determination that re-execution does not reproduce evidences nothing. Measured DETERMINISTIC over two runs at one commit, so admitting it keeps the pipeline convergent.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UCOS-USIS-WAVE0/freeze_c4_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-FREEZE-C4",
+        "name": "Freeze C4 execution streams (operational memory)",
+        "owner": "00-MASTER/UCOS-USIS-WAVE0",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCOS-USIS-WAVE0/"
+        ]
+      },
+      {
+        "$discovery": "Declared by Ω-E04 as an EXTEND of the located lifecycle authority. Measured DETERMINISTIC over two runs at one commit: the registers are a pure function of the declaration, the discovered manifests and the located constitutional metadata, so re-execution reproduces them byte for byte and admitting the stage keeps the pipeline convergent. It reads the pipeline declaration it is a member of, which is a read of DECLARED metadata and not an observation of the working tree, so RFP-3 is unaffected; and it re-invokes no stage engine, so it never observes a run of itself.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UCL-000001/ucl_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-UCL",
+        "name": "Universal Constitutional Lifecycle (discover, order and execute the constitutional stage graph)",
+        "owner": "00-MASTER/UCL-000001",
+        "purpose": "the constitutional stage graph, discovered from constitutional metadata and executed; BEFORE the aggregate certifier because the lifecycle it measures is what the certifier then certifies",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCL-000001/"
+        ]
+      },
+      {
+        "$discovery": "Declared by Ω-E05 as an EXTEND of the located engineering plane. It CONSUMES the constitutional lifecycle from 00-MASTER/UCL-000001/ucl-stage-manifest.json and derives no lifecycle of its own, so it is not a parallel lifecycle. Measured DETERMINISTIC over two runs at one commit: the registers and every derived plan identity are a pure function of the declaration, the two discovered manifests and the located constitutional metadata it reads, so re-execution reproduces them byte for byte and admitting the stage keeps the pipeline convergent. It reads the pipeline declaration it is a member of, which is a read of DECLARED metadata and not an observation of the working tree, so RFP-3 is unaffected. It INVOKES NO CAPABILITY and re-runs no owner — actuation is discharged by the located owners of the stages declared here — so it never observes a run of itself and creates no second execution surface.",
+        "argv": [
+          "$PY",
+          "00-MASTER/ACEE-000001/acee_engine.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-ACEE",
+        "name": "Autonomous constitutional engineering (bind an engineering goal to the consumed lifecycle)",
+        "owner": "00-MASTER/ACEE-000001",
+        "purpose": "the goal plane and the constitutional completion invariants, measured against located owners; AFTER the lifecycle stage because it CONSUMES the stage graph that stage discovers, and BEFORE the aggregate certifier because the bindings it measures are what the certifier then certifies",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/ACEE-000001/"
+        ]
+      },
+      {
+        "$discovery": "RE-ADMITTED ON THE MEASUREMENT ITS WITHDRAWAL SAID IT DID NOT HAVE. (No commit identity is named here: RFP-2 forbids a tracked artifact embedding one, and this declaration is projected into rfp.json. The withdrawal is the commit titled 'STAGE-LIFECYCLE-CLOSURE is withdrawn: I declared it on evidence a later run contradicted'.) That withdrawal named three faults and this entry answers each with a measurement rather than a restatement. (1) `heavy: false` was provably wrong -- one run was still going at 44 minutes against the probe's 900s budget. Measured now at 2927s and 3695s, so `heavy: true`, which is exactly what keeps it out of the probe's seeding (seed_skips_heavy). (2) 'changing no committed byte' was false -- a later run moved 916 insertions and 1,036 deletions across six files in branch_coverage_percent, branches_covered and capability_coverage_percent. That was the engine resolving its coverage instrument through sys.executable: absent from any interpreter that is not the pinned venv, it published zeros. The engine now resolves .ec1-venv explicitly and refuses outright when the instrument did not run, so those fields are a function of tracked content again. (3) `reentrant` was UNMEASURED. Two consecutive full runs in one tree are now byte-identical across all ten artifacts, which is the property the flag asserts.",
+        "$timeout_comment": "5400s against measured runs of 2927s and 3695s -- 1.46x the slower observation. Not rounded up further ON PURPOSE: this stage runs in BOTH convergence passes, so the declared budget is spent twice. At 5400 the worst case is 10,800s on top of the gate's measured 6,718s, which is 4h52m and fits inside the CI job limit with margin. A budget generous enough to never refuse would put the gate itself at risk of being killed, and a gate that cannot finish refuses nothing.",
+        "argv": [
+          "$PY",
+          "00-MASTER/P0-LIFECYCLE-CLOSURE-001/lifecycle_closure_engine.py"
+        ],
+        "heavy": true,
+        "id": "STAGE-LIFECYCLE-CLOSURE",
+        "name": "Universal Constitutional Lifecycle realization measurement",
+        "owner": "00-MASTER/P0-LIFECYCLE-CLOSURE-001",
+        "purpose": "measures whether each of the 45 declared lifecycle stages is realized, by five executed probes rather than by reading the manifest's own claims",
+        "reentrant": true,
+        "required": true,
+        "timeout_seconds": 5400,
+        "writes": [
+          "00-MASTER/P0-LIFECYCLE-CLOSURE-001/"
+        ]
+      },
+      {
+        "$reentrant_comment": "Declared non-reentrant as standing defence in depth. The gate graph is a DAG — this engine is a stage of the fixed-point pipeline and the fixed-point condition is NOT one of its checks — so no recursion occurs today. It was briefly bound as a check of this engine, and the measured consequence was that this engine's emitted verdict depended on whether it had been invoked nested, which is the self-observation topology RFP-3 forbids: the repository could not converge. Keeping the guard armed means a future re-binding degrades to a no-op instead of to non-termination. THE PRICE OF THIS GUARD IS ONE UNBOUND OBLIGATION, PAID KNOWINGLY. UCL-000001 binds its Certify stage (UCL-S-0280) to this stage, and OBL-REPLAY requires the bound executable stage to declare reentrant: true. It does not, so Certify measures 9/10 and UCL reports obligations=1unbound — permanently, by choice, not by oversight. The trade was put to the owner and decided: a declared deficiency that names its cause is worth more than a guard flipped to make a counter read zero. Reversing it is one boolean, and this sentence is where a future reader should start.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UCCEP-000000/uccep_engine.py",
+          "--tier",
+          "full"
+        ],
+        "heavy": true,
+        "id": "STAGE-UCCEP",
+        "name": "Aggregate constitutional certification",
+        "owner": "00-MASTER/UCCEP-000000",
+        "purpose": "the constitutional checks, gates and programmes; LAST because it certifies what the earlier stages produced",
+        "reentrant": false,
+        "required": true,
+        "writes": [
+          "00-MASTER/UCCEP-000000/"
+        ]
+      },
+      {
+        "$discovery": "ADMITTED ONLY AFTER THE ENGINE COULD CONVERGE. RFP reported thirteen CYC-UNGOVERNED paths here, and a stage alone would not have closed them: the engine stamped the LIVE closure baseline into every register header, so a committed artifact could never match a re-render and this gate could never pass over it. `--render` now replays the recorded baseline, which is what makes the stage admissible. Measured after the fix: two consecutive replay renders produce byte-identical output, and the twenty-one count changes the corpus had accumulated are committed alongside.",
+        "$ordering": "REPOSITIONED AFTER EVERY CORPUS WRITER. This stage counts evidence across the corpus, and it sat at position 18 while 22 later stages wrote into 00-MASTER/. It therefore counted the PREVIOUS pass's output every pass, which is why UCOS-RFP-001 measured it rewriting on pass 2 and not only pass 1 -- a read-after-write ordering violation, not staleness and not a moving anchor, and one no amount of regeneration could close. RFP-6's own remediation states the rule: a producer is 'positioned after the stages whose output it consumes'. The declaration carries no depends_on field, so stage order is positional and its rationale was unrecorded; this note is that rationale.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAKOS-PHASE-001B/emit_registers.py",
+          "--render"
+        ],
+        "heavy": false,
+        "id": "STAGE-PHASE-001B",
+        "name": "Constitutional provenance reconstruction registers",
+        "owner": "00-MASTER/UAKOS-PHASE-001B",
+        "purpose": "the thirteen provenance registers, reconstructed from the declared model; BEFORE PHASE-001A-R1, which certifies against the provenance.json this programme owns",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAKOS-PHASE-001B/"
+        ]
+      },
+      {
+        "$discovery": "ADMITTED ONLY AFTER THE ENGINE COULD CONVERGE, for the same reason as STAGE-PHASE-001B and by the same fix. RFP reported twelve CYC-UNGOVERNED paths; two drifted on the stamped baseline alone and ten on counts the corpus had moved. `--render` replays the recorded baseline and the counts are committed, so the engine now reproduces what is committed. Measured: two consecutive replay renders byte-identical.",
+        "$ordering": "REPOSITIONED AFTER EVERY CORPUS WRITER. This stage counts evidence across the corpus, and it sat at position 19 while 22 later stages wrote into 00-MASTER/. It therefore counted the PREVIOUS pass's output every pass, which is why UCOS-RFP-001 measured it rewriting on pass 2 and not only pass 1 -- a read-after-write ordering violation, not staleness and not a moving anchor, and one no amount of regeneration could close. RFP-6's own remediation states the rule: a producer is 'positioned after the stages whose output it consumes'. The declaration carries no depends_on field, so stage order is positional and its rationale was unrecorded; this note is that rationale.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAKOS-PHASE-001A-R1/cert_engine.py",
+          "--render"
+        ],
+        "heavy": false,
+        "id": "STAGE-PHASE-001A-R1",
+        "name": "Constitutional baseline re-certification registers",
+        "owner": "00-MASTER/UAKOS-PHASE-001A-R1",
+        "purpose": "the twelve certification registers, derived from the provenance model PHASE-001B emits, which is why it is ordered after it",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAKOS-PHASE-001A-R1/"
+        ]
+      },
+      {
+        "$discovery": "ADMITTED AFTER CYC-UNGOVERNED NAMED ELEVEN OF ITS OUTPUTS AND CYC-PRODUCER NAMED THE ENGINE. Every path it writes lies inside its own programme home, so this is the pattern every other stage in this pipeline already follows and not a new claim about ownership. It renders with --render, which REPLAYS the head recorded in requirements.json rather than re-reading the live one: a committed artifact can never carry the sha of the commit that carries it, and an engine that embeds the live HEAD can never be a fixed point. Measured before admission: two consecutive renders exit 0 and leave the tree byte-identical.",
+        "$ordering": "REPOSITIONED AFTER EVERY CORPUS WRITER. This stage counts evidence across the corpus, and it sat at position 20 while 22 later stages wrote into 00-MASTER/. It therefore counted the PREVIOUS pass's output every pass, which is why UCOS-RFP-001 measured it rewriting on pass 2 and not only pass 1 -- a read-after-write ordering violation, not staleness and not a moving anchor, and one no amount of regeneration could close. RFP-6's own remediation states the rule: a producer is 'positioned after the stages whose output it consumes'. The declaration carries no depends_on field, so stage order is positional and its rationale was unrecorded; this note is that rationale.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAKOS-CLOSURE-009/requirement_engine.py",
+          "--render"
+        ],
+        "heavy": false,
+        "id": "STAGE-CLOSURE-009",
+        "name": "Repository requirement closure registers",
+        "owner": "00-MASTER/UAKOS-CLOSURE-009",
+        "purpose": "the requirement, coverage, gap, maturity and readiness registers, rendered from the declared inputs",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAKOS-CLOSURE-009/"
+        ]
+      },
+      {
+        "$discovery": "Discovered by the tracked-tree candidate scope — the Execution Surface never named it — and PROVED a producer by execution (RFP-6). Its committed registers had drifted from what it re-derives, which is Evidence Drift in an operational-memory artifact: the artifact class whose convergence obligation is REQUIRED precisely because a determination that re-execution does not reproduce evidences nothing. Measured DETERMINISTIC over two runs at one commit, so admitting it keeps the pipeline convergent.",
+        "$ordering": "REPOSITIONED AFTER EVERY CORPUS WRITER. This stage counts evidence across the corpus, and it sat at position 33 while 10 later stages wrote into 00-MASTER/. It therefore counted the PREVIOUS pass's output every pass, which is why UCOS-RFP-001 measured it rewriting on pass 2 and not only pass 1 -- a read-after-write ordering violation, not staleness and not a moving anchor, and one no amount of regeneration could close. RFP-6's own remediation states the rule: a producer is 'positioned after the stages whose output it consumes'. The declaration carries no depends_on field, so stage order is positional and its rationale was unrecorded; this note is that rationale.",
+        "argv": [
+          "$PY",
+          "00-MASTER/UAKOS-PHASE-002/phase2_recon.py"
+        ],
+        "heavy": false,
+        "id": "STAGE-PHASE2",
+        "name": "Repository reconciliation (operational memory)",
+        "owner": "00-MASTER/UAKOS-PHASE-002",
+        "reentrant": true,
+        "required": true,
+        "writes": [
+          "00-MASTER/UAKOS-PHASE-002/"
+        ]
+      }
+    ]
+  },
+  "principle": [
+    {
+      "enforced_by": [
+        "CK-FIXED-POINT"
+      ],
+      "id": "RFP-1",
+      "rationale": "Certification asserts a property of the repository. An assertion that re-execution does not reproduce is not evidence.",
+      "rule": "No programme may close, and no repository may be certified, unless the repository is a Stable Repository State: executing the declared pipeline over the committed HEAD leaves the repository byte-identical, for each of the declared convergence passes.",
+      "title": "Fixed-Point Closure Condition"
+    },
+    {
+      "cycle_class": "CYC-COMMIT",
+      "enforced_by": [
+        "CK-FIXED-POINT"
+      ],
+      "id": "RFP-2",
+      "rationale": "The commit's identity is a function of the tracked bytes it contains. An artifact that names its own commit demands a commit whose hash appears inside its own tree, which is not reachable. Committing changes HEAD, which changes the artifact, without limit. Version control already records the containing commit, so restating it inside the artifact also duplicates state the repository already owns.",
+      "rule": "No tracked artifact's bytes may depend on the identity of the commit that contains it — its hash, abbreviation, committer date, author date, tag or ref.",
+      "title": "No Commit Self-Reference"
+    },
+    {
+      "cycle_class": "CYC-OBSERVE",
+      "enforced_by": [
+        "CK-FIXED-POINT"
+      ],
+      "id": "RFP-3",
+      "rationale": "Writing an unscoped observation falsifies it: an artifact recording 'working tree CLEAN, 0 entries' makes the tree dirty by being written, so the recorded value is never the value that holds once it is recorded. The defect is not the measurement, it is the self-inclusion of the recorder in what it measures. Scoping the observation to exclude the recorder's own write zone removes the self-inclusion and makes the record stable, which is why a repository-cleanliness gate may persist a verdict measured outside its own zone.",
+      "rule": "No tracked artifact's bytes may record an observation of the working tree that the act of recording invalidates. An observation whose scope EXCLUDES the recorder's own declared write zone does not invalidate itself and is therefore permitted; an unscoped observation is not. In every case the observation is a legitimate input to a GATE VERDICT and legitimate content of a gate's exit code and standard output.",
+      "title": "No Working-Tree Self-Observation"
+    },
+    {
+      "cycle_class": "CYC-HASH",
+      "enforced_by": [
+        "CK-FIXED-POINT"
+      ],
+      "id": "RFP-4",
+      "rationale": "This is the CK-REG-DRIFT topology exactly: the registry recorded the hash of an artifact that embedded the hash of the registry. Mutual hash embedding admits no simultaneous solution.",
+      "rule": "No tracked artifact may embed a content hash of any artifact that depends, directly or transitively, upon it.",
+      "title": "No Hash Cycle"
+    },
+    {
+      "cycle_class": "CYC-REGISTER",
+      "enforced_by": [
+        "CK-REG-ENFORCE",
+        "CK-REG-DRIFT",
+        "CK-FIXED-POINT"
+      ],
+      "id": "RFP-5",
+      "rationale": "Registration records a content hash. A class whose content is derived cannot hold a stable hash relative to the register that records it. This restates GOV-005 §5.3 as a closure obligation and is the rule whose absence produced CK-REG-DRIFT.",
+      "rule": "Only artifacts of class CANONICAL-SOURCE are eligible for registration. Every other class is a non-artifact, excluded by a declared authority, and may never consume a permanent corpus identity.",
+      "title": "Registration Admits Canonical Source Only"
+    },
+    {
+      "enforced_by": [
+        "CK-FIXED-POINT",
+        "CK-PRODUCER-COMPLETE"
+      ],
+      "id": "RFP-6",
+      "rationale": "A fixed point can only be asserted over a known pipeline. Undeclared regeneration is precisely how the CK-REG-DRIFT split reached four sealed commits unnoticed. Discovery closes the residual hole in the original enforcement: attributing residue can only convict a producer that RAN inside the declared pipeline, so a producer omitted from the pipeline never ran and was never observed. Measuring the Execution Surface instead makes omission itself the detectable event.",
+      "rule": "Every producer that writes tracked repository content must appear as a stage of the declared pipeline. A producer absent from the pipeline is unverifiable and its output is therefore not an Acceptable Repository State. Completeness of the pipeline is itself a measured property: the repository DISCOVERS its own producers from its Execution Surface and proves, by execution, that each one is declared. Declaration is never satisfied by a list somebody remembered to update.",
+      "title": "Producers Are Declared, Never Discovered Ad Hoc"
+    },
+    {
+      "enforced_by": [
+        "CK-FIXED-POINT",
+        "G-15"
+      ],
+      "id": "RFP-7",
+      "rationale": "A rule a programme must opt into is a rule the next programme forgets. Evaluating the condition over the repository rather than over a programme register makes exemption impossible and enrolment unnecessary.",
+      "rule": "RFP-1..RFP-6 bind every PROGRAM, EPIC, EIP, Universe, Framework, Capability and Module, present and future, with no opt-out and no per-programme exemption. Inheritance is structural: the condition is evaluated over the REPOSITORY, so anything the repository contains is bound without needing to declare itself bound.",
+      "title": "Universal Inheritance, No Opt-Out"
+    }
+  ],
+  "programme": {
+    "$excluded_location_comment": "The engine RESOLVES excluded locations from these two authorities at run time (git's own ignore machinery plus the corpus-internal prefix list). It keeps no second list, so an exclusion declared once is honoured everywhere and no path is restated here.",
+    "authority": "NONE — DERIVED TRUTH. This programme legislates the closure CONDITION; it ratifies nothing, freezes nothing and owns no capability.",
+    "excluded_location_authority": [
+      "00-BOOK/tools/config.py::EXCLUDE_DIR_PREFIXES",
+      ".gitignore (+ standard git exclude sources)"
+    ],
+    "governing_instruments": [
+      "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+      "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "00-BOOK/tools/config.py (GOV-005 §5.3 admission boundary)",
+      "00-MASTER/UCOS-RECON-C1-OPERATIONAL-MEMORY-EXCLUSION.md",
+      "00-MASTER/UCOS-RECON-C2/ROOT-CAUSE-REPORT.md"
+    ],
+    "id": "UCOS-RFP-001",
+    "name": "Repository Fixed-Point Closure",
+    "origin": "CK-REG-DRIFT. A generated artifact carrying repository-derived state (HEAD, commit metadata, projection hashes) was admitted into the registration corpus, creating a registration relation with no fixed point. This declaration makes that class of topology constitutionally impossible rather than individually repaired."
+  },
+  "vocabulary": [
+    {
+      "definition": "A committed repository state R is a Repository Fixed Point of the declared pipeline P when P(R) = R byte-for-byte. Executing every declared producer over R rewrites no tracked byte and creates no untracked entry outside a constitutionally excluded location.",
+      "id": "VOC-FIXED-POINT",
+      "term": "Repository Fixed Point"
+    },
+    {
+      "definition": "A repository in which every producer's output is a pure function of tracked repository content. Two executions over the same tracked content, in any environment, yield identical bytes.",
+      "id": "VOC-DETERMINISTIC",
+      "term": "Deterministic Repository"
+    },
+    {
+      "definition": "A state that is a Repository Fixed Point under N consecutive pipeline executions, N being the declared convergence_passes. Stability is an observation over repetitions; a fixed point observed once may be coincidence.",
+      "id": "VOC-STABLE",
+      "term": "Stable Repository State"
+    },
+    {
+      "definition": "The state in which a programme is permitted to declare itself closed: its implementation is complete, every gate binding it PASSES, and the repository containing it is a Stable Repository State. Closure is a property of the REPOSITORY, never a property of the programme's own report.",
+      "id": "VOC-CLOSURE",
+      "term": "Closure State"
+    },
+    {
+      "definition": "A state that is either a Repository Fixed Point, or one whose only divergence is a declared, dispositioned finding carried in this declaration. Any other divergence is unacceptable and fails closed.",
+      "id": "VOC-ACCEPTABLE",
+      "term": "Acceptable Repository State"
+    },
+    {
+      "definition": "A repository for which no reachable state is a Repository Fixed Point, because at least one tracked artifact's required bytes are a function of the very act of committing or recording them. Non-convergence is a topological property: it cannot be cleared by regenerating, committing or reordering.",
+      "id": "VOC-NON-CONVERGENT",
+      "term": "Non-convergent Repository"
+    },
+    {
+      "definition": "A repository containing at least one tracked artifact whose content depends, directly or transitively, on itself — on the identity of the commit that contains it, on an observation of the working tree that contains it, or on the hash of an artifact that depends on it. Every self-referential repository is non-convergent.",
+      "id": "VOC-SELF-REFERENTIAL",
+      "term": "Self-referential Repository"
+    },
+    {
+      "definition": "The genus. Any divergence between the committed repository and the result of re-executing the declared pipeline over it. Registration, Projection and Evidence Drift are its species.",
+      "id": "VOC-REPO-DRIFT",
+      "term": "Repository Drift"
+    },
+    {
+      "definition": "Divergence between the registered corpus and the artifacts on disk: an artifact's recorded identity, content hash or classification no longer matches the artifact. Owned and detected by REG-AUTO-001 (register.sh --guard / CK-REG-DRIFT).",
+      "id": "VOC-REG-DRIFT",
+      "term": "Registration Drift"
+    },
+    {
+      "definition": "Divergence between a derived projection and the canonical source it projects: the projection was not regenerated after its source changed, or was regenerated from a stale reading of it.",
+      "id": "VOC-PROJ-DRIFT",
+      "term": "Projection Drift"
+    },
+    {
+      "definition": "Divergence between recorded evidence and the state it claims to evidence: a verdict, measurement or certification asserting a repository state that re-execution does not reproduce. An evidence artifact that records an observation invalidated by its own writing is permanently in Evidence Drift.",
+      "id": "VOC-EV-DRIFT",
+      "term": "Evidence Drift"
+    },
+    {
+      "definition": "An executable the repository itself can invoke that writes tracked repository content. Both halves are measured, never assumed: invocability is read from the repository's own Execution Surface, and writing is OBSERVED by executing the candidate and comparing tracked content. Neither half appeals to a filename, a directory, a naming convention or a list, so the definition admits producers that do not exist yet.",
+      "id": "VOC-PRODUCER",
+      "term": "Producer"
+    },
+    {
+      "definition": "The set of invocations the repository declares it performs: the recipe lines of its build entry point and the steps of its continuous-integration workflows, plus the argv of every declared pipeline stage. It is the repository's own statement of what it executes, maintained for its own reasons, and is therefore a discovery authority that cannot fall out of date without the repository ceasing to build.",
+      "id": "VOC-EXEC-SURFACE",
+      "term": "Execution Surface"
+    },
+    {
+      "definition": "A repository in which every Producer discovered from the Execution Surface is a declared pipeline stage, every path any Producer writes lies inside exactly one declared write zone, and no discovered candidate remains unprobed. Producer completeness is thus a MEASUREMENT over the repository rather than a list somebody maintains, and it is re-measured on every gate run.",
+      "id": "VOC-PRODUCER-COMPLETE",
+      "term": "Producer-Complete Repository"
+    }
+  ]
+}

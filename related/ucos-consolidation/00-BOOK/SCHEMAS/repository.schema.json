@@ -1,0 +1,23 @@
+{
+  "title": "UCOS Ω∞ Repository Intelligence Entity",
+  "description": "A repository as a first-class Universal Artifact (UKB-002). Tracks branches, commits, PRs, releases, contributors, dependencies, and code structure. derived_status is computed from signals; never hand-entered.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["universal_id", "name", "url"],
+  "properties": {
+    "universal_id": { "type": "string", "pattern": "^UCOS-(REPO|CMT|BLD)-[0-9]{6}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "url": { "type": "string" },
+    "default_branch": { "type": "string", "default": "main" },
+    "visibility": { "type": "string", "enum": ["public", "private", "internal"], "default": "private" },
+    "owner": { "type": "string" },
+    "languages": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "latest_commit": { "type": ["string", "null"], "default": null },
+    "branches": { "type": "array", "items": { "type": "object", "additionalProperties": true }, "default": [] },
+    "contributors": { "type": "array", "items": { "type": "object", "additionalProperties": true }, "default": [] },
+    "dependencies": { "type": "array", "items": { "type": "object", "additionalProperties": true }, "default": [], "description": "Each: {name, version (pinned), ecosystem, advisories[]}." },
+    "structure": { "type": "object", "description": "Embedded module/package/file/class/function inventory keyed by structural_key (UKB-003).", "additionalProperties": true, "default": {} },
+    "implements": { "type": "array", "items": { "type": "string", "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$" }, "default": [], "description": "Architecture/implementation artifacts this repo realizes." },
+    "derived_status": { "type": "string", "default": "NOT_STARTED" }
+  }
+}

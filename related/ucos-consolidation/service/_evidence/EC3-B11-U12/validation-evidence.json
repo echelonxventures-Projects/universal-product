@@ -1,0 +1,183 @@
+{
+  "accepted": true,
+  "blocking_failures": [],
+  "blueprint_id": "BAND-11",
+  "checks_run": [
+    "band11-all-units-certified",
+    "band11-identified",
+    "band11-independence",
+    "band11-inventory-complete",
+    "band11-metamodel-integration-closed",
+    "band11-non-projection",
+    "band11-typed",
+    "band11-valid-state",
+    "band11-versioned",
+    "foundation-reuse-integrity",
+    "founding-acyclic",
+    "meta-class-single",
+    "meta-relationships-closed",
+    "non-constitutive",
+    "provisional-state-disclosure",
+    "service-value-fidelity",
+    "traceability-rooted"
+  ],
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 17,
+    "total": 17
+  },
+  "evidence_format": "ucos-validation-evidence/1.0.0",
+  "findings": [
+    {
+      "check_id": "band11-all-units-certified",
+      "details": {
+        "units_certified": 11
+      },
+      "message": "band11-all-units-certified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band11-identified",
+      "details": {
+        "band_id": "UCOS-BAND11-ucos.service.band11.completion-13ba9a8b6b721448"
+      },
+      "message": "band11-identified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band11-independence",
+      "details": {},
+      "message": "band11-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band11-inventory-complete",
+      "details": {
+        "unit_count": 11
+      },
+      "message": "band11-inventory-complete satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band11-metamodel-integration-closed",
+      "details": {},
+      "message": "band11-metamodel-integration-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band11-non-projection",
+      "details": {},
+      "message": "band11-non-projection satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band11-typed",
+      "details": {
+        "type_tag": "ucos.core.band-completion"
+      },
+      "message": "band11-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band11-valid-state",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "band11-valid-state satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band11-versioned",
+      "details": {
+        "version": "1.0.0"
+      },
+      "message": "band11-versioned satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-004",
+          "ENG-005",
+          "CCE"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "coverage": "SMC-01…10"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {},
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "service-value-fidelity",
+      "details": {
+        "value_digest": "13ba9a8b6b7214488346f865c2d7f12678b8d94af659d699db514aa94785df93"
+      },
+      "message": "service-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 5
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-BAND11-ucos.service.band11.completion-13ba9a8b6b721448",
+  "verdict": "pass"
+}

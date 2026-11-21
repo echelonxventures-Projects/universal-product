@@ -1,0 +1,157 @@
+name: UCCEP-000000 Continuous Constitutional Evolution Gate
+
+# UCCEP-000000 — the AGGREGATE constitutional gate, and the authoritative backstop that
+# closes finding UCCEP-F-005: before this workflow, five fail-closed gates existed in the
+# repository and ran in NO automated gate (the meta-constitutional gate, the three closure
+# gates, repository health, graph invariants and intelligence determinism), so a change
+# could bypass every one of them.
+#
+# This workflow adds NO new validator. It runs the located gates that already exist and
+# are already owned, through the single aggregation declared in
+# 00-MASTER/UCCEP-000000/uccep-bindings.json. Adding a programme, gate, check, invariant
+# or finding is an entry in that DATA file — this workflow never needs to change, and no
+# programme, domain, technology or platform is enumerated here.
+#
+# Exit semantics of the gate:
+#   0  every blocking check in scope executed and passed
+#   1  a blocking check failed, OR a blocking check in scope produced no evidence
+#      (UNAVAILABLE / NOT-EXECUTED) — absence of evidence is never evidence
+#   2  fail-closed abort — the declaration is unusable, so no verdict may be asserted
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uccep-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: UCCEP self-guards (declaration · zero-enumeration · write-scope · determinism)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Declaration integrity (every reference resolves · one disposition each · no manual gate)
+        run: python3 00-MASTER/UCCEP-000000/uccep_engine.py --check-declaration
+
+      - name: Zero-enumeration / data-driven proof (no declared identifier is hardcoded in the engine)
+        run: python3 00-MASTER/UCCEP-000000/uccep_engine.py --check-no-enumeration
+
+      - name: Forbidden-write guard (Repository Truth is never created outside the repository)
+        run: python3 00-MASTER/UCCEP-000000/uccep_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical rendering across runs)
+        run: python3 00-MASTER/UCCEP-000000/uccep_engine.py --check-determinism
+
+      # Observation is not emission: no observing act may narrow a recorded determination.
+      - name: Observation/emission separation (an observing run may never rewrite Repository Truth)
+        run: python3 00-MASTER/UCCEP-000000/uccep_engine.py --check-observation
+
+  aggregate-gate:
+    name: Aggregate constitutional gate (standard tier)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      # The standard tier reaches located gates that live in the installed package
+      # (repository health, graph invariants, discovery coverage, intelligence
+      # determinism). Those checks are declared with the `$PY` interpreter token, which
+      # resolves to the CANONICAL venv interpreter `.ec1-venv/bin/python` — not to
+      # whatever `python` happens to be on PATH.
+      #
+      # EIP-018 (FP-2): this step previously ran `pip install -e ".[dev]"` into the
+      # runner's system Python. That never creates `.ec1-venv`, so `$PY` resolved to the
+      # empty string and every `$PY` check reported UNAVAILABLE. Combined with the old
+      # aggregation — which filtered non-executed checks out of the exit code — four
+      # BLOCKING checks silently never ran while this job still went green.
+      #
+      # Bootstrapping the canonical venv is the fix: it is the same environment owner
+      # (`scripts/ucos-env.sh`) that `verify.sh` and `repo-ops.sh` use, so CI and local
+      # execution are now the same predicate rather than two similar ones.
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Bootstrap the canonical environment (creates .ec1-venv so $PY resolves)
+        run: ./bootstrap.sh
+
+      - name: Assert $PY resolves (fail-closed — a missing venv must never read as PASS)
+        run: |
+          test -x .ec1-venv/bin/python || {
+            echo "canonical venv interpreter absent; \$PY-declared blocking checks" \
+                 "would report UNAVAILABLE and the aggregate gate would fail-closed." >&2
+            exit 1
+          }
+          .ec1-venv/bin/python --version
+
+      # Tier note (EIP-018 / FP-3): the `full` tier additionally binds three blocking
+      # checks whose subjects are ./verify.sh, the determinism double-build, and
+      # register.sh --guard. They are NOT run here, and that exclusion is no longer
+      # silent: the engine now discloses every tier-excluded blocking check and caps
+      # this run's determination at CERTIFIED-PROVISIONAL. None of the three is
+      # bypassed — each executes in its own owning workflow (ec1-ci.yml,
+      # determinism.yml, ucos-registration-gate.yml), so running them again here would
+      # duplicate work without adding evidence. `make uccep-full` is the local path to
+      # an unqualified determination.
+      #
+      # OBSERVATION IS NOT EMISSION: this step is read-only over the tracked tree
+      # whenever the recorded determination is wider than the standard tier, which is
+      # what it means for CI to observe Repository Truth rather than rewrite it. Before
+      # that separation existed, this job's standard-tier run replaced the committed
+      # full-tier determination in its own checkout and published the narrower reading as
+      # the workflow artifact.
+      - name: Aggregate constitutional gate (fail-closed)
+        run: python3 00-MASTER/UCCEP-000000/uccep_engine.py --tier standard --gate
+
+      # The determinations published here are the ones Repository Truth records, not a
+      # narrower re-derivation produced by this job.
+      - name: Publish the constitutional determinations
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uccep-determinations
+          path: |
+            00-MASTER/UCCEP-000000/*.md
+            00-MASTER/UCCEP-000000/uccep.json
+            00-MASTER/UCCEP-000000/evidence/
+          if-no-files-found: warn

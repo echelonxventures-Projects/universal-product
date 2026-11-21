@@ -1,0 +1,285 @@
+{
+  "generated_at": "2026-07-17T14:53:03+00:00",
+  "signal_seq": 15,
+  "run_seq": 267,
+  "seen_keys": [
+    "github-actions|gha-1001#0",
+    "github-actions|gha-1001#1",
+    "github-actions|gha-1002#0",
+    "github-actions|gha-1002#1",
+    "kubernetes|k8s-4001#0",
+    "kubernetes|k8s-4002#0",
+    "prometheus|prom-3001#0",
+    "prometheus|prom-3001#1",
+    "prometheus|prom-3002#0",
+    "prometheus|prom-3002#1",
+    "trivy|trivy-2001#0",
+    "trivy|trivy-2002#0",
+    "sonarqube|sonar-5001#0",
+    "sonarqube|sonar-5002#0",
+    "git-repository|master-book-under-version-control#0"
+  ],
+  "signals": [
+    {
+      "signal_id": "USIG-000000001",
+      "subject_universal_id": "UCOS-IMP-000009",
+      "subject_native_id": null,
+      "dimension": "build",
+      "state": "IMPLEMENTED",
+      "source": "GITHUB_ACTIONS",
+      "as_of": "2026-07-15T08:00:00Z",
+      "evidence": "gha://run/1001",
+      "metrics": {
+        "result": "pass",
+        "duration_seconds": 412,
+        "coverage": 87.4,
+        "workflow": "ci.yml"
+      },
+      "connector": "github-actions",
+      "ingest_run": "URUN-000000001"
+    },
+    {
+      "signal_id": "USIG-000000002",
+      "subject_universal_id": "UCOS-IMP-000009",
+      "subject_native_id": null,
+      "dimension": "unit_testing",
+      "state": "TESTED",
+      "source": "GITHUB_ACTIONS",
+      "as_of": "2026-07-15T08:00:00Z",
+      "evidence": "gha://run/1001",
+      "metrics": {
+        "coverage": 87.4
+      },
+      "connector": "github-actions",
+      "ingest_run": "URUN-000000001"
+    },
+    {
+      "signal_id": "USIG-000000003",
+      "subject_universal_id": "UCOS-IMP-000015",
+      "subject_native_id": null,
+      "dimension": "build",
+      "state": "BLOCKED",
+      "source": "GITHUB_ACTIONS",
+      "as_of": "2026-07-15T08:05:00Z",
+      "evidence": "gha://run/1002",
+      "metrics": {
+        "result": "fail",
+        "duration_seconds": 120,
+        "coverage": 61.2,
+        "workflow": "ci.yml"
+      },
+      "connector": "github-actions",
+      "ingest_run": "URUN-000000001"
+    },
+    {
+      "signal_id": "USIG-000000004",
+      "subject_universal_id": "UCOS-IMP-000015",
+      "subject_native_id": null,
+      "dimension": "unit_testing",
+      "state": "BLOCKED",
+      "source": "GITHUB_ACTIONS",
+      "as_of": "2026-07-15T08:05:00Z",
+      "evidence": "gha://run/1002",
+      "metrics": {
+        "coverage": 61.2
+      },
+      "connector": "github-actions",
+      "ingest_run": "URUN-000000001"
+    },
+    {
+      "signal_id": "USIG-000000005",
+      "subject_universal_id": "UCOS-RUN-000006",
+      "subject_native_id": null,
+      "dimension": "deployment",
+      "state": "DEPLOYED",
+      "source": "KUBERNETES",
+      "as_of": "2026-07-15T08:30:00Z",
+      "evidence": "ucos-prod",
+      "metrics": {
+        "rollout": "complete",
+        "tier": "PROD",
+        "replicas_ready": 6,
+        "replicas_desired": 6,
+        "image": "ucos/runtime-exec:1.4.2"
+      },
+      "connector": "kubernetes",
+      "ingest_run": "URUN-000000002"
+    },
+    {
+      "signal_id": "USIG-000000006",
+      "subject_universal_id": "UCOS-IMP-000009",
+      "subject_native_id": null,
+      "dimension": "deployment",
+      "state": "IN_PROGRESS",
+      "source": "KUBERNETES",
+      "as_of": "2026-07-15T08:33:00Z",
+      "evidence": "ucos-staging",
+      "metrics": {
+        "rollout": "progressing",
+        "tier": "STAGING",
+        "replicas_ready": 2,
+        "replicas_desired": 4,
+        "image": "ucos/foundation:0.9.0"
+      },
+      "connector": "kubernetes",
+      "ingest_run": "URUN-000000002"
+    },
+    {
+      "signal_id": "USIG-000000007",
+      "subject_universal_id": "UCOS-RUN-000001",
+      "subject_native_id": null,
+      "dimension": "production",
+      "state": "PRODUCTION",
+      "source": "PROMETHEUS",
+      "as_of": "2026-07-15T08:20:00Z",
+      "evidence": "grafana://d/runtime",
+      "metrics": {
+        "availability": 0.9993,
+        "slo_target": 0.999,
+        "error_rate": 0.0004,
+        "latency_p99_ms": 180
+      },
+      "connector": "prometheus",
+      "ingest_run": "URUN-000000003"
+    },
+    {
+      "signal_id": "USIG-000000008",
+      "subject_universal_id": "UCOS-RUN-000001",
+      "subject_native_id": null,
+      "dimension": "operational",
+      "state": "PRODUCTION",
+      "source": "PROMETHEUS",
+      "as_of": "2026-07-15T08:20:00Z",
+      "evidence": "grafana://d/runtime",
+      "metrics": {
+        "error_rate": 0.0004
+      },
+      "connector": "prometheus",
+      "ingest_run": "URUN-000000003"
+    },
+    {
+      "signal_id": "USIG-000000009",
+      "subject_universal_id": "UCOS-RUN-000006",
+      "subject_native_id": null,
+      "dimension": "production",
+      "state": "BLOCKED",
+      "source": "PROMETHEUS",
+      "as_of": "2026-07-15T08:22:00Z",
+      "evidence": "grafana://d/exec",
+      "metrics": {
+        "availability": 0.982,
+        "slo_target": 0.995,
+        "error_rate": 0.02,
+        "latency_p99_ms": 640
+      },
+      "connector": "prometheus",
+      "ingest_run": "URUN-000000003"
+    },
+    {
+      "signal_id": "USIG-000000010",
+      "subject_universal_id": "UCOS-RUN-000006",
+      "subject_native_id": null,
+      "dimension": "operational",
+      "state": "BLOCKED",
+      "source": "PROMETHEUS",
+      "as_of": "2026-07-15T08:22:00Z",
+      "evidence": "grafana://d/exec",
+      "metrics": {
+        "error_rate": 0.02
+      },
+      "connector": "prometheus",
+      "ingest_run": "URUN-000000003"
+    },
+    {
+      "signal_id": "USIG-000000011",
+      "subject_universal_id": "UCOS-ARCH-000019",
+      "subject_native_id": null,
+      "dimension": "security",
+      "state": "APPROVED",
+      "source": "TRIVY",
+      "as_of": "2026-07-15T08:10:00Z",
+      "evidence": "trivy://scan/2001",
+      "metrics": {
+        "critical": 0,
+        "high": 0,
+        "medium": 2
+      },
+      "connector": "trivy",
+      "ingest_run": "URUN-000000004"
+    },
+    {
+      "signal_id": "USIG-000000012",
+      "subject_universal_id": "UCOS-IMP-000015",
+      "subject_native_id": null,
+      "dimension": "security",
+      "state": "BLOCKED",
+      "source": "TRIVY",
+      "as_of": "2026-07-15T08:12:00Z",
+      "evidence": "trivy://scan/2002",
+      "metrics": {
+        "critical": 1,
+        "high": 3,
+        "medium": 5
+      },
+      "connector": "trivy",
+      "ingest_run": "URUN-000000004"
+    },
+    {
+      "signal_id": "USIG-000000013",
+      "subject_universal_id": "UCOS-IMP-000011",
+      "subject_native_id": null,
+      "dimension": "quality",
+      "state": "APPROVED",
+      "source": "SONARQUBE",
+      "as_of": "2026-07-15T08:40:00Z",
+      "evidence": "sonarqube://project/knowledge-graph-engine",
+      "metrics": {
+        "quality_gate": "OK",
+        "maintainability": "A",
+        "coverage": 82.1,
+        "code_smells": 14,
+        "bugs": 0,
+        "duplication": 1.2
+      },
+      "connector": "sonarqube",
+      "ingest_run": "URUN-000000012"
+    },
+    {
+      "signal_id": "USIG-000000014",
+      "subject_universal_id": "UCOS-IMP-000010",
+      "subject_native_id": null,
+      "dimension": "quality",
+      "state": "BLOCKED",
+      "source": "SONARQUBE",
+      "as_of": "2026-07-15T08:44:00Z",
+      "evidence": "sonarqube://project/identity-platform",
+      "metrics": {
+        "quality_gate": "ERROR",
+        "maintainability": "D",
+        "coverage": 41.7,
+        "code_smells": 233,
+        "bugs": 9,
+        "duplication": 12.8
+      },
+      "connector": "sonarqube",
+      "ingest_run": "URUN-000000012"
+    },
+    {
+      "signal_id": "USIG-000000015",
+      "subject_universal_id": "UCOS-BOOK-000000",
+      "subject_native_id": null,
+      "dimension": "implementation",
+      "state": "IMPLEMENTED",
+      "source": "GIT",
+      "as_of": "2026-07-16T09:56:37+05:30",
+      "evidence": "git:4a0f999",
+      "metrics": {
+        "head": "4a0f999",
+        "tracked_book_files": 46,
+        "version_controlled": true
+      },
+      "connector": "git-repository",
+      "ingest_run": "URUN-000000043"
+    }
+  ]
+}

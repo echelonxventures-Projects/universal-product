@@ -1,0 +1,2932 @@
+{
+  "artifact_id": "UCOS-NUCLEUS-IDENTIFIER-DICTIONARY",
+  "authority": "NONE — DERIVED TRUTH. A projection of the nucleus structural registry through the identifier grammar already owned by UCKP-ART-05 and engine/registry/universal/identity.py. It mints nothing, advances no counter, and registers no object: every entry is re-minted from its own identity tuple by verification, so the artifact proves agreement rather than asserting it. Deleting it changes no verdict.",
+  "by_kind": {
+    "CAPABILITY": 129,
+    "COMPOSITION": 26,
+    "LAYER": 14,
+    "NUCLEUS": 43
+  },
+  "closed_set": false,
+  "count": 212,
+  "digest": "cbd65b640a2d2dc44279a3abab6c45486477aac7ac6fba2eecd0ce9115ab3852",
+  "entries": [
+    {
+      "attributes": {
+        "owner_key": "lifecycle"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-8c0c5b30d4a7"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "lifecycle.registration",
+      "owner": "UCOS-NUC-8c0c5b30d4a7",
+      "universal_id": "UCOS-CAP-001c4bf390b8"
+    },
+    {
+      "attributes": {
+        "owner_key": "learning"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-f9e3cbac4ae6"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "learning.authority",
+      "owner": "UCOS-NUC-f9e3cbac4ae6",
+      "universal_id": "UCOS-CAP-02bfaa73896a"
+    },
+    {
+      "attributes": {
+        "owner_key": "location"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-e36817b19a00"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "location.authority",
+      "owner": "UCOS-NUC-e36817b19a00",
+      "universal_id": "UCOS-CAP-04502c4a23b4"
+    },
+    {
+      "attributes": {
+        "owner_key": "workflow"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-6f394f83a7b3"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "workflow.authority",
+      "owner": "UCOS-NUC-6f394f83a7b3",
+      "universal_id": "UCOS-CAP-050d7213284e"
+    },
+    {
+      "attributes": {
+        "owner_key": "knowledge"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-6ce795f6b138"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "knowledge.authority",
+      "owner": "UCOS-NUC-6ce795f6b138",
+      "universal_id": "UCOS-CAP-087670851f15"
+    },
+    {
+      "attributes": {
+        "owner_key": "lineage"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-fbb09af82147"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "lineage.authority",
+      "owner": "UCOS-NUC-fbb09af82147",
+      "universal_id": "UCOS-CAP-0b04e9ef2c16"
+    },
+    {
+      "attributes": {
+        "owner_key": "dependency"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-ad34fdf75b72"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "dependency.registration",
+      "owner": "UCOS-NUC-ad34fdf75b72",
+      "universal_id": "UCOS-CAP-0c77755c2480"
+    },
+    {
+      "attributes": {
+        "owner_key": "ownership"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-7baa8e22ebe9"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "ownership.resolution",
+      "owner": "UCOS-NUC-7baa8e22ebe9",
+      "universal_id": "UCOS-CAP-10cf1d8cf05f"
+    },
+    {
+      "attributes": {
+        "owner_key": "context"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-9f9afb049e80"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "context.resolution",
+      "owner": "UCOS-NUC-9f9afb049e80",
+      "universal_id": "UCOS-CAP-133933d0ea40"
+    },
+    {
+      "attributes": {
+        "owner_key": "pricing"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-53eb3633ebc9"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "pricing.authority",
+      "owner": "UCOS-NUC-53eb3633ebc9",
+      "universal_id": "UCOS-CAP-1966b83b7fb2"
+    },
+    {
+      "attributes": {
+        "owner_key": "language"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-749333531fd0"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "language.authority",
+      "owner": "UCOS-NUC-749333531fd0",
+      "universal_id": "UCOS-CAP-1cc45372468e"
+    },
+    {
+      "attributes": {
+        "owner_key": "regulation"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-82d1c4681d7a"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "regulation.authority",
+      "owner": "UCOS-NUC-82d1c4681d7a",
+      "universal_id": "UCOS-CAP-1dc6838824f2"
+    },
+    {
+      "attributes": {
+        "owner_key": "product"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-58e51e197432"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "product.registration",
+      "owner": "UCOS-NUC-58e51e197432",
+      "universal_id": "UCOS-CAP-1e30482e7a10"
+    },
+    {
+      "attributes": {
+        "owner_key": "culture"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-9d916cd6e5ec"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "culture.registration",
+      "owner": "UCOS-NUC-9d916cd6e5ec",
+      "universal_id": "UCOS-CAP-1ed35ae2fe27"
+    },
+    {
+      "attributes": {
+        "owner_key": "units"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-e37dc4b5f4c8"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "units.registration",
+      "owner": "UCOS-NUC-e37dc4b5f4c8",
+      "universal_id": "UCOS-CAP-20207aa26387"
+    },
+    {
+      "attributes": {
+        "owner_key": "knowledge"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-6ce795f6b138"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "knowledge.registration",
+      "owner": "UCOS-NUC-6ce795f6b138",
+      "universal_id": "UCOS-CAP-2612079576f7"
+    },
+    {
+      "attributes": {
+        "owner_key": "communication"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-fd5059f9cf0e"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "communication.registration",
+      "owner": "UCOS-NUC-fd5059f9cf0e",
+      "universal_id": "UCOS-CAP-266dde116225"
+    },
+    {
+      "attributes": {
+        "owner_key": "security"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-07169ec593f1"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "security.registration",
+      "owner": "UCOS-NUC-07169ec593f1",
+      "universal_id": "UCOS-CAP-2a82a11b5ad0"
+    },
+    {
+      "attributes": {
+        "owner_key": "regulation"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-82d1c4681d7a"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "regulation.resolution",
+      "owner": "UCOS-NUC-82d1c4681d7a",
+      "universal_id": "UCOS-CAP-2b0a10082304"
+    },
+    {
+      "attributes": {
+        "owner_key": "pricing"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-53eb3633ebc9"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "pricing.resolution",
+      "owner": "UCOS-NUC-53eb3633ebc9",
+      "universal_id": "UCOS-CAP-2c71ca520b5b"
+    },
+    {
+      "attributes": {
+        "owner_key": "economy"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-2c9db59e8bfb"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "economy.authority",
+      "owner": "UCOS-NUC-2c9db59e8bfb",
+      "universal_id": "UCOS-CAP-2cd8921fcc41"
+    },
+    {
+      "attributes": {
+        "owner_key": "relationship"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-9ee1b7ec6a73"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "relationship.registration",
+      "owner": "UCOS-NUC-9ee1b7ec6a73",
+      "universal_id": "UCOS-CAP-2d609aa0925a"
+    },
+    {
+      "attributes": {
+        "owner_key": "lifecycle"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-8c0c5b30d4a7"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "lifecycle.authority",
+      "owner": "UCOS-NUC-8c0c5b30d4a7",
+      "universal_id": "UCOS-CAP-2f8a84245684"
+    },
+    {
+      "attributes": {
+        "owner_key": "economy"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-2c9db59e8bfb"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "economy.registration",
+      "owner": "UCOS-NUC-2c9db59e8bfb",
+      "universal_id": "UCOS-CAP-30e308cb030e"
+    },
+    {
+      "attributes": {
+        "owner_key": "location"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-e36817b19a00"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "location.resolution",
+      "owner": "UCOS-NUC-e36817b19a00",
+      "universal_id": "UCOS-CAP-3122537714b7"
+    },
+    {
+      "attributes": {
+        "owner_key": "registry"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-0a2f15e92986"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "registry.authority",
+      "owner": "UCOS-NUC-0a2f15e92986",
+      "universal_id": "UCOS-CAP-330d195e5955"
+    },
+    {
+      "attributes": {
+        "owner_key": "calendar"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-98e337744232"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "calendar.resolution",
+      "owner": "UCOS-NUC-98e337744232",
+      "universal_id": "UCOS-CAP-362fa632c535"
+    },
+    {
+      "attributes": {
+        "owner_key": "intelligence"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-1e60177e1e29"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "intelligence.authority",
+      "owner": "UCOS-NUC-1e60177e1e29",
+      "universal_id": "UCOS-CAP-3af75a350f41"
+    },
+    {
+      "attributes": {
+        "owner_key": "identifier"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-400fd3ffc229"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "identifier.resolution",
+      "owner": "UCOS-NUC-400fd3ffc229",
+      "universal_id": "UCOS-CAP-3b5d2cf65a95"
+    },
+    {
+      "attributes": {
+        "owner_key": "jurisdiction"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-ea0a7f5c5d4a"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "jurisdiction.resolution",
+      "owner": "UCOS-NUC-ea0a7f5c5d4a",
+      "universal_id": "UCOS-CAP-3b7cbf73c601"
+    },
+    {
+      "attributes": {
+        "owner_key": "language"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-749333531fd0"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "language.resolution",
+      "owner": "UCOS-NUC-749333531fd0",
+      "universal_id": "UCOS-CAP-3cc629c0aa2b"
+    },
+    {
+      "attributes": {
+        "owner_key": "evidence"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-d981932c4dc1"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "evidence.authority",
+      "owner": "UCOS-NUC-d981932c4dc1",
+      "universal_id": "UCOS-CAP-3ea5567db5ad"
+    },
+    {
+      "attributes": {
+        "owner_key": "product"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-58e51e197432"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "product.resolution",
+      "owner": "UCOS-NUC-58e51e197432",
+      "universal_id": "UCOS-CAP-3ec4845beb6f"
+    },
+    {
+      "attributes": {
+        "owner_key": "policy"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-e3b85383e592"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "policy.registration",
+      "owner": "UCOS-NUC-e3b85383e592",
+      "universal_id": "UCOS-CAP-3f5a1af0ef50"
+    },
+    {
+      "attributes": {
+        "owner_key": "time"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-914650511a25"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "time.authority",
+      "owner": "UCOS-NUC-914650511a25",
+      "universal_id": "UCOS-CAP-3fb964f12568"
+    },
+    {
+      "attributes": {
+        "owner_key": "execution"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-edaa17079af0"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "execution.resolution",
+      "owner": "UCOS-NUC-edaa17079af0",
+      "universal_id": "UCOS-CAP-407655acdea4"
+    },
+    {
+      "attributes": {
+        "owner_key": "translation"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-dcaff0b39ca4"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "translation.registration",
+      "owner": "UCOS-NUC-dcaff0b39ca4",
+      "universal_id": "UCOS-CAP-40787acbb806"
+    },
+    {
+      "attributes": {
+        "owner_key": "registry"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-0a2f15e92986"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "registry.resolution",
+      "owner": "UCOS-NUC-0a2f15e92986",
+      "universal_id": "UCOS-CAP-436eb0d5db53"
+    },
+    {
+      "attributes": {
+        "owner_key": "security"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-07169ec593f1"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "security.resolution",
+      "owner": "UCOS-NUC-07169ec593f1",
+      "universal_id": "UCOS-CAP-4962a5ad91aa"
+    },
+    {
+      "attributes": {
+        "owner_key": "registry"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-0a2f15e92986"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "registry.registration",
+      "owner": "UCOS-NUC-0a2f15e92986",
+      "universal_id": "UCOS-CAP-4c72b5fa1f85"
+    },
+    {
+      "attributes": {
+        "owner_key": "governance"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-50c9c6953d60"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "governance.authority",
+      "owner": "UCOS-NUC-50c9c6953d60",
+      "universal_id": "UCOS-CAP-4cafb7335881"
+    },
+    {
+      "attributes": {
+        "owner_key": "measurement"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-020040c239d3"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "measurement.registration",
+      "owner": "UCOS-NUC-020040c239d3",
+      "universal_id": "UCOS-CAP-4e21b7bad1d8"
+    },
+    {
+      "attributes": {
+        "owner_key": "payment"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-c4ec775a090b"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "payment.authority",
+      "owner": "UCOS-NUC-c4ec775a090b",
+      "universal_id": "UCOS-CAP-4fe98f091f2b"
+    },
+    {
+      "attributes": {
+        "owner_key": "governance"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-50c9c6953d60"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "governance.registration",
+      "owner": "UCOS-NUC-50c9c6953d60",
+      "universal_id": "UCOS-CAP-51d205deb33b"
+    },
+    {
+      "attributes": {
+        "owner_key": "communication"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-fd5059f9cf0e"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "communication.resolution",
+      "owner": "UCOS-NUC-fd5059f9cf0e",
+      "universal_id": "UCOS-CAP-5287cc5b58ef"
+    },
+    {
+      "attributes": {
+        "owner_key": "tax"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-02a1f4668447"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "tax.resolution",
+      "owner": "UCOS-NUC-02a1f4668447",
+      "universal_id": "UCOS-CAP-545ac7f7bc29"
+    },
+    {
+      "attributes": {
+        "owner_key": "dependency"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-ad34fdf75b72"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "dependency.authority",
+      "owner": "UCOS-NUC-ad34fdf75b72",
+      "universal_id": "UCOS-CAP-549f85b8cc3d"
+    },
+    {
+      "attributes": {
+        "owner_key": "evolution"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-1204c17dfc3b"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "evolution.registration",
+      "owner": "UCOS-NUC-1204c17dfc3b",
+      "universal_id": "UCOS-CAP-56a6d14c4925"
+    },
+    {
+      "attributes": {
+        "owner_key": "media"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-de396cdea4af"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "media.authority",
+      "owner": "UCOS-NUC-de396cdea4af",
+      "universal_id": "UCOS-CAP-56f08753a279"
+    },
+    {
+      "attributes": {
+        "owner_key": "catalog"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-474df1c51468"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "catalog.authority",
+      "owner": "UCOS-NUC-474df1c51468",
+      "universal_id": "UCOS-CAP-589a3fb7d618"
+    },
+    {
+      "attributes": {
+        "owner_key": "billing"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-57103076fbe7"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "billing.resolution",
+      "owner": "UCOS-NUC-57103076fbe7",
+      "universal_id": "UCOS-CAP-5e3dd6154875"
+    },
+    {
+      "attributes": {
+        "owner_key": "lineage"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-fbb09af82147"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "lineage.resolution",
+      "owner": "UCOS-NUC-fbb09af82147",
+      "universal_id": "UCOS-CAP-64d45a010ad4"
+    },
+    {
+      "attributes": {
+        "owner_key": "culture"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-9d916cd6e5ec"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "culture.authority",
+      "owner": "UCOS-NUC-9d916cd6e5ec",
+      "universal_id": "UCOS-CAP-67fb8ce75c47"
+    },
+    {
+      "attributes": {
+        "owner_key": "intelligence"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-1e60177e1e29"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "intelligence.registration",
+      "owner": "UCOS-NUC-1e60177e1e29",
+      "universal_id": "UCOS-CAP-683af295ae03"
+    },
+    {
+      "attributes": {
+        "owner_key": "jurisdiction"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-ea0a7f5c5d4a"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "jurisdiction.registration",
+      "owner": "UCOS-NUC-ea0a7f5c5d4a",
+      "universal_id": "UCOS-CAP-6abb85fa1095"
+    },
+    {
+      "attributes": {
+        "owner_key": "certification"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-712f7a8617c9"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "certification.resolution",
+      "owner": "UCOS-NUC-712f7a8617c9",
+      "universal_id": "UCOS-CAP-6ae0a262534f"
+    },
+    {
+      "attributes": {
+        "owner_key": "identity"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-644f127fc234"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "identity.authority",
+      "owner": "UCOS-NUC-644f127fc234",
+      "universal_id": "UCOS-CAP-6c49a2538c7e"
+    },
+    {
+      "attributes": {
+        "owner_key": "catalog"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-474df1c51468"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "catalog.resolution",
+      "owner": "UCOS-NUC-474df1c51468",
+      "universal_id": "UCOS-CAP-6fae530d0602"
+    },
+    {
+      "attributes": {
+        "owner_key": "media"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-de396cdea4af"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "media.registration",
+      "owner": "UCOS-NUC-de396cdea4af",
+      "universal_id": "UCOS-CAP-72ce7775a173"
+    },
+    {
+      "attributes": {
+        "owner_key": "currency"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-c000b48abb39"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "currency.resolution",
+      "owner": "UCOS-NUC-c000b48abb39",
+      "universal_id": "UCOS-CAP-73c8b501db03"
+    },
+    {
+      "attributes": {
+        "owner_key": "billing"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-57103076fbe7"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "billing.authority",
+      "owner": "UCOS-NUC-57103076fbe7",
+      "universal_id": "UCOS-CAP-79477f713c0b"
+    },
+    {
+      "attributes": {
+        "owner_key": "context"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-9f9afb049e80"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "context.registration",
+      "owner": "UCOS-NUC-9f9afb049e80",
+      "universal_id": "UCOS-CAP-7e942848fa3b"
+    },
+    {
+      "attributes": {
+        "owner_key": "regulation"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-82d1c4681d7a"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "regulation.registration",
+      "owner": "UCOS-NUC-82d1c4681d7a",
+      "universal_id": "UCOS-CAP-806d83935074"
+    },
+    {
+      "attributes": {
+        "owner_key": "culture"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-9d916cd6e5ec"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "culture.resolution",
+      "owner": "UCOS-NUC-9d916cd6e5ec",
+      "universal_id": "UCOS-CAP-80d182fc1707"
+    },
+    {
+      "attributes": {
+        "owner_key": "currency"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-c000b48abb39"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "currency.registration",
+      "owner": "UCOS-NUC-c000b48abb39",
+      "universal_id": "UCOS-CAP-89267a6112bd"
+    },
+    {
+      "attributes": {
+        "owner_key": "location"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-e36817b19a00"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "location.registration",
+      "owner": "UCOS-NUC-e36817b19a00",
+      "universal_id": "UCOS-CAP-8af07329bd8b"
+    },
+    {
+      "attributes": {
+        "owner_key": "security"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-07169ec593f1"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "security.authority",
+      "owner": "UCOS-NUC-07169ec593f1",
+      "universal_id": "UCOS-CAP-8b2d0513a37b"
+    },
+    {
+      "attributes": {
+        "owner_key": "validation"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-b01b33f495f7"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "validation.registration",
+      "owner": "UCOS-NUC-b01b33f495f7",
+      "universal_id": "UCOS-CAP-8e9302f18ecb"
+    },
+    {
+      "attributes": {
+        "owner_key": "identifier"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-400fd3ffc229"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "identifier.authority",
+      "owner": "UCOS-NUC-400fd3ffc229",
+      "universal_id": "UCOS-CAP-8f2f78d87ff3"
+    },
+    {
+      "attributes": {
+        "owner_key": "translation"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-dcaff0b39ca4"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "translation.resolution",
+      "owner": "UCOS-NUC-dcaff0b39ca4",
+      "universal_id": "UCOS-CAP-90031f26c6a9"
+    },
+    {
+      "attributes": {
+        "owner_key": "billing"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-57103076fbe7"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "billing.registration",
+      "owner": "UCOS-NUC-57103076fbe7",
+      "universal_id": "UCOS-CAP-9180559fdccb"
+    },
+    {
+      "attributes": {
+        "owner_key": "measurement"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-020040c239d3"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "measurement.resolution",
+      "owner": "UCOS-NUC-020040c239d3",
+      "universal_id": "UCOS-CAP-950254213064"
+    },
+    {
+      "attributes": {
+        "owner_key": "certification"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-712f7a8617c9"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "certification.registration",
+      "owner": "UCOS-NUC-712f7a8617c9",
+      "universal_id": "UCOS-CAP-95b3568dddd1"
+    },
+    {
+      "attributes": {
+        "owner_key": "media"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-de396cdea4af"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "media.resolution",
+      "owner": "UCOS-NUC-de396cdea4af",
+      "universal_id": "UCOS-CAP-96d40fad275a"
+    },
+    {
+      "attributes": {
+        "owner_key": "identity"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-644f127fc234"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "identity.registration",
+      "owner": "UCOS-NUC-644f127fc234",
+      "universal_id": "UCOS-CAP-9710a770ec06"
+    },
+    {
+      "attributes": {
+        "owner_key": "pricing"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-53eb3633ebc9"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "pricing.registration",
+      "owner": "UCOS-NUC-53eb3633ebc9",
+      "universal_id": "UCOS-CAP-98294dd4459c"
+    },
+    {
+      "attributes": {
+        "owner_key": "trust"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-68005376a02e"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "trust.authority",
+      "owner": "UCOS-NUC-68005376a02e",
+      "universal_id": "UCOS-CAP-9b40b9821095"
+    },
+    {
+      "attributes": {
+        "owner_key": "jurisdiction"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-ea0a7f5c5d4a"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "jurisdiction.authority",
+      "owner": "UCOS-NUC-ea0a7f5c5d4a",
+      "universal_id": "UCOS-CAP-9c9233d09cfd"
+    },
+    {
+      "attributes": {
+        "owner_key": "payment"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-c4ec775a090b"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "payment.resolution",
+      "owner": "UCOS-NUC-c4ec775a090b",
+      "universal_id": "UCOS-CAP-a80d6f3ab30b"
+    },
+    {
+      "attributes": {
+        "owner_key": "workflow"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-6f394f83a7b3"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "workflow.resolution",
+      "owner": "UCOS-NUC-6f394f83a7b3",
+      "universal_id": "UCOS-CAP-aef51dadfbf6"
+    },
+    {
+      "attributes": {
+        "owner_key": "geography"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-85bd8ca96740"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "geography.registration",
+      "owner": "UCOS-NUC-85bd8ca96740",
+      "universal_id": "UCOS-CAP-af51c6cec4bb"
+    },
+    {
+      "attributes": {
+        "owner_key": "tax"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-02a1f4668447"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "tax.registration",
+      "owner": "UCOS-NUC-02a1f4668447",
+      "universal_id": "UCOS-CAP-b14c2c518ead"
+    },
+    {
+      "attributes": {
+        "owner_key": "lineage"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-fbb09af82147"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "lineage.registration",
+      "owner": "UCOS-NUC-fbb09af82147",
+      "universal_id": "UCOS-CAP-b16a6b108125"
+    },
+    {
+      "attributes": {
+        "owner_key": "time"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-914650511a25"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "time.resolution",
+      "owner": "UCOS-NUC-914650511a25",
+      "universal_id": "UCOS-CAP-b3e3323442e4"
+    },
+    {
+      "attributes": {
+        "owner_key": "tax"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-02a1f4668447"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "tax.authority",
+      "owner": "UCOS-NUC-02a1f4668447",
+      "universal_id": "UCOS-CAP-b493e32435fd"
+    },
+    {
+      "attributes": {
+        "owner_key": "language"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-749333531fd0"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "language.registration",
+      "owner": "UCOS-NUC-749333531fd0",
+      "universal_id": "UCOS-CAP-b56ea7cb2cc0"
+    },
+    {
+      "attributes": {
+        "owner_key": "calendar"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-98e337744232"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "calendar.registration",
+      "owner": "UCOS-NUC-98e337744232",
+      "universal_id": "UCOS-CAP-b6859b527ae2"
+    },
+    {
+      "attributes": {
+        "owner_key": "units"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-e37dc4b5f4c8"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "units.resolution",
+      "owner": "UCOS-NUC-e37dc4b5f4c8",
+      "universal_id": "UCOS-CAP-ba6c8e1f1a7f"
+    },
+    {
+      "attributes": {
+        "owner_key": "intelligence"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-1e60177e1e29"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "intelligence.resolution",
+      "owner": "UCOS-NUC-1e60177e1e29",
+      "universal_id": "UCOS-CAP-be587a34cb23"
+    },
+    {
+      "attributes": {
+        "owner_key": "policy"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-e3b85383e592"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "policy.resolution",
+      "owner": "UCOS-NUC-e3b85383e592",
+      "universal_id": "UCOS-CAP-bf18adf41e9f"
+    },
+    {
+      "attributes": {
+        "owner_key": "governance"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-50c9c6953d60"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "governance.resolution",
+      "owner": "UCOS-NUC-50c9c6953d60",
+      "universal_id": "UCOS-CAP-c067b74d4fdf"
+    },
+    {
+      "attributes": {
+        "owner_key": "time"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-914650511a25"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "time.registration",
+      "owner": "UCOS-NUC-914650511a25",
+      "universal_id": "UCOS-CAP-c0c094118fe7"
+    },
+    {
+      "attributes": {
+        "owner_key": "trust"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-68005376a02e"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "trust.resolution",
+      "owner": "UCOS-NUC-68005376a02e",
+      "universal_id": "UCOS-CAP-c16c50603ebe"
+    },
+    {
+      "attributes": {
+        "owner_key": "learning"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-f9e3cbac4ae6"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "learning.resolution",
+      "owner": "UCOS-NUC-f9e3cbac4ae6",
+      "universal_id": "UCOS-CAP-c29e1dcae972"
+    },
+    {
+      "attributes": {
+        "owner_key": "ownership"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-7baa8e22ebe9"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "ownership.authority",
+      "owner": "UCOS-NUC-7baa8e22ebe9",
+      "universal_id": "UCOS-CAP-c56077413126"
+    },
+    {
+      "attributes": {
+        "owner_key": "validation"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-b01b33f495f7"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "validation.resolution",
+      "owner": "UCOS-NUC-b01b33f495f7",
+      "universal_id": "UCOS-CAP-c7245b5f501e"
+    },
+    {
+      "attributes": {
+        "owner_key": "economy"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-2c9db59e8bfb"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "economy.resolution",
+      "owner": "UCOS-NUC-2c9db59e8bfb",
+      "universal_id": "UCOS-CAP-c74a24830582"
+    },
+    {
+      "attributes": {
+        "owner_key": "measurement"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-020040c239d3"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "measurement.authority",
+      "owner": "UCOS-NUC-020040c239d3",
+      "universal_id": "UCOS-CAP-c8c393f43138"
+    },
+    {
+      "attributes": {
+        "owner_key": "geography"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-85bd8ca96740"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "geography.authority",
+      "owner": "UCOS-NUC-85bd8ca96740",
+      "universal_id": "UCOS-CAP-cbbab8fb0af4"
+    },
+    {
+      "attributes": {
+        "owner_key": "evidence"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-d981932c4dc1"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "evidence.registration",
+      "owner": "UCOS-NUC-d981932c4dc1",
+      "universal_id": "UCOS-CAP-cbd72290289a"
+    },
+    {
+      "attributes": {
+        "owner_key": "evolution"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-1204c17dfc3b"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "evolution.authority",
+      "owner": "UCOS-NUC-1204c17dfc3b",
+      "universal_id": "UCOS-CAP-cbdc2dfe8eec"
+    },
+    {
+      "attributes": {
+        "owner_key": "evolution"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-1204c17dfc3b"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "evolution.resolution",
+      "owner": "UCOS-NUC-1204c17dfc3b",
+      "universal_id": "UCOS-CAP-ccf30ec0553a"
+    },
+    {
+      "attributes": {
+        "owner_key": "trust"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-68005376a02e"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "trust.registration",
+      "owner": "UCOS-NUC-68005376a02e",
+      "universal_id": "UCOS-CAP-ce7b0b9f3f60"
+    },
+    {
+      "attributes": {
+        "owner_key": "dependency"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-ad34fdf75b72"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "dependency.resolution",
+      "owner": "UCOS-NUC-ad34fdf75b72",
+      "universal_id": "UCOS-CAP-ce9fe2b80637"
+    },
+    {
+      "attributes": {
+        "owner_key": "catalog"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-474df1c51468"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "catalog.registration",
+      "owner": "UCOS-NUC-474df1c51468",
+      "universal_id": "UCOS-CAP-d4ae992185ef"
+    },
+    {
+      "attributes": {
+        "owner_key": "identity"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-644f127fc234"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "identity.resolution",
+      "owner": "UCOS-NUC-644f127fc234",
+      "universal_id": "UCOS-CAP-d58e74978f20"
+    },
+    {
+      "attributes": {
+        "owner_key": "learning"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-f9e3cbac4ae6"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "learning.registration",
+      "owner": "UCOS-NUC-f9e3cbac4ae6",
+      "universal_id": "UCOS-CAP-d6c2efdcce7e"
+    },
+    {
+      "attributes": {
+        "owner_key": "communication"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-fd5059f9cf0e"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "communication.authority",
+      "owner": "UCOS-NUC-fd5059f9cf0e",
+      "universal_id": "UCOS-CAP-da5cf7548b54"
+    },
+    {
+      "attributes": {
+        "owner_key": "context"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-9f9afb049e80"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "context.authority",
+      "owner": "UCOS-NUC-9f9afb049e80",
+      "universal_id": "UCOS-CAP-dd695929c315"
+    },
+    {
+      "attributes": {
+        "owner_key": "identifier"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-400fd3ffc229"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "identifier.registration",
+      "owner": "UCOS-NUC-400fd3ffc229",
+      "universal_id": "UCOS-CAP-decf04917b26"
+    },
+    {
+      "attributes": {
+        "owner_key": "calendar"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-98e337744232"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "calendar.authority",
+      "owner": "UCOS-NUC-98e337744232",
+      "universal_id": "UCOS-CAP-e273db332f3c"
+    },
+    {
+      "attributes": {
+        "owner_key": "relationship"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-9ee1b7ec6a73"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "relationship.authority",
+      "owner": "UCOS-NUC-9ee1b7ec6a73",
+      "universal_id": "UCOS-CAP-e6667a9fa7dc"
+    },
+    {
+      "attributes": {
+        "owner_key": "evidence"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-d981932c4dc1"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "evidence.resolution",
+      "owner": "UCOS-NUC-d981932c4dc1",
+      "universal_id": "UCOS-CAP-e698633173f0"
+    },
+    {
+      "attributes": {
+        "owner_key": "execution"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-edaa17079af0"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "execution.registration",
+      "owner": "UCOS-NUC-edaa17079af0",
+      "universal_id": "UCOS-CAP-e75396cdfdfd"
+    },
+    {
+      "attributes": {
+        "owner_key": "knowledge"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-6ce795f6b138"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "knowledge.resolution",
+      "owner": "UCOS-NUC-6ce795f6b138",
+      "universal_id": "UCOS-CAP-ea2655de2e38"
+    },
+    {
+      "attributes": {
+        "owner_key": "policy"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-e3b85383e592"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "policy.authority",
+      "owner": "UCOS-NUC-e3b85383e592",
+      "universal_id": "UCOS-CAP-ee68277cb895"
+    },
+    {
+      "attributes": {
+        "owner_key": "ownership"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-7baa8e22ebe9"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "ownership.registration",
+      "owner": "UCOS-NUC-7baa8e22ebe9",
+      "universal_id": "UCOS-CAP-eeb1ccf22217"
+    },
+    {
+      "attributes": {
+        "owner_key": "product"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-58e51e197432"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "product.authority",
+      "owner": "UCOS-NUC-58e51e197432",
+      "universal_id": "UCOS-CAP-efa6e7f415c2"
+    },
+    {
+      "attributes": {
+        "owner_key": "translation"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-dcaff0b39ca4"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "translation.authority",
+      "owner": "UCOS-NUC-dcaff0b39ca4",
+      "universal_id": "UCOS-CAP-f029363a6cba"
+    },
+    {
+      "attributes": {
+        "owner_key": "relationship"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-9ee1b7ec6a73"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "relationship.resolution",
+      "owner": "UCOS-NUC-9ee1b7ec6a73",
+      "universal_id": "UCOS-CAP-f089c74ebcce"
+    },
+    {
+      "attributes": {
+        "owner_key": "geography"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-85bd8ca96740"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "geography.resolution",
+      "owner": "UCOS-NUC-85bd8ca96740",
+      "universal_id": "UCOS-CAP-f2510a9f6501"
+    },
+    {
+      "attributes": {
+        "owner_key": "currency"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-c000b48abb39"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "currency.authority",
+      "owner": "UCOS-NUC-c000b48abb39",
+      "universal_id": "UCOS-CAP-f2de7600fce0"
+    },
+    {
+      "attributes": {
+        "owner_key": "payment"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-c4ec775a090b"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "payment.registration",
+      "owner": "UCOS-NUC-c4ec775a090b",
+      "universal_id": "UCOS-CAP-f48d873fcb6f"
+    },
+    {
+      "attributes": {
+        "owner_key": "execution"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-edaa17079af0"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "execution.authority",
+      "owner": "UCOS-NUC-edaa17079af0",
+      "universal_id": "UCOS-CAP-f5975e9ecaf7"
+    },
+    {
+      "attributes": {
+        "owner_key": "certification"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-712f7a8617c9"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "certification.authority",
+      "owner": "UCOS-NUC-712f7a8617c9",
+      "universal_id": "UCOS-CAP-f5abe9a87481"
+    },
+    {
+      "attributes": {
+        "owner_key": "validation"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-b01b33f495f7"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "validation.authority",
+      "owner": "UCOS-NUC-b01b33f495f7",
+      "universal_id": "UCOS-CAP-f794ff076df4"
+    },
+    {
+      "attributes": {
+        "owner_key": "units"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-e37dc4b5f4c8"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "units.authority",
+      "owner": "UCOS-NUC-e37dc4b5f4c8",
+      "universal_id": "UCOS-CAP-fab03342eca1"
+    },
+    {
+      "attributes": {
+        "owner_key": "workflow"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-6f394f83a7b3"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "workflow.registration",
+      "owner": "UCOS-NUC-6f394f83a7b3",
+      "universal_id": "UCOS-CAP-fdd5425a4ea7"
+    },
+    {
+      "attributes": {
+        "owner_key": "lifecycle"
+      },
+      "code": "CAP",
+      "kind": "CAPABILITY",
+      "lineage": [
+        "UCOS-NUC-8c0c5b30d4a7"
+      ],
+      "namespace": "ucos.capability",
+      "natural_key": "lifecycle.resolution",
+      "owner": "UCOS-NUC-8c0c5b30d4a7",
+      "universal_id": "UCOS-CAP-fde2f34933b7"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "government-platform",
+      "owner": "UCOS-CMPO-0e6da80abbf4",
+      "universal_id": "UCOS-CMPO-0e6da80abbf4"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "crm",
+      "owner": "UCOS-CMPO-0f4a9d5c2081",
+      "universal_id": "UCOS-CMPO-0f4a9d5c2081"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "scientific-platform",
+      "owner": "UCOS-CMPO-10255df26f3c",
+      "universal_id": "UCOS-CMPO-10255df26f3c"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "erp",
+      "owner": "UCOS-CMPO-12106b802045",
+      "universal_id": "UCOS-CMPO-12106b802045"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "x",
+      "owner": "UCOS-CMPO-1f2578401f3c",
+      "universal_id": "UCOS-CMPO-1f2578401f3c"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "banking-platform",
+      "owner": "UCOS-CMPO-257d990341bf",
+      "universal_id": "UCOS-CMPO-257d990341bf"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "lms",
+      "owner": "UCOS-CMPO-2ab41a6a56f3",
+      "universal_id": "UCOS-CMPO-2ab41a6a56f3"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "youtube",
+      "owner": "UCOS-CMPO-3ec8156bd5e1",
+      "universal_id": "UCOS-CMPO-3ec8156bd5e1"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "edtech",
+      "owner": "UCOS-CMPO-44840470789c",
+      "universal_id": "UCOS-CMPO-44840470789c"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "marketplace",
+      "owner": "UCOS-CMPO-4dd3e806a839",
+      "universal_id": "UCOS-CMPO-4dd3e806a839"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "healthcare-platform",
+      "owner": "UCOS-CMPO-63be9d4bb00d",
+      "universal_id": "UCOS-CMPO-63be9d4bb00d"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "instagram",
+      "owner": "UCOS-CMPO-641a688c77b0",
+      "universal_id": "UCOS-CMPO-641a688c77b0"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "amazon",
+      "owner": "UCOS-CMPO-6795a5691dae",
+      "universal_id": "UCOS-CMPO-6795a5691dae"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "insurance-platform",
+      "owner": "UCOS-CMPO-6cd6fe1031b0",
+      "universal_id": "UCOS-CMPO-6cd6fe1031b0"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "industrial-platform",
+      "owner": "UCOS-CMPO-766b0bef5acf",
+      "universal_id": "UCOS-CMPO-766b0bef5acf"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "consultancy-platform",
+      "owner": "UCOS-CMPO-7b51ef448fc5",
+      "universal_id": "UCOS-CMPO-7b51ef448fc5"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "retail",
+      "owner": "UCOS-CMPO-80bfa1717bc6",
+      "universal_id": "UCOS-CMPO-80bfa1717bc6"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "whatsapp",
+      "owner": "UCOS-CMPO-98ece14ae207",
+      "universal_id": "UCOS-CMPO-98ece14ae207"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "linkedin",
+      "owner": "UCOS-CMPO-aa6c9bd19552",
+      "universal_id": "UCOS-CMPO-aa6c9bd19552"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "defence-platform",
+      "owner": "UCOS-CMPO-bb7c1b1dae16",
+      "universal_id": "UCOS-CMPO-bb7c1b1dae16"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "facebook",
+      "owner": "UCOS-CMPO-c2017e5f0700",
+      "universal_id": "UCOS-CMPO-c2017e5f0700"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "civilizational-platform",
+      "owner": "UCOS-CMPO-c23adedaa4f4",
+      "universal_id": "UCOS-CMPO-c23adedaa4f4"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "commerce",
+      "owner": "UCOS-CMPO-ce3c0433fb4b",
+      "universal_id": "UCOS-CMPO-ce3c0433fb4b"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "research-platform",
+      "owner": "UCOS-CMPO-d3bddf655b56",
+      "universal_id": "UCOS-CMPO-d3bddf655b56"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "uber",
+      "owner": "UCOS-CMPO-f242ce0dce95",
+      "universal_id": "UCOS-CMPO-f242ce0dce95"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "composition"
+      },
+      "code": "CMPO",
+      "kind": "COMPOSITION",
+      "lineage": [],
+      "namespace": "ucos.structure.composition",
+      "natural_key": "paytm",
+      "owner": "UCOS-CMPO-f2bf6ff14036",
+      "universal_id": "UCOS-CMPO-f2bf6ff14036"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "runtime",
+      "owner": "UCOS-LYR-11955fc3d4f4",
+      "universal_id": "UCOS-LYR-11955fc3d4f4"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "infrastructure",
+      "owner": "UCOS-LYR-328751bb868f",
+      "universal_id": "UCOS-LYR-328751bb868f"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "governance",
+      "owner": "UCOS-LYR-3cff45017332",
+      "universal_id": "UCOS-LYR-3cff45017332"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "registry",
+      "owner": "UCOS-LYR-3e78d01e9826",
+      "universal_id": "UCOS-LYR-3e78d01e9826"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "security",
+      "owner": "UCOS-LYR-586c1ccdb8af",
+      "universal_id": "UCOS-LYR-586c1ccdb8af"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "book",
+      "owner": "UCOS-LYR-69925b6181e4",
+      "universal_id": "UCOS-LYR-69925b6181e4"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "constitution",
+      "owner": "UCOS-LYR-8a584d79d54d",
+      "universal_id": "UCOS-LYR-8a584d79d54d"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "architecture",
+      "owner": "UCOS-LYR-b8e7dd976531",
+      "universal_id": "UCOS-LYR-b8e7dd976531"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "data",
+      "owner": "UCOS-LYR-c67d804077db",
+      "universal_id": "UCOS-LYR-c67d804077db"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "platform",
+      "owner": "UCOS-LYR-ca870f0b54ac",
+      "universal_id": "UCOS-LYR-ca870f0b54ac"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "engineering",
+      "owner": "UCOS-LYR-d8145191823d",
+      "universal_id": "UCOS-LYR-d8145191823d"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "application",
+      "owner": "UCOS-LYR-dd9062680e7d",
+      "universal_id": "UCOS-LYR-dd9062680e7d"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "service",
+      "owner": "UCOS-LYR-e0de2c2e6ec1",
+      "universal_id": "UCOS-LYR-e0de2c2e6ec1"
+    },
+    {
+      "attributes": {
+        "concept": "",
+        "role": "layer"
+      },
+      "code": "LYR",
+      "kind": "LAYER",
+      "lineage": [],
+      "namespace": "ucos.structure.layer",
+      "natural_key": "implementation",
+      "owner": "UCOS-LYR-ee493730a97d",
+      "universal_id": "UCOS-LYR-ee493730a97d"
+    },
+    {
+      "attributes": {
+        "concept": "measurement",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "measurement",
+      "owner": "UCOS-NUC-020040c239d3",
+      "universal_id": "UCOS-NUC-020040c239d3"
+    },
+    {
+      "attributes": {
+        "concept": "taxation",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "tax",
+      "owner": "UCOS-NUC-02a1f4668447",
+      "universal_id": "UCOS-NUC-02a1f4668447"
+    },
+    {
+      "attributes": {
+        "concept": "security",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "security",
+      "owner": "UCOS-NUC-07169ec593f1",
+      "universal_id": "UCOS-NUC-07169ec593f1"
+    },
+    {
+      "attributes": {
+        "concept": "registration",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "registry",
+      "owner": "UCOS-NUC-0a2f15e92986",
+      "universal_id": "UCOS-NUC-0a2f15e92986"
+    },
+    {
+      "attributes": {
+        "concept": "evolution",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "evolution",
+      "owner": "UCOS-NUC-1204c17dfc3b",
+      "universal_id": "UCOS-NUC-1204c17dfc3b"
+    },
+    {
+      "attributes": {
+        "concept": "intelligence",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "intelligence",
+      "owner": "UCOS-NUC-1e60177e1e29",
+      "universal_id": "UCOS-NUC-1e60177e1e29"
+    },
+    {
+      "attributes": {
+        "concept": "economic-system",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "economy",
+      "owner": "UCOS-NUC-2c9db59e8bfb",
+      "universal_id": "UCOS-NUC-2c9db59e8bfb"
+    },
+    {
+      "attributes": {
+        "concept": "universal-identifier",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "identifier",
+      "owner": "UCOS-NUC-400fd3ffc229",
+      "universal_id": "UCOS-NUC-400fd3ffc229"
+    },
+    {
+      "attributes": {
+        "concept": "catalog",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "catalog",
+      "owner": "UCOS-NUC-474df1c51468",
+      "universal_id": "UCOS-NUC-474df1c51468"
+    },
+    {
+      "attributes": {
+        "concept": "governance",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "governance",
+      "owner": "UCOS-NUC-50c9c6953d60",
+      "universal_id": "UCOS-NUC-50c9c6953d60"
+    },
+    {
+      "attributes": {
+        "concept": "pricing",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "pricing",
+      "owner": "UCOS-NUC-53eb3633ebc9",
+      "universal_id": "UCOS-NUC-53eb3633ebc9"
+    },
+    {
+      "attributes": {
+        "concept": "billing",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "billing",
+      "owner": "UCOS-NUC-57103076fbe7",
+      "universal_id": "UCOS-NUC-57103076fbe7"
+    },
+    {
+      "attributes": {
+        "concept": "product",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "product",
+      "owner": "UCOS-NUC-58e51e197432",
+      "universal_id": "UCOS-NUC-58e51e197432"
+    },
+    {
+      "attributes": {
+        "concept": "identity",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "identity",
+      "owner": "UCOS-NUC-644f127fc234",
+      "universal_id": "UCOS-NUC-644f127fc234"
+    },
+    {
+      "attributes": {
+        "concept": "trust",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "trust",
+      "owner": "UCOS-NUC-68005376a02e",
+      "universal_id": "UCOS-NUC-68005376a02e"
+    },
+    {
+      "attributes": {
+        "concept": "knowledge",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "knowledge",
+      "owner": "UCOS-NUC-6ce795f6b138",
+      "universal_id": "UCOS-NUC-6ce795f6b138"
+    },
+    {
+      "attributes": {
+        "concept": "workflow",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "workflow",
+      "owner": "UCOS-NUC-6f394f83a7b3",
+      "universal_id": "UCOS-NUC-6f394f83a7b3"
+    },
+    {
+      "attributes": {
+        "concept": "certification",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "certification",
+      "owner": "UCOS-NUC-712f7a8617c9",
+      "universal_id": "UCOS-NUC-712f7a8617c9"
+    },
+    {
+      "attributes": {
+        "concept": "language",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "language",
+      "owner": "UCOS-NUC-749333531fd0",
+      "universal_id": "UCOS-NUC-749333531fd0"
+    },
+    {
+      "attributes": {
+        "concept": "canonical-ownership",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "ownership",
+      "owner": "UCOS-NUC-7baa8e22ebe9",
+      "universal_id": "UCOS-NUC-7baa8e22ebe9"
+    },
+    {
+      "attributes": {
+        "concept": "regulation",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "regulation",
+      "owner": "UCOS-NUC-82d1c4681d7a",
+      "universal_id": "UCOS-NUC-82d1c4681d7a"
+    },
+    {
+      "attributes": {
+        "concept": "geography",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "geography",
+      "owner": "UCOS-NUC-85bd8ca96740",
+      "universal_id": "UCOS-NUC-85bd8ca96740"
+    },
+    {
+      "attributes": {
+        "concept": "constitutional-lifecycle",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "lifecycle",
+      "owner": "UCOS-NUC-8c0c5b30d4a7",
+      "universal_id": "UCOS-NUC-8c0c5b30d4a7"
+    },
+    {
+      "attributes": {
+        "concept": "time",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "time",
+      "owner": "UCOS-NUC-914650511a25",
+      "universal_id": "UCOS-NUC-914650511a25"
+    },
+    {
+      "attributes": {
+        "concept": "calendar",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "calendar",
+      "owner": "UCOS-NUC-98e337744232",
+      "universal_id": "UCOS-NUC-98e337744232"
+    },
+    {
+      "attributes": {
+        "concept": "culture",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "culture",
+      "owner": "UCOS-NUC-9d916cd6e5ec",
+      "universal_id": "UCOS-NUC-9d916cd6e5ec"
+    },
+    {
+      "attributes": {
+        "concept": "relationship",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "relationship",
+      "owner": "UCOS-NUC-9ee1b7ec6a73",
+      "universal_id": "UCOS-NUC-9ee1b7ec6a73"
+    },
+    {
+      "attributes": {
+        "concept": "context",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "context",
+      "owner": "UCOS-NUC-9f9afb049e80",
+      "universal_id": "UCOS-NUC-9f9afb049e80"
+    },
+    {
+      "attributes": {
+        "concept": "dependency",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "dependency",
+      "owner": "UCOS-NUC-ad34fdf75b72",
+      "universal_id": "UCOS-NUC-ad34fdf75b72"
+    },
+    {
+      "attributes": {
+        "concept": "validation",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "validation",
+      "owner": "UCOS-NUC-b01b33f495f7",
+      "universal_id": "UCOS-NUC-b01b33f495f7"
+    },
+    {
+      "attributes": {
+        "concept": "currency",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "currency",
+      "owner": "UCOS-NUC-c000b48abb39",
+      "universal_id": "UCOS-NUC-c000b48abb39"
+    },
+    {
+      "attributes": {
+        "concept": "payment",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "payment",
+      "owner": "UCOS-NUC-c4ec775a090b",
+      "universal_id": "UCOS-NUC-c4ec775a090b"
+    },
+    {
+      "attributes": {
+        "concept": "evidence",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "evidence",
+      "owner": "UCOS-NUC-d981932c4dc1",
+      "universal_id": "UCOS-NUC-d981932c4dc1"
+    },
+    {
+      "attributes": {
+        "concept": "translation",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "translation",
+      "owner": "UCOS-NUC-dcaff0b39ca4",
+      "universal_id": "UCOS-NUC-dcaff0b39ca4"
+    },
+    {
+      "attributes": {
+        "concept": "media",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "media",
+      "owner": "UCOS-NUC-de396cdea4af",
+      "universal_id": "UCOS-NUC-de396cdea4af"
+    },
+    {
+      "attributes": {
+        "concept": "location",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "location",
+      "owner": "UCOS-NUC-e36817b19a00",
+      "universal_id": "UCOS-NUC-e36817b19a00"
+    },
+    {
+      "attributes": {
+        "concept": "units-of-measure",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "units",
+      "owner": "UCOS-NUC-e37dc4b5f4c8",
+      "universal_id": "UCOS-NUC-e37dc4b5f4c8"
+    },
+    {
+      "attributes": {
+        "concept": "policy",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "policy",
+      "owner": "UCOS-NUC-e3b85383e592",
+      "universal_id": "UCOS-NUC-e3b85383e592"
+    },
+    {
+      "attributes": {
+        "concept": "jurisdiction",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "jurisdiction",
+      "owner": "UCOS-NUC-ea0a7f5c5d4a",
+      "universal_id": "UCOS-NUC-ea0a7f5c5d4a"
+    },
+    {
+      "attributes": {
+        "concept": "execution",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "execution",
+      "owner": "UCOS-NUC-edaa17079af0",
+      "universal_id": "UCOS-NUC-edaa17079af0"
+    },
+    {
+      "attributes": {
+        "concept": "learning",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "learning",
+      "owner": "UCOS-NUC-f9e3cbac4ae6",
+      "universal_id": "UCOS-NUC-f9e3cbac4ae6"
+    },
+    {
+      "attributes": {
+        "concept": "lineage",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "lineage",
+      "owner": "UCOS-NUC-fbb09af82147",
+      "universal_id": "UCOS-NUC-fbb09af82147"
+    },
+    {
+      "attributes": {
+        "concept": "communication",
+        "role": "nucleus"
+      },
+      "code": "NUC",
+      "kind": "NUCLEUS",
+      "lineage": [],
+      "namespace": "ucos.structure.nucleus",
+      "natural_key": "communication",
+      "owner": "UCOS-NUC-fd5059f9cf0e",
+      "universal_id": "UCOS-NUC-fd5059f9cf0e"
+    }
+  ],
+  "generation_context": {
+    "determinism": "pure over the registry state; no clock, no network, no machine path",
+    "lifecycle": "REGENERATED",
+    "producer": "engine/nucleus/cli.py",
+    "regeneration_command": "python -m engine.nucleus.cli dictionary --write"
+  },
+  "owner": "UCOS-NUCLEUS-001",
+  "schema": "ucos-universal-identifier-dictionary",
+  "source": {
+    "identifier_grammar": "engine.registry.universal.identity.deterministic_id",
+    "projection": "engine.registry.universal.dictionary.dictionary_for",
+    "registry": "engine.nucleus.registry.build_seed_registry",
+    "registry_digest": "46506f2287012463801e81a18dd1c377b39fb0828dae9ef2e3d422a108199fd0"
+  },
+  "upper_limit": null,
+  "verification": {
+    "by_kind": {
+      "CAPABILITY": 129,
+      "COMPOSITION": 26,
+      "LAYER": 14,
+      "NUCLEUS": 43
+    },
+    "count": 212,
+    "duplicated_natural_keys": [],
+    "parse_coverage": 1.0,
+    "schema": "ucos-identifier-dictionary-verification",
+    "status": "PASS",
+    "unparsed": [],
+    "unreproducible": [],
+    "version": "1.0.0"
+  },
+  "version": "1.0.0"
+}

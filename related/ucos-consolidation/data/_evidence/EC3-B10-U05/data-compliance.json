@@ -1,0 +1,73 @@
+{
+  "compliance_format": "ucos-data-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "storage-typed",
+        "storage-identified"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UDL-03), identified and objecthood-bound (UDL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UDL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "data-value-fidelity"
+      ],
+      "id": "C3",
+      "requirement": "Value is ENG-003 value (UDL-06).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "storage-placement-explicit",
+        "storage-durability-declared",
+        "storage-schema-aligned"
+      ],
+      "id": "C4",
+      "requirement": "Entity/attribute/schema structure is explicit (UDL-07/08/10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-relationships-closed",
+        "founding-acyclic",
+        "storage-persists-entities"
+      ],
+      "id": "C5",
+      "requirement": "Relationships are ENG-005 references; founding structure acyclic (UDL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "storage-independence",
+        "storage-topology-consistent",
+        "storage-persistence-by-reference"
+      ],
+      "id": "C6",
+      "materially_exercised": true,
+      "note": "storage is abstract topology: placement/durability/schema-alignment declared and persistence bound by reference to RUNTIME state, naming no engine/format/query/vendor (UDL-11 Storage Independence; DTA-01 / DTA-K5)",
+      "requirement": "Selects no technology; describes storage abstractly (UDL-11/15).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive"
+      ],
+      "id": "C7",
+      "requirement": "Confers no authority and embeds no secret (UDL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "DATA-001 §12",
+  "target_id": "UCOS-STORAGE-ucos.data.storage.foundation-b63d474835e6f132"
+}

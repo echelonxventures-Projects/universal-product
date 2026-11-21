@@ -1,0 +1,1039 @@
+{
+  "$comment": "DECLARED CONSTITUTIONAL METADATA — the constitutional stage graph of the Universal Constitutional Lifecycle. This file is DATA. It is discovered, never imported: ucl_engine.py contains no stage id, no stage name and no owner path, and the declaration ucl-declaration.json contains none either. Both discover this manifest through a located manifest pattern, so a future constitutional stage becomes automatically discoverable by appending a node record here, or by adding a second manifest that the same pattern matches — with NO change to the engine, NO change to the declaration and NO architectural redesign. The graph is therefore OPEN: nothing in this file, in the declaration or in the engine records how many stages there are, and no field bounds the count. Ordinals ascend in steps of ten precisely so that a stage may be admitted BETWEEN two existing stages without renumbering any of them.",
+  "$authority_comment": "AUTHORITY = NONE (DERIVED TRUTH). No node here creates a stage, an owner, an authority or a gate. Every node BINDS a constitutional stage to an owner the repository has already legislated and, where Repository Truth already declares an executable or governed counterpart, to that counterpart by reference. UCIC-001 owns the single deterministic lifecycle every capability follows; this manifest EXTENDS its stage coverage and replaces nothing. Where a node and a located instrument differ, the located instrument governs.",
+  "$implementation_independence_comment": "Every node's owner and authority_owner is a DECLARED CONSTITUTIONAL INSTRUMENT — a constitution, an architecture, a determination, a register or a declared metadata file. The optional `evidence` list may cite implementation source, but evidence NEVER originates a node, an edge, an ordering or an obligation: it only corroborates one that declared metadata already established. The constitutional graph is therefore implementation-independent, and deleting every module named in every `evidence` list would not remove a single stage from the graph.",
+  "manifest": {
+    "id": "UCL-MANIFEST-001",
+    "name": "Universal Constitutional Lifecycle — Constitutional Stage Graph",
+    "version": "1.0",
+    "discovery_class": "constitutional-metadata",
+    "format": "json",
+    "open": true,
+    "closed_enumeration": false,
+    "admission": "Append a node record to `nodes`, or add another manifest matching the located manifest pattern. No engine change, no declaration change, no architectural redesign.",
+    "ordinal_step": 10,
+    "$ordinal_step_comment": "The step is recorded so the gap between consecutive stages is itself declared metadata: a stage admitted between two others takes an ordinal in the gap and no existing ordinal moves.",
+    "reentry_semantics": "A node carrying `reenters` re-enters the graph at the named node. Re-entry is NOT a dependency edge: it is the constitutional statement that the lifecycle does not terminate (AUTH-INF-001 CR-INF-001 Ω∞ non-terminality). Recording it as an edge would make the graph cyclic and unorderable; recording it as a property keeps the graph orderable AND non-terminal."
+  },
+  "nodes": [
+    {
+      "id": "UCL-S-0010",
+      "stage": "Receive Goal",
+      "ordinal": 10,
+      "group": "GOAL",
+      "owner": "00-MASTER/UCOS-AEE-001/01-MANDATE-COVERAGE-REGISTER.md",
+      "authority": "A goal is admissible only as a mandate the repository records; an unrecorded goal is not an engineering goal.",
+      "authority_owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "depends_on": [],
+      "binds": [],
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/aee_engine.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0020",
+      "stage": "Understand",
+      "ordinal": 20,
+      "group": "GOAL",
+      "owner": "00-MASTER/UCOS-AEE-001/04-DISCOVERY-AND-CLASSIFICATION-REGISTER.md",
+      "authority": "A received goal is classified before it is acted on; classification is discovery, not interpretation.",
+      "authority_owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "depends_on": [
+        "UCL-S-0010"
+      ],
+      "binds": [],
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/05-DECISION-REGISTER.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0030",
+      "stage": "Context Assimilation",
+      "ordinal": 30,
+      "group": "DISCOVERY",
+      "owner": "00-MASTER/UAKOS-CLOSURE-008/assimilation.json",
+      "authority": "CEP-002 §28.5 — Repository Truth is the permanent institutional memory, not conversation history.",
+      "authority_owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0020"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-01"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-ASSIMILATE"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0040",
+      "stage": "Repository Truth Discovery",
+      "ordinal": 40,
+      "group": "DISCOVERY",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "authority": "Repository Truth is read, never written by the reader; it is the sole admissible evidence.",
+      "authority_owner": "00-MASTER/UAKOS-CLOSURE-002/19-REPOSITORY-TRUTH-DETERMINATION.md",
+      "depends_on": [
+        "UCL-S-0030"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-06"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-CLOSURE"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0050",
+      "stage": "Knowledge Discovery",
+      "ordinal": 50,
+      "group": "DISCOVERY",
+      "owner": "knowledge/canonical-knowledge.json",
+      "authority": "Knowledge Once — canonical knowledge is homed exactly once and discovered, never redefined.",
+      "authority_owner": "00-MASTER/UCOS-EKAP-001/01-ENTERPRISE-KNOWLEDGE-INVENTORY.md",
+      "depends_on": [
+        "UCL-S-0040"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-02"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-UKAP"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UKAP-001/corpus_engine.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0060",
+      "stage": "Canonical Owner Discovery",
+      "ordinal": 60,
+      "group": "DISCOVERY",
+      "owner": "02-CANONICAL-OWNERSHIP-MATRIX.md",
+      "authority": "CMG Art LXXVI–LXXVII — every concern has exactly one canonical owner; the map concern→owner is injective.",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0040"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-05"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCOS-RIB-001/03-CANONICAL-OWNER-MATRIX.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0070",
+      "stage": "Capability Discovery",
+      "ordinal": 70,
+      "group": "DISCOVERY",
+      "owner": "00-MASTER/UCOS-RIB-001/02-REPOSITORY-CAPABILITY-GRAPH.md",
+      "authority": "UCIC-001 — the capability set is discovered from the repository, never enumerated by the executor.",
+      "authority_owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "depends_on": [
+        "UCL-S-0060"
+      ],
+      "binds": [
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-RIB"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCOS-RIB-001/08-REUSE-ANALYSIS.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0080",
+      "stage": "Dependency Discovery",
+      "ordinal": 80,
+      "group": "DISCOVERY",
+      "owner": "03-DEPENDENCY-GRAPH.md",
+      "authority": "Dependencies are derived and acyclic; a cycle is a defect, never a sequencing preference.",
+      "authority_owner": "00-MASTER/UCOS-RIB-001/05-DEPENDENCY-GRAPH.md",
+      "depends_on": [
+        "UCL-S-0070"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-08"
+        }
+      ],
+      "evidence": [
+        "05-DEPENDENCY-CLOSURE.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0090",
+      "stage": "Constraint Discovery",
+      "ordinal": 90,
+      "group": "DISCOVERY",
+      "owner": "08-QUALITY-GATES.md",
+      "authority": "Every constraint is a declared gate; an undeclared constraint binds nothing.",
+      "authority_owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0080"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-04"
+        }
+      ],
+      "evidence": [
+        "06-VALIDATION-READINESS.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0100",
+      "stage": "Gap Discovery",
+      "ordinal": 100,
+      "group": "DISCOVERY",
+      "owner": "04-REPOSITORY-GAP-ANALYSIS.md",
+      "authority": "A gap is measured against Repository Truth; absence of evidence is never evidence of absence of a gap.",
+      "authority_owner": "00-MASTER/URRC-000001/06-GAP-MATRIX.md",
+      "depends_on": [
+        "UCL-S-0090"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-06"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-URRC"
+        }
+      ],
+      "evidence": [
+        "02-GAP-CLASSIFICATION.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0110",
+      "stage": "Reuse Before Create",
+      "ordinal": 110,
+      "group": "REUSE",
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "authority": "CMG Art LXXVII.2(a)/LXXVII.4 — where a canonical owner resolves, CREATE is refused and EXTEND is the only lawful disposition.",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0100"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-03"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/URRC-000001/04-DUPLICATION-MATRIX.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0120",
+      "stage": "Observe",
+      "ordinal": 120,
+      "group": "PERCEPTION",
+      "owner": "00-MASTER/UEI-000001/02-UNIVERSAL-OBSERVATION-SPECIFICATION.md",
+      "authority": "Observation precedes inference; what is not observed may not be asserted.",
+      "authority_owner": "00-MASTER/UEI-000001/01-UNIVERSAL-EVOLUTION-INTELLIGENCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0110"
+      ],
+      "binds": [
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-UEI"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/03-OBSERVATION-REGISTER.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0130",
+      "stage": "Perceive",
+      "ordinal": 130,
+      "group": "PERCEPTION",
+      "owner": "00-MASTER/UAIE-000001/01-FACULTY-BINDING-REGISTER.md",
+      "authority": "Every architectural faculty resolves to a located owner, a home and a registered analysis.",
+      "authority_owner": "00-MASTER/UAIE-000001/uaie-architecture.json",
+      "depends_on": [
+        "UCL-S-0120"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-22"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-UAIE"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UAIE-000001/uaie_engine.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0140",
+      "stage": "Measure",
+      "ordinal": 140,
+      "group": "PERCEPTION",
+      "owner": "00-MASTER/UAIE-000001/02-REGISTER-PLANE.md",
+      "authority": "A declared property that nothing measures is reported DECLARED-NOT-MEASURABLE, never passed silently.",
+      "authority_owner": "00-MASTER/UAIE-000001/uaie-architecture.json",
+      "depends_on": [
+        "UCL-S-0130"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-22"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UAIE-000001/03-CROSS-REGISTER-CONSISTENCY.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0150",
+      "stage": "Evidence",
+      "ordinal": 150,
+      "group": "EVIDENCE",
+      "owner": "00-MASTER/UCOS-AEE-001/06-ITERATION-LEDGER.md",
+      "authority": "Evidence is emitted to a journal before a claim rests on it; fail-closed on missing evidence.",
+      "authority_owner": "00-MASTER/UER-000001/05-UNIVERSAL-EXECUTION-JOURNAL-SPECIFICATION.md",
+      "depends_on": [
+        "UCL-S-0140"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-12"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UER-000001/06-UNIVERSAL-WORK-PACKAGE-LEDGER-SPECIFICATION.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0160",
+      "stage": "Validate",
+      "ordinal": 160,
+      "group": "ASSURANCE",
+      "owner": "00-MASTER/UEI-000001/19-VALIDATION-REPORT.md",
+      "authority": "Validation checks the shape of what was produced against its declared contract.",
+      "authority_owner": "08-QUALITY-GATES.md",
+      "depends_on": [
+        "UCL-S-0150"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-10"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-VERIFY"
+        }
+      ],
+      "evidence": [
+        "06-VALIDATION-RECONCILIATION.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0170",
+      "stage": "Verify",
+      "ordinal": 170,
+      "group": "ASSURANCE",
+      "owner": "VERIFICATION-RUNBOOK.md",
+      "authority": "Verification re-derives the claim from the repository; a command exiting zero is not verification.",
+      "authority_owner": "08-QUALITY-GATES.md",
+      "depends_on": [
+        "UCL-S-0160"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-10"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-VERIFY"
+        }
+      ],
+      "evidence": [
+        "verify.sh",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0180",
+      "stage": "Learn",
+      "ordinal": 180,
+      "group": "COGNITION",
+      "owner": "00-MASTER/UEI-000001/03-UNIVERSAL-LEARNING-SPECIFICATION.md",
+      "authority": "Learning appends; it never rewrites what was previously recorded.",
+      "authority_owner": "00-MASTER/UEI-000001/01-UNIVERSAL-EVOLUTION-INTELLIGENCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0170"
+      ],
+      "binds": [
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-UEI"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/08-LEARNING-LEDGER.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0190",
+      "stage": "Reason",
+      "ordinal": 190,
+      "group": "COGNITION",
+      "owner": "00-MASTER/UEI-000001/06-UNIVERSAL-IMPACT-ANALYSIS-SPECIFICATION.md",
+      "authority": "Reasoning is traceable to observed evidence and declared law, never to preference.",
+      "authority_owner": "00-MASTER/UEI-000001/01-UNIVERSAL-EVOLUTION-INTELLIGENCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0180"
+      ],
+      "binds": [],
+      "evidence": [
+        "engine/uckp/intelligence.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0200",
+      "stage": "Reflect",
+      "ordinal": 200,
+      "group": "COGNITION",
+      "owner": "00-MASTER/UEI-000001/07-UNIVERSAL-SIMULATION-SPECIFICATION.md",
+      "authority": "A change is simulated against the repository before it is committed to the repository.",
+      "authority_owner": "00-MASTER/UEI-000001/01-UNIVERSAL-EVOLUTION-INTELLIGENCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0190"
+      ],
+      "binds": [],
+      "evidence": [
+        "00-MASTER/UEI-000001/05-UNIVERSAL-RECOMMENDATION-SPECIFICATION.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0210",
+      "stage": "Challenge",
+      "ordinal": 210,
+      "group": "CORRECTION",
+      "owner": "00-MASTER/URRC-000001/05-CONFLICT-MATRIX.md",
+      "authority": "A measured divergence is referred to its owner under CEP-002 Art 23.2, never adjudicated by the measurer.",
+      "authority_owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0200"
+      ],
+      "binds": [],
+      "evidence": [
+        "00-MASTER/URRC-000001/04-DUPLICATION-MATRIX.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0220",
+      "stage": "Correct",
+      "ordinal": 220,
+      "group": "CORRECTION",
+      "owner": "00-MASTER/UER-000001/03-UNIVERSAL-RECOVERY-POLICY.md",
+      "authority": "Correction is a forward append with a recorded cause; the past is never rewritten.",
+      "authority_owner": "00-MASTER/UER-000001/01-UNIVERSAL-EXECUTION-RESILIENCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0210"
+      ],
+      "binds": [
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-UER"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UER-000001/02-UNIVERSAL-CHECKPOINT-POLICY.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0230",
+      "stage": "Improve",
+      "ordinal": 230,
+      "group": "CORRECTION",
+      "owner": "00-MASTER/UEI-000001/08-UNIVERSAL-IMPROVEMENT-DISCOVERY-SPECIFICATION.md",
+      "authority": "Improvement is discovered from measured position, not proposed from intent.",
+      "authority_owner": "00-MASTER/UEI-000001/01-UNIVERSAL-EVOLUTION-INTELLIGENCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0220"
+      ],
+      "binds": [],
+      "evidence": [
+        "00-MASTER/UEI-000001/11-CONTINUOUS-IMPROVEMENT-SPECIFICATION.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0240",
+      "stage": "Architect",
+      "ordinal": 240,
+      "group": "CONSTRUCTION",
+      "owner": "03-ARCHITECTURAL-COMPLETENESS.md",
+      "authority": "CMG Art LXXVI — an architectural construct is admitted by the construct-admission lifecycle, never by assertion.",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0230"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-05"
+        }
+      ],
+      "evidence": [
+        "02-ARCHITECTURAL-STABILITY-CERTIFICATION.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0250",
+      "stage": "Engineer",
+      "ordinal": 250,
+      "group": "CONSTRUCTION",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "authority": "UCIC-001 — the single deterministic lifecycle every capability follows; no capability may bypass it or skip a gate.",
+      "authority_owner": "00-MASTER/MCS-000-MASTER-CONTEXT-SYSTEM-ARCHITECTURE.md",
+      "depends_on": [
+        "UCL-S-0240"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-13"
+        }
+      ],
+      "evidence": [
+        "02-IMPLEMENTATION-MANIFEST.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0260",
+      "stage": "Test",
+      "ordinal": 260,
+      "group": "CONSTRUCTION",
+      "owner": "06-VALIDATION-READINESS.md",
+      "authority": "A capability is tested against its declared contract before it is certified against it.",
+      "authority_owner": "08-QUALITY-GATES.md",
+      "depends_on": [
+        "UCL-S-0250"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-14"
+        }
+      ],
+      "evidence": [
+        "engine/tests/conftest.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0270",
+      "stage": "Govern",
+      "ordinal": 270,
+      "group": "GOVERNANCE",
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "authority": "Governance is exercised by the declared owner through a declared gate; no parallel authority may arise.",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0260"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-09"
+        }
+      ],
+      "evidence": [
+        "09-EXECUTION-GOVERNANCE.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0280",
+      "stage": "Certify",
+      "ordinal": 280,
+      "group": "GOVERNANCE",
+      "owner": "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md",
+      "authority": "Certification closes scope, never evolution; a certificate rests only on gates that ran.",
+      "authority_owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0270"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-11"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-UCCEP"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCCEP-000000/uccep_engine.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0290",
+      "stage": "Integrate",
+      "ordinal": 290,
+      "group": "INTEGRATION",
+      "owner": "05-CANONICAL-INTEGRATION-PLAN.md",
+      "authority": "Integration binds a capability into the located canonical structure; it never forks a parallel structure.",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0280"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-05"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCOS-RIB-001/04-REPOSITORY-INTEGRATION-BLUEPRINT.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0300",
+      "stage": "Register",
+      "ordinal": 300,
+      "group": "INTEGRATION",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+      "authority": "REG-AUTO-001 — registration is automatic and derived; an unregistered artifact is not an artifact.",
+      "authority_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-REG-AUTO-001-AUTOMATIC-ARTIFACT-REGISTRATION-STANDARD.md",
+      "depends_on": [
+        "UCL-S-0290"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-07"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-REGISTER"
+        }
+      ],
+      "evidence": [
+        "00-BOOK/tools/ukb.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0310",
+      "stage": "Assign Universal Constitutional Identifier",
+      "ordinal": 310,
+      "group": "IDENTITY",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "authority": "AIF Part III A/G-AUTH — there is exactly ONE identity authority; allocation is append-only and never reissued.",
+      "authority_owner": "02-MASTER/UCOS-Ω∞-ABSOLUTE-IDENTITY-FEDERATION-AND-CONTINUITY-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0300"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-24"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-UIS"
+        }
+      ],
+      "evidence": [
+        "00-BOOK/DATA/id-ledger.json",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0320",
+      "stage": "Update Universal Constitutional Identifier Dictionary",
+      "ordinal": 320,
+      "group": "IDENTITY",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md",
+      "authority": "ENG-001 D11 — a namespace minted without a declared classification rule is a namespace no authority governs.",
+      "authority_owner": "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md",
+      "depends_on": [
+        "UCL-S-0310"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-24"
+        }
+      ],
+      "evidence": [
+        "engine/uckp/vocabulary.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0330",
+      "stage": "Update Universal Registry",
+      "ordinal": 330,
+      "group": "IDENTITY",
+      "owner": "00-BOOK/DATA/artifacts.json",
+      "authority": "UMB-005 — the registry is DERIVED truth, regenerated and never hand-authored.",
+      "authority_owner": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+      "depends_on": [
+        "UCL-S-0320"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-07"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-REGISTER"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCCEP-000000/04-UNIVERSAL-REGISTRY-CERTIFICATION.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0340",
+      "stage": "Update Universal Bookkeeping",
+      "ordinal": 340,
+      "group": "IDENTITY",
+      "owner": "00-BOOK/DATA/id-ledger.json",
+      "authority": "Bookkeeping is append-only: every prior content hash is preserved and no snapshot is ever edited.",
+      "authority_owner": "00-BOOK/MASTER-BOOK/UMB-IMP-001-AUTOMATIC-REGISTRATION-AND-ENFORCEMENT-REALIZATION.md",
+      "depends_on": [
+        "UCL-S-0330"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-07"
+        }
+      ],
+      "evidence": [
+        "00-BOOK/MASTER-BOOK/UMB-009-VERSION-ARCHITECTURE.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0350",
+      "stage": "Update Universal Lineage",
+      "ordinal": 350,
+      "group": "IDENTITY",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-010-LINEAGE-ARCHITECTURE.md",
+      "authority": "UCI-001 Part XVI.5 — lineage and evolution are DERIVED projections over recorded history; no new store is created.",
+      "authority_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-UCI-001-UNIVERSAL-CHANGE-INTELLIGENCE-AND-REGENERATION-STANDARD.md",
+      "depends_on": [
+        "UCL-S-0340"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-07"
+        }
+      ],
+      "evidence": [
+        "00-BOOK/MASTER-BOOK/UMB-008-CHANGE-ARCHITECTURE.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0360",
+      "stage": "Update Repository Truth",
+      "ordinal": 360,
+      "group": "TRUTH",
+      "owner": "00-MASTER/UCCEP-000000/02-REPOSITORY-TRUTH-REGISTER.md",
+      "authority": "Repository Truth is regenerated by its owner alone; a reader that repaired it would commit the defect it reports.",
+      "authority_owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0350"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-06"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-CLOSURE"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0370",
+      "stage": "Replay",
+      "ordinal": 370,
+      "group": "CONVERGENCE",
+      "owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "authority": "Committed registers must be the product of their declaration; drift means the committed bytes evidence nothing.",
+      "authority_owner": "00-MASTER/UER-000001/01-UNIVERSAL-EXECUTION-RESILIENCE-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0360"
+      ],
+      "binds": [
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-UER"
+        }
+      ],
+      "evidence": [
+        "engine/runtime/execution/replay.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0380",
+      "stage": "Deterministic Fixed Point",
+      "ordinal": 380,
+      "group": "CONVERGENCE",
+      "owner": "00-MASTER/UCCEP-000000/19-REPOSITORY-FIXED-POINT-CLOSURE.md",
+      "authority": "RFP-2/RFP-3 — no commit self-reference and no working-tree self-observation, so the repository converges.",
+      "authority_owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "depends_on": [
+        "UCL-S-0370"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-15"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCOS-RFP-001/rfp_engine.py",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0390",
+      "stage": "Extract Engineering Knowledge",
+      "ordinal": 390,
+      "group": "KNOWLEDGE",
+      "owner": "00-MASTER/UCOS-EKAP-001/06-KNOWLEDGE-ASSIMILATION-REPORT.md",
+      "authority": "Knowledge is extracted into the located knowledge home, not restated in the artifact that produced it.",
+      "authority_owner": "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+      "depends_on": [
+        "UCL-S-0380"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-02"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCOS-EKAP-001/02-KNOWLEDGE-CLASSIFICATION-MATRIX.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0400",
+      "stage": "Register Engineering Knowledge",
+      "ordinal": 400,
+      "group": "KNOWLEDGE",
+      "owner": "knowledge/decisions.json",
+      "authority": "Every decision is registered with its evidence; an unregistered decision governs nothing.",
+      "authority_owner": "00-MASTER/UCDA-000001/ucda-decisions.json",
+      "depends_on": [
+        "UCL-S-0390"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-02"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-UCDA"
+        }
+      ],
+      "evidence": [
+        "03-ARCHITECTURAL-DECISION-ASSIMILATION-MATRIX.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0410",
+      "stage": "Elevate",
+      "ordinal": 410,
+      "group": "ELEVATION",
+      "owner": "00-MASTER/UEI-000001/17-EVOLUTION-LIFECYCLE-DETERMINATION.md",
+      "authority": "AUTH-INF-001 CR-INF-001 — Ω∞ non-terminality: certification closes scope, never evolution.",
+      "authority_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0400"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-17"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-UCEF"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UEI-000001/18-GOVERNANCE-BINDING-DETERMINATION.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0420",
+      "stage": "Increase Constitutional Capability",
+      "ordinal": 420,
+      "group": "ELEVATION",
+      "owner": "00-MASTER/UCEF-000001/04-OPEN-WORLD-EXPANSION-REGISTER.md",
+      "authority": "CEP-009 ADDENDUM B — a constitutional capability is admitted through the amendment lifecycle, never by assertion.",
+      "authority_owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0410"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-17"
+        },
+        {
+          "source": "SRC-EXECUTABLE-STAGES",
+          "ref": "STAGE-UCEF"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCEF-000001/03-CONSTRUCT-CLASS-REGISTER.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0430",
+      "stage": "Increase Engineering Capability",
+      "ordinal": 430,
+      "group": "ELEVATION",
+      "owner": "00-MASTER/UEI-000001/16-ARCHITECTURE-EVOLUTION-SPECIFICATION.md",
+      "authority": "AUTH-INF-001 CR-INF-007/009 — engineering capability expands append-only, with no architectural ceiling.",
+      "authority_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0420"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-17"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UEI-000001/14-REPOSITORY-EVOLUTION-SPECIFICATION.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0440",
+      "stage": "Increase Autonomous Engineering Capability",
+      "ordinal": 440,
+      "group": "ELEVATION",
+      "owner": "00-MASTER/UCOS-AEE-001/09-CONTINUOUS-EVOLUTION-BINDING.md",
+      "authority": "Autonomy is bound to the same gates as manual execution; an autonomous actor gains no exemption.",
+      "authority_owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "depends_on": [
+        "UCL-S-0430"
+      ],
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-17"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/07-CONVERGENCE-CERTIFICATION.md",
+        "engine/constitution/stages.py"
+      ]
+    },
+    {
+      "id": "UCL-S-0450",
+      "stage": "Begin Next Elevated Engineering Cycle",
+      "ordinal": 450,
+      "group": "ELEVATION",
+      "owner": "02-EXECUTION-LIFECYCLE.md",
+      "authority": "AUTH-INF-001 CR-INF-001 — there is no stage from which nothing follows; the lifecycle never terminates.",
+      "authority_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "depends_on": [
+        "UCL-S-0440"
+      ],
+      "reenters": "UCL-S-0010",
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATES",
+          "ref": "G-15"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+        "engine/constitution/stages.py"
+      ]
+    }
+  ]
+}

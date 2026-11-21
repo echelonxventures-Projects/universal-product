@@ -1,0 +1,51 @@
+{
+  "backward": [
+    "AMC-04",
+    "APPLICATION-008",
+    "APPLICATION-005",
+    "APPLICATION-001",
+    "ARCH-APPLICATION-001",
+    "12-APPLICATION@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-FEATURE-ucos.application.feature.foundation-6b02aa0642dfabfc",
+    "EC3-B12-U04-VALIDATION-EVIDENCE",
+    "EC3-B12-U04-CCE-CERTIFICATION",
+    "EC3-B12-U04-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "afeae55",
+  "meta_class": "AMC-04",
+  "referenced_units": [
+    "AMC-02",
+    "AMC-03",
+    "AMC-06",
+    "SF-2",
+    "DF-2"
+  ],
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "SF-2",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "presented/typed-I-O data by reference (AMR-14, FEA-05); none redefined",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the feature)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity; no parallel model)",
+    "ENG-004": "application.feature_meta.FeatureKind + type_tag (ENG-004 typing, by ref)",
+    "ENG-005": "reference identifiers (capability/module/interaction/operation/data refs)",
+    "RL-F2": "feature-invoke/sequence/interact/emit behavior by reference (§7); none redefined",
+    "SF-2": "consumed contracted operation(s) by reference (AMR-13, FEA-04); none redefined"
+  },
+  "target_id": "UCOS-FEATURE-ucos.application.feature.foundation-6b02aa0642dfabfc",
+  "trace_format": "ucos-application-feature-traceability/1.0.0",
+  "unit": "EC3-B12-U04"
+}

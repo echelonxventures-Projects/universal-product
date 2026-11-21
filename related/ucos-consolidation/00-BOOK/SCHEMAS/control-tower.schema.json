@@ -1,0 +1,60 @@
+{
+  "title": "UCOS Ω∞ Program Control Tower Snapshot",
+  "description": "A point-in-time roll-up of program and portfolio status across every tracked dimension. Generated deterministically from the Universal Artifact Registry and (optionally) automated signals.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["generated_at", "portfolio", "programs", "dimensions"],
+  "properties": {
+    "generated_at": { "type": "string", "format": "date-time" },
+    "generator_version": { "type": "string" },
+    "portfolio": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["total_artifacts", "total_pages", "total_volumes", "total_edges", "portfolio_status"],
+      "properties": {
+        "total_artifacts": { "type": "integer", "minimum": 0 },
+        "total_pages": { "type": "integer", "minimum": 0 },
+        "total_volumes": { "type": "integer", "minimum": 0 },
+        "total_edges": { "type": "integer", "minimum": 0 },
+        "portfolio_status": { "type": "string" },
+        "status_histogram": { "type": "object", "additionalProperties": { "type": "integer" } }
+      }
+    },
+    "programs": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["program", "artifact_count", "status_histogram", "rollup_status"],
+        "properties": {
+          "program": { "type": "string" },
+          "artifact_count": { "type": "integer", "minimum": 0 },
+          "status_histogram": { "type": "object", "additionalProperties": { "type": "integer" } },
+          "rollup_status": { "type": "string" }
+        }
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "description": "Control Tower tracked dimensions and their current roll-up state.",
+      "additionalProperties": { "$ref": "#/$defs/dimension" }
+    }
+  },
+  "$defs": {
+    "dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "type": "string" },
+        "signal_source": {
+          "type": "string",
+          "enum": ["MANUAL", "GITHUB", "GITHUB_ACTIONS", "JIRA", "SONARQUBE", "OWASP", "TRIVY", "PROMETHEUS", "GRAFANA", "OPENTELEMETRY", "KUBERNETES", "CLOUD"],
+          "default": "MANUAL"
+        },
+        "as_of": { "type": "string", "format": "date-time" },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

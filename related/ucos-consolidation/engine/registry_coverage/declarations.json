@@ -1,0 +1,253 @@
+{
+  "declaration_id": "RCM-DECL-001",
+  "name": "Registry Coverage Matrix — declaration mechanisms and disclosed gaps",
+  "version": "1.0",
+  "authority": "NONE — DERIVED COVERAGE INTELLIGENCE. This file declares no registry, no object, no identity and no ownership. It names WHERE authority is already declared, and which registries are known to declare none. Deleting it removes a measurement and changes no registration.",
+  "$not_a_registry": "The matrix must never become the 141st registry. It stores no object record: every object it reports is read from the plane that already registers it, and every ownership it reports is read from the instrument that already declares it. A matrix that kept its own copy would be the duplicate-catalogue defect it exists to detect.",
+  "$mechanism_comment": "The five places authority is legitimately declared, measured at discovery. Ordered by directness: an in-file declaration beats an external one, because a reader holding the file can resolve it without knowing where else to look.",
+  "authority_mechanisms": [
+    {
+      "id": "RCM-AM-01",
+      "mechanism": "TOP_LEVEL_AUTHORITY_KEY",
+      "locator": "the artifact's own `authority` field",
+      "rank": 1
+    },
+    {
+      "id": "RCM-AM-02",
+      "mechanism": "DOMAIN_AUTHORITY_KEY",
+      "locator": "a domain-specific key naming authority or ownership",
+      "key_pattern": "authorit|owner|standing",
+      "rank": 2
+    },
+    {
+      "id": "RCM-AM-03",
+      "mechanism": "GENERATED_ARTIFACT_REGISTRY",
+      "locator": "00-BOOK/DATA/generated-artifact-registry.json",
+      "rank": 3
+    },
+    {
+      "id": "RCM-AM-04",
+      "mechanism": "CONSTITUTIONAL_AUTHORITY_ALIGNMENT",
+      "locator": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "rank": 4
+    },
+    {
+      "id": "RCM-AM-05",
+      "mechanism": "MUTATION_GOVERNANCE_BOUNDARY",
+      "locator": "00-BOOK/DATA/mutation-governance-boundary.json",
+      "rank": 5
+    }
+  ],
+  "$plane_comment": "The two registration planes and what each holds. The partition is MEASURED on every build, never assumed: an object in both planes, or in neither, is a finding.",
+  "registration_planes": [
+    {
+      "plane": "CORPUS",
+      "registry": "00-BOOK/DATA/artifacts.json",
+      "owner": "UMB-IMP-001",
+      "holds_object_classes": [
+        "DOCUMENT_ARTIFACT"
+      ],
+      "mutation_class": "CORPUS_REGISTRATION",
+      "population_key": "artifacts",
+      "population_shape": "list of records carrying `path`"
+    },
+    {
+      "plane": "REPOSITORY",
+      "registry": "00-BOOK/DATA/id-ledger.json",
+      "owner": "UCKP-ART-05 persistence binding",
+      "holds_object_classes": [
+        "EXCLUDED_DOCUMENT",
+        "EXECUTABLE_OBJECT",
+        "TEST_OBJECT",
+        "DATA_OBJECT",
+        "TOOLING_OBJECT",
+        "CONFIGURATION_OBJECT"
+      ],
+      "mutation_class": "CORPUS_REGISTRATION",
+      "population_key": "by_object",
+      "population_shape": "mapping keyed by repository path"
+    }
+  ],
+  "$gap_comment": "W5-G1 — DISCLOSED, NOT INFERRED. Each of these is a producer output carrying `generated_at`/`generator_version`, with no in-file authority, no generated-artifact-registry entry and no naming mutation class. The producer is RECORDED as the located writer, and explicitly NOT adopted as the declared owner: inferring ownership permanently would manufacture the declaration the finding says is missing. Disclosure is what keeps the gap countable while its remediation is decided by the owner it is referred to. An undisclosed registry with no authority closes the gate; a disclosed one does not.",
+  "disclosed_authority_gaps": [
+    {
+      "id": "W5-G1-01",
+      "registry": "00-BOOK/DATA/relationships.json",
+      "producer": "00-BOOK/tools/ukb.py",
+      "producer_owner": "UCOS-UKB-TOOLING",
+      "missing": "AUTHORITY_DECLARATION",
+      "remediation": "declare in generated-artifact-registry.json, or add an in-file authority field",
+      "referred_to": "UCOS-UKB-TOOLING"
+    },
+    {
+      "id": "W5-G1-02",
+      "registry": "00-BOOK/DATA/change-ledger.json",
+      "producer": "00-BOOK/tools/ukb.py",
+      "producer_owner": "UCOS-UKB-TOOLING",
+      "missing": "AUTHORITY_DECLARATION",
+      "remediation": "declare in generated-artifact-registry.json, or add an in-file authority field",
+      "referred_to": "UCOS-UKB-TOOLING"
+    },
+    {
+      "id": "W5-G1-03",
+      "registry": "00-BOOK/DATA/control-tower.json",
+      "producer": "00-BOOK/tools/ukb.py",
+      "producer_owner": "UCOS-UKB-TOOLING",
+      "missing": "AUTHORITY_DECLARATION",
+      "remediation": "declare in generated-artifact-registry.json, or add an in-file authority field",
+      "referred_to": "UCOS-UKB-TOOLING"
+    },
+    {
+      "id": "W5-G1-04",
+      "registry": "00-BOOK/DATA/volumes.json",
+      "producer": "00-BOOK/tools/ukb.py",
+      "producer_owner": "UCOS-UKB-TOOLING",
+      "missing": "AUTHORITY_DECLARATION",
+      "remediation": "declare in generated-artifact-registry.json, or add an in-file authority field",
+      "referred_to": "UCOS-UKB-TOOLING"
+    },
+    {
+      "id": "W5-G1-05",
+      "registry": "00-BOOK/DATA/certification.json",
+      "producer": "00-BOOK/tools/governance_telemetry.py",
+      "producer_owner": "UCOS-UKB-TOOLING",
+      "missing": "AUTHORITY_DECLARATION",
+      "remediation": "declare in generated-artifact-registry.json, or add an in-file authority field",
+      "referred_to": "UCOS-UKB-TOOLING"
+    },
+    {
+      "id": "W5-G1-06",
+      "registry": "00-BOOK/DATA/twin.json",
+      "producer": "00-BOOK/tools/ukbx.py",
+      "producer_owner": "UCOS-UKB-TOOLING",
+      "missing": "AUTHORITY_DECLARATION",
+      "remediation": "declare in generated-artifact-registry.json, or add an in-file authority field",
+      "referred_to": "UCOS-UKB-TOOLING"
+    },
+    {
+      "id": "W5-G1-07",
+      "registry": "00-BOOK/DATA/signals.json",
+      "producer": "00-BOOK/tools/ukbx.py",
+      "producer_owner": "UCOS-UKB-TOOLING",
+      "missing": "AUTHORITY_DECLARATION",
+      "remediation": "declare in generated-artifact-registry.json, or add an in-file authority field",
+      "referred_to": "UCOS-UKB-TOOLING"
+    },
+    {
+      "id": "W5-G1-08",
+      "registry": "00-BOOK/DATA/connector-cursors.json",
+      "producer": "00-BOOK/tools/connectors/base.py",
+      "producer_owner": "UCOS-UKB-TOOLING",
+      "missing": "AUTHORITY_DECLARATION",
+      "remediation": "declare in generated-artifact-registry.json, or add an in-file authority field",
+      "referred_to": "UCOS-UKB-TOOLING"
+    },
+    {
+      "id": "W5-G1-09",
+      "registry": "00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/output/knowledge/gaps.json",
+      "producer": "EXTERNAL — vendored, produced outside this repository",
+      "producer_owner": "UAKOS-CLOSURE-008",
+      "missing": "AUTHORITY_DECLARATION",
+      "remediation": "none available in-file; custody is declared in 00-BOOK/DATA/generated-artifact-registry.json as an authored input of UAKOS-CLOSURE-008",
+      "referred_to": "UAKOS-CLOSURE-008",
+      "$why": "VENDORED EXTERNAL EVIDENCE, BYTE-LOCKED. This artifact is not a registry of this repository and declares no object of its own: it is third-party knowledge output vendored under 00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/ and hash-locked by that programme's EVIDENCE-MANIFEST.json. It is registry-SHAPED only because it carries a population key, which is why the syntactic scan finds it. RCM-AM-01 is unavailable BY CONSTRUCTION rather than by preference: adding an `authority` field would change the bytes, break the manifest's hash lock, and make UAKOS-CLOSURE-008 unreplayable — turning a documentation improvement into a verification failure. It is declared as an authored input in 00-BOOK/DATA/generated-artifact-registry.json, which is where its custody is recorded."
+    },
+    {
+      "id": "W5-G1-10",
+      "registry": "00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/output/knowledge/knowledge_base.json",
+      "producer": "EXTERNAL — vendored, produced outside this repository",
+      "producer_owner": "UAKOS-CLOSURE-008",
+      "missing": "AUTHORITY_DECLARATION",
+      "remediation": "none available in-file; custody is declared in 00-BOOK/DATA/generated-artifact-registry.json as an authored input of UAKOS-CLOSURE-008",
+      "referred_to": "UAKOS-CLOSURE-008",
+      "$why": "VENDORED EXTERNAL EVIDENCE, BYTE-LOCKED. This artifact is not a registry of this repository and declares no object of its own: it is third-party knowledge output vendored under 00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/ and hash-locked by that programme's EVIDENCE-MANIFEST.json. It is registry-SHAPED only because it carries a population key, which is why the syntactic scan finds it. RCM-AM-01 is unavailable BY CONSTRUCTION rather than by preference: adding an `authority` field would change the bytes, break the manifest's hash lock, and make UAKOS-CLOSURE-008 unreplayable — turning a documentation improvement into a verification failure. It is declared as an authored input in 00-BOOK/DATA/generated-artifact-registry.json, which is where its custody is recorded."
+    },
+    {
+      "id": "W5-G1-11",
+      "registry": "00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/output/knowledge/knowledge_base_summary.json",
+      "producer": "EXTERNAL — vendored, produced outside this repository",
+      "producer_owner": "UAKOS-CLOSURE-008",
+      "missing": "AUTHORITY_DECLARATION",
+      "remediation": "none available in-file; custody is declared in 00-BOOK/DATA/generated-artifact-registry.json as an authored input of UAKOS-CLOSURE-008",
+      "referred_to": "UAKOS-CLOSURE-008",
+      "$why": "VENDORED EXTERNAL EVIDENCE, BYTE-LOCKED. This artifact is not a registry of this repository and declares no object of its own: it is third-party knowledge output vendored under 00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/ and hash-locked by that programme's EVIDENCE-MANIFEST.json. It is registry-SHAPED only because it carries a population key, which is why the syntactic scan finds it. RCM-AM-01 is unavailable BY CONSTRUCTION rather than by preference: adding an `authority` field would change the bytes, break the manifest's hash lock, and make UAKOS-CLOSURE-008 unreplayable — turning a documentation improvement into a verification failure. It is declared as an authored input in 00-BOOK/DATA/generated-artifact-registry.json, which is where its custody is recorded."
+    }
+  ],
+  "$scan_comment": "Where the matrix looks for registry-shaped artifacts. A registry-shaped artifact is a JSON object carrying a population of at least `minimum_population`; the threshold exists so that a small configuration file is not reported as an undeclared registry.",
+  "scan": {
+    "roots": [
+      "00-BOOK/DATA",
+      "00-MASTER",
+      "intelligence",
+      "knowledge",
+      "engine"
+    ],
+    "glob": "*.json",
+    "minimum_population": 3
+  },
+  "$states_comment": "The four coverage states. UNREGISTERED and DUPLICATE_REGISTRATION are failures; PARTIALLY_COVERED means an object is registered but its plane declares no owner for it.",
+  "coverage_states": [
+    "COVERED",
+    "PARTIALLY_COVERED",
+    "UNREGISTERED",
+    "DUPLICATE_REGISTRATION"
+  ],
+  "$population_key_comment": "WHICH key holds the registration, named per plane. Without it a scan of the whole document conflates `id-ledger.by_path` — which is a DISCOVERY INDEX over corpus paths — with `by_object`, the repository plane's registration. A first implementation did exactly that and reported all 1,233 corpus artifacts as DUPLICATE_REGISTRATION. The registration key is declared, never guessed.",
+  "$backlog_comment": "THE UNDECLARED BACKLOG, DISCLOSED AND RATCHETED. These registry-shaped artifacts declare authority through none of the five mechanisms. They are recorded rather than fixed because each is owned by the programme that wrote it, and manufacturing a declaration on its owner's behalf would be the inference this workstream refuses. Validation refuses any registry NOT in this list and not otherwise declared, so the backlog can shrink or hold but never grow silently — the same ratchet UOBC-BSP-001 applies to birth adoption. Removing an entry here is the correct way to close one: it is closed by DECLARING the authority, and the entry then becomes unnecessary.",
+  "undeclared_backlog": [
+    "00-MASTER/ACEE-000001/acee-goal-manifest.json",
+    "00-MASTER/ACEE-000001/acee-invariant-manifest.json",
+    "00-MASTER/BASELINE-001/baseline-declaration.json",
+    "00-MASTER/MCOS-000001/evidence/mcos-architectural-proof.json",
+    "00-MASTER/MCOS-000001/evidence/mcos-kernel-snapshot.json",
+    "00-MASTER/MCOS-000001/mcos-civilization.json",
+    "00-MASTER/STATE/mcs-state.schema.json",
+    "00-MASTER/UAEP-000001/uaep-platform.json",
+    "00-MASTER/UAEP-000001/uaep.json",
+    "00-MASTER/UAIE-000001/uaie-architecture.json",
+    "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+    "00-MASTER/UAKOS-PHASE-001B/provenance.json",
+    "00-MASTER/UAKOS-PHASE-004/10-UNIVERSAL-GAP-DEPENDENCY-GRAPH.json",
+    "00-MASTER/UCCEP-000000/uccep-bindings.json",
+    "00-MASTER/UCCEP-000000/uccep.json",
+    "00-MASTER/UCCEP-000005/evidence/baseline/certification-baseline.json",
+    "00-MASTER/UCCEP-000005/evidence/final-verification/rie-verify.json",
+    "00-MASTER/UCCEP-000005/evidence/post/T-1-eng-chain-edges.json",
+    "00-MASTER/UCCEP-000005/evidence/post/T-3-graph-evidence.json",
+    "00-MASTER/UCCEP-000005/evidence/post/T-3-rie-determinism.json",
+    "00-MASTER/UCCEP-000005/evidence/post/T-3-uccep-certification.json",
+    "00-MASTER/UCCEP-000005/evidence/post/T-3-uccep-full-tier.json",
+    "00-MASTER/UCDA-000001/ucda-decisions.json",
+    "00-MASTER/UCEF-000001/evidence/ucef-assessment.json",
+    "00-MASTER/UCEF-000001/evidence/ucef-bindings.json",
+    "00-MASTER/UCEF-000001/evidence/ucef-validation.json",
+    "00-MASTER/UCMI-000001/commercial-surface.json",
+    "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+    "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+    "00-MASTER/UCOS-RFP-001/rfp.json",
+    "00-MASTER/UCOS-RIB-001/evidence/rib-evidence-index.json",
+    "00-MASTER/UCOS-RIB-001/rib-blueprint.json",
+    "00-MASTER/UCOS-UFEP-001/ufep-declaration.json",
+    "00-MASTER/UCOS-UICM-000001/03-CLOSURE-MEASUREMENT-REPORT.json",
+    "00-MASTER/UCOS-UICM-000001/uicm.json",
+    "00-MASTER/UCOS-UTCE-001/utce-declaration.json",
+    "00-MASTER/UEI-000001/uei-evolution.json",
+    "00-MASTER/UER-000001/uer-resilience.json",
+    "00-MASTER/UMK-000001/evidence/umk-architectural-proof.json",
+    "00-MASTER/UMK-000001/evidence/umk-constitutional-compliance.json",
+    "00-MASTER/UMK-000001/evidence/umk-kernel-snapshot.json",
+    "00-MASTER/UMK-000001/umk-kernel.json",
+    "00-MASTER/UPF-000001/evidence/upf-architectural-proof.json",
+    "00-MASTER/UPF-000001/evidence/upf-constitutional-compliance.json",
+    "00-MASTER/UPF-000001/evidence/upf-framework-certification.json",
+    "00-MASTER/UPF-000001/evidence/upf-framework-description.json",
+    "00-MASTER/UPF-000001/upf-provider.json",
+    "00-MASTER/URRC-000001/evidence/urrc-substrate-index.json",
+    "00-MASTER/URRC-000001/urrc-bindings.json",
+    "engine/context/catalog/reference-frames.json",
+    "engine/determinism/blueprints/BP-DATA-0001.json",
+    "intelligence/UCOS-UPI-001/publications/datasheet--all-research-areas.json",
+    "knowledge/canonical-knowledge-history.json",
+    "knowledge/canonical-knowledge.json"
+  ]
+}

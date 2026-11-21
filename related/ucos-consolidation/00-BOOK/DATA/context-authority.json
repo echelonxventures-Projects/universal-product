@@ -1,0 +1,993 @@
+{
+  "artifact_id": "UCOS-UCTX-001",
+  "title": "Universal Context Authority — the one canonical context source, and the derivation of every agent surface from it",
+  "authority": "AUTHORED REPOSITORY TRUTH, HELD AS A PROJECTION UNDER UCKP-LAW-0001. This instrument legislates no law, mints no identity, owns no graph and certifies nothing. It declares which EXISTING constitutional authority answers each context domain, and it declares that every agent-facing context surface is a generated projection of those authorities. It creates no authority and may never hold one.",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "PROJECTION",
+    "relation": "PROJECTION",
+    "articles": [
+      "UCKP-ART-03",
+      "UCKP-ART-04",
+      "UCKP-ART-11",
+      "UCKP-ART-13",
+      "UCKP-ART-18"
+    ],
+    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+    "effect": "UCKP-ART-18 requires an existing canonical object to be located and reused before anything is created. Every context domain below therefore NAMES an authority that already exists rather than declaring one. UCKP-ART-03 makes a second authoring of the same knowledge void, which is precisely what an agent instruction file becomes the moment it states a rule in its own right. UCKP-ART-11 makes the emitted surfaces views that never own truth, and UCKP-ART-13 makes their bytes a pure function of the declared inputs. UCKP-ART-04 is why an agent directory can never be an authority: it is a persistence mechanism, and none holds independent authority."
+  },
+  "constitutional_basis": "UCKP-LAW-0001 (engine/uckp/law.py), UCOS-CAA-001, UCOS-UGA-001, GOV-005 §5.3",
+  "schema": "ucos-context-authority",
+  "version": "1.0.0",
+  "why_this_exists": [
+    "MEASURED BEFORE THIS INSTRUMENT EXISTED, at fce3cb9b over the whole repository universe:",
+    "  * .claude/      0 tracked files. Two untracked: settings.local.json (classified",
+    "                  TOOL_OPERATIONAL in the exclusion register) and scheduled_tasks.lock.",
+    "  * .cursor/      did not exist.",
+    "  * .kiro/        7 tracked hooks, ALL frozen — every one carries `hooks: []` and states",
+    "                  that it confers no constitutional authority.",
+    "  * .github/      35 workflows, gating every branch, none claiming authority.",
+    "  * CLAUDE.md     did not exist anywhere in the repository. Neither did .kiro/steering,",
+    "                  .cursor/rules, nor any prompt, rule or instruction directory.",
+    "",
+    "So agent-exclusive TRUTH was already absent — no agent surface claimed authority, and the",
+    "authority-claim scan found 0 unregistered claims across 133 claiming instruments. The defect",
+    "was the opposite one, and it is the reason this instrument is a PROJECTION and not a law:",
+    "agents received NO DERIVED CONTEXT AT ALL. There was nothing to derive from, and no",
+    "instrument owned the domain. Of the twelve knowledge domains CAA resolves, `agents` was the",
+    "single one with no authority — measured as `unknown_authority_domains = 1`.",
+    "",
+    "An empty agent surface is not a safe steady state. It is the condition in which the FIRST",
+    "person to write a CLAUDE.md creates repository truth by hand, in a file no register lists,",
+    "under no authority, on one branch, reviewed by nobody — and every subsequent agent inherits",
+    "it. That file would be a rival authority under UCKP-ART-03 the moment it stated a rule the",
+    "constitution already states, and a branch-exclusive one under CAA the moment a second branch",
+    "disagreed. The window was open; nothing had walked through it yet.",
+    "",
+    "This instrument closes the window by making the surface GENERATED. An agent file that is a",
+    "projection cannot become an authority, because a hand edit to it is a drift failure rather",
+    "than a new rule. The fix is therefore structural rather than editorial: it does not ask",
+    "anyone to refrain from writing agent context, it makes hand-written agent context fail.",
+    "",
+    "WHAT THIS DELIBERATELY DOES NOT DO. It does not collapse the domains CAA declares plural by",
+    "design — certification (14 bounded surfaces), existence (4), identity namespaces (2) and",
+    "lifecycle (2 orthogonal axes). CAA's model is that authority is single per BOUNDED QUESTION,",
+    "not per domain NAME, and each of those resolutions carries its own second_authority_test",
+    "proving no two answer the same question. Collapsing them to one authority per name would",
+    "destroy working governance rather than tighten it. This instrument records the binding and",
+    "asserts nothing about it."
+  ],
+  "context_root": {
+    "path": "00-BOOK/CONTEXT",
+    "role": "CANONICAL CONTEXT ROOT",
+    "status": "GENERATED PROJECTION LAYER",
+    "declares": "Every file under this root is emitted by the declared producer from the declared inputs. Nothing here is authored, nothing here is authority, and a hand edit is a drift failure — not a new rule.",
+    "may_never": "Hold an authority, originate a rule, or carry a statement absent from the instrument it projects."
+  },
+  "producer": {
+    "home": "00-BOOK/tools/ukctx.py",
+    "build_command": "python3 00-BOOK/tools/ukctx.py build",
+    "verify_command": "python3 00-BOOK/tools/ukctx.py verify",
+    "determinism": "Reads only the version-controlled instruments named in `domains[].authority_home` and this declaration. Reads no clock, no network, no working-tree state and no environment. Identical inputs produce identical bytes (UCKP-ART-13).",
+    "fixed_point": "REQUIRED. A second consecutive build over an unchanged input set writes no byte. Measured by INV-CTX-11."
+  },
+  "$domain_comment": [
+    "A CONTEXT DOMAIN is a question an operator or agent asks the repository about itself.",
+    "Each binds to the authority that ALREADY answers it. `authority_home` must exist in the",
+    "tree; the generator refuses to build when one does not, which is what stops this register",
+    "from drifting into a list of aspirations. `cardinality` records CAA's own finding for the",
+    "domain and is never re-decided here."
+  ],
+  "domains": [
+    {
+      "domain": "governance",
+      "authority": "UCKP-LAW-0001",
+      "authority_home": "engine/uckp/law.py",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "answers": "What is the supreme law, what are its articles and invariants, and where does every other instrument stand under it?",
+      "bounded_question": "Which instrument holds supreme constitutional authority over this repository, and where does every other instrument stand beneath it?",
+      "ucxi_disambiguation": {
+        "ucxi_kind": "governance",
+        "ucxi_source": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+        "ucxi_answers": "What governance FRAME does an entity resolve in — the programme instruments, the fail-closed policy posture, and who holds decision rights. Its value is a set of dimension VALUES.",
+        "uctx_answers": "Which INSTRUMENT holds supreme constitutional authority. Its value is a pointer to one instrument.",
+        "why_not_the_same_question": "UCXI answers what surrounds an entity; UCTX answers what an agent must read. A frame description and an authority pointer are different objects: UCXI's entry carries policy strings and decision-right prose, UCTX's carries a path to the root law. UCXI's own CXL-10 (Zero Authority) states that its layer describes and never grants, and its catalog entry says verbatim 'This layer is derived truth and creates no authority' — so it cannot be answering 'which instrument is authoritative', because answering that would be granting.",
+        "why_the_sources_differ": "CEP-002 is a PROGRAMME constitution; UCKP-LAW-0001 is the ROOT law that UCOS-CAA-001 declares SUPREME. They sit at different tiers and neither is a rival of the other. UCXI names the programme frame an entity operates under; UCTX names the supreme instrument. A reader who needed one and got the other would be misled, which is why this block exists rather than being left implicit."
+      }
+    },
+    {
+      "domain": "architecture",
+      "authority": "UCOS-UAIE-001",
+      "authority_home": "00-MASTER/UAIE-000001/uaie.json",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "answers": "What is the architectural structure of the system and how is architectural intelligence derived?",
+      "bounded_question": "Which instrument derives the architectural structure of the system?"
+    },
+    {
+      "domain": "identity",
+      "authority": "UCKP-ART-05",
+      "authority_home": "00-BOOK/DATA/id-ledger.json",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "answers": "What identifies an object, which mint issues identity, and why is an identity never reissued?",
+      "bounded_question": "Which mint issues repository object identity, and where does the identity ledger live?",
+      "ucxi_disambiguation": {
+        "ucxi_kind": "identity",
+        "ucxi_source": "engine/registry/universal/identity.py",
+        "ucxi_answers": "What identity FRAME a registered artifact resolves in — the identifier shape and the registration authority, as dimension values.",
+        "uctx_answers": "Which append-only mint holds repository object identity, and where the ledger is.",
+        "why_not_the_same_question": "UCXI describes the shape and namespace an identity takes; UCTX names the mint and its ledger. UCOS-CAA-001 already resolves identity plurality explicitly under identity_namespace_resolution (MULTIPLE_INDEPENDENT_BOUNDED_NAMESPACES, two namespaces, each with its own second_authority_test) — so two instruments naming different identity homes is a resolved condition of this repository, not a defect introduced here.",
+        "why_the_sources_differ": "CAA's identity_namespace_resolution declares exactly this: the UCKP URN namespace and the knowledge-registry namespace are bounded-plural by design and share one Layer-Zero primitive. UCXI names the registry-platform surface; UCTX names the ledger. Both are inside that declared plurality."
+      }
+    },
+    {
+      "domain": "registries",
+      "authority": "UMB-IMP-001",
+      "authority_home": "00-BOOK/tools/ukb.py",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/generated-artifact-registry.json",
+      "answers": "Which registers exist, which are generated, and what regenerates them?",
+      "bounded_question": "Which registers exist, which of them are generated, and what regenerates them?"
+    },
+    {
+      "domain": "knowledge",
+      "authority": "UCOS-BOOK-000000",
+      "authority_home": "00-BOOK/UCOS-BOOK-000000-UNIVERSAL-MASTER-KNOWLEDGE-BOOK.md",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/artifacts.json",
+      "answers": "What does the repository know, and where is it written down?",
+      "bounded_question": "Where is the repository's knowledge corpus written down?",
+      "ucxi_disambiguation": {
+        "ucxi_kind": "knowledge",
+        "ucxi_source": "engine/knowledge/model.py",
+        "ucxi_answers": "What knowledge FRAME applies — provenance model, confidence posture, and what counts as a source, as dimension values.",
+        "uctx_answers": "Where the knowledge corpus is written down, so an agent can read it.",
+        "why_not_the_same_question": "UCXI answers how knowledge is modelled; UCTX answers where the corpus lives. UCXI's own note for this kind is 'Knowledge Once: one canonical home per unit of knowledge' — a statement about the MODEL, asserted by the module that implements it. UCTX points at the corpus that model governs.",
+        "why_the_sources_differ": "engine/knowledge/model.py is the model; 00-BOOK/UCOS-BOOK-000000 is the corpus the model describes. A model and its population are not rival authorities."
+      }
+    },
+    {
+      "domain": "observations",
+      "authority": "UCOS-OBSERVATION-UNIVERSE-001",
+      "authority_home": "00-BOOK/DATA/observation-universe.json",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "answers": "What was SEEN at a moment, and why may an observation never enter canonical identity?",
+      "bounded_question": "Which register records what was SEEN at a moment, outside the commit boundary?"
+    },
+    {
+      "domain": "evidence",
+      "authority": "UCOS-EVIDENCE-UNIVERSE-001",
+      "authority_home": "00-BOOK/DATA/evidence-universe.json",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "answers": "What record is kept so an act can be reviewed after the fact?",
+      "bounded_question": "Which register records what was DONE, kept so an act can be reviewed after the fact?"
+    },
+    {
+      "domain": "execution",
+      "authority": "UEG-000001",
+      "authority_home": "00-MASTER/UEG-000001/ueg-declaration.json",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "answers": "Which environment executes the repository's commands, and how is it verified rather than repaired?",
+      "bounded_question": "Which execution environment does a certified run of this repository require?"
+    },
+    {
+      "domain": "repository_policy",
+      "authority": "UCOS-EXCLUSION-REGISTER-001",
+      "authority_home": "00-BOOK/DATA/exclusion-register.json",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "answers": "Which paths are excluded from version control, under which declared class, and why does exclusion cost a declaration?",
+      "bounded_question": "Which paths are excluded from version control, under which declared class?"
+    },
+    {
+      "domain": "mutation_policy",
+      "authority": "UCOS-MUTATION-GOVERNANCE-BOUNDARY-001",
+      "authority_home": "00-BOOK/DATA/mutation-governance-boundary.json",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "answers": "Which authority governs which class of mutation, and which mutations are irreversible?",
+      "bounded_question": "Which authority disposes of which class of mutation?"
+    },
+    {
+      "domain": "development_policy",
+      "authority": "UVI-000001",
+      "authority_home": "00-MASTER/UVI-000001/uvi-declaration.json",
+      "cardinality": "SINGLE",
+      "binding": "verify.sh",
+      "answers": "Which verification mode claims what, and which command does an operator actually run?",
+      "bounded_question": "Which verification mode claims what, and which command does an operator actually run?"
+    },
+    {
+      "domain": "lifecycle",
+      "authority": "UCL-000001",
+      "authority_home": "00-MASTER/UCL-000001/ucl-declaration.json",
+      "cardinality": "PLURAL_BY_DESIGN",
+      "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "answers": "What stages does a unit of work pass through, and what standing does an artifact hold? CAA declares these two ORTHOGONAL AXES, not one authority.",
+      "bounded_question": "What stages does a unit of work pass through, and what standing does an artifact hold?"
+    },
+    {
+      "domain": "certification",
+      "authority": "MULTIPLE_INDEPENDENT_AUTHORITIES",
+      "authority_home": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "cardinality": "PLURAL_BY_DESIGN",
+      "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "answers": "Which surface certifies which bounded question? CAA declares 14 surfaces, each bounded, with a second_authority_test proving no two answer the same question.",
+      "bounded_question": "Which surface certifies which bounded question?"
+    },
+    {
+      "domain": "workflows",
+      "authority": "UCOS-CI-PROJECTION",
+      "authority_home": ".github/workflows",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/mutation-governance-boundary.json",
+      "answers": "Which gates run, on which branches, and what does each refuse? The workflows hold no authority; each runs an engine that does.",
+      "bounded_question": "Which CI gates run, on which refs, and what does each refuse?"
+    },
+    {
+      "domain": "branch_policy",
+      "authority": "UCOS-UCTX-001",
+      "authority_home": "00-BOOK/DATA/context-authority.json",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/context-authority.json",
+      "answers": "May a branch or worktree carry exclusive contextual truth? It may not — INV-CTX-08 and INV-CTX-09. This is the one domain this instrument answers itself, because it is a statement ABOUT context distribution and about nothing else.",
+      "bounded_question": "May a branch or worktree carry contextual truth the declaration does not produce?"
+    },
+    {
+      "domain": "agent_policy",
+      "authority": "UCOS-UCTX-001",
+      "authority_home": "00-BOOK/DATA/context-authority.json",
+      "cardinality": "SINGLE",
+      "binding": "00-BOOK/DATA/context-authority.json",
+      "answers": "May an agent hold context of its own? It may not — every agent surface is a generated projection of this root. This is the second and last domain this instrument answers itself, and it is the domain measured as ownerless at fce3cb9b.",
+      "bounded_question": "May an agent-facing surface hold context of its own?"
+    }
+  ],
+  "$agent_surface_comment": [
+    "Every agent surface the repository emits. `generated: true` means the file is written by the",
+    "declared producer and a hand edit is a drift failure. A surface listed here with no emitted",
+    "file is a declaration the generator has not honoured, and INV-CTX-06 fails closed on it.",
+    "Adding a future agent is an append to this list plus a template — never a new authority."
+  ],
+  "agent_surfaces": [
+    {
+      "agent": "Claude",
+      "surface": ".claude/CLAUDE.md",
+      "format": "markdown",
+      "generated": true,
+      "consumed_by": "Claude Code, claude.ai/code, Claude Agent SDK",
+      "repository_coupling": "read at session start from the repository root"
+    },
+    {
+      "agent": "Cursor",
+      "surface": ".cursor/rules/ucos.mdc",
+      "format": "mdc",
+      "generated": true,
+      "consumed_by": "Cursor IDE rules engine",
+      "repository_coupling": "read from .cursor/rules/ by the editor"
+    },
+    {
+      "agent": "Kiro",
+      "surface": ".kiro/steering/ucos.md",
+      "format": "markdown",
+      "generated": true,
+      "consumed_by": "Kiro steering loader",
+      "repository_coupling": "read from .kiro/steering/; the 7 hooks under .kiro/hooks/ remain frozen and are NOT projections"
+    },
+    {
+      "agent": "Copilot",
+      "surface": ".github/copilot-instructions.md",
+      "format": "markdown",
+      "generated": true,
+      "consumed_by": "GitHub Copilot",
+      "repository_coupling": "read from .github/ by GitHub"
+    },
+    {
+      "agent": "AGENTS.md",
+      "surface": "AGENTS.md",
+      "format": "markdown",
+      "generated": true,
+      "consumed_by": "the cross-vendor agents.md convention — any future agent honouring it",
+      "repository_coupling": "repository root; this is the surface a FUTURE agent inherits without this register being edited"
+    }
+  ],
+  "$invariant_comment": [
+    "The invariants that make context divergence a verification failure rather than a habit.",
+    "Every one fails closed. INV-CTX-07 is the load-bearing one: without it every other",
+    "invariant can be satisfied by a projection that somebody has since edited by hand."
+  ],
+  "invariants": [
+    {
+      "id": "INV-CTX-01",
+      "name": "EXACTLY_ONE_CANONICAL_CONTEXT_AUTHORITY",
+      "statement": "Exactly one instrument declares the context root, it is UCOS-UCTX-001, and its declared root exists.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-02",
+      "name": "EVERY_CONTEXT_ARTIFACT_RESOLVES_TO_AUTHORITY",
+      "statement": "Every domain names an authority whose declared home exists in the version-controlled tree.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-03",
+      "name": "NO_ORPHANED_CONTEXT",
+      "statement": "Every file under the context root and every declared agent surface is emitted by the declared producer and listed in the manifest. A file present under the root that the manifest does not carry is an orphan.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-04",
+      "name": "NO_DUPLICATE_AUTHORITY",
+      "statement": "No two domains bind the same bounded question to different authorities, and no domain introduces an authority absent from the constitutional binding.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-05",
+      "name": "NO_AGENT_OWNED_AUTHORITY",
+      "statement": "No agent surface declares an authority of its own. Measured over the emitted surfaces and over every tracked file in an agent directory.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-06",
+      "name": "EVERY_AGENT_PROJECTION_GENERATED",
+      "statement": "Every surface declared in agent_surfaces with generated:true exists on disk and was emitted by the declared producer.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-07",
+      "name": "NO_MANUAL_MODIFICATION_OF_GENERATED_PROJECTIONS",
+      "statement": "Every emitted file's content digest equals the digest the manifest records. A hand edit is a drift failure.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-08",
+      "name": "NO_BRANCH_EXCLUSIVE_CONTEXT_AUTHORITY",
+      "statement": "No context instrument, context root file or agent surface exists on any ref that does not exist at the measured head. Context is a pure function of the declaration, so a ref carrying a context file the declaration does not produce is carrying exclusive truth.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-09",
+      "name": "NO_WORKTREE_EXCLUSIVE_CONTEXT_AUTHORITY",
+      "statement": "No worktree holds an uncommitted modification to a context instrument, a context root file or an agent surface.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-10",
+      "name": "EVERY_PROJECTION_TRACEABLE_TO_CANONICAL_SOURCE",
+      "statement": "Every emitted file names, in the manifest, the declaration and the authority homes it derives from, and every named input exists.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-11",
+      "name": "GENERATOR_REACHES_FIXED_POINT",
+      "statement": "A second consecutive build over an unchanged input set writes no byte.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-12",
+      "name": "NO_UNREGISTERED_AGENT_SURFACES",
+      "statement": "Every file inside a declared agent directory, and every file anywhere in the repository whose name matches a declared agent-context filename, resolves to exactly one declared agent surface class. A file resolving to none is unclassified and FAILS CLOSED. Measured over the filesystem, ignored-inclusive, so an untracked rogue file is visible. Additionally, every non-ignored top-level dot-directory holding an instruction-shaped file must be a declared agent directory, so a NEW agent arriving in a directory nobody enumerated is refused rather than unnoticed.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-13",
+      "name": "NO_AGENT_DIVERGENCE",
+      "statement": "After replacing every permitted substitution and stripping the format envelope, every agent projection has one identical digest. Two agents cannot be told different things.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-14",
+      "name": "BOUNDED_QUESTION_UNIQUENESS",
+      "statement": "Every domain declares a bounded_question; no two domains share a normalized bounded_question with different authorities; and every authority named resolves in authority_registry as CAA_BOUND or DISCLAIMED.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-15",
+      "name": "NO_UNDISAMBIGUATED_CONTEXT_KIND_COLLISION",
+      "statement": "Every domain whose name collides with a UCXI-000001 universal context kind, recomputed from engine/context/taxonomy.py on each run, carries a ucxi_disambiguation naming UCXI's source, both answers and why the sources differ. A new collision FAILS until stated.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-16",
+      "name": "NO_PROPOSAL_EVER_PROJECTED",
+      "statement": "No file classified PROPOSAL ever appears in any agent projection. The proposal lane routes IN; the projection lane routes OUT. A proposal that becomes context must pass through the assimilation pipeline first.",
+      "fails_closed": true
+    },
+    {
+      "id": "INV-CTX-17",
+      "name": "EVERY_ASSIMILATION_IDENTIFIED_AND_GATED",
+      "statement": "Every assimilated contribution carries a Universal ID minted under REG-AUTO-001 with an operator-issued permit, and every assimilation passed all four declared gates. An assimilated contribution with no ID or no gate record is void.",
+      "fails_closed": true
+    }
+  ],
+  "non_goals": [
+    "Creating an authority. This instrument confers none and occupies no domain that an existing instrument answers.",
+    "Replacing UCKP-LAW-0001, UCOS-CAA-001, UCKO or any part of the constitutional hierarchy.",
+    "Collapsing the domains CAA declares plural by design.",
+    "Governing the .kiro/hooks/ freeze, which is a Phase-1A determination this instrument neither relaxes nor re-decides.",
+    "Registering agent surfaces into the Repository Corpus. They are generated projections and are excluded from corpus registration exactly as every other generated family is."
+  ],
+  "$ucxi_comment": [
+    "TASK (A-R2): resolve the apparent overlap between UCXI-000001 and this instrument.",
+    "Both are CAA-bound PROJECTIONs, both map a context name to a repository source, and three",
+    "names collide — governance, identity, knowledge — with DIFFERENT sources on each side.",
+    "That was measured, not assumed, and it is why this section exists rather than a sentence.",
+    "The resolution is the same shape UCOS-CAA-001 uses everywhere else: name the sibling, state",
+    "each bounded question, and carry a second_authority_test that a machine can re-run."
+  ],
+  "ucxi_relationship": {
+    "sibling": "UCXI-000001",
+    "sibling_home": "00-MASTER/UCXI-000001/ucxi-declaration.json",
+    "sibling_catalog": "engine/context/catalog.py",
+    "sibling_kind_source": "engine/context/taxonomy.py :: ContextKind",
+    "model": "ADJACENT_BOUNDED_QUESTIONS",
+    "QUESTION_ANSWERED_BY_UCXI": "In which reference frame does a context resolve, what kind of context is it, and how is a kind nobody has declared yet admitted? Its values are dimension VALUES describing the frame that surrounds an entity.",
+    "QUESTION_ANSWERED_BY_UCTX": "Which existing constitutional instrument answers a given repository knowledge domain, and is every agent-facing surface a generated projection of it? Its values are POINTERS to instruments.",
+    "OVERLAP_SET": [
+      "governance",
+      "identity",
+      "knowledge"
+    ],
+    "DIFFERENCE_SET": {
+      "ucxi_only": [
+        "computational",
+        "cultural",
+        "economic",
+        "environmental",
+        "existence",
+        "linguistic",
+        "measurement",
+        "observer",
+        "reality",
+        "regulatory",
+        "security",
+        "spatial",
+        "temporal"
+      ],
+      "uctx_only": [
+        "agent_policy",
+        "architecture",
+        "branch_policy",
+        "certification",
+        "development_policy",
+        "evidence",
+        "execution",
+        "lifecycle",
+        "mutation_policy",
+        "observations",
+        "registries",
+        "repository_policy",
+        "workflows"
+      ]
+    },
+    "SECOND_AUTHORITY_TEST": {
+      "statement": "A rival would be an instrument answering the SAME bounded question about the SAME population with a different answer. For each of the three colliding names the populations differ (context objects of entities vs repository knowledge domains) and the value KINDS differ (dimension values vs instrument pointers). Each collision carries a per-domain `ucxi_disambiguation` naming UCXI's source, UCXI's answer, this instrument's answer, and why the sources differ.",
+      "measured_by": "INV-CTX-15, which recomputes the collision set from engine/context/taxonomy.py on every run and refuses any collision that carries no disambiguation.",
+      "why_it_is_not_prose": "A prose claim of non-overlap decays the moment either side adds a name. Recomputing the collision set from UCXI's own home means a future collision FAILS until somebody states the difference.",
+      "result": "No rival found. UCXI's CXL-10 (Zero Authority: context describes, never grants) and its catalog's own note ('This layer is derived truth and creates no authority') make it structurally incapable of answering 'which instrument is authoritative', which is the only question this instrument answers."
+    },
+    "why_uctx_does_not_extend_the_ucxi_taxonomy": "UCXI's taxonomy is open and extended through ContextTaxonomy.extend (CXL-02). This instrument deliberately does NOT enter kinds there, because a UCXI ContextKind is a frame an ENTITY resolves in and would acquire a frame, an identity tuple and a precedence rank it has no use for. Registering 'agent_policy' as a universal context kind would assert that every entity in the platform resolves in an agent-policy frame, which is false. The relationship is declared here instead, and INV-CTX-15 keeps it honest.",
+    "known_open_item": {
+      "id": "UCXI-CXL-06-SCOPE",
+      "status": "RECORDED, NOT CLOSED BY THIS INSTRUMENT",
+      "note": "UCXI legislates CXL-06 'Context Once — one canonical home per unit of context', but engine/context/constitution.py::_check_context_once iterates registry.records() only, so the law's scope is the UCXI in-memory registry rather than the repository. This instrument escapes CXL-06 by scope rather than by conformance. That is a pre-existing property of UCXI's enforcement, not a defect introduced here, and it is recorded so it is not mistaken for conformance. Widening CXL-06 is UCXI's decision and belongs to its owner."
+    }
+  },
+  "$authority_registry_comment": [
+    "Every authority any domain may name, its standing, and THE EXACT DOMAINS IT MAY ANSWER.",
+    "An authority absent from here FAILS CLOSED; so does a domain this block does not grant it.",
+    "",
+    "The `domains` binding is the part that actually closes attack A8. A bare registration check",
+    "would not: A8 added a second governance domain pointing at UCOS-EXCLUSION-REGISTER-001, an",
+    "authority that IS legitimately registered, with freshly-worded prose. Comparing question",
+    "STRINGS cannot catch that, because the attacker writes the string. Binding an authority to",
+    "the domains it owns can: the register already says which questions that instrument answers,",
+    "and answering one more is a change to this block rather than a change of wording.",
+    "",
+    "UCOS-UCTX-001 answers two domains (branch_policy, agent_policy). That is declared here rather",
+    "than being an unexplained exception: both are statements about context DISTRIBUTION — where",
+    "context may live and who may hold it — and neither states a rule about the objects any other",
+    "instrument governs."
+  ],
+  "authority_registry": {
+    "UCKP-LAW-0001": {
+      "standing": "CAA_BOUND",
+      "note": "the supreme authority",
+      "domains": [
+        "governance"
+      ]
+    },
+    "UCXI-000001": {
+      "standing": "CAA_BOUND",
+      "domains": []
+    },
+    "UEG-000001": {
+      "standing": "CAA_BOUND",
+      "domains": [
+        "execution"
+      ]
+    },
+    "UCOS-UCTX-001": {
+      "standing": "CAA_BOUND",
+      "note": "this instrument",
+      "domains": [
+        "agent_policy",
+        "branch_policy"
+      ]
+    },
+    "UCOS-EXCLUSION-REGISTER-001": {
+      "standing": "CAA_BOUND",
+      "domains": [
+        "repository_policy"
+      ]
+    },
+    "UCOS-MUTATION-GOVERNANCE-BOUNDARY-001": {
+      "standing": "CAA_BOUND",
+      "domains": [
+        "mutation_policy"
+      ]
+    },
+    "UCOS-OBSERVATION-UNIVERSE-001": {
+      "standing": "CAA_BOUND",
+      "domains": [
+        "observations"
+      ]
+    },
+    "UCOS-EVIDENCE-UNIVERSE-001": {
+      "standing": "CAA_BOUND",
+      "domains": [
+        "evidence"
+      ]
+    },
+    "UCKP-ART-05": {
+      "standing": "DISCLAIMED",
+      "basis": "An ARTICLE of the supreme authority, not an instrument. It cannot be CAA-bound because CAA binds instruments; naming it is naming the root law's own clause.",
+      "domains": [
+        "identity"
+      ]
+    },
+    "UCOS-UAIE-001": {
+      "standing": "DISCLAIMED",
+      "basis": "A programme instrument with its own declaration at 00-MASTER/UAIE-000001/uaie.json. It claims no constitutional authority and is therefore outside the CAA claim scan.",
+      "domains": [
+        "architecture"
+      ]
+    },
+    "UMB-IMP-001": {
+      "standing": "DISCLAIMED",
+      "basis": "The registration realization governed by REG-AUTO-001; an execution authority over corpus registration, already declared in 00-BOOK/DATA/mutation-governance-boundary.json.",
+      "domains": [
+        "registries"
+      ]
+    },
+    "UCOS-BOOK-000000": {
+      "standing": "DISCLAIMED",
+      "basis": "The knowledge corpus root — a document population, not an authority-claiming instrument.",
+      "domains": [
+        "knowledge"
+      ]
+    },
+    "UCL-000001": {
+      "standing": "DISCLAIMED",
+      "basis": "A lifecycle programme instrument; CAA's lifecycle_resolution already declares the two orthogonal axes it participates in.",
+      "domains": [
+        "lifecycle"
+      ]
+    },
+    "UCOS-CI-PROJECTION": {
+      "standing": "DISCLAIMED",
+      "basis": "Not an instrument at all: the .github/workflows tree holds no authority and each workflow runs an engine that does. Named so the workflows domain resolves to something explicit rather than to nothing.",
+      "domains": [
+        "workflows"
+      ]
+    },
+    "MULTIPLE_INDEPENDENT_AUTHORITIES": {
+      "standing": "DISCLAIMED",
+      "basis": "A sentinel recording CAA's own certification_authority_resolution finding (14 bounded surfaces). It names a resolved plurality, never a single authority.",
+      "domains": [
+        "certification"
+      ]
+    },
+    "UVI-000001": {
+      "standing": "DISCLAIMED",
+      "basis": "The Verification Mode Constitution at 00-MASTER/UVI-000001/uvi-declaration.json. A programme instrument claiming no constitutional authority; it declares what each verify.sh mode measures.",
+      "domains": [
+        "development_policy"
+      ]
+    }
+  },
+  "$agent_surface_comment2": [
+    "Attack A1-A4 placed a rogue instruction file in .claude/, .cursor/rules/, .kiro/steering/ and",
+    "at the repository root; every one passed every invariant. The naive fix — forbid undeclared",
+    "files in agent directories — would have flagged 45 legitimate files (36 workflows, 7 frozen",
+    "hooks, 2 tool-operational). So the rule is a CLASSIFICATION, exactly as the exclusion register",
+    "classifies ignored paths: every file in an agent directory resolves to one declared class, and",
+    "a file resolving to none FAILS CLOSED. Adding a rogue file is then not a silent act; it is an",
+    "unclassified path, which is a refusal."
+  ],
+  "agent_directories": [
+    ".claude",
+    ".cursor",
+    ".kiro",
+    ".github"
+  ],
+  "agent_filename_patterns": [
+    "CLAUDE.md",
+    "AGENTS.md",
+    "AGENT.md",
+    "GEMINI.md",
+    "COPILOT.md",
+    "COPILOT-INSTRUCTIONS.md",
+    ".cursorrules",
+    ".windsurfrules",
+    "CONVENTIONS.md",
+    ".aider.conf.yml"
+  ],
+  "agent_surface_classes": {
+    "PROJECTION": "A generated context surface emitted by the declared producer. Declared in agent_surfaces; its bytes are a pure function of this instrument.",
+    "WORKFLOW": "A CI workflow definition. Runs an engine that holds authority; holds none itself.",
+    "FROZEN_HOOK": "An agent hook deliberately inert (`hooks: []`), preserved verbatim under a Phase-1A freeze determination. It fires nothing and legislates nothing.",
+    "TOOL_OPERATIONAL": "Per-developer operational state of a tool. Never shared, never repository truth. Same class the exclusion register already uses.",
+    "AGENT_ASSET": "A non-instructional supporting file consumed by tooling (schema, icon, lockfile). Carries no instruction to any agent.",
+    "PROPOSAL": "A contribution proposal from an agent or developer. Routes IN to the proposer's folder, awaiting assimilation. Never projected; never becomes authority until assimilated."
+  },
+  "$proposal_lane_comment": [
+    "TWO LANES, AND THE ROAD BETWEEN THEM. Proposals route IN to the proposer's own folder;",
+    "implementation routes OUT from this one authority through generated projections. Until the",
+    "inbound lane existed there was no lawful way to add context at all: hand-editing a projection",
+    "is the drift INV-CTX-07 refuses, editing this file directly is an ungated mutation, and writing",
+    "context anywhere else is the rival authority UCKP-ART-03 voids. A proposal is free to write and",
+    "costs nothing; it simply is not context until it has passed the four gates.",
+    "",
+    "THE AGENT LANE IS DERIVED, NEVER ENUMERATED. `agent_paths` is a pattern over",
+    "`agent_directories`, so a new agent brings its proposal folder with it and nothing here is",
+    "edited (UCKP-ART-08). Enumerating one path per agent would be the stale list this instrument",
+    "exists to refuse."
+  ],
+  "proposal_lane": {
+    "model": "TWO_LANE_CONTEXT_FLOW",
+    "agent_paths": [
+      "{agent_directory}/proposals"
+    ],
+    "developer_path": "proposals/developers/{author}",
+    "suffixes": [
+      ".md"
+    ],
+    "naming_convention": "<lane>/YYYY-MM-DD-<slug>.md",
+    "inbound": {
+      "description": "Discussion, input and proposals route IN to the proposer's own folder",
+      "class": "PROPOSAL",
+      "status": "untracked, awaiting assimilation",
+      "effect": "A proposal never projects to an agent surface and never becomes context until it has passed every gate assimilation_pipeline declares"
+    },
+    "outbound": {
+      "description": "Implementation routes OUT from one canonical authority through generated projections",
+      "authority": "UCOS-UCTX-001",
+      "class": "PROJECTION",
+      "status": "generated, deterministic, a pure function of the declared inputs"
+    },
+    "boundary": "The assimilation pipeline sits between IN and OUT, running every declared gate before any byte is written"
+  },
+  "assimilation_pipeline": {
+    "owner": "UCOS-UCTX-001",
+    "home": "00-BOOK/tools/ukctx_assimilate.py",
+    "gate_command": "python3 00-BOOK/tools/ukctx_assimilate.py --gate",
+    "description": "Every gate runs against the MERGED result BEFORE anything is written, inverting the build-then-check order that can detect drift but cannot stop the authority absorbing a duplicate.",
+    "$order_comment": [
+      "`order` is the executable declaration and `gates` is the reason for each entry. The tool reads",
+      "`order` and nothing else, so the sequence a run actually takes is declared here rather than",
+      "hardcoded in the tool — which is what makes the order reviewable instead of incidental."
+    ],
+    "order": [
+      "validate",
+      "duplication",
+      "overlap",
+      "verification"
+    ],
+    "gates": [
+      {
+        "id": "validate",
+        "refuses": "malformed front matter, an undeclared domain, an unattributed contribution, a proposal that states nothing"
+      },
+      {
+        "id": "duplication",
+        "refuses": "a sentence the authority already states (UCKP-ART-03: a second authoring is void)"
+      },
+      {
+        "id": "overlap",
+        "refuses": "an answer asserted in a domain other than the one the proposal declares — one bounded question, one owner"
+      },
+      {
+        "id": "verification",
+        "refuses": "a merge the independent verifier will not certify as a faithful projection"
+      }
+    ],
+    "identity_allocation": {
+      "authority": "REG-AUTO-001",
+      "permit_source": "00-BOOK/DATA/allocation-permits.json",
+      "requirement": "Every assimilated contribution receives a Universal ID; minting is irreversible and requires an operator-issued permit, so the tool plans by default and may never self-authorize an allocation"
+    },
+    "exit_contracts": {
+      "bare_cli_no_lane": "exit 2 (refuses an undeclared lane)",
+      "bare_cli_with_lane": "exit 0 or 1 (discovers proposals, runs every declared gate)",
+      "gate_mode_no_proposals": "exit 0 (nothing to refuse)",
+      "gate_mode_with_refusals": "exit 1"
+    }
+  },
+  "$entry_points_comment": [
+    "AN ENTRY POINT IS NOT AN AGENT SURFACE, AND ONE OF THESE IS BOTH. AGENTS.md carries the same",
+    "body every agent surface carries — INV-CTX-13 measures that the surfaces do not diverge, so a",
+    "bespoke rendering of one of them is a divergence by construction. `surface_binding` records",
+    "that, and the producer skips any entry point that declares it rather than writing the file a",
+    "second time.",
+    "",
+    "NEITHER IS TRACKED, AND THAT IS THE SAME DECISION EVERY OTHER PROJECTION TAKES. Under GOV-005",
+    "5.3 a generated artifact is regenerated, never hand-registered, so it consumes no permanent",
+    "identity; both are classified GENERATED_DETERMINISTIC in 00-BOOK/DATA/exclusion-register.json",
+    "and emitted by scripts/generate-prerequisites.sh at verify.sh stage 1b. A cold clone obtains",
+    "them by running ./bootstrap.sh — which is exactly the one instruction an entry point has to",
+    "carry, and the only one it cannot carry to a reader who has not run it yet. Making either file",
+    "TRACKED would put a README in a clone before any command is typed; it is an irreversible",
+    "identity allocation under REG-AUTO-001 and needs an operator-issued permit, so it is not a",
+    "change this producer or any agent may make for itself.",
+    "",
+    "THE KEY IS `role`, NOT `purpose`, AND THAT IS NOT A STYLE CHOICE. UFI builds its provenance",
+    "corpus from every string in this file INCLUDING dict keys, and normalises a surface by",
+    "replacing each corpus string with a slot. A key that is also a common English word therefore",
+    "erases that word from every reviewed template: `purpose` (7 characters, over the MIN_SLOT",
+    "floor of 6) turned `the generator and the gate are separate modules on purpose` into",
+    "`... on {}` and unprovenanced the sentence on all five agent surfaces. Raising MIN_SLOT was",
+    "measured and is strictly worse — it takes UCOS-UCTX-001 from 0 findings to 209 by demoting",
+    "real declared values out of slot range. Keep declaration keys either specific enough not to",
+    "collide or shorter than the floor."
+  ],
+  "entry_points": {
+    "README.md": {
+      "status": "generated, excluded from version control",
+      "generated": true,
+      "producer": "00-BOOK/tools/ukctx.py",
+      "role": "The door a human opens: the commands to run and the paths that hold the answers",
+      "content": "Pointers only — every line is a command an operator types or a path read from this declaration. It states no rule and paraphrases no instrument, because UCKP-ART-03 makes a second authoring void."
+    },
+    "AGENTS.md": {
+      "status": "generated, excluded from version control",
+      "generated": true,
+      "producer": "00-BOOK/tools/ukctx.py",
+      "role": "The context an agent is given, under the cross-vendor agents.md convention",
+      "content": "The identical projection body every other agent surface carries",
+      "surface_binding": "Declared in agent_surfaces; emitted by the agent-surface loop, never by an entry-point renderer"
+    }
+  },
+  "agent_surface_rules": [
+    {
+      "pattern": ".github/workflows/*.yml",
+      "class": "WORKFLOW",
+      "basis": "Each workflow runs a declared engine; 00-BOOK/DATA/mutation-governance-boundary.json holds the authorities they invoke."
+    },
+    {
+      "pattern": ".github/workflows/*.yaml",
+      "class": "WORKFLOW",
+      "basis": "Same class as .yml; both extensions are honoured by GitHub."
+    },
+    {
+      "pattern": ".kiro/hooks/*.json",
+      "class": "FROZEN_HOOK",
+      "basis": "All seven carry `hooks: []` under the Phase-1A / S4 Automatic Governance Write Review freeze. This instrument neither relaxes nor re-decides that determination."
+    },
+    {
+      "pattern": ".claude/settings.local.json",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Already classified TOOL_OPERATIONAL in 00-BOOK/DATA/exclusion-register.json. Reused, not re-decided (UCKP-ART-18)."
+    },
+    {
+      "pattern": ".claude/scheduled_tasks.lock",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Per-clone lock file of the local agent runtime. Carries no instruction."
+    },
+    {
+      "pattern": ".claude/scheduled_tasks.json",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Claude Code operational state — the local scheduled-task list. Classified TOOL_OPERATIONAL in 00-BOOK/DATA/exclusion-register.json and ignored by the versioned .gitignore, so the classification travels with the repository instead of depending on .git/info/exclude or a developer's global git ignore (MB9)."
+    },
+    {
+      "pattern": ".claude/routines/.state/*",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Claude Code operational state — per-clone routine execution state. Classified TOOL_OPERATIONAL in 00-BOOK/DATA/exclusion-register.json and ignored by the versioned .gitignore, so the classification travels with the repository instead of depending on .git/info/exclude or a developer's global git ignore (MB9)."
+    },
+    {
+      "pattern": ".claude/worktrees/*",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Claude Code operational state — the agent's own record of worktrees it created. Classified TOOL_OPERATIONAL in 00-BOOK/DATA/exclusion-register.json and ignored by the versioned .gitignore, so the classification travels with the repository instead of depending on .git/info/exclude or a developer's global git ignore (MB9)."
+    },
+    {
+      "pattern": ".claude/checkpoints/*",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Claude Code operational state — per-clone session checkpoints. Classified TOOL_OPERATIONAL in 00-BOOK/DATA/exclusion-register.json and ignored by the versioned .gitignore, so the classification travels with the repository instead of depending on .git/info/exclude or a developer's global git ignore (MB9)."
+    },
+    {
+      "pattern": ".claude/mailbox/*",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Claude Code operational state — inter-session message spool. Classified TOOL_OPERATIONAL in 00-BOOK/DATA/exclusion-register.json and ignored by the versioned .gitignore, so the classification travels with the repository instead of depending on .git/info/exclude or a developer's global git ignore (MB9)."
+    },
+    {
+      "pattern": ".claude/agent-registry.json",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Claude Code operational state — the local registry of running agents. Classified TOOL_OPERATIONAL in 00-BOOK/DATA/exclusion-register.json and ignored by the versioned .gitignore, so the classification travels with the repository instead of depending on .git/info/exclude or a developer's global git ignore (MB9)."
+    },
+    {
+      "pattern": ".claude/agent-memory-local",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Claude Code operational state — per-developer agent memory (file form). Classified TOOL_OPERATIONAL in 00-BOOK/DATA/exclusion-register.json and ignored by the versioned .gitignore, so the classification travels with the repository instead of depending on .git/info/exclude or a developer's global git ignore (MB9)."
+    },
+    {
+      "pattern": ".claude/agent-memory-local/*",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Claude Code operational state — per-developer agent memory (directory form). Classified TOOL_OPERATIONAL in 00-BOOK/DATA/exclusion-register.json and ignored by the versioned .gitignore, so the classification travels with the repository instead of depending on .git/info/exclude or a developer's global git ignore (MB9)."
+    },
+    {
+      "pattern": ".claude/first-run",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Claude Code operational state — the first-run marker. Classified TOOL_OPERATIONAL in 00-BOOK/DATA/exclusion-register.json and ignored by the versioned .gitignore, so the classification travels with the repository instead of depending on .git/info/exclude or a developer's global git ignore (MB9)."
+    },
+    {
+      "pattern": ".claude/assistant-daemon-state.json",
+      "class": "TOOL_OPERATIONAL",
+      "basis": "Claude Code operational state — the local daemon's record of itself. Classified TOOL_OPERATIONAL in 00-BOOK/DATA/exclusion-register.json and ignored by the versioned .gitignore, so the classification travels with the repository instead of depending on .git/info/exclude or a developer's global git ignore (MB9)."
+    },
+    {
+      "pattern": "*/proposals/*",
+      "class": "PROPOSAL",
+      "basis": "The agent lane of proposal_lane, matched as a PATTERN rather than one rule per agent directory: proposal_lane.agent_paths derives the folder from agent_directories, so a rule that enumerated `.claude/proposals/*` and its four siblings would go stale the moment a fifth agent arrived (UCKP-ART-08). A file here is a contribution awaiting assimilation, never an instruction to the agent whose directory holds it — which is why INV-CTX-16 refuses to project it and INV-CTX-12 still demands it resolve to exactly this one class."
+    },
+    {
+      "pattern": "proposals/developers/*",
+      "class": "PROPOSAL",
+      "basis": "The developer lane of proposal_lane. It sits outside every agent directory on purpose: a developer is not an agent surface, and putting the human lane inside `.claude/` would make one vendor's directory the home of a repository-wide facility."
+    }
+  ],
+  "$normalization_comment": [
+    "Attack A10 made one agent's projection say 'CURSOR ONLY: you may edit generated files' while",
+    "every invariant stayed green, because INV-CTX-07 compares each file to its OWN derivation and",
+    "nothing compared the surfaces to each other. These are the ONLY differences permitted between",
+    "two agent projections. Everything else must be byte-identical after substitution."
+  ],
+  "projection_normalization": {
+    "permitted_substitutions": [
+      {
+        "token": "agent_name",
+        "source": "agent_surfaces[].agent",
+        "why": "the H1 names the agent whose surface it is"
+      },
+      {
+        "token": "surface_path",
+        "source": "agent_surfaces[].surface",
+        "why": "a projection may cite its own path"
+      }
+    ],
+    "format_envelopes": {
+      "mdc": "A leading YAML front-matter block, stripped before comparison; it carries loader directives, never instruction."
+    },
+    "rule": "After replacing every permitted substitution with a placeholder and stripping the format envelope, all agent projections MUST have one identical digest."
+  },
+  "true_input_set": {
+    "$why": "Measured by runtime tracing (sys.addaudithook over `open`), cold-start, with every output removed first — not by source inspection. The previous declaration named 14 inputs of which 9 were never opened; two of those nine were modified in a working tree and a clean clone still reproduced 23/23 byte-identical, which is the proof they were not inputs.",
+    "method": "python3 -c with sys.addaudithook capturing `open` events, cwd=/, outputs deleted before the run",
+    "inputs": [
+      "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "00-BOOK/DATA/context-authority.json",
+      "00-BOOK/DATA/exclusion-register.json",
+      "00-BOOK/DATA/mutation-governance-boundary.json",
+      "engine/uckp/law.py"
+    ],
+    "observed_count": 5,
+    "undeclared_observed": 0,
+    "unused_declared": 0
+  },
+  "$agent_discovery_comment": [
+    "Attack A22 defeated the first version of INV-CTX-12 with `.newagent/rules.md`: a directory",
+    "the declaration did not name, holding a file whose name matched no convention. Both lists",
+    "were enumerations, and an enumeration cannot cover a directory nobody has invented yet.",
+    "",
+    "This block closes that by inverting the question. Instead of asking 'is this one of the agent",
+    "directories we listed', it asks 'is there a top-level dot-directory carrying instruction-shaped",
+    "files that nobody has classified'. A new agent almost always arrives as exactly that. Ignored",
+    "directories are excluded because 00-BOOK/DATA/exclusion-register.json ALREADY requires every",
+    "ignored path to resolve to a declared class — reusing that authority rather than restating it",
+    "(UCKP-ART-18). Measured over the four non-ignored dot-directories that carry instruction-shaped",
+    "files today, the set is exactly the four declared agent directories."
+  ],
+  "agent_directory_discovery": {
+    "scope": "top-level directories whose name begins with a dot",
+    "excluded": "directories the ignore authority covers — the exclusion register already requires every ignored path to carry a declared class",
+    "instruction_file_suffixes": [
+      ".md",
+      ".mdc",
+      ".txt",
+      ".rules",
+      ".mdx"
+    ],
+    "rule": "A non-ignored top-level dot-directory containing at least one instruction-shaped file MUST appear in agent_directories. One that does not is an undeclared agent surface and FAILS CLOSED.",
+    "measured_by": "INV-CTX-12"
+  },
+  "$storage_model_comment": [
+    "Decision-01 (operator, this round): MODEL B. A generated context projection is a PRODUCT,",
+    "never tracked truth. The canonical authority is the authored declaration; the projections",
+    "are re-derived from it in one command.",
+    "",
+    "WHAT THIS BUYS AND WHAT IT COSTS, both measured rather than asserted. It removes 23 permanent",
+    "identity allocations — irreversible acts — for artifacts that a single command reproduces",
+    "byte-identically. It costs a fresh clone its context until bootstrap runs, which is exactly",
+    "the condition this capability exists to prevent, so the bootstrap is not left to habit: the",
+    "projections are declared in generated_inputs with a bootstrap_command, and UGA-INV-06 refuses",
+    "the declaration if the bootstrap stage stops producing them.",
+    "",
+    "STORAGE IS NOT EXISTENCE. UCKP-ART-09 makes the repository one persistence mechanism among",
+    "several, so excluding a projection from version control says where its bytes are kept and",
+    "nothing about whether the context exists. The context exists because the declaration does."
+  ],
+  "projection_storage_model": {
+    "model": "B",
+    "decision": "Decision-01",
+    "tracked": false,
+    "class": "GENERATED_DETERMINISTIC",
+    "exclusion_authority": "00-BOOK/DATA/exclusion-register.json",
+    "bootstrap_command": "python3 00-BOOK/tools/ukctx.py build",
+    "bootstrap_stage": "verify.sh stage 1b — scripts/generate-prerequisites.sh",
+    "bootstrap_obligation_measured_by": "UGA-INV-06 (EVERY_GENERATED_INPUT_HAS_BOOTSTRAP_PATH), over 00-BOOK/DATA/generated-artifact-registry.json generated_inputs",
+    "absence_is_a_failure_not_a_default": "INV-CTX-06 refuses a tree in which a declared surface is missing, and INV-CTX-07 refuses one in which a present surface differs from its derivation. A clone that has not bootstrapped therefore FAILS the context gate rather than operating ungoverned.",
+    "tracked_canonical_sources": [
+      "00-BOOK/DATA/context-authority.json",
+      "00-BOOK/tools/ukctx.py",
+      "00-BOOK/tools/ukctx_gate.py",
+      ".github/workflows/uctx-gate.yml"
+    ],
+    "identity_cost": {
+      "model_a_allocations": 27,
+      "model_b_allocations": 4,
+      "removed": 23,
+      "note": "The four that remain are authored: the declaration, the producer, the gate and the CI workflow. They are truth, not product, and must carry permanent identity."
+    }
+  },
+  "$mb9_comment": [
+    "MB9. INV-CTX-12 walks agent directories on the FILESYSTEM, ignored-inclusive, which is what",
+    "lets it see a rogue file the moment it appears. The same property made it see Claude Code's",
+    "own runtime state — mailbox, checkpoints, agent-registry, routine state — none of which was",
+    "declared anywhere, because all of it was excluded by .git/info/exclude and, for",
+    "settings.local.json, by this developer's global ~/.config/git/ignore. Neither travels with a",
+    "clone.",
+    "",
+    "So the gate would refuse a tree for a reason that had nothing to do with governance, on some",
+    "machines and not others, with no declaration anywhere to explain it. A gate that fails for",
+    "reasons unrelated to its subject is one that gets switched off, which would have taken the",
+    "rogue-file detection with it.",
+    "",
+    "Closed on both planes: the .gitignore rules make the exclusion travel, and these rules make",
+    "the classification explicit. INV-CTX-12 additionally proves each agent path matches EXACTLY",
+    "one class, so TOOL_OPERATIONAL can never quietly overlap GENERATED_DETERMINISTIC."
+  ],
+  "operational_class_constraint": {
+    "$why": [
+      "Declaring .claude/mailbox/* as TOOL_OPERATIONAL closed MB9 and immediately opened MB10: a",
+      "file named rogue.md inside the mailbox classified as runtime state and passed the gate. That",
+      "is the same defect MB9 was, inverted — a directory nobody inspects, holding instructions.",
+      "",
+      "Runtime state is JSON, locks and markers. An .md inside a message spool is not runtime state;",
+      "it is an instruction wearing one. So a TOOL_OPERATIONAL rule containing a wildcard may never",
+      "claim an instruction-shaped file, and such a file falls through to unclassified and FAILS",
+      "CLOSED. Exact-path rules are unaffected: `.claude/first-run` names one file and claims one file.",
+      "",
+      "The suffix list is not restated here. It is read from agent_directory_discovery, which already",
+      "declares what instruction-shaped means (UCKP-ART-18)."
+    ],
+    "rule": "A TOOL_OPERATIONAL rule whose pattern contains a wildcard may not classify a path whose suffix appears in agent_directory_discovery.instruction_file_suffixes.",
+    "instruction_suffix_source": "agent_directory_discovery.instruction_file_suffixes",
+    "effect": "An instruction-shaped file inside an operational directory is unclassified, and unclassified fails closed.",
+    "measured_by": "INV-CTX-12"
+  }
+}

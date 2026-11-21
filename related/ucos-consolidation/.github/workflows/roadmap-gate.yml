@@ -1,0 +1,104 @@
+name: UCOS-MXR-001 Master Execution Roadmap Gate
+
+# UCOS-MXR-001 — master execution roadmap (post UAKOS-CLOSURE-008).
+#
+# This workflow adds NO new validator and NO new registry. It does two independent things:
+#
+#   1. DERIVABILITY (`--gate`): re-compiles the execution program from the repository's own
+#      registers at the checked-out commit and fails closed if the program is not executable —
+#      a cyclic dependency graph, an unresolved dependency, an item whose repository location
+#      does not exist, an item with no named owner / validation command / Definition of Done /
+#      rollback strategy, a READY item behind a non-executable prerequisite, a wave that depends
+#      on a later wave, or an incomplete execution order.
+#
+#   2. DRIFT (`--render`): re-renders 01..10 from the COMMITTED roadmap.json and asserts the
+#      committed artifacts are that rendered fixed point. The drift check must REPLAY rather than
+#      recompile: the artifacts record the HEAD they were compiled at, and a committed file can
+#      never contain the sha of the commit that carries it, so a recompile-and-diff check would
+#      be unsatisfiable on every commit. Replay pins the recorded HEAD, so the check tests what
+#      it is meant to test — that the committed registers match their own machine-readable
+#      source — and step 1 independently proves the program is still compilable and executable.
+#
+# DISCLOSED LIMIT (recorded, not gated): the roadmap is derived from `closure.json`, which is
+# derived from the corpus that the roadmap itself joins on commit. Regenerating closure.json
+# after this program is committed therefore yields MORE concepts than the committed roadmap was
+# compiled from, so "recompiled == committed" is not a reachable fixed point in a single commit
+# and is deliberately NOT asserted. The committed roadmap records the exact sha256 of every input
+# it was compiled from (`roadmap.json` → `inputs`), which is the provenance that IS checkable.
+#
+# Exit semantics:
+#   0  the roadmap is executable and the committed artifacts are the replay of roadmap.json
+#   1  a blocking gate failed, or the committed artifacts drifted from roadmap.json
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: roadmap-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  roadmap-gate:
+    name: Execution roadmap gate (fail-closed) + replay drift gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the gate installs nothing.
+      # ORDER MATTERS: the replay/drift check runs BEFORE the recompile, because the recompile
+      # rewrites roadmap.json with the checked-out commit's own sha.
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Drift gate (committed registers must be the replay of roadmap.json)
+        run: |
+          python3 00-MASTER/UCOS-MXR-001/roadmap_engine.py --render
+          git diff --exit-code -- 00-MASTER/UCOS-MXR-001 \
+            || { echo "::error::the committed roadmap registers are not the replay of roadmap.json"; exit 1; }
+
+      - name: Materialize the gitignored derived input (closure.json)
+        # `00-MASTER/UAKOS-CLOSURE-002/closure.json` is deliberately gitignored (.gitignore §53):
+        # it is regenerated from the corpus rather than committed. The derivability gate below
+        # reads it, so it is regenerated here from the repository's own entry point. Nothing is
+        # discovered or reconciled — this is the same command `make closure` runs locally.
+        # Scope declaration (see the Makefile `closure` target): ../UCOS is absent on every
+        # runner, so without this the disclosure differs between CI and a developer clone.
+        env:
+          CLOSURE_SKIP_CORPUS: "1"
+        run: python3 00-MASTER/UAKOS-CLOSURE-002/closure_engine.py
+
+      - name: Roadmap gate (graph acyclic · deps resolved · order total · items executable)
+        run: python3 00-MASTER/UCOS-MXR-001/roadmap_engine.py --gate
+
+      - name: Restore the replayed registers (the gate above recompiles at the current HEAD)
+        run: git checkout -- 00-MASTER/UCOS-MXR-001
+
+      - name: Publish the roadmap artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucos-mxr-001-roadmap
+          path: |
+            00-MASTER/UCOS-MXR-001/*.md
+            00-MASTER/UCOS-MXR-001/roadmap.json
+          if-no-files-found: warn

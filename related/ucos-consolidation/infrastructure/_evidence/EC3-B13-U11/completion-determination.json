@@ -1,0 +1,25 @@
+{
+  "complete": true,
+  "completion_criteria": {
+    "BCC-1": true,
+    "BCC-2": true,
+    "BCC-3": true,
+    "BCC-4": true,
+    "BCC-5": true,
+    "BCC-6": true,
+    "BCC-7": true,
+    "BCC-8": true
+  },
+  "definitions": {
+    "BCC-1": "Completeness — all ten realization units physically exist and are CERTIFIED.",
+    "BCC-2": "Predecessor units frozen-clean — no certified unit mutated (reuse by reference).",
+    "BCC-3": "Readiness discharged — the band readiness criteria BRC-1…8 all PASS.",
+    "BCC-4": "Dependency closure — downward-only, acyclic; no forward/upward dependency.",
+    "BCC-5": "Consistency — the UIMM integration closes over the ten realized units.",
+    "BCC-6": "Reuse integrity — no EL-1/prior-unit concept redefined; no new primitive.",
+    "BCC-7": "Discipline conformance per unit — UCIC-001 + CCE + determinism.",
+    "BCC-8": "Governance records — all evidence bundles + completion reports present (traceable)."
+  },
+  "determination": "COMPLETE",
+  "unit": "EC3-B13-U11"
+}

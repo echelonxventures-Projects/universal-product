@@ -1,0 +1,115 @@
+name: MCOS-000001 Universal Meta-Civilization Platform Gate
+
+# MCOS-000001 — Universal Meta-Civilization Platform (PROGRAM-004, WAVE-2).
+#
+# Runs the executable expression of the layer that generates constitutional operating systems:
+# the constitutional proof that lives in engine/civilization/compliance.py, bound and rendered
+# by 00-MASTER/MCOS-000001/mcos_engine.py from the DATA declaration mcos-civilization.json.
+#
+# A dimension, a capability, a composition strategy, a generation stratum and a constitutional
+# operating system are each a registered kernel meta-type or a registered kernel object, so a
+# previously unknown one is admitted by registration only — admitting one needs neither a layer
+# change nor a change to this workflow. The immutable PROGRAM-002 kernel is never modified, and
+# the architectural proof fingerprints both the layer and the kernel to show it.
+#
+# The layer claims NO constitutional authority: MetaCivilizationPlatform.authority is the
+# literal string "NONE", and the blocking gate no-parallel-constitutional-authority fails if
+# that ever changes or if the three components stop sharing one kernel registry.
+#
+# Exit semantics of the gate:
+#   0  constitutionally compliant (every gate passed; layer + kernel unchanged)
+#   1  a gate failed
+#   2  fail-closed abort — the declaration or a required substrate is unusable
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mcos-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: MCOS-000001 self-guards (four, each fail-closed)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Declaration integrity (substrate, gates, categories, operating systems, strata)
+        run: python3 00-MASTER/MCOS-000001/mcos_engine.py --check-declaration
+
+      - name: Reuse-before-create (a REUSED responsibility must be homed outside this layer)
+        run: python3 00-MASTER/MCOS-000001/mcos_engine.py --check-reuse-before-create
+
+      - name: Forbidden-write guard (every output lands inside 00-MASTER/MCOS-000001/)
+        run: python3 00-MASTER/MCOS-000001/mcos_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical deliverables across runs)
+        run: python3 00-MASTER/MCOS-000001/mcos_engine.py --check-determinism
+
+  civilization-tests:
+    name: Meta-Civilization Platform unit + proof suite
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the pinned test toolchain
+        run: python3 -m pip install --disable-pip-version-check pytest==8.3.4 pytest-cov==6.0.0 coverage==7.15.2
+
+      - name: Layer tests (architectural proof + invariants; 100% statement and branch)
+        run: python3 -m pytest engine/tests/civilization -o addopts="" --cov=engine.civilization --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=100
+
+      - name: Unconditional certification (all 20 matrix dimensions must be 100%)
+        run: python3 00-MASTER/MCOS-000001/mcos_engine.py --certify
+
+  constitutional-gate:
+    name: Meta-Civilization Platform constitutional gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: civilization-tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Meta-Civilization Platform gate (fail-closed)
+        run: python3 00-MASTER/MCOS-000001/mcos_engine.py --gate
+
+      - name: Publish the meta-civilization deliverables + evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mcos-meta-civilization-platform
+          path: |
+            00-MASTER/MCOS-000001/*.md
+            00-MASTER/MCOS-000001/mcos-civilization.json
+            00-MASTER/MCOS-000001/evidence/
+          if-no-files-found: warn

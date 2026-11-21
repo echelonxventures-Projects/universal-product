@@ -1,0 +1,18 @@
+{
+  "title": "UCOS Ω∞ Publication Export Job",
+  "description": "A dynamic export request/record (UKB-009). Exports are generated from current authoritative data at request time; the job record is provenance only, never a source of truth.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["export_id", "scope", "selector", "format", "as_of"],
+  "properties": {
+    "export_id": { "type": "string", "pattern": "^UCOS-EXP-[0-9]{6}$" },
+    "scope": { "type": "string", "enum": ["ARTIFACT", "FEATURE", "MODULE", "VOLUME", "PROGRAM", "TRACEABILITY_CHAIN", "USER_GUIDE", "ARCHITECTURE_PACKAGE", "IMPLEMENTATION_PACKAGE", "SECURITY_PACKAGE", "DEPLOYMENT_PACKAGE"] },
+    "selector": { "type": "string", "description": "The scope argument, e.g. 'login', 'runtime', 'UCOS-ARCH-000010'." },
+    "format": { "type": "string", "enum": ["PDF", "DOCX", "HTML", "MARKDOWN", "JSON"] },
+    "as_of": { "type": "string", "format": "date-time" },
+    "included_ids": { "type": "array", "items": { "type": "string", "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$" }, "default": [] },
+    "content_hashes": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "source_signals": { "type": "array", "items": { "type": "string", "pattern": "^USIG-[0-9]{9,}$" }, "default": [] },
+    "output_path": { "type": ["string", "null"], "default": null }
+  }
+}

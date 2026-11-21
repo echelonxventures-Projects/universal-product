@@ -1,0 +1,195 @@
+name: UCOS-URI-001 / UCOS-UPI-001 Research and Publication Gate
+
+# UCOS-URI-001 — Universal Research Intelligence.
+# UCOS-UPI-001 — Universal Publication Intelligence.
+#
+# This workflow adds NO new validator, engine or capability. It runs the two additive
+# intelligence subsystems that already own research and publication:
+#
+#   * UCOS-URI-001 assimilates the declared substrate surfaces (canonical knowledge,
+#     the decision record, the concept closure, the generated corpus measurements and
+#     the coverage report) into a research corpus of claims, findings, contribution
+#     areas and standards records, registers it append-only, and validates thirteen
+#     fail-closed obligations. Adding a substrate surface or a measurement is an edit to
+#     the DATA declarations in intelligence/kernel/{substrate,knowledge}.py — no
+#     capability is enumerated in this workflow.
+#
+#   * UCOS-UPI-001 generates every registered publication format from that corpus and
+#     validates fourteen fail-closed obligations, including an EXECUTED proof that the
+#     format space is open (a format declared as data is registered at runtime,
+#     generated and rendered). Adding a publication format is an entry in
+#     intelligence/UCOS-UPI-001/publication-formats.json — this workflow never changes.
+#
+# Both subsystems are AUTHORITY = NONE (DERIVED TRUTH), stdlib-only, and write nothing
+# outside their own operational-memory directories under intelligence/.
+#
+# Exit semantics of each gate:
+#   0  every obligation satisfied and output byte-identical on regeneration (gate OPEN)
+#   1  an obligation is unsatisfied, or regeneration is non-deterministic (CLOSED)
+#   2  fail-closed abort — a required substrate surface is unusable, so no verdict may
+#      be asserted
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: research-publication-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: Self-guards (determinism · validation · zero-duplication)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Research determinism (identical substrate state, byte-identical corpus)
+        run: python3 -m intelligence.research verify > /dev/null
+
+      - name: Research validation (13 obligations, incl. zero canonical-prose duplication)
+        run: python3 -m intelligence.research validate > /dev/null
+
+      - name: Publication determinism (identical corpus, byte-identical documents)
+        run: python3 -m intelligence.publication verify > /dev/null
+
+      - name: Publication validation (14 obligations, incl. the format-openness probe)
+        run: python3 -m intelligence.publication validate > /dev/null
+
+  research-gate:
+    name: Research Validation Gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Regenerate the research intelligence outputs
+        run: python3 -m intelligence.research build
+
+      - name: Research Validation Gate (fail-closed)
+        run: python3 -m intelligence.research gate
+
+      - name: Publish the research intelligence outputs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: research-intelligence
+          path: |
+            intelligence/UCOS-URI-001/*.json
+          if-no-files-found: warn
+
+  publication-gate:
+    name: Publication Validation Gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: research-gate
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Regenerate every publication format
+        run: python3 -m intelligence.publication build
+
+      - name: Publication Validation Gate (fail-closed)
+        run: python3 -m intelligence.publication gate
+
+      - name: Publish the generated publications and their evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: publication-intelligence
+          path: |
+            intelligence/UCOS-UPI-001/*.json
+            intelligence/UCOS-UPI-001/publications/
+          if-no-files-found: warn
+
+  subsystem-tests:
+    name: Research + Publication test suites
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Install the pinned test toolchain (DE-04 pinned/vetted)
+        run: |
+          python3 -m pip install --disable-pip-version-check \
+            pytest==8.3.4 pytest-cov==6.0.0
+
+      - name: Run the additive subsystem test suites
+        # --no-cov: the repository coverage gate scopes to engine*/platform*; these
+        # additive subsystems are excluded from the wheel and from that gate.
+        run: |
+          python3 -m pytest -p no:cacheprovider -q --no-cov \
+            intelligence/tests/test_research_intelligence.py \
+            intelligence/tests/test_publication_intelligence.py

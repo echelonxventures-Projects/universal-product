@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "AMC-02",
+  "target_id": "UCOS-CAPABILITY-ucos.application.capability.foundation-b1acc62b3827c5ff",
+  "verdict": "pass"
+}

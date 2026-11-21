@@ -1,0 +1,99 @@
+{
+  "artifact_id": "UOBC-000001",
+  "name": "Universal Object Birth Contract",
+  "version": "1.0",
+  "authority": "NONE — DERIVED TRUTH. This contract legislates no identity. It activates the CONSTITUTIONAL_OBJECT identity plane already declared SUPREME at 00-BOOK/DATA/constitutional-authority-alignment.json (identity_authority_resolution.planes[CONSTITUTIONAL_OBJECT], role 'SUPREME — this IS UCKP-ART-05'). It opens no counter, consumes no corpus serial and issues no repository identifier, so it cannot become a second identity authority under that file's own second_authority_test.",
+  "$why_this_exists": "Identity was purely post-hoc: two path-keyed scanners (00-BOOK/tools/ukb.py allocate, 00-MASTER/UCOS-UGA-001/uga_engine.py epoch1_identity) discovered artifacts that already existed and then named them. A path-derived identity is an address, not an identity — UCKP Article 5 says so in its own first sentence — and an address changes when a file moves, which is why a rename was previously an identity act. This contract makes identity a function of BIRTH FACTS rather than of location, so an object is identified before it exists and keeps that identity through every later move and every later evolution.",
+  "identity_plane": {
+    "plane": "CONSTITUTIONAL_OBJECT",
+    "home": "engine/uckp/identity.py",
+    "symbols": ["urn_for", "uuid_for", "UniversalIdentity", "UCKO_URN_PREFIX", "UCKP_NAMESPACE_UUID"],
+    "shape": "urn:ucos:ucko:<namespace>:<local_name>",
+    "derivation": "pure, total, clock-free, storage-free, repository-free; minting again cannot produce a different answer",
+    "counter_consumed": false,
+    "mint_marker_held": false,
+    "$not_a_second_authority": "CAA-INV-04 recognises a second identity authority by the counter it advances — the declared mint_marker is 'category_seq'. Birth identity is DERIVED (RFC 4122 v5 name-based UUID over the birth URN), so no counter exists to advance and no file in this programme holds the marker. The repository serial (UCOS-<CATEGORY>-<NNNNNN>) continues to be issued by the one REPOSITORY_OBJECT mint at 00-BOOK/DATA/id-ledger.json, unchanged."
+  },
+  "namespace_policy": {
+    "pattern": "^[a-z0-9][a-z0-9._-]{0,62}$",
+    "enforced_by": "engine/uckp/identity.py::_NAMESPACE_RE",
+    "declared_namespaces": [
+      { "namespace": "ucos.cmg", "owner": "CMG Foundation", "zone": "00-MASTER/CMG-*/" },
+      { "namespace": "ucos.master", "owner": "Master Context System", "zone": "00-MASTER/" },
+      { "namespace": "ucos.engine", "owner": "Engineering Governance", "zone": "engine/" },
+      { "namespace": "ucos.determination", "owner": "UCOS-REPOSITORY-ROOT", "zone": "*-DETERMINATION.md" }
+    ],
+    "$open_world": "The list is open through declaration, never through invention at a call site: an unlisted namespace is refused by the gate, and admitting one is an edit to this file."
+  },
+  "stages": [
+    { "id": "UOBC-S-01", "ordinal": 10, "stage": "intent-discovery", "duty": "Locate the intent that requires a new object to exist, and the owner asserting it.", "produces": "intent", "identity_exists": false },
+    { "id": "UOBC-S-02", "ordinal": 20, "stage": "context-assimilation", "duty": "Assimilate the context of creation across the fifteen universal context kinds owned by UCXI-000001.", "produces": "creation_context", "identity_exists": false },
+    { "id": "UOBC-S-03", "ordinal": 30, "stage": "creation-decision", "duty": "Decide that a new object is required rather than an extension or reuse of an existing one.", "produces": "creation_decision", "identity_exists": false },
+    { "id": "UOBC-S-04", "ordinal": 40, "stage": "identity-minting", "duty": "Derive the Universal Unique Identity from the birth tuple. No artifact exists at this point.", "produces": "universal_id", "identity_exists": true },
+    { "id": "UOBC-S-05", "ordinal": 50, "stage": "artifact-instantiation", "duty": "Instantiate the artifact. It is born already identified.", "produces": "artifact", "identity_exists": true },
+    { "id": "UOBC-S-06", "ordinal": 60, "stage": "registry-registration", "duty": "Bind the derived identity to its repository persistence in the one REPOSITORY_OBJECT mint.", "produces": "registry_entry", "identity_exists": true },
+    { "id": "UOBC-S-07", "ordinal": 70, "stage": "lifecycle-activation", "duty": "Activate the inherited lifecycle. The object becomes subject to evolution under UCIC-001.", "produces": "lifecycle_state", "identity_exists": true }
+  ],
+  "$stage_ordering": "Ordinals step by ten so a future stage can be admitted between two existing ones without renumbering. identity_exists flips exactly once, at UOBC-S-04, and never flips back — that boolean IS the identity-first requirement, expressed as data the gate can measure.",
+  "mandatory_fields": [
+    { "id": "UOBC-F-01", "field": "universal_id", "shape": "urn:ucos:ucko:<namespace>:<local_name>", "derived": true, "immutable": true, "basis": "UCKP-ART-05" },
+    { "id": "UOBC-F-02", "field": "namespace", "shape": "declared namespace token", "derived": false, "immutable": true, "basis": "namespace_policy" },
+    { "id": "UOBC-F-03", "field": "owner", "shape": "located owner name", "derived": false, "immutable": false, "basis": "ownership may transfer; identity may not" },
+    { "id": "UOBC-F-04", "field": "creation_timestamp", "shape": "declared temporal coordinate", "derived": false, "immutable": true, "basis": "CMG-000002 Universal Temporal Existence Contract" },
+    { "id": "UOBC-F-05", "field": "creation_context", "shape": "mapping of context kind to value", "derived": false, "immutable": true, "basis": "UCXI-000001 fifteen universal kinds" },
+    { "id": "UOBC-F-06", "field": "parent_identity", "shape": "urn or null for a root object", "derived": false, "immutable": true, "basis": "lineage; null admitted only for a declared root" },
+    { "id": "UOBC-F-07", "field": "lifecycle_binding", "shape": "lifecycle owner reference", "derived": false, "immutable": false, "basis": "UCIC-001 owner; UCL-000001 derived truth" },
+    { "id": "UOBC-F-08", "field": "initial_state", "shape": "declared initial lifecycle state", "derived": false, "immutable": true, "basis": "initial_states below" },
+    { "id": "UOBC-F-09", "field": "certification_boundary", "shape": "statement of what the object certifies", "derived": false, "immutable": false, "basis": "CEP-005 certification channel" }
+  ],
+  "$timestamp_determinism": "creation_timestamp is DATA supplied by the caller, never a clock read inside the engine, and it is deliberately NOT an input to the identity derivation. So the engine stays clock-free (identity is reproducible across eras per UCKP Article 5) while the record still carries the temporal coordinate CMG-000002 requires. A birth record replays byte-identically; a clock read would have made that impossible.",
+  "initial_states": ["DECLARED", "REGISTERED", "ACTIVE"],
+  "$initial_state_rationale": "A born object may not start in a terminal or superseded state. DECLARED is identity-only; REGISTERED adds the persistence binding; ACTIVE adds lifecycle activation. Nothing else is admissible at birth.",
+  "identity_inputs": ["namespace", "local_name"],
+  "$identity_inputs_rationale": "Exactly the two inputs UCKP Article 5 declares. Owner, timestamp, context, parent and state are all RECORDED but none is an identity input, because an identity that changed when its owner changed would not be an identity. This is what makes UOBC-L-03 and UOBC-L-07 provable rather than merely asserted.",
+  "laws": [
+    { "id": "UOBC-L-01", "title": "Identity Precedes Existence", "statement": "Every object's Universal Unique Identity is derived before the artifact is instantiated.", "check": "identity_precedes_existence" },
+    { "id": "UOBC-L-02", "title": "Derived, Never Counted", "statement": "Birth identity is derived by pure function and consumes no counter, so this contract is not a second identity authority.", "check": "no_rival_counter" },
+    { "id": "UOBC-L-03", "title": "Identity Immutability", "statement": "Identity is a pure function of namespace and local name; it is never replaced, renumbered or reissued.", "check": "identity_immutable" },
+    { "id": "UOBC-L-04", "title": "No Anonymous Object", "statement": "Every object admitted under this contract holds a birth record carrying all nine mandatory fields.", "check": "no_anonymous_object" },
+    { "id": "UOBC-L-05", "title": "No Temporary Identity", "statement": "No provisional, placeholder or draft identity is admitted; there is one identity from birth.", "check": "no_temporary_identity" },
+    { "id": "UOBC-L-06", "title": "No Post-Creation Registration", "statement": "Registration is a declared stage of birth, not a later reconciliation of an existing artifact.", "check": "no_post_creation_registration" },
+    { "id": "UOBC-L-07", "title": "Evolution Under One Identity", "statement": "Evolution changes state, owner, path and content; it never changes identity.", "check": "evolution_preserves_identity" },
+    { "id": "UOBC-L-08", "title": "Append-Only Birth History", "statement": "Birth records are appended and superseded, never overwritten or deleted.", "check": "append_only_history" }
+  ],
+  "$law_checks": "Every law names a check that computes its own compliance. A law with no reachable check would be manual governance, so the contract refuses to construct itself if any check is missing — the same discipline engine/context/constitution.py applies to CXL-01..12.",
+  "prohibitions": [
+    { "id": "UOBC-P-01", "prohibition": "anonymous objects", "law": "UOBC-L-04" },
+    { "id": "UOBC-P-02", "prohibition": "temporary identities", "law": "UOBC-L-05" },
+    { "id": "UOBC-P-03", "prohibition": "post-creation registration", "law": "UOBC-L-06" },
+    { "id": "UOBC-P-04", "prohibition": "identity replacement during evolution", "law": "UOBC-L-07" }
+  ],
+  "ledger": {
+    "home": "00-MASTER/UOBC-000001/birth-ledger.json",
+    "append_only": true,
+    "keyed_by": "universal_id",
+    "$keyed_by_rationale": "Keyed by IDENTITY, not by path. This is the structural difference from the two path-keyed maps in 00-BOOK/DATA/id-ledger.json: a move rewrites a path key but cannot touch an identity key, so UOBC-L-07 holds across renames by construction rather than by discipline."
+  },
+  "gate": {
+    "home": "engine/object_birth/gate.py",
+    "invocation": "python -m engine.object_birth.gate --gate",
+    "fail_closed": true,
+    "hermetic": "reads the declaration, the ledger and the version-controlled tree; reads no clock and no network; writes nothing"
+  },
+  "lifecycle_inheritance": {
+    "lifecycle_owner": "UCIC-001",
+    "derived_truth": "UCL-000001",
+    "law_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+    "evolution_channel": ["CEP-009", "engine/uckp/evolution.py Article-14"],
+    "independent_lifecycle_defined": false
+  },
+  "boundaries": [
+    { "id": "UOBC-BND-01", "refuses": "issuing repository serials", "owner": "00-BOOK/DATA/id-ledger.json (REPOSITORY_OBJECT plane)" },
+    { "id": "UOBC-BND-02", "refuses": "classifying objects by path", "owner": "00-MASTER/UCOS-UGA-001/uga_engine.py::classify_object" },
+    { "id": "UOBC-BND-03", "refuses": "declaring context kinds", "owner": "engine/context/ (UCXI-000001)" },
+    { "id": "UOBC-BND-04", "refuses": "declaring lifecycle stages", "owner": "UCIC-001 / engine/uckp/evolution.py" },
+    { "id": "UOBC-BND-05", "refuses": "granting authority from a birth record", "owner": "nobody — context and identity describe, never grant" },
+    { "id": "UOBC-BND-06", "refuses": "certifying the objects it records", "owner": "CEP-005 certification channel" }
+  ],
+  "certification_boundary": "This contract certifies that every birth record it holds satisfies the nine mandatory fields and the eight laws. It certifies nothing about the correctness, quality or constitutionality of the objects born under it."
+}

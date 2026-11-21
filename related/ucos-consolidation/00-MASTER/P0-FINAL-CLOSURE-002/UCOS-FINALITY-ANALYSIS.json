@@ -1,0 +1,81 @@
+{
+  "authority": "NONE — DERIVED TRUTH. Measurement only; this file certifies nothing and creates no authority.",
+  "mission": "UCOS-P0-FINAL-CLOSURE-002",
+  "phase": 1,
+  "question": "Why is unconditional certification prohibited, which authority introduced it, and is the limitation fundamental?",
+  "verdict": "PROHIBITED IN-CORPUS — INTENTIONAL CONSTITUTIONAL LAW",
+  "classification": "Intentional Constitutional Law (not an implementation, governance, architectural or measurement defect, and not an artificial constraint)",
+  "why_prohibited": "Tier T1 (Constitutional Authority) is VACANT (VAC-01). CMG-000001 X.12 (CMG-L-12) caps standing at PROVISIONAL wherever no located authority confers it. CEP-006 XII.2 permits FINALIZED from a PROVISIONAL determination ONLY upon the act of the out-of-corpus finality authority.",
+  "introducing_authorities": [
+    {
+      "id": "CEP-000 §5.3",
+      "text": "Program Authority SHALL NOT extend to the substance of the UCOS Ω∞ Constitution. The Program governs how constitutional content is engineered; it does not decide what that content is."
+    },
+    {
+      "id": "CEP-000 §5.4",
+      "text": "Program Authority SHALL NEVER self-elevate. … no CEP agent SHALL grant itself ratification authority."
+    },
+    {
+      "id": "CEP-000 §6.5",
+      "text": "Where final constitutional finality requires an authority residing outside the corpus, this Charter SHALL recognize that authority as superior for the purpose of finality…"
+    },
+    {
+      "id": "CEP-006 I.4",
+      "text": "Where final constitutional finality requires an authority residing outside the corpus, that out-of-corpus authority SHALL be recognized as superior for finality, and Ratification Authority within the corpus SHALL confer only PROVISIONAL acceptance pending that finality."
+    },
+    {
+      "id": "CEP-006 I.5",
+      "text": "Ratification Authority SHALL NEVER be self-conferred by Execution Authority."
+    },
+    {
+      "id": "CEP-006 XII.2",
+      "text": "An ACCEPTED determination MAY reach FINALIZED upon in-corpus finality authority; a PROVISIONAL determination SHALL reach FINALIZED only upon the act of the out-of-corpus finality authority."
+    },
+    {
+      "id": "CEP-006 XII.3",
+      "text": "Where the finality authority is out-of-corpus or unavailable, the artifact SHALL rest at PROVISIONAL, which is non-blocking to engineering progression and blocking only to declared constitutional finality."
+    },
+    {
+      "id": "CMG-000001 X.12 (CMG-L-12)",
+      "text": "An artifact SHALL NOT declare a standing higher than the standing conferred by a located authority. Where no such authority exists, the standing IS PROVISIONAL."
+    },
+    {
+      "id": "CMG-000001 LI.6",
+      "text": "Certification SHALL NOT be self-issued. The certifying authority SHALL be distinct from the certified subject's author."
+    }
+  ],
+  "limitation_nature": {
+    "fundamental": true,
+    "derived": false,
+    "historical": false,
+    "transitional": false,
+    "temporary": false,
+    "vacant_authority_dependent": true,
+    "note": "Fundamental AS TO EXECUTION AUTHORITY. The cap is a consequence of VAC-01, and VAC-01 has a declared closure procedure — but no in-corpus act may execute it (CEP-000 §5.4; DR-RAT-11 Q7)."
+  },
+  "requires_permanent_external_finality": true,
+  "requires_merely_independent_finality": false,
+  "externality_independence_conflated": false,
+  "conflation_finding": "NOT conflated. 09-DR-RAT-11-ASSESSMENT.md §2 poses and answers this question directly: finality is a distinct, higher power from implementation, and 'the corpus cannot self-mint constituent authority (CEP-000 §5.3) — a system cannot be the sole author of its own founding legitimacy.' In-corpus independence is insufficient BECAUSE any in-corpus authority is authored by the corpus. This is CMG LI.6 applied one tier higher: repairing the ceiling in-corpus would re-introduce, at the constituent level, precisely the self-issued-certification defect removed at the certification level under P0-ULTIMATE-CLOSURE-001.",
+  "executable_evidence": {
+    "register": "00-MASTER/UCOS-URAT-001/urat.json",
+    "finality_ceiling": {
+      "in_corpus_ceiling": [
+        "PROVISIONAL"
+      ],
+      "unreachable_in_corpus": [
+        "FINALIZED"
+      ]
+    },
+    "uccep_finding": "UCCEP-F-004 (STANDING-CONSTITUTIONAL-CEILING, blocking, disposition REGISTERED, deliberately retained)"
+  },
+  "tier_T1": {
+    "id": "T1",
+    "name": "Constitutional Authority",
+    "subordinate_to": [
+      "T0"
+    ],
+    "occupancy": "VACANT",
+    "vacancy": "VAC-01"
+  }
+}

@@ -1,0 +1,2206 @@
+{
+  "$comment": "UCOS-URR-001 — Universal Requirement Repository. DISCOVERY-GRAMMAR DECLARATION ONLY. Not one requirement is enumerated, named, restated or defined here: this file declares HOW requirements are discovered from Repository Truth, never WHICH requirements exist. Adding a source of requirements, a modal, a class, an inference law, a priority rule, a risk rule or a gap class is an entry in this file and requires NO change to urr_engine.py. Knowledge Once (00-CMG/CMG-000001 VIII.1) forbids this file from carrying normative text; the engine proves that mechanically with --check-knowledge-once and --check-no-enumeration.",
+  "programme": "UCOS-URR-001",
+  "title": "Universal Requirement Repository",
+  "authority": "NONE — DERIVED TRUTH",
+  "standing": "PROPOSED — NOT ADMITTED",
+  "$standing_comment": "This declaration holds NO AUTHORITY and is NOT Repository Truth. Its integration surface (urr_engine.py, five Makefile targets, a workflow and a test) does not exist, and Ω-A07 deliberately did not build it: a second register plane over the 541 requirements already registered by 00-MASTER/UAKOS-CLOSURE-009 would be the competing measurement UCOS-UFC-001 UFC-16 forbids. The disposition, the three constitutionally valid alternatives and the recommendation are recorded in 00-URR-DISPOSITION-DETERMINATION.md, which also records that choosing between them is reserved to a governing authority under CEP-002 14.2. Until that decision is taken, no engine reads this file and no gate consumes it.",
+  "disposition_record": "00-MASTER/UCOS-URR-001/00-URR-DISPOSITION-DETERMINATION.md",
+  "description": "Declares the discovery grammar, the acceptance signals, the attribute derivation rules and the inference laws by which every accepted requirement anywhere in Repository Truth is discovered, registered, attributed and measured. The repository — not this file and not the engine — is the source of every requirement.",
+  "self_exclusion": {
+    "$comment": "The programme home is excluded from every scan: from prose sourcing (a requirement may never be homed inside the measurer — Reuse Before Create), from the anchor index and from inference subjects. This also makes the render stable: committing the generated registers cannot change the next measurement.",
+    "exclude_own_home": true
+  },
+  "file_universe": {
+    "$comment": "The universe is the version-controlled tracked set, enumerated deterministically. Nothing outside version control is a source of requirements, so the measurement is reproducible from a checkout alone.",
+    "enumerator": "git ls-files -z",
+    "text_extensions": [
+      ".md",
+      ".py",
+      ".json",
+      ".yml",
+      ".yaml",
+      ".sh",
+      ".txt",
+      ".toml",
+      ".cfg",
+      ".ini",
+      ".mk"
+    ],
+    "extensionless_text_names": [
+      "Makefile"
+    ],
+    "binary_extensions": [
+      ".docx",
+      ".pdf",
+      ".png",
+      ".jpg",
+      ".jpeg",
+      ".zip",
+      ".gif",
+      ".webp",
+      ".db"
+    ],
+    "exclude_path_parts": [
+      ".git",
+      ".ec1-venv",
+      ".mypy_cache",
+      ".ruff_cache",
+      ".pytest_cache",
+      "__pycache__",
+      "node_modules",
+      "dist"
+    ]
+  },
+  "requirement_classes": [
+    {
+      "code": "EXP",
+      "class": "EXPLICIT",
+      "definition": "A normative obligation stated in the text of a repository instrument by a declared modal.",
+      "discovery": "normative-prose",
+      "task": "TASK-01 discover every explicit requirement"
+    },
+    {
+      "code": "IMP",
+      "class": "IMPLICIT",
+      "definition": "An obligation carried by a machine-readable criteria, gate, check, invariant, principle, condition or obligation record rather than by prose.",
+      "discovery": "criteria-record",
+      "task": "TASK-02 discover every implicit requirement"
+    },
+    {
+      "code": "DRV",
+      "class": "DERIVED",
+      "definition": "A requirement projected from an already accepted constitutional concept by an existing located owner.",
+      "discovery": "concept-projection",
+      "task": "TASK-03 discover every derived requirement"
+    },
+    {
+      "code": "INF",
+      "class": "INFERRED",
+      "definition": "A requirement not stated anywhere but constitutionally necessary: entailed by a declared inference law over discovered objects.",
+      "discovery": "inference-law",
+      "task": "TASK-04 discover every inferred requirement that is constitutionally necessary"
+    },
+    {
+      "code": "CNV",
+      "class": "CONVERSATION-ORIGIN",
+      "definition": "A requirement whose origin is the discussion corpus, recognised through the committed corpus-assimilation record.",
+      "discovery": "corpus-assimilation-record",
+      "task": "TASK-10 detect requirements that exist only in conversations"
+    },
+    {
+      "code": "DOC",
+      "class": "DOCUMENT-ORIGIN",
+      "definition": "A requirement carried by an uploaded source document that has not been extracted into Repository Truth.",
+      "discovery": "upload-manifest",
+      "task": "TASK-10 detect requirements that exist only in documentation"
+    }
+  ],
+  "modal_lexicon": [
+    {
+      "token": "SHALL NOT",
+      "polarity": "PROHIBITION",
+      "strength": "MANDATORY"
+    },
+    {
+      "token": "SHALL NEVER",
+      "polarity": "PROHIBITION",
+      "strength": "MANDATORY"
+    },
+    {
+      "token": "MUST NOT",
+      "polarity": "PROHIBITION",
+      "strength": "MANDATORY"
+    },
+    {
+      "token": "MAY NEVER",
+      "polarity": "PROHIBITION",
+      "strength": "MANDATORY"
+    },
+    {
+      "token": "IS PROHIBITED",
+      "polarity": "PROHIBITION",
+      "strength": "MANDATORY"
+    },
+    {
+      "token": "ARE PROHIBITED",
+      "polarity": "PROHIBITION",
+      "strength": "MANDATORY"
+    },
+    {
+      "token": "IS FORBIDDEN",
+      "polarity": "PROHIBITION",
+      "strength": "MANDATORY"
+    },
+    {
+      "token": "IS REQUIRED TO",
+      "polarity": "OBLIGATION",
+      "strength": "MANDATORY"
+    },
+    {
+      "token": "ARE REQUIRED TO",
+      "polarity": "OBLIGATION",
+      "strength": "MANDATORY"
+    },
+    {
+      "token": "SHALL",
+      "polarity": "OBLIGATION",
+      "strength": "MANDATORY"
+    },
+    {
+      "token": "MUST",
+      "polarity": "OBLIGATION",
+      "strength": "MANDATORY"
+    },
+    {
+      "token": "SHOULD NOT",
+      "polarity": "DISCOURAGEMENT",
+      "strength": "ADVISORY"
+    },
+    {
+      "token": "SHOULD",
+      "polarity": "RECOMMENDATION",
+      "strength": "ADVISORY"
+    }
+  ],
+  "prose_scan": {
+    "$comment": "One pass over every tracked markdown instrument. A table row is split on the pipe so that an obligation stated inside a cell is discovered; a sentence is the unit of obligation so a clause carrying three modals is three obligations only when they are three sentences.",
+    "source_extensions": [
+      ".md"
+    ],
+    "sentence_split": "(?<=[.;:])\\s+(?=[A-Z0-9(*`\\u03a9])",
+    "min_statement_chars": 25,
+    "label_max_chars": 90,
+    "label_note": "The Canonical Name is a NON-NORMATIVE locator label truncated to label_max_chars. Verbatim normative text is never copied into this programme (CMG-000001 XL.2); the register carries a resolvable pointer instead.",
+    "emphasis_strip": [
+      "\\*\\*",
+      "__",
+      "\\*",
+      "(?<![A-Za-z0-9])_(?![A-Za-z0-9])"
+    ],
+    "link_collapse": "\\[([^\\]]*)\\]\\([^)]*\\)",
+    "leading_noise": "^[\\s>#*+\\-|]+",
+    "clause_markers": [
+      "^(?:Article|Art\\.?)\\s+([IVXLCDM]+|\\d+)",
+      "^(\\d+(?:\\.\\d+)+)(?=[\\s)])",
+      "^([IVXLCDM]{1,7}\\.\\d+(?:\\.\\d+)?)(?=[\\s)])",
+      "^([A-Z]\\.\\d+)(?=[\\s)])",
+      "^\\u00a7\\s*([\\d.]+)",
+      "^([A-Z]{2,}(?:-[A-Z0-9]+)+)(?=[\\s)|])"
+    ],
+    "standing_markers": [
+      {
+        "pattern": "\\bSUPERSEDED\\b",
+        "standing": "SUPERSEDED"
+      },
+      {
+        "pattern": "\\bRETIRED\\b",
+        "standing": "SUPERSEDED"
+      },
+      {
+        "pattern": "\\bREPEALED\\b",
+        "standing": "SUPERSEDED"
+      },
+      {
+        "pattern": "\\bRATIFIED\\b",
+        "standing": "RATIFIED"
+      },
+      {
+        "pattern": "\\bFROZEN\\b",
+        "standing": "FROZEN"
+      },
+      {
+        "pattern": "\\bREJECTED\\b",
+        "standing": "REJECTED"
+      },
+      {
+        "pattern": "\\bDEFERRED\\b",
+        "standing": "DEFERRED"
+      },
+      {
+        "pattern": "\\bADVISORY\\b",
+        "standing": "ADVISORY"
+      },
+      {
+        "pattern": "\\bnon-normative\\b",
+        "standing": "NON-NORMATIVE"
+      },
+      {
+        "pattern": "\\bILLUSTRATIVE\\b",
+        "standing": "NON-NORMATIVE"
+      }
+    ],
+    "document_authority_row": "^\\|\\s*(?:\\*\\*)?AUTHORITY(?:\\*\\*)?\\s*\\|\\s*(.+?)\\s*\\|\\s*$",
+    "document_program_row": "^\\|\\s*(?:\\*\\*)?PROGRAM(?:\\*\\*)?\\s*\\|\\s*(.+?)\\s*\\|\\s*$",
+    "heading": "^(#{1,6})\\s+(.*)$"
+  },
+  "anchor_grammar": {
+    "$comment": "ZERO ENUMERATION OF IDENTIFIER FAMILIES. A single open grammar recognises every identifier-shaped token, so a family that does not exist yet is discovered without an engine or declaration change. This deliberately remediates the IDENTIFIER COMPLETENESS: FAIL finding recorded by 00-MASTER/UAKOS-CLOSURE-007 section 3, which lists ~30 identifier families present in the repository but invisible to the closed 26-family recogniser.",
+    "token": "[A-Z\\u03a9\\u221e][A-Z0-9\\u03a9\\u221e]*(?:-[A-Z0-9\\u03a9\\u221e]+)+",
+    "require_digit": true,
+    "min_chars": 4,
+    "min_segments": 2,
+    "max_segments": 6,
+    "min_distinct_files": 2,
+    "stopwords": [
+      "UTF-8",
+      "UTF-16",
+      "SHA-256",
+      "SHA-1",
+      "SHA-512",
+      "BASE-64",
+      "ISO-8601",
+      "RFC-3339",
+      "RFC-2119",
+      "PYTHON-3",
+      "PYTHON-3.12",
+      "IPV-4",
+      "IPV-6",
+      "P-256",
+      "X-509",
+      "HTTP-2",
+      "TLS-1.2",
+      "TLS-1.3",
+      "AES-256",
+      "SPDX-2",
+      "JSON-2020",
+      "V-1",
+      "V-2",
+      "V-3",
+      "V-4",
+      "V-5"
+    ],
+    "resolution_scopes": [
+      "STATEMENT",
+      "HEADING",
+      "DOCUMENT",
+      "NONE"
+    ]
+  },
+  "authority_zones": {
+    "$comment": "Ordered by rank, highest first. The rank decides which location is the canonical home when the same obligation is present in several places (duplicate resolution) and contributes to standing and priority. The final entry is an OPEN catch-all: an unknown zone is carried generically and NEVER rejected (Zero Finite / Infinite Extensibility).",
+    "zones": [
+      {
+        "prefix": "00-CMG/",
+        "rank": 12,
+        "tier": "T0-META-CONSTITUTIONAL",
+        "standing": "RATIFIED",
+        "owner": "Constitutional Meta-Governance Authority (00-CMG)"
+      },
+      {
+        "prefix": "00-CEP/",
+        "rank": 11,
+        "tier": "T1-CONSTITUTIONAL-PROGRAMME",
+        "standing": "RATIFIED",
+        "owner": "Constitutional Engineering Programme Authority (00-CEP)"
+      },
+      {
+        "prefix": "02-MASTER/",
+        "rank": 10,
+        "tier": "T2-MASTER-CONSTITUTIONAL",
+        "standing": "RATIFIED",
+        "owner": "Master Constitutional Authority (02-MASTER)"
+      },
+      {
+        "prefix": "07-ENGINEERING/",
+        "rank": 9,
+        "tier": "T3-FOUNDATION",
+        "standing": "FROZEN",
+        "owner": "Engineering Foundation Authority (07-ENGINEERING)"
+      },
+      {
+        "prefix": "08-RUNTIME/",
+        "rank": 9,
+        "tier": "T3-FOUNDATION",
+        "standing": "FROZEN",
+        "owner": "Runtime Foundation Authority (08-RUNTIME)"
+      },
+      {
+        "prefix": "09-PLATFORM/",
+        "rank": 8,
+        "tier": "T4-PLATFORM",
+        "standing": "FROZEN",
+        "owner": "Platform Authority (09-PLATFORM)"
+      },
+      {
+        "prefix": "10-DATA/",
+        "rank": 8,
+        "tier": "T4-PLATFORM",
+        "standing": "FROZEN",
+        "owner": "Data Authority (10-DATA)"
+      },
+      {
+        "prefix": "11-SERVICE/",
+        "rank": 8,
+        "tier": "T4-PLATFORM",
+        "standing": "FROZEN",
+        "owner": "Service Authority (11-SERVICE)"
+      },
+      {
+        "prefix": "12-APPLICATION/",
+        "rank": 8,
+        "tier": "T4-PLATFORM",
+        "standing": "FROZEN",
+        "owner": "Application Authority (12-APPLICATION)"
+      },
+      {
+        "prefix": "13-INFRASTRUCTURE/",
+        "rank": 8,
+        "tier": "T4-PLATFORM",
+        "standing": "FROZEN",
+        "owner": "Infrastructure Authority (13-INFRASTRUCTURE)"
+      },
+      {
+        "prefix": "14-SECURITY/",
+        "rank": 8,
+        "tier": "T4-PLATFORM",
+        "standing": "FROZEN",
+        "owner": "Security Authority (14-SECURITY)"
+      },
+      {
+        "prefix": "15-UNIVERSAL-SCIENCE-INTELLIGENCE/",
+        "rank": 7,
+        "tier": "T5-SCIENCE",
+        "standing": "DECLARED",
+        "owner": "Universal Science Intelligence Authority (15-UNIVERSAL-SCIENCE-INTELLIGENCE)"
+      },
+      {
+        "prefix": "03-CATALOGS/",
+        "rank": 7,
+        "tier": "T5-CATALOGUE",
+        "standing": "DECLARED",
+        "owner": "Canonical Catalog Authority (03-CATALOGS)"
+      },
+      {
+        "prefix": "04-REFERENCE/",
+        "rank": 6,
+        "tier": "T6-REFERENCE",
+        "standing": "DECLARED",
+        "owner": "Canonical Reference Authority (04-REFERENCE)"
+      },
+      {
+        "prefix": "05-GENERATION/",
+        "rank": 6,
+        "tier": "T6-GENERATION",
+        "standing": "DECLARED",
+        "owner": "Generation Authority (05-GENERATION)"
+      },
+      {
+        "prefix": "06-IMPLEMENTATION/",
+        "rank": 6,
+        "tier": "T6-IMPLEMENTATION",
+        "standing": "DECLARED",
+        "owner": "Implementation Authority (06-IMPLEMENTATION)"
+      },
+      {
+        "prefix": "01-WORKING/",
+        "rank": 5,
+        "tier": "T7-RECONCILIATION",
+        "standing": "DECLARED",
+        "owner": "Constitutional Reconciliation Authority (01-WORKING)"
+      },
+      {
+        "prefix": "00-MASTER/",
+        "rank": 4,
+        "tier": "T8-OPERATIONAL-MEMORY",
+        "standing": "DERIVED",
+        "owner": "Master Context System (00-MASTER)"
+      },
+      {
+        "prefix": "adr/",
+        "rank": 4,
+        "tier": "T8-DECISION-RECORD",
+        "standing": "DECLARED",
+        "owner": "Architecture Decision Record Authority (adr/)"
+      },
+      {
+        "prefix": "knowledge/",
+        "rank": 4,
+        "tier": "T8-KNOWLEDGE-RECORD",
+        "standing": "DECLARED",
+        "owner": "Canonical Knowledge Authority (knowledge/)"
+      },
+      {
+        "prefix": "engine/",
+        "rank": 3,
+        "tier": "T9-IMPLEMENTATION-SURFACE",
+        "standing": "IMPLEMENTED",
+        "owner": "Engine Implementation Authority (engine/)"
+      },
+      {
+        "prefix": "platform/",
+        "rank": 3,
+        "tier": "T9-IMPLEMENTATION-SURFACE",
+        "standing": "IMPLEMENTED",
+        "owner": "Platform Implementation Authority (platform/)"
+      },
+      {
+        "prefix": "intelligence/",
+        "rank": 3,
+        "tier": "T9-INTELLIGENCE-SURFACE",
+        "standing": "DERIVED",
+        "owner": "Repository Intelligence Authority (intelligence/)"
+      },
+      {
+        "prefix": ".github/",
+        "rank": 3,
+        "tier": "T9-ENFORCEMENT-SURFACE",
+        "standing": "IMPLEMENTED",
+        "owner": "CI Gate Authority (.github/)"
+      },
+      {
+        "prefix": "00-SOURCE/",
+        "rank": 2,
+        "tier": "T10-UPLOADED-SOURCE",
+        "standing": "UNEXTRACTED",
+        "owner": "Uploaded Source Authority (00-SOURCE)"
+      },
+      {
+        "prefix": "00-SOURCE-MANIFEST/",
+        "rank": 2,
+        "tier": "T10-UPLOADED-SOURCE",
+        "standing": "UNEXTRACTED",
+        "owner": "Uploaded Source Authority (00-SOURCE-MANIFEST)"
+      },
+      {
+        "prefix": "00-BOOK/",
+        "rank": 1,
+        "tier": "T11-GENERATED-PROJECTION",
+        "standing": "PROJECTION",
+        "owner": "Universal Knowledge Book Authority (00-BOOK)"
+      },
+      {
+        "prefix": "",
+        "rank": 0,
+        "tier": "T12-UNCLASSIFIED-OPEN",
+        "standing": "UNDECLARED",
+        "owner": "UNDECLARED — no located owner"
+      }
+    ]
+  },
+  "category_rules": {
+    "$comment": "Ordered. The first matching path prefix supplies the requirement Category. An unmatched path yields the open UNCLASSIFIED category, which is carried, counted and reported — never dropped.",
+    "rules": [
+      {
+        "prefix": "00-CMG/",
+        "category": "META-GOVERNANCE"
+      },
+      {
+        "prefix": "00-CEP/",
+        "category": "CONSTITUTIONAL-PROCESS"
+      },
+      {
+        "prefix": "02-MASTER/",
+        "category": "CONSTITUTIONAL"
+      },
+      {
+        "prefix": "07-ENGINEERING/",
+        "category": "ENGINEERING-FOUNDATION"
+      },
+      {
+        "prefix": "08-RUNTIME/",
+        "category": "RUNTIME"
+      },
+      {
+        "prefix": "09-PLATFORM/",
+        "category": "PLATFORM"
+      },
+      {
+        "prefix": "10-DATA/",
+        "category": "DATA"
+      },
+      {
+        "prefix": "11-SERVICE/",
+        "category": "SERVICE"
+      },
+      {
+        "prefix": "12-APPLICATION/",
+        "category": "APPLICATION"
+      },
+      {
+        "prefix": "13-INFRASTRUCTURE/",
+        "category": "INFRASTRUCTURE"
+      },
+      {
+        "prefix": "14-SECURITY/",
+        "category": "SECURITY"
+      },
+      {
+        "prefix": "15-UNIVERSAL-SCIENCE-INTELLIGENCE/",
+        "category": "SCIENCE-INTELLIGENCE"
+      },
+      {
+        "prefix": "03-CATALOGS/",
+        "category": "CATALOGUE"
+      },
+      {
+        "prefix": "04-REFERENCE/",
+        "category": "REFERENCE"
+      },
+      {
+        "prefix": "05-GENERATION/",
+        "category": "GENERATION"
+      },
+      {
+        "prefix": "06-IMPLEMENTATION/",
+        "category": "IMPLEMENTATION"
+      },
+      {
+        "prefix": "01-WORKING/",
+        "category": "RECONCILIATION"
+      },
+      {
+        "prefix": "00-MASTER/",
+        "category": "GOVERNANCE-OPERATIONS"
+      },
+      {
+        "prefix": "adr/",
+        "category": "ARCHITECTURE-DECISION"
+      },
+      {
+        "prefix": "knowledge/",
+        "category": "CANONICAL-KNOWLEDGE"
+      },
+      {
+        "prefix": "engine/",
+        "category": "ENGINE"
+      },
+      {
+        "prefix": "platform/",
+        "category": "PLATFORM-IMPLEMENTATION"
+      },
+      {
+        "prefix": "intelligence/",
+        "category": "REPOSITORY-INTELLIGENCE"
+      },
+      {
+        "prefix": ".github/",
+        "category": "ENFORCEMENT"
+      },
+      {
+        "prefix": ".kiro/",
+        "category": "AUTOMATION"
+      },
+      {
+        "prefix": "00-SOURCE",
+        "category": "UPLOADED-SOURCE"
+      },
+      {
+        "prefix": "00-BOOK/",
+        "category": "KNOWLEDGE-PROJECTION"
+      },
+      {
+        "prefix": "",
+        "category": "UNCLASSIFIED"
+      }
+    ]
+  },
+  "evidence_kinds": {
+    "$comment": "Declarative and additive. Adding a kind needs no other change; a path matching no pattern simply contributes no kind. The kinds drive Implementation, Validation, Verification, Certification and Runtime status, so the lifecycle axes are measured from located artifacts and never asserted.",
+    "kinds": [
+      {
+        "kind": "test",
+        "pattern": "(^|/)tests?/|(^|/)test_[^/]+\\.py$|_test\\.py$"
+      },
+      {
+        "kind": "validation",
+        "pattern": "VALIDATION[^/]*\\.md$|validation[^/]*\\.json$|-VALIDATION-[^/]*\\.md$|(^|/)validation/"
+      },
+      {
+        "kind": "verification",
+        "pattern": "VERIFICATION[^/]*\\.md$|verification[^/]*\\.json$|-COMPLETION-REPORT\\.md$|realization-evidence\\.json$"
+      },
+      {
+        "kind": "certificate",
+        "pattern": "CERTIFICAT[EI][^/]*\\.md$|CERTIFICATION[^/]*\\.md$|certification[^/]*\\.json$|(^|/)certification/"
+      },
+      {
+        "kind": "determinism",
+        "pattern": "determinism-evidence|reproducibility[_-]report"
+      },
+      {
+        "kind": "compliance",
+        "pattern": "compliance\\.json$|-compliance[^/]*\\.json$"
+      },
+      {
+        "kind": "engine",
+        "pattern": "_engine\\.py$|(^|/)(?:ukb|ukbx)\\.py$"
+      },
+      {
+        "kind": "code",
+        "pattern": "\\.py$"
+      },
+      {
+        "kind": "enforcement",
+        "pattern": "^\\.github/workflows/[^/]+\\.ya?ml$|(^|/)Makefile$|(^|/)[a-z0-9_-]+-gate\\.sh$"
+      },
+      {
+        "kind": "registry",
+        "pattern": "(^|/)DATA/[^/]+\\.json$|-MASTER-REGISTRY\\.md$|-REGISTRY\\.md$|(^|/)REGISTRIES/"
+      },
+      {
+        "kind": "register",
+        "pattern": "-REGISTER\\.md$"
+      },
+      {
+        "kind": "constitution",
+        "pattern": "-CONSTITUTION\\.md$|CONSTITUTION[^/]*\\.md$"
+      },
+      {
+        "kind": "determination",
+        "pattern": "-DETERMINATION\\.md$"
+      },
+      {
+        "kind": "matrix",
+        "pattern": "-MATRIX\\.md$"
+      },
+      {
+        "kind": "plan",
+        "pattern": "-PLAN[^/]*\\.md$|-ROADMAP[^/]*\\.md$|-BACKLOG\\.md$|-PROGRAMME\\.md$"
+      },
+      {
+        "kind": "runtime",
+        "pattern": "^08-RUNTIME/|(^|/)\\.runtime/|(^|/)runtime[_-]|twin\\.json$|signals\\.json$|control-tower\\.json$"
+      },
+      {
+        "kind": "upload",
+        "pattern": "\\.docx$|\\.pdf$"
+      },
+      {
+        "kind": "projection",
+        "pattern": "^00-BOOK/PORTAL/|^00-BOOK/MASTER-BOOK/|^00-BOOK/VOLUMES/"
+      }
+    ],
+    "implementation_kinds": [
+      "code",
+      "engine"
+    ],
+    "validation_kinds": [
+      "validation",
+      "compliance"
+    ],
+    "verification_kinds": [
+      "verification",
+      "test",
+      "determinism"
+    ],
+    "certification_kinds": [
+      "certificate"
+    ],
+    "runtime_kinds": [
+      "runtime"
+    ],
+    "enforcement_kinds": [
+      "enforcement"
+    ]
+  },
+  "traceability_spine": {
+    "$comment": "The nine-tier spine is owned by 00-MASTER/MCP-006-MASTER-TRACEABILITY.md and is referenced here, never restated. A tier is PRESENT for a requirement when a located artifact of the tier's evidence kinds cites one of the requirement's anchors.",
+    "owner": "00-MASTER/MCP-006-MASTER-TRACEABILITY.md",
+    "tiers": [
+      {
+        "tier": "vision",
+        "kinds": [
+          "upload"
+        ],
+        "path_hint": "^00-SOURCE/VISION|VISION"
+      },
+      {
+        "tier": "principle",
+        "kinds": [
+          "constitution",
+          "determination"
+        ],
+        "path_hint": "PRINCIPLE|^00-CMG/"
+      },
+      {
+        "tier": "constitution",
+        "kinds": [
+          "constitution"
+        ],
+        "path_hint": "^00-CEP/|^00-CMG/|^02-MASTER/|-CONSTITUTION\\.md$"
+      },
+      {
+        "tier": "requirement",
+        "kinds": [
+          "register",
+          "registry"
+        ],
+        "path_hint": "REQUIREMENT|OBLIGATION|CRITERIA"
+      },
+      {
+        "tier": "capability",
+        "kinds": [
+          "registry",
+          "matrix"
+        ],
+        "path_hint": "CAPABILITY"
+      },
+      {
+        "tier": "implementation",
+        "kinds": [
+          "code",
+          "engine"
+        ],
+        "path_hint": "\\.py$"
+      },
+      {
+        "tier": "test",
+        "kinds": [
+          "test"
+        ],
+        "path_hint": "tests?/"
+      },
+      {
+        "tier": "evidence",
+        "kinds": [
+          "validation",
+          "verification",
+          "determinism",
+          "compliance"
+        ],
+        "path_hint": "EVIDENCE|evidence"
+      },
+      {
+        "tier": "certification",
+        "kinds": [
+          "certificate"
+        ],
+        "path_hint": "CERTIF"
+      }
+    ]
+  },
+  "inputs": {
+    "$comment": "Every input is an existing committed repository register. This programme introduces no new source of truth. A required input missing makes the run fail closed (exit 2) so a verdict is never asserted over an unknown substrate; an optional input missing is recorded ABSENT and transparently degrades the measurement rather than being silently assumed (Zero Silent Repair).",
+    "declared": [
+      {
+        "key": "concepts",
+        "path": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+        "required": true,
+        "role": "accepted constitutional concepts and their homes"
+      },
+      {
+        "key": "derived_requirements",
+        "path": "00-MASTER/UAKOS-CLOSURE-009/requirements.json",
+        "required": true,
+        "role": "existing concept-projected requirement register (reused, never re-minted)"
+      },
+      {
+        "key": "assimilation",
+        "path": "00-MASTER/UAKOS-CLOSURE-008/assimilation.json",
+        "required": true,
+        "role": "committed corpus-assimilation record — the in-repo representation of the discussion corpus"
+      },
+      {
+        "key": "corpus",
+        "path": "00-MASTER/UKAP-001/corpus.json",
+        "required": true,
+        "role": "conversation corpus currency and consumption record"
+      },
+      {
+        "key": "bindings",
+        "path": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+        "required": true,
+        "role": "constitutional checks, gates, invariants, principles and findings"
+      },
+      {
+        "key": "artifacts",
+        "path": "00-BOOK/DATA/artifacts.json",
+        "required": true,
+        "role": "artifact registration, version, status, content hash"
+      },
+      {
+        "key": "relationships",
+        "path": "00-BOOK/DATA/relationships.json",
+        "required": true,
+        "role": "declared dependency edges"
+      },
+      {
+        "key": "control_tower",
+        "path": "00-BOOK/DATA/control-tower.json",
+        "required": true,
+        "role": "lifecycle and programme roll-up status"
+      },
+      {
+        "key": "certification",
+        "path": "00-BOOK/DATA/certification.json",
+        "required": true,
+        "role": "certification standard and verdict"
+      },
+      {
+        "key": "change_ledger",
+        "path": "00-BOOK/DATA/change-ledger.json",
+        "required": false,
+        "role": "evolution history"
+      },
+      {
+        "key": "cko",
+        "path": "knowledge/canonical-knowledge.json",
+        "required": false,
+        "role": "canonical knowledge objects carrying statements and lifecycle"
+      },
+      {
+        "key": "decisions",
+        "path": "knowledge/decisions.json",
+        "required": false,
+        "role": "architecture decision records with evaluation and certification criteria"
+      },
+      {
+        "key": "baseline",
+        "path": "00-MASTER/BASELINE-001/baseline.json",
+        "required": false,
+        "role": "certified baseline inheritance"
+      },
+      {
+        "key": "twin",
+        "path": "00-BOOK/DATA/twin.json",
+        "required": false,
+        "role": "runtime digital twin dimensions"
+      },
+      {
+        "key": "signals",
+        "path": "00-BOOK/DATA/signals.json",
+        "required": false,
+        "role": "runtime signals"
+      },
+      {
+        "key": "upload_manifest",
+        "path": "00-SOURCE-MANIFEST/SOURCE-FILES.txt",
+        "required": false,
+        "role": "hash-pinned uploaded-document manifest"
+      },
+      {
+        "key": "upload_hashes",
+        "path": "00-SOURCE-MANIFEST/SOURCE-HASHES.txt",
+        "required": false,
+        "role": "uploaded-document content pins"
+      }
+    ]
+  },
+  "criteria_records": {
+    "$comment": "IMPLICIT requirement sources. Each entry names an input, a pointer into it, and the fields that carry identity, name, owner and outcome. A record kind that does not exist yet is added here, never in the engine.",
+    "records": [
+      {
+        "id": "CR-01",
+        "input": "bindings",
+        "pointer": "invariants",
+        "kind": "CONSTITUTIONAL-INVARIANT",
+        "id_field": "id",
+        "name_field": "name",
+        "owner_field": "owner",
+        "category": "META-GOVERNANCE"
+      },
+      {
+        "id": "CR-02",
+        "input": "bindings",
+        "pointer": "principles",
+        "kind": "CONSTITUTIONAL-PRINCIPLE",
+        "id_field": "id",
+        "name_field": "name",
+        "owner_field": "owner",
+        "enforced_by_field": "enforced_by",
+        "category": "META-GOVERNANCE"
+      },
+      {
+        "id": "CR-03",
+        "input": "bindings",
+        "pointer": "checks",
+        "kind": "ENFORCEMENT-CHECK",
+        "id_field": "id",
+        "name_field": "name",
+        "owner_field": "owner",
+        "category": "ENFORCEMENT"
+      },
+      {
+        "id": "CR-04",
+        "input": "bindings",
+        "pointer": "gates",
+        "kind": "CONSTITUTIONAL-GATE",
+        "id_field": "id",
+        "name_field": "name",
+        "owner_field": "owner",
+        "depends_field": "checks",
+        "category": "ENFORCEMENT"
+      },
+      {
+        "id": "CR-05",
+        "input": "bindings",
+        "pointer": "findings",
+        "kind": "CONSTITUTIONAL-FINDING",
+        "id_field": "id",
+        "name_field": "title",
+        "owner_field": "owner",
+        "category": "META-GOVERNANCE"
+      },
+      {
+        "id": "CR-06",
+        "input": "bindings",
+        "pointer": "work_packages",
+        "kind": "AUTHORISED-WORK-PACKAGE",
+        "id_field": "id",
+        "name_field": "title",
+        "owner_field": "owner",
+        "category": "GOVERNANCE-OPERATIONS"
+      },
+      {
+        "id": "CR-07",
+        "input": "derived_requirements",
+        "pointer": "baseline_conditions",
+        "kind": "BASELINE-CONDITION",
+        "id_field": "id",
+        "name_field": "name",
+        "owner_field": "owner",
+        "outcome_field": "verdict",
+        "category": "GOVERNANCE-OPERATIONS"
+      },
+      {
+        "id": "CR-08",
+        "input": "derived_requirements",
+        "pointer": "gap_classes",
+        "kind": "GAP-CLASS-OBLIGATION",
+        "id_field": "gap_id",
+        "name_field": "name",
+        "owner_field": "canonical_owner",
+        "action_field": "required_action",
+        "category": "GOVERNANCE-OPERATIONS"
+      },
+      {
+        "id": "CR-09",
+        "input": "derived_requirements",
+        "pointer": "work_packages",
+        "kind": "AUTHORISED-WORK-PACKAGE",
+        "id_field": "work_package_id",
+        "name_field": "title",
+        "owner_field": "canonical_owner",
+        "priority_field": "priority",
+        "category": "GOVERNANCE-OPERATIONS"
+      },
+      {
+        "id": "CR-10",
+        "input": "assimilation",
+        "pointer": "gates",
+        "kind": "ASSIMILATION-GATE",
+        "id_field": "gate",
+        "name_field": "gate",
+        "outcome_field": "result",
+        "category": "GOVERNANCE-OPERATIONS"
+      },
+      {
+        "id": "CR-11",
+        "input": "corpus",
+        "pointer": "gates",
+        "kind": "CORPUS-CURRENCY-GATE",
+        "id_field": "gate",
+        "name_field": "gate",
+        "outcome_field": "result",
+        "category": "GOVERNANCE-OPERATIONS"
+      },
+      {
+        "id": "CR-12",
+        "input": "cko",
+        "pointer": "objects",
+        "kind": "CANONICAL-KNOWLEDGE-OBLIGATION",
+        "id_field": "cko_id",
+        "name_field": "title",
+        "owner_field": "owner",
+        "authority_field": "authority",
+        "lifecycle_field": "lifecycle",
+        "depends_field": "dependencies",
+        "evidence_field": "evidence",
+        "validation_field": "validation",
+        "certification_field": "certification",
+        "supersede_field": "superseded_by",
+        "category": "CANONICAL-KNOWLEDGE"
+      },
+      {
+        "id": "CR-13",
+        "input": "decisions",
+        "pointer": "decisions",
+        "kind": "ARCHITECTURE-DECISION-OBLIGATION",
+        "id_field": "decision_id",
+        "name_field": "objective",
+        "owner_field": "review_authority",
+        "authority_field": "authority",
+        "lifecycle_field": "lifecycle",
+        "depends_field": "dependencies",
+        "certification_field": "certification_requirements",
+        "validation_field": "validation_strategy",
+        "category": "ARCHITECTURE-DECISION"
+      },
+      {
+        "id": "CR-14",
+        "input": "certification",
+        "pointer": "domains",
+        "kind": "CERTIFICATION-DOMAIN-OBLIGATION",
+        "id_field": "id",
+        "name_field": "name",
+        "outcome_field": "verdict",
+        "category": "CERTIFICATION"
+      }
+    ]
+  },
+  "concept_projection": {
+    "$comment": "DERIVED requirement source. Identity is REUSED from the existing register: the URR never re-mints a concept-projected requirement identity, it adopts RR-<CONCEPT-ID> as the source identity and records it verbatim. CREATE = 0 at the concept layer.",
+    "input": "derived_requirements",
+    "pointer": "requirements",
+    "id_field": "requirement_id",
+    "concept_field": "concept_id",
+    "family_field": "family",
+    "owner_field": "canonical_owner",
+    "authority_field": "authority",
+    "category_field": "category",
+    "location_field": "repository_location",
+    "depends_field": "dependencies",
+    "disposition_field": "disposition",
+    "implementation_field": "implementation_status",
+    "validation_field": "validation_status",
+    "verification_field": "verification_status",
+    "certification_field": "certification_status",
+    "runtime_field": "runtime_status",
+    "maturity_field": "maturity_level",
+    "coverage_field": "coverage",
+    "traceability_field": "traceability",
+    "evidence_count_field": "evidence_files",
+    "evidence_kinds_field": "evidence_kinds",
+    "orphan_field": "orphan",
+    "homed_field": "homed",
+    "fallback_concepts": {
+      "input": "concepts",
+      "pointer": "concepts",
+      "id_field": "concept_id",
+      "disposition_field": "disposition",
+      "family_field": "family",
+      "files_field": "files",
+      "homes_field": "def_homes",
+      "conversation_field": "conversation_only"
+    }
+  },
+  "corpus_records": {
+    "$comment": "CONVERSATION-ORIGIN requirement source. Rows are read from the committed assimilation record, never from the external corpus, so the measurement is reproducible from a checkout alone and the external corpus is never treated as a home (UKAP-001). A row is requirement-bearing only when the record itself counted normative statements in it: a knowledge object with zero normative statements is a CONCEPT — owned by UAKOS-CLOSURE-002/008 — and is deliberately not re-homed here (Knowledge Once).",
+    "input": "assimilation",
+    "rows_pointer": "rows",
+    "columns_pointer": "row_columns",
+    "id_field": "kid",
+    "name_field": "name",
+    "requirement_bearing_field": "normative_statements",
+    "requirement_bearing_min": 1,
+    "origin_field": "origin_conversations",
+    "evidence_conversation_field": "evidence_conversation",
+    "presence_field": "presence_level",
+    "maturity_field": "maturity",
+    "state_field": "state",
+    "decision_field": "decision",
+    "priority_field": "priority",
+    "category_field": "category",
+    "destination_field": "destination",
+    "depends_field": "dependencies",
+    "action_field": "implementation_action",
+    "action_priority_field": "implementation_priority",
+    "wave_field": "wave",
+    "conflict_field": "superiority",
+    "presence_absent_values": [
+      "ABSENT"
+    ],
+    "measures_pointer": "published_measures"
+  },
+  "upload_manifest_source": {
+    "$comment": "DOCUMENT-ORIGIN requirement source. An uploaded document is a binary that cannot be extracted by a stdlib, deterministic, read-only engine. Each such document is therefore registered as ONE unextracted requirement-bearing source with an explicit UNEXTRACTED standing, so the volume of requirements known to exist only in documentation is reported rather than silently assumed to be zero.",
+    "manifest_input": "upload_manifest",
+    "hashes_input": "upload_hashes",
+    "upload_extensions": [
+      ".docx",
+      ".pdf"
+    ],
+    "upload_path_prefixes": [
+      "00-SOURCE/",
+      "04-REFERENCE/"
+    ]
+  },
+  "inference_laws": {
+    "$comment": "INFERRED requirements: constitutionally necessary obligations that are entailed by repository law over discovered objects. Each law cites its located constitutional owner and is measured, never asserted. A law with scope UNIVERSAL yields exactly one requirement whose coverage is measured over its subject population; a law with scope PER-SUBJECT yields one requirement per discovered subject. Mechanisms are generic: adding a law is an entry here.",
+    "laws": [
+      {
+        "id": "IL-01",
+        "name": "Every located engine is reachable by tooling",
+        "authority": "REG-AUTO-001 P7 — enforceability by tooling gates, not author discipline",
+        "owner": "00-BOOK/tools/register.sh",
+        "scope": "PER-SUBJECT",
+        "mechanism": "required-companion",
+        "subject_selector": {
+          "path_pattern": "^00-MASTER/[^/]+/[a-z0-9_]+_engine\\.py$"
+        },
+        "companions": [
+          {
+            "name": "makefile-target",
+            "path_pattern": "(^|/)Makefile$",
+            "must_cite_subject": true
+          },
+          {
+            "name": "ci-workflow",
+            "path_pattern": "^\\.github/workflows/[^/]+\\.ya?ml$",
+            "must_cite_subject": true
+          },
+          {
+            "name": "test",
+            "path_pattern": "(^|/)tests?/.*\\.py$|(^|/)test_[^/]+\\.py$",
+            "must_cite_subject": true
+          }
+        ],
+        "priority": "P1",
+        "category": "ENFORCEMENT"
+      },
+      {
+        "id": "IL-02",
+        "name": "Every accepted requirement has exactly one canonical home",
+        "authority": "00-CMG/CMG-000001 VIII.1 Knowledge Once; XL.2 no normative copy",
+        "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "accepted",
+        "predicate": "single_canonical_home",
+        "priority": "P0",
+        "category": "META-GOVERNANCE"
+      },
+      {
+        "id": "IL-03",
+        "name": "Every accepted requirement names a located canonical owner",
+        "authority": "00-CMG/CMG-000001 XI.2 CMG-INV-02 zero parallel authority; CMG-INV-03 no orphan governance",
+        "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "accepted",
+        "predicate": "owner_located",
+        "priority": "P0",
+        "category": "META-GOVERNANCE"
+      },
+      {
+        "id": "IL-04",
+        "name": "Every accepted requirement carries evidence that resolves in the repository",
+        "authority": "00-CEP/CEP-002 Article 28 — Implementation Evidence; 28.4/28.5 a decision present only in conversation is not recorded",
+        "owner": "00-MASTER/UCDA-000001",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "accepted",
+        "predicate": "evidence_resolves",
+        "priority": "P0",
+        "category": "CONSTITUTIONAL-PROCESS"
+      },
+      {
+        "id": "IL-05",
+        "name": "Every accepted requirement resolves across the traceability spine",
+        "authority": "00-MASTER/MCP-006-MASTER-TRACEABILITY.md — nine-tier spine, evidence_ref MUST exist (fail-closed)",
+        "owner": "00-MASTER/MCP-006-MASTER-TRACEABILITY.md",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "accepted",
+        "predicate": "traceability_complete",
+        "priority": "P1",
+        "category": "GOVERNANCE-OPERATIONS"
+      },
+      {
+        "id": "IL-06",
+        "name": "Every accepted requirement is implemented by a located owner",
+        "authority": "00-CEP/CEP-002 Article 28 — disposition must be supported by evidence that resolves",
+        "owner": "00-MASTER/UCDA-000001",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "accepted",
+        "predicate": "implemented",
+        "priority": "P1",
+        "category": "IMPLEMENTATION"
+      },
+      {
+        "id": "IL-07",
+        "name": "Every accepted requirement is validated by a located owner",
+        "authority": "00-MASTER/UCOS-CVR-001 — Constitutional Validation Authority",
+        "owner": "00-MASTER/UCOS-CVR-001",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "accepted",
+        "predicate": "validated",
+        "priority": "P1",
+        "category": "VALIDATION"
+      },
+      {
+        "id": "IL-08",
+        "name": "Every accepted requirement is verified by a located owner",
+        "authority": "00-MASTER/UCOS-USIS-001 section 11 — verification and proof obligations",
+        "owner": "00-MASTER/UCOS-USIS-001",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "accepted",
+        "predicate": "verified",
+        "priority": "P1",
+        "category": "VALIDATION"
+      },
+      {
+        "id": "IL-09",
+        "name": "Every accepted requirement is certified by a located owner",
+        "authority": "00-MASTER/UCOS-CVER-001 — Constitutional Certification Authority",
+        "owner": "00-MASTER/UCOS-CVER-001",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "accepted",
+        "predicate": "certified",
+        "priority": "P2",
+        "category": "CERTIFICATION"
+      },
+      {
+        "id": "IL-10",
+        "name": "Every accepted requirement originating in conversation is homed in Repository Truth",
+        "authority": "00-CEP/CEP-002 Article 28.4, 28.5 — a requirement present only in conversation is not recorded",
+        "owner": "00-MASTER/UCDA-000001",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "conversation_origin_accepted",
+        "predicate": "homed_in_repository",
+        "priority": "P0",
+        "category": "GOVERNANCE-OPERATIONS"
+      },
+      {
+        "id": "IL-11",
+        "name": "Every uploaded source document is extracted into Repository Truth",
+        "authority": "00-MASTER/UAKOS-CLOSURE-002 section 32 — conversation and upload reconciliation; absence disclosed, never asserted complete",
+        "owner": "00-MASTER/UAKOS-CLOSURE-002",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "document_origin",
+        "predicate": "extracted",
+        "priority": "P1",
+        "category": "UPLOADED-SOURCE"
+      },
+      {
+        "id": "IL-12",
+        "name": "No requirement is superseded implicitly",
+        "authority": "00-CMG/CMG-000001 XVI.6 — rank is never decided by recency; supersession is explicit",
+        "owner": "01-WORKING/SUPERSESSION-REGISTER.md",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "superseded",
+        "predicate": "supersession_explicit",
+        "priority": "P1",
+        "category": "RECONCILIATION"
+      },
+      {
+        "id": "IL-13",
+        "name": "No two accepted requirements conflict without an adjudication",
+        "authority": "00-CMG/CMG-000001 XVI.6 precedence; 01-WORKING/DUPLICATE-REGISTER.md conflict adjudication",
+        "owner": "01-WORKING/DUPLICATE-REGISTER.md",
+        "scope": "UNIVERSAL",
+        "mechanism": "population-predicate",
+        "population": "conflicting",
+        "predicate": "conflict_adjudicated",
+        "priority": "P0",
+        "category": "RECONCILIATION"
+      }
+    ]
+  },
+  "acceptance_signals": {
+    "$comment": "A requirement is ACCEPTED when the instrument or record that carries it has standing. Acceptance is read from the repository's own declarations, never inferred from tone or volume. Signals are evaluated per class; the first matching rule decides, and an unmatched requirement is recorded UNDETERMINED and reported as a gap rather than silently accepted.",
+    "rules": [
+      {
+        "id": "AS-01",
+        "classes": [
+          "EXPLICIT"
+        ],
+        "when": {
+          "standing": [
+            "SUPERSEDED",
+            "REJECTED",
+            "NON-NORMATIVE"
+          ]
+        },
+        "accepted": false,
+        "basis": "instrument marks the statement as not in force"
+      },
+      {
+        "id": "AS-02",
+        "classes": [
+          "EXPLICIT"
+        ],
+        "when": {
+          "strength": [
+            "ADVISORY"
+          ]
+        },
+        "accepted": false,
+        "basis": "advisory modal carries no obligation"
+      },
+      {
+        "id": "AS-03",
+        "classes": [
+          "EXPLICIT"
+        ],
+        "when": {
+          "authority_rank_min": 1
+        },
+        "accepted": true,
+        "basis": "mandatory obligation in an instrument with located authority"
+      },
+      {
+        "id": "AS-04",
+        "classes": [
+          "EXPLICIT"
+        ],
+        "when": {},
+        "accepted": true,
+        "basis": "mandatory obligation in an undeclared zone — accepted and reported as orphan governance"
+      },
+      {
+        "id": "AS-05",
+        "classes": [
+          "IMPLICIT"
+        ],
+        "when": {},
+        "accepted": true,
+        "basis": "committed criteria, gate, invariant, principle or condition record"
+      },
+      {
+        "id": "AS-06",
+        "classes": [
+          "DERIVED"
+        ],
+        "when": {
+          "disposition": [
+            "REJECTED"
+          ]
+        },
+        "accepted": false,
+        "basis": "concept disposition is REJECTED"
+      },
+      {
+        "id": "AS-07",
+        "classes": [
+          "DERIVED"
+        ],
+        "when": {},
+        "accepted": true,
+        "basis": "concept accepted by the existing closure determination"
+      },
+      {
+        "id": "AS-08",
+        "classes": [
+          "CONVERSATION-ORIGIN"
+        ],
+        "when": {
+          "state": [
+            "REJECTED"
+          ]
+        },
+        "accepted": false,
+        "basis": "assimilation state REJECTED"
+      },
+      {
+        "id": "AS-09",
+        "classes": [
+          "CONVERSATION-ORIGIN"
+        ],
+        "when": {
+          "decision": [
+            "REJECT"
+          ]
+        },
+        "accepted": false,
+        "basis": "assimilation decision REJECT"
+      },
+      {
+        "id": "AS-10",
+        "classes": [
+          "CONVERSATION-ORIGIN"
+        ],
+        "when": {
+          "maturity": [
+            "IDEA",
+            "PROPOSAL"
+          ],
+          "decision": [
+            "DEFER"
+          ]
+        },
+        "accepted": false,
+        "basis": "deferred idea or proposal — discussed, not accepted"
+      },
+      {
+        "id": "AS-11",
+        "classes": [
+          "CONVERSATION-ORIGIN"
+        ],
+        "when": {},
+        "accepted": true,
+        "basis": "accepted, merged, superseding or already-represented normative knowledge of conversational origin"
+      },
+      {
+        "id": "AS-12",
+        "classes": [
+          "DOCUMENT-ORIGIN"
+        ],
+        "when": {},
+        "accepted": true,
+        "basis": "hash-pinned uploaded source of record"
+      },
+      {
+        "id": "AS-13",
+        "classes": [
+          "INFERRED"
+        ],
+        "when": {},
+        "accepted": true,
+        "basis": "constitutionally necessary — entailed by a located repository law"
+      }
+    ]
+  },
+  "status_vocabularies": {
+    "implementation": [
+      "PRESENT-IN-CODE",
+      "ENFORCED-BY-TOOLING",
+      "DOCUMENTED-ONLY",
+      "ABSENT",
+      "NOT-EXTRACTED",
+      "INHERITED"
+    ],
+    "validation": [
+      "EVIDENCED",
+      "NOT-EVIDENCED"
+    ],
+    "verification": [
+      "EVIDENCED",
+      "NOT-EVIDENCED"
+    ],
+    "certification": [
+      "CERTIFIED-PROVISIONAL",
+      "NOT-CERTIFIED"
+    ],
+    "runtime": [
+      "RUNTIME-EVIDENCED",
+      "NO-RUNTIME-EVIDENCE"
+    ],
+    "coverage": [
+      "FULLY-COVERED",
+      "SUBSTANTIALLY-COVERED",
+      "PARTIALLY-COVERED",
+      "REGISTERED-ONLY",
+      "UNCOVERED"
+    ],
+    "standing": [
+      "RATIFIED",
+      "FROZEN",
+      "DECLARED",
+      "DERIVED",
+      "IMPLEMENTED",
+      "ADVISORY",
+      "PROJECTION",
+      "DUPLICATE",
+      "SUPERSEDED",
+      "REJECTED",
+      "NON-NORMATIVE",
+      "UNEXTRACTED",
+      "UNDECLARED"
+    ]
+  },
+  "coverage_rules": {
+    "$comment": "Ordered. Coverage is the composite lifecycle position of a requirement and is measured only from located evidence.",
+    "rules": [
+      {
+        "id": "CV-01",
+        "coverage": "FULLY-COVERED",
+        "when": {
+          "implementation_status": [
+            "PRESENT-IN-CODE",
+            "ENFORCED-BY-TOOLING"
+          ],
+          "validation_status": [
+            "EVIDENCED"
+          ],
+          "verification_status": [
+            "EVIDENCED"
+          ],
+          "certification_status": [
+            "CERTIFIED-PROVISIONAL"
+          ]
+        }
+      },
+      {
+        "id": "CV-02",
+        "coverage": "SUBSTANTIALLY-COVERED",
+        "when": {
+          "implementation_status": [
+            "PRESENT-IN-CODE",
+            "ENFORCED-BY-TOOLING"
+          ],
+          "verification_status": [
+            "EVIDENCED"
+          ]
+        }
+      },
+      {
+        "id": "CV-03",
+        "coverage": "PARTIALLY-COVERED",
+        "when": {
+          "implementation_status": [
+            "PRESENT-IN-CODE",
+            "ENFORCED-BY-TOOLING"
+          ]
+        }
+      },
+      {
+        "id": "CV-04",
+        "coverage": "REGISTERED-ONLY",
+        "when": {
+          "implementation_status": [
+            "DOCUMENTED-ONLY",
+            "INHERITED"
+          ]
+        }
+      },
+      {
+        "id": "CV-05",
+        "coverage": "UNCOVERED",
+        "when": {}
+      }
+    ]
+  },
+  "gap_classes": {
+    "$comment": "Ordered. Exactly one gap class is assigned to every registered requirement so the population is totally accounted for. GAP-00 is the satisfied class; every other class names the located owner that must act.",
+    "classes": [
+      {
+        "id": "GAP-01",
+        "name": "NOT-ACCEPTED",
+        "when": {
+          "accepted": [
+            false
+          ]
+        },
+        "severity": "NONE",
+        "action": "No action — recorded for completeness; not in force"
+      },
+      {
+        "id": "GAP-02",
+        "name": "CONFLICTING",
+        "when": {
+          "conflict_count_min": 1
+        },
+        "severity": "CRITICAL",
+        "action": "Adjudicate under CMG-000001 XVI.6 and record in 01-WORKING/DUPLICATE-REGISTER.md"
+      },
+      {
+        "id": "GAP-03",
+        "name": "SUPERSEDED-WITHOUT-RECORD",
+        "when": {
+          "standing": [
+            "SUPERSEDED"
+          ],
+          "supersession_recorded": [
+            false
+          ]
+        },
+        "severity": "MAJOR",
+        "action": "Record the supersession in 01-WORKING/SUPERSESSION-REGISTER.md"
+      },
+      {
+        "id": "GAP-04",
+        "name": "DUPLICATE",
+        "when": {
+          "standing": [
+            "DUPLICATE"
+          ]
+        },
+        "severity": "MAJOR",
+        "action": "Collapse to the canonical home by reference (CMG-000001 VIII.1)"
+      },
+      {
+        "id": "GAP-05",
+        "name": "CONVERSATION-ONLY",
+        "when": {
+          "origin_only": [
+            "CONVERSATION"
+          ]
+        },
+        "severity": "CRITICAL",
+        "action": "Home in Repository Truth or reject with constitutional justification (CEP-002 Art 28.4)"
+      },
+      {
+        "id": "GAP-06",
+        "name": "DOCUMENTATION-ONLY",
+        "when": {
+          "origin_only": [
+            "DOCUMENT"
+          ]
+        },
+        "severity": "CRITICAL",
+        "action": "Extract the uploaded source into Repository Truth"
+      },
+      {
+        "id": "GAP-07",
+        "name": "ORPHAN-GOVERNANCE",
+        "when": {
+          "owner_located": [
+            false
+          ]
+        },
+        "severity": "CRITICAL",
+        "action": "Name a located canonical owner (CMG-INV-03)"
+      },
+      {
+        "id": "GAP-08",
+        "name": "UNTRACEABLE",
+        "when": {
+          "anchor_scope": [
+            "NONE"
+          ]
+        },
+        "severity": "MAJOR",
+        "action": "Bind the obligation to an addressable identifier so it is traceable"
+      },
+      {
+        "id": "GAP-09",
+        "name": "NOT-IMPLEMENTED",
+        "when": {
+          "implementation_status": [
+            "ABSENT",
+            "NOT-EXTRACTED"
+          ]
+        },
+        "severity": "CRITICAL",
+        "action": "Implement under the located owner"
+      },
+      {
+        "id": "GAP-10",
+        "name": "NOT-VERIFIED",
+        "when": {
+          "verification_status": [
+            "NOT-EVIDENCED"
+          ]
+        },
+        "severity": "MAJOR",
+        "action": "Produce verification evidence under the located owner"
+      },
+      {
+        "id": "GAP-11",
+        "name": "NOT-VALIDATED",
+        "when": {
+          "validation_status": [
+            "NOT-EVIDENCED"
+          ]
+        },
+        "severity": "MAJOR",
+        "action": "Produce validation evidence under the located owner"
+      },
+      {
+        "id": "GAP-12",
+        "name": "NOT-CERTIFIED",
+        "when": {
+          "certification_status": [
+            "NOT-CERTIFIED"
+          ]
+        },
+        "severity": "MINOR",
+        "action": "Certify under the located certification authority"
+      },
+      {
+        "id": "GAP-13",
+        "name": "NO-RUNTIME-EVIDENCE",
+        "when": {
+          "runtime_status": [
+            "NO-RUNTIME-EVIDENCE"
+          ]
+        },
+        "severity": "MINOR",
+        "action": "Prove the obligation at runtime"
+      },
+      {
+        "id": "GAP-00",
+        "name": "SATISFIED",
+        "when": {},
+        "severity": "NONE",
+        "action": "None — implemented, validated, verified, certified and runtime-proven"
+      }
+    ]
+  },
+  "priority_rules": {
+    "$comment": "Ordered. Priority is derived from constitutional weight and gap severity, never assigned by hand.",
+    "rules": [
+      {
+        "id": "PR-01",
+        "priority": "P0",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_severity": [
+            "CRITICAL"
+          ],
+          "authority_rank_min": 9
+        }
+      },
+      {
+        "id": "PR-02",
+        "priority": "P0",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_class": [
+            "GAP-02",
+            "GAP-05",
+            "GAP-06",
+            "GAP-07"
+          ]
+        }
+      },
+      {
+        "id": "PR-03",
+        "priority": "P1",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_severity": [
+            "CRITICAL"
+          ]
+        }
+      },
+      {
+        "id": "PR-04",
+        "priority": "P1",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_severity": [
+            "MAJOR"
+          ],
+          "authority_rank_min": 9
+        }
+      },
+      {
+        "id": "PR-05",
+        "priority": "P2",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_severity": [
+            "MAJOR"
+          ]
+        }
+      },
+      {
+        "id": "PR-06",
+        "priority": "P3",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_severity": [
+            "MINOR"
+          ]
+        }
+      },
+      {
+        "id": "PR-07",
+        "priority": "P4",
+        "when": {}
+      }
+    ]
+  },
+  "risk_rules": {
+    "$comment": "Ordered. Risk is the constitutional exposure carried by leaving the requirement in its measured state.",
+    "rules": [
+      {
+        "id": "RK-01",
+        "risk": "SEVERE",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_class": [
+            "GAP-02"
+          ]
+        },
+        "exposure": "Parallel or contradictory authority — undecidable precedence"
+      },
+      {
+        "id": "RK-02",
+        "risk": "SEVERE",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_class": [
+            "GAP-05",
+            "GAP-06"
+          ]
+        },
+        "exposure": "Accepted obligation absent from Repository Truth — unrecorded requirement"
+      },
+      {
+        "id": "RK-03",
+        "risk": "HIGH",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_class": [
+            "GAP-07",
+            "GAP-04"
+          ]
+        },
+        "exposure": "Orphan governance or duplicated normative text — guaranteed drift"
+      },
+      {
+        "id": "RK-04",
+        "risk": "HIGH",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_class": [
+            "GAP-09"
+          ],
+          "authority_rank_min": 9
+        },
+        "exposure": "Mandatory constitutional obligation with no implementation"
+      },
+      {
+        "id": "RK-05",
+        "risk": "MODERATE",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_class": [
+            "GAP-09",
+            "GAP-08"
+          ]
+        },
+        "exposure": "Obligation not realised or not addressable"
+      },
+      {
+        "id": "RK-06",
+        "risk": "MODERATE",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_severity": [
+            "MAJOR"
+          ]
+        },
+        "exposure": "Obligation unproven"
+      },
+      {
+        "id": "RK-07",
+        "risk": "LOW",
+        "when": {
+          "accepted": [
+            true
+          ],
+          "gap_severity": [
+            "MINOR"
+          ]
+        },
+        "exposure": "Obligation proven but not certified or not runtime-proven"
+      },
+      {
+        "id": "RK-08",
+        "risk": "NONE",
+        "when": {},
+        "exposure": "No exposure"
+      }
+    ]
+  },
+  "roadmap": {
+    "$comment": "Waves are derived from priority and dependency depth. No wave count is fixed: the wave set is whatever the measured priority classes require.",
+    "wave_by_priority": {
+      "P0": "W01",
+      "P1": "W02",
+      "P2": "W03",
+      "P3": "W04",
+      "P4": "W05"
+    },
+    "wave_names": {
+      "W01": "Constitutional integrity — conflict, unrecorded, orphan and unhomed obligations",
+      "W02": "Realisation — implement every accepted mandatory obligation under its located owner",
+      "W03": "Proof — validate and verify every implemented obligation",
+      "W04": "Certification and runtime proof",
+      "W05": "Recorded, not in force — no action required"
+    }
+  },
+  "comparison_axes": {
+    "$comment": "The A-G comparison demanded of a Universal Requirement Repository. Each axis is a population predicate measured over the register; no axis is estimated.",
+    "axes": [
+      {
+        "axis": "A",
+        "name": "Accepted requirements discussed and agreed",
+        "population": "accepted"
+      },
+      {
+        "axis": "B",
+        "name": "Requirements represented in the repository",
+        "population": "accepted_represented"
+      },
+      {
+        "axis": "C",
+        "name": "Requirements actually implemented",
+        "population": "accepted_implemented"
+      },
+      {
+        "axis": "D",
+        "name": "Requirements validated",
+        "population": "accepted_validated"
+      },
+      {
+        "axis": "E",
+        "name": "Requirements verified",
+        "population": "accepted_verified"
+      },
+      {
+        "axis": "F",
+        "name": "Requirements certified",
+        "population": "accepted_certified"
+      },
+      {
+        "axis": "G",
+        "name": "Requirements still missing",
+        "population": "accepted_missing"
+      }
+    ]
+  },
+  "integrity_conditions": {
+    "$comment": "The Requirement Repository Integrity Gate (--gate). These conditions test whether the REPOSITORY OF REQUIREMENTS is sound - every requirement discovered, classified, attributed, accounted and canonically homed. They deliberately do NOT test whether the requirements are satisfied; that is the separate Requirement Closure Gate (--closure-gate), which reports exactly what is missing.",
+    "conditions": [
+      {
+        "id": "IC-01",
+        "name": "Every declared required input resolves",
+        "predicate": "inputs_resolve"
+      },
+      {
+        "id": "IC-02",
+        "name": "Requirement identity is injective over its source key",
+        "predicate": "identity_injective"
+      },
+      {
+        "id": "IC-03",
+        "name": "Every requirement carries every declared attribute",
+        "predicate": "attributes_total"
+      },
+      {
+        "id": "IC-04",
+        "name": "Every requirement is classified into exactly one declared class",
+        "predicate": "class_total"
+      },
+      {
+        "id": "IC-05",
+        "name": "Every requirement carries exactly one gap class",
+        "predicate": "gap_total"
+      },
+      {
+        "id": "IC-06",
+        "name": "Every requirement carries exactly one acceptance determination",
+        "predicate": "acceptance_total"
+      },
+      {
+        "id": "IC-07",
+        "name": "No requirement is homed inside this programme",
+        "predicate": "no_self_home"
+      },
+      {
+        "id": "IC-08",
+        "name": "Every duplicate resolves to exactly one canonical home",
+        "predicate": "duplicates_resolved"
+      },
+      {
+        "id": "IC-09",
+        "name": "Every declared inference law yields at least one measured requirement",
+        "predicate": "laws_measured"
+      },
+      {
+        "id": "IC-10",
+        "name": "Every declared requirement class is reachable by discovery",
+        "predicate": "classes_reachable"
+      },
+      {
+        "id": "IC-11",
+        "name": "The comparison axes are totally ordered by containment",
+        "predicate": "axes_contained"
+      },
+      {
+        "id": "IC-12",
+        "name": "Every registered requirement is reachable from the register index",
+        "predicate": "index_total"
+      }
+    ]
+  },
+  "closure_conditions": {
+    "$comment": "The Requirement Closure Gate (--closure-gate). Non-zero while any accepted requirement is not implemented, validated, verified and certified, and while any accepted requirement exists only in conversation or documentation. This is the instrument that reports exactly what is missing before implementation continues.",
+    "conditions": [
+      {
+        "id": "RC-01",
+        "name": "Zero accepted requirements exist only in conversation",
+        "gap_class": "GAP-05"
+      },
+      {
+        "id": "RC-02",
+        "name": "Zero accepted requirements exist only in documentation",
+        "gap_class": "GAP-06"
+      },
+      {
+        "id": "RC-03",
+        "name": "Zero unadjudicated conflicting requirements",
+        "gap_class": "GAP-02"
+      },
+      {
+        "id": "RC-04",
+        "name": "Zero duplicated requirements",
+        "gap_class": "GAP-04"
+      },
+      {
+        "id": "RC-05",
+        "name": "Zero supersessions without a record",
+        "gap_class": "GAP-03"
+      },
+      {
+        "id": "RC-06",
+        "name": "Zero orphan-governance requirements",
+        "gap_class": "GAP-07"
+      },
+      {
+        "id": "RC-07",
+        "name": "Zero untraceable requirements",
+        "gap_class": "GAP-08"
+      },
+      {
+        "id": "RC-08",
+        "name": "Zero unimplemented accepted requirements",
+        "gap_class": "GAP-09"
+      },
+      {
+        "id": "RC-09",
+        "name": "Zero unverified accepted requirements",
+        "gap_class": "GAP-10"
+      },
+      {
+        "id": "RC-10",
+        "name": "Zero unvalidated accepted requirements",
+        "gap_class": "GAP-11"
+      },
+      {
+        "id": "RC-11",
+        "name": "Zero uncertified accepted requirements",
+        "gap_class": "GAP-12"
+      },
+      {
+        "id": "RC-12",
+        "name": "Zero accepted requirements without runtime evidence",
+        "gap_class": "GAP-13"
+      }
+    ]
+  },
+  "deliverables": {
+    "$comment": "The rendered surface. Ten of these are the deliverables demanded of a Universal Requirement Repository; the remainder are the detection reports, the comparison and the programme's own validation and certification records.",
+    "artifacts": [
+      {
+        "file": "00-URR-DASHBOARD.md",
+        "title": "Universal Requirement Repository Dashboard",
+        "deliverable": "0"
+      },
+      {
+        "file": "01-COMPLETE-REQUIREMENT-REGISTER.md",
+        "title": "Complete Requirement Register",
+        "deliverable": "1"
+      },
+      {
+        "file": "02-REQUIREMENT-COVERAGE-REPORT.md",
+        "title": "Requirement Coverage Report",
+        "deliverable": "2"
+      },
+      {
+        "file": "03-REQUIREMENT-GAP-REPORT.md",
+        "title": "Requirement Gap Report",
+        "deliverable": "3"
+      },
+      {
+        "file": "04-REQUIREMENT-TRACEABILITY-MATRIX.md",
+        "title": "Requirement Traceability Matrix",
+        "deliverable": "4"
+      },
+      {
+        "file": "05-REQUIREMENT-DEPENDENCY-GRAPH.md",
+        "title": "Requirement Dependency Graph",
+        "deliverable": "5"
+      },
+      {
+        "file": "06-REQUIREMENT-IMPLEMENTATION-MATRIX.md",
+        "title": "Requirement Implementation Matrix",
+        "deliverable": "6"
+      },
+      {
+        "file": "07-REQUIREMENT-VALIDATION-MATRIX.md",
+        "title": "Requirement Validation Matrix",
+        "deliverable": "7"
+      },
+      {
+        "file": "08-REQUIREMENT-VERIFICATION-MATRIX.md",
+        "title": "Requirement Verification Matrix",
+        "deliverable": "8"
+      },
+      {
+        "file": "09-REQUIREMENT-CERTIFICATION-MATRIX.md",
+        "title": "Requirement Certification Matrix",
+        "deliverable": "9"
+      },
+      {
+        "file": "10-REQUIREMENT-ROADMAP.md",
+        "title": "Requirement Roadmap",
+        "deliverable": "10"
+      },
+      {
+        "file": "11-DUPLICATE-CONFLICT-AND-SUPERSESSION-REPORT.md",
+        "title": "Duplicate, Conflict and Supersession Report",
+        "deliverable": "detection"
+      },
+      {
+        "file": "12-CONVERSATION-AND-DOCUMENTATION-ONLY-REGISTER.md",
+        "title": "Conversation-Only and Documentation-Only Requirement Register",
+        "deliverable": "detection"
+      },
+      {
+        "file": "13-ACCEPTED-VERSUS-REPRESENTED-COMPARISON.md",
+        "title": "Accepted versus Represented, Implemented, Validated, Verified and Certified Comparison",
+        "deliverable": "comparison"
+      },
+      {
+        "file": "14-PRIORITISED-IMPLEMENTATION-PLAN.md",
+        "title": "Prioritised Implementation Plan",
+        "deliverable": "plan"
+      },
+      {
+        "file": "15-DISCOVERY-METHOD-AND-ASSUMPTION-REGISTER.md",
+        "title": "Discovery Method and Assumption Register",
+        "deliverable": "method"
+      },
+      {
+        "file": "16-VALIDATION-REPORT.md",
+        "title": "Validation Report",
+        "deliverable": "validation"
+      },
+      {
+        "file": "17-CERTIFICATION-REPORT.md",
+        "title": "Certification Report",
+        "deliverable": "certification"
+      }
+    ]
+  },
+  "integration_surface": {
+    "$comment": "The out-of-home footprint is DECLARED rather than left undeclared (UAKOS-CLOSURE-008 charter section 2). The engine writes none of these; they are committed with the programme so it is runnable and gated, discharging REG-AUTO-001 P7 (>=1 Makefile target AND >=1 workflow AND >=1 test).",
+    "makefile_targets": [
+      "urr",
+      "urr-gate",
+      "urr-self",
+      "urr-replay",
+      "urr-closure-gate"
+    ],
+    "workflow": ".github/workflows/urr-gate.yml",
+    "test": "engine/tests/unit/test_urr_requirement_repository.py"
+  }
+}

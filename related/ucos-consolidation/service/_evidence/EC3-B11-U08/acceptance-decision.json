@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "SMC-08",
+  "target_id": "UCOS-EXECUTION-ucos.service.execution.foundation-067d5836c9f6e3c8",
+  "verdict": "pass"
+}

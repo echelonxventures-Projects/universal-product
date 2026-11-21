@@ -1,0 +1,617 @@
+{
+  "authority": "NONE — DERIVED TRUTH. A persistence binding of UCKP-ART-05 (engine/uckp/identity.py). Holds no counter and issues no repository serial.",
+  "births": {
+    "urn:ucos:ucko:ucos.cmg:CMG-000012": {
+      "certification_boundary": "Certifies the binding to UCXI-000001; certifies no context conformance.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Lifecycle Evolution Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.cmg",
+      "owner": "CMG Foundation",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:B-01-BIRTH-SCOPE-GOVERNANCE-DETERMINATION": {
+      "certification_boundary": "Certifies the machine-readable form of the birth scope rule; certifies no object and no adoption level.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Phase 1 Scope B, B-01 Machine-Readable Birth Scope Governance cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#488",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UOBC-000001"
+    },
+    "urn:ucos:ucko:ucos.determination:B-01-IMPLEMENTATION-PLAN": {
+      "certification_boundary": "Certifies the change contract; certifies no executed change.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Phase 1 Scope B, B-01 Machine-Readable Birth Scope Governance cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#488",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:B-01-BIRTH-SCOPE-GOVERNANCE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:CMG-000012-IDENTITY-AND-OWNERSHIP-DETERMINATION": {
+      "certification_boundary": "Certifies the slot resolution; certifies no context model.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Lifecycle Evolution Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:GOVERNED-EVOLUTION-STATE-DETERMINATION": {
+      "certification_boundary": "Certifies the category definition; reclassifies nothing.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ verification/evolution plane separation cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:MUTATION-OWNERSHIP-DISCOVERY-DETERMINATION": {
+      "certification_boundary": "Certifies the responsibility map; certifies no mutation authority.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ verification/evolution plane separation cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:P1-A-01-ROOT-ONTOLOGY-DISCOVERY-REPORT": {
+      "certification_boundary": "Certifies the discovery sequence and the gap set it found; certifies no implementation.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Phase 1 Foundation Completion, Scope A Constitutional Primitive Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#487",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UCPA-001-CONSTITUTIONAL-PRIMITIVE-ALIGNMENT-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:P1-A-02-ROOT-ONTOLOGY-IMPLEMENTATION-PLAN": {
+      "certification_boundary": "Certifies the change contract and its reuse analysis; certifies no executed change.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Phase 1 Foundation Completion, Scope A Constitutional Primitive Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#487",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UCPA-001-CONSTITUTIONAL-PRIMITIVE-ALIGNMENT-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:SEMANTIC-LIFECYCLE-RECONCILIATION-REGISTER": {
+      "certification_boundary": "Certifies the A–E classification; certifies no terminology.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Lifecycle Evolution Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:UCPA-001-CONSTITUTIONAL-PRIMITIVE-ALIGNMENT-DETERMINATION": {
+      "certification_boundary": "Certifies the role assignment and the facet reduction; certifies no ontology, which remains owned by its canonical register.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Phase 1 Foundation Completion, Scope A Constitutional Primitive Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#487",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": null
+    },
+    "urn:ucos:ucko:ucos.determination:UNIVERSAL-BASELINE-TEMPORAL-CERTIFICATION-DETERMINATION": {
+      "certification_boundary": "Certifies the eleven-field baseline measurement and the technology posture; certifies no baseline.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Infinite Scope, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#485",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UISD-000001"
+    },
+    "urn:ucos:ucko:ucos.determination:UNIVERSAL-EVOLUTION-MODEL-DETERMINATION": {
+      "certification_boundary": "Certifies the field reconciliation; certifies no evolution model.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ verification/evolution plane separation cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-DICTIONARY-DETERMINATION": {
+      "certification_boundary": "Certifies the identity-chain location and dictionary expansion measurement; mints nothing.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Infinite Scope, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#485",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UISD-000001"
+    },
+    "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-MIGRATION-DETERMINATION": {
+      "certification_boundary": "Certifies the population enumeration and disposition; performs no migration.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ verification/evolution plane separation cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION": {
+      "certification_boundary": "Certifies the reuse map and gap analysis; certifies no identity mechanism.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Lifecycle Evolution Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": null
+    },
+    "urn:ucos:ucko:ucos.determination:UNIVERSAL-INFINITE-SCOPE-AND-DIRECTION-DETERMINATION": {
+      "certification_boundary": "Certifies the located owners and the refusal set; legislates no principle.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Infinite Scope, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#485",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:UNIVERSAL-LIFECYCLE-INHERITANCE-RECONCILIATION-DETERMINATION": {
+      "certification_boundary": "Certifies the located lifecycle owners; certifies no lifecycle.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Lifecycle Evolution Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.determination:UNIVERSAL-LIFECYCLE-SEMANTIC-RESCAN-REGISTER": {
+      "certification_boundary": "Certifies the A–E classification of every located occurrence; edits no record and renames nothing.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Infinite Scope, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#485",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UISD-000001"
+    },
+    "urn:ucos:ucko:ucos.determination:UNIVERSAL-RELATIONSHIP-INTELLIGENCE-FOUNDATION-DETERMINATION": {
+      "certification_boundary": "Certifies the measured openness of the located relationship model; declares no relationship type.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Infinite Scope, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#485",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "UCOS-REPOSITORY-ROOT",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UISD-000001"
+    },
+    "urn:ucos:ucko:ucos.determination:UNIVERSAL-VERIFICATION-INTELLIGENCE-DETERMINATION": {
+      "certification_boundary": "Certifies the determination it records; certifies no measurement it cites.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Verification Intelligence, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#486",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.determination",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.engine:engine.infinite_scope": {
+      "certification_boundary": "Certifies that the ten laws are computed rather than asserted; certifies no scope.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Infinite Scope, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#485",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UISD-000001"
+    },
+    "urn:ucos:ucko:ucos.engine:engine.object_birth": {
+      "certification_boundary": "Certifies that every birth record satisfies the nine fields and eight laws.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Lifecycle Evolution Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.engine:engine.root_ontology": {
+      "certification_boundary": "Certifies that the eight laws are computed rather than asserted; certifies no primitive.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Phase 1 Foundation Completion, Scope A Constitutional Primitive Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#487",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UCPA-000001"
+    },
+    "urn:ucos:ucko:ucos.engine:engine.temporal": {
+      "certification_boundary": "Certifies CMG-000002 conformance of its own operations; certifies no coordinate value.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Lifecycle Evolution Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.engine:engine.verification_impact": {
+      "certification_boundary": "Certifies the minimal verification scope it computes; certifies no test outcome.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ verification/evolution plane separation cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.engine:engine.verification_intelligence": {
+      "certification_boundary": "Certifies that the ten laws are computed rather than asserted; certifies no verification result.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Verification Intelligence, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#486",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UVI-000001"
+    },
+    "urn:ucos:ucko:ucos.engine:test_birth_scope": {
+      "certification_boundary": "Certifies that each birth-scope law is exercised in both directions; certifies no coverage claim.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Phase 1 Scope B, B-01 Machine-Readable Birth Scope Governance cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#488",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UOBC-000001"
+    },
+    "urn:ucos:ucko:ucos.engine:test_infinite_scope": {
+      "certification_boundary": "Certifies that each law is falsifiable and the gate writes nothing; certifies no law.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Infinite Scope, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#485",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UISD-000001"
+    },
+    "urn:ucos:ucko:ucos.engine:test_object_birth": {
+      "certification_boundary": "Certifies that the birth contract's laws are measured; certifies no object.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ verification/evolution plane separation cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.engine:test_root_ontology": {
+      "certification_boundary": "Certifies that each law is exercised in both directions; certifies no coverage claim.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Phase 1 Foundation Completion, Scope A Constitutional Primitive Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#487",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UCPA-000001"
+    },
+    "urn:ucos:ucko:ucos.engine:test_temporal_contract": {
+      "certification_boundary": "Certifies CMG-000002 conformance of the temporal engine; certifies no coordinate.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ verification/evolution plane separation cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.engine:test_verification_impact": {
+      "certification_boundary": "Certifies that the impact engine fails wide; certifies no verification outcome.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ verification/evolution plane separation cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.engine:test_verification_intelligence": {
+      "certification_boundary": "Certifies that every law can refuse and that the execution path is exercised; certifies no scope.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Verification Intelligence, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#486",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.master:UVI-000001"
+    },
+    "urn:ucos:ucko:ucos.engine:test_verification_purity": {
+      "certification_boundary": "Certifies that the verification plane mutates nothing; certifies no gate verdict.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ verification/evolution plane separation cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.engine",
+      "owner": "Engineering Governance",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.master:UCPA-000001": {
+      "certification_boundary": "Certifies that the eight declared laws were measured against the declared surfaces; certifies no ontology and no primitive.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Phase 1 Foundation Completion, Scope A Constitutional Primitive Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#487",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.master",
+      "owner": "UCPA-000001",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UCPA-001-CONSTITUTIONAL-PRIMITIVE-ALIGNMENT-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.master:UISD-000001": {
+      "certification_boundary": "Certifies that the ten declared laws were measured against the declared surfaces; certifies no object and no baseline.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Infinite Scope, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#485",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.master",
+      "owner": "UISD-000001",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.master:UOBC-000001": {
+      "certification_boundary": "Certifies birth-record conformance; certifies nothing about the objects born.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Lifecycle Evolution Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#484",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.master",
+      "owner": "UOBC-000001",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-IDENTITY-UNIVERSE-DETERMINATION"
+    },
+    "urn:ucos:ucko:ucos.master:UVI-000001": {
+      "certification_boundary": "Certifies that verification selection, scheduling and evidence reuse preserve every declared obligation; certifies no obligation of its own.",
+      "creation_context": {
+        "existence": "actual",
+        "governance": "CMG-000001 law owner; UCIC-001 lifecycle owner",
+        "identity": "UCKP-ART-05 constitutional object plane",
+        "knowledge": "UCOS Ω∞ Universal Verification Intelligence, Self-Evolving Constitutional Model Alignment cycle",
+        "temporal": "logical: repository history position, not wall-clock"
+      },
+      "creation_timestamp": "logical:ucos-repository-history@1#486",
+      "initial_state": "ACTIVE",
+      "lifecycle_binding": "UCIC-001 (owner) · UCL-000001 (derived)",
+      "namespace": "ucos.master",
+      "owner": "UVI-000001",
+      "parent_identity": "urn:ucos:ucko:ucos.determination:UNIVERSAL-VERIFICATION-INTELLIGENCE-DETERMINATION"
+    }
+  },
+  "keyed_by": "universal_id",
+  "schema": "ucos-object-birth-ledger",
+  "supersessions": [],
+  "version": "1.0"
+}

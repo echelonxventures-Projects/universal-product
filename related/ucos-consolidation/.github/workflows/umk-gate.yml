@@ -1,0 +1,106 @@
+name: UMK-000001 Universal Meta-Kernel Gate
+
+# UMK-000001 — Universal Meta-Kernel Foundation (PROGRAM-002, WAVE-2).
+#
+# This workflow adds NO new validator, registry or enumeration. It runs the executable
+# expression of the meta-kernel: the constitutional proof that lives in the kernel
+# (engine/kernel/compliance.py), bound and rendered by 00-MASTER/UMK-000001/umk_engine.py
+# from the DATA declaration umk-kernel.json. The kernel represents concept-categories as
+# registered meta-types, so a previously unknown category is admitted by registration
+# only — adding one needs neither a kernel change nor a change to this workflow.
+#
+# Exit semantics of the gate:
+#   0  constitutionally compliant (every quality gate passed; kernel source unchanged)
+#   1  a quality gate failed (gate CLOSED)
+#   2  fail-closed abort — the declaration or a required substrate is unusable
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: umk-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: UMK-000001 self-guards (three, each fail-closed)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+      - name: Declaration integrity (abstractions, seeded meta-types, proof categories resolve)
+        run: python3 00-MASTER/UMK-000001/umk_engine.py --check-declaration
+
+      - name: Forbidden-write guard (every output lands inside 00-MASTER/UMK-000001/)
+        run: python3 00-MASTER/UMK-000001/umk_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical deliverables across runs, no timestamps)
+        run: python3 00-MASTER/UMK-000001/umk_engine.py --check-determinism
+
+  kernel-tests:
+    name: Universal Meta-Kernel unit + proof suite
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the pinned test toolchain
+        run: python3 -m pip install --disable-pip-version-check pytest==8.3.4 pytest-cov==6.0.0 coverage==7.15.2
+
+      - name: Kernel tests (executable architectural proof + invariants)
+        run: python3 -m pytest engine/tests/kernel -o addopts="" --cov=engine.kernel --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=100
+
+      - name: Unconditional certification (all 20 matrix dimensions must be 100%)
+        run: python3 00-MASTER/UMK-000001/umk_engine.py --certify
+
+  constitutional-gate:
+    name: Universal Meta-Kernel constitutional gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: kernel-tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Universal Meta-Kernel gate (fail-closed)
+        run: python3 00-MASTER/UMK-000001/umk_engine.py --gate
+
+      - name: Publish the meta-kernel deliverables + evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: umk-meta-kernel
+          path: |
+            00-MASTER/UMK-000001/*.md
+            00-MASTER/UMK-000001/umk-kernel.json
+            00-MASTER/UMK-000001/evidence/
+          if-no-files-found: warn

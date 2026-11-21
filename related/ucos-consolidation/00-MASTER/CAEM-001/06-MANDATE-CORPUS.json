@@ -1,0 +1,8719 @@
+{
+ "artifact_id": "CAEM-001-06",
+ "title": "CAEM-001 · OUTPUT 06 — MANDATE CORPUS",
+ "authority": "NONE — DERIVED TRUTH",
+ "constitutional_superior": "UCKP-LAW-0001 via CAEM-001",
+ "$why_this_exists": "CAEM-001 §1 mapped THIRTEEN mandated concepts to canonical homes by hand. Six governing documents mandate 1,449. This file is those 1,449 transcribed verbatim as atoms so the mapping act has a stable, citable subject: without it every re-reading of the documents produces a slightly different population and no disposition can be compared to the one before it.",
+ "$authoring": "TRANSCRIPTION. Each label is the document's own wording. No atom is inferred, merged, split or renamed; repeats WITHIN one section are collapsed and repeats ACROSS sections are kept, because the same concept mandated twice is two mandates on one concept.",
+ "$not_a_requirement_register": "These are MANDATES, not repository requirements. UAKOS-CLOSURE-009 owns the Repository Requirement Register and projects only concepts already in Repository Truth; its own posture forbids ingesting an external corpus (\"CREATE = 0 at the concept layer\"). Feeding these atoms there would breach the property that makes it trustworthy, so they live here, under the instrument that owns mandate mapping.",
+ "sources": {
+  "PRD": "UCOS Ω∞ Product Requirements Document (Constitutional Foundation v1.0)",
+  "MI": "UCOS Ω∞ Master Constitution / Master Index / Master Knowledge Map (000–018)",
+  "ARCH": "Absolute Universal Constitutional Architecture (Master Architectural Diagram)",
+  "UAKP": "Universal Autonomous Knowledge Platform — Constitutional Architectural Foundation",
+  "QM": "Absolute Universal Constitutional Model (the interrogative model)",
+  "LYR": "UCOS Ω∞ Self-Evolving Constitutional Substrate Architecture (Layers 0–15)"
+ },
+ "atom_count": 1449,
+ "atoms": [
+  {
+   "atom_id": "PRD-P/P-001",
+   "source": "PRD",
+   "section": "PRD-P",
+   "label": "No Terminal Ontology"
+  },
+  {
+   "atom_id": "PRD-P/P-002",
+   "source": "PRD",
+   "section": "PRD-P",
+   "label": "No Terminal Taxonomy"
+  },
+  {
+   "atom_id": "PRD-P/P-003",
+   "source": "PRD",
+   "section": "PRD-P",
+   "label": "No Terminal Architecture"
+  },
+  {
+   "atom_id": "PRD-P/P-004",
+   "source": "PRD",
+   "section": "PRD-P",
+   "label": "Infinite Composition"
+  },
+  {
+   "atom_id": "PRD-P/P-005",
+   "source": "PRD",
+   "section": "PRD-P",
+   "label": "Constitutional Governance"
+  },
+  {
+   "atom_id": "PRD-P/P-006",
+   "source": "PRD",
+   "section": "PRD-P",
+   "label": "Universal Observability"
+  },
+  {
+   "atom_id": "PRD-P/P-007",
+   "source": "PRD",
+   "section": "PRD-P",
+   "label": "Universal Traceability"
+  },
+  {
+   "atom_id": "PRD-P/P-008",
+   "source": "PRD",
+   "section": "PRD-P",
+   "label": "Universal Certifiability"
+  },
+  {
+   "atom_id": "PRD-P/P-009",
+   "source": "PRD",
+   "section": "PRD-P",
+   "label": "Universal Monetization"
+  },
+  {
+   "atom_id": "PRD-P/P-010",
+   "source": "PRD",
+   "section": "PRD-P",
+   "label": "Universal Evolvability"
+  },
+  {
+   "atom_id": "PRD-FR/FR-01",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Admission"
+  },
+  {
+   "atom_id": "PRD-FR/FR-02",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Representation"
+  },
+  {
+   "atom_id": "PRD-FR/FR-03",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Composition"
+  },
+  {
+   "atom_id": "PRD-FR/FR-04",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Relationship"
+  },
+  {
+   "atom_id": "PRD-FR/FR-05",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Governance"
+  },
+  {
+   "atom_id": "PRD-FR/FR-06",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Observation"
+  },
+  {
+   "atom_id": "PRD-FR/FR-07",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "PRD-FR/FR-08",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Verification"
+  },
+  {
+   "atom_id": "PRD-FR/FR-09",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "PRD-FR/FR-10",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Monetization"
+  },
+  {
+   "atom_id": "PRD-FR/FR-11",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Publication"
+  },
+  {
+   "atom_id": "PRD-FR/FR-12",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Evolution"
+  },
+  {
+   "atom_id": "PRD-FR/FR-13",
+   "source": "PRD",
+   "section": "PRD-FR",
+   "label": "Retirement"
+  },
+  {
+   "atom_id": "PRD-ADM/ADM-01",
+   "source": "PRD",
+   "section": "PRD-ADM",
+   "label": "Discovery"
+  },
+  {
+   "atom_id": "PRD-ADM/ADM-02",
+   "source": "PRD",
+   "section": "PRD-ADM",
+   "label": "Registration"
+  },
+  {
+   "atom_id": "PRD-ADM/ADM-03",
+   "source": "PRD",
+   "section": "PRD-ADM",
+   "label": "Classification"
+  },
+  {
+   "atom_id": "PRD-ADM/ADM-04",
+   "source": "PRD",
+   "section": "PRD-ADM",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "PRD-ADM/ADM-05",
+   "source": "PRD",
+   "section": "PRD-ADM",
+   "label": "Governance"
+  },
+  {
+   "atom_id": "PRD-ADM/ADM-06",
+   "source": "PRD",
+   "section": "PRD-ADM",
+   "label": "Observation"
+  },
+  {
+   "atom_id": "PRD-ADM/ADM-07",
+   "source": "PRD",
+   "section": "PRD-ADM",
+   "label": "Evolution"
+  },
+  {
+   "atom_id": "PRD-ADM/ADM-08",
+   "source": "PRD",
+   "section": "PRD-ADM",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "PRD-ADM/ADM-09",
+   "source": "PRD",
+   "section": "PRD-ADM",
+   "label": "Publication"
+  },
+  {
+   "atom_id": "PRD-COMP/COMP-01",
+   "source": "PRD",
+   "section": "PRD-COMP",
+   "label": "Static Composition"
+  },
+  {
+   "atom_id": "PRD-COMP/COMP-02",
+   "source": "PRD",
+   "section": "PRD-COMP",
+   "label": "Dynamic Composition"
+  },
+  {
+   "atom_id": "PRD-COMP/COMP-03",
+   "source": "PRD",
+   "section": "PRD-COMP",
+   "label": "Runtime Composition"
+  },
+  {
+   "atom_id": "PRD-COMP/COMP-04",
+   "source": "PRD",
+   "section": "PRD-COMP",
+   "label": "Event Driven Composition"
+  },
+  {
+   "atom_id": "PRD-COMP/COMP-05",
+   "source": "PRD",
+   "section": "PRD-COMP",
+   "label": "Intent Driven Composition"
+  },
+  {
+   "atom_id": "PRD-COMP/COMP-06",
+   "source": "PRD",
+   "section": "PRD-COMP",
+   "label": "Policy Driven Composition"
+  },
+  {
+   "atom_id": "PRD-COMP/COMP-07",
+   "source": "PRD",
+   "section": "PRD-COMP",
+   "label": "Knowledge Driven Composition"
+  },
+  {
+   "atom_id": "PRD-COMP/COMP-08",
+   "source": "PRD",
+   "section": "PRD-COMP",
+   "label": "Autonomous Composition"
+  },
+  {
+   "atom_id": "PRD-COMP/COMP-09",
+   "source": "PRD",
+   "section": "PRD-COMP",
+   "label": "Recursive Composition"
+  },
+  {
+   "atom_id": "PRD-GOV/GOV-01",
+   "source": "PRD",
+   "section": "PRD-GOV",
+   "label": "Policy"
+  },
+  {
+   "atom_id": "PRD-GOV/GOV-02",
+   "source": "PRD",
+   "section": "PRD-GOV",
+   "label": "Rule"
+  },
+  {
+   "atom_id": "PRD-GOV/GOV-03",
+   "source": "PRD",
+   "section": "PRD-GOV",
+   "label": "Law"
+  },
+  {
+   "atom_id": "PRD-GOV/GOV-04",
+   "source": "PRD",
+   "section": "PRD-GOV",
+   "label": "Constitution"
+  },
+  {
+   "atom_id": "PRD-GOV/GOV-05",
+   "source": "PRD",
+   "section": "PRD-GOV",
+   "label": "Compliance"
+  },
+  {
+   "atom_id": "PRD-GOV/GOV-06",
+   "source": "PRD",
+   "section": "PRD-GOV",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "PRD-GOV/GOV-07",
+   "source": "PRD",
+   "section": "PRD-GOV",
+   "label": "Enforcement"
+  },
+  {
+   "atom_id": "PRD-GOV/GOV-08",
+   "source": "PRD",
+   "section": "PRD-GOV",
+   "label": "Audit"
+  },
+  {
+   "atom_id": "PRD-GOV/GOV-09",
+   "source": "PRD",
+   "section": "PRD-GOV",
+   "label": "Lineage"
+  },
+  {
+   "atom_id": "PRD-GOV/GOV-10",
+   "source": "PRD",
+   "section": "PRD-GOV",
+   "label": "Accountability"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-01",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Construct Discovery"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-02",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Relationship Discovery"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-03",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Capability Discovery"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-04",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Context Discovery"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-05",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Dependency Discovery"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-06",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Knowledge Discovery"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-07",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Policy Discovery"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-08",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Risk Discovery"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-09",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Opportunity Discovery"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-10",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Pattern Discovery"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-11",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Anomaly Discovery"
+  },
+  {
+   "atom_id": "PRD-DISC/DISC-12",
+   "source": "PRD",
+   "section": "PRD-DISC",
+   "label": "Emergent Behavior Discovery"
+  },
+  {
+   "atom_id": "PRD-KN/KN-01",
+   "source": "PRD",
+   "section": "PRD-KN",
+   "label": "Knowledge Capture"
+  },
+  {
+   "atom_id": "PRD-KN/KN-02",
+   "source": "PRD",
+   "section": "PRD-KN",
+   "label": "Knowledge Ingestion"
+  },
+  {
+   "atom_id": "PRD-KN/KN-03",
+   "source": "PRD",
+   "section": "PRD-KN",
+   "label": "Knowledge Assimilation"
+  },
+  {
+   "atom_id": "PRD-KN/KN-04",
+   "source": "PRD",
+   "section": "PRD-KN",
+   "label": "Knowledge Classification"
+  },
+  {
+   "atom_id": "PRD-KN/KN-05",
+   "source": "PRD",
+   "section": "PRD-KN",
+   "label": "Knowledge Validation"
+  },
+  {
+   "atom_id": "PRD-KN/KN-06",
+   "source": "PRD",
+   "section": "PRD-KN",
+   "label": "Knowledge Verification"
+  },
+  {
+   "atom_id": "PRD-KN/KN-07",
+   "source": "PRD",
+   "section": "PRD-KN",
+   "label": "Knowledge Certification"
+  },
+  {
+   "atom_id": "PRD-KN/KN-08",
+   "source": "PRD",
+   "section": "PRD-KN",
+   "label": "Knowledge Evolution"
+  },
+  {
+   "atom_id": "PRD-KN/KN-09",
+   "source": "PRD",
+   "section": "PRD-KN",
+   "label": "Knowledge Retirement"
+  },
+  {
+   "atom_id": "PRD-INT/INT-01",
+   "source": "PRD",
+   "section": "PRD-INT",
+   "label": "Human Intelligence"
+  },
+  {
+   "atom_id": "PRD-INT/INT-02",
+   "source": "PRD",
+   "section": "PRD-INT",
+   "label": "Machine Intelligence"
+  },
+  {
+   "atom_id": "PRD-INT/INT-03",
+   "source": "PRD",
+   "section": "PRD-INT",
+   "label": "AI Intelligence"
+  },
+  {
+   "atom_id": "PRD-INT/INT-04",
+   "source": "PRD",
+   "section": "PRD-INT",
+   "label": "Collective Intelligence"
+  },
+  {
+   "atom_id": "PRD-INT/INT-05",
+   "source": "PRD",
+   "section": "PRD-INT",
+   "label": "Synthetic Intelligence"
+  },
+  {
+   "atom_id": "PRD-INT/INT-06",
+   "source": "PRD",
+   "section": "PRD-INT",
+   "label": "Future Intelligence Models"
+  },
+  {
+   "atom_id": "PRD-INT/INT-07",
+   "source": "PRD",
+   "section": "PRD-INT",
+   "label": "Unknown Intelligence Forms"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-01",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Cost"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-02",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Revenue"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-03",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Billing"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-04",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Settlement"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-05",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Pricing"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-06",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Subscription"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-07",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Royalty"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-08",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Taxation"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-09",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Ownership"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-10",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Licensing"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-11",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Marketplace"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-12",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Commerce"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-13",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Free"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-14",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Paid"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-15",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Owned"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-16",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Shared"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-17",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Leased"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-18",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Licensed"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-19",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Auctioned"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-20",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Tokenized"
+  },
+  {
+   "atom_id": "PRD-ECON/ECON-21",
+   "source": "PRD",
+   "section": "PRD-ECON",
+   "label": "Fractionalized"
+  },
+  {
+   "atom_id": "PRD-PUB/PUB-01",
+   "source": "PRD",
+   "section": "PRD-PUB",
+   "label": "Technical Documents"
+  },
+  {
+   "atom_id": "PRD-PUB/PUB-02",
+   "source": "PRD",
+   "section": "PRD-PUB",
+   "label": "Architecture Documents"
+  },
+  {
+   "atom_id": "PRD-PUB/PUB-03",
+   "source": "PRD",
+   "section": "PRD-PUB",
+   "label": "Specifications"
+  },
+  {
+   "atom_id": "PRD-PUB/PUB-04",
+   "source": "PRD",
+   "section": "PRD-PUB",
+   "label": "Standards"
+  },
+  {
+   "atom_id": "PRD-PUB/PUB-05",
+   "source": "PRD",
+   "section": "PRD-PUB",
+   "label": "Whitepapers"
+  },
+  {
+   "atom_id": "PRD-PUB/PUB-06",
+   "source": "PRD",
+   "section": "PRD-PUB",
+   "label": "Research Papers"
+  },
+  {
+   "atom_id": "PRD-PUB/PUB-07",
+   "source": "PRD",
+   "section": "PRD-PUB",
+   "label": "Journal Publications"
+  },
+  {
+   "atom_id": "PRD-PUB/PUB-08",
+   "source": "PRD",
+   "section": "PRD-PUB",
+   "label": "Patent Applications"
+  },
+  {
+   "atom_id": "PRD-PUB/PUB-09",
+   "source": "PRD",
+   "section": "PRD-PUB",
+   "label": "Regulatory Submissions"
+  },
+  {
+   "atom_id": "PRD-PUB/PUB-10",
+   "source": "PRD",
+   "section": "PRD-PUB",
+   "label": "Knowledge Artifacts"
+  },
+  {
+   "atom_id": "PRD-PUB/PUB-11",
+   "source": "PRD",
+   "section": "PRD-PUB",
+   "label": "Training Materials"
+  },
+  {
+   "atom_id": "PRD-CERT/CERT-01",
+   "source": "PRD",
+   "section": "PRD-CERT",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "PRD-CERT/CERT-02",
+   "source": "PRD",
+   "section": "PRD-CERT",
+   "label": "Verification"
+  },
+  {
+   "atom_id": "PRD-CERT/CERT-03",
+   "source": "PRD",
+   "section": "PRD-CERT",
+   "label": "Evidence"
+  },
+  {
+   "atom_id": "PRD-CERT/CERT-04",
+   "source": "PRD",
+   "section": "PRD-CERT",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "PRD-CERT/CERT-05",
+   "source": "PRD",
+   "section": "PRD-CERT",
+   "label": "Renewal"
+  },
+  {
+   "atom_id": "PRD-CERT/CERT-06",
+   "source": "PRD",
+   "section": "PRD-CERT",
+   "label": "Revocation"
+  },
+  {
+   "atom_id": "PRD-CERT/CERT-07",
+   "source": "PRD",
+   "section": "PRD-CERT",
+   "label": "Audit"
+  },
+  {
+   "atom_id": "PRD-OBS/OBS-01",
+   "source": "PRD",
+   "section": "PRD-OBS",
+   "label": "Metrics"
+  },
+  {
+   "atom_id": "PRD-OBS/OBS-02",
+   "source": "PRD",
+   "section": "PRD-OBS",
+   "label": "Events"
+  },
+  {
+   "atom_id": "PRD-OBS/OBS-03",
+   "source": "PRD",
+   "section": "PRD-OBS",
+   "label": "Logs"
+  },
+  {
+   "atom_id": "PRD-OBS/OBS-04",
+   "source": "PRD",
+   "section": "PRD-OBS",
+   "label": "Traces"
+  },
+  {
+   "atom_id": "PRD-OBS/OBS-05",
+   "source": "PRD",
+   "section": "PRD-OBS",
+   "label": "Signals"
+  },
+  {
+   "atom_id": "PRD-OBS/OBS-06",
+   "source": "PRD",
+   "section": "PRD-OBS",
+   "label": "Predictions"
+  },
+  {
+   "atom_id": "PRD-OBS/OBS-07",
+   "source": "PRD",
+   "section": "PRD-OBS",
+   "label": "Anomalies"
+  },
+  {
+   "atom_id": "PRD-SEC/SEC-01",
+   "source": "PRD",
+   "section": "PRD-SEC",
+   "label": "Zero Trust"
+  },
+  {
+   "atom_id": "PRD-SEC/SEC-02",
+   "source": "PRD",
+   "section": "PRD-SEC",
+   "label": "Least Privilege"
+  },
+  {
+   "atom_id": "PRD-SEC/SEC-03",
+   "source": "PRD",
+   "section": "PRD-SEC",
+   "label": "Continuous Verification"
+  },
+  {
+   "atom_id": "PRD-SEC/SEC-04",
+   "source": "PRD",
+   "section": "PRD-SEC",
+   "label": "Defense In Depth"
+  },
+  {
+   "atom_id": "PRD-SEC/SEC-05",
+   "source": "PRD",
+   "section": "PRD-SEC",
+   "label": "Cryptographic Trust"
+  },
+  {
+   "atom_id": "PRD-SEC/SEC-06",
+   "source": "PRD",
+   "section": "PRD-SEC",
+   "label": "Post Quantum Readiness"
+  },
+  {
+   "atom_id": "PRD-SEC/SEC-07",
+   "source": "PRD",
+   "section": "PRD-SEC",
+   "label": "Autonomous Threat Detection"
+  },
+  {
+   "atom_id": "PRD-SEC/SEC-08",
+   "source": "PRD",
+   "section": "PRD-SEC",
+   "label": "Autonomous Response"
+  },
+  {
+   "atom_id": "PRD-TWIN/TWIN-01",
+   "source": "PRD",
+   "section": "PRD-TWIN",
+   "label": "Representation Twin"
+  },
+  {
+   "atom_id": "PRD-TWIN/TWIN-02",
+   "source": "PRD",
+   "section": "PRD-TWIN",
+   "label": "Operational Twin"
+  },
+  {
+   "atom_id": "PRD-TWIN/TWIN-03",
+   "source": "PRD",
+   "section": "PRD-TWIN",
+   "label": "Behavioral Twin"
+  },
+  {
+   "atom_id": "PRD-TWIN/TWIN-04",
+   "source": "PRD",
+   "section": "PRD-TWIN",
+   "label": "Predictive Twin"
+  },
+  {
+   "atom_id": "PRD-TWIN/TWIN-05",
+   "source": "PRD",
+   "section": "PRD-TWIN",
+   "label": "Simulation Twin"
+  },
+  {
+   "atom_id": "PRD-TWIN/TWIN-06",
+   "source": "PRD",
+   "section": "PRD-TWIN",
+   "label": "Evolution Twin"
+  },
+  {
+   "atom_id": "PRD-MD/MD-01",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Tenant"
+  },
+  {
+   "atom_id": "PRD-MD/MD-02",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Organization"
+  },
+  {
+   "atom_id": "PRD-MD/MD-03",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Language"
+  },
+  {
+   "atom_id": "PRD-MD/MD-04",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Culture"
+  },
+  {
+   "atom_id": "PRD-MD/MD-05",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Currency"
+  },
+  {
+   "atom_id": "PRD-MD/MD-06",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Tax"
+  },
+  {
+   "atom_id": "PRD-MD/MD-07",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Jurisdiction"
+  },
+  {
+   "atom_id": "PRD-MD/MD-08",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Cloud"
+  },
+  {
+   "atom_id": "PRD-MD/MD-09",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Edge"
+  },
+  {
+   "atom_id": "PRD-MD/MD-10",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Reality"
+  },
+  {
+   "atom_id": "PRD-MD/MD-11",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Existence"
+  },
+  {
+   "atom_id": "PRD-MD/MD-12",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Timeline"
+  },
+  {
+   "atom_id": "PRD-MD/MD-13",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Universe"
+  },
+  {
+   "atom_id": "PRD-MD/MD-14",
+   "source": "PRD",
+   "section": "PRD-MD",
+   "label": "Multi-Dimension"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-01",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Discovering"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-02",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Registering"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-03",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Classifying"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-04",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Documenting"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-05",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Governing"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-06",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Validating"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-07",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Verifying"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-08",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Certifying"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-09",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Monitoring"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-10",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Healing"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-11",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Optimizing"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-12",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Evolving"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-13",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Publishing"
+  },
+  {
+   "atom_id": "PRD-SELF/SELF-14",
+   "source": "PRD",
+   "section": "PRD-SELF",
+   "label": "Self Auditing"
+  },
+  {
+   "atom_id": "PRD-NFR/NFR-01",
+   "source": "PRD",
+   "section": "PRD-NFR",
+   "label": "Scalability"
+  },
+  {
+   "atom_id": "PRD-NFR/NFR-02",
+   "source": "PRD",
+   "section": "PRD-NFR",
+   "label": "Availability"
+  },
+  {
+   "atom_id": "PRD-NFR/NFR-03",
+   "source": "PRD",
+   "section": "PRD-NFR",
+   "label": "Reliability"
+  },
+  {
+   "atom_id": "PRD-NFR/NFR-04",
+   "source": "PRD",
+   "section": "PRD-NFR",
+   "label": "Security"
+  },
+  {
+   "atom_id": "PRD-NFR/NFR-05",
+   "source": "PRD",
+   "section": "PRD-NFR",
+   "label": "Portability"
+  },
+  {
+   "atom_id": "PRD-NFR/NFR-06",
+   "source": "PRD",
+   "section": "PRD-NFR",
+   "label": "Interoperability"
+  },
+  {
+   "atom_id": "PRD-NFR/NFR-07",
+   "source": "PRD",
+   "section": "PRD-NFR",
+   "label": "Evolvability"
+  },
+  {
+   "atom_id": "PRD-NFR/NFR-08",
+   "source": "PRD",
+   "section": "PRD-NFR",
+   "label": "Extensibility"
+  },
+  {
+   "atom_id": "PRD-NFR/NFR-09",
+   "source": "PRD",
+   "section": "PRD-NFR",
+   "label": "Observability"
+  },
+  {
+   "atom_id": "PRD-NFR/NFR-10",
+   "source": "PRD",
+   "section": "PRD-NFR",
+   "label": "Governability"
+  },
+  {
+   "atom_id": "PRD-NFR/NFR-11",
+   "source": "PRD",
+   "section": "PRD-NFR",
+   "label": "Auditability"
+  },
+  {
+   "atom_id": "PRD-SC/SC-01",
+   "source": "PRD",
+   "section": "PRD-SC",
+   "label": "New constructs require no redesign"
+  },
+  {
+   "atom_id": "PRD-SC/SC-02",
+   "source": "PRD",
+   "section": "PRD-SC",
+   "label": "New domains require no redesign"
+  },
+  {
+   "atom_id": "PRD-SC/SC-03",
+   "source": "PRD",
+   "section": "PRD-SC",
+   "label": "New realities require no redesign"
+  },
+  {
+   "atom_id": "PRD-SC/SC-04",
+   "source": "PRD",
+   "section": "PRD-SC",
+   "label": "New business models require no redesign"
+  },
+  {
+   "atom_id": "PRD-SC/SC-05",
+   "source": "PRD",
+   "section": "PRD-SC",
+   "label": "New technologies require no redesign"
+  },
+  {
+   "atom_id": "PRD-SC/SC-06",
+   "source": "PRD",
+   "section": "PRD-SC",
+   "label": "New governance models require no redesign"
+  },
+  {
+   "atom_id": "PRD-SC/SC-07",
+   "source": "PRD",
+   "section": "PRD-SC",
+   "label": "New intelligence models require no redesign"
+  },
+  {
+   "atom_id": "PRD-SC/SC-08",
+   "source": "PRD",
+   "section": "PRD-SC",
+   "label": "New existence domains require no redesign"
+  },
+  {
+   "atom_id": "PRD-SC/SC-09",
+   "source": "PRD",
+   "section": "PRD-SC",
+   "label": "Architecture evolves without reconstruction"
+  },
+  {
+   "atom_id": "PRD-SC/SC-10",
+   "source": "PRD",
+   "section": "PRD-SC",
+   "label": "Unknown constructs admitted by governance not code"
+  },
+  {
+   "atom_id": "MI-000/K-01",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Purpose"
+  },
+  {
+   "atom_id": "MI-000/K-02",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Vision"
+  },
+  {
+   "atom_id": "MI-000/K-03",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Mission"
+  },
+  {
+   "atom_id": "MI-000/K-04",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Philosophy"
+  },
+  {
+   "atom_id": "MI-000/K-05",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Core Values"
+  },
+  {
+   "atom_id": "MI-000/K-06",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Guiding Principles"
+  },
+  {
+   "atom_id": "MI-000/K-07",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Constitutional Laws"
+  },
+  {
+   "atom_id": "MI-000/K-08",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Invariants"
+  },
+  {
+   "atom_id": "MI-000/K-09",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Axioms"
+  },
+  {
+   "atom_id": "MI-000/K-10",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Postulates"
+  },
+  {
+   "atom_id": "MI-000/K-11",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Definitions"
+  },
+  {
+   "atom_id": "MI-000/K-12",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Terminology"
+  },
+  {
+   "atom_id": "MI-000/K-13",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Semantics"
+  },
+  {
+   "atom_id": "MI-000/K-14",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Symbols"
+  },
+  {
+   "atom_id": "MI-000/K-15",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Mathematics"
+  },
+  {
+   "atom_id": "MI-000/K-16",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Logic"
+  },
+  {
+   "atom_id": "MI-000/K-17",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Proof System"
+  },
+  {
+   "atom_id": "MI-000/K-18",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Meta Model"
+  },
+  {
+   "atom_id": "MI-000/K-19",
+   "source": "MI",
+   "section": "MI-000",
+   "label": "Universal Constitutional Grammar"
+  },
+  {
+   "atom_id": "MI-001/F-01",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Constitutional Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-02",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Existence Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-03",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Reality Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-04",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Possibility Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-05",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Truth Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-06",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Meaning Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-07",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Knowledge Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-08",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Information Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-09",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Identity Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-10",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Relationship Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-11",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Context Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-12",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Constraint Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-13",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Rule Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-14",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Logic Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-15",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Mathematics Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-16",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Measurement Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-17",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Computation Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-18",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Intelligence Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-19",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Governance Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-20",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Evolution Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-21",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Assurance Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-22",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Runtime Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-23",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Economic Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-24",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Commercial Foundation"
+  },
+  {
+   "atom_id": "MI-001/F-25",
+   "source": "MI",
+   "section": "MI-001",
+   "label": "Universal Projection Foundation"
+  },
+  {
+   "atom_id": "MI-002/C-01",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Constitutional Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-02",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Identity Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-03",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Relationship Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-04",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Context Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-05",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Constraint Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-06",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Rule Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-07",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Knowledge Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-08",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Information Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-09",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Intelligence Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-10",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Capability Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-11",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Configuration Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-12",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Composition Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-13",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Lifecycle Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-14",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Runtime Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-15",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Repository Truth Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-16",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Governance Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-17",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Validation Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-18",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Verification Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-19",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Certification Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-20",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Security Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-21",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Privacy Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-22",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Commercial Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-23",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Economic Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-24",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Monitoring Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-25",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Analytics Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-26",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Evolution Constitution"
+  },
+  {
+   "atom_id": "MI-002/C-27",
+   "source": "MI",
+   "section": "MI-002",
+   "label": "Projection Constitution"
+  },
+  {
+   "atom_id": "MI-003/M-01",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Primitive Model"
+  },
+  {
+   "atom_id": "MI-003/M-02",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Concept Model"
+  },
+  {
+   "atom_id": "MI-003/M-03",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Object Model"
+  },
+  {
+   "atom_id": "MI-003/M-04",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Identity Model"
+  },
+  {
+   "atom_id": "MI-003/M-05",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Relationship Model"
+  },
+  {
+   "atom_id": "MI-003/M-06",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Context Model"
+  },
+  {
+   "atom_id": "MI-003/M-07",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Capability Model"
+  },
+  {
+   "atom_id": "MI-003/M-08",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Constraint Model"
+  },
+  {
+   "atom_id": "MI-003/M-09",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Rule Model"
+  },
+  {
+   "atom_id": "MI-003/M-10",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Event Model"
+  },
+  {
+   "atom_id": "MI-003/M-11",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "State Model"
+  },
+  {
+   "atom_id": "MI-003/M-12",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Behavior Model"
+  },
+  {
+   "atom_id": "MI-003/M-13",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Lifecycle Model"
+  },
+  {
+   "atom_id": "MI-003/M-14",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Evolution Model"
+  },
+  {
+   "atom_id": "MI-003/M-15",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Runtime Model"
+  },
+  {
+   "atom_id": "MI-003/M-16",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Repository Model"
+  },
+  {
+   "atom_id": "MI-003/M-17",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Governance Model"
+  },
+  {
+   "atom_id": "MI-003/M-18",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Economic Model"
+  },
+  {
+   "atom_id": "MI-003/M-19",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Commercial Model"
+  },
+  {
+   "atom_id": "MI-003/M-20",
+   "source": "MI",
+   "section": "MI-003",
+   "label": "Projection Model"
+  },
+  {
+   "atom_id": "MI-004/G-01",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Knowledge Graph"
+  },
+  {
+   "atom_id": "MI-004/G-02",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Semantic Graph"
+  },
+  {
+   "atom_id": "MI-004/G-03",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Concept Graph"
+  },
+  {
+   "atom_id": "MI-004/G-04",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Identity Graph"
+  },
+  {
+   "atom_id": "MI-004/G-05",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Relationship Graph"
+  },
+  {
+   "atom_id": "MI-004/G-06",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Dependency Graph"
+  },
+  {
+   "atom_id": "MI-004/G-07",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Capability Graph"
+  },
+  {
+   "atom_id": "MI-004/G-08",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Runtime Graph"
+  },
+  {
+   "atom_id": "MI-004/G-09",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Repository Graph"
+  },
+  {
+   "atom_id": "MI-004/G-10",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Governance Graph"
+  },
+  {
+   "atom_id": "MI-004/G-11",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Intelligence Graph"
+  },
+  {
+   "atom_id": "MI-004/G-12",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Evidence Graph"
+  },
+  {
+   "atom_id": "MI-004/G-13",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Traceability Graph"
+  },
+  {
+   "atom_id": "MI-004/G-14",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Lineage Graph"
+  },
+  {
+   "atom_id": "MI-004/G-15",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Evolution Graph"
+  },
+  {
+   "atom_id": "MI-004/G-16",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Security Graph"
+  },
+  {
+   "atom_id": "MI-004/G-17",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Commercial Graph"
+  },
+  {
+   "atom_id": "MI-004/G-18",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Economic Graph"
+  },
+  {
+   "atom_id": "MI-004/G-19",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Monitoring Graph"
+  },
+  {
+   "atom_id": "MI-004/G-20",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Analytics Graph"
+  },
+  {
+   "atom_id": "MI-004/G-21",
+   "source": "MI",
+   "section": "MI-004",
+   "label": "Projection Graph"
+  },
+  {
+   "atom_id": "MI-005/D-01",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Observation"
+  },
+  {
+   "atom_id": "MI-005/D-02",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-03",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Knowledge Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-04",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Requirement Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-05",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Capability Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-06",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Dependency Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-07",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Context Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-08",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Identity Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-09",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Relationship Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-10",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Ownership Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-11",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Constraint Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-12",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Gap Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-13",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Risk Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-14",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Opportunity Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-15",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Reuse Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-16",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Alternative Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-17",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Pattern Discovery"
+  },
+  {
+   "atom_id": "MI-005/D-18",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Context Assimilation"
+  },
+  {
+   "atom_id": "MI-005/D-19",
+   "source": "MI",
+   "section": "MI-005",
+   "label": "Constitutional Understanding"
+  },
+  {
+   "atom_id": "MI-006/DEC-01",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Constitutional Decision"
+  },
+  {
+   "atom_id": "MI-006/DEC-02",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Planning"
+  },
+  {
+   "atom_id": "MI-006/DEC-03",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Analysis"
+  },
+  {
+   "atom_id": "MI-006/DEC-04",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Evaluation"
+  },
+  {
+   "atom_id": "MI-006/DEC-05",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Derivation"
+  },
+  {
+   "atom_id": "MI-006/DEC-06",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Reuse"
+  },
+  {
+   "atom_id": "MI-006/DEC-07",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Extension"
+  },
+  {
+   "atom_id": "MI-006/DEC-08",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Composition"
+  },
+  {
+   "atom_id": "MI-006/DEC-09",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Configuration"
+  },
+  {
+   "atom_id": "MI-006/DEC-10",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Generation"
+  },
+  {
+   "atom_id": "MI-006/DEC-11",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Specialization"
+  },
+  {
+   "atom_id": "MI-006/DEC-12",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Optimization"
+  },
+  {
+   "atom_id": "MI-006/DEC-13",
+   "source": "MI",
+   "section": "MI-006",
+   "label": "Approval"
+  },
+  {
+   "atom_id": "MI-007/E-01",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Architecture"
+  },
+  {
+   "atom_id": "MI-007/E-02",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Design"
+  },
+  {
+   "atom_id": "MI-007/E-03",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Modeling"
+  },
+  {
+   "atom_id": "MI-007/E-04",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Composition"
+  },
+  {
+   "atom_id": "MI-007/E-05",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Configuration"
+  },
+  {
+   "atom_id": "MI-007/E-06",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Generation"
+  },
+  {
+   "atom_id": "MI-007/E-07",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Implementation"
+  },
+  {
+   "atom_id": "MI-007/E-08",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Build"
+  },
+  {
+   "atom_id": "MI-007/E-09",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Packaging"
+  },
+  {
+   "atom_id": "MI-007/E-10",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Deployment"
+  },
+  {
+   "atom_id": "MI-007/E-11",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Runtime Preparation"
+  },
+  {
+   "atom_id": "MI-007/E-12",
+   "source": "MI",
+   "section": "MI-007",
+   "label": "Infrastructure"
+  },
+  {
+   "atom_id": "MI-008/A-01",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "MI-008/A-02",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Verification"
+  },
+  {
+   "atom_id": "MI-008/A-03",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "MI-008/A-04",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Testing"
+  },
+  {
+   "atom_id": "MI-008/A-05",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Static Analysis"
+  },
+  {
+   "atom_id": "MI-008/A-06",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Dynamic Analysis"
+  },
+  {
+   "atom_id": "MI-008/A-07",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Security Assessment"
+  },
+  {
+   "atom_id": "MI-008/A-08",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Performance Assessment"
+  },
+  {
+   "atom_id": "MI-008/A-09",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Compliance Assessment"
+  },
+  {
+   "atom_id": "MI-008/A-10",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Evidence Collection"
+  },
+  {
+   "atom_id": "MI-008/A-11",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Audit"
+  },
+  {
+   "atom_id": "MI-008/A-12",
+   "source": "MI",
+   "section": "MI-008",
+   "label": "Replay"
+  },
+  {
+   "atom_id": "MI-009/GV-01",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Repository Truth"
+  },
+  {
+   "atom_id": "MI-009/GV-02",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Identity"
+  },
+  {
+   "atom_id": "MI-009/GV-03",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Registry"
+  },
+  {
+   "atom_id": "MI-009/GV-04",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Dictionary"
+  },
+  {
+   "atom_id": "MI-009/GV-05",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Ontology"
+  },
+  {
+   "atom_id": "MI-009/GV-06",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Taxonomy"
+  },
+  {
+   "atom_id": "MI-009/GV-07",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Provenance"
+  },
+  {
+   "atom_id": "MI-009/GV-08",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Lineage"
+  },
+  {
+   "atom_id": "MI-009/GV-09",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Ownership"
+  },
+  {
+   "atom_id": "MI-009/GV-10",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Authority"
+  },
+  {
+   "atom_id": "MI-009/GV-11",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Traceability"
+  },
+  {
+   "atom_id": "MI-009/GV-12",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Policy"
+  },
+  {
+   "atom_id": "MI-009/GV-13",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Compliance"
+  },
+  {
+   "atom_id": "MI-009/GV-14",
+   "source": "MI",
+   "section": "MI-009",
+   "label": "Constitutional Governance"
+  },
+  {
+   "atom_id": "MI-010/X-01",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Work Discovery"
+  },
+  {
+   "atom_id": "MI-010/X-02",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Dependency Scheduling"
+  },
+  {
+   "atom_id": "MI-010/X-03",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Resource Discovery"
+  },
+  {
+   "atom_id": "MI-010/X-04",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Orchestration"
+  },
+  {
+   "atom_id": "MI-010/X-05",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Execution"
+  },
+  {
+   "atom_id": "MI-010/X-06",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Runtime"
+  },
+  {
+   "atom_id": "MI-010/X-07",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Monitoring"
+  },
+  {
+   "atom_id": "MI-010/X-08",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Analytics"
+  },
+  {
+   "atom_id": "MI-010/X-09",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Optimization"
+  },
+  {
+   "atom_id": "MI-010/X-10",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Recovery"
+  },
+  {
+   "atom_id": "MI-010/X-11",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Replay"
+  },
+  {
+   "atom_id": "MI-010/X-12",
+   "source": "MI",
+   "section": "MI-010",
+   "label": "Deterministic Fixed Point"
+  },
+  {
+   "atom_id": "MI-011/O-01",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi User"
+  },
+  {
+   "atom_id": "MI-011/O-02",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Tenant"
+  },
+  {
+   "atom_id": "MI-011/O-03",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Organization"
+  },
+  {
+   "atom_id": "MI-011/O-04",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Enterprise"
+  },
+  {
+   "atom_id": "MI-011/O-05",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Region"
+  },
+  {
+   "atom_id": "MI-011/O-06",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Country"
+  },
+  {
+   "atom_id": "MI-011/O-07",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Language"
+  },
+  {
+   "atom_id": "MI-011/O-08",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Currency"
+  },
+  {
+   "atom_id": "MI-011/O-09",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Tax"
+  },
+  {
+   "atom_id": "MI-011/O-10",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Calendar"
+  },
+  {
+   "atom_id": "MI-011/O-11",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Temporal"
+  },
+  {
+   "atom_id": "MI-011/O-12",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Runtime"
+  },
+  {
+   "atom_id": "MI-011/O-13",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Cloud"
+  },
+  {
+   "atom_id": "MI-011/O-14",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Planet"
+  },
+  {
+   "atom_id": "MI-011/O-15",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Universe"
+  },
+  {
+   "atom_id": "MI-011/O-16",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Multi Reality"
+  },
+  {
+   "atom_id": "MI-011/O-17",
+   "source": "MI",
+   "section": "MI-011",
+   "label": "Infinite Scalability"
+  },
+  {
+   "atom_id": "MI-012/CM-01",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Products"
+  },
+  {
+   "atom_id": "MI-012/CM-02",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Services"
+  },
+  {
+   "atom_id": "MI-012/CM-03",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Assets"
+  },
+  {
+   "atom_id": "MI-012/CM-04",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Capabilities"
+  },
+  {
+   "atom_id": "MI-012/CM-05",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Marketplace"
+  },
+  {
+   "atom_id": "MI-012/CM-06",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Licensing"
+  },
+  {
+   "atom_id": "MI-012/CM-07",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Metering"
+  },
+  {
+   "atom_id": "MI-012/CM-08",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Billing"
+  },
+  {
+   "atom_id": "MI-012/CM-09",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Revenue"
+  },
+  {
+   "atom_id": "MI-012/CM-10",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Cost"
+  },
+  {
+   "atom_id": "MI-012/CM-11",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Pricing"
+  },
+  {
+   "atom_id": "MI-012/CM-12",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Subscription"
+  },
+  {
+   "atom_id": "MI-012/CM-13",
+   "source": "MI",
+   "section": "MI-012",
+   "label": "Ecosystem"
+  },
+  {
+   "atom_id": "MI-013/OB-01",
+   "source": "MI",
+   "section": "MI-013",
+   "label": "Logging"
+  },
+  {
+   "atom_id": "MI-013/OB-02",
+   "source": "MI",
+   "section": "MI-013",
+   "label": "Monitoring"
+  },
+  {
+   "atom_id": "MI-013/OB-03",
+   "source": "MI",
+   "section": "MI-013",
+   "label": "Telemetry"
+  },
+  {
+   "atom_id": "MI-013/OB-04",
+   "source": "MI",
+   "section": "MI-013",
+   "label": "Events"
+  },
+  {
+   "atom_id": "MI-013/OB-05",
+   "source": "MI",
+   "section": "MI-013",
+   "label": "Metrics"
+  },
+  {
+   "atom_id": "MI-013/OB-06",
+   "source": "MI",
+   "section": "MI-013",
+   "label": "Analytics"
+  },
+  {
+   "atom_id": "MI-013/OB-07",
+   "source": "MI",
+   "section": "MI-013",
+   "label": "Dashboards"
+  },
+  {
+   "atom_id": "MI-013/OB-08",
+   "source": "MI",
+   "section": "MI-013",
+   "label": "Alerts"
+  },
+  {
+   "atom_id": "MI-013/OB-09",
+   "source": "MI",
+   "section": "MI-013",
+   "label": "Intelligence"
+  },
+  {
+   "atom_id": "MI-013/OB-10",
+   "source": "MI",
+   "section": "MI-013",
+   "label": "Insights"
+  },
+  {
+   "atom_id": "MI-014/EV-01",
+   "source": "MI",
+   "section": "MI-014",
+   "label": "Observation"
+  },
+  {
+   "atom_id": "MI-014/EV-02",
+   "source": "MI",
+   "section": "MI-014",
+   "label": "Measurement"
+  },
+  {
+   "atom_id": "MI-014/EV-03",
+   "source": "MI",
+   "section": "MI-014",
+   "label": "Learning"
+  },
+  {
+   "atom_id": "MI-014/EV-04",
+   "source": "MI",
+   "section": "MI-014",
+   "label": "Reasoning"
+  },
+  {
+   "atom_id": "MI-014/EV-05",
+   "source": "MI",
+   "section": "MI-014",
+   "label": "Knowledge Extraction"
+  },
+  {
+   "atom_id": "MI-014/EV-06",
+   "source": "MI",
+   "section": "MI-014",
+   "label": "Capability Elevation"
+  },
+  {
+   "atom_id": "MI-014/EV-07",
+   "source": "MI",
+   "section": "MI-014",
+   "label": "Improvement"
+  },
+  {
+   "atom_id": "MI-014/EV-08",
+   "source": "MI",
+   "section": "MI-014",
+   "label": "Optimization"
+  },
+  {
+   "atom_id": "MI-014/EV-09",
+   "source": "MI",
+   "section": "MI-014",
+   "label": "Constitutional Evolution"
+  },
+  {
+   "atom_id": "MI-014/EV-10",
+   "source": "MI",
+   "section": "MI-014",
+   "label": "Repository Truth Update"
+  },
+  {
+   "atom_id": "MI-014/EV-11",
+   "source": "MI",
+   "section": "MI-014",
+   "label": "Infinite Evolution Cycle"
+  },
+  {
+   "atom_id": "MI-015/PJ-01",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Documentation"
+  },
+  {
+   "atom_id": "MI-015/PJ-02",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Architecture"
+  },
+  {
+   "atom_id": "MI-015/PJ-03",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Diagrams"
+  },
+  {
+   "atom_id": "MI-015/PJ-04",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Source Code"
+  },
+  {
+   "atom_id": "MI-015/PJ-05",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "APIs"
+  },
+  {
+   "atom_id": "MI-015/PJ-06",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "SDKs"
+  },
+  {
+   "atom_id": "MI-015/PJ-07",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "CLIs"
+  },
+  {
+   "atom_id": "MI-015/PJ-08",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Libraries"
+  },
+  {
+   "atom_id": "MI-015/PJ-09",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Services"
+  },
+  {
+   "atom_id": "MI-015/PJ-10",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Applications"
+  },
+  {
+   "atom_id": "MI-015/PJ-11",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Platforms"
+  },
+  {
+   "atom_id": "MI-015/PJ-12",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Infrastructure"
+  },
+  {
+   "atom_id": "MI-015/PJ-13",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Databases"
+  },
+  {
+   "atom_id": "MI-015/PJ-14",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Schemas"
+  },
+  {
+   "atom_id": "MI-015/PJ-15",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Registries"
+  },
+  {
+   "atom_id": "MI-015/PJ-16",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Dictionaries"
+  },
+  {
+   "atom_id": "MI-015/PJ-17",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Tests"
+  },
+  {
+   "atom_id": "MI-015/PJ-18",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Dashboards"
+  },
+  {
+   "atom_id": "MI-015/PJ-19",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Reports"
+  },
+  {
+   "atom_id": "MI-015/PJ-20",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Evidence"
+  },
+  {
+   "atom_id": "MI-015/PJ-21",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Policies"
+  },
+  {
+   "atom_id": "MI-015/PJ-22",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Deployments"
+  },
+  {
+   "atom_id": "MI-015/PJ-23",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Digital Twins"
+  },
+  {
+   "atom_id": "MI-015/PJ-24",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "AI Agents"
+  },
+  {
+   "atom_id": "MI-015/PJ-25",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Robotics"
+  },
+  {
+   "atom_id": "MI-015/PJ-26",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Enterprise Systems"
+  },
+  {
+   "atom_id": "MI-015/PJ-27",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Commerce Platforms"
+  },
+  {
+   "atom_id": "MI-015/PJ-28",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Scientific Platforms"
+  },
+  {
+   "atom_id": "MI-015/PJ-29",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Government Platforms"
+  },
+  {
+   "atom_id": "MI-015/PJ-30",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Space Platforms"
+  },
+  {
+   "atom_id": "MI-015/PJ-31",
+   "source": "MI",
+   "section": "MI-015",
+   "label": "Infinite Future Projections"
+  },
+  {
+   "atom_id": "ARCH-STACK/ST-01",
+   "source": "ARCH",
+   "section": "ARCH-STACK",
+   "label": "Potential"
+  },
+  {
+   "atom_id": "ARCH-STACK/ST-02",
+   "source": "ARCH",
+   "section": "ARCH-STACK",
+   "label": "Possibility"
+  },
+  {
+   "atom_id": "ARCH-STACK/ST-03",
+   "source": "ARCH",
+   "section": "ARCH-STACK",
+   "label": "Existence"
+  },
+  {
+   "atom_id": "ARCH-STACK/ST-04",
+   "source": "ARCH",
+   "section": "ARCH-STACK",
+   "label": "Reality"
+  },
+  {
+   "atom_id": "ARCH-STACK/ST-05",
+   "source": "ARCH",
+   "section": "ARCH-STACK",
+   "label": "Truth"
+  },
+  {
+   "atom_id": "ARCH-STACK/ST-06",
+   "source": "ARCH",
+   "section": "ARCH-STACK",
+   "label": "Meaning"
+  },
+  {
+   "atom_id": "ARCH-KERNEL/AK-01",
+   "source": "ARCH",
+   "section": "ARCH-KERNEL",
+   "label": "Absolute Constitutional Kernel"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-01",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Identity"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-02",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Relationships"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-03",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Context"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-04",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Meaning"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-05",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Constraints"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-06",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Rules"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-07",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Knowledge"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-08",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Information"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-09",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Semantics"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-10",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Logic"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-11",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Mathematics"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-12",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Measurement"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-13",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Capability"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-14",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Behaviour"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-15",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal State"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-16",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Event"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-17",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Lifecycle"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-18",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Evolution"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-19",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Governance"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-20",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Authority"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-21",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Ownership"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-22",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Security"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-23",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Privacy"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-24",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Trust"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-25",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Economics"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-26",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Commerce"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-27",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Runtime"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-28",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Intelligence"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-29",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Automation"
+  },
+  {
+   "atom_id": "ARCH-UCMM/UM-30",
+   "source": "ARCH",
+   "section": "ARCH-UCMM",
+   "label": "Universal Projection"
+  },
+  {
+   "atom_id": "ARCH-UCG/UG-01",
+   "source": "ARCH",
+   "section": "ARCH-UCG",
+   "label": "Universal Constitutional Graph"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-01",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Observe"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-02",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Discover"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-03",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Recognize"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-04",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Identify"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-05",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Classify"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-06",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Resolve Context"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-07",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Resolve Relationships"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-08",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Resolve Constraints"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-09",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Resolve Rules"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-10",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Resolve Dependencies"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-11",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Knowledge Assimilation"
+  },
+  {
+   "atom_id": "ARCH-DISCF/DF-12",
+   "source": "ARCH",
+   "section": "ARCH-DISCF",
+   "label": "Repository Truth"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-01",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Planning"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-02",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Requirements"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-03",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Architecture"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-04",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Design"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-05",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Engineering"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-06",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Composition"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-07",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Configuration"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-08",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Generation"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-09",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Implementation"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-10",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Integration"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-11",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Packaging"
+  },
+  {
+   "atom_id": "ARCH-ENGF/EF-12",
+   "source": "ARCH",
+   "section": "ARCH-ENGF",
+   "label": "Publication"
+  },
+  {
+   "atom_id": "ARCH-ASSUR/AS-01",
+   "source": "ARCH",
+   "section": "ARCH-ASSUR",
+   "label": "Constitutional Assurance"
+  },
+  {
+   "atom_id": "ARCH-ASSUR/AS-02",
+   "source": "ARCH",
+   "section": "ARCH-ASSUR",
+   "label": "Knowledge Assurance"
+  },
+  {
+   "atom_id": "ARCH-ASSUR/AS-03",
+   "source": "ARCH",
+   "section": "ARCH-ASSUR",
+   "label": "Architecture Assurance"
+  },
+  {
+   "atom_id": "ARCH-ASSUR/AS-04",
+   "source": "ARCH",
+   "section": "ARCH-ASSUR",
+   "label": "Engineering Assurance"
+  },
+  {
+   "atom_id": "ARCH-ASSUR/AS-05",
+   "source": "ARCH",
+   "section": "ARCH-ASSUR",
+   "label": "Runtime Assurance"
+  },
+  {
+   "atom_id": "ARCH-ASSUR/AS-06",
+   "source": "ARCH",
+   "section": "ARCH-ASSUR",
+   "label": "Security Assurance"
+  },
+  {
+   "atom_id": "ARCH-ASSUR/AS-07",
+   "source": "ARCH",
+   "section": "ARCH-ASSUR",
+   "label": "Commercial Assurance"
+  },
+  {
+   "atom_id": "ARCH-ASSUR/AS-08",
+   "source": "ARCH",
+   "section": "ARCH-ASSUR",
+   "label": "Evolution Assurance"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-01",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Static Analysis"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-02",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Dynamic Analysis"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-03",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Semantic Analysis"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-04",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Architecture Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-05",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Constitutional Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-06",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Requirement Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-07",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Dependency Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-08",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Configuration Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-09",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Identity Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-10",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Relationship Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-11",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Policy Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-12",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Compliance Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-13",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Security Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-14",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Privacy Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-15",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Legal Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-16",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Risk Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-17",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Performance Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-18",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Reliability Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-19",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Scalability Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-20",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Compatibility Validation"
+  },
+  {
+   "atom_id": "ARCH-VALID/VL-21",
+   "source": "ARCH",
+   "section": "ARCH-VALID",
+   "label": "Interoperability Validation"
+  },
+  {
+   "atom_id": "ARCH-VERIF/VF-01",
+   "source": "ARCH",
+   "section": "ARCH-VERIF",
+   "label": "Determinism"
+  },
+  {
+   "atom_id": "ARCH-VERIF/VF-02",
+   "source": "ARCH",
+   "section": "ARCH-VERIF",
+   "label": "Replay"
+  },
+  {
+   "atom_id": "ARCH-VERIF/VF-03",
+   "source": "ARCH",
+   "section": "ARCH-VERIF",
+   "label": "Integrity"
+  },
+  {
+   "atom_id": "ARCH-VERIF/VF-04",
+   "source": "ARCH",
+   "section": "ARCH-VERIF",
+   "label": "Traceability"
+  },
+  {
+   "atom_id": "ARCH-VERIF/VF-05",
+   "source": "ARCH",
+   "section": "ARCH-VERIF",
+   "label": "Lineage"
+  },
+  {
+   "atom_id": "ARCH-VERIF/VF-06",
+   "source": "ARCH",
+   "section": "ARCH-VERIF",
+   "label": "Provenance"
+  },
+  {
+   "atom_id": "ARCH-VERIF/VF-07",
+   "source": "ARCH",
+   "section": "ARCH-VERIF",
+   "label": "Evidence"
+  },
+  {
+   "atom_id": "ARCH-VERIF/VF-08",
+   "source": "ARCH",
+   "section": "ARCH-VERIF",
+   "label": "Completeness"
+  },
+  {
+   "atom_id": "ARCH-VERIF/VF-09",
+   "source": "ARCH",
+   "section": "ARCH-VERIF",
+   "label": "Consistency"
+  },
+  {
+   "atom_id": "ARCH-VERIF/VF-10",
+   "source": "ARCH",
+   "section": "ARCH-VERIF",
+   "label": "Coverage"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-01",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Unit Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-02",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Component Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-03",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Integration Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-04",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "System Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-05",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "End-to-End Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-06",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Regression Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-07",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Performance Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-08",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Security Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-09",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Chaos Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-10",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Recovery Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-11",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Billing Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-12",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Licensing Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-13",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Analytics Testing"
+  },
+  {
+   "atom_id": "ARCH-TEST/TS-14",
+   "source": "ARCH",
+   "section": "ARCH-TEST",
+   "label": "Runtime Testing"
+  },
+  {
+   "atom_id": "ARCH-CERTV/CV-01",
+   "source": "ARCH",
+   "section": "ARCH-CERTV",
+   "label": "PASS"
+  },
+  {
+   "atom_id": "ARCH-CERTV/CV-02",
+   "source": "ARCH",
+   "section": "ARCH-CERTV",
+   "label": "REUSE"
+  },
+  {
+   "atom_id": "ARCH-CERTV/CV-03",
+   "source": "ARCH",
+   "section": "ARCH-CERTV",
+   "label": "EXTEND"
+  },
+  {
+   "atom_id": "ARCH-CERTV/CV-04",
+   "source": "ARCH",
+   "section": "ARCH-CERTV",
+   "label": "CREATE"
+  },
+  {
+   "atom_id": "ARCH-CERTV/CV-05",
+   "source": "ARCH",
+   "section": "ARCH-CERTV",
+   "label": "SUPERSEDE"
+  },
+  {
+   "atom_id": "ARCH-CERTV/CV-06",
+   "source": "ARCH",
+   "section": "ARCH-CERTV",
+   "label": "DEPRECATE"
+  },
+  {
+   "atom_id": "ARCH-CERTV/CV-07",
+   "source": "ARCH",
+   "section": "ARCH-CERTV",
+   "label": "BLOCKED"
+  },
+  {
+   "atom_id": "ARCH-CERTV/CV-08",
+   "source": "ARCH",
+   "section": "ARCH-CERTV",
+   "label": "NOT_APPLICABLE"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-01",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Approval"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-02",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-03",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Registration"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-04",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Universal Identity Assignment"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-05",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Dictionary Update"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-06",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Ontology Update"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-07",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Taxonomy Update"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-08",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Registry Update"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-09",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Relationship Update"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-10",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Dependency Update"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-11",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Capability Update"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-12",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Evidence Registration"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-13",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Bookkeeping Update"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-14",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Lineage Update"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-15",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Provenance Update"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-16",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Repository Truth Update"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-17",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Production Readiness"
+  },
+  {
+   "atom_id": "ARCH-GOVF/GF-18",
+   "source": "ARCH",
+   "section": "ARCH-GOVF",
+   "label": "Go-Live Authorization"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-01",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Deployment"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-02",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Provisioning"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-03",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Activation"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-04",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Execution"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-05",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Runtime"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-06",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Observation"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-07",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Monitoring"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-08",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Telemetry"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-09",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Logging"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-10",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Tracing"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-11",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Analytics"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-12",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Security Monitoring"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-13",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Fraud Monitoring"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-14",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Compliance Monitoring"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-15",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Billing"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-16",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Metering"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-17",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Licensing"
+  },
+  {
+   "atom_id": "ARCH-OPF/OF-18",
+   "source": "ARCH",
+   "section": "ARCH-OPF",
+   "label": "Commercialization"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-01",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Knowledge Extraction"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-02",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Learning"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-03",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Reasoning"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-04",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Improvement"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-05",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Optimization"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-06",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Versioning"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-07",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Upgrade"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-08",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Downgrade"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-09",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Migration"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-10",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Transformation"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-11",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Archive"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-12",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Restore"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-13",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Replay"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-14",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Deterministic Fixed Point"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-15",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Capability Elevation"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-16",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Engineering Knowledge Registration"
+  },
+  {
+   "atom_id": "ARCH-EVOF/VF2-17",
+   "source": "ARCH",
+   "section": "ARCH-EVOF",
+   "label": "Repository Observation"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-01",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Constitutional Foundation Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-02",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Ontology Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-03",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Identity Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-04",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Context Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-05",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Knowledge Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-06",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Evidence Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-07",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Truth Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-08",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Memory Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-09",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Governance Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-10",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Intent Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-11",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Reasoning Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-12",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Decision Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-13",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Planning Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-14",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Dependency Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-15",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Orchestration Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-16",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Realization Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-17",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Observation Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-18",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Validation Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-19",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Verification Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-20",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Certification Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-21",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Evolution Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-22",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Integration Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-23",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Environment Universe"
+  },
+  {
+   "atom_id": "UAKP-UNIV/UV-24",
+   "source": "UAKP",
+   "section": "UAKP-UNIV",
+   "label": "Self-Evolution Universe"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-01",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Storage Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-02",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Knowledge Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-03",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Repository Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-04",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Identity Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-05",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Governance Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-06",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Configuration Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-07",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Runtime Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-08",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Communication Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-09",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Observation Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-10",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Execution Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-11",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Security Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-12",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Policy Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-13",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Integration Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-14",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Discovery Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-15",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Context Adapter"
+  },
+  {
+   "atom_id": "UAKP-ADPT/AD-16",
+   "source": "UAKP",
+   "section": "UAKP-ADPT",
+   "label": "Evolution Adapter"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-01",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Ontology Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-02",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Knowledge Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-03",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Identity Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-04",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Context Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-05",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Evidence Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-06",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Truth Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-07",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Requirement Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-08",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Decision Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-09",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Planning Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-10",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Capability Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-11",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Dependency Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-12",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Artifact Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-13",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Relationship Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-14",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Implementation Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-15",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Realization Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-16",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Execution Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-17",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Validation Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-18",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Verification Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-19",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Certification Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-20",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Governance Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-21",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Memory Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-22",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Evolution Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-23",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Environment Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-24",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Adapter Registry"
+  },
+  {
+   "atom_id": "UAKP-REG/RG-25",
+   "source": "UAKP",
+   "section": "UAKP-REG",
+   "label": "Integration Registry"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-01",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Working Memory"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-02",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Operational Memory"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-03",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Execution Memory"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-04",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Decision Memory"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-05",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Institutional Memory"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-06",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Knowledge Memory"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-07",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Evidence Memory"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-08",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Learning Memory"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-09",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Failure Memory"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-10",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Optimization Memory"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-11",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Evolution Memory"
+  },
+  {
+   "atom_id": "UAKP-MEM/MM-12",
+   "source": "UAKP",
+   "section": "UAKP-MEM",
+   "label": "Historical Memory"
+  },
+  {
+   "atom_id": "UAKP-TRUTH/TR-01",
+   "source": "UAKP",
+   "section": "UAKP-TRUTH",
+   "label": "Observation to Claim"
+  },
+  {
+   "atom_id": "UAKP-TRUTH/TR-02",
+   "source": "UAKP",
+   "section": "UAKP-TRUTH",
+   "label": "Claim to Evidence"
+  },
+  {
+   "atom_id": "UAKP-TRUTH/TR-03",
+   "source": "UAKP",
+   "section": "UAKP-TRUTH",
+   "label": "Confidence Assessment"
+  },
+  {
+   "atom_id": "UAKP-TRUTH/TR-04",
+   "source": "UAKP",
+   "section": "UAKP-TRUTH",
+   "label": "Reasoning"
+  },
+  {
+   "atom_id": "UAKP-TRUTH/TR-05",
+   "source": "UAKP",
+   "section": "UAKP-TRUTH",
+   "label": "Truth Determination"
+  },
+  {
+   "atom_id": "UAKP-TRUTH/TR-06",
+   "source": "UAKP",
+   "section": "UAKP-TRUTH",
+   "label": "Canonical Knowledge State"
+  },
+  {
+   "atom_id": "UAKP-TRUTH/TR-07",
+   "source": "UAKP",
+   "section": "UAKP-TRUTH",
+   "label": "Truth revisable on new evidence"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-01",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Knowledge Acquisition Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-02",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Knowledge Assimilation Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-03",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Knowledge Refinement Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-04",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Knowledge Classification Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-05",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Context Resolution Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-06",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Repository Discovery Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-07",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Environment Discovery Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-08",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Evidence Discovery Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-09",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Truth Discovery Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-10",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Canonical Authority Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-11",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Duplicate Detection Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-12",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Conflict Detection Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-13",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Gap Discovery Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-14",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Requirement Discovery Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-15",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Dependency Discovery Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-16",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Reasoning Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-17",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Decision Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-18",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Planning Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-19",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Execution Specification Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-20",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Realization Package Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-21",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Orchestration Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-22",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Realization Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-23",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Observation Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-24",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Validation Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-25",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Verification Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-26",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Certification Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-27",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Knowledge Extraction Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-28",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Learning Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-29",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Capability Elevation Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-30",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Evolution Engine"
+  },
+  {
+   "atom_id": "UAKP-ENG/EN-31",
+   "source": "UAKP",
+   "section": "UAKP-ENG",
+   "label": "Universal Self-Evolution Engine"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-01",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Unknown"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-02",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Discovered"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-03",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Observed"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-04",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Assimilated"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-05",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Refined"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-06",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Classified"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-07",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Contextualized"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-08",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Governed"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-09",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Reasoned"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-10",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Planned"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-11",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Realized"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-12",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Validated"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-13",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Verified"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-14",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Certified"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-15",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Learned"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-16",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Elevated"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-17",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Historical"
+  },
+  {
+   "atom_id": "UAKP-STATE/SS-18",
+   "source": "UAKP",
+   "section": "UAKP-STATE",
+   "label": "Archived"
+  },
+  {
+   "atom_id": "UAKP-SELFEV/SE-01",
+   "source": "UAKP",
+   "section": "UAKP-SELFEV",
+   "label": "Self Observation"
+  },
+  {
+   "atom_id": "UAKP-SELFEV/SE-02",
+   "source": "UAKP",
+   "section": "UAKP-SELFEV",
+   "label": "Self Analysis"
+  },
+  {
+   "atom_id": "UAKP-SELFEV/SE-03",
+   "source": "UAKP",
+   "section": "UAKP-SELFEV",
+   "label": "Self Validation"
+  },
+  {
+   "atom_id": "UAKP-SELFEV/SE-04",
+   "source": "UAKP",
+   "section": "UAKP-SELFEV",
+   "label": "Self Verification"
+  },
+  {
+   "atom_id": "UAKP-SELFEV/SE-05",
+   "source": "UAKP",
+   "section": "UAKP-SELFEV",
+   "label": "Self Certification"
+  },
+  {
+   "atom_id": "UAKP-SELFEV/SE-06",
+   "source": "UAKP",
+   "section": "UAKP-SELFEV",
+   "label": "Self Planning"
+  },
+  {
+   "atom_id": "UAKP-SELFEV/SE-07",
+   "source": "UAKP",
+   "section": "UAKP-SELFEV",
+   "label": "Self Evolution"
+  },
+  {
+   "atom_id": "UAKP-SELFEV/SE-08",
+   "source": "UAKP",
+   "section": "UAKP-SELFEV",
+   "label": "Self Learning"
+  },
+  {
+   "atom_id": "UAKP-SELFEV/SE-09",
+   "source": "UAKP",
+   "section": "UAKP-SELFEV",
+   "label": "Self Governance"
+  },
+  {
+   "atom_id": "UAKP-MAT/MT-00",
+   "source": "UAKP",
+   "section": "UAKP-MAT",
+   "label": "Stage 0 Research"
+  },
+  {
+   "atom_id": "UAKP-MAT/MT-01",
+   "source": "UAKP",
+   "section": "UAKP-MAT",
+   "label": "Stage 1 Concept"
+  },
+  {
+   "atom_id": "UAKP-MAT/MT-02",
+   "source": "UAKP",
+   "section": "UAKP-MAT",
+   "label": "Stage 2 Prototype"
+  },
+  {
+   "atom_id": "UAKP-MAT/MT-03",
+   "source": "UAKP",
+   "section": "UAKP-MAT",
+   "label": "Stage 3 Alpha"
+  },
+  {
+   "atom_id": "UAKP-MAT/MT-04",
+   "source": "UAKP",
+   "section": "UAKP-MAT",
+   "label": "Stage 4 Beta"
+  },
+  {
+   "atom_id": "UAKP-MAT/MT-05",
+   "source": "UAKP",
+   "section": "UAKP-MAT",
+   "label": "Stage 5 Production Ready"
+  },
+  {
+   "atom_id": "UAKP-MAT/MT-06",
+   "source": "UAKP",
+   "section": "UAKP-MAT",
+   "label": "Stage 6 Validated Baseline"
+  },
+  {
+   "atom_id": "UAKP-MAT/MT-07",
+   "source": "UAKP",
+   "section": "UAKP-MAT",
+   "label": "Stage 7 Verified Baseline"
+  },
+  {
+   "atom_id": "UAKP-MAT/MT-08",
+   "source": "UAKP",
+   "section": "UAKP-MAT",
+   "label": "Stage 8 Certified Baseline"
+  },
+  {
+   "atom_id": "UAKP-MAT/MT-09",
+   "source": "UAKP",
+   "section": "UAKP-MAT",
+   "label": "Stage 9 Production Ecosystem"
+  },
+  {
+   "atom_id": "UAKP-MAT/MT-10",
+   "source": "UAKP",
+   "section": "UAKP-MAT",
+   "label": "Stage 10 Constitutionally Stable Platform"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-01",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Universal Identity attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-02",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Type attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-03",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Metadata attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-04",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Lifecycle State attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-05",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Relationships attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-06",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Authority attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-07",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Provenance attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-08",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Evidence attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-09",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Confidence attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-10",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Governance attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-11",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Version attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-12",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "History attribute"
+  },
+  {
+   "atom_id": "UAKP-OBJ/OJ-13",
+   "source": "UAKP",
+   "section": "UAKP-OBJ",
+   "label": "Evolution History attribute"
+  },
+  {
+   "atom_id": "UAKP-IND/ID-01",
+   "source": "UAKP",
+   "section": "UAKP-IND",
+   "label": "Platform independent of UCOS"
+  },
+  {
+   "atom_id": "UAKP-IND/ID-02",
+   "source": "UAKP",
+   "section": "UAKP-IND",
+   "label": "No project-specific assumptions"
+  },
+  {
+   "atom_id": "UAKP-IND/ID-03",
+   "source": "UAKP",
+   "section": "UAKP-IND",
+   "label": "No technology-specific assumptions"
+  },
+  {
+   "atom_id": "UAKP-IND/ID-04",
+   "source": "UAKP",
+   "section": "UAKP-IND",
+   "label": "No repository-specific assumptions"
+  },
+  {
+   "atom_id": "UAKP-IND/ID-05",
+   "source": "UAKP",
+   "section": "UAKP-IND",
+   "label": "No programming-language assumptions"
+  },
+  {
+   "atom_id": "UAKP-IND/ID-06",
+   "source": "UAKP",
+   "section": "UAKP-IND",
+   "label": "No AI-model assumptions"
+  },
+  {
+   "atom_id": "UAKP-IND/ID-07",
+   "source": "UAKP",
+   "section": "UAKP-IND",
+   "label": "No storage assumptions"
+  },
+  {
+   "atom_id": "UAKP-IND/ID-08",
+   "source": "UAKP",
+   "section": "UAKP-IND",
+   "label": "No infrastructure assumptions"
+  },
+  {
+   "atom_id": "UAKP-IND/ID-09",
+   "source": "UAKP",
+   "section": "UAKP-IND",
+   "label": "No execution assumptions"
+  },
+  {
+   "atom_id": "MI-016/SH-01",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Founders"
+  },
+  {
+   "atom_id": "MI-016/SH-02",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Board"
+  },
+  {
+   "atom_id": "MI-016/SH-03",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Executives"
+  },
+  {
+   "atom_id": "MI-016/SH-04",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Enterprise Architects"
+  },
+  {
+   "atom_id": "MI-016/SH-05",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Solution Architects"
+  },
+  {
+   "atom_id": "MI-016/SH-06",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Developers"
+  },
+  {
+   "atom_id": "MI-016/SH-07",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "QA Engineers"
+  },
+  {
+   "atom_id": "MI-016/SH-08",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Platform Engineers"
+  },
+  {
+   "atom_id": "MI-016/SH-09",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "DevOps"
+  },
+  {
+   "atom_id": "MI-016/SH-10",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "SRE"
+  },
+  {
+   "atom_id": "MI-016/SH-11",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Security Teams"
+  },
+  {
+   "atom_id": "MI-016/SH-12",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Compliance Teams"
+  },
+  {
+   "atom_id": "MI-016/SH-13",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Product Teams"
+  },
+  {
+   "atom_id": "MI-016/SH-14",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Researchers"
+  },
+  {
+   "atom_id": "MI-016/SH-15",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Scientists"
+  },
+  {
+   "atom_id": "MI-016/SH-16",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Governments"
+  },
+  {
+   "atom_id": "MI-016/SH-17",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Universities"
+  },
+  {
+   "atom_id": "MI-016/SH-18",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Enterprises"
+  },
+  {
+   "atom_id": "MI-016/SH-19",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Startups"
+  },
+  {
+   "atom_id": "MI-016/SH-20",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Partners"
+  },
+  {
+   "atom_id": "MI-016/SH-21",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Customers"
+  },
+  {
+   "atom_id": "MI-016/SH-22",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Regulators"
+  },
+  {
+   "atom_id": "MI-016/SH-23",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "AI Agents"
+  },
+  {
+   "atom_id": "MI-016/SH-24",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Autonomous Systems"
+  },
+  {
+   "atom_id": "MI-016/SH-25",
+   "source": "MI",
+   "section": "MI-016",
+   "label": "Future Civilizations"
+  },
+  {
+   "atom_id": "MI-017/TD-01",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Commerce"
+  },
+  {
+   "atom_id": "MI-017/TD-02",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "ERP"
+  },
+  {
+   "atom_id": "MI-017/TD-03",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "CRM"
+  },
+  {
+   "atom_id": "MI-017/TD-04",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "SCM"
+  },
+  {
+   "atom_id": "MI-017/TD-05",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Manufacturing"
+  },
+  {
+   "atom_id": "MI-017/TD-06",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Finance"
+  },
+  {
+   "atom_id": "MI-017/TD-07",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Banking"
+  },
+  {
+   "atom_id": "MI-017/TD-08",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Insurance"
+  },
+  {
+   "atom_id": "MI-017/TD-09",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Healthcare"
+  },
+  {
+   "atom_id": "MI-017/TD-10",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Education"
+  },
+  {
+   "atom_id": "MI-017/TD-11",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Government"
+  },
+  {
+   "atom_id": "MI-017/TD-12",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Defense"
+  },
+  {
+   "atom_id": "MI-017/TD-13",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Energy"
+  },
+  {
+   "atom_id": "MI-017/TD-14",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Agriculture"
+  },
+  {
+   "atom_id": "MI-017/TD-15",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Transportation"
+  },
+  {
+   "atom_id": "MI-017/TD-16",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Logistics"
+  },
+  {
+   "atom_id": "MI-017/TD-17",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "IoT"
+  },
+  {
+   "atom_id": "MI-017/TD-18",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Robotics"
+  },
+  {
+   "atom_id": "MI-017/TD-19",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "AI"
+  },
+  {
+   "atom_id": "MI-017/TD-20",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Scientific Computing"
+  },
+  {
+   "atom_id": "MI-017/TD-21",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Knowledge Systems"
+  },
+  {
+   "atom_id": "MI-017/TD-22",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Digital Twins"
+  },
+  {
+   "atom_id": "MI-017/TD-23",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Smart Cities"
+  },
+  {
+   "atom_id": "MI-017/TD-24",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Space Systems"
+  },
+  {
+   "atom_id": "MI-017/TD-25",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Planetary Infrastructure"
+  },
+  {
+   "atom_id": "MI-017/TD-26",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Multi Planet Operations"
+  },
+  {
+   "atom_id": "MI-017/TD-27",
+   "source": "MI",
+   "section": "MI-017",
+   "label": "Future Unknown Domains"
+  },
+  {
+   "atom_id": "MI-018/ES-01",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Repository Truth"
+  },
+  {
+   "atom_id": "MI-018/ES-02",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Knowledge"
+  },
+  {
+   "atom_id": "MI-018/ES-03",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Understanding"
+  },
+  {
+   "atom_id": "MI-018/ES-04",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Planning"
+  },
+  {
+   "atom_id": "MI-018/ES-05",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Design"
+  },
+  {
+   "atom_id": "MI-018/ES-06",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Generation"
+  },
+  {
+   "atom_id": "MI-018/ES-07",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Implementation"
+  },
+  {
+   "atom_id": "MI-018/ES-08",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "MI-018/ES-09",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Verification"
+  },
+  {
+   "atom_id": "MI-018/ES-10",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "MI-018/ES-11",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Deployment"
+  },
+  {
+   "atom_id": "MI-018/ES-12",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Runtime"
+  },
+  {
+   "atom_id": "MI-018/ES-13",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Monitoring"
+  },
+  {
+   "atom_id": "MI-018/ES-14",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Learning"
+  },
+  {
+   "atom_id": "MI-018/ES-15",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Knowledge Extraction"
+  },
+  {
+   "atom_id": "MI-018/ES-16",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Capability Elevation"
+  },
+  {
+   "atom_id": "MI-018/ES-17",
+   "source": "MI",
+   "section": "MI-018",
+   "label": "Evolution"
+  },
+  {
+   "atom_id": "QM-WHY/WY-01",
+   "source": "QM",
+   "section": "QM-WHY",
+   "label": "Why does anything exist"
+  },
+  {
+   "atom_id": "QM-WHY/WY-02",
+   "source": "QM",
+   "section": "QM-WHY",
+   "label": "Why should it exist"
+  },
+  {
+   "atom_id": "QM-WHY/WY-03",
+   "source": "QM",
+   "section": "QM-WHY",
+   "label": "Why should it evolve"
+  },
+  {
+   "atom_id": "QM-WHY/WY-04",
+   "source": "QM",
+   "section": "QM-WHY",
+   "label": "Why should it continue"
+  },
+  {
+   "atom_id": "QM-WHAT/WT-01",
+   "source": "QM",
+   "section": "QM-WHAT",
+   "label": "What exists"
+  },
+  {
+   "atom_id": "QM-WHAT/WT-02",
+   "source": "QM",
+   "section": "QM-WHAT",
+   "label": "What can exist"
+  },
+  {
+   "atom_id": "QM-WHAT/WT-03",
+   "source": "QM",
+   "section": "QM-WHAT",
+   "label": "What cannot exist"
+  },
+  {
+   "atom_id": "QM-WHAT/WT-04",
+   "source": "QM",
+   "section": "QM-WHAT",
+   "label": "What may exist"
+  },
+  {
+   "atom_id": "QM-WHAT/WT-05",
+   "source": "QM",
+   "section": "QM-WHAT",
+   "label": "What must exist"
+  },
+  {
+   "atom_id": "QM-WHAT/WT-06",
+   "source": "QM",
+   "section": "QM-WHAT",
+   "label": "What should exist"
+  },
+  {
+   "atom_id": "QM-WHAT/WT-07",
+   "source": "QM",
+   "section": "QM-WHAT",
+   "label": "What will exist"
+  },
+  {
+   "atom_id": "QM-WHAT/WT-08",
+   "source": "QM",
+   "section": "QM-WHAT",
+   "label": "What no longer exists"
+  },
+  {
+   "atom_id": "QM-WHAT/WT-09",
+   "source": "QM",
+   "section": "QM-WHAT",
+   "label": "What is unknown"
+  },
+  {
+   "atom_id": "QM-WHO/WO-01",
+   "source": "QM",
+   "section": "QM-WHO",
+   "label": "Who created"
+  },
+  {
+   "atom_id": "QM-WHO/WO-02",
+   "source": "QM",
+   "section": "QM-WHO",
+   "label": "Who owns"
+  },
+  {
+   "atom_id": "QM-WHO/WO-03",
+   "source": "QM",
+   "section": "QM-WHO",
+   "label": "Who governs"
+  },
+  {
+   "atom_id": "QM-WHO/WO-04",
+   "source": "QM",
+   "section": "QM-WHO",
+   "label": "Who observes"
+  },
+  {
+   "atom_id": "QM-WHO/WO-05",
+   "source": "QM",
+   "section": "QM-WHO",
+   "label": "Who decides"
+  },
+  {
+   "atom_id": "QM-WHO/WO-06",
+   "source": "QM",
+   "section": "QM-WHO",
+   "label": "Who executes"
+  },
+  {
+   "atom_id": "QM-WHO/WO-07",
+   "source": "QM",
+   "section": "QM-WHO",
+   "label": "Who certifies"
+  },
+  {
+   "atom_id": "QM-WHO/WO-08",
+   "source": "QM",
+   "section": "QM-WHO",
+   "label": "Who evolves"
+  },
+  {
+   "atom_id": "QM-WHO/WO-09",
+   "source": "QM",
+   "section": "QM-WHO",
+   "label": "Who consumes"
+  },
+  {
+   "atom_id": "QM-WHO/WO-10",
+   "source": "QM",
+   "section": "QM-WHO",
+   "label": "Who benefits"
+  },
+  {
+   "atom_id": "QM-WHERE/WR-01",
+   "source": "QM",
+   "section": "QM-WHERE",
+   "label": "Where does it exist"
+  },
+  {
+   "atom_id": "QM-WHERE/WR-02",
+   "source": "QM",
+   "section": "QM-WHERE",
+   "label": "Where is it valid"
+  },
+  {
+   "atom_id": "QM-WHERE/WR-03",
+   "source": "QM",
+   "section": "QM-WHERE",
+   "label": "Where is it executed"
+  },
+  {
+   "atom_id": "QM-WHERE/WR-04",
+   "source": "QM",
+   "section": "QM-WHERE",
+   "label": "Where is it observed"
+  },
+  {
+   "atom_id": "QM-WHERE/WR-05",
+   "source": "QM",
+   "section": "QM-WHERE",
+   "label": "Where is it stored"
+  },
+  {
+   "atom_id": "QM-WHERE/WR-06",
+   "source": "QM",
+   "section": "QM-WHERE",
+   "label": "Where is it deployed"
+  },
+  {
+   "atom_id": "QM-WHERE/WR-07",
+   "source": "QM",
+   "section": "QM-WHERE",
+   "label": "Where is it governed"
+  },
+  {
+   "atom_id": "QM-WHERE/WR-08",
+   "source": "QM",
+   "section": "QM-WHERE",
+   "label": "Where can it evolve"
+  },
+  {
+   "atom_id": "QM-WHERE/WR-09",
+   "source": "QM",
+   "section": "QM-WHERE",
+   "label": "Where can it replicate"
+  },
+  {
+   "atom_id": "QM-WHERE/WR-10",
+   "source": "QM",
+   "section": "QM-WHERE",
+   "label": "Where can it project"
+  },
+  {
+   "atom_id": "QM-WHEN/WN-01",
+   "source": "QM",
+   "section": "QM-WHEN",
+   "label": "When was it created"
+  },
+  {
+   "atom_id": "QM-WHEN/WN-02",
+   "source": "QM",
+   "section": "QM-WHEN",
+   "label": "When is it valid"
+  },
+  {
+   "atom_id": "QM-WHEN/WN-03",
+   "source": "QM",
+   "section": "QM-WHEN",
+   "label": "When does it execute"
+  },
+  {
+   "atom_id": "QM-WHEN/WN-04",
+   "source": "QM",
+   "section": "QM-WHEN",
+   "label": "When does it change"
+  },
+  {
+   "atom_id": "QM-WHEN/WN-05",
+   "source": "QM",
+   "section": "QM-WHEN",
+   "label": "When does it expire"
+  },
+  {
+   "atom_id": "QM-WHEN/WN-06",
+   "source": "QM",
+   "section": "QM-WHEN",
+   "label": "When does it evolve"
+  },
+  {
+   "atom_id": "QM-WHEN/WN-07",
+   "source": "QM",
+   "section": "QM-WHEN",
+   "label": "When is it certified"
+  },
+  {
+   "atom_id": "QM-WHEN/WN-08",
+   "source": "QM",
+   "section": "QM-WHEN",
+   "label": "When is it observed"
+  },
+  {
+   "atom_id": "QM-WHEN/WN-09",
+   "source": "QM",
+   "section": "QM-WHEN",
+   "label": "When is it replayed"
+  },
+  {
+   "atom_id": "QM-WHEN/WN-10",
+   "source": "QM",
+   "section": "QM-WHEN",
+   "label": "When is the next evolution"
+  },
+  {
+   "atom_id": "QM-HOW/HW-01",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it discovered"
+  },
+  {
+   "atom_id": "QM-HOW/HW-02",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it understood"
+  },
+  {
+   "atom_id": "QM-HOW/HW-03",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it related"
+  },
+  {
+   "atom_id": "QM-HOW/HW-04",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it configured"
+  },
+  {
+   "atom_id": "QM-HOW/HW-05",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it composed"
+  },
+  {
+   "atom_id": "QM-HOW/HW-06",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it generated"
+  },
+  {
+   "atom_id": "QM-HOW/HW-07",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it implemented"
+  },
+  {
+   "atom_id": "QM-HOW/HW-08",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it validated"
+  },
+  {
+   "atom_id": "QM-HOW/HW-09",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it verified"
+  },
+  {
+   "atom_id": "QM-HOW/HW-10",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it certified"
+  },
+  {
+   "atom_id": "QM-HOW/HW-11",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it deployed"
+  },
+  {
+   "atom_id": "QM-HOW/HW-12",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it operated"
+  },
+  {
+   "atom_id": "QM-HOW/HW-13",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it monitored"
+  },
+  {
+   "atom_id": "QM-HOW/HW-14",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it improved"
+  },
+  {
+   "atom_id": "QM-HOW/HW-15",
+   "source": "QM",
+   "section": "QM-HOW",
+   "label": "How is it evolved"
+  },
+  {
+   "atom_id": "QM-WHICH/WH-01",
+   "source": "QM",
+   "section": "QM-WHICH",
+   "label": "Which version"
+  },
+  {
+   "atom_id": "QM-WHICH/WH-02",
+   "source": "QM",
+   "section": "QM-WHICH",
+   "label": "Which variant"
+  },
+  {
+   "atom_id": "QM-WHICH/WH-03",
+   "source": "QM",
+   "section": "QM-WHICH",
+   "label": "Which context"
+  },
+  {
+   "atom_id": "QM-WHICH/WH-04",
+   "source": "QM",
+   "section": "QM-WHICH",
+   "label": "Which configuration"
+  },
+  {
+   "atom_id": "QM-WHICH/WH-05",
+   "source": "QM",
+   "section": "QM-WHICH",
+   "label": "Which capability"
+  },
+  {
+   "atom_id": "QM-WHICH/WH-06",
+   "source": "QM",
+   "section": "QM-WHICH",
+   "label": "Which dependency"
+  },
+  {
+   "atom_id": "QM-WHICH/WH-07",
+   "source": "QM",
+   "section": "QM-WHICH",
+   "label": "Which constraint"
+  },
+  {
+   "atom_id": "QM-WHICH/WH-08",
+   "source": "QM",
+   "section": "QM-WHICH",
+   "label": "Which rule"
+  },
+  {
+   "atom_id": "QM-WHICH/WH-09",
+   "source": "QM",
+   "section": "QM-WHICH",
+   "label": "Which policy"
+  },
+  {
+   "atom_id": "QM-WHICH/WH-10",
+   "source": "QM",
+   "section": "QM-WHICH",
+   "label": "Which evolution"
+  },
+  {
+   "atom_id": "QM-CAN/CN-01",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can discover"
+  },
+  {
+   "atom_id": "QM-CAN/CN-02",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can reuse"
+  },
+  {
+   "atom_id": "QM-CAN/CN-03",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can derive"
+  },
+  {
+   "atom_id": "QM-CAN/CN-04",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can configure"
+  },
+  {
+   "atom_id": "QM-CAN/CN-05",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can compose"
+  },
+  {
+   "atom_id": "QM-CAN/CN-06",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can generate"
+  },
+  {
+   "atom_id": "QM-CAN/CN-07",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can implement"
+  },
+  {
+   "atom_id": "QM-CAN/CN-08",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can validate"
+  },
+  {
+   "atom_id": "QM-CAN/CN-09",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can verify"
+  },
+  {
+   "atom_id": "QM-CAN/CN-10",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can certify"
+  },
+  {
+   "atom_id": "QM-CAN/CN-11",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can commercialize"
+  },
+  {
+   "atom_id": "QM-CAN/CN-12",
+   "source": "QM",
+   "section": "QM-CAN",
+   "label": "Can evolve"
+  },
+  {
+   "atom_id": "QM-CONST/CO-01",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Identity"
+  },
+  {
+   "atom_id": "QM-CONST/CO-02",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Meaning"
+  },
+  {
+   "atom_id": "QM-CONST/CO-03",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Purpose"
+  },
+  {
+   "atom_id": "QM-CONST/CO-04",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Context"
+  },
+  {
+   "atom_id": "QM-CONST/CO-05",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Relationships"
+  },
+  {
+   "atom_id": "QM-CONST/CO-06",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Constraints"
+  },
+  {
+   "atom_id": "QM-CONST/CO-07",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Rules"
+  },
+  {
+   "atom_id": "QM-CONST/CO-08",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Laws"
+  },
+  {
+   "atom_id": "QM-CONST/CO-09",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Capabilities"
+  },
+  {
+   "atom_id": "QM-CONST/CO-10",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Behaviors"
+  },
+  {
+   "atom_id": "QM-CONST/CO-11",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "States"
+  },
+  {
+   "atom_id": "QM-CONST/CO-12",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Events"
+  },
+  {
+   "atom_id": "QM-CONST/CO-13",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Measurements"
+  },
+  {
+   "atom_id": "QM-CONST/CO-14",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Evidence"
+  },
+  {
+   "atom_id": "QM-CONST/CO-15",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Knowledge"
+  },
+  {
+   "atom_id": "QM-CONST/CO-16",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Information"
+  },
+  {
+   "atom_id": "QM-CONST/CO-17",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Intelligence"
+  },
+  {
+   "atom_id": "QM-CONST/CO-18",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Governance"
+  },
+  {
+   "atom_id": "QM-CONST/CO-19",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Security"
+  },
+  {
+   "atom_id": "QM-CONST/CO-20",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Privacy"
+  },
+  {
+   "atom_id": "QM-CONST/CO-21",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Economics"
+  },
+  {
+   "atom_id": "QM-CONST/CO-22",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Commercialization"
+  },
+  {
+   "atom_id": "QM-CONST/CO-23",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Runtime"
+  },
+  {
+   "atom_id": "QM-CONST/CO-24",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Evolution"
+  },
+  {
+   "atom_id": "QM-CONST/CO-25",
+   "source": "QM",
+   "section": "QM-CONST",
+   "label": "Projection"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-01",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Potential"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-02",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Observation"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-03",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Discovery"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-04",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Recognition"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-05",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Classification"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-06",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Identity Resolution"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-07",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Context Resolution"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-08",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Relationship Resolution"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-09",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Constraint Resolution"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-10",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Knowledge Assimilation"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-11",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Repository Truth"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-12",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Planning"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-13",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Composition"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-14",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Configuration"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-15",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Generation"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-16",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Implementation"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-17",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-18",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Verification"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-19",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-20",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Registration"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-21",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Deployment"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-22",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Runtime"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-23",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Monitoring"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-24",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Measurement"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-25",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Learning"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-26",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Knowledge Extraction"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-27",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Capability Elevation"
+  },
+  {
+   "atom_id": "QM-FLOW/FL-28",
+   "source": "QM",
+   "section": "QM-FLOW",
+   "label": "Evolution Registration"
+  },
+  {
+   "atom_id": "QM-OUT/OU-01",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Everything"
+  },
+  {
+   "atom_id": "QM-OUT/OU-02",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Knowledge"
+  },
+  {
+   "atom_id": "QM-OUT/OU-03",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Documentation"
+  },
+  {
+   "atom_id": "QM-OUT/OU-04",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Architecture"
+  },
+  {
+   "atom_id": "QM-OUT/OU-05",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Models"
+  },
+  {
+   "atom_id": "QM-OUT/OU-06",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Policies"
+  },
+  {
+   "atom_id": "QM-OUT/OU-07",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Registries"
+  },
+  {
+   "atom_id": "QM-OUT/OU-08",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Ontologies"
+  },
+  {
+   "atom_id": "QM-OUT/OU-09",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Taxonomies"
+  },
+  {
+   "atom_id": "QM-OUT/OU-10",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Schemas"
+  },
+  {
+   "atom_id": "QM-OUT/OU-11",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Data"
+  },
+  {
+   "atom_id": "QM-OUT/OU-12",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Source Code"
+  },
+  {
+   "atom_id": "QM-OUT/OU-13",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Tests"
+  },
+  {
+   "atom_id": "QM-OUT/OU-14",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Evidence"
+  },
+  {
+   "atom_id": "QM-OUT/OU-15",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "APIs"
+  },
+  {
+   "atom_id": "QM-OUT/OU-16",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "SDKs"
+  },
+  {
+   "atom_id": "QM-OUT/OU-17",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Services"
+  },
+  {
+   "atom_id": "QM-OUT/OU-18",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Applications"
+  },
+  {
+   "atom_id": "QM-OUT/OU-19",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Platforms"
+  },
+  {
+   "atom_id": "QM-OUT/OU-20",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Infrastructure"
+  },
+  {
+   "atom_id": "QM-OUT/OU-21",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Runtime"
+  },
+  {
+   "atom_id": "QM-OUT/OU-22",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Dashboards"
+  },
+  {
+   "atom_id": "QM-OUT/OU-23",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Reports"
+  },
+  {
+   "atom_id": "QM-OUT/OU-24",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Organizations"
+  },
+  {
+   "atom_id": "QM-OUT/OU-25",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Commerce"
+  },
+  {
+   "atom_id": "QM-OUT/OU-26",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Robots"
+  },
+  {
+   "atom_id": "QM-OUT/OU-27",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Digital Twins"
+  },
+  {
+   "atom_id": "QM-OUT/OU-28",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "AI"
+  },
+  {
+   "atom_id": "QM-OUT/OU-29",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Future Systems"
+  },
+  {
+   "atom_id": "QM-OUT/OU-30",
+   "source": "QM",
+   "section": "QM-OUT",
+   "label": "Unknown Future Projections"
+  },
+  {
+   "atom_id": "LYR-STACK/LS-01",
+   "source": "LYR",
+   "section": "LYR-STACK",
+   "label": "Universal Constitutional Kernel"
+  },
+  {
+   "atom_id": "LYR-STACK/LS-02",
+   "source": "LYR",
+   "section": "LYR-STACK",
+   "label": "Universal Existence and Context Engine"
+  },
+  {
+   "atom_id": "LYR-STACK/LS-03",
+   "source": "LYR",
+   "section": "LYR-STACK",
+   "label": "Universal Knowledge Universe"
+  },
+  {
+   "atom_id": "LYR-STACK/LS-04",
+   "source": "LYR",
+   "section": "LYR-STACK",
+   "label": "Universal Capability Composer"
+  },
+  {
+   "atom_id": "LYR-STACK/LS-05",
+   "source": "LYR",
+   "section": "LYR-STACK",
+   "label": "Universal Evolution Engine"
+  },
+  {
+   "atom_id": "LYR-STACK/LS-06",
+   "source": "LYR",
+   "section": "LYR-STACK",
+   "label": "Generated Reality Applications"
+  },
+  {
+   "atom_id": "LYR-NEG/LN-01",
+   "source": "LYR",
+   "section": "LYR-NEG",
+   "label": "No fixed domains"
+  },
+  {
+   "atom_id": "LYR-NEG/LN-02",
+   "source": "LYR",
+   "section": "LYR-NEG",
+   "label": "No fixed entities"
+  },
+  {
+   "atom_id": "LYR-NEG/LN-03",
+   "source": "LYR",
+   "section": "LYR-NEG",
+   "label": "No fixed layers"
+  },
+  {
+   "atom_id": "LYR-NEG/LN-04",
+   "source": "LYR",
+   "section": "LYR-NEG",
+   "label": "No fixed planets"
+  },
+  {
+   "atom_id": "LYR-NEG/LN-05",
+   "source": "LYR",
+   "section": "LYR-NEG",
+   "label": "No fixed industries"
+  },
+  {
+   "atom_id": "LYR-NEG/LN-06",
+   "source": "LYR",
+   "section": "LYR-NEG",
+   "label": "No fixed artifact types"
+  },
+  {
+   "atom_id": "LYR-NEG/LN-07",
+   "source": "LYR",
+   "section": "LYR-NEG",
+   "label": "No fixed business models"
+  },
+  {
+   "atom_id": "LYR-NEG/LN-08",
+   "source": "LYR",
+   "section": "LYR-NEG",
+   "label": "No fixed technical stacks"
+  },
+  {
+   "atom_id": "LYR-L0/K-01",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Constitution"
+  },
+  {
+   "atom_id": "LYR-L0/K-02",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Identity"
+  },
+  {
+   "atom_id": "LYR-L0/K-03",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Existence"
+  },
+  {
+   "atom_id": "LYR-L0/K-04",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Relationship"
+  },
+  {
+   "atom_id": "LYR-L0/K-05",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Capability"
+  },
+  {
+   "atom_id": "LYR-L0/K-06",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Knowledge"
+  },
+  {
+   "atom_id": "LYR-L0/K-07",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Truth"
+  },
+  {
+   "atom_id": "LYR-L0/K-08",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Ownership"
+  },
+  {
+   "atom_id": "LYR-L0/K-09",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Authority"
+  },
+  {
+   "atom_id": "LYR-L0/K-10",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Constraint"
+  },
+  {
+   "atom_id": "LYR-L0/K-11",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Rule"
+  },
+  {
+   "atom_id": "LYR-L0/K-12",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Policy"
+  },
+  {
+   "atom_id": "LYR-L0/K-13",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Lifecycle"
+  },
+  {
+   "atom_id": "LYR-L0/K-14",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Evidence"
+  },
+  {
+   "atom_id": "LYR-L0/K-15",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Measurement"
+  },
+  {
+   "atom_id": "LYR-L0/K-16",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Verification"
+  },
+  {
+   "atom_id": "LYR-L0/K-17",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "LYR-L0/K-18",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "LYR-L0/K-19",
+   "source": "LYR",
+   "section": "LYR-L0",
+   "label": "Evolution"
+  },
+  {
+   "atom_id": "LYR-L0R/KR-01",
+   "source": "LYR",
+   "section": "LYR-L0R",
+   "label": "Define universal rules"
+  },
+  {
+   "atom_id": "LYR-L0R/KR-02",
+   "source": "LYR",
+   "section": "LYR-L0R",
+   "label": "Maintain consistency"
+  },
+  {
+   "atom_id": "LYR-L0R/KR-03",
+   "source": "LYR",
+   "section": "LYR-L0R",
+   "label": "Prevent contradictions"
+  },
+  {
+   "atom_id": "LYR-L0R/KR-04",
+   "source": "LYR",
+   "section": "LYR-L0R",
+   "label": "Govern evolution"
+  },
+  {
+   "atom_id": "LYR-L0R/KR-05",
+   "source": "LYR",
+   "section": "LYR-L0R",
+   "label": "Preserve lineage"
+  },
+  {
+   "atom_id": "LYR-L0R/KR-06",
+   "source": "LYR",
+   "section": "LYR-L0R",
+   "label": "Enable replay"
+  },
+  {
+   "atom_id": "LYR-L1/EX-01",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Existence"
+  },
+  {
+   "atom_id": "LYR-L1/EX-02",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Reality"
+  },
+  {
+   "atom_id": "LYR-L1/EX-03",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Universe"
+  },
+  {
+   "atom_id": "LYR-L1/EX-04",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Galaxy"
+  },
+  {
+   "atom_id": "LYR-L1/EX-05",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Planet"
+  },
+  {
+   "atom_id": "LYR-L1/EX-06",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Environment"
+  },
+  {
+   "atom_id": "LYR-L1/EX-07",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Location"
+  },
+  {
+   "atom_id": "LYR-L1/EX-08",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Entity"
+  },
+  {
+   "atom_id": "LYR-L1/EX-09",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Object"
+  },
+  {
+   "atom_id": "LYR-L1/EX-10",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Event"
+  },
+  {
+   "atom_id": "LYR-L1/EX-11",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Relationship"
+  },
+  {
+   "atom_id": "LYR-L1/EX-12",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "State"
+  },
+  {
+   "atom_id": "LYR-L1/EX-13",
+   "source": "LYR",
+   "section": "LYR-L1",
+   "label": "Unknown Future Construct"
+  },
+  {
+   "atom_id": "LYR-L2/CX-01",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Spatial Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-02",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Temporal Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-03",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Physical Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-04",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Environmental Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-05",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Cultural Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-06",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Linguistic Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-07",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Economic Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-08",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Governance Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-09",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Regulatory Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-10",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Identity Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-11",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Security Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-12",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Knowledge Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-13",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Computational Context"
+  },
+  {
+   "atom_id": "LYR-L2/CX-14",
+   "source": "LYR",
+   "section": "LYR-L2",
+   "label": "Future Context Types"
+  },
+  {
+   "atom_id": "LYR-L3/KU-01",
+   "source": "LYR",
+   "section": "LYR-L3",
+   "label": "Universal Knowledge Universe"
+  },
+  {
+   "atom_id": "LYR-L3/KU-02",
+   "source": "LYR",
+   "section": "LYR-L3",
+   "label": "Knowledge Domain Registry"
+  },
+  {
+   "atom_id": "LYR-L3/KU-03",
+   "source": "LYR",
+   "section": "LYR-L3",
+   "label": "Dynamic Knowledge Nuclei"
+  },
+  {
+   "atom_id": "LYR-L3/KU-04",
+   "source": "LYR",
+   "section": "LYR-L3",
+   "label": "Knowledge Objects"
+  },
+  {
+   "atom_id": "LYR-L3/KU-05",
+   "source": "LYR",
+   "section": "LYR-L3",
+   "label": "Knowledge Relationships"
+  },
+  {
+   "atom_id": "LYR-L3/KU-06",
+   "source": "LYR",
+   "section": "LYR-L3",
+   "label": "Knowledge Evolution"
+  },
+  {
+   "atom_id": "LYR-L4/CA-01",
+   "source": "LYR",
+   "section": "LYR-L4",
+   "label": "Identity Capability"
+  },
+  {
+   "atom_id": "LYR-L4/CA-02",
+   "source": "LYR",
+   "section": "LYR-L4",
+   "label": "Commerce Capability"
+  },
+  {
+   "atom_id": "LYR-L4/CA-03",
+   "source": "LYR",
+   "section": "LYR-L4",
+   "label": "Mobility Capability"
+  },
+  {
+   "atom_id": "LYR-L4/CA-04",
+   "source": "LYR",
+   "section": "LYR-L4",
+   "label": "Finance Capability"
+  },
+  {
+   "atom_id": "LYR-L4/CA-05",
+   "source": "LYR",
+   "section": "LYR-L4",
+   "label": "Communication Capability"
+  },
+  {
+   "atom_id": "LYR-L4/CA-06",
+   "source": "LYR",
+   "section": "LYR-L4",
+   "label": "Knowledge Capability"
+  },
+  {
+   "atom_id": "LYR-L4/CA-07",
+   "source": "LYR",
+   "section": "LYR-L4",
+   "label": "Manufacturing Capability"
+  },
+  {
+   "atom_id": "LYR-L4/CA-08",
+   "source": "LYR",
+   "section": "LYR-L4",
+   "label": "Governance Capability"
+  },
+  {
+   "atom_id": "LYR-L4/CA-09",
+   "source": "LYR",
+   "section": "LYR-L4",
+   "label": "Future Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-01",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Product Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-02",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Catalog Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-03",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Search Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-04",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Listing Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-05",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Cart Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-06",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Pricing Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-07",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Payment Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-08",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Tax Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-09",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Logistics Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-10",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Customer Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-11",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Analytics Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-12",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Billing Capability"
+  },
+  {
+   "atom_id": "LYR-L4C/CC-13",
+   "source": "LYR",
+   "section": "LYR-L4C",
+   "label": "Evolution Capability"
+  },
+  {
+   "atom_id": "LYR-L5/US-01",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Identity"
+  },
+  {
+   "atom_id": "LYR-L5/US-02",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Constitution"
+  },
+  {
+   "atom_id": "LYR-L5/US-03",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Ontology"
+  },
+  {
+   "atom_id": "LYR-L5/US-04",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Taxonomy"
+  },
+  {
+   "atom_id": "LYR-L5/US-05",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Repository Truth"
+  },
+  {
+   "atom_id": "LYR-L5/US-06",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Registry"
+  },
+  {
+   "atom_id": "LYR-L5/US-07",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Generator"
+  },
+  {
+   "atom_id": "LYR-L5/US-08",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Runtime"
+  },
+  {
+   "atom_id": "LYR-L5/US-09",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Contracts"
+  },
+  {
+   "atom_id": "LYR-L5/US-10",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "APIs"
+  },
+  {
+   "atom_id": "LYR-L5/US-11",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Interfaces"
+  },
+  {
+   "atom_id": "LYR-L5/US-12",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Verification"
+  },
+  {
+   "atom_id": "LYR-L5/US-13",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "LYR-L5/US-14",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "LYR-L5/US-15",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Monitoring"
+  },
+  {
+   "atom_id": "LYR-L5/US-16",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Measurement"
+  },
+  {
+   "atom_id": "LYR-L5/US-17",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Governance"
+  },
+  {
+   "atom_id": "LYR-L5/US-18",
+   "source": "LYR",
+   "section": "LYR-L5",
+   "label": "Evolution"
+  },
+  {
+   "atom_id": "LYR-L5N/UN-01",
+   "source": "LYR",
+   "section": "LYR-L5N",
+   "label": "Nucleus"
+  },
+  {
+   "atom_id": "LYR-L5N/UN-02",
+   "source": "LYR",
+   "section": "LYR-L5N",
+   "label": "Domain"
+  },
+  {
+   "atom_id": "LYR-L5N/UN-03",
+   "source": "LYR",
+   "section": "LYR-L5N",
+   "label": "Universe"
+  },
+  {
+   "atom_id": "LYR-L5N/UN-04",
+   "source": "LYR",
+   "section": "LYR-L5N",
+   "label": "Module"
+  },
+  {
+   "atom_id": "LYR-L5N/UN-05",
+   "source": "LYR",
+   "section": "LYR-L5N",
+   "label": "Realm"
+  },
+  {
+   "atom_id": "LYR-L5N/UN-06",
+   "source": "LYR",
+   "section": "LYR-L5N",
+   "label": "Capability Cluster"
+  },
+  {
+   "atom_id": "LYR-L5N/UN-07",
+   "source": "LYR",
+   "section": "LYR-L5N",
+   "label": "Future Name"
+  },
+  {
+   "atom_id": "LYR-L6/AU-01",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Discovery"
+  },
+  {
+   "atom_id": "LYR-L6/AU-02",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Assimilation"
+  },
+  {
+   "atom_id": "LYR-L6/AU-03",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Classification"
+  },
+  {
+   "atom_id": "LYR-L6/AU-04",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Reasoning"
+  },
+  {
+   "atom_id": "LYR-L6/AU-05",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Planning"
+  },
+  {
+   "atom_id": "LYR-L6/AU-06",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Generation"
+  },
+  {
+   "atom_id": "LYR-L6/AU-07",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Composition"
+  },
+  {
+   "atom_id": "LYR-L6/AU-08",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Implementation"
+  },
+  {
+   "atom_id": "LYR-L6/AU-09",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Testing"
+  },
+  {
+   "atom_id": "LYR-L6/AU-10",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Documentation"
+  },
+  {
+   "atom_id": "LYR-L6/AU-11",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Verification"
+  },
+  {
+   "atom_id": "LYR-L6/AU-12",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "LYR-L6/AU-13",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Optimization"
+  },
+  {
+   "atom_id": "LYR-L6/AU-14",
+   "source": "LYR",
+   "section": "LYR-L6",
+   "label": "Evolution"
+  },
+  {
+   "atom_id": "LYR-L7I/GI-01",
+   "source": "LYR",
+   "section": "LYR-L7I",
+   "label": "Constitution"
+  },
+  {
+   "atom_id": "LYR-L7I/GI-02",
+   "source": "LYR",
+   "section": "LYR-L7I",
+   "label": "Knowledge"
+  },
+  {
+   "atom_id": "LYR-L7I/GI-03",
+   "source": "LYR",
+   "section": "LYR-L7I",
+   "label": "Capability"
+  },
+  {
+   "atom_id": "LYR-L7I/GI-04",
+   "source": "LYR",
+   "section": "LYR-L7I",
+   "label": "Rules"
+  },
+  {
+   "atom_id": "LYR-L7I/GI-05",
+   "source": "LYR",
+   "section": "LYR-L7I",
+   "label": "Constraints"
+  },
+  {
+   "atom_id": "LYR-L7I/GI-06",
+   "source": "LYR",
+   "section": "LYR-L7I",
+   "label": "Context"
+  },
+  {
+   "atom_id": "LYR-L7I/GI-07",
+   "source": "LYR",
+   "section": "LYR-L7I",
+   "label": "Relationships"
+  },
+  {
+   "atom_id": "LYR-L7O/GO-01",
+   "source": "LYR",
+   "section": "LYR-L7O",
+   "label": "Runtime"
+  },
+  {
+   "atom_id": "LYR-L7O/GO-02",
+   "source": "LYR",
+   "section": "LYR-L7O",
+   "label": "APIs"
+  },
+  {
+   "atom_id": "LYR-L7O/GO-03",
+   "source": "LYR",
+   "section": "LYR-L7O",
+   "label": "Applications"
+  },
+  {
+   "atom_id": "LYR-L7O/GO-04",
+   "source": "LYR",
+   "section": "LYR-L7O",
+   "label": "Documentation"
+  },
+  {
+   "atom_id": "LYR-L7O/GO-05",
+   "source": "LYR",
+   "section": "LYR-L7O",
+   "label": "Tests"
+  },
+  {
+   "atom_id": "LYR-L7O/GO-06",
+   "source": "LYR",
+   "section": "LYR-L7O",
+   "label": "Governance"
+  },
+  {
+   "atom_id": "LYR-L7O/GO-07",
+   "source": "LYR",
+   "section": "LYR-L7O",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "LYR-L8/RT-01",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Any Application"
+  },
+  {
+   "atom_id": "LYR-L8/RT-02",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Any Domain"
+  },
+  {
+   "atom_id": "LYR-L8/RT-03",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Any Capability"
+  },
+  {
+   "atom_id": "LYR-L8/RT-04",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Any Environment"
+  },
+  {
+   "atom_id": "LYR-L8/RT-05",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Any Infrastructure"
+  },
+  {
+   "atom_id": "LYR-L8/RT-06",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Runtime identity"
+  },
+  {
+   "atom_id": "LYR-L8/RT-07",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Runtime context"
+  },
+  {
+   "atom_id": "LYR-L8/RT-08",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Runtime relationships"
+  },
+  {
+   "atom_id": "LYR-L8/RT-09",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Runtime policies"
+  },
+  {
+   "atom_id": "LYR-L8/RT-10",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Runtime events"
+  },
+  {
+   "atom_id": "LYR-L8/RT-11",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Runtime state"
+  },
+  {
+   "atom_id": "LYR-L8/RT-12",
+   "source": "LYR",
+   "section": "LYR-L8",
+   "label": "Runtime evolution"
+  },
+  {
+   "atom_id": "LYR-L9/KG-01",
+   "source": "LYR",
+   "section": "LYR-L9",
+   "label": "Universal Knowledge Graph"
+  },
+  {
+   "atom_id": "LYR-L9/KG-02",
+   "source": "LYR",
+   "section": "LYR-L9",
+   "label": "Objects"
+  },
+  {
+   "atom_id": "LYR-L9/KG-03",
+   "source": "LYR",
+   "section": "LYR-L9",
+   "label": "Relationships"
+  },
+  {
+   "atom_id": "LYR-L9/KG-04",
+   "source": "LYR",
+   "section": "LYR-L9",
+   "label": "Events"
+  },
+  {
+   "atom_id": "LYR-L9/KG-05",
+   "source": "LYR",
+   "section": "LYR-L9",
+   "label": "States"
+  },
+  {
+   "atom_id": "LYR-L9/KG-06",
+   "source": "LYR",
+   "section": "LYR-L9",
+   "label": "History"
+  },
+  {
+   "atom_id": "LYR-L9/KG-07",
+   "source": "LYR",
+   "section": "LYR-L9",
+   "label": "Lineage"
+  },
+  {
+   "atom_id": "LYR-L10/GV-01",
+   "source": "LYR",
+   "section": "LYR-L10",
+   "label": "Ownership"
+  },
+  {
+   "atom_id": "LYR-L10/GV-02",
+   "source": "LYR",
+   "section": "LYR-L10",
+   "label": "Authority"
+  },
+  {
+   "atom_id": "LYR-L10/GV-03",
+   "source": "LYR",
+   "section": "LYR-L10",
+   "label": "Permissions"
+  },
+  {
+   "atom_id": "LYR-L10/GV-04",
+   "source": "LYR",
+   "section": "LYR-L10",
+   "label": "Policies"
+  },
+  {
+   "atom_id": "LYR-L10/GV-05",
+   "source": "LYR",
+   "section": "LYR-L10",
+   "label": "Compliance"
+  },
+  {
+   "atom_id": "LYR-L10/GV-06",
+   "source": "LYR",
+   "section": "LYR-L10",
+   "label": "Audit"
+  },
+  {
+   "atom_id": "LYR-L10/GV-07",
+   "source": "LYR",
+   "section": "LYR-L10",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "LYR-L10/GV-08",
+   "source": "LYR",
+   "section": "LYR-L10",
+   "label": "Change Control"
+  },
+  {
+   "atom_id": "LYR-L10/GV-09",
+   "source": "LYR",
+   "section": "LYR-L10",
+   "label": "Evolution Rules"
+  },
+  {
+   "atom_id": "LYR-L11/ME-01",
+   "source": "LYR",
+   "section": "LYR-L11",
+   "label": "Performance"
+  },
+  {
+   "atom_id": "LYR-L11/ME-02",
+   "source": "LYR",
+   "section": "LYR-L11",
+   "label": "Quality"
+  },
+  {
+   "atom_id": "LYR-L11/ME-03",
+   "source": "LYR",
+   "section": "LYR-L11",
+   "label": "Accuracy"
+  },
+  {
+   "atom_id": "LYR-L11/ME-04",
+   "source": "LYR",
+   "section": "LYR-L11",
+   "label": "Cost"
+  },
+  {
+   "atom_id": "LYR-L11/ME-05",
+   "source": "LYR",
+   "section": "LYR-L11",
+   "label": "Usage"
+  },
+  {
+   "atom_id": "LYR-L11/ME-06",
+   "source": "LYR",
+   "section": "LYR-L11",
+   "label": "Reliability"
+  },
+  {
+   "atom_id": "LYR-L11/ME-07",
+   "source": "LYR",
+   "section": "LYR-L11",
+   "label": "Evolution"
+  },
+  {
+   "atom_id": "LYR-L11/ME-08",
+   "source": "LYR",
+   "section": "LYR-L11",
+   "label": "Impact"
+  },
+  {
+   "atom_id": "LYR-L11/ME-09",
+   "source": "LYR",
+   "section": "LYR-L11",
+   "label": "Health"
+  },
+  {
+   "atom_id": "LYR-L12V/VF-01",
+   "source": "LYR",
+   "section": "LYR-L12V",
+   "label": "Evidence"
+  },
+  {
+   "atom_id": "LYR-L12V/VF-02",
+   "source": "LYR",
+   "section": "LYR-L12V",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "LYR-L12V/VF-03",
+   "source": "LYR",
+   "section": "LYR-L12V",
+   "label": "Testing"
+  },
+  {
+   "atom_id": "LYR-L12V/VF-04",
+   "source": "LYR",
+   "section": "LYR-L12V",
+   "label": "Replay"
+  },
+  {
+   "atom_id": "LYR-L12V/VF-05",
+   "source": "LYR",
+   "section": "LYR-L12V",
+   "label": "Consistency"
+  },
+  {
+   "atom_id": "LYR-L12V/VF-06",
+   "source": "LYR",
+   "section": "LYR-L12V",
+   "label": "Integrity"
+  },
+  {
+   "atom_id": "LYR-L12C/CF-01",
+   "source": "LYR",
+   "section": "LYR-L12C",
+   "label": "Certified State"
+  },
+  {
+   "atom_id": "LYR-L12C/CF-02",
+   "source": "LYR",
+   "section": "LYR-L12C",
+   "label": "Baseline"
+  },
+  {
+   "atom_id": "LYR-L12C/CF-03",
+   "source": "LYR",
+   "section": "LYR-L12C",
+   "label": "Release"
+  },
+  {
+   "atom_id": "LYR-L12C/CF-04",
+   "source": "LYR",
+   "section": "LYR-L12C",
+   "label": "Evolution Approval"
+  },
+  {
+   "atom_id": "LYR-L13/CM-01",
+   "source": "LYR",
+   "section": "LYR-L13",
+   "label": "Product"
+  },
+  {
+   "atom_id": "LYR-L13/CM-02",
+   "source": "LYR",
+   "section": "LYR-L13",
+   "label": "Service"
+  },
+  {
+   "atom_id": "LYR-L13/CM-03",
+   "source": "LYR",
+   "section": "LYR-L13",
+   "label": "Capability"
+  },
+  {
+   "atom_id": "LYR-L13/CM-04",
+   "source": "LYR",
+   "section": "LYR-L13",
+   "label": "Knowledge"
+  },
+  {
+   "atom_id": "LYR-L13/CM-05",
+   "source": "LYR",
+   "section": "LYR-L13",
+   "label": "License"
+  },
+  {
+   "atom_id": "LYR-L13/CM-06",
+   "source": "LYR",
+   "section": "LYR-L13",
+   "label": "Subscription"
+  },
+  {
+   "atom_id": "LYR-L13/CM-07",
+   "source": "LYR",
+   "section": "LYR-L13",
+   "label": "Marketplace"
+  },
+  {
+   "atom_id": "LYR-L13/CM-08",
+   "source": "LYR",
+   "section": "LYR-L13",
+   "label": "Billing"
+  },
+  {
+   "atom_id": "LYR-L13/CM-09",
+   "source": "LYR",
+   "section": "LYR-L13",
+   "label": "Revenue"
+  },
+  {
+   "atom_id": "LYR-L13/CM-10",
+   "source": "LYR",
+   "section": "LYR-L13",
+   "label": "Distribution"
+  },
+  {
+   "atom_id": "LYR-L14/IF-01",
+   "source": "LYR",
+   "section": "LYR-L14",
+   "label": "Web"
+  },
+  {
+   "atom_id": "LYR-L14/IF-02",
+   "source": "LYR",
+   "section": "LYR-L14",
+   "label": "Mobile"
+  },
+  {
+   "atom_id": "LYR-L14/IF-03",
+   "source": "LYR",
+   "section": "LYR-L14",
+   "label": "Voice"
+  },
+  {
+   "atom_id": "LYR-L14/IF-04",
+   "source": "LYR",
+   "section": "LYR-L14",
+   "label": "AR"
+  },
+  {
+   "atom_id": "LYR-L14/IF-05",
+   "source": "LYR",
+   "section": "LYR-L14",
+   "label": "VR"
+  },
+  {
+   "atom_id": "LYR-L14/IF-06",
+   "source": "LYR",
+   "section": "LYR-L14",
+   "label": "API"
+  },
+  {
+   "atom_id": "LYR-L14/IF-07",
+   "source": "LYR",
+   "section": "LYR-L14",
+   "label": "CLI"
+  },
+  {
+   "atom_id": "LYR-L14/IF-08",
+   "source": "LYR",
+   "section": "LYR-L14",
+   "label": "Future Interface"
+  },
+  {
+   "atom_id": "LYR-L15/EL-01",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Discover"
+  },
+  {
+   "atom_id": "LYR-L15/EL-02",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Understand"
+  },
+  {
+   "atom_id": "LYR-L15/EL-03",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Measure"
+  },
+  {
+   "atom_id": "LYR-L15/EL-04",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Learn"
+  },
+  {
+   "atom_id": "LYR-L15/EL-05",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Reason"
+  },
+  {
+   "atom_id": "LYR-L15/EL-06",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Challenge"
+  },
+  {
+   "atom_id": "LYR-L15/EL-07",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Improve"
+  },
+  {
+   "atom_id": "LYR-L15/EL-08",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Architect"
+  },
+  {
+   "atom_id": "LYR-L15/EL-09",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Generate"
+  },
+  {
+   "atom_id": "LYR-L15/EL-10",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Verify"
+  },
+  {
+   "atom_id": "LYR-L15/EL-11",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Certify"
+  },
+  {
+   "atom_id": "LYR-L15/EL-12",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Integrate"
+  },
+  {
+   "atom_id": "LYR-L15/EL-13",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Replay"
+  },
+  {
+   "atom_id": "LYR-L15/EL-14",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Elevate"
+  },
+  {
+   "atom_id": "LYR-L15/EL-15",
+   "source": "LYR",
+   "section": "LYR-L15",
+   "label": "Repeat"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-01",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover the environment"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-02",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover knowledge"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-03",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover structure"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-04",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover governance"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-05",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover relationships"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-06",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover dependencies"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-07",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover canonical ownership"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-08",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover evidence"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-09",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover truth"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-10",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover gaps"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-11",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover conflicts"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-12",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Discover opportunities"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-13",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Generate requirements"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-14",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Generate planning"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-15",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Generate realization packages"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-16",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Generate execution specifications"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-17",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Orchestrate realization"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-18",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Validate"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-19",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Verify"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-20",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Certify"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-21",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Update canonical knowledge"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-22",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Learn"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-23",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Improve itself"
+  },
+  {
+   "atom_id": "UAKP-PO/PO-24",
+   "source": "UAKP",
+   "section": "UAKP-PO",
+   "label": "Repeat continuously"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-01",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Knowledge Acquisition"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-02",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Knowledge Assimilation"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-03",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Knowledge Refinement"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-04",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Knowledge Classification"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-05",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Context Resolution"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-06",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Evidence Discovery"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-07",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Truth Discovery"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-08",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Canonical Authority Discovery"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-09",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Gap Discovery"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-10",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Conflict Discovery"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-11",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Requirement Discovery"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-12",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Dependency Discovery"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-13",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Reasoning"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-14",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Decision"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-15",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Planning"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-16",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Execution Specification Generation"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-17",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Realization Package Generation"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-18",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Execution Orchestration"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-19",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Realization"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-20",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Observation"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-21",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-22",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Verification"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-23",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-24",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Canonical Knowledge Update"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-25",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Learning"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-26",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Capability Elevation"
+  },
+  {
+   "atom_id": "UAKP-PROC/PR-27",
+   "source": "UAKP",
+   "section": "UAKP-PROC",
+   "label": "Evolution"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-01",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Knowledge"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-02",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Evidence"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-03",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Truth"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-04",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Requirement"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-05",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Capability"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-06",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Dependency"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-07",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Planning"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-08",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Execution Specification"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-09",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Realization"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-10",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Observation"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-11",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-12",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Verification"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-13",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-14",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Learning"
+  },
+  {
+   "atom_id": "UAKP-GRAPH/GP-15",
+   "source": "UAKP",
+   "section": "UAKP-GRAPH",
+   "label": "Evolution"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-01",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Knowledge"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-02",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Information"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-03",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Observation"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-04",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Claim"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-05",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Evidence"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-06",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Truth"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-07",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Confidence"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-08",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Fact"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-09",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Hypothesis"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-10",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Decision"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-11",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Intent"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-12",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Goal"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-13",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Constraint"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-14",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Policy"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-15",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Context"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-16",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Identity"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-17",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Capability"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-18",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Requirement"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-19",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Artifact"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-20",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Component"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-21",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Relationship"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-22",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Dependency"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-23",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Graph"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-24",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Work"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-25",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Execution"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-26",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Realization"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-27",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Validation"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-28",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Verification"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-29",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Certification"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-30",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Governance"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-31",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Memory"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-32",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Learning"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-33",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Evolution"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-34",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Environment"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-35",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Adapter"
+  },
+  {
+   "atom_id": "UAKP-CLS/CS-36",
+   "source": "UAKP",
+   "section": "UAKP-CLS",
+   "label": "Integration"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-01",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Existing Project"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-02",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "New Project"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-03",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Empty Repository"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-04",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Legacy Repository"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-05",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Monorepo"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-06",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Polyrepo"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-07",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Documentation System"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-08",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Wiki"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-09",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Knowledge Base"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-10",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Enterprise Platform"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-11",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Cloud Environment"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-12",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Local Environment"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-13",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Distributed Environment"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-14",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Database"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-15",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Object Store"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-16",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Data Lake"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-17",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "APIs"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-18",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Event Streams"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-19",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "AI Memory"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-20",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Digital Twin"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-21",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Runtime System"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-22",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Organizational Knowledge"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-23",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Research Knowledge"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-24",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Scientific Knowledge"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-25",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Regulatory Knowledge"
+  },
+  {
+   "atom_id": "UAKP-ENV/EV2-26",
+   "source": "UAKP",
+   "section": "UAKP-ENV",
+   "label": "Future Unknown Environment"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-01",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Certified Release"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-02",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Compatibility Validation"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-03",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Integration Certification"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-04",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer Integration"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-05",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer UCOS"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-06",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer Linux"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-07",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer ERP"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-08",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer Banking"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-09",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer Healthcare"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-10",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer Government"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-11",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer Research"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-12",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer Manufacturing"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-13",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer Open Source"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-14",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer Enterprise Platforms"
+  },
+  {
+   "atom_id": "UAKP-INTG/IG-15",
+   "source": "UAKP",
+   "section": "UAKP-INTG",
+   "label": "Consumer Future Systems"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-01",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Constitution before implementation"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-02",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Concepts before technologies"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-03",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Universes before engines"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-04",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Objects before documents"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-05",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Graphs before hierarchies"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-06",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Truth before implementation"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-07",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Evidence before truth"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-08",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Governance before automation"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-09",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Discovery before configuration"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-10",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Composition before specialization"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-11",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Configuration before customization"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-12",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Capabilities before projects"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-13",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Reuse before duplication"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-14",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Replaceability before coupling"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-15",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Evolution before stagnation"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-16",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Autonomy under governance"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-17",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Knowledge once reuse everywhere"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-18",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "No hard-coded project assumptions"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-19",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "No hard-coded repository assumptions"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-20",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "No hard-coded technology assumptions"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-21",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "No hard-coded AI assumptions"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-22",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "No hard-coded storage assumptions"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-23",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "No hard-coded workflow assumptions"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-24",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Everything discoverable"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-25",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Everything governable"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-26",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Everything composable"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-27",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Everything extensible"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-28",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Everything replaceable"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-29",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Everything evolvable"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-30",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Infinite scalability"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-31",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Infinite extensibility"
+  },
+  {
+   "atom_id": "UAKP-PRIN/PN-32",
+   "source": "UAKP",
+   "section": "UAKP-PRIN",
+   "label": "Zero architectural specialization"
+  }
+ ],
+ "section_kinds": {
+  "MI-016": "STAKEHOLDER",
+  "MI-017": "DOMAIN"
+ },
+ "$section_kinds": "Most sections mandate CONSTRUCTS -- things to build, reference or extend. Two do not, and the documents say so in their own headings. '016 STAKEHOLDERS' lists who the substrate serves; '017 TARGET DOMAINS' lists the markets it can be composed into. Treating either as a construct inverts the architecture: a target domain implemented as code is a FIXED INDUSTRY, which PRD principle P-001, LYR-NEG/LN-05 and MIP LAW P43-001 each forbid -- and 'industry' is a PROHIBITED_TOKEN the kernel refuses to seed. A register that dispositioned 'Agriculture' as CREATE would be instructing the repository to breach the mandate the same corpus states four sections earlier."
+}

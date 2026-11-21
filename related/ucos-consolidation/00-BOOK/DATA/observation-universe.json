@@ -1,0 +1,369 @@
+{
+  "artifact_id": "UCOS-OBSERVATION-UNIVERSE-001",
+  "title": "Universal Observation Universe — what an observation IS, and why it may never be canonical",
+  "authority": "AUTHORED REPOSITORY TRUTH, HELD SUBORDINATE UNDER UCKP-LAW-0001. This register legislates the separation of Identity Truth, Observation Truth, Evidence Truth and Decision Truth. It is upstream of every engine it governs and must never be produced by one — and the separation it draws is binding because UCKP-ART-13 makes it so, not because this register says so.",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "OBSERVATION",
+    "relation": "PROJECTION",
+    "articles": ["UCKP-ART-05", "UCKP-ART-13", "UCKP-ART-15"],
+    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+    "effect": "UCKP-ART-13 requires identical inputs to produce identical bytes. A reading taken outside the commit boundary is not an input the commit contains, so admitting one into a canonical digest destroys the fixed point by construction — which is exactly how one stale digest became a permanently non-convergent Phase 8. This register owns what an observation is and how a canonical artifact may reference one. It may never own a second identity authority: observations mint from the one ledger, and UCKP-ART-05 is why they must."
+  },
+  "constitutional_basis": "UCKP-LAW-0001 (engine/uckp/law.py), UCOS-CAA-001, UCOS-RC-003, UAKOS-CLOSURE-008, GOV-005 §5.1/§5.3, UCOS-EVIDENCE-UNIVERSE-001, UCOS-UGA-001",
+  "schema": "ucos-observation-universe",
+  "version": "1.0.0",
+
+  "why_this_exists": [
+    "UCOS-RC-003 already established that a working-tree measurement is a GATE INPUT and never canonical",
+    "identity, and withheld the VALUES of such measurements from rib.json. It was correct and incomplete:",
+    "redaction can hide what a field SAYS, but it cannot hide whether a list ELEMENT EXISTS. A compliance",
+    "finding is appended when the tree is dirty and absent when it is clean, so the canonical bytes still",
+    "move with the working tree. UCOS-AEE-001 had no such protection at all — it wrote the observed",
+    "`residue` path list verbatim into aee.json, the artifact Phase 8 measures as certification_variance.",
+    "",
+    "Measured consequence: one stale digest in UKAP-001 caused ONE file to be rewritten. RIB, running",
+    "later in the same AEE pass, observed that single dirty entry, flipped GATE-04 and GATE-12, and",
+    "rewrote sixteen files. AEE then recorded seventeen residue paths into its own canonical artifact.",
+    "A one-file staleness became a twenty-one-file, permanently non-convergent oscillation, because",
+    "canonical artifacts were allowed to absorb transient state.",
+    "",
+    "The amplifier is the defect, not the trigger. A repository whose canonical artifacts embed runtime",
+    "observations can never hold a fixed point, because running the gate is itself a mutation that",
+    "changes the next measurement."
+  ],
+
+  "the_four_truths": {
+    "IDENTITY_TRUTH": {
+      "definition": "What a thing IS. A pure function of the commit.",
+      "may_be_canonical": true,
+      "home": "00-BOOK/DATA/id-ledger.json and the object registries derived from it",
+      "test": "Two clones of the same commit compute it identically, with no execution history."
+    },
+    "OBSERVATION_TRUTH": {
+      "definition": "What was SEEN at a moment — working-tree dirtiness, what an actuator wrote, a wall clock, a duration, a count of uncommitted entries.",
+      "may_be_canonical": false,
+      "home": "an evidence surface, addressed by a stable observation identity",
+      "test": "Its value can differ between two runs over the same commit. If it can, it is an observation."
+    },
+    "EVIDENCE_TRUTH": {
+      "definition": "The preserved record of an observation, retained so a decision can be reviewed after the fact.",
+      "may_be_canonical": false,
+      "home": "the surfaces declared in UCOS-EVIDENCE-UNIVERSE-001",
+      "test": "It is referenced by identity and never by content."
+    },
+    "DECISION_TRUTH": {
+      "definition": "A verdict reached by applying a rule to an observation.",
+      "may_be_canonical": "ONLY when every input to the rule is Identity Truth",
+      "home": "canonical when commit-determined; otherwise an evidence surface carrying the observation id it rests on",
+      "test": "A verdict that changes because the tree is dirty is Observation Truth wearing a verdict's clothes."
+    }
+  },
+
+  "observation_kinds": {
+    "WORKING_TREE_STATE": {
+      "definition": "Any measurement of uncommitted state: dirty entries, modified, deleted, untracked, contamination.",
+      "canonical_admissibility": "FORBIDDEN",
+      "evidence_class": "EXECUTION",
+      "precedent": "UCOS-RC-003"
+    },
+    "EXECUTION_RESIDUE": {
+      "definition": "The set of paths whose on-disk state changed while a located actuator ran.",
+      "canonical_admissibility": "FORBIDDEN",
+      "evidence_class": "EXECUTION",
+      "precedent": "UAKOS-CLOSURE-008"
+    },
+    "MATERIALIZATION_ACTION": {
+      "definition": "What a write did to the filesystem — created, updated, unchanged.",
+      "canonical_admissibility": "FORBIDDEN",
+      "evidence_class": "EXECUTION",
+      "precedent": "UCOS-UGA-001 (intelligence/realization)"
+    },
+    "ENVIRONMENT_STATE": {
+      "definition": "Interpreter path, venv presence, host, wall clock, elapsed time.",
+      "canonical_admissibility": "FORBIDDEN",
+      "evidence_class": "EXECUTION"
+    },
+    "COMMITTED_CONTENT": {
+      "definition": "A measurement whose entire input is version-controlled content at a commit — a content hash of a tracked file, a count derived from `git ls-files`.",
+      "canonical_admissibility": "PERMITTED",
+      "evidence_class": "VALIDATION",
+      "note": "This is Identity Truth, listed here so the boundary is explicit rather than assumed. It is the ONLY kind a canonical artifact may embed by value."
+    }
+  },
+
+  "identity_rule": {
+    "statement": "Every observation receives a Universal Identity before it may be referenced.",
+    "authority": "00-BOOK/DATA/id-ledger.json — the ONE identity authority. Observations are minted into the append-only `by_observation` map from the shared `category_seq`, category OBS.",
+    "key": "observation_key = <observer>::<subject>::<kind>",
+    "value_independence": "THE CENTRAL PROPERTY. The identity is a function of WHO observed WHAT, and never of what was seen. So a canonical artifact may carry the observation id forever while the observed value changes on every run — which is precisely what makes the canonical bytes hold still without hiding anything.",
+    "anonymous_observations": "FORBIDDEN. An observation with no identity cannot be referenced, cannot be audited, and cannot be traced to the run that produced it."
+  },
+
+  "canonical_reference_rule": {
+    "statement": "A canonical artifact may reference an observation ONLY through its stable identity.",
+    "permitted": "\"residue_observation\": \"UCOS-OBS-000042\"",
+    "forbidden": [
+      "\"residue\": [\"path/a\", \"path/b\"]        — the value",
+      "\"residue_count\": 16                      — a lower-resolution copy of the value",
+      "\"dirty\": true                            — a one-bit copy of the value",
+      "appending a finding only when the observation is non-empty — LIST MEMBERSHIP is a copy of the value"
+    ],
+    "membership_rule": "Where a finding depends on an observation, the finding SLOT is always present with its stable id, and only its verdict is withheld. Presence must not encode the observation."
+  },
+
+  "mutation_evidence_rule": {
+    "statement": "Every execution mutation produces evidence.",
+    "requirement": "An engine that writes MUST emit an observation record naming what it wrote, so nothing is lost by removing the value from canonical artifacts. Evidence is preserved, never deleted — it is relocated from identity into evidence, where it was always supposed to live."
+  },
+
+  "$lineage_comment": [
+    "UNIVERSAL OBSERVATION LINEAGE BOUNDARY. The rule above says a canonical artifact may",
+    "not carry an observation VALUE. Measured consequence of stopping there: it did not say",
+    "a canonical artifact may not carry a value COMPUTED FROM one, and a producer that",
+    "redacted every named measure still emitted an artifact that moved with the working tree.",
+    "",
+    "The forensic case. UCOS-RIB-001 strips eight declared working-tree measures and",
+    "RECOMPUTES gates[].verdict, gate, gate_exit, determination and compliance from what",
+    "remains — correctly. But metrics.gates_passed and metrics.blocking_failed are computed",
+    "at rib_engine.py:1939-1945 from the UNREDACTED gates, before the strip runs, and the",
+    "strip never revisits them. The committed artifact therefore said gate=OPEN, gates[] all",
+    "PASS, and gates_passed=10 in the same file. Four aggregates and one boolean moved with",
+    "the tree: gates_passed, blocking_failed, compliance_findings, validations_failed,",
+    "contamination.clean — and seal_sha256 inherited all five.",
+    "",
+    "Consequence: Phase 8 held at zero_drift_rounds=0 with registry_variance=5 and",
+    "ordering_variance=5, while RIB itself was perfectly deterministic — round 1 through",
+    "round 5 produced byte-identical digests. The artifact was stable; it was stably WRONG,",
+    "because the committed bytes were generated over a dirty tree and the clean-tree bytes",
+    "differ by exactly those six values.",
+    "",
+    "Why the previous remediation could not catch it. OBS-INV-02 reads",
+    "forbidden_canonical_keys; OBS-INV-07 sweeps OBSERVATION_SIGNATURES; RIB's own strip",
+    "reads _WORKING_TREE_MEASURES. All three are the SAME KIND of instrument — a vocabulary",
+    "of leak NAMES — and none of the six leaking values is spelled like a leak.",
+    "`gates_passed` is a perfectly innocent name for a contaminated number.",
+    "",
+    "So the boundary below is not a longer list. It is a change of instrument: contamination",
+    "is defined by INFLUENCE and detected DIFFERENTIALLY. A name-based test can only ever",
+    "find the leaks someone already thought of."
+  ],
+  "derived_observation_rule": {
+    "statement": "Observation influence must never enter canonical identity, directly or through derived values.",
+    "transitivity": "A canonical value computed from an observation IS an observation, at every depth. An aggregate, a count, a boolean, a verdict, a digest and a rendered sentence are each a lower-resolution copy of their inputs, and a copy of an observation is an observation.",
+    "corollary_for_producers": "A producer that redacts an observation must recompute EVERY value derived from it from the redacted structures. Redacting an input while keeping an aggregate computed from the unredacted input leaves the observation in the artifact at lower resolution — which is the defect this rule exists to name.",
+    "test": {
+      "kind": "DIFFERENTIAL",
+      "statement": "Hold the commit fixed. Vary only a declared observation source. The canonical projection must be byte-identical.",
+      "why_not_lexical": "A lexical test can only find the leak names already enumerated, and the leak that broke Phase 8 was called `gates_passed`. A differential test is name-free and therefore total over the values a producer emits, including the ones nobody has thought of.",
+      "why_this_is_not_a_new_engine": "It is a property of a projection function that already exists, measured by the gates that already run. Nothing new executes and nothing new is stored."
+    },
+    "remedy": "RECOMPUTE, never delete. The derived value keeps its slot and its meaning; only its INPUTS change from runtime structures to canonical ones. Nothing is weakened: the runtime verdict is still computed, still fails the gate, still printed, and still written to the evidence surface.",
+    "measured_by": ["OBS-INV-11", "OBS-INV-12", "OBS-INV-13"]
+  },
+
+  "$source_comment": [
+    "The runtime reads that make a value observation-derived. A producer may read any of",
+    "these — reading is not the violation; carrying the reading into canonical identity is.",
+    "Declared here so a producer that acquires a new source is caught by OBS-INV-12 rather",
+    "than discovered by a failing fixed point five phases later.",
+    "",
+    "`probe` is what the differential test varies. A source with no probe cannot be varied,",
+    "so it cannot be measured, so it fails closed rather than being presumed absent."
+  ],
+  "observation_sources": {
+    "WORKING_TREE": {
+      "detect": "\"--porcelain\"|'--porcelain'|status\\s+--porcelain",
+      "definition": "Uncommitted state: modified, deleted, untracked, staged, contaminated or shadowed paths.",
+      "probe": "git status --porcelain",
+      "kind": "WORKING_TREE_STATE",
+      "canonical_admissibility": "FORBIDDEN",
+      "why": "It is not an input the commit contains, so admitting it destroys the fixed point by construction (UCKP-ART-13)."
+    },
+    "WALL_CLOCK": {
+      "detect": "datetime\\.now\\(|datetime\\.utcnow\\(|time\\.time\\(|perf_counter\\(|monotonic\\(",
+      "definition": "Any reading of the current time, elapsed time or duration.",
+      "probe": "datetime.now / time.time / perf_counter",
+      "kind": "ENVIRONMENT_STATE",
+      "canonical_admissibility": "FORBIDDEN",
+      "why": "A generated artifact stamped with the current time can never hold a fixed point: the second run differs from the first by construction."
+    },
+    "ENVIRONMENT": {
+      "detect": "os\\.environ|getenv\\(|platform\\.node\\(|gethostname\\(",
+      "definition": "Environment variables, host name, platform, interpreter path, working directory.",
+      "probe": "os.environ / platform.node / socket.gethostname",
+      "kind": "ENVIRONMENT_STATE",
+      "canonical_admissibility": "FORBIDDEN_AS_VALUE_PERMITTED_AS_INPUT_SELECTION",
+      "why": "An environment variable that CHOOSES which declared input to read is a configuration binding and leaves no reading in the artifact. One whose VALUE is written into the artifact is an environment observation. The two are distinguished by whether the artifact changes when the variable changes while the selected input does not."
+    },
+    "COVERAGE": {
+      "detect": "coverage\\.xml|total_coverage",
+      "definition": "Test-coverage totals and any per-run measurement of a test execution.",
+      "probe": "coverage.xml / total_coverage",
+      "kind": "ENVIRONMENT_STATE",
+      "canonical_admissibility": "FORBIDDEN",
+      "precedent": "UCOS-CL-005 closed this in UCOS-RIE-001."
+    },
+    "FILESYSTEM_STATE": {
+      "detect": "st_mtime|getmtime\\(",
+      "definition": "Modification times, inode data, directory listing order, absolute paths.",
+      "probe": "stat().st_mtime / os.listdir order",
+      "kind": "ENVIRONMENT_STATE",
+      "canonical_admissibility": "FORBIDDEN",
+      "why": "None of it survives a clone, so a canonical value derived from it cannot be reproduced by anyone else."
+    }
+  },
+
+  "$declaration_comment": [
+    "Every producer holding CANONICAL output, with the observation sources it reads and how",
+    "each is discharged. Measured, not assumed: the audit that produced this table read the",
+    "call sites, and the grep-level candidates that turned out to be docstrings describing an",
+    "ALREADY-CLOSED leak (MCOS-000001, UPF-000001, UMK-000001 all quote UCOS-CL-005) are",
+    "recorded as NONE rather than silently omitted, because an omission and a clean finding",
+    "are indistinguishable to whoever reads this next.",
+    "",
+    "`discharge` is how the producer keeps the reading out of canonical identity:",
+    "  IDENTITY_REFERENCE  the value is replaced by the observation's Universal Identity",
+    "  RECOMPUTED          derived values are recomputed from the redacted structures",
+    "  INPUT_SELECTION     the read only chooses which declared input to open; no reading lands",
+    "  NONE                the producer reads no observation source"
+  ],
+  "producer_observation_declarations": [
+    {
+      "producer": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "canonical_artifacts": 16,
+      "sources": ["WORKING_TREE"],
+      "discharge": ["IDENTITY_REFERENCE", "RECOMPUTED"],
+      "observation": "UCOS-OBS-000003",
+      "evidence_surface": "00-MASTER/UCOS-RIB-001/evidence/observations/RIB/",
+      "note": "The producer this boundary was written for. Redaction plus verdict recomputation was already in place; the aggregates over those verdicts were not, and that gap is what RECOMPUTED now names as an obligation rather than an implementation detail."
+    },
+    {
+      "producer": "00-MASTER/UCOS-AEE-001/aee_engine.py",
+      "canonical_artifacts": 15,
+      "sources": ["WORKING_TREE", "ENVIRONMENT"],
+      "discharge": ["IDENTITY_REFERENCE", "INPUT_SELECTION"],
+      "observation": "UCOS-OBS-000001, UCOS-OBS-000002",
+      "evidence_surface": "00-MASTER/UCOS-AEE-001/evidence/observations.json",
+      "note": "WORKING_TREE is discharged by IDENTITY_REFERENCE: every residue-family key in aee.json holds a UCOS-OBS-NNNNNN identity, none holds a value or a count. ENVIRONMENT is discharged by INPUT_SELECTION — `dict(os.environ)` composes the subprocess environment each actuator runs under, and `os.environ.get(reentrancy_env)` is the guard that refuses to drive the loop from inside the fixed-point owner's own pipeline. Neither writes an environment value into a canonical artifact.",
+      "$how_this_entry_was_corrected": "The first draft of this table declared WORKING_TREE alone. OBS-INV-12 rejected it — the engine reads os.environ at two call sites and the declaration omitted them. The invariant found the omission the hand audit made, which is the entire reason a declaration is measured rather than trusted."
+    },
+    {
+      "producer": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+      "canonical_artifacts": 10,
+      "sources": [],
+      "discharge": ["NONE"],
+      "note": "Audited clean. The candidate matches were the KEYS of OBSERVATION_SIGNATURES — the detection vocabulary itself, not a reading."
+    },
+    {
+      "producer": "00-MASTER/UKAP-001/corpus_engine.py",
+      "canonical_artifacts": 10,
+      "sources": ["ENVIRONMENT"],
+      "discharge": ["INPUT_SELECTION"],
+      "note": "UKAP_CORPUS_ROOTS and UAKOS_EVIDENCE_ROOT choose which declared corpus root to read. No environment value is written into a canonical artifact."
+    },
+    {
+      "producer": "00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py",
+      "canonical_artifacts": 13,
+      "sources": ["ENVIRONMENT"],
+      "discharge": ["INPUT_SELECTION"],
+      "note": "UAKOS_EVIDENCE_ROOT selects the evidence root. Same construction as UKAP-001."
+    },
+    {"producer": "00-MASTER/MCOS-000001/mcos_engine.py", "canonical_artifacts": 9, "sources": [], "discharge": ["NONE"], "note": "Audited clean; the coverage match is a docstring recording UCOS-CL-005."},
+    {"producer": "00-MASTER/UPF-000001/upf_engine.py", "canonical_artifacts": 9, "sources": [], "discharge": ["NONE"], "note": "Audited clean; same docstring."},
+    {"producer": "00-MASTER/UMK-000001/umk_engine.py", "canonical_artifacts": 9, "sources": [], "discharge": ["NONE"], "note": "Audited clean; same docstring."},
+    {
+      "producer": "00-BOOK/tools/ukctx.py",
+      "canonical_artifacts": 23,
+      "sources": [],
+      "discharge": [
+        "NONE"
+      ],
+      "note": "Audited clean BY CONSTRUCTION, and the construction is the point. The first version of this capability put the generator and its closure gate in one module, and OBS-INV-12 refused it: `reads WORKING_TREE and declares no observation source`. The reading was real — `git status --porcelain` for INV-CTX-09 and the ref list for INV-CTX-08 — so the answer was not to declare it but to move it. The observing half is now 00-BOOK/tools/ukctx_gate.py, which holds no canonical output and therefore is not measured here. This producer reads the declaration and the tracked instruments it names, and nothing else: no git, no working tree, no clock, no environment."
+    }
+  ],
+
+  "$ancestry_comment": [
+    "What a canonical artifact must be able to PROVE about where its bytes came from. The",
+    "generated-artifact registry already declares each artifact's input_closure and the",
+    "classification of each input. What it did not declare is ANCESTRY: an input that is",
+    "itself generated has inputs of its own, and a clean immediate closure says nothing about",
+    "a contaminated grandparent.",
+    "",
+    "Ancestry is DERIVED, never authored — walked transitively through the registry's own",
+    "producer relation. Authoring it would create a second copy of the dependency graph and",
+    "guarantee the two disagree."
+  ],
+  "canonical_value_lineage": {
+    "requirement": "Every canonical artifact can prove its source inputs, its dependency ancestry, and the classification of every ancestor.",
+    "source_inputs": "00-BOOK/DATA/generated-artifact-registry.json :: entries[].input_closure",
+    "ancestor_classification": "00-BOOK/DATA/generated-artifact-registry.json :: entries[].input_classification, resolved transitively through the producer of each GENERATED_DETERMINISTIC input",
+    "ancestry_derivation": "For artifact A: the closure of input_closure under 'if input I is the canonical_path of some entry E, then E.input_closure are also ancestors of A'. Fixed point; cycles are reported, never traversed twice.",
+    "rule": "No canonical artifact may have an ancestor whose classification is not one of the declared input_classifications, and no ancestor may be an evidence or observation surface.",
+    "measured_by": "OBS-INV-13"
+  },
+
+  "forbidden_canonical_keys": {
+    "_note": "Where an observation VALUE is known to enter a canonical artifact. Declared here, never hard-coded in an engine, so closing a newly-found leak is one appended entry in DATA and the gate strengthens without a code change.",
+
+    "_why_scoped_to_artifacts": [
+      "A key name alone cannot decide this, and assuming it can produces false accusations.",
+      "Measured: an unscoped scan flagged 188 sites, of which 18 were `action` in ACEE-000001/acee.json",
+      "and UCL-000001/ucl.json holding 'REUSE' and 'EXTEND' — architectural DISPOSITIONS derived from a",
+      "declaration. That is Identity Truth and perfectly canonical. The identical word in a",
+      "materialization manifest means 'this run created the file', which is Observation Truth and is",
+      "forbidden.",
+      "",
+      "The kind is therefore a property of the (artifact, key) PAIR, never of the key. Scoping is what",
+      "makes this invariant precise enough to be believed — an invariant that cries wolf gets",
+      "suppressed, and a suppressed invariant governs nothing."
+    ],
+
+    "rules": [
+      {"key": "residue", "kind": "EXECUTION_RESIDUE", "artifact": "00-MASTER/UCOS-AEE-001/aee.json"},
+      {"key": "unattributed", "kind": "EXECUTION_RESIDUE", "artifact": "00-MASTER/UCOS-AEE-001/aee.json"},
+      {"key": "unattributed_residue", "kind": "EXECUTION_RESIDUE", "artifact": "00-MASTER/UCOS-AEE-001/aee.json"},
+      {"key": "residue_total", "kind": "EXECUTION_RESIDUE", "artifact": "00-MASTER/UCOS-AEE-001/aee.json"},
+      {"key": "dirty_entries", "kind": "WORKING_TREE_STATE", "artifact": "00-MASTER/UCOS-RIB-001/rib.json"},
+      {"key": "dirty_entries_outside_generated", "kind": "WORKING_TREE_STATE", "artifact": "00-MASTER/UCOS-RIB-001/rib.json"},
+      {"key": "contamination_entries", "kind": "WORKING_TREE_STATE", "artifact": "00-MASTER/UCOS-RIB-001/rib.json"}
+    ]
+  },
+
+  "canonical_scope": {
+    "_note": "The artifacts OBS-INV-02 polices. These are the eight Phase-8 variance dimensions — the set whose byte-stability IS the fixed point — plus the pristine-clone comparison set, which is the same set.",
+    "paths": [
+      "00-MASTER/UCOS-RIB-001/rib.json",
+      "00-MASTER/UCOS-RIB-001/10-IMPLEMENTATION-QUEUE.md",
+      "00-MASTER/UCOS-AEE-001/aee.json",
+      "00-MASTER/UCCEP-000000/uccep.json",
+      "00-MASTER/UCL-000001/ucl.json",
+      "00-MASTER/ACEE-000001/acee.json",
+      "00-MASTER/P0-LIFECYCLE-CLOSURE-001/UCOS-LIFECYCLE-REPLAY.json",
+      "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json"
+    ]
+  },
+
+  "observation_id_shape": "^UCOS-OBS-[0-9]{6}$",
+
+  "invariants": [
+    {"id": "OBS-INV-01", "name": "EVERY_OBSERVATION_HAS_UNIVERSAL_IDENTITY"},
+    {"id": "OBS-INV-02", "name": "NO_CANONICAL_ARTIFACT_EMBEDS_AN_OBSERVATION_VALUE"},
+    {"id": "OBS-INV-03", "name": "EVERY_OBSERVATION_REFERENCE_RESOLVES_TO_A_DECLARED_KIND"},
+    {"id": "OBS-INV-04", "name": "EVERY_OBSERVATION_HAS_AN_EVIDENCE_SURFACE"},
+    {"id": "OBS-INV-05", "name": "NO_CERTIFICATION_ARTIFACT_OBSERVES_ITS_OWN_PRODUCT"},
+    {"id": "OBS-INV-06", "name": "OBSERVATION_IDENTITY_IS_VALUE_INDEPENDENT"},
+    {"id": "OBS-INV-11", "name": "NO_CANONICAL_VALUE_IS_DERIVED_FROM_AN_OBSERVATION", "test": "DIFFERENTIAL"},
+    {"id": "OBS-INV-12", "name": "EVERY_PRODUCER_DECLARES_THE_OBSERVATION_SOURCES_IT_READS"},
+    {"id": "OBS-INV-13", "name": "EVERY_CANONICAL_ARTIFACT_PROVES_ITS_ANCESTRY"}
+  ],
+
+  "no_finite_domain": "Observation kinds are defined by their relation to the commit boundary — inside it or outside it — never by any named environment, machine, platform, reality or domain. A new kind is one appended entry and requires no change to the rule.",
+
+  "not_in_this_universe": [
+    "The observed VALUES. They live on evidence surfaces declared in UCOS-EVIDENCE-UNIVERSE-001.",
+    "A sixth evidence class. This register creates none; every observation binds to one of the five that already exist.",
+    "A second identity authority. Observations mint from the one id-ledger."
+  ]
+}

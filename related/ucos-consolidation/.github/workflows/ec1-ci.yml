@@ -1,0 +1,323 @@
+# TASK-000002 — EC-1 Foundation CI pipeline.
+# Jobs: frozen-path guard (DP-03), lint (CD-01/CD-04), test+coverage (CD-02), build (DE-01).
+# Action versions are pinned to major tags (DE-04).
+name: EC-1 CI
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+# CI throughput: supersede in-flight runs for the same ref so a new push cancels a
+# stale one instead of queuing behind it. Pure run-scheduling — no gate/behavior change.
+concurrency:
+  group: ec1-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+# THE SHARD COUNT IS DECLARED, NOT INHERITED FROM THE MACHINE. Without this override
+# `resolve_workers` takes the smaller of the declared ceiling and `os.cpu_count()`, so the
+# partition would be a property of whichever runner GitHub allocated — and the plan job and
+# the shard jobs could silently disagree if they were ever given different sizes. Pinning it
+# makes the plan a pure function of tracked inputs, which is what lets every job recompute
+# the same partition independently and what makes the plan digest meaningful.
+env:
+  UVI_WORKERS: "12"
+
+jobs:
+  # Computes the partition ONCE so the matrix can be built from the plan's own shard
+  # indices. The matrix must never be built from the worker count: `plan_shards` returns one
+  # shard per worker PLUS one per isolated wave, so `range(workers)` names one fewer shard
+  # than the plan holds, and the shard it fails to name simply never runs — while every
+  # job's topology proof still passes, because that proof measures the PLAN and not what was
+  # executed. UVI-L-08 measures this addressing property from outside.
+  plan:
+    name: Shard plan (UVI-000001)
+    runs-on: ubuntu-latest
+    outputs:
+      shards: ${{ steps.partition.outputs.shards }}
+      digest: ${{ steps.partition.outputs.digest }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install (pinned dev dependencies)
+        run: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
+
+      # THROUGH THE CLI, NOT AROUND IT. The first version of this step built the plan
+      # itself with `build_plan("full")` -- and `workers_override` is an explicit parameter
+      # that `build_plan` never reads from the environment, so this job silently resolved
+      # workers from os.cpu_count() (4 on this runner, giving 5 shards) while every shard
+      # job went through the CLI, read UVI_WORKERS=12, and computed 13. The matrix was
+      # therefore built from one plan and executed against another. Reimplementing the
+      # CLI's plan construction in YAML is what made that possible, so this step now runs
+      # the same command the shard jobs do, and the plan is constructed in exactly one
+      # place. The digest guard caught it -- every shard refused rather than running a
+      # partition it could not prove -- which is why this was a red run and not a green one
+      # missing eight shards' tests.
+      - name: Compute the partition and its digest
+        id: partition
+        run: |
+          set -euo pipefail
+          export PLAN
+          UVI="python -m engine.verification_intelligence"
+          # --full selects the whole suite, so every job computes the same plan. An
+          # impact-selected mode is derived from the diff and the CLI refuses to shard it.
+          PLAN="${RUNNER_TEMP}/plan.json"
+          $UVI plan --mode full --json --out "$PLAN"
+          SHARDS="$(python -c 'import json,os;print(json.dumps([s["index"] for s in json.load(open(os.environ["PLAN"]))["shards"]]))')"
+          DIGEST="$($UVI plan --mode full --digest)"
+          echo "shards=${SHARDS}" >> "$GITHUB_OUTPUT"
+          echo "digest=${DIGEST}" >> "$GITHUB_OUTPUT"
+          echo "matrix: ${SHARDS}"
+          echo "digest: ${DIGEST}"
+
+  foundation:
+    name: Foundation (shard ${{ matrix.shard }})
+    needs: plan
+    strategy:
+      # Every shard must report. Stopping the matrix at the first red would leave the
+      # combine job unable to tell a failing shard from one that never ran.
+      fail-fast: false
+      matrix:
+        shard: ${{ fromJSON(needs.plan.outputs.shards) }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install (pinned dev dependencies)
+        run: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
+
+      - name: Frozen-path guard (DP-03 — corpus is read-only)
+        run: |
+          set -euo pipefail
+          # DP-03 protects the certified CANON. The four generated register
+          # surfaces (00-BOOK/{DATA,REGISTRIES,CONTROL-TOWER,PORTAL}) are
+          # deterministically re-derivable machinery OUTPUT — declared out of
+          # scope by REG-AUTO-001 §2 and owned by the Atomic Registration
+          # Transaction, which legitimately regenerates and commits them (every
+          # `REG-AUTO-001: register …` commit touches them). Their integrity is
+          # enforced by register.sh --guard (the Registration Gate drift check,
+          # same four-subtree set), NOT by this frozen-path guard. Excluding
+          # them here reconciles this gate with the Registration Gate so a
+          # registration commit is not falsely flagged as a DP-03 violation,
+          # while the guard still protects 00-SOURCE/, 99-FREEZE/, and the
+          # authored 00-BOOK canon.
+          #
+          # EIP-018 (FP-7): this step used to `echo "…skipping…(no-op)"` and
+          # report SUCCESS whenever the base ref did not resolve — which is the
+          # normal case for the first push to a new branch (github.event.before
+          # is the all-zero SHA) and for re-runs. DP-03 enforcement was
+          # therefore silently disabled on exactly the pushes most likely to
+          # introduce a corpus write. The base ref is now resolved through an
+          # ordered fallback chain, and if NOTHING resolves the step fails:
+          # if we cannot determine what changed, we cannot assert DP-03.
+          BASE=""
+          for CANDIDATE in \
+            "${{ github.event.pull_request.base.sha }}" \
+            "${{ github.event.before }}" \
+            "$(git merge-base "origin/${{ github.event.repository.default_branch }}" HEAD 2>/dev/null || true)" \
+            "$(git rev-parse --verify --quiet 'HEAD^' 2>/dev/null || true)"
+          do
+            [ -n "$CANDIDATE" ] || continue
+            if git rev-parse --verify --quiet "${CANDIDATE}^{commit}" >/dev/null; then
+              BASE="$CANDIDATE"
+              break
+            fi
+          done
+
+          if [ -z "$BASE" ]; then
+            echo "DP-03 GUARD FAIL-CLOSED: no diff base could be resolved, so the set of" >&2
+            echo "changed paths is unknown and corpus read-only-ness cannot be asserted." >&2
+            echo "Refusing to report success for an unperformed check." >&2
+            exit 1
+          fi
+          echo "Guarding changes against base $BASE"
+
+          # No `|| true` on git: a git failure must fail the step rather than
+          # silently produce an empty change set that trivially passes.
+          CHANGED="$(git diff --name-only "$BASE" HEAD)"
+
+          # IMPLEMENT-001B RB-01 (CF-01 / CF-02): SCHEMAS/ and tools/ join the
+          # exclusion set, because DP-03's authoritative text — UCIC-001 Stage 4,
+          # "0 writes to … `00-BOOK/**` SOURCE" — protects the authored 00-BOOK
+          # CANON, and neither of these two subtrees is that canon:
+          #
+          #   * 00-BOOK/tools/  — REG-AUTO-001 §2 names it "the generator's own
+          #     machinery", explicitly OUT OF SCOPE; §3 P3 further names config.py
+          #     a declared INPUT to registration ("a pure function of repository
+          #     content + the append-only ledger + config.py"). 0 of 1193
+          #     registered artifacts live under it — the registry never lists its
+          #     own generator.
+          #   * 00-BOOK/SCHEMAS/ — registered content, but four located Control
+          #     Tower standards affirmatively authorize ADDITIVE schema change:
+          #     STATUS-001:122 ("additive; existing data remains valid") and :139,
+          #     GOV-INT-001:308/:370, UCI-001:37, UCI-OPT-001:258. Its integrity is
+          #     enforced by the Registration Gate (content_hash drift via
+          #     register.sh --guard / CK-REG-DRIFT), not by this guard.
+          #
+          # Verified against the authority chain: 00-BOOK appears in the X-1…X-10
+          # protected-area register (UCCEP-000006 Output 6) ONLY at X-4
+          # (00-BOOK/DATA/id-ledger.json) and X-5 (00-BOOK/DATA/* ledgers) — X-1 is
+          # 00-SOURCE/ + 00-SOURCE-MANIFEST/ + 99-FREEZE/, and the freeze manifest
+          # (99-FREEZE/SOURCE-FILES.txt) names 13 files, none under 00-BOOK.
+          #
+          # STILL GUARDED, deliberately: 00-SOURCE/, 99-FREEZE/, and the authored
+          # 00-BOOK canon (UCOS-BOOK-000000-*.md, MASTER-BOOK/, ADVANCEMENT/).
+          # The shared FROZEN_PREFIXES constant is UNCHANGED — it has 21 call
+          # sites, of which 18 are write-time guards (evidence writers, knowledge
+          # store, publishing, realization) for which whole-tree 00-BOOK breadth is
+          # correct. Narrowing the constant would weaken those 18 to fix this one
+          # review gate. The scope correction belongs here, at the review boundary.
+          #
+          # `grep -v` exits 1 when it filters EVERYTHING. That is a legitimate
+          # "only generated register surfaces changed" result, so tolerate a
+          # non-zero exit from grep alone — never from git, handled above.
+          FILTERED="$(printf '%s\n' "$CHANGED" \
+            | grep -vE '^00-BOOK/(DATA|REGISTRIES|CONTROL-TOWER|PORTAL|SCHEMAS|tools)/' || true)"
+
+          if [ -z "$(printf '%s' "$FILTERED" | tr -d '[:space:]')" ]; then
+            echo "No changed paths outside the generated register surfaces; nothing for the guard to reject."
+            exit 0
+          fi
+          printf '%s\n' "$FILTERED" | ec1-frozen-guard --stdin
+
+      # EIP-018 (FP-8): CI used to reimplement a SUBSET of the canonical gate
+      # (`ruff check` + `pytest`), omitting `ruff format --check`, the explicit
+      # coverage report, and the governance pre-registration gate. verify.sh —
+      # the gate every contributor is told is authoritative — ran in NO
+      # workflow, so "verify.sh is green" and "CI is green" were different
+      # predicates and format drift passed CI. Invoking verify.sh directly makes
+      # them the same predicate by construction: it runs the shared
+      # ucos_ruff_gate (check AND format --check), pytest with the 90% coverage
+      # gate, the coverage report, and `ukb.py enforce --pre`.
+      #
+      # UVI-000001 made the mode EXPLICIT. The bare invocation used to be the
+      # certification contract and is now --change, a developer mode that runs
+      # impact-selected tests without the coverage floor and certifies nothing.
+      # CI must name the certification mode, and --full is it: the whole suite
+      # under the 90% floor, every governance / identity / lifecycle / evolution
+      # gate, plus the read-only registration observation. Dropping "--full"
+      # here would silently turn this job into a developer check.
+      # EEG-00 refused every run of this job: verify.sh resolves its interpreter through
+      # scripts/ucos-env.sh, which requires .ec1-venv, and this workflow installed into the
+      # runner's system Python instead. The gate never reached a single stage — it printed
+      # "the canonical interpreter is absent" and exited 1. Bootstrapping through the same
+      # environment owner verify.sh uses keeps CI and local execution the same predicate
+      # rather than two similar ones (the reasoning aee-gate.yml already records).
+      - name: Bootstrap the canonical environment (creates .ec1-venv)
+        run: ./bootstrap.sh
+
+      - name: Assert the canonical interpreter resolves (fail-closed)
+        run: |
+          test -x .ec1-venv/bin/python || {
+            echo "canonical venv interpreter absent after bootstrap; verify.sh would refuse" \
+                 "at EEG-00 and the job would report an environment fault as a gate result." >&2
+            exit 1
+          }
+          .ec1-venv/bin/python --version
+
+      # EVERY JOB RUNS THE WHOLE CANONICAL GATE, and only the pytest stage is narrowed.
+      # EIP-018 (FP-8) records what decomposing this gate across CI steps cost last time:
+      # CI reimplemented a subset, so "verify.sh is green" and "CI is green" became
+      # different predicates and format drift passed. Sharding does not reopen that. The
+      # mode is still --full, every stage still runs, and the job still re-derives the whole
+      # plan and re-proves that it unions to the selection before narrowing to its shard.
+      #
+      # What a sharded job does NOT do is claim the floor: it evaluates no coverage
+      # percentage and records no stage evidence (see the note in verify.sh). The floor is a
+      # property of the whole suite and is evaluated exactly once, by the combine job.
+      - name: Canonical verification gate (./verify.sh --full, shard ${{ matrix.shard }})
+        env:
+          UVI_SHARD: ${{ matrix.shard }}
+          # OUTSIDE THE WORKING TREE, for the reason run_tests already records about its
+          # own temp dirs: to a governance gate a directory in the tree is an OBJECT, and
+          # the governance stages of this very run execute after the pytest stage. An
+          # export directory inside the workspace would be measured by UCOS-UGA-001 as an
+          # unidentified object, and a verification run must not be able to dirty the
+          # thing it is verifying.
+          UVI_COVERAGE_OUT: ${{ runner.temp }}/uvi-coverage
+          UVI_PLAN_DIGEST: ${{ needs.plan.outputs.digest }}
+        run: ./verify.sh --full
+
+      # `include-hidden-files` is load-bearing: the data files are named `.coverage.shard-N`
+      # and upload-artifact has excluded dotfiles by default since v4.4. Without it the
+      # artifact uploads empty, and the combine job would refuse the run for a missing shard
+      # that had in fact measured everything asked of it.
+      - name: Upload this shard's coverage data
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-shard-${{ matrix.shard }}
+          path: ${{ runner.temp }}/uvi-coverage/.coverage.shard-*
+          include-hidden-files: true
+          if-no-files-found: error
+
+  combine:
+    name: Coverage floor (combined, evaluated once)
+    needs: [plan, foundation]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Install (pinned dev dependencies)
+        run: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
+
+      - name: Download every shard's coverage data
+        uses: actions/download-artifact@v4
+        with:
+          pattern: coverage-shard-*
+          merge-multiple: true
+          path: .uvi-coverage
+
+      # Fails closed on a missing shard. In one process a shard that dies before writing
+      # data also exits non-zero, so nothing false can be minted; a combine job sees
+      # artifacts and never exit codes, so a cancelled, skipped or failed-upload job is
+      # indistinguishable from one that measured nothing — and the coverage tool would
+      # happily report a floor over the fragment that arrived. The expected indices come
+      # from the plan, so this refuses unless every shard of THAT partition reported.
+      - name: Combine and evaluate the 90% floor once, over the union
+        run: |
+          python -m engine.verification_intelligence combine \
+            --mode full \
+            --data-dir .uvi-coverage \
+            --plan-digest ${{ needs.plan.outputs.digest }}
+
+      - name: Build (wheel + sdist)
+        run: python -m pip install build==1.2.2 && python -m build
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-xml
+          path: coverage.xml
+          if-no-files-found: ignore

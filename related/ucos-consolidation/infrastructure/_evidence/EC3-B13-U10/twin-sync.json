@@ -1,0 +1,15 @@
+{
+  "artifact": "EC3-B13-U10-TWIN-SYNC",
+  "integration_registry_head": "7c89e922223abe8c3f8db5ceb85a1840e6130cccbce7fb37a2a328aa7d476260",
+  "leaf_closure_complete": true,
+  "no_architectural_drift": true,
+  "registration_step": "deferred to append-only UKB registration transaction (out of scope of this additive realization)",
+  "surfaces": [
+    "Registry",
+    "Portal",
+    "Control Tower",
+    "Digital Twin"
+  ],
+  "synchronization_model": "append-only UKB build (REG-AUTO-001): the integration record is registered additively; native IDs preserved; no frozen artifact modified; drift enforced by register.sh --guard over {DATA,REGISTRIES,CONTROL-TOWER,PORTAL}.",
+  "unit": "EC3-B13-U10"
+}

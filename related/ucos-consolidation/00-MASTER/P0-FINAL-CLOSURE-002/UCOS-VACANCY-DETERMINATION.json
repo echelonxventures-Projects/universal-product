@@ -1,0 +1,54 @@
+{
+  "authority": "NONE — DERIVED TRUTH. Measurement only; this file certifies nothing and creates no authority.",
+  "phase": 5,
+  "subject": "VAC-01",
+  "record": {
+    "id": "VAC-01",
+    "tier": "T1",
+    "located": false,
+    "declared_superior": "The ratified UCOS Omega-Infinity Constitution presupposed at CEP-000 §5.5 Tier 1 and §6.4",
+    "evidence": "The referent exists in the repository only as frozen non-normative source material under 00-SOURCE/CONSTITUTIONS/ (.docx). No ratified normative artifact occupies the tier.",
+    "closure_procedure": "CMG-000001 XVII.4: (a) record the vacancy; (b) record the determinations rendered provisional; (c) refer identification of the occupying authority to explicit ratification; (d) re-run authority resolution on closure.",
+    "open_question": "CMG-OQ-02",
+    "provisional_consequence": "Every determination depending on T1 — including the standing of CMG-000001 itself — is PROVISIONAL under CMG-L-12."
+  },
+  "classification": {
+    "permanent": false,
+    "temporary": false,
+    "artificial": false,
+    "unfillable": false,
+    "unimplemented": false,
+    "missing": false,
+    "implicitly_fillable": false,
+    "explicitly_fillable": true,
+    "auto_fillable": false,
+    "governance_fillable": false,
+    "evolution_fillable": false
+  },
+  "verdict": "EXPLICITLY FILLABLE — BUT NOT BY ANY IN-CORPUS ACT",
+  "referent_located": {
+    "exists": true,
+    "paths": [
+      "UCOS Ω.docx",
+      "UCOS Ω∞ ABSOLUTE ARCHITECTURAL CONSTITUTION.docx",
+      "UCOS Ω∞ UNIVERSAL REALITY COMPILER CONSTITUTION.docx",
+      "Universal Commerce Compiler Constitution.docx"
+    ],
+    "status": "frozen, non-normative-as-law (Tier T0 Constitutional Source Corpus)"
+  },
+  "lawful_filling_mechanism": {
+    "requirement": "EXPLICIT RATIFICATION (CMG-OQ-02.requires)",
+    "actor": "The out-of-corpus constituent / finality authority — never Execution Authority (CEP-000 §5.4, CEP-006 I.5)",
+    "steps": [
+      "CMG-000001 XVII.4 (c) refer identification of the occupying authority to explicit ratification",
+      "constituent ratification act (out-of-corpus, CEP-006 XII.2)",
+      "CMG-000001 XVII.4 (d) re-run authority resolution on closure"
+    ],
+    "in_corpus_satisfiable": false,
+    "automatable": false,
+    "reproducible": false,
+    "basis": "09-DR-RAT-11-ASSESSMENT.md Q6/Q7/Q8: 'No repository action, script, or pipeline can perform an out-of-corpus constituent act'; 'a singular constituent act, not a deterministic, re-runnable computation over Repository Truth.'"
+  },
+  "blocks": "Closure of VAC-01 and non-provisional standing of every T2/T1M instrument (CMG-OQ-02.blocks)",
+  "residual_risk_if_never_satisfied": "RR-08 — the system remains PROVISIONAL indefinitely (09-DR-RAT-11-ASSESSMENT §3). Non-blocking to engineering progression per CEP-006 XII.3."
+}

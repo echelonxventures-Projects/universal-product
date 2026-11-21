@@ -1,0 +1,252 @@
+{
+  "accepted": true,
+  "blocking_failures": [],
+  "blueprint_id": "DMC-06",
+  "checks_run": [
+    "data-value-fidelity",
+    "foundation-reuse-integrity",
+    "founding-acyclic",
+    "lifecycle-valid",
+    "meta-class-single",
+    "meta-constraints",
+    "meta-relationships-closed",
+    "non-constitutive",
+    "provisional-state-disclosure",
+    "storage-classified",
+    "storage-durability-declared",
+    "storage-identified",
+    "storage-independence",
+    "storage-named",
+    "storage-persistence-by-reference",
+    "storage-persists-entities",
+    "storage-placement-explicit",
+    "storage-schema-aligned",
+    "storage-topology-consistent",
+    "storage-typed",
+    "storage-versioned",
+    "traceability-rooted"
+  ],
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 22,
+    "total": 22
+  },
+  "evidence_format": "ucos-validation-evidence/1.0.0",
+  "findings": [
+    {
+      "check_id": "data-value-fidelity",
+      "details": {
+        "value_digest": "b63d474835e6f132359798f8cff1584fb31e73474f04acc4197e4eccdd17c417"
+      },
+      "message": "data-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-004",
+          "ENG-005"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "lifecycle-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "DMC-06"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "DTA-K1",
+          "DTA-K3",
+          "DMK-01",
+          "DMK-03"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "DMR-05",
+          "DMR-10",
+          "DMR-11"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-classified",
+      "details": {
+        "kind": "Local-Topology"
+      },
+      "message": "storage-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-durability-declared",
+      "details": {
+        "durability": "Durable"
+      },
+      "message": "storage-durability-declared satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-identified",
+      "details": {
+        "storage_id": "UCOS-STORAGE-ucos.data.storage.foundation-b63d474835e6f132"
+      },
+      "message": "storage-identified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-independence",
+      "details": {},
+      "message": "storage-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-named",
+      "details": {
+        "name": "ucos.data.storage.foundation"
+      },
+      "message": "storage-named satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-persistence-by-reference",
+      "details": {
+        "runtime_ref": "UCOS-RUNTIME-REF:state.persist"
+      },
+      "message": "storage-persistence-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-persists-entities",
+      "details": {
+        "persists": [
+          "UCOS-ENTITY-ucos.data.entity.foundation-b014125ab4fbbe4f"
+        ]
+      },
+      "message": "storage-persists-entities satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-placement-explicit",
+      "details": {
+        "locus_count": 1
+      },
+      "message": "storage-placement-explicit satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-schema-aligned",
+      "details": {
+        "schemas": [
+          "UCOS-SCHEMA-ucos.data.schema.foundation-9c2e6c6c67fee5d6"
+        ]
+      },
+      "message": "storage-schema-aligned satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-topology-consistent",
+      "details": {
+        "kind": "Local-Topology",
+        "loci": 1
+      },
+      "message": "storage-topology-consistent satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-typed",
+      "details": {
+        "type_tag": "ucos.core.storage"
+      },
+      "message": "storage-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-versioned",
+      "details": {
+        "version": "1.0.0"
+      },
+      "message": "storage-versioned satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 6
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-STORAGE-ucos.data.storage.foundation-b63d474835e6f132",
+  "verdict": "pass"
+}

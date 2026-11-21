@@ -1,0 +1,48 @@
+{
+  "backward": [
+    "AMC-03",
+    "APPLICATION-007",
+    "APPLICATION-005",
+    "APPLICATION-001",
+    "ARCH-APPLICATION-001",
+    "12-APPLICATION@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-MODULE-ucos.application.module.foundation-42d78167ff63a8a9",
+    "EC3-B12-U03-VALIDATION-EVIDENCE",
+    "EC3-B12-U03-CCE-CERTIFICATION",
+    "EC3-B12-U03-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "6051820",
+  "meta_class": "AMC-03",
+  "referenced_units": [
+    "AMC-01",
+    "AMC-02",
+    "SF-2",
+    "DF-2"
+  ],
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "PL-F2"
+  ],
+  "substrate_reuse": {
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the module)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity; no parallel model)",
+    "ENG-004": "application.module_meta.ModuleKind + type_tag (ENG-004 typing, by ref)",
+    "ENG-005": "reference identifiers (feature/application/composition refs; no new construct)",
+    "PL-F2": "experience composition bound by reference (AMR-07/12; PLATFORM-009/010); none redef",
+    "RL-F2": "module-transition / module-emit lifecycle behavior by reference (§7); none redefined"
+  },
+  "target_id": "UCOS-MODULE-ucos.application.module.foundation-42d78167ff63a8a9",
+  "trace_format": "ucos-application-module-traceability/1.0.0",
+  "unit": "EC3-B12-U03"
+}

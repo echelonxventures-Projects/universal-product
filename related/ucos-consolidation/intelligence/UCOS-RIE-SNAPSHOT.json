@@ -1,0 +1,308 @@
+{
+  "aeos_verdict": "FOUNDATION-READY — AEOS may begin as a separately authorized program; NOT begun here.",
+  "artifact_id": "UCOS-RIE-SNAPSHOT",
+  "authority": "NONE (derived truth)",
+  "capability_count": 148,
+  "classification": "ADDITIVE INTELLIGENCE (machine-readable) — derived, non-authoritative",
+  "content_hash": "1e20dba3bfc8148a6098c6402b2aa80430527f7bb6b8f9b9a05d039de4509d5e",
+  "dimension_index_reconciled_pct": 26.7,
+  "drift": {
+    "baseline": false,
+    "certification_drift": [],
+    "dependency_drift": [],
+    "duplicate_findings": [
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.acceptance",
+          "engine.tests.acceptance"
+        ],
+        "name": "acceptance"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.graph.architecture",
+          "engine.tests.graph.architecture"
+        ],
+        "name": "architecture"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.certification",
+          "engine.tests.certification",
+          "platform.certification"
+        ],
+        "name": "certification"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.ceu",
+          "engine.tests.ceu"
+        ],
+        "name": "ceu"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.civilization",
+          "engine.tests.civilization"
+        ],
+        "name": "civilization"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.constitution",
+          "engine.tests.constitution"
+        ],
+        "name": "constitution"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.context",
+          "engine.tests.context"
+        ],
+        "name": "context"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.discovery",
+          "engine.tests.discovery"
+        ],
+        "name": "discovery"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.factory",
+          "engine.tests.factory"
+        ],
+        "name": "factory"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.foundation",
+          "platform.foundation"
+        ],
+        "name": "foundation"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.governance",
+          "engine.tests.governance"
+        ],
+        "name": "governance"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.graph",
+          "engine.tests.graph"
+        ],
+        "name": "graph"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.knowledge.integration",
+          "engine.tests.integration",
+          "engine.tests.knowledge.integration"
+        ],
+        "name": "integration"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.kernel",
+          "engine.tests.kernel",
+          "intelligence.kernel"
+        ],
+        "name": "kernel"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.knowledge",
+          "engine.tests.knowledge"
+        ],
+        "name": "knowledge"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.nucleus",
+          "engine.tests.nucleus"
+        ],
+        "name": "nucleus"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.omega_governance",
+          "engine.tests.omega_governance"
+        ],
+        "name": "omega_governance"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.omega_infinite",
+          "engine.tests.omega_infinite"
+        ],
+        "name": "omega_infinite"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.provider",
+          "engine.tests.provider"
+        ],
+        "name": "provider"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "automation/ukb.py",
+          "automation/ukbx.py"
+        ],
+        "name": "py"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.omega_governance.temporal",
+          "engine.temporal"
+        ],
+        "name": "temporal"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "application.tests",
+          "data.tests",
+          "engine.tests",
+          "infrastructure.tests",
+          "intelligence.tests",
+          "platform.tests",
+          "service.tests"
+        ],
+        "name": "tests"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.tests.uckp",
+          "engine.uckp"
+        ],
+        "name": "uckp"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.knowledge.ukip",
+          "engine.tests.knowledge.ukip"
+        ],
+        "name": "ukip"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.tests.universal_certification",
+          "engine.universal_certification"
+        ],
+        "name": "universal_certification"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.tests.universal_discovery",
+          "engine.universal_discovery"
+        ],
+        "name": "universal_discovery"
+      },
+      {
+        "assessment": "INTENTIONAL (layered engine/platform pair) — KEEP/COMPOSE",
+        "locations": [
+          "engine.tests.validation",
+          "engine.validation",
+          "platform.validation"
+        ],
+        "name": "validation"
+      }
+    ],
+    "implementation_drift": [],
+    "stale_evidence": [
+      {
+        "as_of": "2026-07-15T08:05:00Z",
+        "dimension": "build",
+        "source": "GITHUB_ACTIONS",
+        "status": "BLOCKED"
+      },
+      {
+        "as_of": "2026-07-15T08:33:00Z",
+        "dimension": "deployment",
+        "source": "KUBERNETES",
+        "status": "IN_PROGRESS"
+      },
+      {
+        "as_of": "2026-07-16T09:56:37+05:30",
+        "dimension": "implementation",
+        "source": "GIT",
+        "status": "IMPLEMENTED"
+      },
+      {
+        "as_of": "2026-07-15T08:22:00Z",
+        "dimension": "operational",
+        "source": "PROMETHEUS",
+        "status": "BLOCKED"
+      },
+      {
+        "as_of": "2026-07-15T08:22:00Z",
+        "dimension": "production",
+        "source": "PROMETHEUS",
+        "status": "BLOCKED"
+      },
+      {
+        "as_of": "2026-07-15T08:12:00Z",
+        "dimension": "security",
+        "source": "TRIVY",
+        "status": "BLOCKED"
+      },
+      {
+        "as_of": "2026-07-15T08:05:00Z",
+        "dimension": "unit_testing",
+        "source": "GITHUB_ACTIONS",
+        "status": "BLOCKED"
+      }
+    ]
+  },
+  "evidence_state": {
+    "evidence_files": {
+      "00-BOOK/DATA/artifacts.json": "aa096e10c9cc0b9ff0a04da62746892dea54153893b3f9633783072584fb4abe",
+      "00-BOOK/DATA/certification.json": "493c11ef1c1a084a7afad786296384857d8333160458e019fcfe3a3d132261a1",
+      "00-BOOK/DATA/control-tower.json": "3afbb9b010911fad12eaca81793e7039935140f58930fefb00784a04d48fdaec",
+      "00-BOOK/DATA/twin.json": "c50247cea005c7c40ce60e45bbcceca231cc9836efa24f263da03c2312da4128",
+      "00-BOOK/DATA/volumes.json": "bca13cfe0aaf66f50d10637463be8ab952bc2acdbecac66894c21018b6a897b5"
+    }
+  },
+  "evidence_timestamp": "2026-09-13T23:56:07+00:00",
+  "generation": {
+    "anchor": "the containing commit — owned by version control, never restated here (UCOS-RFP-001 RFP-2)",
+    "generator": "UCOS-RIE-001 Repository Intelligence Engine",
+    "generator_version": "1.0.0",
+    "input_hash": "e90d065033a34cc1c4ef51c91909bef4a7edc840cdae3ce21a42ad2e453ad402",
+    "input_hash_basis": "sha256 over the canonical evidence fingerprint — every 00-BOOK/DATA evidence file hash, which together pin the tracked state these outputs derive from. Coverage measurement (TEST_EXECUTION_STATE) is excluded per UCOS-P0-FCL-002-FIX-001 — it is not canonical identity input.",
+    "output_hash_field": "content_hash"
+  },
+  "next_executable_capability": "EC-3 Band 10 (Data) realization",
+  "overall_health": "HEALTHY",
+  "producer": "UCOS-RIE-001 Repository Intelligence Engine v1.0.0",
+  "title": "Repository Intelligence Snapshot"
+}

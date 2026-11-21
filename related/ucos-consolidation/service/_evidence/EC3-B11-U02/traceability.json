@@ -1,0 +1,43 @@
+{
+  "backward": [
+    "SMC-02",
+    "SOE-02",
+    "SERVICE-005",
+    "SERVICE-001",
+    "ARCH-SERVICE-001",
+    "11-SERVICE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-CAPABILITY-ucos.service.capability.foundation-928605ff32407252",
+    "EC3-B11-U02-VALIDATION-EVIDENCE",
+    "EC3-B11-U02-CCE-CERTIFICATION",
+    "EC3-B11-U02-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "0595a91",
+  "meta_class": "SMC-02",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "PL-F2"
+  ],
+  "substrate_reuse": {
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the capability)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity, no parallel model)",
+    "ENG-004": "service.capability_meta.CapabilityKind + type_tag (ENG-004 typing, by reference)",
+    "ENG-005": "reference identifiers (behavior/platform/service refs; no new construct)",
+    "PL-F2": "PLATFORM-006 capability construct bound by reference (SMR-12); not redefined",
+    "RL-F2": "behavior bound by reference (SMR-11); the ability-to-perform-work, not redefined",
+    "SMC-01": "the Universal Service root that realizes this capability (SMR-01, by reference)"
+  },
+  "target_id": "UCOS-CAPABILITY-ucos.service.capability.foundation-928605ff32407252",
+  "trace_format": "ucos-service-traceability/1.0.0",
+  "unit": "EC3-B11-U02"
+}

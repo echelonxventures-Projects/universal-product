@@ -1,0 +1,1725 @@
+{
+  "artifact_id": "UCOS-CAA-001",
+  "title": "Constitutional Authority Alignment — the one supreme object authority, and where every other instrument stands under it",
+  "authority": "AUTHORED REPOSITORY TRUTH, HELD SUBORDINATE. This binding legislates no law, mints no identity, owns no graph and certifies nothing. UCKP-ART-01 already declares that no architectural authority exists outside the root law; what the repository lacked was the BINDING that says which instrument stands WHERE under it. This file is that binding and only that binding. It is upstream of the engines that read it and must never be produced by one.",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "DERIVED",
+    "articles": [
+      "UCKP-ART-01",
+      "UCKP-ART-03",
+      "UCKP-ART-18"
+    ],
+    "effect": "This binding derives its whole content from the root law. It adds no article, no invariant and no stop condition, because an amendment to fit the data is the failure mode UCKP-ART-17 exists to prevent."
+  },
+  "constitutional_basis": "UCKP-LAW-0001 (engine/uckp/law.py), UCOS-UCOM-001, UCOS-UCAF-001, UCOS-UFC-001 UFC-15, GOV-005 §5.1/§5.3",
+  "schema": "ucos-constitutional-authority-alignment",
+  "version": "1.0.0",
+  "why_this_exists": [
+    "Measured over the tree as it stood before this binding existed: 105 version-controlled JSON",
+    "instruments carried a top-level `authority` key. 49 disclaimed authority (`NONE — DERIVED",
+    "TRUTH`), 48 disclosed execution-only standing (`ENGINEERING-EXECUTION-ONLY`) and one conveyed",
+    "an assignment made elsewhere (`Governed Ownership Authority`) — 98 instruments claiming nothing,",
+    "under tokens UCOS-UCAF-001 had already classed non-constitutional. Seven CLAIMED authority",
+    "outright, each with the words `AUTHORED REPOSITORY TRUTH`, and each asserting that it is",
+    "upstream of the engines that read it.",
+    "",
+    "Every one of those seven claims is, on its own terms, correct: each really is the authoring",
+    "surface for what it declares. What none of them said is by WHAT authority it declares it.",
+    "Seven instruments each standing as the top of its own chain is seven roots, and UCKP-ART-01",
+    "admits exactly one. The condition is not a wrong declaration anywhere; it is a MISSING EDGE",
+    "everywhere — no instrument named its superior, so no gate could tell an authority derived from",
+    "the root law from an authority invented beside it.",
+    "",
+    "The same absence produced two concrete duplications the repository could see but not measure:",
+    "the id-ledger and UCKP identity both mint identity with no declared relation between them, and",
+    "UCOS-UGA-001 emits a relationship graph while engine/uckp/graph.py declares what a relationship",
+    "IS, again with no declared relation. Neither is a rival implementation. Both were UNDECLARED",
+    "subordinations, which is indistinguishable from rivalry to anything that has to check.",
+    "",
+    "This binding adds the missing edges and nothing else. No instrument is migrated, replaced,",
+    "regenerated or retired; no identity is re-minted; no engine is rewritten. Seven files gain a",
+    "`constitutional_superior` block, and the gate that already runs in verify.sh gains the",
+    "invariants that keep an eighth from appearing unbound."
+  ],
+  "supreme_authority": {
+    "id": "UCKP-LAW-0001",
+    "name": "Universal Constitutional Knowledge Principle",
+    "home": "engine/uckp/law.py",
+    "object_model": "UCKO — the Universal Constitutional Knowledge Object (engine/uckp/ucko.py)",
+    "object_model_determination": "UCOS-UCOM-001-UNIVERSAL-CONSTITUTIONAL-OBJECT-MODEL-DETERMINATION.md",
+    "supremacy_clause_home": "UCKP-ART-01",
+    "supremacy_clause": "Every constitutional entity shall exist exactly once as a canonical Universal Constitutional Knowledge Object. Every representation, execution environment and persistence mechanism of that entity is a view of it and holds no independent architectural authority. No architectural authority exists outside this principle.",
+    "articles": 20,
+    "invariants": 17,
+    "stop_conditions": 13,
+    "exactly_one": "There is exactly ONE supreme constitutional object authority. A second instrument declaring role SUPREME is a competing root and is void under UCKP-ART-03.",
+    "why_the_home_is_code": "UCKP-ART-11 forbids a generated representation from holding truth, and a law whose only home is a document is a law a document edit can silently repeal. The articles are immutable Python values in engine/uckp/law.py; every register, declaration and certificate that states them is generated from those values. This binding restates no clause it does not quote, and quotes only to be checkable.",
+    "self_grounding": "The root law is the single object in the universe whose authority derives from itself (engine/uckp/constitution.py::law_object). If two did, UCKP-ART-01 would be false; if none did, every chain would regress forever and nothing would ground."
+  },
+  "object_model": {
+    "model": "UCKO",
+    "name": "Universal Constitutional Knowledge Object",
+    "home": "engine/uckp/ucko.py",
+    "article": "UCKP-ART-02",
+    "facets": 33,
+    "determination": "UCOS-UCOM-001-UNIVERSAL-CONSTITUTIONAL-OBJECT-MODEL-DETERMINATION.md",
+    "rule": "Exactly ONE object model is declared repository-wide. An instrument that declares object classes states which model those classes PROJECT; it never declares a model of its own.",
+    "why": "UCOS-UCOM-001 measured the mission's 36 object dimensions against this model and found 34 already answered by a declared facet or a law. The model was never missing. What was missing was any requirement that an instrument declaring seven object classes say which model they belong to — and a class list that cites no model reads exactly like a second model.",
+    "measured_by": "CAA-INV-07"
+  },
+  "$authority_role_comment": [
+    "The standing an instrument may hold under the root law. Roles are derived from the articles,",
+    "never invented here: each names the article that creates the standing it describes. The set is",
+    "OPEN by registration (UCKP-ART-17) — an unknown future standing is one appended entry, never an",
+    "amendment to engine/uckp/law.py. Exactly one role is supreme, and exactly one instrument may",
+    "hold it.",
+    "",
+    "Every `definition` below is a CHECKED PROJECTION of engine/uckp/alignment.py::AUTHORITY_ROLES,",
+    "not a second wording of it. verify_binding compares them verbatim, so a role whose prose drifts",
+    "here fails a test rather than quietly becoming a second definition — which is what UCKP-ART-03",
+    "forbids and what a register full of near-identical paraphrases actually is."
+  ],
+  "authority_roles": {
+    "SUPREME": {
+      "definition": "the root constitutional law; its authority derives from itself and every other chain terminates at it",
+      "article": "UCKP-ART-01",
+      "may_hold_authority": true,
+      "cardinality": "EXACTLY_ONE"
+    },
+    "PROJECTION": {
+      "definition": "a generated or authored view of what the objects already are; it may state repository reality and may never state law",
+      "article": "UCKP-ART-11",
+      "also": "UCKP-ART-04",
+      "may_hold_authority": false,
+      "cardinality": "MANY"
+    },
+    "PERSISTENCE": {
+      "definition": "a storage mechanism holding copies of objects and their identities; where a thing is kept is never what a thing is",
+      "article": "UCKP-ART-09",
+      "also": "UCKP-ART-04",
+      "may_hold_authority": false,
+      "cardinality": "MANY"
+    },
+    "EXECUTION": {
+      "definition": "a technology that acts on objects; execution never owns knowledge",
+      "article": "UCKP-ART-10",
+      "may_hold_authority": false,
+      "cardinality": "MANY"
+    },
+    "EVIDENCE": {
+      "definition": "the record of what was done, kept so an act can be reviewed after the fact; evidence supports truth and never constitutes it",
+      "article": "UCKP-ART-16",
+      "also": "UCKP-ART-12",
+      "may_hold_authority": false,
+      "cardinality": "MANY"
+    },
+    "OBSERVATION": {
+      "definition": "the record of what was seen at a moment; taken outside the commit boundary, so it may never enter a canonical digest",
+      "article": "UCKP-ART-13",
+      "also": "UCKP-ART-15",
+      "may_hold_authority": false,
+      "cardinality": "MANY"
+    },
+    "DERIVED": {
+      "definition": "an instrument that records or measures the standing of others and asserts nothing of its own",
+      "article": "UCKP-ART-15",
+      "may_hold_authority": false,
+      "cardinality": "MANY"
+    },
+    "ORTHOGONAL": {
+      "definition": "an instrument that governs a distinct, non-overlapping axis of constitutional responsibility — such as recognition and classification of constitutional instruments — and does not compete for supremacy on the axis Article 1 governs; it holds no authority outside its own declared scope",
+      "article": "UCKP-ART-01",
+      "also": "UCKP-ART-04",
+      "may_hold_authority": false,
+      "cardinality": "FEW"
+    }
+  },
+  "$relation_comment": [
+    "How a subordinate instrument stands to the authority above it. The three relations are REUSED",
+    "verbatim from UCOS-UFC-001 UFC-15, whose executable gate FG-15-NO-PARALLEL-AUTHORITY already",
+    "verifies them over platform surfaces (platform/universal_foundation/convergence.py). UCKP-ART-18",
+    "requires an existing canonical object to be reused rather than given a rival, and a second",
+    "vocabulary for the identical concept is exactly such a rival. No fourth relation is created."
+  ],
+  "subordination_relations": {
+    "DELEGATES": "The surface still exists and reaches the authority above it rather than answering for itself.",
+    "SUPERSEDED": "The surface once held a competing definition and is now gone. A retired definition that still exists is still a second answer.",
+    "PROJECTION": "The surface is a derived or authored view of the objects, holding no independent determination.",
+    "ORTHOGONAL": "The surface holds independent, non-overlapping authority on a different axis and neither derives from nor answers to the authority above it; the two are declared non-competing rather than ranked."
+  },
+  "plane_relation_to_UFC_15": {
+    "statement": "UFC-15 and this binding are one principle measured on two planes, not two authorities.",
+    "UFC_15_plane": "platform.* Python surfaces, verified by import graph and by absence — platform/universal_foundation/convergence.py.",
+    "CAA_plane": "authority-CLAIMING instruments anywhere in the version-controlled boundary, verified by whether they name a constitutional superior — 00-MASTER/UCOS-UGA-001/uga_engine.py.",
+    "why_UCKP_is_not_a_model_in_foundation_convergence": "Registering the root law as a model inside UCOS-UFC-001's convergence register would make the platform's constitution the frame that admits the root law, inverting the hierarchy UCKP-ART-01 declares. The vocabulary is reused; the containment is not.",
+    "no_second_gate": "Neither gate is duplicated. FG-15 keeps its population and this binding adds none to it."
+  },
+  "$instrument_comment": [
+    "Every instrument that CLAIMS constitutional authority, with the standing it holds under the root",
+    "law. An instrument that DISCLAIMS authority is not listed and needs no entry: it asserts nothing,",
+    "so there is nothing to derive. The disclaiming tokens are not invented here either — they are the",
+    "non-constitutional token classes UCOS-UCAF-001 already legislates.",
+    "",
+    "`owns` and `may_never_own` are the operative halves. Together they are what makes 'subordinate'",
+    "a testable statement rather than a courtesy: the instrument keeps everything it actually",
+    "authored, and gives up only the claim to be the top of its own chain."
+  ],
+  "subordinate_instruments": [
+    {
+      "id": "UCOS-CAA-001",
+      "instrument": "00-BOOK/DATA/constitutional-authority-alignment.json",
+      "name": "Constitutional Authority Alignment",
+      "role": "DERIVED",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-01",
+        "UCKP-ART-03",
+        "UCKP-ART-18"
+      ],
+      "owns": "The record of which instrument holds which standing under the root law.",
+      "may_never_own": "An authority. This binding confers none, ratifies nothing and occupies no tier.",
+      "why_it_binds_itself": "It carries a top-level `authority` and therefore appears in its own claim scan. An alignment register exempt from the rule it enforces is the first parallel authority anyone would build, so it is measured by CAA-INV-02 and CAA-INV-03 exactly like every instrument it names."
+    },
+    {
+      "id": "UCOS-UGA-001",
+      "instrument": "00-MASTER/UCOS-UGA-001/uga-declaration.json",
+      "name": "Universal Governance Assimilation",
+      "role": "PROJECTION",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-04",
+        "UCKP-ART-05",
+        "UCKP-ART-07",
+        "UCKP-ART-11"
+      ],
+      "owns": "The REPOSITORY REALITY PROJECTION — which version-controlled objects exist, who owns each, what produced it, what it depends on, and which evidence class its governance records belong to. Every one of those is a statement about the repository, and the repository is a persistence and projection binding under UCKP-ART-04.",
+      "may_never_own": "What an OBJECT is; what an IDENTITY is; what a RELATIONSHIP is. Those are UCKP-ART-02, UCKP-ART-05 and UCKP-ART-07, and they are law.",
+      "why_this_is_not_a_demotion": "UGA measured 5757 objects that had no identity, no owner and no lifecycle, and nothing else in the repository could have. That work is untouched. What changes is one sentence about where its warrant comes from — which is the sentence that lets a gate tell it apart from an eighth authority nobody vetted."
+    },
+    {
+      "id": "UCOS-CEU-001",
+      "instrument": "00-MASTER/UCOS-CEU-001/ceu-declaration.json",
+      "name": "Constitutional Existence Universe",
+      "role": "PROJECTION",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-02",
+        "UCKP-ART-07",
+        "UCKP-ART-18"
+      ],
+      "owns": "Existence representation — the registration, supersession and resurrection of a unit of any declared form, the declaration of a form nobody has named yet, and the relationship and topology INSTANCES registered as units.",
+      "may_never_own": "What a relationship IS. That is UCKP-ART-07 at engine/uckp/graph.py, and CAA-INV-05 permits exactly one owner of the model. Nor the object model, which is UCKO under UCKP-ART-02 and which this substrate projects. Nor identity allocation, which is UCOS-EPIC-001. Nor context resolution, which is UCXI-000001. Nor lifecycle stages, which are UCKP-ART-14.",
+      "$instance_versus_model": "A relationship INSTANCE is a thing that exists, so it is an entity and it is represented here. A relationship DEFINITION is a semantic contract and stays with the model authority. Separating the two is what keeps one owner for the model while leaving instance registration open, and it is why a new relationship needs no model change and a model refinement needs no re-registration.",
+      "$why_this_binding_was_missing": "The substrate has existed at engine/ceu/ and has been in use by engine/nucleus/authority.py, which resolved a prior duplicate ownership in its favour. It carried no declaration artifact and appeared nowhere in this register, so the one instrument that answers 'what may exist' was the one instrument no gate could tell apart from an authority nobody vetted. This entry recognises it; it transfers nothing."
+    },
+    {
+      "id": "UCXI-000001",
+      "instrument": "00-MASTER/UCXI-000001/ucxi-declaration.json",
+      "name": "Universal Context Intelligence",
+      "role": "PROJECTION",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-04",
+        "UCKP-ART-07",
+        "UCKP-ART-13"
+      ],
+      "owns": "The reference frame every context resolves in, the open taxonomy of context kinds, the extension mechanism that admits a future kind as data, and context binding resolution.",
+      "may_never_own": "Permission. CXL-10 is that context describes and never grants, and UCKP-ART-04 is the article that sentence is true under. Nor entity existence, which is UCOS-CEU-001. Nor the relationship model, which is UCKP-ART-07 — the eleven declared context relations are instances projecting it. Nor identity allocation, nor governance decisions, which are CEP-002 Article 28 and UCDA-000001."
+    },
+    {
+      "id": "UCOS-EVIDENCE-UNIVERSE-001",
+      "instrument": "00-BOOK/DATA/evidence-universe.json",
+      "name": "Universal Evidence Universe",
+      "role": "EVIDENCE",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-11",
+        "UCKP-ART-12",
+        "UCKP-ART-16"
+      ],
+      "owns": "The five evidence classes, what each may touch, and the retention and input classification of every declared surface.",
+      "may_never_own": "Canonical identity. UCKP-ART-12 makes evidence a DELTA a state references; it never makes evidence the state."
+    },
+    {
+      "id": "UCOS-OBSERVATION-UNIVERSE-001",
+      "instrument": "00-BOOK/DATA/observation-universe.json",
+      "name": "Universal Observation Universe",
+      "role": "OBSERVATION",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-05",
+        "UCKP-ART-13",
+        "UCKP-ART-15"
+      ],
+      "owns": "What an observation IS, the four truths it separates, the observation kinds, and the rule that a canonical artifact references an observation only through its value-independent identity.",
+      "may_never_own": "A second identity authority. Observations mint from the one ledger, and the rule that they must is UCKP-ART-05."
+    },
+    {
+      "id": "UCOS-GENERATED-ARTIFACT-REGISTRY-001",
+      "instrument": "00-BOOK/DATA/generated-artifact-registry.json",
+      "name": "Generated Artifact Registry",
+      "role": "PROJECTION",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-04",
+        "UCKP-ART-11",
+        "UCKP-ART-13"
+      ],
+      "owns": "Which artifacts are generated, by which producer, from which input closure, under which input classification.",
+      "may_never_own": "Truth. UCKP-ART-11 is explicit that generated output never owns it; this register is the machine form of that article over the corpus."
+    },
+    {
+      "id": "UCOS-EXCLUSION-REGISTER-001",
+      "instrument": "00-BOOK/DATA/exclusion-register.json",
+      "name": "Exclusion Register",
+      "role": "PERSISTENCE",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-04",
+        "UCKP-ART-09"
+      ],
+      "owns": "The classification of excluded filesystem state — which bytes the version-control binding carries and which it does not.",
+      "may_never_own": "Existence. UCKP-ART-09 makes the repository one persistence mechanism among several, so exclusion from it is a statement about storage and never about whether a thing IS."
+    },
+    {
+      "id": "UCOS-MUTATION-GOVERNANCE-BOUNDARY-001",
+      "instrument": "00-BOOK/DATA/mutation-governance-boundary.json",
+      "name": "Mutation Governance Boundary",
+      "role": "EXECUTION",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-10",
+        "UCKP-ART-16"
+      ],
+      "owns": "Which mutation classes exist and which authority disposes of each.",
+      "may_never_own": "Knowledge. UCKP-ART-10 is that execution never owns it — this instrument already says of itself that it 'does not create a new authority and governs nothing itself', and this entry is where that sentence acquires a superior to be true under."
+    },
+    {
+      "id": "UAKOS-CLOSURE-008-VALIDATION-RECORD",
+      "instrument": "00-MASTER/UAKOS-CLOSURE-008/validation-record.json",
+      "name": "UAKOS Closure 008 validation record",
+      "role": "EVIDENCE",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-12",
+        "UCKP-ART-16"
+      ],
+      "owns": "The deterministic result of one named validation, recorded so the act can be reviewed after the fact.",
+      "may_never_own": "The standard it validated against. A record of a measurement is not the law the measurement was taken under."
+    },
+    {
+      "id": "UCOS-ALLOCATION-PERMIT-REGISTER-001",
+      "instrument": "00-BOOK/DATA/allocation-permits.json",
+      "name": "Allocation Permit Register",
+      "role": "EVIDENCE",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-05",
+        "UCKP-ART-12",
+        "UCKP-ART-16"
+      ],
+      "owns": "The written record of which operator authorized which specific, digest-bound identity allocation, retained so an irreversible act can be reviewed after the fact.",
+      "may_never_own": "The power to allocate. A permit is verified by UCOS-LEDGER-AUTHORITY-001 against the manifest the write actually measures, and a permit binding a digest the write does not produce authorizes nothing — so the register records authorization and confers no authority, exactly as a validation record records a measurement without being the law it was taken under.",
+      "why_it_is_evidence_and_not_execution": "It executes nothing. `engine/ledger_authority` READS it and refuses; no engine writes it, and an operator issuing a permit is acting outside the repository. Filing it as EXECUTION would say the register performs allocations, which is the precise misreading its content-bound, single-use verification exists to make impossible."
+    },
+    {
+      "id": "CMG-000001",
+      "instrument": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "name": "Constitutional Meta Governance Constitution",
+      "role": "ORTHOGONAL",
+      "relation": "ORTHOGONAL",
+      "derives_under": [
+        "UCKP-ART-01",
+        "UCKP-ART-04"
+      ],
+      "owns": "Recognition and classification of constitutional instruments: what counts as a Constitution, how instruments rank against each other under the Constitutional Precedence Lattice, and the recording of vacancies, gaps and open constitutional questions across the corpus. Self-bounded by its own front matter: 'Supreme over META-CONSTITUTIONAL MATTER ONLY... Confers NO authority over constitutional content.'",
+      "may_never_own": "What a canonical knowledge object is; identity; the relationship graph model; persistence, execution or projection authority. Those are UCKP-ART-02, UCKP-ART-05, UCKP-ART-07 and UCKP-ART-04, and CMG-000001 Article LXXXI.2 disclaims them in its own text: 'This instrument holds no substantive authority.'",
+      "why_orthogonal_not_subordinate": "CMG-000001 never claims authority over the canonical-object axis Article 1 governs, and UCKP-LAW-0001 never claims authority over which instruments are recognized as constitutional (that question is never posed inside the root law). The two claims do not overlap, so neither derives from nor is superior to the other — the same relationship CMG-000001 Article XVI.4 already declares between its own T1M tier and Program Authority (T2). See UCKP-CMG-CONSTITUTIONAL-RECONCILIATION-DETERMINATION.md for the full analysis."
+    },
+    {
+      "id": "UEG-000001",
+      "instrument": "00-MASTER/UEG-000001/ueg-declaration.json",
+      "name": "Universal Execution Governance",
+      "role": "EXECUTION",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-10",
+        "UCKP-ART-16"
+      ],
+      "owns": "The EXECUTION ENVIRONMENT MODEL — which interpreter, virtual environment, series and toolchain a certified execution runs under, the integrity conditions that execution must satisfy, and the evidence a certified run records about what verified it.",
+      "may_never_own": "Knowledge, and the verdict of anything that runs inside the environment it governs. UCKP-ART-10 is that execution never owns knowledge; the declaration already states the same boundary in its own words (`$not_a_second_authority`: pyproject.toml remains the only place a version is declared), and this entry is where that sentence acquires a superior to be true under.",
+      "why_it_is_bound_here": "It carries a top-level `authority`, so it enters the CAA-INV-02 claim scan the moment it enters version control — it was authored untracked, which is the only reason the scan had not already seen it. Binding it is the declared extension path (`extension_rule.how_to_extend`: a new repository capability declares its role and its articles here and gains a `constitutional_superior` block), not a new authority."
+    },
+    {
+      "id": "UCOS-UCTX-001",
+      "instrument": "00-BOOK/DATA/context-authority.json",
+      "name": "Universal Context Authority",
+      "role": "PROJECTION",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-03",
+        "UCKP-ART-04",
+        "UCKP-ART-11",
+        "UCKP-ART-13",
+        "UCKP-ART-18"
+      ],
+      "owns": "Which existing authority answers each context domain, and the declaration that every agent-facing context surface is a generated projection of those authorities.",
+      "may_never_own": "Truth, and any domain an existing instrument already answers. It NAMES authorities under UCKP-ART-18 and declares none. Its two self-answered domains (branch_policy, agent_policy) are statements about context DISTRIBUTION — where context may live and who may hold it — and neither states a rule about the objects any other instrument governs.",
+      "why_it_binds_itself": "It carries a top-level `authority`, so it enters the CAA-INV-02 claim scan the moment it enters version control. Binding it is the declared extension path (`extension_rule.how_to_extend`), not a new authority. The `agents` domain was measured ownerless at fce3cb9b — the single unknown_authority_domain of the twelve — and an ownerless domain is the condition in which the first hand-written agent file becomes an unregistered, branch-local, rival authority under UCKP-ART-03. This instrument occupies that domain as a PROJECTION so that nothing else can occupy it as a law."
+    },
+    {
+      "id": "BASELINE-001-AUTHORITY-001",
+      "instrument": "00-BOOK/DATA/baseline-authority.json",
+      "name": "BASELINE-001 Authority",
+      "role": "PROJECTION",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-03",
+        "UCKP-ART-04",
+        "UCKP-ART-11",
+        "UCKP-ART-18"
+      ],
+      "owns": "The canonical data BASELINE-001's inheritance surfaces must project, and against which UFI verifies them independently of the generator.",
+      "may_never_own": "An authority. It holds authored data, not law, and the articles above are the ones its own constitutional_superior already names.",
+      "why_it_binds_itself": "It carries a top-level `authority` and therefore appears in the claim scan. It declared its superior in its own file but was never entered here, so CAA-INV-02 read it as an instrument claiming authority under nobody."
+    },
+    {
+      "id": "UCOS-EXECUTION-BACKLOG-001",
+      "instrument": "00-MASTER/EXECUTION-BACKLOG.json",
+      "name": "Repository-Wide Closure Execution Backlog",
+      "role": "DERIVED",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-16",
+        "UCKP-ART-18"
+      ],
+      "owns": "The enumerated work items derived from the measured MB7-MB24 closure gap, ordered into waves with their evidence and closure criteria.",
+      "may_never_own": "An authority, a certification or a determination. A backlog records what remains to be done; it may not decide that anything is done.",
+      "why_it_binds_itself": "It carries a top-level `authority` naming a programme phase, which the claim scan reads as an authority claim. It is a derived work plan and holds no standing of its own."
+    },
+    {
+      "id": "UCOS-WORKSPACE-COORDINATION-001",
+      "instrument": "00-BOOK/DATA/workspace-coordination.json",
+      "name": "Workspace Coordination Register",
+      "role": "PERSISTENCE",
+      "relation": "PROJECTION",
+      "derives_under": [
+        "UCKP-ART-04",
+        "UCKP-ART-05",
+        "UCKP-ART-13",
+        "UCKP-ART-16"
+      ],
+      "owns": "How concurrent actors coordinate over one governed corpus: the merge class of each register, the claim on an authority home, the mint window, and the measurement window a certification may not span.",
+      "may_never_own": "What an actor may change. Every mutation remains its own class owner's question under 00-BOOK/DATA/mutation-governance-boundary.json; this register decides only how two actors avoid destroying each other's work while doing it. It confers no permit and grants no identity.",
+      "why_it_binds_itself": "It carries a top-level `authority`, which the claim scan reads as an authority claim. It is a subordinate persistence instrument deriving under ART-04 (a persistence mechanism holds no independent authority), ART-05 (identity is irreversible, which is why minting is scheduled rather than concurrent), ART-13 (one canonical form, which is why a derived register is regenerated rather than merged) and ART-16 (governance is executable, which is why the merge classes are enforced by drivers rather than by convention)."
+    }
+  ],
+  "$scan_comment": [
+    "How an unbound authority claim is FOUND. The scan is over version-controlled paths only, so an",
+    "untracked working file can never move the measurement and the gate stays a function of the commit.",
+    "An instrument is a claim if it carries a top-level string `authority` that matches none of the",
+    "declared disclaiming tokens. Adding a token here narrows a constitutional measurement, so every",
+    "token names the located instrument that classes it non-constitutional rather than being asserted."
+  ],
+  "authority_claim_scan": {
+    "tracked_only": true,
+    "path_suffixes": [
+      ".json"
+    ],
+    "$why_the_whole_tree": "The scan is deliberately not narrowed to a directory. A rival authority is most useful to whoever writes it precisely where nobody is looking, so restricting the sweep to 00-BOOK/DATA or 00-MASTER would leave the only interesting hiding places unmeasured. Every tracked JSON is read; an instrument that cannot be parsed is a finding rather than a skip.",
+    "authority_key": "authority",
+    "disclaiming_token_source": {
+      "owner": "00-MASTER/UCOS-UCAF-001/ucaf-authority.json",
+      "pointer": "realization_token_classes",
+      "constitutional_field": "constitutional",
+      "note": "UCAF discovers and classes the executable plane's authority tokens. The classes marked constitutional=false are disclaimers there and are disclaimers here; this binding reuses that determination rather than restating it."
+    },
+    "disclaiming_prefixes": [
+      {
+        "prefix": "NONE",
+        "class": "DERIVED-TRUTH",
+        "basis": "UCOS-UCAF-001 UCAF-TC-02 — 00-CMG/CMG-000001 ARTICLE XVI.2: the derived-truth tier records and asserts nothing."
+      },
+      {
+        "prefix": "ENGINEERING-EXECUTION-ONLY",
+        "class": "ENGINEERING-EXECUTION",
+        "basis": "UCOS-UCAF-001 UCAF-TC-01 — 00-CEP/CEP-003 ARTICLE I.3: execution authority SHALL NOT govern, ratify or decide constitutional content."
+      },
+      {
+        "prefix": "GOVERNED OWNERSHIP AUTHORITY",
+        "class": "DELEGATED-ASSIGNMENT",
+        "basis": "platform/universal_ownership/catalog/ucos-ownership-declarations.json — the catalogue names the authority under which each assignment binds and never infers one. It conveys an assignment made elsewhere; it constitutes none."
+      }
+    ],
+    "rule": "An instrument whose `authority` matches no disclaiming prefix MUST appear in subordinate_instruments with a declared role and at least one article of derivation. There is no third outcome: silence is the condition this binding exists to end."
+  },
+  "$identity_comment": [
+    "TASK: resolve the identity authority duplication. The resolution is that there was never a",
+    "second authority — there were two PLANES with no declared edge between them, which is what a",
+    "second authority looks like from outside.",
+    "",
+    "engine/uckp/identity.py mints the identity of a constitutional OBJECT: a pure, clock-free,",
+    "storage-free URN. 00-BOOK/DATA/id-ledger.json mints the identity of a repository OBJECT: an",
+    "append-only UCOS-<CATEGORY>-<NNNNNN> serial, frozen at first sight. `engine/uckp/law.py` holds",
+    "both — UCOS-ENGINE-000496 names the FILE, urn:ucos:ucko:ucos:UCKP-LAW-0001 names the LAW. They",
+    "were never competing for one subject; nothing said so.",
+    "",
+    "NOTHING IS RE-MINTED. The derivation below carries every existing identifier through verbatim as",
+    "the URN's local name, so the ledger is projected into the object model without a single byte of",
+    "it changing. That is the whole of the resolution: one authority, two planes, one total and pure",
+    "function from the lower to the higher."
+  ],
+  "identity_authority_resolution": {
+    "one_authority": "UCKP-ART-05 — Universal Identity. Every other identity mechanism in the repository is a persistence or projection binding of it.",
+    "planes": [
+      {
+        "plane": "CONSTITUTIONAL_OBJECT",
+        "home": "engine/uckp/identity.py",
+        "identifies": "the constitutional object itself",
+        "shape": "urn:ucos:ucko:<namespace>:<local_name>",
+        "properties": "pure, total, clock-free, storage-free, repository-free; minting again cannot produce a different answer",
+        "role": "SUPREME — this IS UCKP-ART-05"
+      },
+      {
+        "plane": "REPOSITORY_OBJECT",
+        "home": "00-BOOK/DATA/id-ledger.json",
+        "identifies": "the version-controlled thing that holds, produces or observes an object",
+        "shape": "UCOS-<CATEGORY>-<NNNNNN>",
+        "maps": [
+          "by_path",
+          "by_object",
+          "by_observation"
+        ],
+        "properties": "append-only; first_seen frozen at mint; never reissued; never renumbered",
+        "role": "PERSISTENCE — the storage binding of UCKP-ART-05, and the ONE such binding in this repository"
+      }
+    ],
+    "derivation": {
+      "function": "engine.uckp.alignment.repository_local_urn",
+      "urn_prefix": "urn:ucos:ucko",
+      "namespace": "ucos-repository",
+      "id_shape": "^UCOS-[A-Z0-9]+-[0-9]{6}$",
+      "shape": "urn:ucos:ucko:ucos-repository:<UCOS-ID>",
+      "example": "UCOS-ENGINE-000496 -> urn:ucos:ucko:ucos-repository:UCOS-ENGINE-000496",
+      "$two_readers_one_truth": "The prefix, namespace and id shape are declared HERE and read by both planes: engine/uckp/alignment.py implements the derivation from its own constants, and the stdlib-only enforcing engine composes the URN from these fields. verify_binding resolves this block against those constants, so the two readers cannot drift into two derivations without a test failing.",
+      "properties": "TOTAL over every id the ledger holds, PURE, and INJECTIVE — the identifier is carried through verbatim as the local name, so two distinct ledger ids can never derive one URN and no id is rewritten to make the mapping work.",
+      "why_verbatim": "Any derivation that reshaped the identifier would be a re-mint wearing a projection's clothes, and UCKP-ART-05 says an identity once minted never changes."
+    },
+    "second_authority_test": "A second identity authority would be a second APPEND-ONLY MINT — a file other than the ledger that issues repository identifiers. A mint is recognised by the counter it advances, so the marker below is what CAA-INV-04 looks for; finding it anywhere but the one ledger is a second sequence, whatever the file calls itself.",
+    "mint_markers": [
+      "category_seq"
+    ],
+    "$mint_marker_rationale": "category_seq is the shared counter every map in the ledger draws from. A second file holding one is issuing identifiers on its own count, which is the only thing 'a second identity authority' can concretely mean. Measured at authoring time: exactly one file holds it.",
+    "ids_preserved": "ALL. This binding renames nothing, renumbers nothing, retires nothing and reissues nothing."
+  },
+  "$graph_comment": [
+    "TASK: resolve relationship graph ownership. Same shape as identity, same resolution.",
+    "",
+    "UCKP-ART-07 legislates what a relationship IS — every object a node, every dependency an edge,",
+    "and every relationship EXECUTABLE, because a relationship that cannot be resolved is not one.",
+    "engine/uckp/graph.py is the one home of that model. UCOS-UGA-001 emits 32902 edges over",
+    "repository objects in six kinds. Those are not a rival model; they are a POPULATION measured",
+    "in one. The edge that was missing is the one that says each UGA kind is an instance of a UCKP",
+    "relationship class."
+  ],
+  "relationship_graph_resolution": {
+    "model_owner": {
+      "authority": "UCKP-ART-07",
+      "home": "engine/uckp/graph.py",
+      "owns": "What a relationship is, what an edge is, what makes an edge resolvable, and the requirement that the authority relation stay acyclic (UCKP-INV-04, UCKP-INV-05, UCKP-INV-06)."
+    },
+    "projections": [
+      {
+        "projection": "00-MASTER/UCOS-UGA-001/04-RELATIONSHIP-GRAPH.json",
+        "producer": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+        "role": "PROJECTION",
+        "measures": "the repository-object population",
+        "may_never": "declare a relationship KIND that names no class in the model above it"
+      },
+      {
+        "projection": "intelligence/UCOS-RIE-DEPENDENCY-GRAPH.json",
+        "producer": "intelligence/rie/engine.py",
+        "role": "PROJECTION",
+        "measures": "program-to-program dependency rollup, aggregated from each artifact's declared `dependencies` field in 00-BOOK/DATA/artifacts.json — a different grain of the same model, never a rival of it",
+        "may_never": "declare a relationship KIND that names no class in the model above it, or claim authority over the object-level question the model already answers",
+        "$disclaim": "Already self-disclaiming: its own `authority` field reads \"NONE (derived truth)\", matching authority_claim_scan's `NONE` disclaiming prefix (basis: CMG-000001 Article XVI.2). This entry records recognition; it confers nothing the field does not already say."
+      },
+      {
+        "projection": ".runtime/repository-intelligence/UCOS-RPI-DEPENDENCY-GRAPH.json",
+        "producer": "platform/repository_intelligence/substrate.py",
+        "role": "PROJECTION",
+        "measures": "module-to-module dependency graph derived from actual source-code import statements (AST analysis over tracked .py files) — a different grain and a different source (actual imports, not declared metadata) from the model above it, never a rival of it",
+        "may_never": "declare a relationship KIND that names no class in the model above it, or claim authority over the object-level question the model already answers",
+        "$disclaim": "Already self-disclaiming: its own `authority` field reads \"ENGINEERING-EXECUTION-ONLY\", matching authority_claim_scan's `ENGINEERING-EXECUTION-ONLY` disclaiming prefix (basis: CEP-003 Article I.3). Output is written under `.runtime/`, which `.gitignore` excludes — never committed as canonical state. This entry records recognition; it confers nothing the field and the ignore rule do not already say."
+      }
+    ],
+    "$kind_binding_comment": [
+      "Every relationship kind the projection emits, bound to the class and relation term the model",
+      "actually holds. `uckp_class` is a member of RELATIONSHIP_CLASS_VOCABULARY and `uckp_relation`",
+      "a member of RELATION_TYPE_VOCABULARY, both in engine/uckp/vocabulary.py; `direction` records",
+      "whether the projection emits the model's edge or its inverse, because a kind read backwards",
+      "is still that kind and pretending otherwise would invent a term to avoid saying so.",
+      "",
+      "A kind absent from this map is an unmodelled relationship and fails CAA-INV-05. The map is",
+      "DATA, so a seventh kind is one appended entry (UCKP-ART-17) and never an engine change; the",
+      "terms it may use are held honest by engine.uckp.alignment.verify_binding, which resolves every",
+      "class, relation and article against the model itself."
+    ],
+    "model_term_sources": {
+      "relationship_class": "engine/uckp/vocabulary.py :: RELATIONSHIP_CLASS_VOCABULARY",
+      "relation_type": "engine/uckp/vocabulary.py :: RELATION_TYPE_VOCABULARY",
+      "edge_derivation": "engine/uckp/graph.py :: derive_edges",
+      "note": "These lists are NOT copied here. The enforcing engine is stdlib-only by constitutional design and checks kinds against this map; verify_binding checks this map against the vocabularies, so there is one truth and a test between the planes rather than two lists that can drift."
+    },
+    "relationship_kind_bindings": {
+      "owned_by": {
+        "uckp_class": "ownership",
+        "uckp_relation": "owns",
+        "direction": "inverse",
+        "article": "UCKP-ART-06",
+        "meaning": "the accountable owner — the ownership facet, read from the owned object toward its owner"
+      },
+      "produced_by": {
+        "uckp_class": "traceability",
+        "uckp_relation": "produces",
+        "direction": "inverse",
+        "article": "UCKP-ART-19",
+        "meaning": "the producer whose execution brought the object into being"
+      },
+      "produces": {
+        "uckp_class": "traceability",
+        "uckp_relation": "produces",
+        "direction": "forward",
+        "article": "UCKP-ART-19",
+        "meaning": "the same provenance edge forward, so lineage is traversable in both directions"
+      },
+      "depends_on": {
+        "uckp_class": "constitutional",
+        "uckp_relation": "depends-on",
+        "direction": "forward",
+        "article": "UCKP-ART-07",
+        "meaning": "what must exist for the object to exist — the class derive_edges gives every dependency"
+      },
+      "validated_by": {
+        "uckp_class": "validation",
+        "uckp_relation": "validates",
+        "direction": "inverse",
+        "article": "UCKP-ART-16",
+        "meaning": "the contract that decides whether the object is admissible"
+      },
+      "evidenced_by": {
+        "uckp_class": "constitutional",
+        "uckp_relation": "references",
+        "direction": "forward",
+        "article": "UCKP-ART-12",
+        "meaning": "the evidence class the object's governance records belong to"
+      },
+      "Affects": {
+        "uckp_class": "constitutional",
+        "uckp_relation": "depends-on",
+        "direction": "inverse",
+        "article": "UCKP-ART-07",
+        "meaning": "blast radius: what a change to this object reaches, which is the dependency edge traversed in reverse and never a relation of its own"
+      },
+      "Authorized-By": {
+        "uckp_class": "authority",
+        "uckp_relation": "governs",
+        "direction": "inverse",
+        "article": "UCKP-ART-01",
+        "meaning": "from whom the right to exist is derived — the authority relation the model requires to stay acyclic (UCKP-INV-04)"
+      },
+      "Authorizes": {
+        "uckp_class": "authority",
+        "uckp_relation": "governs",
+        "direction": "forward",
+        "article": "UCKP-ART-01",
+        "meaning": "holds decision authority over the object"
+      },
+      "Certifies": {
+        "uckp_class": "validation",
+        "uckp_relation": "certifies",
+        "direction": "forward",
+        "article": "UCKP-ART-16",
+        "meaning": "attests to the completeness of the certified surface"
+      },
+      "Child": {
+        "uckp_class": "constitutional",
+        "uckp_relation": "depends-on",
+        "direction": "inverse",
+        "article": "UCKP-ART-07",
+        "meaning": "the same containment read from the container toward what it contains"
+      },
+      "Consumed-By": {
+        "uckp_class": "knowledge",
+        "uckp_relation": "consumes",
+        "direction": "inverse",
+        "article": "UCKP-ART-07",
+        "meaning": "the same consumption read from the producer toward its consumer"
+      },
+      "Consumes": {
+        "uckp_class": "knowledge",
+        "uckp_relation": "consumes",
+        "direction": "forward",
+        "article": "UCKP-ART-07",
+        "meaning": "reads or depends on the output of another object"
+      },
+      "Depends-On": {
+        "uckp_class": "constitutional",
+        "uckp_relation": "depends-on",
+        "direction": "forward",
+        "article": "UCKP-ART-07",
+        "meaning": "what must exist for the object to exist — the same class depends_on carries in the UGA projection, at a different grain"
+      },
+      "Evidences": {
+        "uckp_class": "constitutional",
+        "uckp_relation": "references",
+        "direction": "inverse",
+        "article": "UCKP-ART-12",
+        "meaning": "the evidence record pointing at what it evidences — the forward sense of evidenced_by"
+      },
+      "Evolves-From": {
+        "uckp_class": "evolution",
+        "uckp_relation": "derived-from",
+        "direction": "forward",
+        "article": "UCKP-ART-14",
+        "meaning": "the prior state this one was computed from"
+      },
+      "Evolves-From-Inverse": {
+        "uckp_class": "evolution",
+        "uckp_relation": "derived-from",
+        "direction": "inverse",
+        "article": "UCKP-ART-14",
+        "meaning": "the same evolution read from the prior state toward its successor"
+      },
+      "Implemented-By": {
+        "uckp_class": "traceability",
+        "uckp_relation": "implements",
+        "direction": "inverse",
+        "article": "UCKP-ART-16",
+        "meaning": "the same conformance read from the specification toward what realises it"
+      },
+      "Implements": {
+        "uckp_class": "traceability",
+        "uckp_relation": "implements",
+        "direction": "forward",
+        "article": "UCKP-ART-16",
+        "meaning": "realises a specification without being derived from it — conformance, which is why the lineage classification excludes it from ancestry"
+      },
+      "Implements-Stage": {
+        "uckp_class": "traceability",
+        "uckp_relation": "implements",
+        "direction": "forward",
+        "article": "UCKP-ART-14",
+        "meaning": "realises a declared lifecycle stage rather than another object"
+      },
+      "In-Program": {
+        "uckp_class": "ownership",
+        "uckp_relation": "owns",
+        "direction": "inverse",
+        "article": "UCKP-ART-06",
+        "meaning": "the programme accountable for the artifact, read from the artifact toward its programme"
+      },
+      "In-Volume": {
+        "uckp_class": "constitutional",
+        "uckp_relation": "depends-on",
+        "direction": "forward",
+        "article": "UCKP-ART-07",
+        "meaning": "the volume the artifact is bound into, the coarsest containment the corpus declares"
+      },
+      "Of-Category": {
+        "uckp_class": "semantic",
+        "uckp_relation": "inherits",
+        "direction": "forward",
+        "article": "UCKP-ART-06",
+        "meaning": "the taxonomy anchor whose properties the artifact takes — the category facet, synthesised as a node so the classification is traversable rather than only readable"
+      },
+      "Parent": {
+        "uckp_class": "constitutional",
+        "uckp_relation": "depends-on",
+        "direction": "forward",
+        "article": "UCKP-ART-07",
+        "meaning": "the containing object this one cannot exist outside of — structural containment is a dependency, which is why it binds to the dependency class rather than inventing a containment term"
+      },
+      "Required-By": {
+        "uckp_class": "constitutional",
+        "uckp_relation": "depends-on",
+        "direction": "inverse",
+        "article": "UCKP-ART-07",
+        "meaning": "the same dependency read from the dependency toward its dependent"
+      },
+      "Requirement-Of": {
+        "uckp_class": "traceability",
+        "uckp_relation": "depends-on",
+        "direction": "inverse",
+        "article": "UCKP-ART-16",
+        "meaning": "the object a requirement binds, read from the requirement toward what must satisfy it"
+      },
+      "Traced-From": {
+        "uckp_class": "traceability",
+        "uckp_relation": "references",
+        "direction": "inverse",
+        "article": "UCKP-ART-16",
+        "meaning": "the same trace read from intent toward effect"
+      },
+      "Traces-Stage:architecture": {
+        "uckp_class": "traceability",
+        "uckp_relation": "references",
+        "direction": "forward",
+        "article": "UCKP-ART-14",
+        "meaning": "trace into the architecture stage of the declared lifecycle"
+      },
+      "Traces-Stage:implementation": {
+        "uckp_class": "traceability",
+        "uckp_relation": "references",
+        "direction": "forward",
+        "article": "UCKP-ART-14",
+        "meaning": "trace into the implementation stage of the declared lifecycle"
+      },
+      "Traces-Stage:requirement": {
+        "uckp_class": "traceability",
+        "uckp_relation": "references",
+        "direction": "forward",
+        "article": "UCKP-ART-14",
+        "meaning": "trace into the requirement stage of the declared lifecycle"
+      },
+      "Traces-To": {
+        "uckp_class": "traceability",
+        "uckp_relation": "references",
+        "direction": "forward",
+        "article": "UCKP-ART-16",
+        "meaning": "upstream intent this object points at — a coverage overlay, not a provenance edge"
+      },
+      "Validates": {
+        "uckp_class": "validation",
+        "uckp_relation": "validates",
+        "direction": "forward",
+        "article": "UCKP-ART-16",
+        "meaning": "checks the shape of another object — the forward sense of the contract validated_by names inversely"
+      }
+    },
+    "$emitting_surface_comment": [
+      "WHY THIS LIST EXISTS. CAA-INV-05 read the kinds off ONE graph — the UGA relationship",
+      "projection — and the rule it enforces applies to every surface that emits a relationship",
+      "kind. engine/graph emitted 26 kinds, none of them bound, and passed, because the",
+      "measurement never reached it. The rule was right and did not reach where it applies.",
+      "",
+      "engine/graph is not in the `projections` list above and should not be: that list",
+      "enumerates PERSISTED artifacts with producers, and engine/graph persists none (it writes",
+      "only to an operator-named path and refuses the frozen corpus). It is an in-memory query",
+      "surface — which changes where its output lives, not whether its kinds must resolve into",
+      "the one model. Hence a second list, of SURFACES rather than artifacts.",
+      "",
+      "Each surface names a `reporter`: a callable returning the kinds that surface actually",
+      "emits, resolved and CALLED at measurement time. Never a declared list — a surface that",
+      "quietly emits a 27th kind is the case worth catching, and a declared list would report 26",
+      "either way. A surface whose reporter cannot be resolved is a violation, not a skip."
+    ],
+    "emitting_surfaces": [
+      {
+        "surface": "00-MASTER/UCOS-UGA-001/04-RELATIONSHIP-GRAPH.json",
+        "home": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+        "reporter": null,
+        "$in_process": "Measured in process by the engine that derives it; its kinds are read off the edges this run produced, before the invariants are evaluated."
+      },
+      {
+        "surface": "engine/graph — the EPIC-002 knowledge graph and its ten projections",
+        "home": "engine/graph/adapter.py",
+        "reporter": "engine.graph.adapter.emitted_kinds",
+        "$persists_nothing": "Builds in memory and persists no registered artifact, which is why it is a surface here and not a projection above."
+      }
+    ],
+    "second_model_test": "A second relationship model would be a second declaration of what a relationship IS. CAA-INV-05 measures that exactly one instrument declares the model and that every emitted kind resolves into it."
+  },
+  "$dependency_evidence_comment": [
+    "TASK (Phase 0.7): record the ~20 static per-programme dependency-graph documents as what",
+    "they are — historical evidence of a closed programme's own measurement at its own closure —",
+    "so they are discoverable and unambiguous rather than silently scattered. None of them is a",
+    "rival to the model above: none is regenerated, none is read by any live gate, and role EVIDENCE",
+    "already exists in AUTHORITY_ROLES for exactly this case ('the record of what was done, kept so",
+    "an act can be reviewed after the fact; evidence supports truth and never constitutes it')."
+  ],
+  "dependency_evidence_index": {
+    "declaration": "No historical snapshot listed here may serve as a dependency authority. Each is EVIDENCE (UCKP-ART-16) of a closed programme's measurement at its own point in time, never a live or competing truth about current repository state.",
+    "role": "EVIDENCE",
+    "authority": "UCKP-ART-16",
+    "verified_frozen": "Sampled by git history at Phase 0.7 authoring time: 00-MASTER/UAKOS-PHASE-004's copy last touched 2026-08-01, 00-MASTER/UCOS-USIS-WAVE1's last touched 2026-07-24 — neither regenerated since, no live producer exists for either.",
+    "entries": [
+      {
+        "location": "00-MASTER/UAKOS-CLOSURE-002/",
+        "files": [
+          "29-CONCEPT-DEPENDENCY-GRAPH.md",
+          "39-IMPLEMENTATION-DEPENDENCY-GRAPH.md"
+        ],
+        "programme_state": "closed"
+      },
+      {
+        "location": "00-MASTER/UAKOS-PHASE-004/",
+        "files": [
+          "10-UNIVERSAL-GAP-DEPENDENCY-GRAPH.md",
+          "10-UNIVERSAL-GAP-DEPENDENCY-GRAPH.json"
+        ],
+        "programme_state": "closed"
+      },
+      {
+        "location": "00-MASTER/UCOS-USIS-WAVE1/",
+        "files": [
+          "03-WAVE1-DEPENDENCY-GRAPH.md",
+          "MISSION-002-USIS-002/03-USIS002-DEPENDENCY-GRAPH.md",
+          "MISSION-003-USIS-003/03-USIS003-DEPENDENCY-GRAPH.md",
+          "MISSION-004-USIS-004/03-USIS004-DEPENDENCY-GRAPH.md"
+        ],
+        "programme_state": "closed"
+      },
+      {
+        "location": "00-MASTER/UCOS-USIS-WAVE3-FOUNDATION/",
+        "files": [
+          "05-DEPENDENCY-GRAPH.md"
+        ],
+        "programme_state": "closed"
+      },
+      {
+        "location": "00-MASTER/UCOS-RIB-001/",
+        "files": [
+          "05-DEPENDENCY-GRAPH.md"
+        ],
+        "programme_state": "active programme, but this specific file confirmed NOT part of RIB's own live-regenerated surface set (unlike rib.json, 01-REPOSITORY-INVENTORY.md, etc.) — frozen despite its location"
+      },
+      {
+        "location": "00-MASTER/ (single-file programmes)",
+        "files": [
+          "IMPLEMENT-001/01-DEPENDENCY-GRAPH.md",
+          "IMR-0000/09-DEPENDENCY-GRAPH-ARCHITECTURE.md",
+          "MIP-W1-P001/12-UNIVERSAL-DEPENDENCY-GRAPH.md",
+          "UAIE-000001/04-OWNERSHIP-AND-DEPENDENCY-GRAPH.md",
+          "UCCEP-000005/07-UPDATED-DEPENDENCY-GRAPH.md",
+          "UCOS-AB-001/05-DEPENDENCY-GRAPH.md",
+          "UCOS-CVR-001/03-VERIFICATION-DEPENDENCY-GRAPH.md",
+          "UCOS-MXR-001/03-DEPENDENCY-GRAPH.md"
+        ],
+        "programme_state": "closed or single-deliverable, individually"
+      },
+      {
+        "location": "00-BOOK/ADVANCEMENT/",
+        "files": [
+          "UKB-ADV-017-DEPENDENCY-GRAPH.md"
+        ],
+        "programme_state": "closed"
+      },
+      {
+        "location": "repository root",
+        "files": [
+          "03-DEPENDENCY-GRAPH.md",
+          "03-IMPLEMENTATION-DEPENDENCY-GRAPH.md"
+        ],
+        "programme_state": "closed, pre-dates current program structure"
+      },
+      {
+        "location": "IAC-001C/",
+        "files": [
+          "03-DEPENDENCY-GRAPH.md"
+        ],
+        "programme_state": "closed"
+      },
+      {
+        "location": "infrastructure/_evidence/EC3-B13-U10/",
+        "files": [
+          "dependency-graph.json"
+        ],
+        "programme_state": "evidence directory by its own path — already self-classifying"
+      }
+    ]
+  },
+  "$certification_comment": [
+    "TASK: resolve certification authority. Same shape as identity and the relationship graph —",
+    "recognition of a plural but non-competing landscape, never a new authority.",
+    "",
+    "Thirteen certification-adjacent surfaces were found (PHASE-CERTIFICATION-GOVERNANCE-RELATIONSHIP-",
+    "DETERMINATION.md), bidirectionally searched for cross-reference, and found to reference each other",
+    "in exactly one real, code-level case: platform/certification imports engine.certification by",
+    "reference. Every other surface answers a genuinely different question (repository-integration",
+    "disposition, meta-constitutional readiness, fixed-point regeneration, validated-subject",
+    "certification, knowledge-object completeness, digital-twin corpus integrity...) and holds its own",
+    "undisputed authority over that question. None claims another's. This is not fragmentation; it is",
+    "what UCKP-ART-01 already permits — architectural authority is one thing (the object model, which",
+    "none of these surfaces touches), and domain-bounded engineering determination is another. Nothing",
+    "here is bound under role SUPREME, PROJECTION-of-the-model, or any existing AUTHORITY_ROLES member:",
+    "those roles govern standing under the canonical-object model specifically (UCKP-ART-01/04/07), and",
+    "certification authority is a materially different axis this binding records without conflating."
+  ],
+  "certification_authority_resolution": {
+    "model": {
+      "type": "MULTIPLE_INDEPENDENT_AUTHORITIES",
+      "declares": "Certification authority in UCOS is plural by design. A certification surface answers one bounded question; holding undisputed authority over that one question is not competition with any other surface holding undisputed authority over a different one."
+    },
+    "principles": [
+      "Certification authority is bounded by certification purpose.",
+      "Multiple certification authorities may coexist.",
+      "Coexistence does not represent duplication.",
+      "A certification authority owns its lifecycle, its verdict semantics, and its evidence interpretation.",
+      "Evidence integrity rules remain globally governed (see evidence_observation_separation and 00-BOOK/DATA/evidence-universe.json's CERTIFICATION_EVIDENCE_CLASS rule — DEBUG/IMPROVEMENT evidence may never influence any certification, anywhere).",
+      "Cross-certification relationships require explicit declaration; an undeclared relationship is not assumed to exist."
+    ],
+    "surfaces": [
+      {
+        "id": "EC1-CERTIFICATION",
+        "home": "engine/certification/",
+        "role": "AUTHORITY",
+        "bounded_question": "Is this one validated subject (single Validation Report + Evidence input) engineering-ready?"
+      },
+      {
+        "id": "UNIVERSAL-CERTIFICATION",
+        "home": "engine/universal_certification/",
+        "role": "AUTHORITY",
+        "bounded_question": "Is this subject (Validation + Measurement + RepositoryTruth, compliance-aware) universally engineering-ready? A distinct, broader question EC-1 does not ask — resolved as valid bounded specialization, not duplication, in CERTIFICATION-OWNERSHIP-RECONCILIATION-FINDING.md."
+      },
+      {
+        "id": "EC2-CERTIFICATION-CONSOLE",
+        "home": "platform/certification/",
+        "role": "PROJECTION",
+        "of": "EC1-CERTIFICATION",
+        "evidence": "real, code-level imports confirmed (facade.py, contracts.py, ledger.py, health.py, status.py, service.py all import from engine.certification); its own documentation states \"no new authority, no new capability group\"",
+        "bounded_question": "n/a — reproduces EC-1's decision read-only, byte-for-byte"
+      },
+      {
+        "id": "KNOWLEDGE-CERTIFICATION",
+        "home": "engine/knowledge/certification.py",
+        "role": "AUTHORITY",
+        "bounded_question": "Is this canonical knowledge object complete?"
+      },
+      {
+        "id": "UKIP-KNOWLEDGE-CERTIFICATION",
+        "home": "engine/knowledge/ukip/certification.py",
+        "role": "AUTHORITY",
+        "bounded_question": "Across an unbounded number of providers, is each of the eleven knowledge capabilities fully established or merely present? A distinct, per-capability question KNOWLEDGE-CERTIFICATION does not ask (which certifies one canonical object's completeness, not a capability across providers).",
+        "vocabulary": "Reuses engine.knowledge.certification.CertStatus verbatim, by the module's own docstring (\"the status vocabulary is reused from the UKDA certifier ... rather than redefined, so a UKIP certificate and a UKDA certificate mean the same thing by the same words\") — shared vocabulary, not shared or subordinate authority; resolved as valid specialization in PHASE-KNOWLEDGE-REGISTRY-OWNERSHIP-RECONCILIATION-DETERMINATION.md."
+      },
+      {
+        "id": "ASSURANCE-CERTIFICATION",
+        "home": "platform/universal_assurance/certification.py",
+        "role": "AUTHORITY",
+        "bounded_question": "Did this assurance run's measured outcome satisfy its declared policy? Established by evidence in PHASE-UNIVERSAL-ASSURANCE-RELATIONSHIP-DETERMINATION.md: zero relationship to EC1-CERTIFICATION (no import anywhere in platform/universal_assurance/); a confirmed, one-directional, non-competing component-reuse relationship to UNIVERSAL-CERTIFICATION for exactly two of this package's ten owned pipeline stages (Certification Execution, Certification Evidence), which the package's own certification.py docstring states explicitly issues no certificate of its own and re-judges nothing on those two stages — the certificate, audit ledger, compliance engine and rule suite are all reused from engine.universal_certification. Assurance's own policy-gate evaluation can still close its certification stage even where the reused rule suite alone would have passed, so this is real component reuse plus additional judgment, not a read-only projection."
+      },
+      {
+        "id": "RIB-CERTIFICATION",
+        "home": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+        "role": "AUTHORITY",
+        "bounded_question": "Does the whole repository integrate coherently right now?"
+      },
+      {
+        "id": "AEE-CERTIFICATION",
+        "home": "00-MASTER/UCOS-AEE-001/aee_engine.py",
+        "role": "AUTHORITY",
+        "bounded_question": "Have this repository's cross-programme mandates and observations converged?"
+      },
+      {
+        "id": "CMG-CERTIFICATION",
+        "home": "00-CMG/tools/cmg_validate.py",
+        "role": "AUTHORITY",
+        "bounded_question": "Is the constitutional corpus meta-constitutionally ready?"
+      },
+      {
+        "id": "PHASE8-CERTIFICATION",
+        "home": "00-MASTER/P0-FINAL-CLOSURE-002/final_closure_engine.py",
+        "role": "AUTHORITY",
+        "bounded_question": "Does repeated in-place regeneration of this repository produce zero drift?"
+      },
+      {
+        "id": "PHASE9-CERTIFICATION",
+        "home": "00-MASTER/P0-FINAL-CLOSURE-002/final_closure_engine.py",
+        "role": "AUTHORITY",
+        "bounded_question": "Do independent pristine clones of this repository reproduce identically?"
+      },
+      {
+        "id": "UCEF-CERTIFICATION",
+        "home": "00-MASTER/UCEF-000001/ucef_engine.py",
+        "role": "AUTHORITY",
+        "bounded_question": "Is the constitutional evolution framework ready?"
+      },
+      {
+        "id": "UMB017-DIGITAL-TWIN-CERTIFICATION",
+        "home": "00-BOOK/tools/ukbx.py (cmd_certify)",
+        "role": "AUTHORITY",
+        "bounded_question": "Is the UKB/UMB document-corpus digital twin internally consistent across its ten integrity domains?",
+        "outputs": [
+          "00-BOOK/DATA/certification.json",
+          "00-BOOK/REGISTRIES/CERTIFICATION-REGISTRY.md"
+        ],
+        "note": "one mechanism, two artifacts (evidence data + rendered report) — not two surfaces"
+      },
+      {
+        "id": "REPOSITORY-INTELLIGENCE-CERTIFICATION",
+        "home": "platform/repository_intelligence/certification.py",
+        "role": "AUTHORITY",
+        "bounded_question": "At a known repository content digest, did all eight discovery dimensions (repository, capability, reuse, dependency, gap, conflict, duplicate, ownership) run and validate as internally consistent?",
+        "authority_claim": "ENGINEERING-EXECUTION-ONLY (REPOSITORY_INTELLIGENCE_AUTHORITY constant, platform/repository_intelligence/contracts.py:64) — its own docstring states the certificate \"confers no constitutional authority (DE-05/IP-01): it records derived engineering truth about the repository\"",
+        "note": "verdict CERTIFIED-INTELLIGENT/NOT-CERTIFIED with gate OPEN/CLOSED; a distinct bounded question from every other surface above, evaluated and admitted in PHASE-UCF-004-COMPLETENESS-GOVERNANCE-BINDING-IMPLEMENTATION-DETERMINATION.md"
+      }
+    ],
+    "second_authority_test": "A second certification authority over the SAME bounded question would be a rival. None was found: every pair of surfaces compared either answers a different question, or (EC-2 only) is an explicit, code-confirmed read-only projection of the one that answers it. Full comparison in PHASE-CERTIFICATION-GOVERNANCE-RELATIONSHIP-DETERMINATION.md and CERTIFICATION-OWNERSHIP-RECONCILIATION-FINDING.md."
+  },
+  "$identity_namespace_comment": [
+    "TASK: resolve the identity-namespace ambiguity between UCKP URN identity and knowledge object",
+    "identifiers. Same shape as certification and the relationship graph — recognition of a plural but",
+    "non-competing landscape, never a new authority.",
+    "",
+    "PHASE-KNOWLEDGE-IDENTITY-RELATIONSHIP-DETERMINATION.md and PHASE-IDENTITY-NAMESPACE-OWNERSHIP-",
+    "DETERMINATION.md found: engine/uckp/identity.py (URN-minted constitutional-object identity) and",
+    "engine/knowledge/cko.py + engine/knowledge/ukip/contracts.py (content-derived knowledge identity)",
+    "both compute their content digests through the one Layer Zero primitive, engine/uckp/canonical.py",
+    "(content_hash, canonical_json) — confirmed by direct import at engine/knowledge/model.py:37 and",
+    "engine/uckp/ucko.py:39, and guarded repository-wide against reimplementation by UCKP-INV-03. Sharing",
+    "that primitive does not make either identity scheme subordinate to the other: URN identity is",
+    "minted (uuid5 over a namespace+local-name pair) and knowledge identity is derived (a pure digest of",
+    "content), and neither construction references, resolves, or is admitted through the other's registry.",
+    "identity_authority_resolution's own text — 'every other identity mechanism in the repository is a",
+    "persistence or projection binding of it' — was written before this question was asked and does not,",
+    "on the evidence, extend to knowledge identity; this binding does not amend that section, it adds the",
+    "sibling declaration that section's own scope does not cover.",
+    "",
+    "The UCKO-<KIND>-<NNNN> knowledge-object id shape was also found already consumed, unmodified, by",
+    "twelve pre-existing 00-MASTER/UAKOS-PHASE-* scripts as a recognized text-reference family. This",
+    "binding records that pattern's origin; it does not create, change, or consolidate those scripts."
+  ],
+  "identity_namespace_resolution": {
+    "model": {
+      "type": "MULTIPLE_INDEPENDENT_BOUNDED_NAMESPACES",
+      "declares": "Identity in UCOS is namespace-plural by design. A namespace answers one bounded identity question over one bounded population; holding undisputed ownership of that namespace is not competition with another namespace holding undisputed ownership of a different one."
+    },
+    "principles": [
+      "An identity namespace is bounded by the population it identifies, not by the primitive it happens to compute digests with.",
+      "Multiple identity namespaces may share a canonical hashing primitive without either becoming a projection or persistence binding of the other.",
+      "Coexistence of namespaces that share a naming acronym by coincidence is not a namespace ownership violation absent a formal reservation of that acronym.",
+      "Each namespace owns its own identifier pattern, its own admission semantics, and its own registry (or the explicit absence of one).",
+      "Cross-namespace relationships require explicit declaration; an undeclared relationship is not assumed to exist."
+    ],
+    "shared_primitive": {
+      "home": "engine/uckp/canonical.py",
+      "provides": [
+        "canonical_json",
+        "content_hash"
+      ],
+      "consumed_by": [
+        "engine/uckp/ucko.py (content_sha256, semantic_digest — line 39)",
+        "engine/knowledge/model.py (re-exported content_hash — line 37, consumed by CKO's content_sha256/semantic_hash and by UKIP's knowledge_sha256/knowledge_id)"
+      ],
+      "enforcement": "UCKP-INV-03 / engine.uckp.validation.ConstitutionalValidator._probe_zero_duplication — forbids any module from reimplementing this primitive; runs on every live gate",
+      "ownership_note": "This entry recognizes a SHARED FOUNDATION, not shared or transferred SEMANTIC OWNERSHIP. Layer Zero owns the digest function; it owns neither namespace's identity scheme built on top of that function."
+    },
+    "namespaces": [
+      {
+        "id": "UCKP-URN-IDENTITY",
+        "home": "engine/uckp/identity.py",
+        "shape": "urn:ucos:ucko:<namespace>:<local_name>",
+        "identifies": "constitutional objects, Article 5 — minted (uuid5 over namespace+local-name) and admitted with refuse-on-clash semantics by engine/uckp/registry.py",
+        "authority": "UCKP-ART-05, already bound SUPREME under identity_authority_resolution's CONSTITUTIONAL_OBJECT plane; unchanged by this binding",
+        "relationship_to_sibling_namespace": "NONE — no knowledge object identifier is ever minted, admitted, or refused through this namespace's registry"
+      },
+      {
+        "id": "KNOWLEDGE-OBJECT-IDENTITY",
+        "home": "engine/knowledge/cko.py (cko_id) + engine/knowledge/model.py (content_hash) + engine/knowledge/ukip/contracts.py (knowledge_id, knowledge_sha256)",
+        "shape": "author-assigned cko_id string, conventionally UCKO-<KIND>-<NNNN>, plus content-derived knowledge_sha256 and UKID-<digest12> knowledge_id",
+        "identifies": "curated institutional/architectural decision knowledge (UKDA) and its unbounded-provider admission layer (UKIP), per PHASE-KNOWLEDGE-REGISTRY-OWNERSHIP-RECONCILIATION-DETERMINATION.md",
+        "authority": "engine/knowledge/store.py, the single authoritative home confirmed by every downstream consumer",
+        "relationship_to_sibling_namespace": "NONE — no UCKP URN is ever derived from, or resolves to, a knowledge object identifier; zero use of the ucko_objects()/UCKO_OBJECTS provider hook anywhere in engine/knowledge/"
+      }
+    ],
+    "canonical_pattern_ownership": [
+      {
+        "pattern": "urn:ucos:ucko:<namespace>:<local_name>",
+        "owner": "engine/uckp/identity.py",
+        "validated_by": "_NAMESPACE_RE, _LOCAL_RE (namespace component lowercase-only, structurally cannot equal a KNOWLEDGE-OBJECT-IDENTITY value)"
+      },
+      {
+        "pattern": "UCKO-<KIND>-<NNNN>",
+        "owner": "engine/knowledge/seed.py, engine/knowledge/capability.py (CAPABILITY_ID_PREFIX)",
+        "consumed_by": "00-MASTER/UAKOS-PHASE-002/003/003R/004/005/006, UAKOS-CLOSURE-002, UAKOS-PHASE-001B, UCOS-MXR-001 (pre-existing text-reference family scanners; this binding records their existing convention, does not create or consolidate them)",
+        "validated_by": "none — informal convention, recorded here as fact, not newly enforced by this binding"
+      },
+      {
+        "pattern": "UKID-<digest12>",
+        "owner": "engine/knowledge/ukip/contracts.py (KNOWLEDGE_ID_PREFIX)",
+        "validated_by": "derived deterministically from knowledge_sha256; no collision found with either pattern above"
+      }
+    ],
+    "$acronym_collision_note": "The bare token UCKO also names a Python symbol (engine.uckp.ucko.UCKO, a class alias for UniversalConstitutionalKnowledgeObject, exposed via engine/uckp/__init__.py's lazy-import table) — a third, code-symbol namespace resolved entirely by Python's own import machinery, sharing no keyspace, parser, or lookup path with either namespace declared above. Recorded per PHASE-IDENTITY-NAMESPACE-OWNERSHIP-DETERMINATION.md section 1; not a namespace this binding governs, since Python's own scoping already governs it completely.",
+    "second_authority_test": "A second authority over the SAME namespace would be a rival mint or a rival admission registry for the same population. None was found: UCKP-URN-IDENTITY is minted and admitted exactly once (engine/uckp/identity.py + engine/uckp/registry.py); KNOWLEDGE-OBJECT-IDENTITY is authored/derived exactly once (engine/knowledge/store.py, reused verbatim by UKI and UKIP per PHASE-KNOWLEDGE-REGISTRY-OWNERSHIP-RECONCILIATION-DETERMINATION.md). Neither namespace's population is ever registered into the other's mechanism. Full analysis in PHASE-KNOWLEDGE-IDENTITY-RELATIONSHIP-DETERMINATION.md and PHASE-IDENTITY-NAMESPACE-OWNERSHIP-DETERMINATION.md.",
+    "ids_preserved": "ALL. This binding renames nothing, migrates nothing, merges no identity system, and creates no new or universal identity authority — it declares two namespaces already independent in code, and the one primitive they already, correctly, share."
+  },
+  "$existence_comment": [
+    "TASK: resolve the existence-tracking landscape. Same shape as identity, the relationship",
+    "graph, and certification — recognition of a plural but non-competing landscape, never a",
+    "new authority.",
+    "",
+    "PHASE-UCF-000/001/002-COMPLETENESS-*-DETERMINATION.md found three independent, real,",
+    "non-competing existence-tracking authorities: engine/uckp/registry.py (facet-complete,",
+    "193 objects, scoped to providers under engine.uckp), 00-MASTER/UCOS-UGA-001/uga_engine.py",
+    "(repository-wide bookkeeping, 5,789 objects), and platform/repository_intelligence/",
+    "(capability/reuse/gap/conflict/duplicate analysis over the whole substrate). Zero",
+    "cross-imports were found in any direction among the three. One partial, not-yet-built",
+    "projection path was identified and is recorded below as DECLARED, NOT YET IMPLEMENTED:",
+    "UGA's existing owner/object_class/lifecycle fields are sufficient to populate three of",
+    "UCKP's 33 facets (OWNERSHIP, IDENTITY, LIFECYCLE) without either registry surrendering",
+    "its own authority or a new mechanism being invented."
+  ],
+  "existence_resolution": {
+    "model": {
+      "type": "MULTIPLE_INDEPENDENT_AUTHORITIES",
+      "declares": "Existence-tracking in UCOS is plural by design. Each authority answers a different bounded question about 'what exists'; holding undisputed authority over one does not compete with another holding undisputed authority over a different one."
+    },
+    "authorities": [
+      {
+        "id": "UCKP-COMPLETENESS-REGISTRY",
+        "home": "engine/uckp/registry.py",
+        "role": "AUTHORITY",
+        "bounded_question": "Does this object answer all 33 constitutional completeness facets (Article 6)?",
+        "population": "193 objects (measured), scoped to providers under engine.uckp by default discover() root"
+      },
+      {
+        "id": "UGA-EXISTENCE-REGISTRY",
+        "home": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+        "role": "AUTHORITY",
+        "bounded_question": "Does this version-controlled artifact exist, and who owns it, at repository scale?",
+        "population": "5,789 objects (measured)"
+      },
+      {
+        "id": "CEU-EXISTENCE-SUBSTRATE",
+        "home": "engine/ceu/",
+        "role": "AUTHORITY",
+        "bounded_question": "What forms of existence are declared, which units hold each form, and which relationship and topology instances hold among them?",
+        "population": "154 units across 51 forms at catalogue bootstrap (measured); the seed is one catalogue, not a fixed vocabulary",
+        "instrument": "00-MASTER/UCOS-CEU-001/ceu-declaration.json"
+      },
+      {
+        "id": "REPOSITORY-INTELLIGENCE",
+        "home": "platform/repository_intelligence/",
+        "role": "AUTHORITY",
+        "bounded_question": "What exists, what can be reused, what is missing, what conflicts, what is duplicated, and who owns it — across the whole repository substrate?"
+      }
+    ],
+    "shared_primitive": {
+      "home": "engine/uckp/canonical.py",
+      "note": "All four authorities compute content digests through the one Layer Zero primitive — UCKP and UCOS-CEU-001 directly, UGA transitively, and platform/repository_intelligence transitively via platform/foundation/contracts.py (line 35, re-exports engine.uckp.canonical.content_hash). Sharing the primitive does not transfer or share existence-tracking authority between them."
+    },
+    "declared_projections": [
+      {
+        "from": "UGA-EXISTENCE-REGISTRY",
+        "to": "UCKP-COMPLETENESS-REGISTRY",
+        "facets_covered": [
+          "OWNERSHIP",
+          "IDENTITY",
+          "LIFECYCLE"
+        ],
+        "status": "DECLARED, NOT YET IMPLEMENTED",
+        "mechanism": "a ucko_objects() provider reading UGA's existing classification (derive_owner(), classify_object()); no new fact is computed, only an existing one exposed",
+        "note": "implementing this provider is code, out of scope for this binding — see PHASE-UCF-004-COMPLETENESS-GOVERNANCE-BINDING-IMPLEMENTATION-DETERMINATION.md §5"
+      }
+    ],
+    "second_authority_test": "A second authority over the SAME bounded question would be a rival. None was found: each of the four answers a structurally different question, confirmed by zero cross-imports in any direction and non-overlapping population definitions. UCOS-CEU-001 was tested against the same condition when it was bound: it asks which forms of existence are DECLARED, where UGA asks whether a tracked artifact EXISTS and the completeness registry asks whether an object ANSWERS its facets; its 154 declared units overlap neither UGA's 5,789 tracked artifacts nor the registry's 193 objects, and it imports none of the three. Full analysis in PHASE-UCF-002-COMPLETENESS-ARCHITECTURE-DETERMINATION.md §1, §3."
+  },
+  "$lifecycle_comment": [
+    "TASK: resolve the apparent overlap between the 45-stage universal process lifecycle",
+    "(UCL-000001) and the 10-stage knowledge artifact state lifecycle. Same shape as CMG",
+    "vs UCKP (Phase 0.6) — two real, non-competing things sharing enough surface similarity",
+    "to be mistaken for rivals, resolved by declaring them orthogonal axes rather than",
+    "merging or subordinating either.",
+    "",
+    "PHASE-UCF-002-COMPLETENESS-ARCHITECTURE-DETERMINATION.md read UCL-000001's full",
+    "45-stage manifest (engine/nucleus/lifecycle.py) and found every stage is a PROCESS",
+    "verb (Observe, Validate, Verify, Govern, Certify, Elevate...) — the steps a unit of",
+    "work passes through — while engine/knowledge/model.py's ten stages are STATE nouns",
+    "(Draft, Approved, Deprecated, Archived...) — the standing a knowledge artifact",
+    "currently holds. UCL-000001 has no state named 'Draft'; the Knowledge Lifecycle has",
+    "no stage named 'Validate' as a transition step. Neither is a projection or",
+    "subordinate of the other. The Evolution History question this pass also raised is",
+    "recorded below as explicitly unresolved, not answered by assertion."
+  ],
+  "lifecycle_resolution": {
+    "model": {
+      "type": "ORTHOGONAL_AXES",
+      "declares": "A process lifecycle (the stages a unit of work passes through) and a state lifecycle (the standing an artifact currently holds) are different axes. Neither is a projection or subordinate of the other; running a process stage is plausibly how a state transition occurs, but the two vocabularies are not the same vocabulary."
+    },
+    "axes": [
+      {
+        "id": "UCL-000001",
+        "home": "engine/nucleus/lifecycle.py",
+        "axis": "PROCESS",
+        "scope": "the 45-stage universal work-cycle, declared to apply to nuclei, layers, compositions, capabilities, artifacts, knowledge, registries, policies, evidence, executions, contexts, universes, civilisations and realities alike",
+        "role": "AUTHORITY over the process axis"
+      },
+      {
+        "id": "KNOWLEDGE-LIFECYCLE",
+        "home": "engine/knowledge/model.py",
+        "axis": "STATE",
+        "scope": "the 10-stage standing vocabulary for knowledge objects specifically",
+        "role": "AUTHORITY over the state axis, bounded to knowledge objects"
+      }
+    ],
+    "already_declared_composition": {
+      "note": "engine/constitution/evolution.py (UCOS-UACE-000001) already documents its own relationship to UCL-000001 in its module docstring: 'It does not replace it and does not copy it... So the relationship is composition... Neither grows a copy of the other.' This binding formalizes that existing, code-documented relationship; it does not create it."
+    },
+    "open_item": {
+      "id": "EVOLUTION-HISTORY-UNIFIED-VIEW",
+      "status": "NOT RESOLVED — existence not confirmed either way",
+      "note": "Real components exist (CMG amendments, Lifecycle.SUPERSEDED/HISTORICAL, supersedes/superseded_by, evolves-from relation types, engine.constitution.evolution) but no single cross-domain read path was confirmed by PHASE-UCF-001 or PHASE-UCF-002. A dedicated discovery pass is the correct next step; this binding does not guess at the answer."
+    },
+    "second_authority_test": "A second authority over the SAME axis (process or state) would be a rival. UCL-000001 and the Knowledge Lifecycle were checked against this test directly: UCL-000001 has no state named 'Draft' or 'Operational'; the Knowledge Lifecycle has no stage named 'Validate' or 'Certify' as a transition step. Full analysis in PHASE-UCF-002-COMPLETENESS-ARCHITECTURE-DETERMINATION.md §2."
+  },
+  "$category_ownership_comment": [
+    "TASK: resolve which provider populates which governed category, and which instrument is",
+    "accountable for the value space they populate into. Same shape as identity, the",
+    "relationship graph, certification, existence and lifecycle — recognition of a standing",
+    "that measurement already shows to hold, never the creation of an authority.",
+    "",
+    "PHASE-UCF-005 admitted a provider whose objects landed in categories nobody had agreed it",
+    "should populate, and nothing in the repository could report it: the measured side existed",
+    "and the recognised side did not. PHASE-UCF-011 built the measurement",
+    "(engine/uckp/intelligence.py::category_populations); PHASE-UCF-013 built the reader and",
+    "the join (engine/uckp/resolution.py, category_integrity()) and stopped short of this",
+    "section deliberately, because writing it required two content answers no measurement had",
+    "yet settled. PHASE-UCF-014 settled both by measurement: the accountable authority is the",
+    "instrument that already owns the governed-category vocabulary and already refuses every",
+    "value outside it (D14-2), and uga_projection's seven projected categories are seven",
+    "independent UCKP-side classifications rather than one inherited UGA relationship, because",
+    "00-MASTER/UCOS-UGA-001/02-UNIVERSAL-OBJECT-REGISTRY.json carries no category field at all",
+    "and the seven values originate in engine/uckp/uga_projection.py's own _CATEGORY_MAP",
+    "(D14-3a, D14-3b).",
+    "",
+    "This section therefore records, per populated category, the providers that DO populate it",
+    "and the instrument accountable for the value space it belongs to. It confers on no one a",
+    "right to populate anything, and it never names a provider as an owner: a provider is a",
+    "discovery fact (UCKP-ART-08), and engine/uckp/intelligence.py reports the substitution as",
+    "a finding if this file ever attempts it. Full analysis in",
+    "PHASE-UCF-014-PROVIDER-CATEGORY-OWNERSHIP-RESOLUTION-POPULATION-DETERMINATION.md; written",
+    "by PHASE-UCF-015-PROVIDER-CATEGORY-OWNERSHIP-RESOLUTION-POPULATION-IMPLEMENTATION.md."
+  ],
+  "category_ownership_resolution": {
+    "model": {
+      "type": "SINGLE_GOVERNED_VALUE_SPACE_MULTIPLE_BOUNDED_POPULATORS",
+      "declares": "A governed category has one value space and may have many populators. Recognition is a two-plane join and asserts neither plane. recognised_populators is the MEASURED plane — the providers that, at measurement time, do in fact populate the category. accountable_authority is the RECOGNISED plane — the instrument already accountable for the value space within which the category exists, and whose enforcement admits or refuses every population of it. Neither plane derives the other; this section asserts neither; engine/uckp/intelligence.py::category_integrity() reports whether they agree. A populator is not an owner, an owner is not an authority, and nothing here is granted to anyone."
+    },
+    "principles": [
+      "A category may be recognised when, and only when, it is a registered term of uckp.governed-category, at least one object populates it, every object in it names a provider, and every measured provider is listed in recognised_populators (PHASE-UCF-014 R1).",
+      "Measurement first, recognition second, never the reverse: a category is registered, populated and measured before any entry names it. A recognition written in anticipation of a population is the grant of a future right rather than the recognition of a present standing, and the join reports it as CONFLICT rather than as a pass (R2, R2a).",
+      "Plurality is representable from day one and is never self-reconciling: recognised_populators is a list, and listing a second populator is legitimate only where the resolution declares a distinct bounded question for each populator. Absent that the plurality stands reported rather than closed, because recognition is not a disposal mechanism (R3, R3a).",
+      "UNKNOWN is a permanent state of the model, never a transitional one. A populated category with no entry, an entry that cannot be read as a recognition, a category recognised more than once, and an unreadable section all leave the category UNKNOWN. That every category measured today is recognised must never come to mean that the check no longer looks (R4, R4a).",
+      "Conflicts are computed, never recorded. This section carries no conflict field, no disposition field and no exception list, and must never acquire one: a ledger that described its own disagreement with reality would be one edit away from disposing of it (R5).",
+      "This section carries no measurement. No object count, no provider count, no percentage and no population digest — counts belong to category_populations(), which recomputes them on every reasoning pass. A recognition references a measurement; it never mirrors one (D14-4).",
+      "This section is never declared empty. An absent section is a lawful, silent, recorded-as-deferred state; a declared and empty one is a claim that could not be resolved, and produces a standing complaint on every pass. It arrives with every recognition it is entitled to make, or it does not arrive (R6)."
+    ],
+    "value_space": {
+      "vocabulary": "uckp.governed-category",
+      "terms": 35,
+      "owner": "UCKP-LAW-0001",
+      "home": "engine/uckp/law.py",
+      "article": "UCKP-ART-17",
+      "enforcement": "engine/uckp/ucko.py:392 (require_lawful → vocabularies.require_term) via engine/uckp/registry.py:123,167 — runs on every admission, so the instrument that admitted, or could have refused, every object's category value is this vocabulary's owner. Reproducible: minting with an unregistered category and admitting it raises LawViolation [UCKP-LAW-001] 'term is not registered in this vocabulary'.",
+      "ownership_note": "This recognises accountability for the VALUE SPACE, not ownership of a category and not ownership of the objects in one. It answers 'which instrument's standing governs the value space this category belongs to, and refuses a value outside it?'. It does not answer 'who decided that this provider should populate this category?' — PHASE-UCF-014 §7.5 measured that no instrument in this repository claims that second accountability, and recording one here would create it rather than recognise it."
+    },
+    "measurement": {
+      "evidence": "taxonomy.category x discovery.provider",
+      "reader": "engine/uckp/resolution.py",
+      "consumer": "engine/uckp/intelligence.py::UniversalIntelligence.category_integrity",
+      "note": "Every count, provider set and population figure is recomputed from the assembled universe on every reasoning pass and is deliberately absent from this section — see PHASE-UCF-014 §8.3 and §10.4, where the only two copied measurements in this binding are also the only two facts in it that have since gone stale."
+    },
+    "provenance": {
+      "determinations": [
+        "PHASE-UCF-007",
+        "PHASE-UCF-008",
+        "PHASE-UCF-009",
+        "PHASE-UCF-010",
+        "PHASE-UCF-011",
+        "PHASE-UCF-012",
+        "PHASE-UCF-013",
+        "PHASE-UCF-014"
+      ],
+      "note": "Each is recorded in full as PHASE-UCF-0NN-*.md in the repository root. PHASE-UCF-014 §15.3 fixes this section's content exactly; PHASE-UCF-015 wrote it and changed nothing else.",
+      "stage": "ADVISORY — divergence between the two planes is reported at OBSERVATION severity and certification is indifferent to it. Promotion to blocking requires a plurality-versus-contamination rule and a certification invariant, both deliberately still deferred (PHASE-UCF-014 §13)."
+    },
+    "recognitions": [
+      {
+        "category": "artifact",
+        "recognised_populators": [
+          "engine.uckp.capabilities"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/capabilities.py:120 (category=\"artifact\" literal)"
+      },
+      {
+        "category": "authority",
+        "recognised_populators": [
+          "engine.uckp.alignment"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/alignment.py:394,431,470 (category=\"authority\" literals)"
+      },
+      {
+        "category": "capability",
+        "recognised_populators": [
+          "engine.uckp.capabilities"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/capabilities.py:141 (category=\"capability\" literal)"
+      },
+      {
+        "category": "concept",
+        "recognised_populators": [
+          "engine.uckp.uga_projection"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/uga_projection.py:79-87 (_CATEGORY_MAP[\"EXCLUDED_DOCUMENT\"] -> \"concept\")"
+      },
+      {
+        "category": "constraint",
+        "recognised_populators": [
+          "engine.uckp.constitution"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/constitution.py:216 (category=\"constraint\" literal)"
+      },
+      {
+        "category": "engine",
+        "recognised_populators": [
+          "engine.uckp.uga_projection"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/uga_projection.py:79-87 (_CATEGORY_MAP[\"EXECUTABLE_OBJECT\"] -> \"engine\")"
+      },
+      {
+        "category": "governance",
+        "recognised_populators": [
+          "engine.uckp.capabilities"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/capabilities.py:249 (category=\"governance\" literal)"
+      },
+      {
+        "category": "identity",
+        "recognised_populators": [
+          "engine.uckp.alignment"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/alignment.py:501 (category=\"identity\" literal)"
+      },
+      {
+        "category": "knowledge",
+        "recognised_populators": [
+          "engine.uckp.uga_projection"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/uga_projection.py:79-87 (_CATEGORY_MAP[\"DOCUMENT_ARTIFACT\"] -> \"knowledge\")"
+      },
+      {
+        "category": "law",
+        "recognised_populators": [
+          "engine.uckp.constitution"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/constitution.py:149 (category=\"law\" literal)"
+      },
+      {
+        "category": "metadata",
+        "recognised_populators": [
+          "engine.uckp.constitution"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/constitution.py:267 (category=\"metadata\" literal)"
+      },
+      {
+        "category": "observation",
+        "recognised_populators": [
+          "engine.uckp.capabilities"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/capabilities.py:286 (category=\"observation\" literal)"
+      },
+      {
+        "category": "policy",
+        "recognised_populators": [
+          "engine.uckp.uga_projection"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/uga_projection.py:79-87 (_CATEGORY_MAP[\"CONFIGURATION_OBJECT\"] -> \"policy\")"
+      },
+      {
+        "category": "principle",
+        "recognised_populators": [
+          "engine.uckp.constitution"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/constitution.py:184 (category=\"principle\" literal)"
+      },
+      {
+        "category": "runtime",
+        "recognised_populators": [
+          "engine.uckp.capabilities"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/capabilities.py:162 (category=\"runtime\" literal)"
+      },
+      {
+        "category": "state",
+        "recognised_populators": [
+          "engine.uckp.uga_projection"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/uga_projection.py:79-87 (_CATEGORY_MAP[\"DATA_OBJECT\"] -> \"state\")"
+      },
+      {
+        "category": "taxonomy",
+        "recognised_populators": [
+          "engine.uckp.constitution"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/constitution.py:291 (category=\"taxonomy\" literal)"
+      },
+      {
+        "category": "transition",
+        "recognised_populators": [
+          "engine.uckp.capabilities"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/capabilities.py:192 (category=\"transition\" literal)"
+      },
+      {
+        "category": "validation",
+        "recognised_populators": [
+          "engine.uckp.constitution"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/constitution.py:249 (category=\"validation\" literal)"
+      },
+      {
+        "category": "verification",
+        "recognised_populators": [
+          "engine.uckp.uga_projection"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/uga_projection.py:79-87 (_CATEGORY_MAP[\"TEST_OBJECT\"] -> \"verification\")"
+      },
+      {
+        "category": "workflow",
+        "recognised_populators": [
+          "engine.uckp.uga_projection"
+        ],
+        "accountable_authority": "UCKP-LAW-0001",
+        "basis": "engine/uckp/uga_projection.py:79-87 (_CATEGORY_MAP[\"TOOLING_OBJECT\"] -> \"workflow\")"
+      }
+    ],
+    "unrecognised_categories": {
+      "count": 14,
+      "categories": [
+        "axiom",
+        "certification",
+        "decision",
+        "dependency",
+        "event",
+        "evidence",
+        "measurement",
+        "ontology",
+        "proof",
+        "registry",
+        "relationship",
+        "responsibility",
+        "simulation",
+        "timeline"
+      ],
+      "reason": "No object populates them. A recognition without a population is the grant of a future right rather than the recognition of a present standing, and the join reports one as CONFLICT (PHASE-UCF-014 R2a, measured). Each already emits its own OBSERVATION from gap_reasoning() as a governed category with no canonical object yet — a statement about population, not about ownership, and unaffected by this section.",
+      "note": "Listed so that this section states its own totality rather than being silently partial: 21 recognised plus 14 unrecognised is every term of uckp.governed-category."
+    },
+    "second_populator_test": "A second populator would be a provider minting objects into a category this section recognises, whose module name does not appear in that category's recognised_populators. It is recognised by measurement, not by declaration: discovery.provider over taxonomy.category, computed by engine/uckp/intelligence.py::category_populations() on every reasoning pass and compared against this section by category_integrity(). Finding one is a CONFLICT, and a CONFLICT is reported and reconciled — never absorbed by adding the provider to this list. Listing a second populator is legitimate only where the resolution declares a distinct bounded question for each, exactly as existence_resolution does for its three authorities; absent that, the plurality stands reported. This section recognises which providers do populate each category; it grants no provider a right to populate anything.",
+    "ids_preserved": "ALL. This section renames nothing, mints nothing, migrates nothing and creates no authority — it recognises a population every object in the registry already carries, and an accountability engine/uckp/law.py already holds and engine/uckp/registry.py already enforces on every admission."
+  },
+  "$truth_comment": [
+    "TASK: establish evidence vs observation separation. UCOS-OBSERVATION-UNIVERSE-001 already",
+    "separated the four truths and UCOS-EVIDENCE-UNIVERSE-001 already closed the evidence classes at",
+    "five. Neither said which ARTICLE made the separation binding, so the separation held by the good",
+    "sense of two registers rather than by law. These are the articles."
+  ],
+  "evidence_observation_separation": {
+    "identity_truth": {
+      "definition": "What a thing IS. A pure function of the commit.",
+      "article": "UCKP-ART-02",
+      "also": [
+        "UCKP-ART-05",
+        "UCKP-ART-13"
+      ],
+      "may_be_canonical": true,
+      "home": "00-BOOK/DATA/id-ledger.json and the object registries derived from it"
+    },
+    "observation_truth": {
+      "definition": "What was SEEN at a moment — working-tree dirtiness, what an actuator wrote, an environment reading.",
+      "article": "UCKP-ART-13",
+      "also": [
+        "UCKP-ART-15"
+      ],
+      "may_be_canonical": false,
+      "why": "UCKP-ART-13 requires identical inputs to produce identical bytes. A reading taken outside the commit boundary is not an input the commit contains, so admitting one into a canonical digest destroys the fixed point by construction — which is exactly how one stale digest became a permanently non-convergent Phase 8.",
+      "home": "00-BOOK/DATA/observation-universe.json; identities in id-ledger by_observation"
+    },
+    "evidence_truth": {
+      "definition": "The record kept so an act can be reviewed after the fact.",
+      "article": "UCKP-ART-12",
+      "also": [
+        "UCKP-ART-16",
+        "UCKP-ART-17"
+      ],
+      "may_be_canonical": false,
+      "home": "00-BOOK/DATA/evidence-universe.json"
+    },
+    "decision_truth": {
+      "definition": "What was decided, replayable from itself.",
+      "article": "UCKP-ART-16",
+      "may_be_canonical": true,
+      "home": "engine/uckp/governance.py"
+    },
+    "separation_rules": [
+      {
+        "id": "SEP-1",
+        "rule": "An observation is not evidence, and evidence is not an observation.",
+        "meaning": "An observation is a READING with a value-independent identity. Evidence is a SURFACE with a class, an owner, a producer and a retention policy. The reading LANDS on the surface; it never becomes it.",
+        "measured_by": "CAA-INV-06"
+      },
+      {
+        "id": "SEP-2",
+        "rule": "Every observation kind binds to exactly one of the five evidence classes, and creates no sixth.",
+        "meaning": "The reading has somewhere to live the moment it is declared, so removing a value from canonical identity relocates evidence rather than deleting it.",
+        "measured_by": "CAA-INV-06"
+      },
+      {
+        "id": "SEP-3",
+        "rule": "Neither register may hold the other's subject. The evidence register declares no observation kind; the observation register declares no sixth evidence class.",
+        "meaning": "Two registers that can each define the other's terms are one register with two names, and the separation is decorative.",
+        "measured_by": "CAA-INV-06"
+      }
+    ]
+  },
+  "id_preservation": {
+    "rule": "Every identifier that existed before this binding exists after it, unchanged.",
+    "scope": [
+      "00-BOOK/DATA/id-ledger.json by_path",
+      "by_object",
+      "by_observation",
+      "every artifact_id in every bound instrument",
+      "every UGA-INV / OBS-INV identifier"
+    ],
+    "method": "This binding is additive only. It appends a `constitutional_superior` block to seven instruments, appends CAA invariants to a register that already exists, and adds no map, no counter and no sequence.",
+    "measured_by": "CAA-INV-04, which recomputes the derivation over every ledger id and fails on any collision or any id it cannot carry through verbatim."
+  },
+  "determinism": {
+    "rule": "No measurement this binding drives reads a wall clock, the working tree or the network.",
+    "inputs": "version-controlled paths (git ls-files), this binding, and the instruments it names",
+    "consequence": "A second run over an unchanged commit rewrites no byte, so Phase-8 fixed point and Phase-9 pristine clone stay checkable by plain comparison.",
+    "measured_by": "the existing Phase-8 fixed-point run; this binding adds no dimension to it"
+  },
+  "$invariant_comment": [
+    "The governance invariants that prevent a duplicate authority from appearing. They are measured by",
+    "00-MASTER/UCOS-UGA-001/uga_engine.py alongside UGA-INV-01..10 and OBS-INV-01..10, and are",
+    "therefore enforced by the gate verify.sh ALREADY runs (Stage 6b). No new stage, no new pipeline,",
+    "no new scheduler and no second criteria set — a parallel enforcement path would be the very",
+    "thing these invariants forbid.",
+    "",
+    "Every one fails closed: an input that cannot be measured is a violation and never a pass."
+  ],
+  "invariants": [
+    {
+      "id": "CAA-INV-01",
+      "name": "EXACTLY_ONE_SUPREME_CONSTITUTIONAL_AUTHORITY",
+      "statement": "Exactly one instrument holds role SUPREME, it is UCKP-LAW-0001, and its declared home exists.",
+      "article": "UCKP-ART-01",
+      "fails_closed": true
+    },
+    {
+      "id": "CAA-INV-02",
+      "name": "EVERY_AUTHORITY_CLAIM_NAMES_ITS_CONSTITUTIONAL_SUPERIOR",
+      "statement": "Every tracked instrument whose declared authority matches no disclaiming token is bound here with a role and at least one article of derivation.",
+      "article": "UCKP-ART-01",
+      "also": [
+        "UCKP-ART-03"
+      ],
+      "fails_closed": true
+    },
+    {
+      "id": "CAA-INV-03",
+      "name": "NO_SUBORDINATE_INSTRUMENT_CLAIMS_INDEPENDENT_AUTHORITY",
+      "statement": "Every bound instrument carries a constitutional_superior block naming UCKP-LAW-0001, whose declared role and articles match this binding and resolve in the root law.",
+      "article": "UCKP-ART-04",
+      "also": [
+        "UCKP-ART-11"
+      ],
+      "fails_closed": true
+    },
+    {
+      "id": "CAA-INV-04",
+      "name": "EXACTLY_ONE_IDENTITY_AUTHORITY",
+      "statement": "One append-only mint holds every repository identity, every declared map resolves in it, and the derivation into the object model is total and injective over every id it holds.",
+      "article": "UCKP-ART-05",
+      "also": [
+        "UCKP-ART-03"
+      ],
+      "fails_closed": true
+    },
+    {
+      "id": "CAA-INV-05",
+      "name": "EXACTLY_ONE_RELATIONSHIP_GRAPH_MODEL_OWNER",
+      "statement": "One instrument declares what a relationship is, and every relationship kind any projection emits binds to a class and an article of that model.",
+      "article": "UCKP-ART-07",
+      "fails_closed": true
+    },
+    {
+      "id": "CAA-INV-06",
+      "name": "EVIDENCE_AND_OBSERVATION_REMAIN_SEPARATE_TRUTHS",
+      "statement": "The four truths each name a governing article, every observation kind binds to one of the five evidence classes, no sixth class is created, and neither register declares the other's subject.",
+      "article": "UCKP-ART-13",
+      "also": [
+        "UCKP-ART-12"
+      ],
+      "fails_closed": true
+    },
+    {
+      "id": "CAA-INV-07",
+      "name": "NO_INSTRUMENT_DECLARES_A_RIVAL_OBJECT_MODEL",
+      "statement": "One object model is declared repository-wide. Every bound instrument that declares object classes names UCKO as the model they project, and every declared authority role resolves to an article of the root law.",
+      "article": "UCKP-ART-02",
+      "also": [
+        "UCKP-ART-17",
+        "UCKP-ART-18"
+      ],
+      "fails_closed": true
+    },
+    {
+      "id": "CAA-INV-08",
+      "name": "ORTHOGONAL_ROLE_IS_SCOPE_BOUNDED_AND_NON_SUPREME",
+      "statement": "Every instrument bound under role ORTHOGONAL declares an explicit, non-unrestricted scope naming the axis its authority is bounded to, and role ORTHOGONAL never resolves as a supreme role; Article 1 continues to admit exactly one.",
+      "article": "UCKP-ART-01",
+      "also": [
+        "UCKP-ART-04"
+      ],
+      "fails_closed": true
+    }
+  ],
+  "extension_rule": {
+    "principle": "Every future capability becomes an EXTENSION of the Universal Constitutional Object Model, never a competing authority beside it.",
+    "articles": [
+      "UCKP-ART-17",
+      "UCKP-ART-18",
+      "UCKP-ART-14"
+    ],
+    "how_to_extend": [
+      "A new family of constitutional objects is a new provider module under engine/uckp/ exposing ucko_objects(). The registry discovers it; engine/uckp/universe.py is never edited (UCKP-ART-08).",
+      "A new vocabulary member, relationship class, adapter or authority role is one appended entry in DATA. engine/uckp/law.py is never amended to fit the data (UCKP-ART-17).",
+      "A new repository capability declares its role and its articles in subordinate_instruments here, and gains a constitutional_superior block. It does not declare a root.",
+      "Before creating anything, its canonical object is located and reused, extended or referenced (UCKP-ART-18)."
+    ],
+    "what_this_forbids": "A second registry, engine, lifecycle, identity authority, relationship graph or evolution system standing beside the ones that exist. Not because expansion is untidy, but because UCKP-ART-03 makes a second definition of an existing primitive void, and CAA-INV-01..07 make that voidness measurable."
+  },
+  "non_goals": [
+    "Creating an authority. This binding confers none, ratifies nothing and occupies no tier.",
+    "Migrating, replacing or retiring any instrument. Every one keeps everything it authored.",
+    "Re-minting, renumbering or reissuing any identity.",
+    "Adding an article, invariant or stop condition to engine/uckp/law.py. Extension is by registration (UCKP-ART-17).",
+    "Adding a verification stage, pipeline or scheduler. The invariants land in the gate verify.sh already runs.",
+    "Deciding a conflict between two located instruments. Where one is found, it is measured and reported, never disposed of here."
+  ]
+}

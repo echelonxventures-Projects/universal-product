@@ -1,0 +1,67 @@
+{
+  "programme": "UCOS-CIOA-001",
+  "title": "Constitutional Implementation Orchestration Authority \u2014 Realization Binding",
+  "authority": "NONE \u2014 DERIVED TRUTH",
+  "specification": "02-MASTER/UCOS-COMP-000000-CONSTITUTIONAL-IMPLEMENTATION-ORCHESTRATION-AUTHORITY.md",
+  "realization_mode": "REALIZE_BY_COMPOSITION",
+  "description": "Binds the CIOA specification to the existing engines that compose to realize its mandated behavior. Creates no new engine, store, or authority.",
+  "bindings": [
+    {
+      "spec_requirement": "Determine where we are (repository state)",
+      "implementor": "intelligence/rie",
+      "evidence": "UCOS-RIE-SNAPSHOT.json, UCOS-RIE-PROGRESS.json",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Determine what is next (implementation sequencing)",
+      "implementor": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "evidence": "uccep.json gates + programmes determine execution frontier",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Determine what can run in parallel",
+      "implementor": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "evidence": "rib.json queue + waves + parallel execution groups",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Determine what must never run yet (blocking gates)",
+      "implementor": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "evidence": "blocking_failures + certification_ceiling enforce hold",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Determine how far from completion",
+      "implementor": "intelligence/rie",
+      "evidence": "UCOS-RIE-PROGRESS.json, UCOS-RIE-AEOS-READINESS.json",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Fail-closed orchestration (no action without evidence)",
+      "implementor": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "evidence": "gate_exit != 0 blocks certification; exit 2 = fail-closed abort",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Deterministic derivation from repository evidence only",
+      "implementor": "All programme engines (stdlib-only, no wall-clock, --check-determinism)",
+      "evidence": "Every programme engine passes self-determinism guard",
+      "verified": true
+    },
+    {
+      "spec_requirement": "Consume CCE by reference (immutable dependency)",
+      "implementor": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "evidence": "UCCEP gates G-01..G-15 are the located CCE completeness checks",
+      "verified": true
+    }
+  ],
+  "completeness": {
+    "total_requirements": 8,
+    "bound": 8,
+    "unbound": 0,
+    "coverage_percent": 100
+  },
+  "gate": "OPEN",
+  "gate_exit": 0,
+  "determination": "REALIZED-BY-COMPOSITION"
+}

@@ -1,0 +1,34 @@
+{
+  "canonical_archive": "ac1451ac4015cf8b",
+  "canonical_document": "04-REFERENCE/ChatGPT Chat-1.docx",
+  "corpus_roots": [
+    "external:KNOWLEDGE-ASSIMILATION"
+  ],
+  "determination_id": "D-1",
+  "files": {
+    "assimilation_baseline": {
+      "bytes": 9337855,
+      "relative": "00-MASTER/UAKOS-CLOSURE-008/assimilation.json",
+      "sha256": "3d733b1cac02746265b5a9ec8063f7ac518116310a2ededb86635d27c3de6061"
+    },
+    "export::31b621b2cecc55e8": {
+      "bytes": 351,
+      "external": true,
+      "relative": "external:export/31b621b2cecc55e8",
+      "sha256": "31b621b2cecc55e878c8a844ef4748803ef23e9587d88e3fd649dea365d12e84"
+    },
+    "export::ac1451ac4015cf8b": {
+      "bytes": 382,
+      "external": true,
+      "relative": "external:export/ac1451ac4015cf8b",
+      "sha256": "ac1451ac4015cf8b05a40856002b673ed175f33d08b9637fa3455a3f25da2fa8"
+    },
+    "provenance_baseline": {
+      "bytes": 5944,
+      "relative": "00-MASTER/UAKOS-PHASE-001B/01-SOURCE-PROVENANCE-REGISTER.md",
+      "sha256": "02872e3edae553e6106c52ac8946dbd5c87b218743b78108ff7c6fc261e147b7"
+    }
+  },
+  "head_commit": "77798202",
+  "program": "UKAP-001"
+}

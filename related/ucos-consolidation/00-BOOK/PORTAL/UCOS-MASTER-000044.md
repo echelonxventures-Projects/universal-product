@@ -1,0 +1,16 @@
+# UCOS-MASTER-000044 — UCOS Ω∞ — COMPILER COMPONENT REGISTER
+
+Breadcrumbs: [UCOS-BOOK-000000](UCOS-BOOK-000000.md) › [UCOS-MASTER-000044](UCOS-MASTER-000044.md)
+
+- Volume: VOL-000  ·  Status: ACTIVE  ·  Twin: [—]
+- Native: —  ·  Program: MASTER
+- Parent: [UCOS-BOOK-000000](UCOS-BOOK-000000.md)
+- Source: [02-MASTER/UCOS-COMPILER-COMPONENT-REGISTER.md](../../02-MASTER/UCOS-COMPILER-COMPONENT-REGISTER.md)
+
+## Children (forward)
+- (none)
+
+## Backlinks (reverse)
+- [UCOS-BOOK-000000](UCOS-BOOK-000000.md) —Child→
+
+Return: [Portal Index](index.md) · [Master Index](../UCOS-BOOK-000000-UNIVERSAL-MASTER-KNOWLEDGE-BOOK.md)

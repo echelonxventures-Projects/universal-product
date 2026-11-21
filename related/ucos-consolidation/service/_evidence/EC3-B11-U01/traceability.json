@@ -1,0 +1,43 @@
+{
+  "backward": [
+    "SMC-01",
+    "SERVICE-005",
+    "SERVICE-001",
+    "ARCH-SERVICE-001",
+    "11-SERVICE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-SERVICE-ucos.service.foundation-3e18fbbb2b7bcac8",
+    "EC3-B11-U01-VALIDATION-EVIDENCE",
+    "EC3-B11-U01-CCE-CERTIFICATION",
+    "EC3-B11-U01-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "0595a91",
+  "meta_class": "SMC-01",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "PL-F2",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "operation I/O by reference (SMR-13) — scoped to the Operation unit (SMC-05)",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the service)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity, no parallel model)",
+    "ENG-004": "service.service_meta.ServiceKind + type_tag (ENG-004 typing, by reference)",
+    "ENG-005": "reference identifiers (capability/behavior/composition refs; no new construct)",
+    "PL-F2": "composition bound by reference (SMR-12; PLATFORM-008); no platform concern redefined",
+    "RL-F2": "behavior/execution bound by reference (SMR-11/07); no runtime concern redefined"
+  },
+  "target_id": "UCOS-SERVICE-ucos.service.foundation-3e18fbbb2b7bcac8",
+  "trace_format": "ucos-service-traceability/1.0.0",
+  "unit": "EC3-B11-U01"
+}

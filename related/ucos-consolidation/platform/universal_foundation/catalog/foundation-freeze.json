@@ -1,0 +1,94 @@
+{
+  "register_id": "ucos.foundation.freeze",
+  "$comment": "THE twelve conditions a Universal Foundation freeze requires. Each names the KIND of evidence that can discharge it, so a criterion is never satisfied by assertion. A criterion whose evidence was not gathered is reported UNMEASURED and withholds readiness exactly as firmly as a failure \u2014 a freeze declared over unmeasured criteria is the failure a freeze exists to prevent. Adding a condition is an entry here and requires NO change to freeze.py.",
+  "criteria": [
+    {
+      "criterion_id": "FZ-01",
+      "requirement": "Zero duplicate capabilities",
+      "kind": "no-duplicates",
+      "rationale": "Measured as surplus live implementations across every declared constitutional model. One model, one implementation \u2014 a second is a duplicate architecture, not a choice."
+    },
+    {
+      "criterion_id": "FZ-02",
+      "requirement": "Zero competing constitutional definitions",
+      "kind": "platform-gates",
+      "gates": ["FG-14-EXACTLY-ONCE"],
+      "rationale": "Every constitutional model has exactly one canonical owner publishing exactly one contract surface."
+    },
+    {
+      "criterion_id": "FZ-03",
+      "requirement": "Zero competing ownership systems",
+      "kind": "models-converged",
+      "models": ["MODEL-OWNERSHIP"],
+      "rationale": "The ownership model must have one live answer. Verified by proving the retired engine-side resolver is absent and every remaining ownership surface reaches the one framework."
+    },
+    {
+      "criterion_id": "FZ-04",
+      "requirement": "Zero competing Repository Truth systems",
+      "kind": "models-converged",
+      "models": ["MODEL-TRUTH"],
+      "rationale": "Every consumer classifies Truth through the one declared policy; no surface carries a second idea of which locations may own."
+    },
+    {
+      "criterion_id": "FZ-05",
+      "requirement": "Zero unresolved Foundation architecture",
+      "kind": "no-fault",
+      "rationale": "A probe that cannot execute means the architecture cannot be measured, which is precisely what 'unresolved' means. Zero FAULT verdicts is the condition."
+    },
+    {
+      "criterion_id": "FZ-06",
+      "requirement": "All Foundation services registered",
+      "kind": "gates",
+      "gates": ["FG-02-SERVICE-REGISTERED"],
+      "rationale": "Every capability registers into a fresh certified registry, that registry validates, and the service resolves to a live instance."
+    },
+    {
+      "criterion_id": "FZ-07",
+      "requirement": "All Foundation contracts validated",
+      "kind": "gates",
+      "gates": ["FG-01-CONTRACT-PUBLISHED", "FG-08-COMPATIBILITY-DECLARED"],
+      "rationale": "A contract surface is published, and one declared semantic version governs the whole of it \u2014 the contract refs and the registered service contract alike."
+    },
+    {
+      "criterion_id": "FZ-08",
+      "requirement": "All Foundation policies certified",
+      "kind": "gates",
+      "gates": ["FG-04-POLICY-DECLARED", "FG-11-CERTIFIABLE"],
+      "rationale": "Every declared policy document resolves and parses, and the capability composed from it is content-addressed and byte-identical across two independent builds."
+    },
+    {
+      "criterion_id": "FZ-09",
+      "requirement": "All Foundation dependencies satisfied",
+      "kind": "gates",
+      "gates": ["FG-12-COMPOSABLE"],
+      "rationale": "Every declared dependency is a registered Foundation capability and is really imported; the composition graph is acyclic."
+    },
+    {
+      "criterion_id": "FZ-10",
+      "requirement": "All Foundation dependencies resolve to a total composition order",
+      "kind": "dependency-order",
+      "rationale": "Separate from FZ-09: a graph can have every edge satisfied and still not admit a total order. The order is derived, not asserted, and a cycle is refused."
+    },
+    {
+      "criterion_id": "FZ-11",
+      "requirement": "All Foundation tests passing",
+      "kind": "command",
+      "command": "make test",
+      "rationale": "The repository's own canonical test and coverage gate. Measured only when explicitly requested, because executing a full suite inside a readiness determination would make the determination non-deterministic in cost; when not executed it is reported UNMEASURED and readiness is withheld."
+    },
+    {
+      "criterion_id": "FZ-12",
+      "requirement": "All Foundation verification and certification complete",
+      "kind": "maturity",
+      "threshold": 100.0,
+      "rationale": "Every capability reaches every declared maturity axis, and the platform-scoped articles pass. Anything below 100% names the axis that is not yet reached rather than rounding it away."
+    },
+    {
+      "criterion_id": "FZ-13",
+      "requirement": "Every registered Ω Nucleus is constitutionally complete",
+      "kind": "platform-gates",
+      "gates": ["FG-17-NUCLEUS-COMPLETE"],
+      "rationale": "A Foundation frozen with one incomplete nucleus freezes the incompleteness with it. Every facet of the declared nucleus contract must resolve for every registered nucleus — realised with evidence, or declared inapplicable with a reason. Nothing is discharged by silence."
+    }
+  ]
+}

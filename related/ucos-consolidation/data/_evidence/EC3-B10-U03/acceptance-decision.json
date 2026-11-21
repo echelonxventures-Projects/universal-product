@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "DMC-02",
+  "target_id": "UCOS-ENTITY-ucos.data.entity.foundation-b014125ab4fbbe4f",
+  "verdict": "pass"
+}

@@ -1,0 +1,1419 @@
+{
+  "artifact": "EC3-B11-U11-REALIZATION-EVIDENCE",
+  "authority": "ENGINEERING-EXECUTION-ONLY",
+  "certification": {
+    "cce_gates": {
+      "advisory_failures": [],
+      "blocking_failures": [],
+      "blueprint_id": "USM",
+      "certification_class": "engineering-readiness",
+      "certification_id": "UCOS-CERT-USM-312abed8081da1d5",
+      "certified": true,
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 10,
+        "total": 10
+      },
+      "findings": [
+        {
+          "criterion_id": "CC-1",
+          "details": {
+            "gate": "architecture"
+          },
+          "message": "CC-1 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-10",
+          "details": {
+            "gate": "completeness"
+          },
+          "message": "CC-10 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-2",
+          "details": {
+            "gate": "dependencies"
+          },
+          "message": "CC-2 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-3",
+          "details": {
+            "gate": "coverage"
+          },
+          "message": "CC-3 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-4",
+          "details": {
+            "gate": "validation",
+            "verdict": "pass"
+          },
+          "message": "CC-4 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-5",
+          "details": {
+            "gate": "traceability"
+          },
+          "message": "CC-5 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-6",
+          "details": {
+            "evidence_sha256": "a154a57c3bdbddec78b77aacf7fec46c7a0e4ae244d588706a2d80286d442205",
+            "gate": "evidence"
+          },
+          "message": "CC-6 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-7",
+          "details": {
+            "gate": "certification-ready"
+          },
+          "message": "CC-7 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-8",
+          "details": {
+            "gate": "readiness"
+          },
+          "message": "CC-8 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-9",
+          "details": {
+            "gate": "gap-zero"
+          },
+          "message": "CC-9 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "record": {
+        "authority": "ENGINEERING-EXECUTION-ONLY",
+        "blueprint_id": "USM",
+        "certification_class": "engineering-readiness",
+        "certification_id": "UCOS-CERT-USM-312abed8081da1d5",
+        "certified": true,
+        "content_sha256": "312abed8081da1d54964195d78482e9076aa438aa8f826ba134faa4e07a6a33b",
+        "criteria": [
+          {
+            "criterion_id": "CC-1",
+            "details": {
+              "gate": "architecture"
+            },
+            "message": "CC-1 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-10",
+            "details": {
+              "gate": "completeness"
+            },
+            "message": "CC-10 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-2",
+            "details": {
+              "gate": "dependencies"
+            },
+            "message": "CC-2 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-3",
+            "details": {
+              "gate": "coverage"
+            },
+            "message": "CC-3 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-4",
+            "details": {
+              "gate": "validation",
+              "verdict": "pass"
+            },
+            "message": "CC-4 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-5",
+            "details": {
+              "gate": "traceability"
+            },
+            "message": "CC-5 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-6",
+            "details": {
+              "evidence_sha256": "a154a57c3bdbddec78b77aacf7fec46c7a0e4ae244d588706a2d80286d442205",
+              "gate": "evidence"
+            },
+            "message": "CC-6 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-7",
+            "details": {
+              "gate": "certification-ready"
+            },
+            "message": "CC-7 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-8",
+            "details": {
+              "gate": "readiness"
+            },
+            "message": "CC-8 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-9",
+            "details": {
+              "gate": "gap-zero"
+            },
+            "message": "CC-9 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          }
+        ],
+        "disclosure": {
+          "asserts_constitutional_finality": false,
+          "authority": "ENGINEERING-EXECUTION-ONLY",
+          "disclosure_id": "EC-1-PROVISIONAL-STATE",
+          "gate": "EC-1",
+          "gate_open": true,
+          "standard": "DE-05",
+          "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+        },
+        "evidence_ref": "a154a57c3bdbddec78b77aacf7fec46c7a0e4ae244d588706a2d80286d442205",
+        "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+        "standard_version": "1.0.0",
+        "status": "certified",
+        "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+        "version": "1.0.0"
+      },
+      "status": "certified",
+      "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+      "version": "1.0.0"
+    },
+    "evidence": {
+      "blocking_failures": [],
+      "blueprint_id": "USM",
+      "certification_class": "engineering-readiness",
+      "certification_id": "UCOS-CERT-USM-312abed8081da1d5",
+      "certified": true,
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 10,
+        "total": 10
+      },
+      "criteria_evaluated": [
+        "CC-1",
+        "CC-10",
+        "CC-2",
+        "CC-3",
+        "CC-4",
+        "CC-5",
+        "CC-6",
+        "CC-7",
+        "CC-8",
+        "CC-9"
+      ],
+      "evidence_format": "ucos-certification-evidence/1.0.0",
+      "findings": [
+        {
+          "criterion_id": "CC-1",
+          "details": {
+            "gate": "architecture"
+          },
+          "message": "CC-1 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-10",
+          "details": {
+            "gate": "completeness"
+          },
+          "message": "CC-10 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-2",
+          "details": {
+            "gate": "dependencies"
+          },
+          "message": "CC-2 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-3",
+          "details": {
+            "gate": "coverage"
+          },
+          "message": "CC-3 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-4",
+          "details": {
+            "gate": "validation",
+            "verdict": "pass"
+          },
+          "message": "CC-4 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-5",
+          "details": {
+            "gate": "traceability"
+          },
+          "message": "CC-5 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-6",
+          "details": {
+            "evidence_sha256": "a154a57c3bdbddec78b77aacf7fec46c7a0e4ae244d588706a2d80286d442205",
+            "gate": "evidence"
+          },
+          "message": "CC-6 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-7",
+          "details": {
+            "gate": "certification-ready"
+          },
+          "message": "CC-7 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-8",
+          "details": {
+            "gate": "readiness"
+          },
+          "message": "CC-8 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-9",
+          "details": {
+            "gate": "gap-zero"
+          },
+          "message": "CC-9 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "record_sha256": "312abed8081da1d54964195d78482e9076aa438aa8f826ba134faa4e07a6a33b",
+      "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+      "standard_version": "1.0.0",
+      "status": "certified",
+      "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+      "validation_evidence_ref": "a154a57c3bdbddec78b77aacf7fec46c7a0e4ae244d588706a2d80286d442205",
+      "version": "1.0.0"
+    },
+    "ledger": {
+      "count": 1,
+      "entries": [
+        {
+          "blueprint_id": "USM",
+          "certification_id": "UCOS-CERT-USM-312abed8081da1d5",
+          "entry_hash": "3020330b64ea36ee1bc6f4c380610d532b748a0fc98d28b0b47a29f0c1ac502e",
+          "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "record_sha256": "312abed8081da1d54964195d78482e9076aa438aa8f826ba134faa4e07a6a33b",
+          "sequence": 0,
+          "status": "certified",
+          "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+          "version": "1.0.0"
+        }
+      ],
+      "head_hash": "3020330b64ea36ee1bc6f4c380610d532b748a0fc98d28b0b47a29f0c1ac502e",
+      "ledger_format": "ucos-certification-ledger/1.0.0"
+    }
+  },
+  "criteria": {
+    "acceptance": {
+      "AC-1": true,
+      "AC-2": true,
+      "AC-3": true,
+      "AC-4": true,
+      "AC-5": true,
+      "AC-6": true,
+      "AC-7": true,
+      "AC-8": true
+    },
+    "certification_gates": {
+      "CC-1": true,
+      "CC-10": true,
+      "CC-2": true,
+      "CC-3": true,
+      "CC-4": true,
+      "CC-5": true,
+      "CC-6": true,
+      "CC-7": true,
+      "CC-8": true,
+      "CC-9": true
+    },
+    "service_compliance": {
+      "C1": true,
+      "C2": true,
+      "C3": true,
+      "C4": true,
+      "C5": true,
+      "C6": true,
+      "C7": true
+    },
+    "validation": {
+      "VC-1": true,
+      "VC-2": true,
+      "VC-3": true,
+      "VC-4": true,
+      "VC-5": true
+    }
+  },
+  "determination": "COMPLETE",
+  "integration_closure": {
+    "all_members_certified": true,
+    "closure_SMI_01": true,
+    "founding_acyclic_SMI_04": true,
+    "map_resolves": true,
+    "non_constitutive_SMI_06": true,
+    "non_projection_SMI_07": true,
+    "relationship_closure_SMI_02": true,
+    "reuse_by_reference_SMI_05": true,
+    "totality_SMI_03": true
+  },
+  "member_certifications": [
+    {
+      "certification_id": "UCOS-CERT-SMC-01-6d805a1308da2f66",
+      "certified": true,
+      "meta_class": "SMC-01",
+      "unit": "EC3-B11-U01"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-02-466c00507b04a1f9",
+      "certified": true,
+      "meta_class": "SMC-02",
+      "unit": "EC3-B11-U02"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-03-d3ba585579bf93ef",
+      "certified": true,
+      "meta_class": "SMC-03",
+      "unit": "EC3-B11-U03"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-04-bcf64d8028ef3d1d",
+      "certified": true,
+      "meta_class": "SMC-04",
+      "unit": "EC3-B11-U04"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-05-5a06bcad4a3086c8",
+      "certified": true,
+      "meta_class": "SMC-05",
+      "unit": "EC3-B11-U05"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-06-370163eb1197edb3",
+      "certified": true,
+      "meta_class": "SMC-06",
+      "unit": "EC3-B11-U06"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-07-99f5148f4f1ba96c",
+      "certified": true,
+      "meta_class": "SMC-07",
+      "unit": "EC3-B11-U07"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-08-96c817b15dca3403",
+      "certified": true,
+      "meta_class": "SMC-08",
+      "unit": "EC3-B11-U08"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-09-61ee948b80beb04f",
+      "certified": true,
+      "meta_class": "SMC-09",
+      "unit": "EC3-B11-U09"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-10-fb17b391ed14db5d",
+      "certified": true,
+      "meta_class": "SMC-10",
+      "unit": "EC3-B11-U10"
+    }
+  ],
+  "meta_invariant_definitions": {
+    "SMI-01": "Closure — no meta-class outside SMC-01…10.",
+    "SMI-02": "Relationship closure — no meta-relationship outside SMR-01…13.",
+    "SMI-03": "Totality — every ontology entity/relationship modelled by exactly one.",
+    "SMI-04": "Acyclicity — the founding meta-graph (SMR-02/03/04/05) is a DAG (SMK-03).",
+    "SMI-05": "Reuse integrity — EL-1/RL-F2/PL-F2/DF-2 referenced, never redefined.",
+    "SMI-06": "Non-constitutiveness — no meta-element confers authority or selects technology.",
+    "SMI-07": "Non-projection — model coverage is never roadmap completion (STATUS-001 §2)."
+  },
+  "meta_invariants": {
+    "SMI-01": true,
+    "SMI-02": true,
+    "SMI-03": true,
+    "SMI-04": true,
+    "SMI-05": true,
+    "SMI-06": true,
+    "SMI-07": true
+  },
+  "model": {
+    "confers_authority": false,
+    "declares_closure": true,
+    "declares_relationship_closure": true,
+    "edges": [
+      {
+        "founding": false,
+        "models": "SOR-01",
+        "name": "realizes",
+        "relationship": "SMR-01",
+        "source": "SMC-01",
+        "target": "SMC-02",
+        "target_is_foundation": false
+      },
+      {
+        "founding": true,
+        "models": "SOR-02",
+        "name": "bound-by",
+        "relationship": "SMR-02",
+        "source": "SMC-05",
+        "target": "SMC-03",
+        "target_is_foundation": false
+      },
+      {
+        "founding": true,
+        "models": "SOR-03",
+        "name": "exposes",
+        "relationship": "SMR-03",
+        "source": "SMC-01",
+        "target": "SMC-04",
+        "target_is_foundation": false
+      },
+      {
+        "founding": true,
+        "models": "SOR-04",
+        "name": "provides",
+        "relationship": "SMR-04",
+        "source": "SMC-01",
+        "target": "SMC-05",
+        "target_is_foundation": false
+      },
+      {
+        "founding": true,
+        "models": "SOR-05",
+        "name": "composes",
+        "relationship": "SMR-05",
+        "source": "SMC-01",
+        "target": "SMC-06",
+        "target_is_foundation": false
+      },
+      {
+        "founding": false,
+        "models": "SOR-06",
+        "name": "orchestrates",
+        "relationship": "SMR-06",
+        "source": "SMC-07",
+        "target": "SMC-01",
+        "target_is_foundation": false
+      },
+      {
+        "founding": false,
+        "models": "SOR-07",
+        "name": "executes",
+        "relationship": "SMR-07",
+        "source": "SMC-05",
+        "target": "SMC-08",
+        "target_is_foundation": false
+      },
+      {
+        "founding": false,
+        "models": "SOR-08",
+        "name": "governed-by",
+        "relationship": "SMR-08",
+        "source": "SMC-01",
+        "target": "SMC-09",
+        "target_is_foundation": false
+      },
+      {
+        "founding": false,
+        "models": "SOR-09",
+        "name": "classified-by",
+        "relationship": "SMR-09",
+        "source": "SMC-01",
+        "target": "SMC-10",
+        "target_is_foundation": false
+      },
+      {
+        "founding": false,
+        "models": "SOR-10",
+        "name": "identified-by",
+        "relationship": "SMR-10",
+        "source": "SMC-01",
+        "target": "ENG-001",
+        "target_is_foundation": true
+      },
+      {
+        "founding": false,
+        "models": "SOR-11",
+        "name": "behaves-as",
+        "relationship": "SMR-11",
+        "source": "SMC-01",
+        "target": "RL-F2",
+        "target_is_foundation": true
+      },
+      {
+        "founding": false,
+        "models": "SOR-12",
+        "name": "composed-as",
+        "relationship": "SMR-12",
+        "source": "SMC-01",
+        "target": "PL-F2",
+        "target_is_foundation": true
+      },
+      {
+        "founding": false,
+        "models": "SOR-13",
+        "name": "operates-on",
+        "relationship": "SMR-13",
+        "source": "SMC-05",
+        "target": "DF-2",
+        "target_is_foundation": true
+      }
+    ],
+    "embeds_secret": false,
+    "founding_acyclic": true,
+    "is_total": true,
+    "map_resolves": true,
+    "members": [
+      {
+        "certification_id": "UCOS-CERT-SMC-01-6d805a1308da2f66",
+        "classified_by": "SXH-01",
+        "meta_class": "SMC-01",
+        "models_entity": "SOE-01",
+        "name": "Service",
+        "owned": false,
+        "resolves": true,
+        "unit": "EC3-B11-U01"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-02-466c00507b04a1f9",
+        "classified_by": "SXH-02",
+        "meta_class": "SMC-02",
+        "models_entity": "SOE-02",
+        "name": "Capability",
+        "owned": false,
+        "resolves": true,
+        "unit": "EC3-B11-U02"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-03-d3ba585579bf93ef",
+        "classified_by": "SXH-03",
+        "meta_class": "SMC-03",
+        "models_entity": "SOE-03",
+        "name": "Contract",
+        "owned": false,
+        "resolves": true,
+        "unit": "EC3-B11-U03"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-04-bcf64d8028ef3d1d",
+        "classified_by": "SXH-04",
+        "meta_class": "SMC-04",
+        "models_entity": "SOE-04",
+        "name": "Interface",
+        "owned": false,
+        "resolves": true,
+        "unit": "EC3-B11-U04"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-05-5a06bcad4a3086c8",
+        "classified_by": "SXH-05",
+        "meta_class": "SMC-05",
+        "models_entity": "SOE-05",
+        "name": "Operation",
+        "owned": false,
+        "resolves": true,
+        "unit": "EC3-B11-U05"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-06-370163eb1197edb3",
+        "classified_by": "SXH-06",
+        "meta_class": "SMC-06",
+        "models_entity": "SOE-06",
+        "name": "Composition",
+        "owned": false,
+        "resolves": true,
+        "unit": "EC3-B11-U06"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-07-99f5148f4f1ba96c",
+        "classified_by": "SXH-07",
+        "meta_class": "SMC-07",
+        "models_entity": "SOE-07",
+        "name": "Orchestration",
+        "owned": false,
+        "resolves": true,
+        "unit": "EC3-B11-U07"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-08-96c817b15dca3403",
+        "classified_by": "SXH-08",
+        "meta_class": "SMC-08",
+        "models_entity": "SOE-08",
+        "name": "Execution",
+        "owned": false,
+        "resolves": true,
+        "unit": "EC3-B11-U08"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-09-61ee948b80beb04f",
+        "classified_by": "SXH-09",
+        "meta_class": "SMC-09",
+        "models_entity": "SOE-09",
+        "name": "Policy",
+        "owned": false,
+        "resolves": true,
+        "unit": "EC3-B11-U09"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-10-fb17b391ed14db5d",
+        "classified_by": "SXH-10",
+        "meta_class": "SMC-10",
+        "models_entity": "SOE-10",
+        "name": "Security",
+        "owned": false,
+        "resolves": true,
+        "unit": "EC3-B11-U10"
+      }
+    ],
+    "members_certified": true,
+    "meta_classes": [
+      "SMC-01",
+      "SMC-02",
+      "SMC-03",
+      "SMC-04",
+      "SMC-05",
+      "SMC-06",
+      "SMC-07",
+      "SMC-08",
+      "SMC-09",
+      "SMC-10"
+    ],
+    "meta_relationships": [
+      "SMR-01",
+      "SMR-02",
+      "SMR-03",
+      "SMR-04",
+      "SMR-05",
+      "SMR-06",
+      "SMR-07",
+      "SMR-08",
+      "SMR-09",
+      "SMR-10",
+      "SMR-11",
+      "SMR-12",
+      "SMR-13"
+    ],
+    "model_class": "USM",
+    "model_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+    "modelled_entities": [
+      "SOE-01",
+      "SOE-02",
+      "SOE-03",
+      "SOE-04",
+      "SOE-05",
+      "SOE-06",
+      "SOE-07",
+      "SOE-08",
+      "SOE-09",
+      "SOE-10"
+    ],
+    "modelled_relationships": [
+      "SOR-01",
+      "SOR-02",
+      "SOR-03",
+      "SOR-04",
+      "SOR-05",
+      "SOR-06",
+      "SOR-07",
+      "SOR-08",
+      "SOR-09",
+      "SOR-10",
+      "SOR-11",
+      "SOR-12",
+      "SOR-13"
+    ],
+    "name": "ucos.service.metamodel.universal",
+    "names_technology": false,
+    "non_constitutive": true,
+    "non_projection": true,
+    "reuses_by_reference": true,
+    "state": "DEFINED",
+    "structure_digest": "1f3eb6bc84fb26de0e7d0363bb3fa1b78011667e42b74de0994188506055bbe2",
+    "substrate_refs": [
+      "ENG-001",
+      "ENG-002",
+      "ENG-004",
+      "ENG-005",
+      "RL-F2",
+      "PL-F2",
+      "DF-2"
+    ],
+    "supersedes": "",
+    "type_tag": "ucos.core.metamodel",
+    "version": "1.0.0"
+  },
+  "model_class": "USM",
+  "service_compliance_C1_C7": {
+    "compliance_format": "ucos-service-compliance/1.0.0",
+    "compliant": true,
+    "conditions": [
+      {
+        "backed_by": [
+          "metamodel-typed",
+          "metamodel-identified"
+        ],
+        "id": "C1",
+        "requirement": "Typed (USL-03), identified and objecthood-bound (USL-04/05).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "foundation-reuse-integrity"
+        ],
+        "id": "C2",
+        "requirement": "Reuses frozen foundations by reference without redefinition (USL-02).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "service-value-fidelity"
+        ],
+        "id": "C3",
+        "requirement": "Carries ENG-003 value; operation I/O is DF-2 data by reference (USL-08/11).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "meta-class-single",
+          "meta-relationships-closed",
+          "metamodel-totality",
+          "metamodel-map-resolves"
+        ],
+        "id": "C4",
+        "requirement": "Contract/interface/operation structure is explicit (USL-06/07/08).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "meta-relationships-closed",
+          "founding-acyclic",
+          "metamodel-map-resolves"
+        ],
+        "id": "C5",
+        "materially_exercised": true,
+        "note": "the Universal Service Meta-Model closes over exactly the thirteen meta-relationships SMR-01…13 (SMI-02) — including composes(SMR-05) and orchestrates(SMR-06) — keeps the founding meta-graph (SMR-02/03/04/05) acyclic (SMI-04), and resolves every map edge within the closure or the frozen EL-1/RL-F2/PL-F2/DF-2 foundations (§9) — each meta-relationship being an ENG-005 reference introducing no new connection construct (USL-09 at the meta level)",
+        "requirement": "Composition/orchestration uses ENG-005 references; founding acyclic (USL-09).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "foundation-reuse-integrity",
+          "metamodel-map-resolves"
+        ],
+        "id": "C6",
+        "requirement": "Execution binds to RL-F2 by reference (USL-10).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "technology-independence",
+          "non-constitutive"
+        ],
+        "id": "C7",
+        "requirement": "Selects no technology, confers no authority, embeds no secret (USL-15).",
+        "status": "pass"
+      }
+    ],
+    "standard": "SERVICE-001 §12",
+    "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de"
+  },
+  "spine": "Meta-Model fixes {Service, Capability, Contract, Interface, Operation, Composition, Orchestration, Execution, Policy, Security} (SMC-01…10) via SMR-01…13 (SMI-01…07)",
+  "traceability": {
+    "backward": [
+      "USM",
+      "SERVICE-005",
+      "SERVICE-004",
+      "SERVICE-003",
+      "SERVICE-001",
+      "ARCH-SERVICE-001",
+      "11-SERVICE@b7e7657"
+    ],
+    "closed": true,
+    "constitutional_anchor": "b7e7657",
+    "forward": [
+      "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+      "EC3-B11-U11-VALIDATION-EVIDENCE",
+      "EC3-B11-U11-CCE-CERTIFICATION",
+      "EC3-B11-U11-COMPLETION-REPORT"
+    ],
+    "implementation_anchor": "0595a91",
+    "meta_class": "USM",
+    "rooted": true,
+    "substrate": [
+      "ENG-001",
+      "ENG-002",
+      "ENG-004",
+      "ENG-005",
+      "RL-F2",
+      "PL-F2",
+      "DF-2"
+    ],
+    "substrate_reuse": {
+      "DF-2": "DATA represented-data concern — bound by reference (SMR-13 operates-on)",
+      "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+      "ENG-002": "python frozen object (immutable objecthood bearing the meta-model record)",
+      "ENG-004": "meta-class + meta-relationship typing discipline (ENG-004)",
+      "ENG-005": "meta-relationship edges + member certification references (§3 / SMR-01…13)",
+      "PL-F2": "PLATFORM composition concern — bound by reference (SMR-12 composed-as)",
+      "RL-F2": "RUNTIME behaviour concern — bound by reference (SMR-11 behaves-as; SMR-07 executes)",
+      "SMC-01..10": "the ten CERTIFIED concern-meta-class realizations — referenced, not owned",
+      "member_SMC-01": "EC3-B11-U01 (SMC-01 Service; UCOS-CERT-SMC-01-6d805a1308da2f66) — integrated by reference, not owned",
+      "member_SMC-02": "EC3-B11-U02 (SMC-02 Capability; UCOS-CERT-SMC-02-466c00507b04a1f9) — integrated by reference, not owned",
+      "member_SMC-03": "EC3-B11-U03 (SMC-03 Contract; UCOS-CERT-SMC-03-d3ba585579bf93ef) — integrated by reference, not owned",
+      "member_SMC-04": "EC3-B11-U04 (SMC-04 Interface; UCOS-CERT-SMC-04-bcf64d8028ef3d1d) — integrated by reference, not owned",
+      "member_SMC-05": "EC3-B11-U05 (SMC-05 Operation; UCOS-CERT-SMC-05-5a06bcad4a3086c8) — integrated by reference, not owned",
+      "member_SMC-06": "EC3-B11-U06 (SMC-06 Composition; UCOS-CERT-SMC-06-370163eb1197edb3) — integrated by reference, not owned",
+      "member_SMC-07": "EC3-B11-U07 (SMC-07 Orchestration; UCOS-CERT-SMC-07-99f5148f4f1ba96c) — integrated by reference, not owned",
+      "member_SMC-08": "EC3-B11-U08 (SMC-08 Execution; UCOS-CERT-SMC-08-96c817b15dca3403) — integrated by reference, not owned",
+      "member_SMC-09": "EC3-B11-U09 (SMC-09 Policy; UCOS-CERT-SMC-09-61ee948b80beb04f) — integrated by reference, not owned",
+      "member_SMC-10": "EC3-B11-U10 (SMC-10 Security; UCOS-CERT-SMC-10-fb17b391ed14db5d) — integrated by reference, not owned"
+    },
+    "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+    "trace_format": "ucos-service-traceability/1.0.0",
+    "unit": "EC3-B11-U11"
+  },
+  "unit": "EC3-B11-U11",
+  "usl_conformance": {
+    "USL-01": true,
+    "USL-02": true,
+    "USL-03": true,
+    "USL-04": true,
+    "USL-05": true,
+    "USL-12": true,
+    "USL-15": true
+  },
+  "validation": {
+    "acceptance": {
+      "accepted": true,
+      "advisory_failures": [],
+      "blocking_failures": [],
+      "blueprint_id": "USM",
+      "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+      "verdict": "pass"
+    },
+    "evidence": {
+      "accepted": true,
+      "blocking_failures": [],
+      "blueprint_id": "USM",
+      "checks_run": [
+        "foundation-reuse-integrity",
+        "founding-acyclic",
+        "lifecycle-valid",
+        "meta-class-single",
+        "meta-constraints",
+        "meta-relationships-closed",
+        "metamodel-identified",
+        "metamodel-map-resolves",
+        "metamodel-members-certified",
+        "metamodel-named",
+        "metamodel-non-projection",
+        "metamodel-totality",
+        "metamodel-typed",
+        "metamodel-versioned",
+        "non-constitutive",
+        "provisional-state-disclosure",
+        "service-value-fidelity",
+        "technology-independence",
+        "traceability-rooted"
+      ],
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 19,
+        "total": 19
+      },
+      "evidence_format": "ucos-validation-evidence/1.0.0",
+      "findings": [
+        {
+          "check_id": "foundation-reuse-integrity",
+          "details": {
+            "substrate": [
+              "ENG-001",
+              "ENG-002",
+              "ENG-004",
+              "ENG-005",
+              "RL-F2",
+              "PL-F2",
+              "DF-2"
+            ]
+          },
+          "message": "foundation-reuse-integrity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "founding-acyclic",
+          "details": {},
+          "message": "founding-acyclic satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "lifecycle-valid",
+          "details": {
+            "state": "DEFINED"
+          },
+          "message": "lifecycle-valid satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-class-single",
+          "details": {
+            "meta_classes": [
+              "SMC-01",
+              "SMC-02",
+              "SMC-03",
+              "SMC-04",
+              "SMC-05",
+              "SMC-06",
+              "SMC-07",
+              "SMC-08",
+              "SMC-09",
+              "SMC-10"
+            ]
+          },
+          "message": "meta-class-single satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-constraints",
+          "details": {
+            "constraints": [
+              "SMK-01",
+              "SMK-03",
+              "SMK-08"
+            ]
+          },
+          "message": "meta-constraints satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-relationships-closed",
+          "details": {
+            "meta_relationships": [
+              "SMR-01",
+              "SMR-02",
+              "SMR-03",
+              "SMR-04",
+              "SMR-05",
+              "SMR-06",
+              "SMR-07",
+              "SMR-08",
+              "SMR-09",
+              "SMR-10",
+              "SMR-11",
+              "SMR-12",
+              "SMR-13"
+            ]
+          },
+          "message": "meta-relationships-closed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-identified",
+          "details": {
+            "model_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de"
+          },
+          "message": "metamodel-identified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-map-resolves",
+          "details": {},
+          "message": "metamodel-map-resolves satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-members-certified",
+          "details": {
+            "members": 10
+          },
+          "message": "metamodel-members-certified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-named",
+          "details": {
+            "name": "ucos.service.metamodel.universal"
+          },
+          "message": "metamodel-named satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-non-projection",
+          "details": {},
+          "message": "metamodel-non-projection satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-totality",
+          "details": {
+            "entities": 10
+          },
+          "message": "metamodel-totality satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-typed",
+          "details": {
+            "type_tag": "ucos.core.metamodel"
+          },
+          "message": "metamodel-typed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-versioned",
+          "details": {
+            "version": "1.0.0"
+          },
+          "message": "metamodel-versioned satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "non-constitutive",
+          "details": {},
+          "message": "non-constitutive satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "provisional-state-disclosure",
+          "details": {
+            "disclosure_id": "EC-1-PROVISIONAL-STATE"
+          },
+          "message": "provisional-state-disclosure satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "service-value-fidelity",
+          "details": {
+            "value_digest": "1f3eb6bc84fb26de0e7d0363bb3fa1b78011667e42b74de0994188506055bbe2"
+          },
+          "message": "service-value-fidelity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "technology-independence",
+          "details": {},
+          "message": "technology-independence satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "traceability-rooted",
+          "details": {
+            "links": 7
+          },
+          "message": "traceability-rooted satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+      "verdict": "pass"
+    },
+    "report": {
+      "accepted": true,
+      "blueprint_id": "USM",
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 19,
+        "total": 19
+      },
+      "findings": [
+        {
+          "check_id": "foundation-reuse-integrity",
+          "details": {
+            "substrate": [
+              "ENG-001",
+              "ENG-002",
+              "ENG-004",
+              "ENG-005",
+              "RL-F2",
+              "PL-F2",
+              "DF-2"
+            ]
+          },
+          "message": "foundation-reuse-integrity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "founding-acyclic",
+          "details": {},
+          "message": "founding-acyclic satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "lifecycle-valid",
+          "details": {
+            "state": "DEFINED"
+          },
+          "message": "lifecycle-valid satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-class-single",
+          "details": {
+            "meta_classes": [
+              "SMC-01",
+              "SMC-02",
+              "SMC-03",
+              "SMC-04",
+              "SMC-05",
+              "SMC-06",
+              "SMC-07",
+              "SMC-08",
+              "SMC-09",
+              "SMC-10"
+            ]
+          },
+          "message": "meta-class-single satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-constraints",
+          "details": {
+            "constraints": [
+              "SMK-01",
+              "SMK-03",
+              "SMK-08"
+            ]
+          },
+          "message": "meta-constraints satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-relationships-closed",
+          "details": {
+            "meta_relationships": [
+              "SMR-01",
+              "SMR-02",
+              "SMR-03",
+              "SMR-04",
+              "SMR-05",
+              "SMR-06",
+              "SMR-07",
+              "SMR-08",
+              "SMR-09",
+              "SMR-10",
+              "SMR-11",
+              "SMR-12",
+              "SMR-13"
+            ]
+          },
+          "message": "meta-relationships-closed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-identified",
+          "details": {
+            "model_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de"
+          },
+          "message": "metamodel-identified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-map-resolves",
+          "details": {},
+          "message": "metamodel-map-resolves satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-members-certified",
+          "details": {
+            "members": 10
+          },
+          "message": "metamodel-members-certified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-named",
+          "details": {
+            "name": "ucos.service.metamodel.universal"
+          },
+          "message": "metamodel-named satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-non-projection",
+          "details": {},
+          "message": "metamodel-non-projection satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-totality",
+          "details": {
+            "entities": 10
+          },
+          "message": "metamodel-totality satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-typed",
+          "details": {
+            "type_tag": "ucos.core.metamodel"
+          },
+          "message": "metamodel-typed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "metamodel-versioned",
+          "details": {
+            "version": "1.0.0"
+          },
+          "message": "metamodel-versioned satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "non-constitutive",
+          "details": {},
+          "message": "non-constitutive satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "provisional-state-disclosure",
+          "details": {
+            "disclosure_id": "EC-1-PROVISIONAL-STATE"
+          },
+          "message": "provisional-state-disclosure satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "service-value-fidelity",
+          "details": {
+            "value_digest": "1f3eb6bc84fb26de0e7d0363bb3fa1b78011667e42b74de0994188506055bbe2"
+          },
+          "message": "service-value-fidelity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "technology-independence",
+          "details": {},
+          "message": "technology-independence satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "traceability-rooted",
+          "details": {
+            "links": 7
+          },
+          "message": "traceability-rooted satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+      "verdict": "pass"
+    }
+  },
+  "version": "1.0.0"
+}

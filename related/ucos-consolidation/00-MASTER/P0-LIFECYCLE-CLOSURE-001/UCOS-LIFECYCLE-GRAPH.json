@@ -1,0 +1,250 @@
+{
+  "authority": "NONE — DERIVED TRUTH",
+  "declared_order": [
+    "UCL-S-0010",
+    "UCL-S-0020",
+    "UCL-S-0030",
+    "UCL-S-0040",
+    "UCL-S-0050",
+    "UCL-S-0060",
+    "UCL-S-0070",
+    "UCL-S-0080",
+    "UCL-S-0090",
+    "UCL-S-0100",
+    "UCL-S-0110",
+    "UCL-S-0120",
+    "UCL-S-0130",
+    "UCL-S-0140",
+    "UCL-S-0150",
+    "UCL-S-0160",
+    "UCL-S-0170",
+    "UCL-S-0180",
+    "UCL-S-0190",
+    "UCL-S-0200",
+    "UCL-S-0210",
+    "UCL-S-0220",
+    "UCL-S-0230",
+    "UCL-S-0240",
+    "UCL-S-0250",
+    "UCL-S-0260",
+    "UCL-S-0270",
+    "UCL-S-0280",
+    "UCL-S-0290",
+    "UCL-S-0300",
+    "UCL-S-0310",
+    "UCL-S-0320",
+    "UCL-S-0330",
+    "UCL-S-0340",
+    "UCL-S-0350",
+    "UCL-S-0360",
+    "UCL-S-0370",
+    "UCL-S-0380",
+    "UCL-S-0390",
+    "UCL-S-0400",
+    "UCL-S-0410",
+    "UCL-S-0420",
+    "UCL-S-0430",
+    "UCL-S-0440",
+    "UCL-S-0450"
+  ],
+  "derived_order": [
+    "UCL-S-0010",
+    "UCL-S-0020",
+    "UCL-S-0030",
+    "UCL-S-0040",
+    "UCL-S-0050",
+    "UCL-S-0060",
+    "UCL-S-0070",
+    "UCL-S-0080",
+    "UCL-S-0090",
+    "UCL-S-0100",
+    "UCL-S-0110",
+    "UCL-S-0120",
+    "UCL-S-0130",
+    "UCL-S-0140",
+    "UCL-S-0150",
+    "UCL-S-0160",
+    "UCL-S-0170",
+    "UCL-S-0180",
+    "UCL-S-0190",
+    "UCL-S-0200",
+    "UCL-S-0210",
+    "UCL-S-0220",
+    "UCL-S-0230",
+    "UCL-S-0240",
+    "UCL-S-0250",
+    "UCL-S-0260",
+    "UCL-S-0270",
+    "UCL-S-0280",
+    "UCL-S-0290",
+    "UCL-S-0300",
+    "UCL-S-0310",
+    "UCL-S-0320",
+    "UCL-S-0330",
+    "UCL-S-0340",
+    "UCL-S-0350",
+    "UCL-S-0360",
+    "UCL-S-0370",
+    "UCL-S-0380",
+    "UCL-S-0390",
+    "UCL-S-0400",
+    "UCL-S-0410",
+    "UCL-S-0420",
+    "UCL-S-0430",
+    "UCL-S-0440",
+    "UCL-S-0450"
+  ],
+  "digest": "71e6ede90e56834dc3e0de06d2a941786880bc96b2b8acb808448accbc5bd7af",
+  "graph": {
+    "UCL-S-0010": [],
+    "UCL-S-0020": [
+      "UCL-S-0010"
+    ],
+    "UCL-S-0030": [
+      "UCL-S-0020"
+    ],
+    "UCL-S-0040": [
+      "UCL-S-0030"
+    ],
+    "UCL-S-0050": [
+      "UCL-S-0040"
+    ],
+    "UCL-S-0060": [
+      "UCL-S-0040"
+    ],
+    "UCL-S-0070": [
+      "UCL-S-0060"
+    ],
+    "UCL-S-0080": [
+      "UCL-S-0070"
+    ],
+    "UCL-S-0090": [
+      "UCL-S-0080"
+    ],
+    "UCL-S-0100": [
+      "UCL-S-0090"
+    ],
+    "UCL-S-0110": [
+      "UCL-S-0100"
+    ],
+    "UCL-S-0120": [
+      "UCL-S-0110"
+    ],
+    "UCL-S-0130": [
+      "UCL-S-0120"
+    ],
+    "UCL-S-0140": [
+      "UCL-S-0130"
+    ],
+    "UCL-S-0150": [
+      "UCL-S-0140"
+    ],
+    "UCL-S-0160": [
+      "UCL-S-0150"
+    ],
+    "UCL-S-0170": [
+      "UCL-S-0160"
+    ],
+    "UCL-S-0180": [
+      "UCL-S-0170"
+    ],
+    "UCL-S-0190": [
+      "UCL-S-0180"
+    ],
+    "UCL-S-0200": [
+      "UCL-S-0190"
+    ],
+    "UCL-S-0210": [
+      "UCL-S-0200"
+    ],
+    "UCL-S-0220": [
+      "UCL-S-0210"
+    ],
+    "UCL-S-0230": [
+      "UCL-S-0220"
+    ],
+    "UCL-S-0240": [
+      "UCL-S-0230"
+    ],
+    "UCL-S-0250": [
+      "UCL-S-0240"
+    ],
+    "UCL-S-0260": [
+      "UCL-S-0250"
+    ],
+    "UCL-S-0270": [
+      "UCL-S-0260"
+    ],
+    "UCL-S-0280": [
+      "UCL-S-0270"
+    ],
+    "UCL-S-0290": [
+      "UCL-S-0280"
+    ],
+    "UCL-S-0300": [
+      "UCL-S-0290"
+    ],
+    "UCL-S-0310": [
+      "UCL-S-0300"
+    ],
+    "UCL-S-0320": [
+      "UCL-S-0310"
+    ],
+    "UCL-S-0330": [
+      "UCL-S-0320"
+    ],
+    "UCL-S-0340": [
+      "UCL-S-0330"
+    ],
+    "UCL-S-0350": [
+      "UCL-S-0340"
+    ],
+    "UCL-S-0360": [
+      "UCL-S-0350"
+    ],
+    "UCL-S-0370": [
+      "UCL-S-0360"
+    ],
+    "UCL-S-0380": [
+      "UCL-S-0370"
+    ],
+    "UCL-S-0390": [
+      "UCL-S-0380"
+    ],
+    "UCL-S-0400": [
+      "UCL-S-0390"
+    ],
+    "UCL-S-0410": [
+      "UCL-S-0400"
+    ],
+    "UCL-S-0420": [
+      "UCL-S-0410"
+    ],
+    "UCL-S-0430": [
+      "UCL-S-0420"
+    ],
+    "UCL-S-0440": [
+      "UCL-S-0430"
+    ],
+    "UCL-S-0450": [
+      "UCL-S-0440"
+    ]
+  },
+  "measurements": {
+    "acyclic": true,
+    "cycles": 0,
+    "derived_matches_declared_order": true,
+    "edges": 44,
+    "nodes": 45,
+    "skipped_prerequisites": 0,
+    "unambiguous": true,
+    "unknown_prerequisites": 0
+  },
+  "ordering_authority": "engine.foundation.composition.ordering",
+  "phase": 4,
+  "programme": "P0-LIFECYCLE-CLOSURE-001",
+  "skipped_prerequisites": [],
+  "title": "Execution Graph Determination",
+  "unknown_prerequisites": [],
+  "unplaceable": []
+}

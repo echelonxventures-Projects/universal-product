@@ -1,0 +1,462 @@
+{
+  "artifact_id": "UEG-000001",
+  "name": "Universal Execution Governance — Execution Environment Intelligence",
+  "version": "1.0.0",
+  "authority": "AUTHORED REPOSITORY TRUTH. This declaration owns the EXECUTION ENVIRONMENT MODEL and the integrity conditions a certified execution must satisfy. It owns no version pin, no test, no stage and no lifecycle other than its own.",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "EXECUTION",
+    "relation": "PROJECTION",
+    "articles": [
+      "UCKP-ART-10",
+      "UCKP-ART-16"
+    ],
+    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+    "effect": "This declaration already says of itself that it pins no version, owns no test, no stage and no lifecycle other than its own. UCKP-ART-10 — execution never owns knowledge — is the article that sentence is true UNDER, and UCKP-ART-16 is the article its evidence record answers to. It owns the execution environment model and the integrity conditions a certified execution must satisfy; it may never own knowledge, a version pin, or the verdict of any gate that runs inside it."
+  },
+  "$why_this_exists": [
+    "UCOS-EXECUTION-ENVIRONMENT-ASSESSMENT.md measured seven findings. Two are the reason",
+    "this declaration exists rather than a shell patch.",
+    "",
+    "F-2: the environment library resolved the repository root from BASH_SOURCE, so sourcing",
+    "it from zsh resolved the root to the PARENT directory and created a virtual environment",
+    "OUTSIDE the repository. That venv is on disk, dated 2026-08-06, and nothing in the",
+    "repository knows it exists. An execution environment that can be built in the wrong place",
+    "without anything noticing is not a governed artifact.",
+    "",
+    "F-1: ./verify.sh could create environments and install packages. A gate that repairs its",
+    "own subject cannot report on it — drift detected is drift erased, and the run reports",
+    "green having destroyed the evidence.",
+    "",
+    "The remedy is not 'check more things in bash'. It is to make the execution environment an",
+    "OBJECT with an identity, a declared model, a fail-closed integrity condition and per-run",
+    "evidence — the same treatment every other governed thing in this repository receives."
+  ],
+  "$not_a_second_authority": [
+    "This declaration does NOT pin versions. pyproject.toml [project.optional-dependencies].dev",
+    "is and remains the only place a version is declared; the model DERIVES the expected",
+    "toolchain by parsing that exact list, exactly as scripts/ucos-env.sh already does. A pin",
+    "restated here would be a second authority under CAA-INV-04 and the gate would be measuring",
+    "its own copy of the truth.",
+    "",
+    "It does NOT own the canonical Python series either: scripts/ucos-env.sh:36 declares it,",
+    "bound below by reference so there is one series and one place to change it.",
+    "",
+    "It does NOT own any verification stage. ./verify.sh declares its stages and",
+    "00-MASTER/UVI-000001/uvi-declaration.json classifies them. The environment gate is",
+    "deliberately NOT a run_stage: a run_stage executes THROUGH the interpreter whose",
+    "trustworthiness this gate exists to decide, so it must precede the stage machinery",
+    "entirely. It is Stage 0, in the same position ucos_ensure_venv occupied."
+  ],
+  "principle": {
+    "statement": "Execution environment is a governed artifact. Every certified execution has an identity, an owner, a verification, evidence and reproducibility.",
+    "consequences": [
+      "No certified execution may depend on developer memory, shell history, PATH ordering, an activated environment, or an undocumented dependency.",
+      "The command that VERIFIES may never REPAIR. Creation and installation belong to bootstrap; verification observes and refuses.",
+      "A failure is deterministic and names both sides: what was expected, and what was detected."
+    ]
+  },
+  "binding": {
+    "series_authority": {
+      "file": "scripts/ucos-env.sh",
+      "symbol": "UCOS_PYTHON_SERIES",
+      "$why": "One canonical series, declared once, in the file that builds the environment."
+    },
+    "pin_authority": {
+      "file": "pyproject.toml",
+      "table": "project.optional-dependencies.dev",
+      "$why": "One place versions live. The model parses it; it never restates it."
+    },
+    "venv_directory": {
+      "relative_path": ".ec1-venv",
+      "overridable_by": "UCOS_VENV_DIR",
+      "$why": "Disposable and .gitignored, so it may be deleted and rebuilt by bootstrap at any time."
+    },
+    "cache_path": ".ucos/environment-fingerprint.json",
+    "evidence_path": ".ucos/execution-evidence.json"
+  },
+  "model": {
+    "$standing": "THE EXECUTION ENVIRONMENT ENTITY. Six attribute groups, each a declared population. engine/execution_environment/model.py is its executable form and holds no attribute this declaration does not name.",
+    "entity": "ExecutionEnvironment",
+    "attribute_groups": [
+      {
+        "group": "identity",
+        "attributes": [
+          {
+            "name": "environment_id",
+            "meaning": "content identity of the environment, derived from runtime + toolchain + dependency + repository fingerprints",
+            "derived": true
+          },
+          {
+            "name": "repository_binding",
+            "meaning": "absolute path of the repository this environment belongs to, resolved by git",
+            "derived": true
+          },
+          {
+            "name": "machine_identity",
+            "meaning": "platform, machine architecture and interpreter implementation — never a hostname or a username",
+            "derived": true
+          }
+        ],
+        "$machine_identity_excludes_personal_data": "A hostname or user name is a personal identifier and would make evidence non-portable and non-comparable between machines. Platform and architecture are what actually change behaviour."
+      },
+      {
+        "group": "runtime",
+        "attributes": [
+          {
+            "name": "language",
+            "meaning": "the runtime language",
+            "derived": true
+          },
+          {
+            "name": "version",
+            "meaning": "full interpreter version",
+            "derived": true
+          },
+          {
+            "name": "series",
+            "meaning": "major.minor, the value compared against the canonical series",
+            "derived": true
+          },
+          {
+            "name": "interpreter_path",
+            "meaning": "fully resolved real path of the running interpreter",
+            "derived": true
+          },
+          {
+            "name": "prefix",
+            "meaning": "sys.prefix — what makes 'is this actually the canonical venv' answerable rather than assumed",
+            "derived": true
+          },
+          {
+            "name": "base_prefix",
+            "meaning": "sys.base_prefix — differs from prefix exactly when running inside a virtual environment",
+            "derived": true
+          }
+        ]
+      },
+      {
+        "group": "toolchain",
+        "attributes": [
+          {
+            "name": "scripts_directory",
+            "meaning": "the venv script directory every declared executable must live in",
+            "derived": true
+          },
+          {
+            "name": "tools",
+            "meaning": "one record per pinned tool: name, expected version, installed version, executable path, importable",
+            "derived": true
+          },
+          {
+            "name": "unexpected_executables",
+            "meaning": "executables in the scripts directory that no pinned distribution declares",
+            "derived": true
+          }
+        ]
+      },
+      {
+        "group": "dependencies",
+        "attributes": [
+          {
+            "name": "expected",
+            "meaning": "the pinned set, parsed from the pin authority",
+            "derived": true
+          },
+          {
+            "name": "installed",
+            "meaning": "the resolved set, from installed distribution metadata",
+            "derived": true
+          },
+          {
+            "name": "fingerprint",
+            "meaning": "sha256 over the sorted (name, version, declared-script-path) triples",
+            "derived": true
+          }
+        ]
+      },
+      {
+        "group": "repository",
+        "attributes": [
+          {
+            "name": "root",
+            "meaning": "git rev-parse --show-toplevel, never a path derived from file layout",
+            "derived": true
+          },
+          {
+            "name": "branch",
+            "meaning": "current branch, or a detached-HEAD marker",
+            "derived": true
+          },
+          {
+            "name": "commit",
+            "meaning": "HEAD commit identity",
+            "derived": true
+          },
+          {
+            "name": "configuration_fingerprint",
+            "meaning": "sha256 over the configuration files whose change invalidates the environment",
+            "derived": true
+          }
+        ]
+      },
+      {
+        "group": "validation",
+        "attributes": [
+          {
+            "name": "command",
+            "meaning": "the command whose execution this environment served",
+            "derived": false
+          },
+          {
+            "name": "checks",
+            "meaning": "one result per declared check",
+            "derived": true
+          },
+          {
+            "name": "result",
+            "meaning": "VALID or INVALID — INVALID iff any blocking check failed",
+            "derived": true
+          },
+          {
+            "name": "timestamp",
+            "meaning": "UTC instant of the observation, recorded in evidence only",
+            "derived": true
+          }
+        ],
+        "$timestamp_is_evidence_only": "The timestamp is never an input to the environment identity or to any fingerprint. A clock in an identity makes two identical environments look different, which is the defect engine.temporal exists to prevent."
+      }
+    ]
+  },
+  "checks": {
+    "$standing": "THE INTEGRITY CONDITIONS. Each is computed, never asserted. `blocking: true` refuses execution; `blocking: false` is reported and does not refuse. The gate holds no check this list does not declare, and declares no check the gate does not compute — engine/tests/unit/test_execution_environment.py measures that equality in both directions.",
+    "items": [
+      {
+        "id": "EEG-01",
+        "title": "correct repository",
+        "blocking": true,
+        "measures": "The repository root resolved by git contains the running interpreter, and the environment's declared venv directory lies inside that root.",
+        "$why": "Finding F-2. A venv outside the repository was created by a root misresolution and went unnoticed for sixteen days. Resolving by git rather than by file layout is what makes this answerable at all."
+      },
+      {
+        "id": "EEG-02",
+        "title": "correct virtual environment",
+        "blocking": true,
+        "measures": "sys.prefix equals the declared venv directory and differs from sys.base_prefix.",
+        "$why": "Assumption A3. A path existing where a venv is expected is not proof that the running interpreter IS that venv; sys.prefix is."
+      },
+      {
+        "id": "EEG-03",
+        "title": "correct interpreter",
+        "blocking": true,
+        "measures": "The interpreter's major.minor equals the canonical series declared by the series authority.",
+        "$why": "The global interpreter on the assessed machine is 3.14.4 against a canonical 3.12. A verification run under the wrong series is not the verification it claims to be."
+      },
+      {
+        "id": "EEG-04",
+        "title": "pytest belongs to this environment",
+        "blocking": true,
+        "measures": "pytest imports, and its module file resolves inside the venv prefix.",
+        "$why": "Finding F-3. A global pytest shadows the canonical one on PATH and LOADS THIS REPOSITORY'S pyproject.toml, so it attempts the certified gate under an interpreter that cannot satisfy it."
+      },
+      {
+        "id": "EEG-05",
+        "title": "required plugins present",
+        "blocking": true,
+        "measures": "Every declared required plugin IMPORTS in this interpreter — not merely that its distribution metadata is recorded.",
+        "required_plugins": [
+          {
+            "module": "pytest_cov",
+            "distribution": "pytest-cov",
+            "$why": "pyproject addopts pass --cov and --cov-fail-under=90. Without this module every certified invocation aborts on unrecognized arguments."
+          },
+          {
+            "module": "coverage",
+            "distribution": "coverage",
+            "$why": "The coverage floor is evaluated by the coverage tool itself; the POST stage invokes it directly."
+          },
+          {
+            "module": "jsonschema",
+            "distribution": "jsonschema",
+            "$why": "ukb.py validate swallows ImportError and still exits 0, so an absent jsonschema turns the schema gate into a silent pass."
+          }
+        ],
+        "$why": "Assumption A4. Version metadata present and module unimportable is a real state, and it is exactly the state that reports a healthy toolchain while the tool fails at the point of use."
+      },
+      {
+        "id": "EEG-06",
+        "title": "dependency state valid",
+        "blocking": true,
+        "measures": "Every pinned distribution is installed at exactly its pinned version, and every executable its own RECORD declares in the scripts directory is present and executable.",
+        "$why": "Preserves the executable-level check scripts/ucos-env.sh already performs, for the reason recorded there: pip treats a requirement as satisfied on version metadata alone, so a lost bin/<tool> is invisible to an ordinary install."
+      },
+      {
+        "id": "EEG-07",
+        "title": "configuration consistent",
+        "blocking": true,
+        "measures": "Every declared configuration file exists and is readable, and the pin authority parses to a non-empty expected set.",
+        "$why": "An unparseable pyproject yields an EMPTY expected set, under which every other dependency check passes vacuously. Fail-closed means an empty expectation is a fault, not a pass."
+      },
+      {
+        "id": "EEG-08",
+        "title": "no unsupported global executable usage",
+        "blocking": false,
+        "measures": "Reports (a) canonical tool names resolving on PATH to a binary outside this venv's script directory, and (b) executables in that directory that no INSTALLED distribution declares in its own RECORD.",
+        "$why": "Finding F-4. The present instances are inert Finder duplicates and a Homebrew pytest that the pipeline never invokes, so blocking on them would fail a healthy environment for a filesystem artifact. The class is not inert — a stale duplicate earlier in resolution order is a silently different toolchain — so it is reported every run rather than ignored.",
+        "$why_not_blocking": "A non-blocking check that is always reported is honest; a blocking check that must be suppressed to get work done is a check people delete.",
+        "$why_all_installed_and_not_only_pinned": "An executable belonging to a transitive dependency is legitimately present. Measuring only against the pinned set would report every one of them, and a check that is mostly noise is a check people learn to ignore."
+      }
+    ]
+  },
+  "fingerprint_cache": {
+    "$standing": "A CACHE OF A MEASUREMENT, NEVER A SUBSTITUTE FOR ONE. The cache may only ever skip work whose inputs are proven unchanged, and a miss costs a full observation — never a pass.",
+    "path": ".ucos/environment-fingerprint.json",
+    "gitignored": true,
+    "stores": [
+      "interpreter fingerprint (real path, version, prefix, base prefix)",
+      "python version",
+      "pytest version",
+      "dependency fingerprint",
+      "configuration fingerprint",
+      "repository identity"
+    ],
+    "invalidation_triggers": [
+      {
+        "trigger": "interpreter changes",
+        "detected_by": "interpreter real path, full version, prefix or base prefix differ"
+      },
+      {
+        "trigger": "dependencies change",
+        "detected_by": "dependency fingerprint differs"
+      },
+      {
+        "trigger": "pyproject.toml changes",
+        "detected_by": "configuration fingerprint differs"
+      },
+      {
+        "trigger": "virtual environment changes",
+        "detected_by": "pyvenv.cfg digest, carried inside the configuration fingerprint"
+      },
+      {
+        "trigger": "tool versions change",
+        "detected_by": "dependency fingerprint differs"
+      },
+      {
+        "trigger": "the declaration or the environment library changes",
+        "detected_by": "configuration fingerprint differs"
+      }
+    ],
+    "$repository_commit_is_not_a_trigger": "The commit is RECORDED as repository identity and is deliberately NOT an invalidation trigger. Making it one would invalidate the cache on every commit, which is every run — a cache that never hits, and a false claim that the environment changed when only the source did.",
+    "$blocking_checks_always_run": "EEG-01 through EEG-05 are recomputed on EVERY invocation regardless of cache state: they are in-process property reads costing microseconds, and they are the checks that catch a wrong interpreter. Only EEG-06's distribution RECORD scan — the one measurably expensive step — is answered from the cache when every trigger proves it unchanged."
+  },
+  "evidence": {
+    "$standing": "Every certified run records what verified it, not only what was verified.",
+    "path": ".ucos/execution-evidence.json",
+    "gitignored": true,
+    "records": [
+      "python executable path",
+      "python version",
+      "pytest executable path",
+      "pytest version",
+      "environment identity",
+      "dependency fingerprint",
+      "repository commit",
+      "validation timestamp"
+    ],
+    "$why": "Finding F-5. Certification recorded what was verified but never what verified it, so two runs under different interpreters were indistinguishable in the evidence."
+  },
+  "separation_of_powers": {
+    "$standing": "Which entry point may perform which act. Phase 5 of the directive, as a declared boundary rather than a convention.",
+    "entry_points": [
+      {
+        "name": "./bootstrap.sh",
+        "may_create_venv": true,
+        "may_install": true,
+        "may_use_network": true,
+        "role": "SETUP AND REPAIR"
+      },
+      {
+        "name": "./doctor.sh",
+        "may_create_venv": false,
+        "may_install": false,
+        "may_use_network": false,
+        "role": "DIAGNOSE"
+      },
+      {
+        "name": "./doctor.sh --fix",
+        "may_create_venv": true,
+        "may_install": true,
+        "may_use_network": true,
+        "role": "REPAIR, EXPLICITLY REQUESTED"
+      },
+      {
+        "name": "./verify.sh",
+        "may_create_venv": false,
+        "may_install": false,
+        "may_use_network": false,
+        "role": "OBSERVE AND REFUSE"
+      }
+    ],
+    "law": "EEG-SEP: no verification entry point may create a virtual environment, install a package, or reach the network. Measured by engine/tests/unit/test_execution_environment.py over the source of verify.sh."
+  },
+  "direct_tool_resolution": {
+    "$standing": "Phase 7. The pipeline already satisfied this; the obligation is to keep it true by measuring it.",
+    "law": "EEG-PATH: every tool invocation in verify.sh resolves through the venv interpreter by absolute path. A bare python, python3, pytest, ruff or coverage word in command position is a violation.",
+    "measured_over": [
+      "verify.sh"
+    ],
+    "$measured_over_scope": "verify.sh is the certified execution path and the only file this law binds. bootstrap.sh and doctor.sh legitimately probe the system interpreter — that is how they FIND one to build the venv from — so binding them would forbid the act that makes the venv exist."
+  },
+  "lifecycle": {
+    "$standing": "The directive's declared lifecycle, with the evidence that discharges each position.",
+    "positions": [
+      {
+        "stage": "DISCOVERY",
+        "discharged_by": "UCOS-EXECUTION-ENVIRONMENT-ASSESSMENT.md",
+        "status": "COMPLETE"
+      },
+      {
+        "stage": "DESIGN",
+        "discharged_by": "this declaration",
+        "status": "COMPLETE"
+      },
+      {
+        "stage": "IMPLEMENTATION",
+        "discharged_by": "engine/execution_environment/",
+        "status": "COMPLETE"
+      },
+      {
+        "stage": "TESTING",
+        "discharged_by": "engine/tests/unit/test_execution_environment.py",
+        "status": "COMPLETE"
+      },
+      {
+        "stage": "VERIFICATION",
+        "discharged_by": "./verify.sh Stage 0 + the coverage floor",
+        "status": "COMPLETE"
+      },
+      {
+        "stage": "CERTIFICATION",
+        "discharged_by": ".ucos/execution-evidence.json emitted by every certified run",
+        "status": "COMPLETE"
+      }
+    ]
+  },
+  "master_plan_registration": {
+    "category": "Universal Execution Governance",
+    "capability": "Execution Environment Intelligence",
+    "registered_in": "UCOS-MIP-000003-MASTER-IMPLEMENTATION-PLAN-V3.md",
+    "part": 52,
+    "$why_v3_and_not_v2": "UCOS-MIP-000002 is the governing instrument and is registered under UCOS-UCOSOMEGAINF-000001 by a digest over its bytes. Editing it would break that registration. v3 is the live amendment surface and admits parts by delta, which is what an amendment surface is for. The registration is therefore PROPOSED under v3's own standing, exactly as Part 51 is — it does not claim ratification it has not received.",
+    "requirements": [
+      "environment discovery",
+      "runtime identity",
+      "toolchain identity",
+      "dependency validation",
+      "execution reproducibility",
+      "validation certification",
+      "automatic recovery guidance"
+    ]
+  }
+}

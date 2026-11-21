@@ -1,0 +1,3123 @@
+{
+  "$comment": "ACEE-000001 — Autonomous Constitutional Engineering Engine. THE SINGLE CANONICAL METADATA SOURCE for this programme: the engine derives all behaviour from this file and this file derives only from Repository Truth. Nothing here is authored from assumption. Every owner cited resolves, every anchor cited is present inside its owner, and every measure cited is a counter in another owner's committed artifact. This programme creates nothing: it CONSUMES the constitutional lifecycle from its located owner, REUSES the disposition vocabulary the repository already legislates, and measures goal-directed engineering against both.",
+  "programme": {
+    "id": "ACEE-000001",
+    "name": "Autonomous Constitutional Engineering Engine",
+    "version": "1.0",
+    "authority": "NONE — DERIVED TRUTH. This programme legislates no lifecycle, opens no registry, mints no identifier, declares no namespace, admits no capability, authorizes no engineering and certifies nothing. UCIC-001 owns the single deterministic lifecycle every capability follows; UCL-000001 made that lifecycle discoverable, ordered and executable, and this programme CONSUMES its stage graph rather than deriving one — a second derivation would be a second lifecycle. UCOS-AEE-001 owns the closed repository-directed loop, which this programme neither duplicates nor re-drives: it invokes no engine and re-runs no owner. UCOS-EG-001 owns engineering governance; UCCEP-000000 owns certification; UCOS-RFP-001 owns fixed-point closure; UEI-000001 and UCEF-000001 own evolution; UER-000001 owns recovery; URRC-000001 owns reuse measurement. This programme BINDS an engineering goal to those located owners and measures whether the binding is total. Where this measurement and a located instrument differ, the located instrument governs.",
+    "operational_home": "00-MASTER/ACEE-000001/",
+    "disclosure": "DISCLOSURE. This programme holds no constitutional authority. It is not a second lifecycle, not a second loop, not a second registry, not a second dictionary, not a second identifier scheme, not a second reasoning engine, not a second learning engine, not a second discovery engine, not a second execution engine and not a competing methodology. It creates no goal, no invariant and no stage: every goal and every completion invariant is discovered from a located manifest pattern, and every lifecycle stage is consumed from its located owner. It enumerates nothing. It invokes no capability, so it never observes a run of itself. It holds no privileged path: it appears in its own goal plane as a subject like any other.",
+    "law_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+    "architecture_owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+    "lifecycle_owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+    "governing_instruments": [
+      "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "00-MASTER/EVOLUTION-001/Ω-E04-CONSTITUTIONAL-COMPLETION-CERTIFICATE.md"
+    ],
+    "$forbidden_write_comment": "Every owner this programme cites must be protected from its own writes. The declaration guard fails closed if a cited claimant is not covered here, so a new citation cannot be introduced without also protecting its owner.",
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "00-BOOK/",
+      "00-CEP/",
+      "00-CMG/",
+      "engine/",
+      "platform/",
+      "data/",
+      "service/",
+      "application/",
+      "infrastructure/",
+      "knowledge/",
+      "intelligence/",
+      "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "00-MASTER/UCL-000001/",
+      "00-MASTER/UCOS-AEE-001/",
+      "00-MASTER/UCOS-EG-001/",
+      "00-MASTER/UCCEP-000000/",
+      "00-MASTER/UCOS-RFP-001/",
+      "00-MASTER/UEI-000001/",
+      "00-MASTER/UER-000001/",
+      "00-MASTER/URRC-000001/",
+      "00-MASTER/UCDA-000001/",
+      "00-MASTER/UCEF-000001/",
+      "00-MASTER/UAKOS-CLOSURE-002/",
+      "00-MASTER/UCOS-RIB-001/",
+      "00-MASTER/UAIE-000001/",
+      "00-MASTER/EVOLUTION-001/"
+    ]
+  },
+  "determination": {
+    "bound": "AUTONOMOUS-CONSTITUTIONAL-ENGINEERING-ESTABLISHED",
+    "open": "AUTONOMOUS-CONSTITUTIONAL-ENGINEERING-NOT-ESTABLISHED"
+  },
+  "$cko_model_comment": "The object model is OPEN. A kind or a relation is admitted by appending an entry; the engine names none of them, so admission requires no code change.",
+  "cko_model": {
+    "identity_field": "record_id",
+    "kind_field": "kind",
+    "open": true,
+    "closed_enumeration": false,
+    "admission": "Append an entry to `kinds` or `relation_types` and declare an adapter that emits it. No engine change, no architectural redesign.",
+    "disposition_kind": "disposition",
+    "kinds": [
+      {
+        "kind": "lifecycle-stage",
+        "note": "a stage of the constitutional lifecycle, CONSUMED from its located owner and never originated here"
+      },
+      {
+        "kind": "engineering-goal",
+        "note": "an engineering goal, discovered from a located manifest pattern"
+      },
+      {
+        "kind": "completion-invariant",
+        "note": "a constitutional completion invariant, discovered from a located manifest pattern and measured against a located owner"
+      },
+      {
+        "kind": "governance-gate",
+        "note": "a located constitutional gate"
+      },
+      {
+        "kind": "quality-capability",
+        "note": "a located constitutional check: validation and verification"
+      },
+      {
+        "kind": "governance-programme",
+        "note": "a located constitutional programme"
+      },
+      {
+        "kind": "governance-principle",
+        "note": "a located constitutional principle"
+      },
+      {
+        "kind": "disposition",
+        "note": "a disposition value the repository already legislates; this programme adds none"
+      },
+      {
+        "kind": "construct-class",
+        "note": "a located class of admissible constitutional construct"
+      },
+      {
+        "kind": "evolution-capability",
+        "note": "a located evolution and intelligence capability"
+      },
+      {
+        "kind": "recovery-capability",
+        "note": "a located execution-resilience and recovery capability"
+      },
+      {
+        "kind": "registered-artifact",
+        "note": "an artifact carrying a registered constitutional identity"
+      },
+      {
+        "kind": "lineage-record",
+        "note": "a located lineage record"
+      },
+      {
+        "kind": "knowledge-object",
+        "note": "a located canonical knowledge object"
+      },
+      {
+        "kind": "truth-concept",
+        "note": "a constitutional concept admitted to Repository Truth"
+      },
+      {
+        "kind": "engineering-relationship",
+        "note": "a relationship, held as a first-class governed object"
+      },
+      {
+        "kind": "executable-stage",
+        "note": "a stage of the declared fixed-point pipeline: the located ACTUATION surface a lifecycle stage binds to. Discovered, never invoked."
+      }
+    ],
+    "relation_types": [
+      {
+        "relation": "requires",
+        "note": "an evidential prerequisite; the ordering relation of the consumed lifecycle"
+      },
+      {
+        "relation": "binds",
+        "note": "binds a subject to a located governance instrument"
+      },
+      {
+        "relation": "evidenced-by",
+        "note": "names the located evidence for a record"
+      },
+      {
+        "relation": "reenters",
+        "note": "re-entry, declared as a relation rather than a dependency so the graph stays orderable and the lifecycle stays non-terminal (CR-INF-001)"
+      },
+      {
+        "relation": "certifies",
+        "note": "a gate or programme to the checks that execute it"
+      },
+      {
+        "relation": "delegates",
+        "note": "a programme to the located owner that discharges it"
+      },
+      {
+        "relation": "enforced-by",
+        "note": "a principle to the checks that enforce it"
+      },
+      {
+        "relation": "governed-by",
+        "note": "a record to the instrument that governs it"
+      }
+    ]
+  },
+  "$serializations_comment": "A serialization is REGISTERED when the engine holds a reader for it. An unregistered serialization is reported rather than fatal: a registry that must be implemented before it can be extended is not open.",
+  "serializations": [
+    {
+      "id": "FMT-JSON",
+      "name": "JSON",
+      "reader": "json",
+      "extensions": [
+        ".json"
+      ],
+      "registered": true,
+      "note": "the serialization most located constitutional metadata uses"
+    },
+    {
+      "id": "FMT-TOML",
+      "name": "TOML",
+      "reader": "toml",
+      "extensions": [
+        ".toml"
+      ],
+      "registered": true,
+      "note": "a second reader, exercised by a located provider, so serialization independence is measured rather than asserted"
+    },
+    {
+      "id": "FMT-MARKDOWN",
+      "name": "Markdown",
+      "reader": "text",
+      "extensions": [
+        ".md"
+      ],
+      "registered": true,
+      "note": "presence and anchor only; never parsed for structure, because prose is not a record store"
+    },
+    {
+      "id": "FMT-YAML",
+      "name": "YAML",
+      "reader": "yaml",
+      "extensions": [
+        ".yml",
+        ".yaml"
+      ],
+      "registered": false,
+      "note": "declared and NOT registered: admitting it is a reader registration, which proves the registry is extendable before it is implemented"
+    },
+    {
+      "id": "FMT-XML",
+      "name": "XML",
+      "reader": "xml",
+      "extensions": [
+        ".xml"
+      ],
+      "registered": false,
+      "note": "declared and not registered"
+    },
+    {
+      "id": "FMT-SQLITE",
+      "name": "SQLite",
+      "reader": "sqlite",
+      "extensions": [
+        ".db",
+        ".sqlite"
+      ],
+      "registered": false,
+      "note": "declared and not registered; a storage technology, not a constitutional concern"
+    }
+  ],
+  "$discovery_classes_comment": "Only a class that MAY ORIGINATE contributes objects. Implementation source is read as EVIDENCE only: regex or syntax inspection of source is evidence extraction by definition, and may corroborate an obligation but never originate one.",
+  "discovery_classes": [
+    {
+      "id": "constitutional-metadata",
+      "name": "Canonical constitutional metadata",
+      "may_originate": true,
+      "note": "hand-authored declarations and manifests of located owners"
+    },
+    {
+      "id": "evidence",
+      "name": "Evidence",
+      "may_originate": false,
+      "note": "read to confirm a symbol or a toolchain fact exists; originates no object and no relation"
+    }
+  ],
+  "$providers_comment": "WHERE engineering metadata lives, and in which serialization. Every owner here is another programme's committed record; none is a register this programme writes, because reading back its own output would make a view a source.",
+  "metadata_providers": [
+    {
+      "id": "PRV-LIFECYCLE",
+      "name": "The constitutional lifecycle stage graph",
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-GOVERNANCE",
+      "name": "Constitutional checks, gates, programmes and principles",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-DISPOSITION",
+      "name": "The located disposition vocabulary",
+      "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-DECISION",
+      "name": "The located realized-disposition vocabulary",
+      "owner": "00-MASTER/UCDA-000001/ucda-decisions.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-EVOLUTION",
+      "name": "Admissible constitutional construct classes",
+      "owner": "00-MASTER/UCEF-000001/ucef-framework.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-INTELLIGENCE",
+      "name": "Evolution and intelligence capabilities",
+      "owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-RESILIENCE",
+      "name": "Execution-resilience and recovery capabilities",
+      "owner": "00-MASTER/UER-000001/uer-resilience.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-REGISTRY",
+      "name": "The Universal Registry",
+      "owner": "00-BOOK/DATA/artifacts.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-LEDGER",
+      "name": "Universal bookkeeping and lineage",
+      "owner": "00-BOOK/DATA/id-ledger.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-KNOWLEDGE",
+      "name": "Canonical knowledge",
+      "owner": "knowledge/canonical-knowledge.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-TRUTH",
+      "name": "Repository Truth concept closure",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-TOOLCHAIN",
+      "name": "The declared toolchain",
+      "owner": "pyproject.toml",
+      "serialization": "FMT-TOML",
+      "discovery_class": "evidence",
+      "note": "an evidence-class provider bound to no adapter: it exercises a second serialization reader and contributes no object, so implementation independence is measured rather than assumed"
+    },
+    {
+      "id": "PRV-PIPELINE",
+      "name": "The declared fixed-point execution pipeline",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    }
+  ],
+  "$provider_discovery_comment": "The OPEN surfaces. The pattern is declared; the providers it finds are listed nowhere, which is what keeps a future goal and a future completion invariant automatically discoverable and stops this declaration becoming an enumeration of either.",
+  "provider_discovery": [
+    {
+      "id": "PRV-GOAL",
+      "name": "Engineering goal manifests",
+      "root": "00-MASTER/ACEE-000001",
+      "suffix": "-goal-manifest.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata",
+      "openness_pointer": "manifest",
+      "openness_fields": {
+        "open": "open",
+        "closed_enumeration": "closed_enumeration",
+        "admission": "admission"
+      }
+    },
+    {
+      "id": "PRV-INVARIANT",
+      "name": "Constitutional completion invariant manifests",
+      "root": "00-MASTER/ACEE-000001",
+      "suffix": "-invariant-manifest.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata",
+      "openness_pointer": "manifest",
+      "openness_fields": {
+        "open": "open",
+        "closed_enumeration": "closed_enumeration",
+        "admission": "admission"
+      }
+    }
+  ],
+  "$adapters_comment": "HOW located records normalize into objects of a declared kind. A field map translates another owner's field names into this programme's neutral vocabulary, so no owner has to change its schema to be read. More than one adapter over one provider is lawful.",
+  "metadata_adapters": [
+    {
+      "id": "SRC-LIFECYCLE",
+      "name": "The consumed constitutional lifecycle",
+      "provider": "PRV-LIFECYCLE",
+      "pointer": "nodes",
+      "cko_kind": "lifecycle-stage",
+      "field_map": {
+        "id": "id",
+        "name": "stage",
+        "ordinal": "ordinal",
+        "group": "group",
+        "owner": "owner",
+        "authority": "authority",
+        "authority_owner": "authority_owner"
+      },
+      "relation_map": {
+        "requires": "depends_on",
+        "binds": "binds",
+        "evidenced-by": "evidence",
+        "reenters": "reenters"
+      },
+      "note": "the lifecycle every goal traverses, read from its located owner; this programme originates no stage"
+    },
+    {
+      "id": "SRC-GOAL",
+      "name": "Engineering goals",
+      "provider": "PRV-GOAL",
+      "pointer": "nodes",
+      "cko_kind": "engineering-goal",
+      "ordinal_base": 0,
+      "field_map": {
+        "id": "id",
+        "name": "goal",
+        "intent": "intent",
+        "class": "class",
+        "ordinal": "ordinal",
+        "subject": "subject",
+        "owner": "owner",
+        "authority": "authority",
+        "authority_owner": "authority_owner"
+      },
+      "relation_map": {
+        "binds": "binds",
+        "evidenced-by": "evidence",
+        "reenters": "reenters"
+      },
+      "note": "the subject plane: discovered, never declared"
+    },
+    {
+      "id": "SRC-INVARIANT",
+      "name": "Constitutional completion invariants",
+      "provider": "PRV-INVARIANT",
+      "pointer": "nodes",
+      "cko_kind": "completion-invariant",
+      "ordinal_base": 0,
+      "field_map": {
+        "id": "id",
+        "name": "invariant",
+        "ordinal": "ordinal",
+        "owner": "owner",
+        "anchor": "anchor",
+        "authority_owner": "authority_owner",
+        "measure_source": "measure_source",
+        "measure": "measure",
+        "comparator": "comparator",
+        "expect": "expect"
+      },
+      "relation_map": {
+        "evidenced-by": "evidence",
+        "governed-by": "authority_owner"
+      },
+      "note": "each invariant is measured against a located owner, a present anchor and a counter in another owner's committed artifact"
+    },
+    {
+      "id": "SRC-GOVERNANCE-GATE",
+      "name": "Constitutional gates",
+      "provider": "PRV-GOVERNANCE",
+      "pointer": "gates",
+      "cko_kind": "governance-gate",
+      "ordinal_base": 1000,
+      "field_map": {
+        "id": "id",
+        "name": "name",
+        "owner": "owner"
+      },
+      "relation_map": {
+        "certifies": "checks"
+      },
+      "note": "supplies the certification plane"
+    },
+    {
+      "id": "SRC-GOVERNANCE-CHECK",
+      "name": "Constitutional checks",
+      "provider": "PRV-GOVERNANCE",
+      "pointer": "checks",
+      "cko_kind": "quality-capability",
+      "ordinal_base": 2000,
+      "field_map": {
+        "id": "id",
+        "name": "name",
+        "owner": "owner",
+        "invocation": "argv",
+        "tier": "tier",
+        "fail_closed": "fail_closed",
+        "advisory": "advisory",
+        "write_scope": "write_scope"
+      },
+      "relation_map": {},
+      "note": "supplies the validation and verification planes; a second adapter over one provider"
+    },
+    {
+      "id": "SRC-GOVERNANCE-PROGRAMME",
+      "name": "Constitutional programmes",
+      "provider": "PRV-GOVERNANCE",
+      "pointer": "programs",
+      "cko_kind": "governance-programme",
+      "ordinal_base": 3000,
+      "field_map": {
+        "id": "id",
+        "name": "name",
+        "output": "output"
+      },
+      "relation_map": {
+        "delegates": "delegated_to",
+        "certifies": "checks"
+      },
+      "note": "supplies the delegation plane, which is how a concern reaches a located owner"
+    },
+    {
+      "id": "SRC-GOVERNANCE-PRINCIPLE",
+      "name": "Constitutional principles",
+      "provider": "PRV-GOVERNANCE",
+      "pointer": "principles",
+      "cko_kind": "governance-principle",
+      "ordinal_base": 4000,
+      "field_map": {
+        "id": "id",
+        "name": "name",
+        "owner": "owner"
+      },
+      "relation_map": {
+        "enforced-by": "enforced_by"
+      },
+      "note": "supplies the governance plane"
+    },
+    {
+      "id": "SRC-DISPOSITION",
+      "name": "The located disposition vocabulary",
+      "provider": "PRV-DISPOSITION",
+      "pointer": "decisions",
+      "cko_kind": "disposition",
+      "ordinal_base": 5000,
+      "field_map": {
+        "id": "id",
+        "name": "decision",
+        "definition": "definition",
+        "requires_evidence": "requires_evidence"
+      },
+      "relation_map": {},
+      "note": "every disposition this programme derives must resolve to one of these; it adds none"
+    },
+    {
+      "id": "SRC-DISPOSITION-REALIZED",
+      "name": "The located realized-disposition vocabulary",
+      "provider": "PRV-DECISION",
+      "pointer": "dispositions",
+      "cko_kind": "disposition",
+      "ordinal_base": 5100,
+      "field_map": {
+        "id": "id",
+        "name": "disposition",
+        "definition": "definition",
+        "clause": "clause",
+        "minimum_stage": "minimum_stage"
+      },
+      "relation_map": {},
+      "note": "the clause-bound realized dispositions; crosswalked with the decision vocabulary and never merged with it"
+    },
+    {
+      "id": "SRC-CONSTRUCT-CLASS",
+      "name": "Admissible constitutional construct classes",
+      "provider": "PRV-EVOLUTION",
+      "pointer": "construct_classes",
+      "cko_kind": "construct-class",
+      "ordinal_base": 6000,
+      "field_map": {
+        "id": "id",
+        "name": "construct_class"
+      },
+      "relation_map": {
+        "governed-by": "admitted_by"
+      },
+      "note": "the classes a goal may declare itself to be; admission is governed outside this programme"
+    },
+    {
+      "id": "SRC-EVOLUTION-CAPABILITY",
+      "name": "Evolution and intelligence capabilities",
+      "provider": "PRV-INTELLIGENCE",
+      "pointer": "capabilities",
+      "cko_kind": "evolution-capability",
+      "ordinal_base": 7000,
+      "field_map": {
+        "id": "id",
+        "name": "name",
+        "mandate": "mandate",
+        "objective": "objective",
+        "homes": "homes"
+      },
+      "relation_map": {
+        "evidenced-by": "evidence"
+      },
+      "note": "the located capabilities that observe, learn, reason, plan and evolve"
+    },
+    {
+      "id": "SRC-RECOVERY-CAPABILITY",
+      "name": "Execution-resilience and recovery capabilities",
+      "provider": "PRV-RESILIENCE",
+      "pointer": "capabilities",
+      "cko_kind": "recovery-capability",
+      "ordinal_base": 8000,
+      "field_map": {
+        "id": "id",
+        "name": "name",
+        "mandate": "mandate",
+        "objective": "objective",
+        "homes": "homes"
+      },
+      "relation_map": {
+        "evidenced-by": "evidence"
+      },
+      "note": "the located capabilities that detect, diagnose, repair, recover and replay"
+    },
+    {
+      "id": "SRC-REGISTRY",
+      "name": "Registered artifacts",
+      "provider": "PRV-REGISTRY",
+      "pointer": "artifacts",
+      "cko_kind": "registered-artifact",
+      "ordinal_base": 9000,
+      "field_map": {
+        "id": "universal_id",
+        "name": "name",
+        "path": "path",
+        "status": "status",
+        "owner": "owner"
+      },
+      "relation_map": {},
+      "note": "the source of REGISTERED constitutional identity for a relationship target"
+    },
+    {
+      "id": "SRC-LINEAGE",
+      "name": "Lineage and bookkeeping records",
+      "provider": "PRV-LEDGER",
+      "pointer": "by_path",
+      "cko_kind": "lineage-record",
+      "ordinal_base": 20000,
+      "field_map": {
+        "id": "",
+        "name": "universal_id",
+        "category": "category"
+      },
+      "relation_map": {},
+      "note": "a keyed store: the mapping key IS the identity, which needs no adapter change and no engine change"
+    },
+    {
+      "id": "SRC-KNOWLEDGE",
+      "name": "Canonical knowledge objects",
+      "provider": "PRV-KNOWLEDGE",
+      "pointer": "objects",
+      "cko_kind": "knowledge-object",
+      "ordinal_base": 30000,
+      "field_map": {
+        "id": "cko_id",
+        "name": "title",
+        "owner": "owner",
+        "authority": "authority",
+        "lifecycle": "lifecycle"
+      },
+      "relation_map": {},
+      "note": "Knowledge Once: extracted knowledge is registered here, never in a register this programme writes"
+    },
+    {
+      "id": "SRC-TRUTH",
+      "name": "Repository Truth concepts",
+      "provider": "PRV-TRUTH",
+      "pointer": "concepts",
+      "cko_kind": "truth-concept",
+      "ordinal_base": 40000,
+      "field_map": {
+        "id": "id",
+        "name": "id",
+        "family": "family",
+        "disposition": "disposition",
+        "homed": "homed"
+      },
+      "relation_map": {},
+      "note": "the concept closure a goal is judged against, so a goal is measured against the repository and not against an assumption about it"
+    },
+    {
+      "id": "SRC-PIPELINE-STAGE",
+      "name": "Executable pipeline stages",
+      "provider": "PRV-PIPELINE",
+      "pointer": "pipeline.stages",
+      "cko_kind": "executable-stage",
+      "ordinal_base": 10000,
+      "field_map": {
+        "id": "id",
+        "name": "name",
+        "owner": "owner",
+        "invocation": "argv",
+        "reentrant": "reentrant",
+        "required": "required",
+        "heavy": "heavy",
+        "purpose": "purpose"
+      },
+      "relation_map": {},
+      "note": "the located owners that ACTUATE the lifecycle. This programme discovers them so a plan can name the actuator of each stage; it invokes none of them, because invoking a capability it measures would make it observe a run of itself."
+    }
+  ],
+  "$reference_normalizations_comment": "Other owners annotate their references in their own house style. These declared readings let a reference be resolved as written FIRST, and only then reinterpreted. Nothing here knows any instrument, any path or any identifier.",
+  "reference_normalizations": [
+    {
+      "id": "REF-ANNOTATION",
+      "rule": "trim-annotation",
+      "separator": " (",
+      "note": "an owner cited with a parenthetical gloss"
+    },
+    {
+      "id": "REF-SECTION",
+      "rule": "trim-section",
+      "separators": [
+        " §",
+        " Art ",
+        " Part ",
+        " Article "
+      ],
+      "note": "an owner cited at a clause"
+    },
+    {
+      "id": "REF-PREFIX",
+      "rule": "prefix-unique",
+      "note": "an owner cited by a unique prefix of its filename; resolves only when exactly one located file matches, so ambiguity is left unresolved rather than guessed"
+    }
+  ],
+  "$applicability_comment": "Applicability is determined FIRST, from Repository Truth. An obligation that does not arise is reported NOT APPLICABLE rather than counted as unbound, because counting it would manufacture a deficiency the repository does not have.",
+  "applicability_classes": [
+    {
+      "id": "REQUIRED",
+      "name": "Required",
+      "participates": "always",
+      "note": "the obligation arises for every subject on the plane"
+    },
+    {
+      "id": "CONDITIONAL",
+      "name": "Conditional",
+      "participates": "when its declared condition holds",
+      "note": "Repository Truth decides whether it arises"
+    },
+    {
+      "id": "NOT_APPLICABLE",
+      "name": "Not applicable",
+      "participates": "never",
+      "note": "reported, never counted as a deficiency"
+    }
+  ],
+  "$planes_comment": "The measured planes. Each is identified by what it is MEASURED BY rather than by its name, so renaming a plane cannot silently change which objects are held to which obligations. The lifecycle plane is CONSUMED and traversed; its own obligations belong to its owner, not to this programme.",
+  "planes": [
+    {
+      "id": "PLANE-GOAL",
+      "plane": "Engineering goal",
+      "kind": "engineering-goal",
+      "measured_by": "obligations",
+      "subject": "an engineering goal, measured for whether it binds to the located engineering plane completely enough to be engineered autonomously"
+    },
+    {
+      "id": "PLANE-INVARIANT",
+      "plane": "Constitutional completion invariant",
+      "kind": "completion-invariant",
+      "measured_by": "properties",
+      "subject": "a completion invariant, measured for whether Repository Truth already owns, anchors, measures and satisfies it — which is what makes REUSE provable rather than assumed"
+    },
+    {
+      "id": "PLANE-LIFECYCLE",
+      "plane": "Constitutional lifecycle",
+      "kind": "lifecycle-stage",
+      "measured_by": "traversal",
+      "subject": "the stage graph a plan walks, consumed from its located owner and never re-derived here"
+    }
+  ],
+  "$relationship_comment": "A relationship is a constitutionally governed entity, so it holds its own object and its own constitutional identity, derived from its participants' identities and never from a handle, a path or a serialization.",
+  "relationship_model": {
+    "first_class": true,
+    "cko_kind": "engineering-relationship",
+    "identity_inputs": [
+      "relation",
+      "source_semantic_id",
+      "target_semantic_id"
+    ],
+    "participants_as_attributes": true,
+    "target_identity_resolution": [
+      "cko",
+      "registry"
+    ],
+    "target_identity_adapter": "SRC-REGISTRY",
+    "note": "A target the registry deliberately does not admit carries no registered constitutional identity. That is REPORTED rather than patched with the target's path: a path is a location, locations may evolve, and using one would convert a file move into an identity change."
+  },
+  "$semantic_identity_comment": "Constitutional identity is derived ONLY from what an entity IS. Every input the invariants permit to evolve is excluded by construction. A digest is used, but only over immutable constitutional identity fields: a digest over anything mutable would be a fingerprint masquerading as an identity.",
+  "semantic_identity": {
+    "algorithm": "sha256",
+    "inputs": [
+      "kind",
+      "record_id"
+    ],
+    "excluded_inputs": [
+      "cko_id",
+      "provider",
+      "provider_owner",
+      "adapter",
+      "discovery_class",
+      "serialization",
+      "owner",
+      "path",
+      "ordinal",
+      "group",
+      "position",
+      "generated_at",
+      "content_hash",
+      "measure_value",
+      "subject"
+    ]
+  },
+  "$obligations_comment": "What an engineering goal must bind before it can be engineered autonomously. Each rule is evaluated over discovered objects and located artifacts only.",
+  "obligation_rules": [
+    {
+      "id": "OBL-SUBJECT",
+      "obligation": "the goal names a subject Repository Truth locates",
+      "applicability": "REQUIRED",
+      "kind": "derived_true",
+      "fact": "subject_located"
+    },
+    {
+      "id": "OBL-OWNER",
+      "obligation": "a canonical owner is located for the goal",
+      "applicability": "REQUIRED",
+      "kind": "attribute_resolves",
+      "attribute": "owner"
+    },
+    {
+      "id": "OBL-AUTHORITY",
+      "obligation": "a constitutional authority owner is located",
+      "applicability": "REQUIRED",
+      "kind": "attribute_resolves",
+      "attribute": "authority_owner"
+    },
+    {
+      "id": "OBL-LIFECYCLE",
+      "obligation": "the goal traverses the consumed lifecycle to a plan whose every step binds a located owner",
+      "applicability": "REQUIRED",
+      "kind": "derived_true",
+      "fact": "plan_complete"
+    },
+    {
+      "id": "OBL-DETERMINISM",
+      "obligation": "the derived plan is deterministic for a fixed goal and repository state",
+      "applicability": "REQUIRED",
+      "kind": "derived_true",
+      "fact": "plan_deterministic"
+    },
+    {
+      "id": "OBL-REUSE",
+      "obligation": "no step of the plan would require new engineering infrastructure",
+      "applicability": "REQUIRED",
+      "kind": "not_of",
+      "rule": {
+        "kind": "derived_true",
+        "fact": "requires_new_infrastructure"
+      }
+    },
+    {
+      "id": "OBL-CERTIFICATION",
+      "obligation": "the goal binds a located constitutional gate",
+      "applicability": "REQUIRED",
+      "kind": "relation_to_kind",
+      "relation": "binds",
+      "kind_filter": "governance-gate",
+      "direction": "outgoing"
+    },
+    {
+      "id": "OBL-VALIDATION",
+      "obligation": "that gate binds at least one located constitutional check",
+      "applicability": "REQUIRED",
+      "kind": "related_satisfies",
+      "relation": "binds",
+      "kind_filter": "governance-gate",
+      "direction": "outgoing",
+      "rule": {
+        "kind": "relation_to_kind",
+        "relation": "certifies",
+        "kind_filter": "quality-capability",
+        "direction": "outgoing"
+      }
+    },
+    {
+      "id": "OBL-VERIFICATION",
+      "obligation": "at least one bound check is fail-closed, so verification cannot pass by absence",
+      "applicability": "REQUIRED",
+      "kind": "related_satisfies",
+      "relation": "binds",
+      "kind_filter": "governance-gate",
+      "direction": "outgoing",
+      "rule": {
+        "kind": "related_satisfies",
+        "relation": "certifies",
+        "kind_filter": "quality-capability",
+        "direction": "outgoing",
+        "rule": {
+          "kind": "attribute_true",
+          "attribute": "fail_closed"
+        }
+      }
+    },
+    {
+      "id": "OBL-EVIDENCE",
+      "obligation": "the goal's declared evidence resolves",
+      "applicability": "CONDITIONAL",
+      "condition": {
+        "kind": "edge_participation",
+        "relation": "evidenced-by"
+      },
+      "kind": "relation_targets_resolve",
+      "relation": "evidenced-by",
+      "note": "conditional because a goal is not obliged to cite evidence; where it does, the citation must resolve"
+    },
+    {
+      "id": "OBL-NON-TERMINAL",
+      "obligation": "the goal re-enters rather than terminating the lifecycle",
+      "applicability": "REQUIRED",
+      "kind": "edge_participation",
+      "relation": "reenters"
+    }
+  ],
+  "$properties_comment": "What makes a completion invariant provably REUSABLE rather than merely asserted. An invariant that fails these is not a satisfied invariant; it is an unmeasured one.",
+  "property_rules": [
+    {
+      "id": "PROP-OWNED",
+      "property": "a canonical owner is located",
+      "kind": "derived_true",
+      "fact": "owner_located"
+    },
+    {
+      "id": "PROP-ANCHORED",
+      "property": "the cited anchor is actually present inside that owner",
+      "kind": "derived_true",
+      "fact": "anchor_present"
+    },
+    {
+      "id": "PROP-READABLE",
+      "property": "the owner's serialization dispatches to a registered reader",
+      "kind": "derived_true",
+      "fact": "machine_readable"
+    },
+    {
+      "id": "PROP-MEASURE-DECLARED",
+      "property": "a measure, comparator and expectation are declared",
+      "kind": "derived_true",
+      "fact": "measure_declared"
+    },
+    {
+      "id": "PROP-MEASURE-LOCATED",
+      "property": "the declared measure resolves in a committed artifact",
+      "kind": "derived_true",
+      "fact": "measure_located"
+    },
+    {
+      "id": "PROP-SATISFIED",
+      "property": "the measured value meets its declared expectation",
+      "kind": "derived_true",
+      "fact": "measure_met"
+    },
+    {
+      "id": "PROP-EXTERNAL",
+      "property": "the owner lies outside this programme, so nothing is self-satisfied",
+      "kind": "derived_true",
+      "fact": "outside_own_home"
+    },
+    {
+      "id": "PROP-GOVERNED",
+      "property": "a located instrument governs the invariant",
+      "kind": "relation_targets_resolve",
+      "relation": "governed-by"
+    },
+    {
+      "id": "PROP-EVIDENCED",
+      "property": "the cited evidence resolves",
+      "kind": "relation_targets_resolve",
+      "relation": "evidenced-by"
+    },
+    {
+      "id": "PROP-TRACEABLE",
+      "property": "the invariant participates in at least one governed relationship",
+      "kind": "edge_participation"
+    }
+  ],
+  "$disposition_comment": "Ordered rules, first match wins, and the final rule on each measured plane is TOTAL so no subject can escape disposition. Every value must resolve to a disposition the repository already legislates — this programme adds none. CREATE is reachable only through a rule whose measured facts say no canonical owner was located, which is the constitutional test rather than a preference. A rule whose identifier ends in CREATE is treated as a creation rule by the reuse-before-create guard.",
+  "disposition_rules": [
+    {
+      "id": "DR-GOAL-REUSE",
+      "plane": "PLANE-GOAL",
+      "when": {
+        "subject_located": true,
+        "obligations_unmet": false,
+        "requires_new_infrastructure": false
+      },
+      "disposition": "DEC-REUSE",
+      "rationale": "the subject is located and every applicable obligation binds, so a located capability already satisfies the goal and building would duplicate it"
+    },
+    {
+      "id": "DR-GOAL-EXTEND",
+      "plane": "PLANE-GOAL",
+      "when": {
+        "subject_located": true,
+        "requires_new_infrastructure": false
+      },
+      "disposition": "DEC-EXTEND",
+      "rationale": "the subject is located but an applicable obligation does not yet bind, so the located owner is extended rather than replaced"
+    },
+    {
+      "id": "DR-GOAL-DEFER",
+      "plane": "PLANE-GOAL",
+      "when": {
+        "subject_located": true
+      },
+      "disposition": "DEC-DEFER",
+      "rationale": "the subject is located but a plan step would require engineering infrastructure that does not exist, so the goal waits on its owner rather than manufacturing that infrastructure here"
+    },
+    {
+      "id": "DR-GOAL-CREATE",
+      "plane": "PLANE-GOAL",
+      "when": {
+        "subject_present": true
+      },
+      "disposition": "DEC-IMPLEMENT",
+      "rationale": "a subject is named but Repository Truth locates no owner for it, which is the only condition under which creation is constitutionally permitted"
+    },
+    {
+      "id": "DR-GOAL-REJECT",
+      "plane": "PLANE-GOAL",
+      "when": {},
+      "disposition": "DEC-REJECT",
+      "rationale": "no subject is named, so there is nothing Repository Truth can be measured against and the goal is refused with a stated reason"
+    },
+    {
+      "id": "DR-INVARIANT-REUSE",
+      "plane": "PLANE-INVARIANT",
+      "when": {
+        "owner_located": true,
+        "anchor_present": true,
+        "measure_met": true,
+        "outside_own_home": true
+      },
+      "disposition": "DEC-REUSE",
+      "rationale": "a located owner outside this programme carries the anchor and the measure is met, so Repository Truth already satisfies the invariant and reimplementing it would duplicate a constitutional capability"
+    },
+    {
+      "id": "DR-INVARIANT-EXTEND",
+      "plane": "PLANE-INVARIANT",
+      "when": {
+        "owner_located": true
+      },
+      "disposition": "DEC-EXTEND",
+      "rationale": "an owner is located but the anchor, the measure or the expectation is not yet discharged, so that located owner is extended"
+    },
+    {
+      "id": "DR-INVARIANT-CREATE",
+      "plane": "PLANE-INVARIANT",
+      "when": {},
+      "disposition": "DEC-IMPLEMENT",
+      "rationale": "Repository Truth locates no owner at all, which is the only condition under which creation is constitutionally permitted"
+    },
+    {
+      "id": "DR-STAGE-PASS",
+      "plane": "PLANE-LIFECYCLE",
+      "when": {
+        "owner_located": true,
+        "authority_located": true,
+        "traversed": true,
+        "invariant_measured": true
+      },
+      "disposition": "DEC-REUSE",
+      "rationale": "PASS — a completion invariant already measures this capability against the located lifecycle owner at this capability's own name, and the capability is owned, authorized and traversed. Nothing is required."
+    },
+    {
+      "id": "DR-STAGE-REUSE",
+      "plane": "PLANE-LIFECYCLE",
+      "when": {
+        "owner_located": true,
+        "authority_located": true,
+        "traversed": true
+      },
+      "disposition": "DEC-REUSE",
+      "rationale": "REUSE — the capability's located canonical owner already discharges the obligation under a located constitutional authority, and the capability is traversed by every plan. No invariant measures it separately, and none is required: the obligation is discharged by its owner, not by the measurement that reads it."
+    },
+    {
+      "id": "DR-STAGE-EXTEND",
+      "plane": "PLANE-LIFECYCLE",
+      "when": {
+        "owner_located": true
+      },
+      "disposition": "DEC-EXTEND",
+      "rationale": "EXTEND — a canonical owner exists but the capability is not yet fully authorized or traversed, so that located owner is extended rather than replaced."
+    },
+    {
+      "id": "DR-STAGE-CREATE",
+      "plane": "PLANE-LIFECYCLE",
+      "when": {},
+      "disposition": "DEC-IMPLEMENT",
+      "rationale": "CREATE — Repository Truth locates no canonical owner for this capability at all, which is the only condition under which creation is constitutionally permitted."
+    }
+  ],
+  "$goal_contract_comment": "What deriving a plan is, and what it is not. It resolves and records. It invokes no capability, because invoking the capabilities it measures would make this engine observe a run of itself — the self-observation topology RFP-3 forbids. Actuation is discharged by the located owners of the execution surfaces, and by no one else.",
+  "goal_contract": {
+    "plan_id_inputs": [
+      "goal_digest",
+      "stage_graph_digest"
+    ],
+    "writes": [],
+    "side_effects": "none",
+    "invokes_capabilities": false,
+    "rederives_lifecycle": false,
+    "actuation_owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+    "loop_owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json"
+  },
+  "$knowledge_comment": "Knowledge Once remains absolute. Extracted knowledge is registered in its located home and is never read back from a register this programme writes, so no view becomes a source.",
+  "knowledge_extraction": {
+    "registration_owner": "knowledge/canonical-knowledge.json",
+    "decision_owner": "00-MASTER/UCDA-000001/ucda-decisions.json",
+    "architecture_owner": "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+    "rules": [
+      {
+        "id": "EK-01",
+        "knowledge": "the engineering goals the repository has been asked to satisfy",
+        "measure": "goals_discovered",
+        "reusable_as": "a located manifest a further goal is appended to, requiring no engine change"
+      },
+      {
+        "id": "EK-02",
+        "knowledge": "the constitutional completion invariants and the owner that satisfies each",
+        "measure": "invariants_discovered",
+        "reusable_as": "a measured REUSE determination, so a future programme need not rediscover the owner"
+      },
+      {
+        "id": "EK-03",
+        "knowledge": "the constitutional lifecycle every goal traverses",
+        "measure": "stages_consumed",
+        "reusable_as": "a consumed graph, so no future goal re-derives an order"
+      },
+      {
+        "id": "EK-04",
+        "knowledge": "the engineering plane as canonical knowledge objects",
+        "measure": "ckos_discovered",
+        "reusable_as": "a composable object graph any further measurement reads without re-parsing its owners"
+      },
+      {
+        "id": "EK-05",
+        "knowledge": "the governed relationships between engineering entities",
+        "measure": "relationship_ckos_discovered",
+        "reusable_as": "first-class relationship objects, so a relationship is governed rather than implied"
+      },
+      {
+        "id": "EK-06",
+        "knowledge": "the derived engineering plan for each goal",
+        "measure": "plans_derived",
+        "reusable_as": "a deterministic plan identity, so an identical goal at an identical state is never re-planned from scratch"
+      },
+      {
+        "id": "EK-07",
+        "knowledge": "the disposition vocabulary the repository legislates",
+        "measure": "dispositions_discovered",
+        "reusable_as": "a located vocabulary, so no future programme mints a disposition"
+      },
+      {
+        "id": "EK-08",
+        "knowledge": "the engineering authorities and the boundary between them",
+        "measure": "authorities_crosswalked",
+        "reusable_as": "a crosswalk, so a future programme can find the owner of a concern without merging owners"
+      }
+    ]
+  },
+  "$elevation_comment": "An elevation is claimed only where all five facets are located: evidence, lineage, replay, certification and a governing authority. An increase without them is an assertion.",
+  "elevation_measures": [
+    {
+      "id": "EL-01",
+      "increase": "Constitutional capability",
+      "measure": "invariants_discovered",
+      "statement": "the constitutional completion invariants are now discoverable, measurable and individually bound to a located owner rather than being a list in a directive",
+      "evidence_owner": "00-MASTER/UCL-000001/ucl.json",
+      "lineage_owner": "00-BOOK/DATA/id-ledger.json",
+      "replay_owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "certification_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md"
+    },
+    {
+      "id": "EL-02",
+      "increase": "Engineering capability",
+      "measure": "stages_consumed",
+      "statement": "the constitutional lifecycle is now traversable FOR A GOAL, binding every stage to a located owner, where before a goal reached a run identity but no bound plan",
+      "evidence_owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "lineage_owner": "00-BOOK/DATA/id-ledger.json",
+      "replay_owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "certification_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "authority_owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md"
+    },
+    {
+      "id": "EL-03",
+      "increase": "Autonomous engineering capability",
+      "measure": "plans_derived",
+      "statement": "an arbitrary engineering goal is now transformed into a complete, bound, deterministic plan with no manual engineering decision and no new engineering infrastructure",
+      "evidence_owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "lineage_owner": "00-BOOK/DATA/id-ledger.json",
+      "replay_owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "certification_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "authority_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md"
+    }
+  ],
+  "$reduction_comment": "The reduction claim, stated as a measurement rather than a promise. Each measure asks what an ADDITIONAL engineering goal would cost. If every step of every plan is discharged by an already-located owner and nothing is dispositioned CREATE, then the marginal engineering infrastructure a further goal requires is nothing, and future engineering is reduced to domain work plus constitutionally governed evolution. This is deliberately NOT a cross-run trend: a trend would compare this programme's own outputs across runs, which would make a derived view a source.",
+  "reduction_measures": [
+    {
+      "id": "RED-01",
+      "reduction": "Less implementation work: no plan step requires engineering infrastructure that does not exist",
+      "measure": "goal_steps_requiring_new_infrastructure",
+      "comparator": "==",
+      "expect": 0,
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "statement": "every stage of every goal's plan resolves to an owner the repository already holds, so the engineering infrastructure cost of a further goal is zero"
+    },
+    {
+      "id": "RED-02",
+      "reduction": "Less uncertainty: no plan step is unbound",
+      "measure": "goal_plan_steps_unbound",
+      "comparator": "==",
+      "expect": 0,
+      "owner": "00-MASTER/URRC-000001/07-COMPLETENESS-MATRIX.md",
+      "statement": "every stage binds both a canonical owner and a constitutional authority, so no step of the lifecycle is left to judgement at execution time"
+    },
+    {
+      "id": "RED-03",
+      "reduction": "Higher reuse: every goal is discharged entirely by located owners",
+      "measure": "goals_not_fully_reused",
+      "comparator": "==",
+      "expect": 0,
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "statement": "no goal depends on a step owned by this programme, so reuse is total rather than partial"
+    },
+    {
+      "id": "RED-04",
+      "reduction": "Greater capability without creation: no completion invariant needs building",
+      "measure": "invariants_dispositioned_create",
+      "comparator": "==",
+      "expect": 0,
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "statement": "every constitutional completion invariant is satisfied by a located owner, so the capability exists and is reused rather than reimplemented"
+    },
+    {
+      "id": "RED-05",
+      "reduction": "Zero undiscovered canonical owners across the invariant plane",
+      "measure": "invariants_without_located_owner",
+      "comparator": "==",
+      "expect": 0,
+      "owner": "00-MASTER/URRC-000001/08-READINESS-MATRIX.md",
+      "statement": "no invariant lacks a canonical owner, so nothing is left for a future programme to discover before it can act"
+    },
+    {
+      "id": "RED-06",
+      "reduction": "Less engineering: nothing in this programme is dispositioned CREATE",
+      "measure": "capabilities_created",
+      "comparator": "==",
+      "expect": 0,
+      "owner": "00-MASTER/URRC-000001/04-DUPLICATION-MATRIX.md",
+      "statement": "the whole programme is REUSE and EXTEND over located owners, so it adds no capability a future programme would have to maintain"
+    }
+  ],
+  "$self_evolution_comment": "This programme may evolve itself, but only along the declared path, and every step is owned OUTSIDE it — so self-modification cannot route around a step by construction: the step's owner is not this programme.",
+  "self_evolution_path": [
+    {
+      "id": "SE-01",
+      "step": "Repository Truth",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "anchor": "determination"
+    },
+    {
+      "id": "SE-02",
+      "step": "Canonical Governance",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "LXXVII"
+    },
+    {
+      "id": "SE-03",
+      "step": "Validation",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "anchor": "checks"
+    },
+    {
+      "id": "SE-04",
+      "step": "Verification",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "anchor": "fail_closed"
+    },
+    {
+      "id": "SE-05",
+      "step": "Certification",
+      "owner": "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md",
+      "anchor": "Gate"
+    },
+    {
+      "id": "SE-06",
+      "step": "Replay",
+      "owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "anchor": "Replay"
+    },
+    {
+      "id": "SE-07",
+      "step": "Deterministic Fixed Point",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "anchor": "closure_criteria"
+    }
+  ],
+  "$authorities_comment": "Several located instruments govern engineering. They are CROSSWALKED and never merged: a merge would amend every owner at once, which is expansion by reinterpretation and is forbidden by CMG-000001 Art LXXVI.6. This programme claims none of these roles.",
+  "engineering_authorities": [
+    {
+      "id": "AUTH-LIFECYCLE",
+      "name": "The single deterministic lifecycle every capability follows",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "anchor": "Discovery",
+      "role": "capability implementation lifecycle",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-LIFECYCLE-GRAPH",
+      "name": "The lifecycle as a discovered, ordered, executable graph",
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "anchor": "ordinal_step",
+      "role": "the stage graph this programme consumes",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-LOOP",
+      "name": "The closed repository-directed engineering loop",
+      "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "anchor": "actuators",
+      "role": "actuation and convergence over the repository",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-GOVERNANCE",
+      "name": "Engineering governance",
+      "owner": "00-MASTER/UCOS-EG-001/01-ENGINEERING-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "ENGINEERING",
+      "role": "engineering conformance and admission",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-CERTIFICATION",
+      "name": "Aggregate constitutional certification",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "anchor": "gates",
+      "role": "checks, gates and programmes",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-FIXED-POINT",
+      "name": "Repository fixed-point closure",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "anchor": "closure_criteria",
+      "role": "closure only after the repository reproduces itself",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-EVOLUTION",
+      "name": "The perpetual, non-terminating evolution cycle",
+      "owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "anchor": "pipeline_continuous",
+      "role": "evolution and continuous improvement",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-ADMISSION",
+      "name": "Constitutional construct admission",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "anchor": "ADDENDUM",
+      "role": "how a future construct becomes lawful",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-REUSE",
+      "name": "Reuse before create",
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "anchor": "REUSE",
+      "role": "the reuse determination a disposition must respect",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-META",
+      "name": "Constitutional meta-governance",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "LXXVII",
+      "role": "the disposition law under which this programme is an EXTEND",
+      "merge_prohibited": true
+    }
+  ],
+  "$exit_dimensions_comment": "Ω-E05 closes only when every dimension is ready AND the gate is OPEN. Each is measured against a located owner: a dimension whose owner does not resolve, or whose measure is unmet, reports NOT READY rather than being waived.",
+  "exit_dimensions": [
+    {
+      "id": "XD-01",
+      "dimension": "Zero parallel authorities",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "measure": "parallel_authority_claims",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-02",
+      "dimension": "Zero claimed authority",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "measure": "authority_claims",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-03",
+      "dimension": "Zero duplicate constitutional capabilities",
+      "owner": "00-MASTER/URRC-000001/04-DUPLICATION-MATRIX.md",
+      "measure": "capabilities_created",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-04",
+      "dimension": "Zero duplicate knowledge",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+      "measure": "cko_identity_collisions",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-05",
+      "dimension": "Zero duplicate lifecycles",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "measure": "stages_originated_here",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-06",
+      "dimension": "Zero privileged engineering paths",
+      "owner": "00-MASTER/UCOS-EG-001/07-ENGINEERING-LIFECYCLE.md",
+      "measure": "privileged_branches",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-07",
+      "dimension": "Zero determinism violations",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "measure": "goal_plans_nondeterministic",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-08",
+      "dimension": "Zero replay violations",
+      "owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "measure": "goal_plans_nondeterministic",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-09",
+      "dimension": "Zero governance ambiguity",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "measure": "authorities_unresolved",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-10",
+      "dimension": "Zero unresolved mandatory dependencies",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "measure": "dangling_relations",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-11",
+      "dimension": "Zero orphan canonical capabilities",
+      "owner": "00-MASTER/UCOS-RIB-001/rib-blueprint.json",
+      "measure": "capabilities_unowned",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-12",
+      "dimension": "Zero undiscovered canonical owners",
+      "owner": "00-MASTER/URRC-000001/08-READINESS-MATRIX.md",
+      "measure": "invariants_without_located_owner",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-13",
+      "dimension": "Every completion invariant is satisfied by a located owner",
+      "owner": "00-MASTER/URRC-000001/07-COMPLETENESS-MATRIX.md",
+      "measure": "invariants_unsatisfied",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-14",
+      "dimension": "Every engineering activity resolves through reuse before create",
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "measure": "invariants_dispositioned_create",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-15",
+      "dimension": "Every goal reaches a bound plan",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "measure": "goal_plan_steps_unbound",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-16",
+      "dimension": "No new engineering infrastructure is required by any goal",
+      "owner": "00-MASTER/URRC-000001/09-AUTOMATION-MATRIX.md",
+      "measure": "goal_steps_requiring_new_infrastructure",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-17",
+      "dimension": "The lifecycle is consumed, and is non-empty",
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "measure": "stages_consumed",
+      "comparator": ">=",
+      "expect": 1
+    },
+    {
+      "id": "XD-18",
+      "dimension": "Engineering knowledge is extracted and measured",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+      "measure": "extractions_unmeasured",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-19",
+      "dimension": "Capability elevation carries evidence, lineage, replay, certification and authority",
+      "owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "measure": "elevations_unevidenced",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-20",
+      "dimension": "Future engineering reduction is measured",
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "measure": "reductions_unachieved",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-21",
+      "dimension": "Self-engineering is exercised: this engine is a goal subject",
+      "owner": "00-MASTER/UCOS-EG-001/07-ENGINEERING-LIFECYCLE.md",
+      "measure": "goals_self_subject",
+      "comparator": ">=",
+      "expect": 1
+    },
+    {
+      "id": "XD-22",
+      "dimension": "No architectural bound is declared",
+      "owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "measure": "expansion_axes_unbound",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-23",
+      "dimension": "Every lifecycle capability is constitutionally owned",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "measure": "stages_unowned",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-24",
+      "dimension": "Every lifecycle capability is dispositioned from Repository Truth",
+      "owner": "00-MASTER/URRC-000001/07-COMPLETENESS-MATRIX.md",
+      "measure": "stages_undispositioned",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "XD-25",
+      "dimension": "No lifecycle capability requires creation",
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "measure": "stages_dispositioned_create",
+      "comparator": "==",
+      "expect": 0
+    }
+  ],
+  "$derived_counters_comment": "Counters synthesized by looping the declaration's own adapters, so the engine names no adapter and a new adapter is counted automatically.",
+  "derived_counters": [
+    {
+      "id": "objects_from_lifecycle",
+      "adapter": "SRC-LIFECYCLE",
+      "note": "objects consumed from the located lifecycle owner"
+    },
+    {
+      "id": "objects_from_goals",
+      "adapter": "SRC-GOAL",
+      "note": "objects discovered on the open goal surface"
+    },
+    {
+      "id": "objects_from_invariants",
+      "adapter": "SRC-INVARIANT",
+      "note": "objects discovered on the open invariant surface"
+    },
+    {
+      "id": "objects_from_registry",
+      "adapter": "SRC-REGISTRY",
+      "note": "objects carrying a registered constitutional identity"
+    },
+    {
+      "id": "objects_from_pipeline",
+      "adapter": "SRC-PIPELINE-STAGE",
+      "note": "located executable pipeline stages discovered as the actuation surface"
+    }
+  ],
+  "$graph_types_comment": "The graphs composed from entity and relationship objects. The registry is OPEN: a graph type is admitted by appending an entry naming registered kinds and relations.",
+  "graph_types": {
+    "open": true,
+    "closed_enumeration": false,
+    "admission": "Append an entry naming registered kinds and relations. No engine change.",
+    "types": [
+      {
+        "id": "GT-LIFECYCLE",
+        "graph": "Constitutional lifecycle order",
+        "node_kinds": [
+          "lifecycle-stage"
+        ],
+        "edge_relations": [
+          "requires"
+        ]
+      },
+      {
+        "id": "GT-LIFECYCLE-REENTRY",
+        "graph": "Lifecycle non-terminality",
+        "node_kinds": [
+          "lifecycle-stage"
+        ],
+        "edge_relations": [
+          "reenters"
+        ]
+      },
+      {
+        "id": "GT-GOAL-GOVERNANCE",
+        "graph": "Goal to governing gate",
+        "node_kinds": [
+          "engineering-goal",
+          "governance-gate"
+        ],
+        "edge_relations": [
+          "binds"
+        ]
+      },
+      {
+        "id": "GT-GOAL-REENTRY",
+        "graph": "Goal non-terminality",
+        "node_kinds": [
+          "engineering-goal"
+        ],
+        "edge_relations": [
+          "reenters"
+        ]
+      },
+      {
+        "id": "GT-LIFECYCLE-GOVERNANCE",
+        "graph": "Lifecycle stage to governing gate",
+        "node_kinds": [
+          "lifecycle-stage",
+          "governance-gate"
+        ],
+        "edge_relations": [
+          "binds"
+        ]
+      },
+      {
+        "id": "GT-CERTIFICATION",
+        "graph": "Gate to the checks that execute it",
+        "node_kinds": [
+          "governance-gate",
+          "quality-capability"
+        ],
+        "edge_relations": [
+          "certifies"
+        ]
+      },
+      {
+        "id": "GT-CAPABILITY",
+        "graph": "Programme capability delegation",
+        "node_kinds": [
+          "governance-programme",
+          "quality-capability"
+        ],
+        "edge_relations": [
+          "certifies",
+          "delegates"
+        ]
+      },
+      {
+        "id": "GT-GOVERNANCE",
+        "graph": "Principle enforcement",
+        "node_kinds": [
+          "governance-principle",
+          "quality-capability"
+        ],
+        "edge_relations": [
+          "enforced-by"
+        ]
+      },
+      {
+        "id": "GT-INVARIANT-GOVERNANCE",
+        "graph": "Completion invariant governance",
+        "node_kinds": [
+          "completion-invariant"
+        ],
+        "edge_relations": [
+          "governed-by"
+        ]
+      },
+      {
+        "id": "GT-EVIDENCE",
+        "graph": "Evidence",
+        "node_kinds": [
+          "lifecycle-stage",
+          "engineering-goal",
+          "completion-invariant",
+          "evolution-capability",
+          "recovery-capability"
+        ],
+        "edge_relations": [
+          "evidenced-by"
+        ]
+      },
+      {
+        "id": "GT-EVOLUTION",
+        "graph": "Construct admission",
+        "node_kinds": [
+          "construct-class"
+        ],
+        "edge_relations": [
+          "governed-by"
+        ]
+      },
+      {
+        "id": "GT-RECOVERY",
+        "graph": "Recovery capability evidence",
+        "node_kinds": [
+          "recovery-capability"
+        ],
+        "edge_relations": [
+          "evidenced-by"
+        ]
+      },
+      {
+        "id": "GT-INTELLIGENCE",
+        "graph": "Evolution capability evidence",
+        "node_kinds": [
+          "evolution-capability"
+        ],
+        "edge_relations": [
+          "evidenced-by"
+        ]
+      },
+      {
+        "id": "GT-ACTUATION",
+        "graph": "Lifecycle stage to the located pipeline stage that actuates it",
+        "node_kinds": [
+          "lifecycle-stage",
+          "executable-stage"
+        ],
+        "edge_relations": [
+          "binds"
+        ]
+      }
+    ]
+  },
+  "$admission_comment": "EVIDENCE probes. Each confirms that a registrar exists for an expansion axis, and originates nothing. An axis whose registrar does not resolve is an axis with a hidden bound, and the gate closes on it.",
+  "admission_paths": [
+    {
+      "id": "AP-KIND",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "kinds",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-RELATION",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "relation_types",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-GRAPH",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "graph_types",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-PROVIDER",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "metadata_providers",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-ADAPTER",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "metadata_adapters",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-SURFACE",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "provider_discovery",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-SERIALIZATION",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "serializations",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-OBLIGATION",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "obligation_rules",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-PROPERTY",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "property_rules",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-DISPOSITION-RULE",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "disposition_rules",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-REDUCTION",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "reduction_measures",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-EXIT",
+      "owner": "00-MASTER/ACEE-000001/acee-declaration.json",
+      "symbol": "exit_dimensions",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-GOAL",
+      "owner": "00-MASTER/ACEE-000001/acee-goal-manifest.json",
+      "symbol": "nodes",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-INVARIANT",
+      "owner": "00-MASTER/ACEE-000001/acee-invariant-manifest.json",
+      "symbol": "nodes",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-STAGE",
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "symbol": "nodes",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-GATE",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "symbol": "gates",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-CHECK",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "symbol": "checks",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-PROGRAMME",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "symbol": "programs",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-PRINCIPLE",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "symbol": "principles",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-DECISION",
+      "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "symbol": "decisions",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-REALIZED",
+      "owner": "00-MASTER/UCDA-000001/ucda-decisions.json",
+      "symbol": "dispositions",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-CONSTRUCT",
+      "owner": "00-MASTER/UCEF-000001/ucef-framework.json",
+      "symbol": "construct_classes",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-EVOLUTION",
+      "owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "symbol": "capabilities",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-RECOVERY",
+      "owner": "00-MASTER/UER-000001/uer-resilience.json",
+      "symbol": "capabilities",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-PIPELINE",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "symbol": "stages",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-REGISTRY",
+      "owner": "00-BOOK/DATA/artifacts.json",
+      "symbol": "artifacts",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-LEDGER",
+      "owner": "00-BOOK/DATA/id-ledger.json",
+      "symbol": "by_path",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-KNOWLEDGE",
+      "owner": "knowledge/canonical-knowledge.json",
+      "symbol": "objects",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-TRUTH",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "symbol": "concepts",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-PHASE",
+      "owner": "platform/universal_pipeline/catalog/uapf-pipelines.json",
+      "symbol": "stages",
+      "kind": "registrar",
+      "discovery_class": "evidence"
+    }
+  ],
+  "$axes_comment": "Every axis along which this programme could be architecturally bounded, each resolving to a located registrar. Thirty axes, none bound.",
+  "expansion_axes": [
+    {
+      "id": "AX-01",
+      "axis": "Object kinds",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-KIND",
+      "blocking": true
+    },
+    {
+      "id": "AX-02",
+      "axis": "Relation types",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-RELATION",
+      "blocking": true
+    },
+    {
+      "id": "AX-03",
+      "axis": "Graph types",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-GRAPH",
+      "blocking": true
+    },
+    {
+      "id": "AX-04",
+      "axis": "Metadata providers",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-PROVIDER",
+      "blocking": true
+    },
+    {
+      "id": "AX-05",
+      "axis": "Metadata adapters",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-ADAPTER",
+      "blocking": true
+    },
+    {
+      "id": "AX-06",
+      "axis": "Open discovery surfaces",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-SURFACE",
+      "blocking": true
+    },
+    {
+      "id": "AX-07",
+      "axis": "Serializations",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-SERIALIZATION",
+      "blocking": true
+    },
+    {
+      "id": "AX-08",
+      "axis": "Obligations",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-OBLIGATION",
+      "blocking": true
+    },
+    {
+      "id": "AX-09",
+      "axis": "Properties",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-PROPERTY",
+      "blocking": true
+    },
+    {
+      "id": "AX-10",
+      "axis": "Disposition rules",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-DISPOSITION-RULE",
+      "blocking": true
+    },
+    {
+      "id": "AX-11",
+      "axis": "Reduction measures",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-REDUCTION",
+      "blocking": true
+    },
+    {
+      "id": "AX-12",
+      "axis": "Exit dimensions",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-EXIT",
+      "blocking": true
+    },
+    {
+      "id": "AX-13",
+      "axis": "Engineering goals",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-GOAL",
+      "blocking": true
+    },
+    {
+      "id": "AX-14",
+      "axis": "Completion invariants",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-INVARIANT",
+      "blocking": true
+    },
+    {
+      "id": "AX-15",
+      "axis": "Lifecycle stages",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-STAGE",
+      "blocking": true
+    },
+    {
+      "id": "AX-16",
+      "axis": "Constitutional gates",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-GATE",
+      "blocking": true
+    },
+    {
+      "id": "AX-17",
+      "axis": "Constitutional checks",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-CHECK",
+      "blocking": true
+    },
+    {
+      "id": "AX-18",
+      "axis": "Constitutional programmes",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-PROGRAMME",
+      "blocking": true
+    },
+    {
+      "id": "AX-19",
+      "axis": "Constitutional principles",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-PRINCIPLE",
+      "blocking": true
+    },
+    {
+      "id": "AX-20",
+      "axis": "Disposition values",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-DECISION",
+      "blocking": true
+    },
+    {
+      "id": "AX-21",
+      "axis": "Realized dispositions",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-REALIZED",
+      "blocking": true
+    },
+    {
+      "id": "AX-22",
+      "axis": "Construct classes",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-CONSTRUCT",
+      "blocking": true
+    },
+    {
+      "id": "AX-23",
+      "axis": "Evolution capabilities",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-EVOLUTION",
+      "blocking": true
+    },
+    {
+      "id": "AX-24",
+      "axis": "Recovery capabilities",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-RECOVERY",
+      "blocking": true
+    },
+    {
+      "id": "AX-25",
+      "axis": "Executable pipeline stages",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-PIPELINE",
+      "blocking": true
+    },
+    {
+      "id": "AX-26",
+      "axis": "Registered artifacts",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-REGISTRY",
+      "blocking": true
+    },
+    {
+      "id": "AX-27",
+      "axis": "Lineage records",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-LEDGER",
+      "blocking": true
+    },
+    {
+      "id": "AX-28",
+      "axis": "Knowledge objects",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-KNOWLEDGE",
+      "blocking": true
+    },
+    {
+      "id": "AX-29",
+      "axis": "Repository Truth concepts",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-TRUTH",
+      "blocking": true
+    },
+    {
+      "id": "AX-30",
+      "axis": "Engineering phases",
+      "clause": "CR-INF-001 — certification closes scope, never evolution",
+      "admission_path": "AP-PHASE",
+      "blocking": true
+    }
+  ],
+  "unboundedness": {
+    "owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+    "anchor": "EVOLUTION",
+    "terminal_tokens": [
+      "engineering is finished",
+      "no further evolution",
+      "final constitutional state",
+      "evolution terminates"
+    ],
+    "negation_markers": [
+      "CR-INF",
+      "non-terminating",
+      "never terminates",
+      "unbounded"
+    ],
+    "dimensions": [
+      {
+        "id": "UB-01",
+        "dimension": "A goal re-enters the lifecycle rather than ending it"
+      },
+      {
+        "id": "UB-02",
+        "dimension": "A stage re-enters, so no stage is terminal"
+      },
+      {
+        "id": "UB-03",
+        "dimension": "Certification closes scope, never evolution"
+      }
+    ]
+  },
+  "hygiene": {
+    "$comment": "The forbidden tokens live in the DECLARATION rather than in the engine, because an engine holding them would match itself. The determinism guard scans the engine's own source for the non-deterministic inputs, and the open-world guard scans the engine and every discovered manifest for architectural bound tokens.",
+    "nondeterministic_inputs": [
+      "datetime.now",
+      "datetime.today",
+      "time.time",
+      "time.monotonic",
+      "os.urandom",
+      "uuid1",
+      "uuid4",
+      "subprocess",
+      "socket.",
+      "getpass",
+      "os.getcwd",
+      "os.environ"
+    ],
+    "limit_tokens": [
+      "hard-coded limit",
+      "fixed set of",
+      "no more than",
+      "cannot exceed",
+      "finite set",
+      "closed set",
+      "exhaustive list",
+      "complete enumeration",
+      "upper bound",
+      "maximum of",
+      "only these",
+      "not extensible",
+      "cannot be extended",
+      "final list"
+    ]
+  },
+  "$capabilities_comment": "The capability disposition of this programme, stated against located owners. Status and action must agree: EXISTING is REUSE, PARTIAL is EXTEND, MISSING is CREATE. The declaration guard fails closed if they disagree, and the reuse guard fails closed on any CREATE.",
+  "capabilities": [
+    {
+      "id": "CAP-01",
+      "group": "Lifecycle",
+      "capability": "The single deterministic lifecycle every capability follows",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "consumed, never re-derived"
+    },
+    {
+      "id": "CAP-02",
+      "group": "Lifecycle",
+      "capability": "The lifecycle as a discovered, ordered, executable stage graph",
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "read as a metadata provider"
+    },
+    {
+      "id": "CAP-03",
+      "group": "Engineering",
+      "capability": "Goal-directed binding of the lifecycle to located owners",
+      "owner": "00-MASTER/UCL-000001/ucl_engine.py",
+      "status": "PARTIAL",
+      "action": "EXTEND",
+      "evidence": "the located traversal reaches a run identity but binds no plan; this programme measures the binding"
+    },
+    {
+      "id": "CAP-04",
+      "group": "Engineering",
+      "capability": "Autonomous disposition of an engineering subject",
+      "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "status": "PARTIAL",
+      "action": "EXTEND",
+      "evidence": "the located loop adjudicates repository findings but accepts no goal; this programme disposes a goal against the same vocabulary"
+    },
+    {
+      "id": "CAP-05",
+      "group": "Governance",
+      "capability": "Checks, gates and programmes",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "bound, never duplicated"
+    },
+    {
+      "id": "CAP-06",
+      "group": "Governance",
+      "capability": "The disposition vocabulary",
+      "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "every derived disposition resolves to a located value"
+    },
+    {
+      "id": "CAP-07",
+      "group": "Closure",
+      "capability": "Deterministic fixed-point closure",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "this programme is a declared pipeline stage of that owner"
+    },
+    {
+      "id": "CAP-08",
+      "group": "Knowledge",
+      "capability": "Canonical knowledge registration",
+      "owner": "knowledge/canonical-knowledge.json",
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "extracted knowledge is registered there, never here"
+    },
+    {
+      "id": "CAP-09",
+      "group": "Reuse",
+      "capability": "Reuse and duplication measurement",
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "the reduction measures are owned there"
+    },
+    {
+      "id": "CAP-10",
+      "group": "Recovery",
+      "capability": "Detect, diagnose, repair, recover, replay",
+      "owner": "00-MASTER/UER-000001/uer-resilience.json",
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "discovered as recovery capabilities"
+    }
+  ],
+  "$record_set_comment": "Located records this programme READS and never writes. Immutability is proved mechanically: write set ∩ located record set = ∅.",
+  "record_set": {
+    "records": [
+      {
+        "id": "REC-LIFECYCLE",
+        "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+        "anchor": "nodes",
+        "law": "Ω-E04 frozen: the lifecycle is consumed, never amended"
+      },
+      {
+        "id": "REC-GOVERNANCE",
+        "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+        "anchor": "checks",
+        "law": "CEP-009: certification is owned elsewhere"
+      },
+      {
+        "id": "REC-DISPOSITION",
+        "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+        "anchor": "decisions",
+        "law": "the disposition vocabulary is legislated elsewhere"
+      },
+      {
+        "id": "REC-DECISION",
+        "owner": "00-MASTER/UCDA-000001/ucda-decisions.json",
+        "anchor": "dispositions",
+        "law": "CEP-002 Art 28.13: realized dispositions are clause-bound"
+      },
+      {
+        "id": "REC-EVOLUTION",
+        "owner": "00-MASTER/UCEF-000001/ucef-framework.json",
+        "anchor": "construct_classes",
+        "law": "CEP-009 ADDENDUM B: admission is owned elsewhere"
+      },
+      {
+        "id": "REC-RESILIENCE",
+        "owner": "00-MASTER/UER-000001/uer-resilience.json",
+        "anchor": "pipeline_recovery",
+        "law": "recovery is owned elsewhere"
+      },
+      {
+        "id": "REC-INTELLIGENCE",
+        "owner": "00-MASTER/UEI-000001/uei-evolution.json",
+        "anchor": "pipeline_continuous",
+        "law": "evolution is owned elsewhere"
+      },
+      {
+        "id": "REC-FIXED-POINT",
+        "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+        "anchor": "closure_criteria",
+        "law": "closure is owned elsewhere"
+      },
+      {
+        "id": "REC-REGISTRY",
+        "owner": "00-BOOK/DATA/artifacts.json",
+        "anchor": "artifacts",
+        "law": "UMB-005: the registry is owned elsewhere"
+      },
+      {
+        "id": "REC-LEDGER",
+        "owner": "00-BOOK/DATA/id-ledger.json",
+        "anchor": "by_path",
+        "law": "UMB-010: lineage is append-only and owned elsewhere"
+      },
+      {
+        "id": "REC-KNOWLEDGE",
+        "owner": "knowledge/canonical-knowledge.json",
+        "anchor": "objects",
+        "law": "Knowledge Once: knowledge is registered there"
+      },
+      {
+        "id": "REC-TRUTH",
+        "owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+        "anchor": "concepts",
+        "law": "Repository Truth is owned elsewhere"
+      },
+      {
+        "id": "REC-PIPELINE",
+        "owner": "platform/universal_pipeline/catalog/uapf-pipelines.json",
+        "anchor": "pipelines",
+        "law": "the declared engineering phases are owned elsewhere"
+      }
+    ]
+  },
+  "$validations_comment": "Every dimension is a counter compared against an expectation. A blocking dimension that fails closes the gate. Bounds are held at exactly the measured value, so no bound carries slack and any regression closes the gate.",
+  "validations": [
+    {
+      "id": "ACEE-V-01",
+      "dimension": "engineering goals are discovered",
+      "measure": "goals_discovered",
+      "comparator": ">=",
+      "expect": 1,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-02",
+      "dimension": "every goal names a located subject",
+      "measure": "goals_without_located_subject",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-03",
+      "dimension": "completion invariants are discovered",
+      "measure": "invariants_discovered",
+      "comparator": ">=",
+      "expect": 1,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-04",
+      "dimension": "every completion invariant has a located owner",
+      "measure": "invariants_without_located_owner",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-05",
+      "dimension": "every cited invariant anchor is present in its owner",
+      "measure": "invariants_without_anchor",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-06",
+      "dimension": "every completion invariant is measured",
+      "measure": "invariants_unmeasured",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-07",
+      "dimension": "every completion invariant is satisfied",
+      "measure": "invariants_unsatisfied",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-08",
+      "dimension": "no completion invariant requires creation",
+      "measure": "invariants_dispositioned_create",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-09",
+      "dimension": "no completion invariant is owned by this programme",
+      "measure": "invariants_owned_here",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-10",
+      "dimension": "every invariant property is held",
+      "measure": "invariant_property_failures",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-11",
+      "dimension": "the constitutional lifecycle is consumed",
+      "measure": "stages_consumed",
+      "comparator": ">=",
+      "expect": 1,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-12",
+      "dimension": "no lifecycle stage is originated by this programme",
+      "measure": "stages_originated_here",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-13",
+      "dimension": "every consumed stage names a located owner",
+      "measure": "stages_unowned",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-14",
+      "dimension": "the consumed lifecycle is acyclic",
+      "measure": "graph_cycles",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-15",
+      "dimension": "no relation dangles",
+      "measure": "dangling_relations",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-16",
+      "dimension": "re-entry is declared, so the lifecycle does not terminate",
+      "measure": "reentry_declarations_absent",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-17",
+      "dimension": "a plan is derived for every goal",
+      "measure": "goal_plans_derived",
+      "comparator": ">=",
+      "expect": 1,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-18",
+      "dimension": "no plan step is unbound",
+      "measure": "goal_plan_steps_unbound",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-19",
+      "dimension": "no plan step requires new engineering infrastructure",
+      "measure": "goal_steps_requiring_new_infrastructure",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-20",
+      "dimension": "every plan is deterministic",
+      "measure": "goal_plans_nondeterministic",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-21",
+      "dimension": "every applicable goal obligation binds",
+      "measure": "goal_obligation_failures",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-22",
+      "dimension": "no goal requires creation",
+      "measure": "goals_dispositioned_create",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-23",
+      "dimension": "every derived disposition resolves to a located value",
+      "measure": "goals_without_located_disposition",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-24",
+      "dimension": "this engine is itself an engineering goal subject",
+      "measure": "goals_self_subject",
+      "comparator": ">=",
+      "expect": 1,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-25",
+      "dimension": "no executable literal names this programme's own home",
+      "measure": "privileged_branches",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-26",
+      "dimension": "every metadata provider is located",
+      "measure": "providers_unlocated",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-27",
+      "dimension": "every provider's serialization has a registered reader",
+      "measure": "providers_without_reader",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-28",
+      "dimension": "every discovered surface declares itself open",
+      "measure": "providers_not_open",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-29",
+      "dimension": "every adapter resolves",
+      "measure": "adapters_unresolved",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-30",
+      "dimension": "more than one serialization reader is registered",
+      "measure": "serialization_readers_registered",
+      "comparator": ">=",
+      "expect": 2,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-31",
+      "dimension": "an unregistered serialization is admitted, so the registry is open",
+      "measure": "serializations_unregistered",
+      "comparator": ">=",
+      "expect": 1,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-32",
+      "dimension": "more than one serialization is exercised by a located provider",
+      "measure": "serializations_exercised",
+      "comparator": ">=",
+      "expect": 2,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-33",
+      "dimension": "more than one open discovery surface exists",
+      "measure": "discovered_surfaces",
+      "comparator": ">=",
+      "expect": 2,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-34",
+      "dimension": "every graph type composes",
+      "measure": "graph_types_empty",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-35",
+      "dimension": "every expansion axis resolves to a located registrar",
+      "measure": "expansion_axes_unbound",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-36",
+      "dimension": "every admission path resolves",
+      "measure": "admission_paths_unresolved",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-37",
+      "dimension": "no architectural bound token is present",
+      "measure": "limit_tokens_present",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-38",
+      "dimension": "no terminal state is claimed",
+      "measure": "terminal_state_claims",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-39",
+      "dimension": "no registry is declared closed",
+      "measure": "closed_enumerations_declared",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-40",
+      "dimension": "every engineering authority resolves with its anchor",
+      "measure": "authorities_unresolved",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-41",
+      "dimension": "no located engineering authority is claimed here",
+      "measure": "parallel_authority_claims",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-42",
+      "dimension": "this programme claims no authority",
+      "measure": "authority_claims",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-43",
+      "dimension": "every self-evolution step is bound",
+      "measure": "self_evolution_steps_unbound",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-44",
+      "dimension": "no self-evolution step is owned by this programme",
+      "measure": "self_evolution_steps_owned_here",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-45",
+      "dimension": "no capability is dispositioned CREATE",
+      "measure": "capabilities_created",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-46",
+      "dimension": "every declared capability owner is located",
+      "measure": "capabilities_unowned",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-47",
+      "dimension": "no object originates from implementation evidence",
+      "measure": "evidence_originated_ckos",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-48",
+      "dimension": "no derived artifact is used as a metadata source",
+      "measure": "derived_artifacts_used_as_truth",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-49",
+      "dimension": "every entity holds exactly one object",
+      "measure": "cko_identity_collisions",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-50",
+      "dimension": "every object carries a constitutional identity",
+      "measure": "ckos_without_semantic_identity",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-51",
+      "dimension": "no two determinate entities share a constitutional identity",
+      "measure": "semantic_identity_collisions",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-52",
+      "dimension": "no constitutional identity rests on a mutable input",
+      "measure": "identities_on_mutable_input",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-53",
+      "dimension": "no object carries an unregistered kind",
+      "measure": "ckos_of_unknown_kind",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-54",
+      "dimension": "relationships are first-class objects",
+      "measure": "relationship_ckos_discovered",
+      "comparator": ">=",
+      "expect": 1,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-55",
+      "dimension": "the declaration restates no discovered goal",
+      "measure": "declaration_names_a_goal",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-56",
+      "dimension": "the declaration restates no discovered invariant",
+      "measure": "declaration_names_an_invariant",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-57",
+      "dimension": "no protected record is in the write set",
+      "measure": "record_write_intersections",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-58",
+      "dimension": "every reduction measure is achieved",
+      "measure": "reductions_unachieved",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-59",
+      "dimension": "every reduction owner resolves",
+      "measure": "reduction_owners_unresolved",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-60",
+      "dimension": "no goal is left partially reused",
+      "measure": "goals_not_fully_reused",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-61",
+      "dimension": "every knowledge extraction is measured",
+      "measure": "extractions_unmeasured",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-62",
+      "dimension": "every capability elevation is evidenced across all five facets",
+      "measure": "elevations_unevidenced",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-63",
+      "dimension": "no declared bound carries slack",
+      "measure": "bounds_slack",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-64",
+      "dimension": "every consumed lifecycle capability is authorized by a located instrument",
+      "measure": "stages_unauthorized",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-65",
+      "dimension": "every consumed lifecycle capability is traversed by every plan",
+      "measure": "stages_not_traversed",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-66",
+      "dimension": "every consumed lifecycle capability receives a disposition",
+      "measure": "stages_undispositioned",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-67",
+      "dimension": "the lifecycle coverage identity balances",
+      "measure": "stage_coverage_imbalance",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-68",
+      "dimension": "no consumed lifecycle capability requires creation",
+      "measure": "stages_dispositioned_create",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "ACEE-V-69",
+      "dimension": "every capability disposition resolves to a located value",
+      "measure": "stages_without_located_disposition",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    }
+  ],
+  "$exit_criteria_comment": "The conditions Ω-E05 must satisfy simultaneously. Each is measured by a blocking dimension above; none is asserted here.",
+  "exit_criteria": [
+    {
+      "id": "ACEE-EX-01",
+      "statement": "Zero parallel authorities: every located engineering authority is crosswalked and none is claimed by this programme."
+    },
+    {
+      "id": "ACEE-EX-02",
+      "statement": "Zero duplicate constitutional capabilities: nothing is dispositioned CREATE, and every capability resolves to a located owner."
+    },
+    {
+      "id": "ACEE-EX-03",
+      "statement": "Zero duplicate knowledge: every governed entity holds exactly one Canonical Knowledge Object, and Knowledge Once is preserved because extracted knowledge is registered in its located home."
+    },
+    {
+      "id": "ACEE-EX-04",
+      "statement": "Zero duplicate lifecycles: the constitutional lifecycle is CONSUMED from a single located owner and no stage is originated here."
+    },
+    {
+      "id": "ACEE-EX-05",
+      "statement": "Zero duplicate engineering engines: no capability is invoked and no owner is re-run, so no second execution surface exists."
+    },
+    {
+      "id": "ACEE-EX-06",
+      "statement": "Zero duplicate governance models: checks, gates, programmes and principles are read from their single located owner."
+    },
+    {
+      "id": "ACEE-EX-07",
+      "statement": "Zero hidden execution paths: the write set is exactly the declared register set, and residue is impossible because nothing is invoked."
+    },
+    {
+      "id": "ACEE-EX-08",
+      "statement": "Zero privileged engineering paths: this engine appears in the goal plane as a subject, and no executable literal names its own home."
+    },
+    {
+      "id": "ACEE-EX-09",
+      "statement": "Zero determinism violations: every derived plan is byte-stable across two derivations at one repository state."
+    },
+    {
+      "id": "ACEE-EX-10",
+      "statement": "Zero replay violations: the registers are a pure function of the declaration, the discovered manifests and the consumed lifecycle."
+    },
+    {
+      "id": "ACEE-EX-11",
+      "statement": "Zero governance ambiguity: every authority resolves, carries its cited anchor, and is marked unmergeable."
+    },
+    {
+      "id": "ACEE-EX-12",
+      "statement": "Zero unresolved mandatory dependencies: no relation dangles and every adapter resolves."
+    },
+    {
+      "id": "ACEE-EX-13",
+      "statement": "Zero orphan canonical capabilities: every declared capability names a located owner."
+    },
+    {
+      "id": "ACEE-EX-14",
+      "statement": "Zero undiscovered canonical owners: every completion invariant resolves to a located owner carrying its cited anchor."
+    },
+    {
+      "id": "ACEE-EX-15",
+      "statement": "Every engineering activity is resolved through REUSE, then EXTEND, then CREATE, and CREATE is reachable only where Repository Truth locates no owner."
+    },
+    {
+      "id": "ACEE-EX-16",
+      "statement": "Given only a goal, Repository Truth and the constitutional framework, the substrate derives a complete, bound, deterministic engineering plan with no manual engineering decision."
+    },
+    {
+      "id": "ACEE-EX-17",
+      "statement": "Every engineering cycle reduces future engineering: no plan step requires engineering infrastructure that does not already exist, so the marginal infrastructure cost of a further goal is zero."
+    },
+    {
+      "id": "ACEE-EX-18",
+      "statement": "No new architectural principle is introduced: the object model, provider and adapter architecture, identity model, applicability model, graph composition and fail-closed guard pattern are all Ω-E04's, reused unchanged."
+    },
+    {
+      "id": "ACEE-EX-19",
+      "statement": "No implementation depends on hardcoded lifecycle, owner or capability knowledge: the zero-enumeration guard proves no discovered value appears as an executable literal."
+    },
+    {
+      "id": "ACEE-EX-20",
+      "statement": "The lifecycle is non-terminal: goals and stages both re-enter, so engineering does not end (CR-INF-001)."
+    },
+    {
+      "id": "ACEE-EX-21",
+      "statement": "Constitutional coverage balances: every capability of the consumed lifecycle is owned, authorized, traversed and dispositioned from Repository Truth, with zero missing, zero unowned, zero undispositioned and zero requiring creation."
+    }
+  ],
+  "$findings_comment": "Measured disclosures. Each is REFERRED to its named owner rather than decided here: a divergence is disposed by the instrument that owns it, not by the measurement that reads it.",
+  "findings": [
+    {
+      "id": "ACEE-F-001",
+      "class": "STANDING-CONSTITUTIONAL-CEILING",
+      "title": "Constitutional finality is reserved to an out-of-corpus authority, so certification is capped at provisional",
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "referred_to": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "bound_measure": "",
+      "detail": "The aggregate certifier discloses that ratifying authority is vacant (UCCEP-F-004), and Ω-E04 inherited that cap. This programme inherits it too: it records a measurement and confers no ratification and no finality.",
+      "why_not_repaired": "A vacancy of ratifying authority cannot be closed by any act inside this repository. Asserting finality here would manufacture an authority the constitution does not grant, which is a graver defect than the disclosure."
+    },
+    {
+      "id": "ACEE-F-002",
+      "class": "DECLARED-SCOPE-BOUNDARY",
+      "title": "Actuation is discharged by the located owners of the execution surfaces, not by this programme",
+      "disposition": "GOVERNED",
+      "blocking": false,
+      "referred_to": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "bound_measure": "",
+      "detail": "This programme derives a plan and measures its binding; it invokes no capability. The declared pipeline executes the located owners, and the repository-directed loop drives them to convergence. Both are named in the plan contract.",
+      "why_not_repaired": "Invoking the capabilities this programme measures would make it observe a run of itself, which is the self-observation topology RFP-3 forbids and which would stop the repository converging. It would also duplicate an execution surface the repository already owns."
+    },
+    {
+      "id": "ACEE-F-003",
+      "class": "CONSUMED-LIFECYCLE-BOUNDARY",
+      "title": "A stage absent from the located lifecycle owner is absent from every plan derived here",
+      "disposition": "GOVERNED",
+      "blocking": false,
+      "referred_to": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "bound_measure": "",
+      "detail": "Plans traverse exactly the stages the located owner declares. If a constitutional act is missing from that owner, no plan derived here will contain it, and this programme reports the absence rather than inventing the stage.",
+      "why_not_repaired": "Adding a stage here would create a second lifecycle, which CMG-000001 Art LXXVI.6 forbids. A missing stage is admitted by appending a node to the located owner's manifest, which that owner's own admission clause provides for."
+    }
+  ],
+  "law_source": {
+    "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+    "anchor": "LXXVII"
+  }
+}

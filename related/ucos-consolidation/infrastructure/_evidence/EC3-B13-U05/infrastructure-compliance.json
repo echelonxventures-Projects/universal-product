@@ -1,0 +1,71 @@
+{
+  "compliance_format": "ucos-infrastructure-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "infra-env-typed",
+        "infra-env-identified-objectbound"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UIL-03), identified and objecthood-bound (UIL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UIL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "infra-env-containment-by-reference",
+        "infra-env-provisioning-binds-runtime"
+      ],
+      "id": "C3",
+      "note": "PL-F2/SF-2/AF-3 delivery + DF-2 data-hosting are scoped to the Storage-Hosting (INFRASTRUCTURE-009) and Distribution (INFRASTRUCTURE-010/012) units; the Environment & Provisioning constructs materially satisfy the by-reference discipline by referencing contained lower constructs (contains) and the frozen RL-F2 workflow (provisions/binds) by ENG-005 reference, redefining no frozen concern (UIL-02 / UIL-09 / UIL-10)",
+      "requirement": "Hosts/delivers PL-F2/SF-2/AF-3 by reference; hosted data DF-2 by ref (UIL-06/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "infra-env-bounded-isolated",
+        "infra-env-located"
+      ],
+      "id": "C4",
+      "requirement": "Environments bounded/isolated, resources explicit, distribution typed (UIL-07/08/12).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "infra-env-containment-acyclic",
+        "founding-acyclic",
+        "meta-relationships-closed"
+      ],
+      "id": "C5",
+      "requirement": "Topology uses ENG-005 references; founding structure is acyclic (UIL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "infra-env-provisioning-binds-runtime"
+      ],
+      "id": "C6",
+      "requirement": "Provisioning/scaling bind RL-F2/DF-2 by ref; no artificial ceiling (UIL-10/11/13).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive",
+        "technology-independence"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (UIL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "INFRASTRUCTURE-001 §12",
+  "target_id": "UCOS-INFRA-ENVIRONMENT-ucos.infrastructure.environment.foundation-407ddc4ae587c6d6"
+}

@@ -1,0 +1,187 @@
+name: UCL-000001 Universal Constitutional Lifecycle Gate (G-25)
+
+# UCL-000001 — the Universal Constitutional Lifecycle.
+#
+# This workflow adds NO new lifecycle, authority, registry, dictionary, namespace, resolver
+# or identifier family. It runs the executable expression of the declaration in
+# 00-MASTER/UCL-000001/ucl-declaration.json, which DISCOVERS the constitutional stage graph
+# the repository has ALREADY legislated and executes it:
+#
+#   UCIC-001   owns the single deterministic lifecycle every capability follows — fifteen
+#              mandatory stages, and the rule that no capability may bypass it or skip a gate.
+#   CEP-009    §ADDENDUM B owns construct admission — the route by which a FUTURE stage
+#              becomes lawful without an architectural redesign.
+#   ENG-001 D30 / UMB-003 §3 own the artifact lifecycle; UEI-000001 §17 owns the evolution
+#              lifecycle; 02-EXECUTION-LIFECYCLE.md owns the execution lifecycle.
+#   RFP-001    declares the executable pipeline and the lifecycle's gate bindings.
+#   UCCEP      declares the checks, gates and programmes.
+#   AUTH-INF-001 legislates unbounded lawful expansion in every direction.
+#
+# Those owners are CROSSWALKED and never merged: several distinct owned things share the word
+# "lifecycle", and unifying them would amend every owner at once.
+#
+# WHY THIS RUNS IN CI. The gap Ω-E04 closed was not a missing lifecycle: UCIC-001 already
+# declared one. The gap was that it was PROSE — fifteen stages in a Markdown table that
+# nothing could discover, order, measure or execute, with the remaining stages of the
+# universal engineering contract bound to nothing at all. A lifecycle that cannot be executed
+# cannot be the substrate an autonomous engine binds to, and a gate that only runs locally is
+# a gate that stops running.
+#
+# WHAT IT PROVES over a fresh checkout of the committed HEAD:
+#   · the stage graph is DISCOVERED from constitutional metadata, not enumerated — the engine
+#     contains no stage, no capability, no owner path, no object kind and no graph type, so
+#     admitting a future stage is an append to DATA and requires no code change;
+#   · discovery is IMPLEMENTATION-INDEPENDENT — no object or relation originates from
+#     implementation source; source may corroborate an obligation, never originate one;
+#   · discovery is SERIALIZATION-INDEPENDENT — providers declare a format, the engine
+#     dispatches to a registered reader, more than one reader is exercised by a real provider,
+#     and an unregistered format is reported rather than fatal;
+#   · every governed entity holds exactly ONE Canonical Knowledge Object, and no derived
+#     register is ever read back as a source, so no view becomes Repository Truth;
+#   · the graph is acyclic and every stage is reachable, so the lifecycle is orderable, and it
+#     re-enters, so no stage is terminal;
+#   · obligations are applied by APPLICABILITY — a NOT_APPLICABLE obligation is reported, never
+#     counted as unbound, so the gate measures deficiency rather than manufacturing it;
+#   · no architectural bound exists — every expansion axis resolves to a located registrar;
+#   · the lifecycle EXECUTES: each declared goal traverses the discovered graph to a
+#     deterministic run identity, byte for byte.
+#
+# Exit semantics of the gate:
+#   0  the lifecycle is discovered, orderable and executable (gate OPEN)
+#   1  a blocking dimension failed (gate CLOSED)
+#   2  fail-closed abort — the declaration or a located source is unusable, so no verdict
+#      may be asserted
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ucl-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: UCL-000001 self-guards (twelve, each fail-closed)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Declaration integrity (ids unique, owners resolve, claimants write-protected)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-declaration
+
+      # The proof that the lifecycle is graph-driven: scans EXECUTABLE string constants only,
+      # so documentation naming a stage is not mistaken for hardcoded behaviour.
+      - name: Zero-enumeration proof (no discovered value steers behaviour from the engine)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-no-enumeration
+
+      - name: Forbidden-write guard (writes only inside its own operational-memory lane)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical rendering; no wall-clock, no commit identity)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-determinism
+
+      # Constitutional discovery targets METADATA. Implementation source is evidence only.
+      - name: Implementation independence (no object originates from implementation source)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-implementation-independence
+
+      - name: Open world (no architectural bound; every axis has a resolving registrar)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-open-world
+
+      # The programme that refuses a second lifecycle must not become one.
+      - name: No parallel authority (located lifecycle owners crosswalked, never claimed)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-no-parallel-authority
+
+      - name: Lifecycle executable (graph acyclic, fully ordered, every goal traversed)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-lifecycle-executable
+
+      # Exactly one CKO per governed entity, and nothing derived is ever a source.
+      - name: Canonical Knowledge Object identity (one per entity; no derived artifact is truth)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-cko-identity
+
+      # Identity must be immutable and singular; a digest is an identity only when derived
+      # exclusively from immutable constitutional identity fields.
+      - name: Semantic identity (invariant, singular, free of mutable inputs)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-semantic-identity
+
+      - name: Knowledge Once (every stage and capability is discovered, never defined here)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-knowledge-once
+
+      - name: Record immutability (write set ∩ located record set = ∅)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-record-immutability
+
+      - name: Bound tightness (no disclosed divergence is inflated to hide a regression)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --check-bounds-tight
+
+  lifecycle-gate:
+    name: Universal Constitutional Lifecycle Gate (fresh checkout, fail-closed)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout committed HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Universal Constitutional Lifecycle Gate (fail-closed)
+        run: python3 00-MASTER/UCL-000001/ucl_engine.py --gate
+
+      # The registers are DERIVED TRUTH: they must be a pure function of the declaration and
+      # the located metadata. If the committed bytes differ from what the declaration
+      # produces, the committed registers are not evidence of anything.
+      - name: Replay (the committed registers are the product of the declaration)
+        run: |
+          python3 00-MASTER/UCL-000001/ucl_engine.py --render --quiet
+          git diff --exit-code -- 00-MASTER/UCL-000001 \
+            || { echo "::error::UCL-000001 REPLAY DRIFT — committed registers are not the product of the declaration"; exit 1; }
+          echo "UCL-000001 replay: no drift"
+
+      # The substrate entry point Ω-E05 (ACEE) binds to. Proves an ARBITRARY goal — one no
+      # declared canonical goal names — traverses the discovered graph to a stable identity.
+      - name: Execute an arbitrary goal twice and prove the run identity is stable
+        run: |
+          python3 00-MASTER/UCL-000001/ucl_engine.py --execute "arbitrary constitutional engineering goal" > /tmp/ucl-run-a.json
+          python3 00-MASTER/UCL-000001/ucl_engine.py --execute "arbitrary constitutional engineering goal" > /tmp/ucl-run-b.json
+          diff -q /tmp/ucl-run-a.json /tmp/ucl-run-b.json \
+            || { echo "::error::UCL-000001 execution is not deterministic for a fixed goal"; exit 1; }
+          echo "UCL-000001 execution: deterministic for a fixed goal"
+
+      # Diagnostic only, and only when the gate has already failed.
+      - name: Name the failing dimension
+        if: failure()
+        run: |
+          python3 00-MASTER/UCL-000001/ucl_engine.py || true
+          git diff --stat || true

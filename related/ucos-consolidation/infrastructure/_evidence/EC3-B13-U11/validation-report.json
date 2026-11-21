@@ -1,0 +1,169 @@
+{
+  "accepted": true,
+  "blueprint_id": "BAND-13",
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 18,
+    "total": 18
+  },
+  "findings": [
+    {
+      "check_id": "band13-all-units-certified",
+      "details": {
+        "units_certified": 10
+      },
+      "message": "band13-all-units-certified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band13-identified",
+      "details": {
+        "band_id": "UCOS-BAND13-ucos.infrastructure.band13.completion-58610bf5cfb2df8c"
+      },
+      "message": "band13-identified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band13-independence",
+      "details": {},
+      "message": "band13-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band13-integration-closed",
+      "details": {},
+      "message": "band13-integration-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band13-inventory-complete",
+      "details": {
+        "unit_count": 10
+      },
+      "message": "band13-inventory-complete satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band13-metamodel-integration-closed",
+      "details": {},
+      "message": "band13-metamodel-integration-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band13-non-projection",
+      "details": {},
+      "message": "band13-non-projection satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band13-typed",
+      "details": {
+        "type_tag": "ucos.core.band-completion"
+      },
+      "message": "band13-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band13-valid-state",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "band13-valid-state satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "band13-versioned",
+      "details": {
+        "version": "1.0.0"
+      },
+      "message": "band13-versioned satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-004",
+          "ENG-005",
+          "CCE"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "infra-capability-value-fidelity",
+      "details": {
+        "value_digest": "58610bf5cfb2df8cd5bc16dc3fb44d750f3ee95d26582798a20160cc81783470"
+      },
+      "message": "infra-capability-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "coverage": "INFRASTRUCTURE-005 §2 — 17/17"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {},
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 5
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-BAND13-ucos.infrastructure.band13.completion-58610bf5cfb2df8c",
+  "verdict": "pass"
+}

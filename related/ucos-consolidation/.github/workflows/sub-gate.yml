@@ -1,0 +1,70 @@
+name: UCOS-SUB-001 Substrate Consumption Gate
+
+# UCOS-SUB-001 — UCOS measured by the substrate it consumes (00-MASTER/UCOS-SUB-001/
+# sub-declaration.json). The second invocation plane for engine/substrate/gate.py, so that
+# deleting the Makefile target leaves a signal (UEC-L-06).
+#
+# WHY THIS IS `workflow_dispatch` AND NOT `push`, WHICH IS THE WHOLE HONEST DIFFICULTY.
+# The substrate publishes no release. It is installed from a local path, and there is no
+# path a hosted runner can resolve. The gate treats an absent substrate as a FAULT — exit 2,
+# no verdict — precisely so that a gate which could not examine its subject never reports
+# OPEN. Running this on every push would therefore mean a permanently red check whose
+# redness carries no information about UCOS, and a check nobody can act on is a check
+# everybody learns to ignore. Declaring `substrate-source` as an input is the alternative
+# that stays honest: the plane exists, it is runnable by name, and it says out loud what it
+# needs in order to reach a verdict.
+#
+# THIS IS A DECLARED GAP AND NOT A DESIGN. The moment the substrate is installable from a
+# resolvable source, this becomes `on: push` and gains a ./verify.sh stage, and
+# 00-MASTER/UCOS-SUB-001/sub-declaration.json records that condition under
+# $why_no_verification_stage so the promise is written down rather than remembered.
+#
+# Exit semantics, from sub-declaration.json:gate.exit_codes:
+#   0  OPEN   — the contradiction ratchet holds at its declared value
+#   1  CLOSED — the ratchet refused, in either direction: new debt, or debt repaid
+#               without tightening the ceiling
+#   2  FAULT  — no verdict could be reached, which is never a pass
+
+on:
+  workflow_dispatch:
+    inputs:
+      substrate-source:
+        description: >-
+          A pip-installable source for the uakp substrate (a VCS URL, an index
+          requirement, or a path present on the runner). Left empty the gate FAULTs, which
+          is the correct outcome and not a pass.
+        required: false
+        default: ""
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sub-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  substrate-gate:
+    name: Substrate Consumption Gate (fail-closed; FAULT is not a pass)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # NOT part of the runtime dependency set, and it could not be: pyproject declares
+      # dependencies = [] on constitutional grounds (TP-04, TP-05), ISD-L-09 refuses a
+      # pinned runtime dependency, and test_infinite_scope asserts the list is empty.
+      # Consumption happens in the GOVERNANCE plane, where declared tooling already lives.
+      - name: Install the substrate UCOS consumes (governance plane only)
+        if: inputs.substrate-source != ''
+        run: python3 -m pip install --disable-pip-version-check "${{ inputs.substrate-source }}"
+
+      - name: The gate that measures UCOS with machinery that never heard of UCOS
+        run: python3 -m engine.substrate.gate

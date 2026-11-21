@@ -1,0 +1,54 @@
+{
+  "artifact_id": "UCOS-RIE-EXECUTION-FRONTIER",
+  "authority": "NONE (derived truth)",
+  "blocked": [
+    {
+      "blocked_by": "sequential band realization (await Band 10)",
+      "capability": "EC-3 Bands 11/12/13"
+    },
+    {
+      "blocked_by": "DR-RAT-11 (exogenous)",
+      "capability": "Constitutional finality (RAT-01..10)"
+    }
+  ],
+  "classification": "ADDITIVE INTELLIGENCE (machine-readable) — derived, non-authoritative",
+  "content_hash": "1396e78d049b97b5ee38c52fbdf99f7e856cb2e95d6e51cf458325df2da486cf",
+  "critical_path": [
+    "Band 10 Data",
+    "Band 11 Service",
+    "Band 12 Application",
+    "Band 13 Infrastructure",
+    "EC-3 go-live + closure"
+  ],
+  "data_program_artifacts": 153,
+  "evidence": [
+    "02-MASTER/EC-3-AP-2-BAND-10-ADMISSION-DETERMINATION.md",
+    "02-MASTER/BANDS-10-13-REALIZATION-LANE-CHARTER.md"
+  ],
+  "evidence_state": {
+    "evidence_files": {
+      "00-BOOK/DATA/artifacts.json": "aa096e10c9cc0b9ff0a04da62746892dea54153893b3f9633783072584fb4abe",
+      "00-BOOK/DATA/certification.json": "493c11ef1c1a084a7afad786296384857d8333160458e019fcfe3a3d132261a1",
+      "00-BOOK/DATA/control-tower.json": "3afbb9b010911fad12eaca81793e7039935140f58930fefb00784a04d48fdaec",
+      "00-BOOK/DATA/twin.json": "c50247cea005c7c40ce60e45bbcceca231cc9836efa24f263da03c2312da4128",
+      "00-BOOK/DATA/volumes.json": "bca13cfe0aaf66f50d10637463be8ab952bc2acdbecac66894c21018b6a897b5"
+    }
+  },
+  "evidence_timestamp": "2026-09-13T23:56:07+00:00",
+  "generation": {
+    "anchor": "the containing commit — owned by version control, never restated here (UCOS-RFP-001 RFP-2)",
+    "generator": "UCOS-RIE-001 Repository Intelligence Engine",
+    "generator_version": "1.0.0",
+    "input_hash": "e90d065033a34cc1c4ef51c91909bef4a7edc840cdae3ce21a42ad2e453ad402",
+    "input_hash_basis": "sha256 over the canonical evidence fingerprint — every 00-BOOK/DATA evidence file hash, which together pin the tracked state these outputs derive from. Coverage measurement (TEST_EXECUTION_STATE) is excluded per UCOS-P0-FCL-002-FIX-001 — it is not canonical identity input.",
+    "output_hash_field": "content_hash"
+  },
+  "next_executable_capability": "EC-3 Band 10 (Data) realization",
+  "producer": "UCOS-RIE-001 Repository Intelligence Engine v1.0.0",
+  "ready": [
+    "EC-3 Band 10 (Data) class-I realization"
+  ],
+  "single_active_frontier": "EC-3 Band 10 (Data)",
+  "title": "Execution Frontier Report",
+  "why": "CIOA/lane authority admitted Band 10 as RUNNABLE root; EC-1/EC-2 predecessors CERTIFIED"
+}

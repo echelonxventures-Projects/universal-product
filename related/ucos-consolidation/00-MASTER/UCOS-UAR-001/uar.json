@@ -1,0 +1,28 @@
+{
+  "by_kind": {
+    "architectural-intelligence-analysis": 3,
+    "baseline-inheritance-analysis": 5,
+    "closure-analysis": 6,
+    "constitutional-authority-analysis": 4,
+    "identity-conformance-analysis": 7,
+    "integration-analysis": 6,
+    "repository-intelligence-analysis": 7,
+    "validation-intelligence-dimension": 7
+  },
+  "by_owner": {
+    "00-MASTER/BASELINE-001": 5,
+    "00-MASTER/UAIE-000001": 3,
+    "00-MASTER/UAKOS-CLOSURE-002": 6,
+    "00-MASTER/UCOS-RIB-001": 6,
+    "00-MASTER/UCOS-UCAF-001": 4,
+    "00-MASTER/UIS-001": 7,
+    "intelligence/rie": 7,
+    "platform/validation_intelligence": 7
+  },
+  "determination": "REGISTRY-BOUND",
+  "gate": "OPEN",
+  "gate_exit": 0,
+  "programme": "UCOS-UAR-001",
+  "seal_sha256": "715705b1e0a66375",
+  "total_analyses": 45
+}

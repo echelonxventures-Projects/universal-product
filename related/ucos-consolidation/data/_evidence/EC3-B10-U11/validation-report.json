@@ -1,0 +1,211 @@
+{
+  "accepted": true,
+  "blueprint_id": "UDM",
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 19,
+    "total": 19
+  },
+  "findings": [
+    {
+      "check_id": "data-value-fidelity",
+      "details": {
+        "value_digest": "09e277250f3892df7c2b65a94bae4bfaafe19809c0a0f6d1980521019024ee7f"
+      },
+      "message": "data-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "PL-F2"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_classes": [
+          "DMC-01",
+          "DMC-02",
+          "DMC-03",
+          "DMC-04",
+          "DMC-05",
+          "DMC-06",
+          "DMC-07",
+          "DMC-08",
+          "DMC-09",
+          "DMC-10"
+        ]
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "DMK-01",
+          "DMK-03",
+          "DMK-08"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "meta_relationships": [
+          "DMR-01",
+          "DMR-02",
+          "DMR-03",
+          "DMR-04",
+          "DMR-05",
+          "DMR-06",
+          "DMR-07",
+          "DMR-08",
+          "DMR-09",
+          "DMR-10",
+          "DMR-11",
+          "DMR-12"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "metamodel-identified",
+      "details": {
+        "model_id": "UCOS-METAMODEL-ucos.data.metamodel.universal-09e277250f3892df"
+      },
+      "message": "metamodel-identified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "metamodel-independence",
+      "details": {},
+      "message": "metamodel-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "metamodel-map-resolves",
+      "details": {},
+      "message": "metamodel-map-resolves satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "metamodel-members-certified",
+      "details": {
+        "members": 10
+      },
+      "message": "metamodel-members-certified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "metamodel-named",
+      "details": {
+        "name": "ucos.data.metamodel.universal"
+      },
+      "message": "metamodel-named satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "metamodel-non-projection",
+      "details": {},
+      "message": "metamodel-non-projection satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "metamodel-totality",
+      "details": {
+        "entities": 10
+      },
+      "message": "metamodel-totality satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "metamodel-typed",
+      "details": {
+        "type_tag": "ucos.core.metamodel"
+      },
+      "message": "metamodel-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "metamodel-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "metamodel-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "metamodel-versioned",
+      "details": {
+        "version": "1.0.0"
+      },
+      "message": "metamodel-versioned satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 7
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-METAMODEL-ucos.data.metamodel.universal-09e277250f3892df",
+  "verdict": "pass"
+}

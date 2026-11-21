@@ -1,0 +1,45 @@
+{
+  "backward": [
+    "SMC-06",
+    "SOE-06",
+    "SERVICE-010",
+    "SERVICE-005",
+    "SERVICE-001",
+    "ARCH-SERVICE-001",
+    "11-SERVICE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-COMPOSITION-ucos.service.composition.foundation-c9d6ea76b5015b12",
+    "EC3-B11-U06-VALIDATION-EVIDENCE",
+    "EC3-B11-U06-CCE-CERTIFICATION",
+    "EC3-B11-U06-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "0595a91",
+  "meta_class": "SMC-06",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "PL-F2",
+    "RL-F2",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "cross-composition data bound by reference (SMR-13); represented data not redefined",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the composition)",
+    "ENG-003": "engine.certification.contracts.canonical_json (structural value fidelity)",
+    "ENG-004": "service.composition_meta.CompositionKind + type_tag (ENG-004 typing, by ref)",
+    "ENG-005": "reference identifiers (member/contract/platform/data refs; no new construct)",
+    "PL-F2": "composition/integration bound by reference (SMR-12; PLATFORM-010/011); redefines 0",
+    "RL-F2": "delegated invocation bound by reference (§7); no runtime concern redefined"
+  },
+  "target_id": "UCOS-COMPOSITION-ucos.service.composition.foundation-c9d6ea76b5015b12",
+  "trace_format": "ucos-service-traceability/1.0.0",
+  "unit": "EC3-B11-U06"
+}

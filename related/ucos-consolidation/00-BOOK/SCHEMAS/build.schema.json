@@ -1,0 +1,23 @@
+{
+  "title": "UCOS Ω∞ Build / Release Entity",
+  "description": "A CI build or release artifact (UKB-002/006). Result and coverage come from signals.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["universal_id", "name"],
+  "properties": {
+    "universal_id": { "type": "string", "pattern": "^UCOS-BLD-[0-9]{6}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "kind": { "type": "string", "enum": ["BUILD", "RELEASE", "TAG"], "default": "BUILD" },
+    "workflow": { "type": ["string", "null"], "default": null },
+    "run_id": { "type": ["string", "null"], "default": null },
+    "commit": { "type": ["string", "null"], "description": "Source commit sha.", "default": null },
+    "semver": { "type": ["string", "null"], "default": null },
+    "artifacts": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "result": { "type": "string", "enum": ["PASS", "FAIL", "RUNNING", "CANCELLED", "UNKNOWN"], "default": "UNKNOWN" },
+    "duration_seconds": { "type": ["number", "null"], "default": null },
+    "coverage": { "type": ["number", "null"], "default": null },
+    "produces_release": { "type": ["string", "null"], "default": null },
+    "references": { "type": "array", "items": { "type": "string", "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$" }, "default": [] },
+    "derived_status": { "type": "string", "default": "NOT_STARTED" }
+  }
+}

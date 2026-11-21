@@ -1,0 +1,73 @@
+{
+  "compliance_format": "ucos-data-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "relationship-typed",
+        "relationship-identified"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UDL-03), identified and objecthood-bound (UDL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UDL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "data-value-fidelity"
+      ],
+      "id": "C3",
+      "requirement": "Value is ENG-003 value (UDL-06).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "relationship-relates-endpoints",
+        "relationship-cardinality-explicit",
+        "relationship-directionality-declared"
+      ],
+      "id": "C4",
+      "requirement": "Entity/attribute/schema structure is explicit (UDL-07/08/10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "relationship-by-reference",
+        "relationship-referential-integrity",
+        "relationship-founding-acyclic-rule",
+        "founding-acyclic",
+        "meta-relationships-closed"
+      ],
+      "id": "C5",
+      "materially_exercised": true,
+      "note": "relationship is an ENG-005 reference relating two CERTIFIED entities: it introduces no new connection construct, is acyclic where founding, resolves every endpoint, and declares explicit cardinality — naming no join/foreign-key/graph/database technology (UDL-09 Relationship by Reference; DRA-01/03/04/05; DRA-K5)",
+      "requirement": "Relationships are ENG-005 references; founding structure acyclic (UDL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "relationship-independence"
+      ],
+      "id": "C6",
+      "requirement": "Selects no technology; describes storage abstractly (UDL-11/15).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive"
+      ],
+      "id": "C7",
+      "requirement": "Confers no authority and embeds no secret (UDL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "DATA-001 §12",
+  "target_id": "UCOS-RELATIONSHIP-ucos.data.relationship.foundation-def27c54fe382f98"
+}

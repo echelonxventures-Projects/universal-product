@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "UAM",
+      "certification_id": "UCOS-CERT-UAM-f9064ad729d4d090",
+      "entry_hash": "944f82bf780ddca9aadc1002b80a2b73602dd6a199d8cd98c09d43a6751629c2",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "f9064ad729d4d09062c35a4983252ab3ecfaa03d8fe24eb2e0ebab6da4406ed8",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-METAMODEL-ucos.application.metamodel.universal-2c2de069de3e71ff",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "944f82bf780ddca9aadc1002b80a2b73602dd6a199d8cd98c09d43a6751629c2",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

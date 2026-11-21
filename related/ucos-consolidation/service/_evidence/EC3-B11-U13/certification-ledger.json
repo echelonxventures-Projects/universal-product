@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "BAND-11-FREEZE",
+      "certification_id": "UCOS-CERT-BAND-11-FREEZE-9969d19b734d2116",
+      "entry_hash": "6b4308abb29ba1ca6b0a9fd9501e9d74abc8762b4b452c992eecb82d77458271",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "9969d19b734d21165e70246fe00b3a621ca2e3e3fd7764dac1d0ec62875ab6ae",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "6b4308abb29ba1ca6b0a9fd9501e9d74abc8762b4b452c992eecb82d77458271",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

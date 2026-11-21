@@ -1,0 +1,48 @@
+{
+  "backward": [
+    "AMC-06",
+    "APPLICATION-010",
+    "APPLICATION-005",
+    "APPLICATION-001",
+    "ARCH-APPLICATION-001",
+    "12-APPLICATION@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-INTERACTION-ucos.application.interaction.foundation-c6a5f6c39a7da8ee",
+    "EC3-B12-U06-VALIDATION-EVIDENCE",
+    "EC3-B12-U06-CCE-CERTIFICATION",
+    "EC3-B12-U06-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "f650e0b",
+  "meta_class": "AMC-06",
+  "referenced_units": [
+    "AMC-04",
+    "AMC-07",
+    "DF-2",
+    "RL-F2"
+  ],
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "represented exchanged data by reference (presents-data AMR-14); none redefined",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the interaction)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity; no parallel model)",
+    "ENG-004": "application.interaction_meta.InteractionKind + type_tag (ENG-004 typing, by ref)",
+    "ENG-005": "reference identifiers (engaged-feature, surface, data, state, behavior refs)",
+    "RL-F2": "event/state concern by reference (§7, AMR-06/11); none redefined"
+  },
+  "target_id": "UCOS-INTERACTION-ucos.application.interaction.foundation-c6a5f6c39a7da8ee",
+  "trace_format": "ucos-application-interaction-traceability/1.0.0",
+  "unit": "EC3-B12-U06"
+}

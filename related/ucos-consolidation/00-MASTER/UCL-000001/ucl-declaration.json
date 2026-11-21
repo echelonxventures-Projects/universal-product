@@ -1,0 +1,2612 @@
+{
+  "$comment": "UCL-000001 — Universal Constitutional Lifecycle. THIS FILE IS DATA AND RULES ONLY. It declares no stage, no stage name, no stage ordering, no capability and no capability name: every one of those is DISCOVERED. Adding a lifecycle stage, a canonical capability, a Canonical Knowledge Object kind, a relation type, a graph type, a metadata provider, a metadata adapter, a serialization, an obligation, a property or an expansion axis is an append-only edit to DATA and requires no change to ucl_engine.py (PR-07 Zero Enumeration). The engine holds no stage id, no capability name, no owner path, no graph type and no serialization parser choice.",
+  "$cko_comment": "CANONICAL KNOWLEDGE OBJECT MODEL. Every constitutionally governed entity is normalized to a Canonical Knowledge Object (CKO): a kind, an identity, an owner, an authority, a provenance and a set of typed relations to other CKOs. Repository Truth is expressed as RELATIONSHIPS AMONG CKOs, never as an implementation-specific structure. The Discovery Engine reads CKOs and nothing else — it never sees a file, a format or a field name.",
+  "$pipeline_comment": "DISCOVERY PIPELINE. Metadata Provider (WHERE constitutional metadata lives, and in which serialization) → Metadata Adapter (HOW that provider's records normalize into CKOs of a declared kind) → Canonical Knowledge Objects → Discovery Engine (composes graphs, evaluates obligations, orders and executes). Each arrow is data-declared. Replacing a serialization or a storage technology means registering a provider and an adapter; it changes no CKO kind, no relation type, no graph type, no obligation, no property and no stage.",
+  "$graph_comment": "GRAPH COMPOSITION. Graph types are themselves CKO-declared and OPEN: `graph_types` is a registry, not a fixed set, and each type is composed by selecting CKO kinds as nodes and relation types as edges. The architecture assumes no permanently fixed set of graph types — appending a graph type is an append here.",
+  "programme": {
+    "id": "UCL-000001",
+    "name": "Universal Constitutional Lifecycle",
+    "version": "1.0",
+    "authority": "NONE — DERIVED TRUTH. This programme legislates no lifecycle, opens no registry, mints no identifier, declares no namespace, admits no capability and certifies nothing. UCIC-001 owns the single deterministic lifecycle every capability follows; CEP-009 ADDENDUM B owns constitutional admission; ENG-001 D30 and UMB-003 §3 own the artifact lifecycle; UEI-000001 §17 owns the evolution lifecycle; 02-EXECUTION-LIFECYCLE.md owns the execution lifecycle. This programme DISCOVERS the constitutional stage graph those instruments already declare, normalizes it into Canonical Knowledge Objects, unifies it without merging its authorities, measures whether each stage is executable, and executes the discovered graph. Where this measurement and a located instrument differ, the located instrument governs.",
+    "operational_home": "00-MASTER/UCL-000001/",
+    "disclosure": "**DISCLOSURE.** This programme holds no constitutional authority. It is not a second lifecycle, not a second registry, not a second dictionary, not a second identifier scheme and not a competing methodology. It creates no stage: every stage it reports is bound to a canonical owner the repository already legislated. It enumerates nothing: stages, capabilities, owners, authorities, obligations, dependencies, admission paths and graph types are discovered from Canonical Constitutional Metadata through providers and adapters. Ω-E04 implements the substrate; Ω-E05 (ACEE) executes it autonomously.",
+    "law_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+    "architecture_owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+    "governing_instruments": [
+      "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "00-MASTER/UCCEP-000000/uccep-bindings.json"
+    ],
+    "$forbidden_write_comment": "Every claimant this programme reads. A claimant it could write is a claimant it could silently reconcile, so --check-write-scope fails closed if its own home falls inside one of these and --check-declaration fails closed if a cited owner is left unprotected.",
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "01-WORKING/",
+      "00-BOOK/",
+      "00-CEP/",
+      "00-CMG/",
+      "02-MASTER/",
+      "07-ENGINEERING/",
+      "engine/",
+      "intelligence/",
+      "knowledge/",
+      "platform/",
+      "pyproject.toml",
+      "02-",
+      "03-",
+      "04-",
+      "05-",
+      "06-",
+      "08-",
+      "09-",
+      "VERIFICATION-RUNBOOK.md",
+      "verify.sh",
+      "00-MASTER/UCOS-",
+      "00-MASTER/UCCEP-",
+      "00-MASTER/UCIC-",
+      "00-MASTER/UEI-",
+      "00-MASTER/UER-",
+      "00-MASTER/URRC-",
+      "00-MASTER/UAIE-",
+      "00-MASTER/UCEF-",
+      "00-MASTER/UAKOS-",
+      "00-MASTER/UCDA-",
+      "00-MASTER/UKAP-",
+      "00-MASTER/UIS-",
+      "00-MASTER/EVOLUTION-",
+      "00-MASTER/MCS-"
+    ]
+  },
+  "determination": {
+    "bound": "UNIVERSAL-CONSTITUTIONAL-LIFECYCLE-EXECUTABLE",
+    "open": "UNIVERSAL-CONSTITUTIONAL-LIFECYCLE-NOT-ESTABLISHED"
+  },
+  "$cko_model_comment": "The CKO kind registry and the relation type registry. Both are OPEN: a previously unknown constitutionally governed entity is admitted by appending a kind, and a previously unknown relationship by appending a relation type. Neither the engine nor any graph type needs to change.",
+  "cko_model": {
+    "identity_field": "cko_id",
+    "kind_field": "kind",
+    "open": true,
+    "closed_enumeration": false,
+    "admission": "Append a kind to `kinds` or a relation to `relation_types`. No engine change.",
+    "kinds": [
+      {
+        "id": "K-LIFECYCLE-STAGE",
+        "kind": "lifecycle-stage",
+        "note": "A constitutional stage of the Universal Constitutional Lifecycle."
+      },
+      {
+        "id": "K-EXECUTABLE-STAGE",
+        "kind": "executable-stage",
+        "note": "A stage the repository actually executes to reproduce itself."
+      },
+      {
+        "id": "K-LIFECYCLE-STEP",
+        "kind": "constitutional-lifecycle-step",
+        "note": "A declared, gate-bound step of the canonical implementation lifecycle."
+      },
+      {
+        "id": "K-CHECK",
+        "kind": "governance-check",
+        "note": "A constitutional check with fail-closed semantics."
+      },
+      {
+        "id": "K-GATE",
+        "kind": "governance-gate",
+        "note": "A constitutional gate composed of member checks."
+      },
+      {
+        "id": "K-PROGRAMME",
+        "kind": "governance-programme",
+        "note": "A constitutional capability with delegated canonical owners."
+      },
+      {
+        "id": "K-ARTIFACT",
+        "kind": "registry-artifact",
+        "note": "A registered artifact in the Universal Registry."
+      },
+      {
+        "id": "K-LINEAGE",
+        "kind": "lineage-record",
+        "note": "An append-only recorded snapshot chain."
+      },
+      {
+        "id": "K-KNOWLEDGE",
+        "kind": "knowledge-object",
+        "note": "A canonical knowledge object in the located knowledge home."
+      },
+      {
+        "id": "K-DECISION",
+        "kind": "decision-record",
+        "note": "A registered constitutional decision bound to evidence."
+      },
+      {
+        "id": "K-AUTHORITY",
+        "kind": "lifecycle-authority",
+        "note": "A located lifecycle owner, crosswalked and never merged."
+      },
+      {
+        "id": "K-ADMISSION",
+        "kind": "admission-path",
+        "note": "A located registrar that admits a previously unknown member."
+      },
+      {
+        "id": "K-RELATIONSHIP",
+        "kind": "constitutional-relationship",
+        "note": "A relationship instance, first-class: it is itself a constitutionally governed entity with its own immutable semantic identity."
+      }
+    ],
+    "relation_types": [
+      {
+        "id": "R-DEPENDS-ON",
+        "relation": "depends-on",
+        "note": "Ordering dependency. Cannot exist without."
+      },
+      {
+        "id": "R-BINDS-TO",
+        "relation": "binds-to",
+        "note": "A stage bound to a located executable, gate or check counterpart."
+      },
+      {
+        "id": "R-VALIDATED-BY",
+        "relation": "validated-by",
+        "note": "A gate or programme to its member checks."
+      },
+      {
+        "id": "R-DELEGATES-TO",
+        "relation": "delegates-to",
+        "note": "A programme to the canonical owners it delegates to."
+      },
+      {
+        "id": "R-EVIDENCED-BY",
+        "relation": "evidenced-by",
+        "note": "A CKO to located evidence. Evidence corroborates; it never originates."
+      },
+      {
+        "id": "R-GOVERNED-BY",
+        "relation": "governed-by",
+        "note": "A CKO to the constitutional authority that governs it."
+      },
+      {
+        "id": "R-REENTERS",
+        "relation": "reenters",
+        "note": "Non-terminality. NOT a dependency edge: recorded as a relation so the graph stays orderable AND the lifecycle never terminates."
+      },
+      {
+        "id": "R-GOVERNS",
+        "relation": "governs",
+        "note": "holds decision authority over"
+      },
+      {
+        "id": "R-OWNS",
+        "relation": "owns",
+        "note": "is accountable for"
+      },
+      {
+        "id": "R-IMPLEMENTS",
+        "relation": "implements",
+        "note": "realises"
+      },
+      {
+        "id": "R-VALIDATES",
+        "relation": "validates",
+        "note": "checks the shape of"
+      },
+      {
+        "id": "R-VERIFIES",
+        "relation": "verifies",
+        "note": "re-derives the claim of"
+      },
+      {
+        "id": "R-CERTIFIES",
+        "relation": "certifies",
+        "note": "attests to the completeness of"
+      },
+      {
+        "id": "R-DERIVES",
+        "relation": "derives",
+        "note": "is computed from"
+      },
+      {
+        "id": "R-COMPOSES",
+        "relation": "composes",
+        "note": "is assembled from"
+      },
+      {
+        "id": "R-SUPERSEDES",
+        "relation": "supersedes",
+        "note": "replaces"
+      },
+      {
+        "id": "R-REFERENCES",
+        "relation": "references",
+        "note": "points at"
+      },
+      {
+        "id": "R-REGISTERS",
+        "relation": "registers",
+        "note": "admits into a located register"
+      },
+      {
+        "id": "R-IDENTIFIES",
+        "relation": "identifies",
+        "note": "assigns constitutional identity to"
+      },
+      {
+        "id": "R-ADMITS",
+        "relation": "admits",
+        "note": "opens admission for a previously unknown member"
+      }
+    ]
+  },
+  "$serializations_comment": "OPEN registry of serialization mechanisms. JSON, Markdown, Python, YAML, TOML, SQL and graph stores are serialization mechanisms ONLY. `registered` means a reader is available today; an unregistered format is admissible and REPORTED, never fatal, so the registry can be extended before it is implemented. Nothing constitutional depends on which entry is used.",
+  "serializations": [
+    {
+      "id": "FMT-JSON",
+      "name": "JSON document",
+      "reader": "json",
+      "extensions": [
+        ".json"
+      ],
+      "registered": true,
+      "note": "What most located constitutional metadata happens to use today. Nothing constitutional depends on that."
+    },
+    {
+      "id": "FMT-TOML",
+      "name": "TOML document",
+      "reader": "toml",
+      "extensions": [
+        ".toml"
+      ],
+      "registered": true,
+      "note": "Registered to prove the reader table is genuinely plural rather than one format with a wrapper. Read via the standard library, so no dependency is added."
+    },
+    {
+      "id": "FMT-MARKDOWN",
+      "name": "Markdown instrument",
+      "reader": "text",
+      "extensions": [
+        ".md"
+      ],
+      "registered": true,
+      "note": "Constitutional instruments serialized as prose. Read as TEXT for anchor presence only — never parsed for graph structure, which is why no Markdown table becomes a stage."
+    },
+    {
+      "id": "FMT-PYTHON",
+      "name": "Python implementation module",
+      "reader": "text",
+      "extensions": [
+        ".py"
+      ],
+      "registered": true,
+      "note": "EVIDENCE ONLY. Read as text to confirm a symbol exists. Per the implementation-as-evidence rule this is evidence extraction, never constitutional discovery."
+    },
+    {
+      "id": "FMT-SHELL",
+      "name": "Shell entry point",
+      "reader": "text",
+      "extensions": [
+        ".sh"
+      ],
+      "registered": true,
+      "note": "EVIDENCE ONLY."
+    },
+    {
+      "id": "FMT-YAML",
+      "name": "YAML document",
+      "reader": "yaml",
+      "extensions": [
+        ".yml",
+        ".yaml"
+      ],
+      "registered": false,
+      "note": "Admissible and unregistered. No located constitutional metadata uses it today, and registering it would add a dependency this measurement does not need. Declared so the registry is provably open rather than provably complete."
+    },
+    {
+      "id": "FMT-SQL",
+      "name": "Relational metadata store",
+      "reader": "sql",
+      "extensions": [
+        ".sql"
+      ],
+      "registered": false,
+      "note": "Admissible and unregistered."
+    },
+    {
+      "id": "FMT-GRAPH",
+      "name": "Graph metadata store",
+      "reader": "graph",
+      "extensions": [],
+      "registered": false,
+      "note": "Admissible and unregistered. A future graph-database home for constitutional metadata registers a reader here; no CKO kind, relation type or graph type changes."
+    }
+  ],
+  "$discovery_classes_comment": "The constitutional separation the amendment requires. Only `constitutional-metadata` may ORIGINATE a CKO. `evidence` may corroborate an obligation that metadata already established, and nothing more.",
+  "discovery_classes": [
+    {
+      "id": "constitutional-metadata",
+      "may_originate": true,
+      "note": "Declared constitutional metadata: a constitution, an architecture, a determination, a declared binding set or a declared manifest. Originates CKOs and relations."
+    },
+    {
+      "id": "evidence",
+      "may_originate": false,
+      "note": "Implementation source, prose instruments read for anchor presence, and symbol probes. May corroborate; may never originate. Regex or syntax inspection of implementation source is evidence extraction by definition."
+    }
+  ],
+  "$providers_comment": "METADATA PROVIDERS — WHERE constitutional metadata lives and in which serialization. A provider knows nothing about CKOs; it only resolves and deserializes. Appending a provider is how the substrate reaches a new metadata home.",
+  "metadata_providers": [
+    {
+      "id": "PRV-RFP",
+      "name": "Repository fixed-point programme declaration",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-UCCEP",
+      "name": "Constitutional certification bindings",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-REGISTRY",
+      "name": "Universal Registry (derived artifact registry)",
+      "owner": "00-BOOK/DATA/artifacts.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-LEDGER",
+      "name": "Universal Bookkeeping and Lineage ledger",
+      "owner": "00-BOOK/DATA/id-ledger.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-KNOWLEDGE",
+      "name": "Canonical knowledge store",
+      "owner": "knowledge/canonical-knowledge.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-DECISIONS",
+      "name": "Constitutional decision register",
+      "owner": "00-MASTER/UCDA-000001/ucda-decisions.json",
+      "serialization": "FMT-JSON",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "PRV-TOOLCHAIN",
+      "name": "Canonical toolchain declaration",
+      "owner": "pyproject.toml",
+      "serialization": "FMT-TOML",
+      "discovery_class": "constitutional-metadata",
+      "note": "Read through the TOML reader so serialization plurality is exercised by a real provider rather than asserted by a table entry."
+    }
+  ],
+  "$adapters_comment": "METADATA ADAPTERS — HOW a provider's records normalize into CKOs. `pointer` is a dotted path into the deserialized document (empty means the document root). `field_map` maps the CKO's neutral vocabulary onto whatever field names that provider happens to use; `relation_map` maps provider fields onto declared relation types. This is the layer that makes discovery independent of serialization AND of source schema. Adapter ids are the stable names other constitutional metadata refers to when it binds a stage to a counterpart.",
+  "metadata_adapters": [
+    {
+      "id": "SRC-EXECUTABLE-STAGES",
+      "name": "Executable pipeline stage adapter",
+      "provider": "PRV-RFP",
+      "pointer": "pipeline.stages",
+      "cko_kind": "executable-stage",
+      "field_map": {
+        "id": "id",
+        "name": "name",
+        "owner": "owner",
+        "executable": "argv",
+        "writes": "writes",
+        "required": "required",
+        "reentrant": "reentrant"
+      },
+      "relation_map": {},
+      "ordering": "sequence",
+      "note": "Supplies executability, write zones, reentrancy and fixed-point membership."
+    },
+    {
+      "id": "SRC-CONSTITUTIONAL-LIFECYCLE",
+      "name": "Canonical implementation lifecycle adapter",
+      "provider": "PRV-RFP",
+      "pointer": "lifecycle",
+      "cko_kind": "constitutional-lifecycle-step",
+      "field_map": {
+        "id": "stage",
+        "name": "stage",
+        "ordinal": "step",
+        "gate": "gate"
+      },
+      "relation_map": {
+        "binds-to": "gate"
+      },
+      "ordering": "ordinal",
+      "note": "The declared, already gate-bound constitutional lifecycle. Two adapters over one provider: the same file supplies both what is executed and what is constitutionally declared, which is why provider and adapter are separate layers."
+    },
+    {
+      "id": "SRC-GOVERNANCE-CHECKS",
+      "name": "Constitutional check adapter",
+      "provider": "PRV-UCCEP",
+      "pointer": "checks",
+      "cko_kind": "governance-check",
+      "field_map": {
+        "id": "id",
+        "name": "name",
+        "owner": "owner",
+        "executable": "argv",
+        "writes": "write_scope",
+        "required": "fail_closed",
+        "tier": "tier"
+      },
+      "relation_map": {},
+      "ordering": "sequence",
+      "note": "Supplies the validation and verification graphs."
+    },
+    {
+      "id": "SRC-GOVERNANCE-GATES",
+      "name": "Constitutional gate adapter",
+      "provider": "PRV-UCCEP",
+      "pointer": "gates",
+      "cko_kind": "governance-gate",
+      "field_map": {
+        "id": "id",
+        "name": "name",
+        "owner": "owner"
+      },
+      "relation_map": {
+        "validated-by": "checks"
+      },
+      "ordering": "sequence",
+      "note": "Supplies the certification and authority graphs."
+    },
+    {
+      "id": "SRC-GOVERNANCE-PROGRAMMES",
+      "name": "Constitutional programme adapter",
+      "provider": "PRV-UCCEP",
+      "pointer": "programs",
+      "cko_kind": "governance-programme",
+      "field_map": {
+        "id": "id",
+        "name": "name",
+        "owner": "output"
+      },
+      "relation_map": {
+        "validated-by": "checks",
+        "delegates-to": "delegated_to"
+      },
+      "ordering": "sequence",
+      "note": "Supplies the capability graph: each programme is a discovered constitutional capability."
+    },
+    {
+      "id": "SRC-REGISTRY",
+      "name": "Universal Registry adapter",
+      "provider": "PRV-REGISTRY",
+      "pointer": "artifacts",
+      "cko_kind": "registry-artifact",
+      "field_map": {
+        "id": "universal_id",
+        "name": "name",
+        "owner": "path",
+        "category": "category",
+        "programme": "program",
+        "custodian": "owner"
+      },
+      "relation_map": {},
+      "ordering": "sequence",
+      "note": "Supplies the registration graph and the capability category space."
+    },
+    {
+      "id": "SRC-LINEAGE",
+      "name": "Universal Lineage adapter",
+      "provider": "PRV-LEDGER",
+      "pointer": "history",
+      "cko_kind": "lineage-record",
+      "field_map": {
+        "id": ""
+      },
+      "relation_map": {},
+      "ordering": "sequence",
+      "note": "Supplies the lineage graph as a derived projection over recorded snapshot history. An empty id mapping means the collection key IS the identity, so a keyed store needs no engine change. No new lineage store is created (UCI-001 Part XVI.5)."
+    },
+    {
+      "id": "SRC-KNOWLEDGE",
+      "name": "Canonical knowledge adapter",
+      "provider": "PRV-KNOWLEDGE",
+      "pointer": "objects",
+      "cko_kind": "knowledge-object",
+      "field_map": {
+        "id": "cko_id",
+        "name": "title",
+        "owner": "owner",
+        "authority": "authority"
+      },
+      "relation_map": {
+        "evidenced-by": "evidence"
+      },
+      "ordering": "sequence",
+      "note": "Supplies the knowledge graph. The located store already keys its records by canonical knowledge object identity, so the adapter is close to an identity mapping — evidence that the object model is the repository's own and not imposed by this programme."
+    },
+    {
+      "id": "SRC-DECISIONS",
+      "name": "Constitutional decision adapter",
+      "provider": "PRV-DECISIONS",
+      "pointer": "decisions",
+      "cko_kind": "decision-record",
+      "field_map": {
+        "id": "id",
+        "name": "title"
+      },
+      "relation_map": {},
+      "ordering": "sequence",
+      "note": "Supplies registered engineering knowledge as decisions bound to evidence."
+    },
+    {
+      "id": "SRC-MANIFEST",
+      "name": "Constitutional stage manifest adapter",
+      "provider": "PRV-MANIFEST",
+      "pointer": "nodes",
+      "cko_kind": "lifecycle-stage",
+      "field_map": {
+        "id": "id",
+        "name": "stage",
+        "ordinal": "ordinal",
+        "group": "group",
+        "owner": "owner",
+        "authority": "authority",
+        "authority_owner": "authority_owner"
+      },
+      "relation_map": {
+        "depends-on": "depends_on",
+        "binds-to": "binds",
+        "evidenced-by": "evidence",
+        "reenters": "reenters"
+      },
+      "ordering": "ordinal",
+      "note": "Normalizes declared constitutional stage metadata into lifecycle-stage CKOs. Its provider is DISCOVERED by pattern, not listed, so this declaration never becomes a stage enumeration."
+    }
+  ],
+  "$provider_discovery_comment": "The OPEN provider surface. Any file under `root` whose name ends with `suffix` becomes a discovered Metadata Provider with the declared serialization and discovery class. This is what makes a future stage automatically discoverable: append a node to an existing manifest, or drop in a new manifest the pattern matches. No engine edit, no declaration edit, no architectural redesign. The manifests themselves are NOT listed here.",
+  "provider_discovery": {
+    "id": "PRV-MANIFEST",
+    "root": "00-MASTER/UCL-000001",
+    "suffix": "-stage-manifest.json",
+    "serialization": "FMT-JSON",
+    "discovery_class": "constitutional-metadata",
+    "openness_pointer": "manifest",
+    "openness_fields": {
+      "open": "open",
+      "closed_enumeration": "closed_enumeration",
+      "admission": "admission"
+    }
+  },
+  "$graph_types_comment": "GRAPH TYPE REGISTRY — open and discoverable. A graph type is composed by selecting CKO kinds as nodes and relation types as edges. Nothing lists members; the members are whatever Repository Truth contains at measurement time. Appending a graph type is an append here, and the architecture assumes no permanently fixed set.",
+  "$reference_normalization_comment": "DECLARED reading rules for references written by other owners. A located record may name an instrument as an identifier prefix, or annotate it with a section or a parenthetical remark — `00-CEP/CEP-005`, `00-CEP/CEP-002 Art 28`, `engine/kernel (immutable baseline)`. Those are faithful references in a human-authored register, not defects, and this programme may not edit another owner's record to suit its parser. So the READING is declared instead: each rule is data, is applied in order, and the rule that resolved a reference is recorded as evidence. `prefix-unique` resolves only when exactly one located file matches, because resolving an ambiguous prefix would be this programme guessing what the owner meant.",
+  "reference_normalizations": [
+    {
+      "id": "RN-01",
+      "rule": "trim-annotation",
+      "separator": " (",
+      "note": "A trailing parenthetical is an annotation on the reference, not part of the path."
+    },
+    {
+      "id": "RN-02",
+      "rule": "trim-section",
+      "separators": [
+        " §",
+        " Art ",
+        " Part ",
+        " Article "
+      ],
+      "note": "A trailing section marker locates a place WITHIN the instrument; the instrument is the reference."
+    },
+    {
+      "id": "RN-03",
+      "rule": "prefix-unique",
+      "note": "An instrument named by identifier prefix resolves to the unique located file whose name begins with it. Ambiguity is left unresolved rather than guessed."
+    }
+  ],
+  "$relationship_model_comment": "RELATIONSHIPS ARE FIRST-CLASS. A relationship is itself a constitutionally governed entity, so it possesses its own Canonical Knowledge Object with its own immutable semantic identity. Graphs are therefore composed from entity CKOs AND relationship CKOs, not from entities plus untyped pointers. A relationship CKO records its participants as attributes rather than as further relations, which is what stops the model regressing infinitely while keeping the relationship itself governable.",
+  "relationship_model": {
+    "first_class": true,
+    "cko_kind": "constitutional-relationship",
+    "identity_inputs": [
+      "relation",
+      "source_semantic_id",
+      "target_semantic_id"
+    ],
+    "participants_as_attributes": true,
+    "$identity_comment": "A relationship's constitutional identity is derived from the relation type and the SEMANTIC IDENTITIES of its participants — never from a handle, an adapter, a provider, a serialization or a path. A target that is a located artifact is resolved to its registered constitutional identity through the Universal Registry; a target the repository has deliberately not registered carries no constitutional identity, and that is REPORTED rather than patched with its path, because a path is a location and locations may evolve.",
+    "target_identity_resolution": [
+      "cko",
+      "registry"
+    ],
+    "note": "The relation TYPE registry is declared in cko_model.relation_types and is open; each relationship INSTANCE is discovered through the same provider and adapter pipeline as an entity, and carries the provenance of the metadata that declared it.",
+    "target_identity_adapter": "SRC-REGISTRY"
+  },
+  "$semantic_identity_comment": "SEMANTIC IDENTITY IS INVARIANT. Every CKO possesses exactly one immutable semantic identity, derived ONLY from what the entity IS — its kind and its recorded identity. Representation, serialization, storage, transport, runtime, implementation and LOCATION are excluded from the derivation by construction, so all of them may evolve without disturbing identity. An identifier may itself evolve through constitutional governance; what may never change under that evolution is that the entity has exactly one semantic identity, and --check-semantic-identity proves the derivation ignores every excluded input.",
+  "semantic_identity": {
+    "algorithm": "sha256",
+    "inputs": [
+      "kind",
+      "record_id"
+    ],
+    "excluded_inputs": [
+      "cko_id",
+      "provider",
+      "provider_owner",
+      "adapter",
+      "discovery_class",
+      "serialization",
+      "owner",
+      "path",
+      "ordinal",
+      "group",
+      "position",
+      "generated_at",
+      "content_hash"
+    ],
+    "$comment": "Derived only from what the entity IS. Every input the invariants permit to evolve — representation, serialization, storage, transport, runtime, implementation and location — is excluded by construction, so none of them can mint a new identity. The inputs are read from this declaration, so the derivation is governed rather than hard-coded, and --check-semantic-identity proves no excluded input participates."
+  },
+  "$knowledge_extraction_comment": "KNOWLEDGE EXTRACTION. Every completed execution extracts engineering knowledge, and that knowledge becomes Canonical Knowledge Objects so it accumulates constitutionally across future cycles. Extraction is a measurement of the run, never an assertion about it. Registration is delegated to the LOCATED knowledge home: this programme opens no knowledge store, because Knowledge Once means the canonical home already exists and a second one would fork it. Each extraction record therefore names the owner that registers it, and readiness is measured rather than claimed.",
+  "knowledge_extraction": {
+    "registration_owner": "knowledge/canonical-knowledge.json",
+    "decision_owner": "00-MASTER/UCDA-000001/ucda-decisions.json",
+    "architecture_owner": "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+    "rules": [
+      {
+        "id": "EK-01",
+        "knowledge": "the discovered constitutional stage graph and its derived traversal order",
+        "measure": "stage_nodes_discovered",
+        "reusable_as": "the lifecycle any future capability executes without redefining it"
+      },
+      {
+        "id": "EK-02",
+        "knowledge": "the obligation applicability profile — which obligations the repository places each stage in scope for",
+        "measure": "stage_obligations_conditional_active",
+        "reusable_as": "the scope model a future capability inherits instead of assuming a uniform obligation set"
+      },
+      {
+        "id": "EK-03",
+        "knowledge": "the obligations that remain unbound after applicability, each traced to a named cause",
+        "measure": "stage_obligation_failures",
+        "reusable_as": "the referred work queue for the owners that must bind them"
+      },
+      {
+        "id": "EK-04",
+        "knowledge": "the inapplicable obligation count, which records where the repository deliberately withholds scope",
+        "measure": "stage_obligations_not_applicable",
+        "reusable_as": "evidence that exclusion authorities are operating rather than being violated"
+      },
+      {
+        "id": "EK-05",
+        "knowledge": "the composed constitutional graphs and their node and edge populations",
+        "measure": "relationship_ckos_discovered",
+        "reusable_as": "the relationship substrate a future graph type composes over without new machinery"
+      },
+      {
+        "id": "EK-06",
+        "knowledge": "the open expansion axes and the located registrar that admits each one",
+        "measure": "expansion_axes_bound",
+        "reusable_as": "the admission map a future capability uses to extend without redesign"
+      }
+    ]
+  },
+  "$elevation_comment": "CAPABILITY ELEVATION. Every execution measures and records three increases, and each carries evidence, lineage, replay, certification and a governing authority. The increase is MEASURED from the discovered graph — never asserted — and every facet binds to a located owner, so an increase this programme cannot evidence is reported as unevidenced rather than claimed.",
+  "elevation_measures": [
+    {
+      "id": "EL-01",
+      "increase": "Constitutional Capability Increase",
+      "measure": "stage_nodes_discovered",
+      "statement": "constitutional stages that are now discoverable, orderable and measurable rather than prose",
+      "evidence_owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "lineage_owner": "00-BOOK/DATA/id-ledger.json",
+      "replay_owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "certification_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "authority_owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+    },
+    {
+      "id": "EL-02",
+      "increase": "Engineering Capability Increase",
+      "measure": "relationship_ckos_discovered",
+      "statement": "governed relationships now first-class and composable into graphs without new machinery",
+      "evidence_owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "lineage_owner": "00-BOOK/MASTER-BOOK/UMB-010-LINEAGE-ARCHITECTURE.md",
+      "replay_owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "certification_owner": "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md"
+    },
+    {
+      "id": "EL-03",
+      "increase": "Autonomous Engineering Capability Increase",
+      "measure": "goals_executed",
+      "statement": "arbitrary engineering goals that traverse the discovered graph to a deterministic run identity, which is the substrate an autonomous engine binds to",
+      "evidence_owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "lineage_owner": "00-BOOK/DATA/id-ledger.json",
+      "replay_owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "certification_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "authority_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md"
+    }
+  ],
+  "$self_evolution_comment": "SELF-EVOLUTION PATH. The substrate may evolve itself, but only along this path, and never outside constitutional governance. Each step binds to the located owner that performs it, so self-modification cannot route around a step by construction: the step's owner is not this programme.",
+  "self_evolution_path": [
+    {
+      "id": "SE-01",
+      "step": "Repository Truth",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "anchor": ""
+    },
+    {
+      "id": "SE-02",
+      "step": "Canonical Governance",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "LXXVII"
+    },
+    {
+      "id": "SE-03",
+      "step": "Validation",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "anchor": "checks"
+    },
+    {
+      "id": "SE-04",
+      "step": "Verification",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "anchor": "fail_closed"
+    },
+    {
+      "id": "SE-05",
+      "step": "Certification",
+      "owner": "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md",
+      "anchor": ""
+    },
+    {
+      "id": "SE-06",
+      "step": "Replay",
+      "owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "anchor": ""
+    },
+    {
+      "id": "SE-07",
+      "step": "Deterministic Fixed Point",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "anchor": "closure_criteria"
+    }
+  ],
+  "$readiness_comment": "Ω-E05 READINESS. Ω-E04 certifies whether Ω-E05 may begin. Every dimension is MEASURED against a located owner: readiness is a statement about the repository, so a dimension whose owner does not resolve, or whose measure is unmet, reports NOT READY rather than being waived. Ω-E05 is authorized only when every dimension is ready AND the gate is OPEN.",
+  "readiness_dimensions": [
+    {
+      "id": "RD-01",
+      "dimension": "Repository Truth status",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "measure": "adapters_unresolved",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "RD-02",
+      "dimension": "Constitutional completeness",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "measure": "stage_nodes_unauthorized",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "RD-03",
+      "dimension": "Deterministic replay",
+      "owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "measure": "runs_nondeterministic",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "RD-04",
+      "dimension": "Fixed-point convergence",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "measure": "graph_cycles",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "RD-05",
+      "dimension": "Knowledge extraction readiness",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+      "measure": "knowledge_extractions_unmeasured",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "RD-06",
+      "dimension": "Universal Identifier readiness",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "measure": "ckos_without_semantic_identity",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "RD-07",
+      "dimension": "Universal Identifier Dictionary readiness",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md",
+      "measure": "ckos_of_unknown_kind",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "RD-08",
+      "dimension": "Universal Registry readiness",
+      "owner": "00-BOOK/DATA/artifacts.json",
+      "measure": "providers_without_reader",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "RD-09",
+      "dimension": "Universal Bookkeeping readiness",
+      "owner": "00-BOOK/DATA/id-ledger.json",
+      "measure": "ckos_without_provenance",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "RD-10",
+      "dimension": "Universal Lineage readiness",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-010-LINEAGE-ARCHITECTURE.md",
+      "measure": "lineage_records_discovered",
+      "comparator": ">=",
+      "expect": 1
+    },
+    {
+      "id": "RD-11",
+      "dimension": "Universal Knowledge readiness",
+      "owner": "knowledge/canonical-knowledge.json",
+      "measure": "knowledge_objects_discovered",
+      "comparator": ">=",
+      "expect": 1
+    },
+    {
+      "id": "RD-12",
+      "dimension": "ACEE substrate readiness",
+      "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "measure": "goals_executed",
+      "comparator": ">=",
+      "expect": 1
+    },
+    {
+      "id": "RD-13",
+      "dimension": "Self-evolution path bound",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "measure": "self_evolution_steps_unbound",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "RD-14",
+      "dimension": "Capability elevation evidenced",
+      "owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "measure": "elevations_unevidenced",
+      "comparator": "==",
+      "expect": 0
+    },
+    {
+      "id": "RD-15",
+      "dimension": "Relationships first-class",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "measure": "relationship_ckos_discovered",
+      "comparator": ">=",
+      "expect": 1
+    }
+  ],
+  "graph_types": {
+    "open": true,
+    "closed_enumeration": false,
+    "admission": "Append a type to `types`. No engine change.",
+    "types": [
+      {
+        "id": "GT-STAGE",
+        "graph": "executable stage graph",
+        "node_kinds": [
+          "lifecycle-stage",
+          "executable-stage",
+          "constitutional-lifecycle-step"
+        ],
+        "edge_relations": [
+          "binds-to"
+        ]
+      },
+      {
+        "id": "GT-CAPABILITY",
+        "graph": "capability graph",
+        "node_kinds": [
+          "governance-programme",
+          "registry-artifact"
+        ],
+        "edge_relations": [
+          "delegates-to"
+        ]
+      },
+      {
+        "id": "GT-DEPENDENCY",
+        "graph": "dependency graph",
+        "node_kinds": [
+          "lifecycle-stage"
+        ],
+        "edge_relations": [
+          "depends-on"
+        ]
+      },
+      {
+        "id": "GT-AUTHORITY",
+        "graph": "authority graph",
+        "node_kinds": [
+          "lifecycle-stage",
+          "lifecycle-authority",
+          "governance-gate"
+        ],
+        "edge_relations": [
+          "governed-by"
+        ]
+      },
+      {
+        "id": "GT-OBLIGATION",
+        "graph": "obligation graph",
+        "node_kinds": [
+          "lifecycle-stage"
+        ],
+        "edge_relations": [
+          "binds-to"
+        ]
+      },
+      {
+        "id": "GT-VALIDATION",
+        "graph": "validation graph",
+        "node_kinds": [
+          "governance-gate",
+          "governance-check"
+        ],
+        "edge_relations": [
+          "validated-by"
+        ]
+      },
+      {
+        "id": "GT-VERIFICATION",
+        "graph": "verification graph",
+        "node_kinds": [
+          "governance-check"
+        ],
+        "edge_relations": []
+      },
+      {
+        "id": "GT-CERTIFICATION",
+        "graph": "certification graph",
+        "node_kinds": [
+          "governance-gate"
+        ],
+        "edge_relations": [
+          "validated-by"
+        ]
+      },
+      {
+        "id": "GT-REGISTRATION",
+        "graph": "registration graph",
+        "node_kinds": [
+          "registry-artifact"
+        ],
+        "edge_relations": []
+      },
+      {
+        "id": "GT-LINEAGE",
+        "graph": "lineage graph",
+        "node_kinds": [
+          "lineage-record"
+        ],
+        "edge_relations": []
+      },
+      {
+        "id": "GT-EVIDENCE",
+        "graph": "evidence graph",
+        "node_kinds": [
+          "lifecycle-stage"
+        ],
+        "edge_relations": [
+          "evidenced-by"
+        ]
+      },
+      {
+        "id": "GT-KNOWLEDGE",
+        "graph": "knowledge graph",
+        "node_kinds": [
+          "knowledge-object",
+          "decision-record"
+        ],
+        "edge_relations": []
+      },
+      {
+        "id": "GT-RELATIONSHIP",
+        "graph": "constitutional relationship graph",
+        "node_kinds": [
+          "constitutional-relationship"
+        ],
+        "edge_relations": []
+      }
+    ]
+  },
+  "$lifecycle_authorities_comment": "The located lifecycle owners, normalized as lifecycle-authority CKOs. They are CROSSWALKED and never merged: several distinct owned things share the word 'lifecycle', and unifying them would amend every owner at once (expansion by reinterpretation, CMG Art LXXVI.6). --check-no-parallel-authority fails closed if this programme claims any of these roles.",
+  "lifecycle_authorities": [
+    {
+      "id": "AUTH-CAPABILITY-LIFECYCLE",
+      "name": "Universal capability implementation lifecycle",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "anchor": "UNIVERSAL CAPABILITY LIFECYCLE",
+      "role": "the single deterministic lifecycle every capability follows; this programme EXTENDS its stage coverage and replaces none of it",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-AMENDMENT-LIFECYCLE",
+      "name": "Constitutional amendment and construct admission lifecycle",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "anchor": "ADDENDUM B",
+      "role": "how a constitutional construct is admitted; the route by which a future stage becomes lawful",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-ARTIFACT-LIFECYCLE",
+      "name": "Universal artifact lifecycle",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "anchor": "Lifecycle",
+      "role": "the status lifecycle of a registered artifact; retirement never releases the identifier",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-EVOLUTION-LIFECYCLE",
+      "name": "Universal evolution lifecycle",
+      "owner": "00-MASTER/UEI-000001/17-EVOLUTION-LIFECYCLE-DETERMINATION.md",
+      "anchor": "EVOLUTION",
+      "role": "the perpetual, non-terminating improvement cycle",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-EXECUTION-LIFECYCLE",
+      "name": "Repository execution lifecycle",
+      "owner": "02-EXECUTION-LIFECYCLE.md",
+      "anchor": "Canonical lifecycle pipeline",
+      "role": "how Repository Truth drives execution batches; every transition is derived, none manual",
+      "merge_prohibited": true
+    },
+    {
+      "id": "AUTH-FIXED-POINT-LIFECYCLE",
+      "name": "Repository fixed-point closure lifecycle",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "anchor": "lifecycle",
+      "role": "closure is asserted only after the repository reproduces itself from the committed state",
+      "merge_prohibited": true
+    }
+  ],
+  "$applicability_comment": "OBLIGATION APPLICABILITY. An obligation is not universally applicable, and counting an inapplicable obligation as unbound would manufacture a deficiency the repository does not have. Every obligation therefore declares its applicability, and Repository Truth — not this declaration — decides the CONDITIONAL cases: the condition is itself a rule evaluated against discovered objects. Only REQUIRED obligations, and CONDITIONAL obligations whose condition is satisfied, participate in gate failure. NOT_APPLICABLE obligations are reported as such and never counted as unbound. Each condition below is deliberately non-circular: it asks whether the repository puts the stage in scope for the obligation, never whether the obligation is already met.",
+  "applicability_classes": [
+    {
+      "id": "REQUIRED",
+      "participates": "always",
+      "note": "Every stage must bind it; failure closes the gate."
+    },
+    {
+      "id": "CONDITIONAL",
+      "participates": "only when the governing condition is satisfied",
+      "note": "The condition is a rule over discovered objects, so Repository Truth determines applicability."
+    },
+    {
+      "id": "NOT_APPLICABLE",
+      "participates": "never",
+      "note": "Reported, never counted as unbound."
+    }
+  ],
+  "$obligation_rules_comment": "The OBLIGATION GRAPH, declared as rules over CKOs and relations rather than as a checklist. `kind` names a generic mechanic the Discovery Engine implements; WHICH obligation uses WHICH mechanic is data. Appending an obligation is an append here — the engine gains no branch.",
+  "obligation_rules": [
+    {
+      "id": "OBL-OWNER",
+      "obligation": "canonical owner",
+      "applicability": "REQUIRED",
+      "kind": "attribute_resolves",
+      "attribute": "owner",
+      "note": "A stage whose canonical owner does not resolve rests on nothing. Applicable to every stage without exception."
+    },
+    {
+      "id": "OBL-AUTHORITY",
+      "obligation": "constitutional authority",
+      "applicability": "REQUIRED",
+      "kind": "all_of",
+      "rules": [
+        {
+          "kind": "attribute_resolves",
+          "attribute": "authority_owner"
+        },
+        {
+          "kind": "attribute_present",
+          "attribute": "authority"
+        }
+      ],
+      "note": "The authority must be both stated and locatable. Applicable to every stage."
+    },
+    {
+      "id": "OBL-DECLARATION",
+      "obligation": "declaration",
+      "applicability": "REQUIRED",
+      "kind": "originated_by_class",
+      "class": "constitutional-metadata",
+      "note": "The stage exists because declared constitutional metadata says so — not because implementation source was parsed."
+    },
+    {
+      "id": "OBL-IMPLEMENTATION",
+      "obligation": "implementation",
+      "applicability": "REQUIRED",
+      "kind": "any_of",
+      "rules": [
+        {
+          "kind": "related_attribute_resolves",
+          "relation": "binds-to",
+          "kind_filter": "executable-stage",
+          "attribute": "executable"
+        },
+        {
+          "kind": "related_attribute_resolves",
+          "relation": "binds-to",
+          "kind_filter": "governance-check",
+          "attribute": "executable"
+        },
+        {
+          "kind": "relation_targets_resolve",
+          "relation": "evidenced-by"
+        }
+      ],
+      "note": "Satisfied by a resolving executable in the fixed-point pipeline or the check register, or by located implementation evidence. Evidence corroborates here; it originates nothing."
+    },
+    {
+      "id": "OBL-EVIDENCE",
+      "obligation": "evidence",
+      "applicability": "REQUIRED",
+      "kind": "relation_targets_resolve",
+      "relation": "evidenced-by",
+      "note": "Absence of evidence is never evidence."
+    },
+    {
+      "id": "OBL-VALIDATION",
+      "obligation": "validation",
+      "applicability": "CONDITIONAL",
+      "condition": {
+        "kind": "scope_covered",
+        "attribute": "owner",
+        "kind_filter": "governance-check",
+        "target_attribute": "owner"
+      },
+      "kind": "transitive_relation_present",
+      "relation": "binds-to",
+      "kind_filter": "governance-gate",
+      "then_relation": "validated-by",
+      "note": "Applicable when the repository already places the stage's owner inside a zone some constitutional check owns. A stage whose owner no check governs is not yet in validation scope, and saying otherwise would invent a gate."
+    },
+    {
+      "id": "OBL-VERIFICATION",
+      "obligation": "verification",
+      "applicability": "CONDITIONAL",
+      "condition": {
+        "kind": "scope_covered",
+        "attribute": "owner",
+        "kind_filter": "governance-check",
+        "target_attribute": "owner"
+      },
+      "kind": "transitive_relation_attribute_true",
+      "relation": "binds-to",
+      "kind_filter": "governance-gate",
+      "then_relation": "validated-by",
+      "attribute": "required",
+      "note": "Applicable on the same condition as validation. At least one reachable check must be fail-closed; an advisory-only stage is not verified."
+    },
+    {
+      "id": "OBL-CERTIFICATION",
+      "obligation": "certification",
+      "applicability": "CONDITIONAL",
+      "condition": {
+        "kind": "scope_covered",
+        "attribute": "owner",
+        "kind_filter": "governance-check",
+        "target_attribute": "owner"
+      },
+      "kind": "relation_to_kind",
+      "relation": "binds-to",
+      "kind_filter": "governance-gate",
+      "note": "Applicable when the stage's owner lies in a governed zone. The stage must then be a member of a declared constitutional gate."
+    },
+    {
+      "id": "OBL-REGISTRATION",
+      "obligation": "registration",
+      "applicability": "CONDITIONAL",
+      "condition": {
+        "kind": "scope_covered",
+        "attribute": "owner",
+        "kind_filter": "registry-artifact",
+        "target_attribute": "owner"
+      },
+      "kind": "attribute_in_kind",
+      "attribute": "owner",
+      "kind_filter": "registry-artifact",
+      "target_attribute": "owner",
+      "note": "Applicable only where the Universal Registry already admits the zone the owner lives in. Operational memory is deliberately barred from consuming a permanent corpus identity, so its absence from the registry is the exclusion authority working — not an unbound obligation. Where the registry DOES cover the zone but not the artifact, the obligation is genuinely unbound and closes the gate."
+    },
+    {
+      "id": "OBL-REPLAY",
+      "obligation": "replay",
+      "applicability": "CONDITIONAL",
+      "condition": {
+        "kind": "relation_to_kind",
+        "relation": "binds-to",
+        "kind_filter": "executable-stage"
+      },
+      "kind": "related_attribute_true",
+      "relation": "binds-to",
+      "kind_filter": "executable-stage",
+      "attribute": "reentrant",
+      "note": "Applicable when the repository executes the stage as a pipeline member. A stage in the pipeline that is NOT reentrant is genuinely unbound; a stage the repository does not execute has nothing to replay."
+    },
+    {
+      "id": "OBL-FIXED-POINT",
+      "obligation": "fixed-point proof",
+      "applicability": "CONDITIONAL",
+      "condition": {
+        "kind": "any_of",
+        "rules": [
+          {
+            "kind": "related_attribute_resolves",
+            "relation": "binds-to",
+            "kind_filter": "executable-stage",
+            "attribute": "executable"
+          },
+          {
+            "kind": "related_attribute_resolves",
+            "relation": "binds-to",
+            "kind_filter": "governance-check",
+            "attribute": "executable"
+          }
+        ]
+      },
+      "kind": "relation_to_kind",
+      "relation": "binds-to",
+      "kind_filter": "executable-stage",
+      "note": "Applicable when the stage has a resolving executable at all — an executable thing must converge. An executable stage absent from the convergence pipeline is genuinely unbound; a purely declarative stage has no execution to converge, so the obligation does not arise. The condition tests executability and the rule tests pipeline membership, so the two are not the same question."
+    }
+  ],
+  "$property_rules_comment": "The ten properties every stage must exhibit, each derived from measured facts rather than asserted. Appending a property is an append here.",
+  "property_rules": [
+    {
+      "id": "PROP-DISCOVERABLE",
+      "property": "discoverable",
+      "kind": "originated_by_class",
+      "class": "constitutional-metadata"
+    },
+    {
+      "id": "PROP-MEASURABLE",
+      "property": "measurable",
+      "kind": "obligation_satisfied",
+      "obligation": "OBL-DECLARATION"
+    },
+    {
+      "id": "PROP-EXECUTABLE",
+      "property": "executable",
+      "kind": "obligation_satisfied",
+      "obligation": "OBL-IMPLEMENTATION"
+    },
+    {
+      "id": "PROP-REPLAYABLE",
+      "property": "replayable",
+      "kind": "any_of",
+      "rules": [
+        {
+          "kind": "obligation_satisfied",
+          "obligation": "OBL-REPLAY"
+        },
+        {
+          "kind": "obligation_satisfied",
+          "obligation": "OBL-DECLARATION"
+        }
+      ],
+      "note": "A declarative stage is replayable because its projection is a pure function of located metadata; an executable stage is replayable when it is reentrant."
+    },
+    {
+      "id": "PROP-TESTABLE",
+      "property": "independently testable",
+      "kind": "any_of",
+      "rules": [
+        {
+          "kind": "obligation_satisfied",
+          "obligation": "OBL-VERIFICATION"
+        },
+        {
+          "kind": "obligation_satisfied",
+          "obligation": "OBL-EVIDENCE"
+        }
+      ]
+    },
+    {
+      "id": "PROP-CERTIFIABLE",
+      "property": "independently certifiable",
+      "kind": "any_of",
+      "rules": [
+        {
+          "kind": "obligation_satisfied",
+          "obligation": "OBL-CERTIFICATION"
+        },
+        {
+          "kind": "obligation_satisfied",
+          "obligation": "OBL-AUTHORITY"
+        }
+      ],
+      "note": "Certifiable means a located authority can certify it — either a declared gate today, or the constitutional owner that would."
+    },
+    {
+      "id": "PROP-EVOLVABLE",
+      "property": "independently evolvable",
+      "kind": "admission_path_open"
+    },
+    {
+      "id": "PROP-REUSABLE",
+      "property": "reusable",
+      "kind": "obligation_satisfied",
+      "obligation": "OBL-OWNER",
+      "note": "A stage bound to a located canonical owner is reusable by every capability, because the owner is not capability-specific."
+    },
+    {
+      "id": "PROP-COMPOSABLE",
+      "property": "composable",
+      "kind": "edge_participation",
+      "relation": "depends-on"
+    },
+    {
+      "id": "PROP-DETERMINISTIC",
+      "property": "deterministic",
+      "kind": "any_of",
+      "rules": [
+        {
+          "kind": "obligation_satisfied",
+          "obligation": "OBL-FIXED-POINT"
+        },
+        {
+          "kind": "obligation_satisfied",
+          "obligation": "OBL-DECLARATION"
+        }
+      ]
+    }
+  ],
+  "$admission_paths_comment": "The registrars that make each expansion axis genuinely open, normalized as admission-path CKOs. These are EVIDENCE probes: they prove a located extension path exists. An axis whose registrar does not resolve is an axis whose openness was asserted and never probed — the exact defect Ω-E03 recorded against Ω-E01.",
+  "admission_paths": [
+    {
+      "id": "AP-KERNEL-REGISTRY",
+      "owner": "engine/kernel/registry.py",
+      "symbol": "UniversalRegistry",
+      "kind": "registered metatype admission",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-VOCABULARY",
+      "owner": "engine/uckp/vocabulary.py",
+      "symbol": "VocabularyRegistry",
+      "kind": "open vocabulary term admission",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-KNOWLEDGE-REGISTRY",
+      "owner": "engine/uckp/registry.py",
+      "symbol": "UniversalKnowledgeRegistry",
+      "kind": "knowledge object admission",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-CLASSIFY-RULES",
+      "owner": "00-BOOK/tools/config.py",
+      "symbol": "CLASSIFY_RULES",
+      "kind": "data-declared namespace admission",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-FAMILIES",
+      "owner": "00-BOOK/tools/config.py",
+      "symbol": "ARTIFACT_FAMILIES",
+      "kind": "data-declared family admission",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-ALLOCATE",
+      "owner": "00-BOOK/tools/ukb.py",
+      "symbol": "allocate",
+      "kind": "append-only identifier allocation",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-SNAPSHOTS",
+      "owner": "00-BOOK/tools/ukb.py",
+      "symbol": "record_snapshots",
+      "kind": "append-only bookkeeping",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-LINEAGE",
+      "owner": "00-BOOK/tools/ukb.py",
+      "symbol": "derive_lineage",
+      "kind": "derived lineage projection",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-UNIVERSE",
+      "owner": "engine/uckp/universe.py",
+      "symbol": "build_universe",
+      "kind": "constitutional universe construction",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-CAPABILITY-OBJECTS",
+      "owner": "engine/uckp/capabilities.py",
+      "symbol": "capability_objects",
+      "kind": "capability object admission",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-INTELLIGENCE",
+      "owner": "engine/uckp/intelligence.py",
+      "symbol": "UniversalIntelligence",
+      "kind": "reasoning faculty admission",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-AUTONOMY",
+      "owner": "00-MASTER/UCOS-AEE-001/aee_engine.py",
+      "symbol": "main",
+      "kind": "autonomous execution entry",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-EVOLUTION",
+      "owner": "engine/uckp/evolution.py",
+      "symbol": "next_stage",
+      "kind": "non-terminating cycle successor",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-RELATION-TYPES",
+      "owner": "engine/uckp/vocabulary.py",
+      "symbol": "RELATION_TYPE_VOCABULARY",
+      "kind": "open relationship type admission",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-GRAPH",
+      "owner": "engine/uckp/graph.py",
+      "symbol": "UniversalKnowledgeGraph",
+      "kind": "unbounded graph depth",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-PROJECTION",
+      "owner": "engine/uckp/projection.py",
+      "symbol": "__all__",
+      "kind": "unbounded composition depth",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-FACETS",
+      "owner": "engine/uckp/facets.py",
+      "symbol": "Facet",
+      "kind": "closed facet set with open vocabulary projection",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-CIVILIZATION",
+      "owner": "engine/civilization/dimensions.py",
+      "symbol": "__all__",
+      "kind": "civilizational and planetary scope admission",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-RUNTIME",
+      "owner": "engine/runtime/composition.py",
+      "symbol": "__all__",
+      "kind": "runtime scale composition",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-EXECUTION-DEPTH",
+      "owner": "engine/uckp/execution.py",
+      "symbol": "__all__",
+      "kind": "unbounded execution depth",
+      "discovery_class": "evidence"
+    },
+    {
+      "id": "AP-MANIFEST",
+      "owner": "00-MASTER/UCL-000001/ucl-declaration.json",
+      "symbol": "provider_discovery",
+      "kind": "open constitutional stage admission",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "AP-CKO-KINDS",
+      "owner": "00-MASTER/UCL-000001/ucl-declaration.json",
+      "symbol": "cko_model",
+      "kind": "open Canonical Knowledge Object kind admission",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "AP-GRAPH-TYPES",
+      "owner": "00-MASTER/UCL-000001/ucl-declaration.json",
+      "symbol": "graph_types",
+      "kind": "open graph type admission",
+      "discovery_class": "constitutional-metadata"
+    },
+    {
+      "id": "AP-SERIALIZATIONS",
+      "owner": "00-MASTER/UCL-000001/ucl-declaration.json",
+      "symbol": "serializations",
+      "kind": "open serialization admission",
+      "discovery_class": "constitutional-metadata"
+    }
+  ],
+  "$expansion_axes_comment": "Every axis the amendment forbids a maximum for. Each binds to the located instrument that authorizes unboundedness AND to an admission path that must resolve. No axis carries a maximum, a limit, a capacity or a closed enum.",
+  "expansion_axes": [
+    {
+      "id": "AX-01",
+      "axis": "capabilities",
+      "clause": "CR-INF-007 · CR-INF-009",
+      "admission_path": "AP-KERNEL-REGISTRY",
+      "blocking": true
+    },
+    {
+      "id": "AX-02",
+      "axis": "universes",
+      "clause": "CR-INF-010",
+      "admission_path": "AP-UNIVERSE",
+      "blocking": true
+    },
+    {
+      "id": "AX-03",
+      "axis": "canonical owners",
+      "clause": "CMG Art LXXVI",
+      "admission_path": "AP-CLASSIFY-RULES",
+      "blocking": true
+    },
+    {
+      "id": "AX-04",
+      "axis": "constitutional identifiers",
+      "clause": "CR-INF-002 · AIF-L24",
+      "admission_path": "AP-ALLOCATE",
+      "blocking": true
+    },
+    {
+      "id": "AX-05",
+      "axis": "identifier dictionaries",
+      "clause": "ENG-001 D11",
+      "admission_path": "AP-VOCABULARY",
+      "blocking": true
+    },
+    {
+      "id": "AX-06",
+      "axis": "registries",
+      "clause": "UMB-005 append-only registers",
+      "admission_path": "AP-KNOWLEDGE-REGISTRY",
+      "blocking": true
+    },
+    {
+      "id": "AX-07",
+      "axis": "bookkeeping",
+      "clause": "REG-AUTO-001 §5",
+      "admission_path": "AP-SNAPSHOTS",
+      "blocking": true
+    },
+    {
+      "id": "AX-08",
+      "axis": "lineage",
+      "clause": "UCI-001 Part XVI.5",
+      "admission_path": "AP-LINEAGE",
+      "blocking": true
+    },
+    {
+      "id": "AX-09",
+      "axis": "engineering knowledge",
+      "clause": "UMB-006 knowledge graph",
+      "admission_path": "AP-KNOWLEDGE-REGISTRY",
+      "blocking": true
+    },
+    {
+      "id": "AX-10",
+      "axis": "intelligence",
+      "clause": "CR-INF-011",
+      "admission_path": "AP-INTELLIGENCE",
+      "blocking": true
+    },
+    {
+      "id": "AX-11",
+      "axis": "autonomous intelligence",
+      "clause": "CR-INF-011 · CR-INF-012",
+      "admission_path": "AP-AUTONOMY",
+      "blocking": true
+    },
+    {
+      "id": "AX-12",
+      "axis": "engineering capability",
+      "clause": "CR-INF-007",
+      "admission_path": "AP-CAPABILITY-OBJECTS",
+      "blocking": true
+    },
+    {
+      "id": "AX-13",
+      "axis": "autonomous engineering capability",
+      "clause": "CR-INF-012",
+      "admission_path": "AP-AUTONOMY",
+      "blocking": true
+    },
+    {
+      "id": "AX-14",
+      "axis": "engineering domains",
+      "clause": "CR-INF-009",
+      "admission_path": "AP-UNIVERSE",
+      "blocking": true
+    },
+    {
+      "id": "AX-15",
+      "axis": "object types",
+      "clause": "CMG Art XIII open Kind set",
+      "admission_path": "AP-KERNEL-REGISTRY",
+      "blocking": true
+    },
+    {
+      "id": "AX-16",
+      "axis": "relationship types",
+      "clause": "CMG Art XIV",
+      "admission_path": "AP-RELATION-TYPES",
+      "blocking": true
+    },
+    {
+      "id": "AX-17",
+      "axis": "ontology depth",
+      "clause": "CMG Art XIV",
+      "admission_path": "AP-GRAPH",
+      "blocking": true
+    },
+    {
+      "id": "AX-18",
+      "axis": "taxonomy depth",
+      "clause": "CMG Art XIII",
+      "admission_path": "AP-FACETS",
+      "blocking": true
+    },
+    {
+      "id": "AX-19",
+      "axis": "dependency depth",
+      "clause": "CR-INF-009",
+      "admission_path": "AP-GRAPH",
+      "blocking": true
+    },
+    {
+      "id": "AX-20",
+      "axis": "composition depth",
+      "clause": "CR-INF-009",
+      "admission_path": "AP-PROJECTION",
+      "blocking": true
+    },
+    {
+      "id": "AX-21",
+      "axis": "abstraction depth",
+      "clause": "CR-INF-010",
+      "admission_path": "AP-KERNEL-REGISTRY",
+      "blocking": true
+    },
+    {
+      "id": "AX-22",
+      "axis": "execution depth",
+      "clause": "CR-INF-009",
+      "admission_path": "AP-EXECUTION-DEPTH",
+      "blocking": true
+    },
+    {
+      "id": "AX-23",
+      "axis": "runtime scale",
+      "clause": "CR-INF-010",
+      "admission_path": "AP-RUNTIME",
+      "blocking": true
+    },
+    {
+      "id": "AX-24",
+      "axis": "repository scale",
+      "clause": "CR-INF-002",
+      "admission_path": "AP-ALLOCATE",
+      "blocking": true
+    },
+    {
+      "id": "AX-25",
+      "axis": "geographic scope",
+      "clause": "CR-INF-010",
+      "admission_path": "AP-CIVILIZATION",
+      "blocking": true
+    },
+    {
+      "id": "AX-26",
+      "axis": "planetary scope",
+      "clause": "CR-INF-010",
+      "admission_path": "AP-CIVILIZATION",
+      "blocking": true
+    },
+    {
+      "id": "AX-27",
+      "axis": "civilizational scope",
+      "clause": "CR-INF-010",
+      "admission_path": "AP-CIVILIZATION",
+      "blocking": true
+    },
+    {
+      "id": "AX-28",
+      "axis": "future evolution",
+      "clause": "CR-INF-001 Ω∞ non-terminality",
+      "admission_path": "AP-EVOLUTION",
+      "blocking": true
+    },
+    {
+      "id": "AX-29",
+      "axis": "constitutional lifecycle stages",
+      "clause": "CEP-009 ADDENDUM B",
+      "admission_path": "AP-MANIFEST",
+      "blocking": true
+    },
+    {
+      "id": "AX-30",
+      "axis": "serialization mechanisms",
+      "clause": "CMG Art LXXVI",
+      "admission_path": "AP-SERIALIZATIONS",
+      "blocking": true
+    },
+    {
+      "id": "AX-31",
+      "axis": "Canonical Knowledge Object kinds",
+      "clause": "CMG Art XIII open Kind set",
+      "admission_path": "AP-CKO-KINDS",
+      "blocking": true
+    },
+    {
+      "id": "AX-32",
+      "axis": "graph types",
+      "clause": "CMG Art XIV",
+      "admission_path": "AP-GRAPH-TYPES",
+      "blocking": true
+    }
+  ],
+  "$execution_comment": "The lifecycle EXECUTES the discovered graph. Execution is a deterministic constitutional traversal in topological order over lifecycle-stage CKOs: it resolves each stage's relations and obligations and emits a run record. It deliberately does NOT re-invoke the stages' own engines — those are already executed by the fixed-point pipeline, and invoking them from here would create the self-observation topology RFP-3 forbids and make the repository non-convergent. The run record is a pure function of the goal text and the discovered graph: no wall clock, no commit identity, no working-tree status.",
+  "execution": {
+    "run_contract": {
+      "run_id_inputs": [
+        "goal_digest",
+        "graph_digest"
+      ],
+      "writes": [],
+      "side_effects": "none",
+      "reinvokes_stage_engines": false,
+      "note": "Two runs of the same goal against the same graph produce the same run_id, byte for byte."
+    },
+    "canonical_goals": [
+      {
+        "id": "GOAL-SELF",
+        "goal": "Execute the Universal Constitutional Lifecycle over the Universal Constitutional Lifecycle itself.",
+        "note": "Self-application. The lifecycle is the first capability the lifecycle governs, which is what makes it a substrate rather than a description."
+      },
+      {
+        "id": "GOAL-SUBSTRATE",
+        "goal": "Engineer the Universal Constitutional Engineering Substrate required for the Autonomous Constitutional Engineering Engine.",
+        "note": "The Ω-E04→Ω-E05 handover goal."
+      },
+      {
+        "id": "GOAL-ARBITRARY-CAPABILITY",
+        "goal": "Engineer an arbitrary future canonical capability that Repository Truth does not yet record.",
+        "note": "Proves universal applicability WITHOUT naming a capability: the traversal is identical for every goal, so no capability needs its own methodology and no capability list exists to be incomplete."
+      }
+    ]
+  },
+  "$unboundedness_comment": "Unbounded lawful expansion is owned by AUTH-INF-001 and REUSED here, never re-declared. A phrase asserting closure inside a PROHIBITION of closure is the architecture defending itself, so a terminal-token hit whose line carries a negation marker is not a claim.",
+  "unboundedness": {
+    "owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+    "anchor": "CR-INF-001",
+    "terminal_tokens": [
+      "final stage",
+      "last stage",
+      "no further evolution",
+      "evolution is complete",
+      "lifecycle is closed",
+      "permanently closed"
+    ],
+    "negation_markers": [
+      "no ",
+      "not ",
+      "never",
+      "shall not",
+      "may not",
+      "forbidden",
+      "prohibit",
+      "refus",
+      "without",
+      "cannot",
+      "non-terminal",
+      "rather than"
+    ],
+    "dimensions": [
+      {
+        "id": "UNB-01",
+        "requirement": "the stage graph is not a closed enumeration",
+        "clause": "CEP-009 ADDENDUM B",
+        "measure": "closed_enumerations_declared",
+        "comparator": "==",
+        "expect": 0,
+        "blocking": true
+      },
+      {
+        "id": "UNB-02",
+        "requirement": "every expansion axis resolves to a located admission path",
+        "clause": "CR-INF-007 · CR-INF-009",
+        "measure": "expansion_axes_unbound",
+        "comparator": "==",
+        "expect": 0,
+        "blocking": true
+      },
+      {
+        "id": "UNB-03",
+        "requirement": "no located instrument claims a terminal constitutional state",
+        "clause": "CR-INF-001",
+        "measure": "terminal_state_claims",
+        "comparator": "==",
+        "expect": 0,
+        "blocking": true
+      },
+      {
+        "id": "UNB-04",
+        "requirement": "no architectural bound token is declared anywhere in this programme",
+        "clause": "CR-INF-009",
+        "measure": "limit_tokens_present",
+        "comparator": "==",
+        "expect": 0,
+        "blocking": true
+      },
+      {
+        "id": "UNB-05",
+        "requirement": "the lifecycle re-enters, so no stage is terminal",
+        "clause": "CR-INF-001",
+        "measure": "reentry_declarations_absent",
+        "comparator": "==",
+        "expect": 0,
+        "blocking": true
+      },
+      {
+        "id": "UNB-06",
+        "requirement": "the serialization registry is open, not a single hard-wired format",
+        "clause": "CMG Art LXXVI",
+        "measure": "serialization_readers_registered",
+        "comparator": ">=",
+        "expect": 2,
+        "blocking": true
+      },
+      {
+        "id": "UNB-07",
+        "requirement": "the capability graph is discovered, never enumerated by this programme",
+        "clause": "CMG Art LXXVII.4",
+        "measure": "capability_nodes_discovered",
+        "comparator": ">=",
+        "expect": 1,
+        "blocking": true
+      },
+      {
+        "id": "UNB-08",
+        "requirement": "the CKO kind registry is open",
+        "clause": "CMG Art XIII",
+        "measure": "cko_kind_registry_closed",
+        "comparator": "==",
+        "expect": 0,
+        "blocking": true
+      },
+      {
+        "id": "UNB-09",
+        "requirement": "the graph type registry is open",
+        "clause": "CMG Art XIV",
+        "measure": "graph_type_registry_closed",
+        "comparator": "==",
+        "expect": 0,
+        "blocking": true
+      }
+    ]
+  },
+  "hygiene": {
+    "$nondeterministic_comment": "Tokens the engine may not contain. Held here rather than in the engine because an engine holding them in its own source would match itself while scanning for them.",
+    "nondeterministic_inputs": [
+      "datetime.now",
+      "datetime.today",
+      "time.time",
+      "time.monotonic",
+      "os.urandom",
+      "uuid1",
+      "uuid4",
+      "subprocess",
+      "socket.",
+      "getpass",
+      "os.getcwd",
+      "os.environ"
+    ],
+    "$limit_comment": "Tokens that would introduce an architectural bound. Scanned across the engine and every discovered manifest. This declaration is excluded from the scan because it is the file that legitimately NAMES them; a scan including it would convict the declaration of the defect it defines.",
+    "limit_tokens": [
+      "max_stages",
+      "max_capabilities",
+      "MAX_STAGES",
+      "MAX_CAPABILITIES",
+      "stage_limit",
+      "capability_limit",
+      "max_depth",
+      "MAX_DEPTH",
+      "max_owners",
+      "max_registries",
+      "max_identifiers",
+      "hard_limit",
+      "architectural ceiling",
+      "closed enumeration of stages"
+    ]
+  },
+  "$capabilities_comment": "This programme's own constitutional dispositions. Disposition order is REUSE → EXTEND → CREATE, and CREATE is a validation FAILURE wherever a canonical owner resolves: a capability whose owner resolves cannot be created a second time without manufacturing a parallel authority. Ω-E04 is REUSE/EXTEND only, with zero CREATE.",
+  "capabilities": [
+    {
+      "id": "CAP-01",
+      "group": "lifecycle",
+      "capability": "the single deterministic lifecycle every capability follows",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "artifacts": [
+        "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md"
+      ],
+      "status": "PARTIAL",
+      "action": "EXTEND",
+      "evidence": "UCIC-001 declares fifteen mandatory stages for taking a capability from selection to production readiness, and is the canonical owner. What it does not do is make the stage graph DISCOVERABLE or EXECUTABLE as a graph: the stages are prose in a table, nothing measures whether each stage's obligations resolve, and the universal engineering contract's remaining stages have no binding at all. This programme EXTENDS stage coverage and executability. It replaces no stage, weakens no gate and claims no lifecycle authority."
+    },
+    {
+      "id": "CAP-02",
+      "group": "lifecycle",
+      "capability": "constitutional admission of a future lifecycle stage",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "artifacts": [
+        "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+        "00-MASTER/UCEF-000001/04-OPEN-WORLD-EXPANSION-REGISTER.md"
+      ],
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "ADDENDUM B already owns construct admission and is measured by UCEF-000001. A future stage is admitted through it. No second admission lifecycle is opened here."
+    },
+    {
+      "id": "CAP-03",
+      "group": "graph",
+      "capability": "executable stage graph with write zones and reentrancy",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "artifacts": [
+        "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+        "00-MASTER/UCOS-RFP-001/rfp_engine.py"
+      ],
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "The fixed-point pipeline already declares the executable stages, their owners, their argv, their write zones, their reentrancy and their necessity. It is READ as the executable stage graph; it is not copied, restated or superseded."
+    },
+    {
+      "id": "CAP-04",
+      "group": "graph",
+      "capability": "validation, verification and certification graphs",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "artifacts": [
+        "00-MASTER/UCCEP-000000/uccep-bindings.json",
+        "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md"
+      ],
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "The check, gate and programme registers already declare what is validated, what is fail-closed, what certifies it and which capability owns it. They are READ as three of the discovered graph types."
+    },
+    {
+      "id": "CAP-05",
+      "group": "identity",
+      "capability": "identifier allocation, dictionary, registry, bookkeeping and lineage",
+      "owner": "00-BOOK/tools/ukb.py",
+      "artifacts": [
+        "00-BOOK/DATA/id-ledger.json",
+        "00-BOOK/DATA/artifacts.json",
+        "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+        "00-BOOK/MASTER-BOOK/UMB-010-LINEAGE-ARCHITECTURE.md"
+      ],
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "Ω-E03 already refused a UCID, a UCIDD and a UCIR on the grounds that these owners resolve. That refusal is inherited verbatim: this programme allocates no identifier, opens no registry and creates no lineage store."
+    },
+    {
+      "id": "CAP-06",
+      "group": "openness",
+      "capability": "unbounded lawful expansion",
+      "owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "artifacts": [
+        "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md"
+      ],
+      "status": "PARTIAL",
+      "action": "EXTEND",
+      "evidence": "AUTH-INF-001 owns unboundedness. Ω-E03 probed nine directions against located extension paths; the amendment names substantially more. This programme EXTENDS the probe surface to thirty-two axes and declares no new expansion authority."
+    },
+    {
+      "id": "CAP-07",
+      "group": "autonomy",
+      "capability": "autonomous constitutional execution",
+      "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "artifacts": [
+        "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+        "00-MASTER/UCOS-AEE-001/aee_engine.py"
+      ],
+      "status": "PARTIAL",
+      "action": "EXTEND",
+      "evidence": "An autonomous engine already exists with mandate coverage, observation, decision and convergence registers. What it lacks is a universal, graph-driven lifecycle to execute for an arbitrary goal. Ω-E04 supplies that substrate; Ω-E05 binds ACEE to it. No autonomous authority is created here."
+    },
+    {
+      "id": "CAP-08",
+      "group": "knowledge",
+      "capability": "canonical knowledge object model and registry",
+      "owner": "engine/uckp/registry.py",
+      "artifacts": [
+        "engine/uckp/registry.py",
+        "engine/uckp/vocabulary.py",
+        "engine/kernel/registry.py",
+        "knowledge/canonical-knowledge.json"
+      ],
+      "status": "EXISTING",
+      "action": "REUSE",
+      "evidence": "The Canonical Knowledge Object model, its open vocabularies and its reflective metatype root already exist and already admit a previously unknown member by registration. This programme normalizes discovered constitutional metadata onto that model and adds no ninth registry."
+    }
+  ],
+  "record_set": {
+    "$comment": "Located records this programme reads and may never write. write_set ∩ record_set = ∅ is proved mechanically.",
+    "records": [
+      {
+        "id": "REC-RFP",
+        "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+        "anchor": "pipeline",
+        "law": "RFP-2 · RFP-3"
+      },
+      {
+        "id": "REC-UCCEP",
+        "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+        "anchor": "gates",
+        "law": "CEP-002 Art 23"
+      },
+      {
+        "id": "REC-REGISTRY",
+        "owner": "00-BOOK/DATA/artifacts.json",
+        "anchor": "artifacts",
+        "law": "AIF-L14"
+      },
+      {
+        "id": "REC-LEDGER",
+        "owner": "00-BOOK/DATA/id-ledger.json",
+        "anchor": "by_path",
+        "law": "UIL-13"
+      },
+      {
+        "id": "REC-UCIC",
+        "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+        "anchor": "UNIVERSAL CAPABILITY LIFECYCLE",
+        "law": "CMG Art LXXVII.4"
+      },
+      {
+        "id": "REC-KNOWLEDGE",
+        "owner": "knowledge/canonical-knowledge.json",
+        "anchor": "objects",
+        "law": "Knowledge Once"
+      },
+      {
+        "id": "REC-DECISIONS",
+        "owner": "00-MASTER/UCDA-000001/ucda-decisions.json",
+        "anchor": "decisions",
+        "law": "CEP-002 Art 23"
+      },
+      {
+        "id": "REC-TOOLCHAIN",
+        "owner": "pyproject.toml",
+        "anchor": "project",
+        "law": "DE-04"
+      }
+    ]
+  },
+  "validations": [
+    {
+      "id": "UCL-V-01",
+      "dimension": "every discovered stage CKO's canonical owner resolves",
+      "measure": "stage_nodes_unowned",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-02",
+      "dimension": "every discovered stage CKO binds a located constitutional authority",
+      "measure": "stage_nodes_unauthorized",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-03",
+      "dimension": "the dependency graph is acyclic, so the lifecycle is orderable",
+      "measure": "graph_cycles",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-04",
+      "dimension": "every declared relation resolves to a discovered CKO",
+      "measure": "dangling_relations",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-05",
+      "dimension": "no capability is dispositioned CREATE",
+      "measure": "capabilities_created",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-06",
+      "dimension": "every declared capability's canonical owner resolves",
+      "measure": "capabilities_unowned",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-07",
+      "dimension": "no CKO or relation originates from implementation evidence",
+      "measure": "evidence_originated_ckos",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-08",
+      "dimension": "every provider declares a registered serialization reader",
+      "measure": "providers_without_reader",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-09",
+      "dimension": "every provider resolves and every adapter pointer yields a collection",
+      "measure": "adapters_unresolved",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-10",
+      "dimension": "every expansion axis resolves to a located admission path",
+      "measure": "expansion_axes_unbound",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-11",
+      "dimension": "no architectural bound token appears in the engine or any manifest",
+      "measure": "limit_tokens_present",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-12",
+      "dimension": "no open registry is declared a closed enumeration",
+      "measure": "closed_enumerations_declared",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-13",
+      "dimension": "the lifecycle re-enters, so no discovered stage is terminal",
+      "measure": "reentry_declarations_absent",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-14",
+      "dimension": "no located instrument claims a terminal constitutional state",
+      "measure": "terminal_state_claims",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-15",
+      "dimension": "every lifecycle authority resolves and its anchor is present in its own text",
+      "measure": "lifecycle_authorities_unresolved",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-16",
+      "dimension": "this programme claims no lifecycle authority of its own",
+      "measure": "parallel_authority_claims",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-17",
+      "dimension": "the located records this programme reads are unwritable by it",
+      "measure": "record_write_intersections",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-18",
+      "dimension": "nothing is written outside the programme's own home",
+      "measure": "writes_outside_home",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-19",
+      "dimension": "this measurement claims no authority",
+      "measure": "authority_claims",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-20",
+      "dimension": "every graph type resolves to declared CKO kinds and relation types",
+      "measure": "graph_types_unresolved",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-21",
+      "dimension": "every graph type composes at least one node",
+      "measure": "graph_types_empty",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-22",
+      "dimension": "every canonical goal executes to a deterministic run record",
+      "measure": "runs_nondeterministic",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-23",
+      "dimension": "every discovered stage exhibits every declared property",
+      "measure": "stage_property_failures",
+      "comparator": "<=",
+      "expect": 0,
+      "blocking": true,
+      "bound_finding": "UCL-F-001"
+    },
+    {
+      "id": "UCL-V-24",
+      "dimension": "every applicable obligation is bound on every discovered stage",
+      "measure": "stage_obligation_failures",
+      "comparator": "<=",
+      "expect": 1,
+      "blocking": true,
+      "bound_finding": "UCL-F-002"
+    },
+    {
+      "id": "UCL-V-25",
+      "dimension": "no unbounded direction is violated",
+      "measure": "unboundedness_violations",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-26",
+      "dimension": "every discovered provider declares itself open and admission-bearing",
+      "measure": "providers_not_open",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-27",
+      "dimension": "every CKO carries the provenance that originated it",
+      "measure": "ckos_without_provenance",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-28",
+      "dimension": "every discovered CKO kind is a member of the declared open kind registry",
+      "measure": "ckos_of_unknown_kind",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-29",
+      "dimension": "every emitted relation is a member of the declared open relation registry",
+      "measure": "relations_of_unknown_type",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-30",
+      "dimension": "every constitutionally governed entity holds exactly one Canonical Knowledge Object",
+      "measure": "cko_identity_collisions",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-31",
+      "dimension": "no derived artifact is used as Repository Truth",
+      "measure": "derived_artifacts_used_as_truth",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-32",
+      "dimension": "every relation resolves to exactly one Canonical Knowledge Object",
+      "measure": "cko_reference_ambiguities",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-33",
+      "dimension": "every Canonical Knowledge Object carries exactly one immutable semantic identity",
+      "measure": "ckos_without_semantic_identity",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-34",
+      "dimension": "no two distinct entities share a semantic identity",
+      "measure": "semantic_identity_collisions",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-35",
+      "dimension": "relationships are first-class Canonical Knowledge Objects",
+      "measure": "relationship_ckos_discovered",
+      "comparator": ">=",
+      "expect": 1,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-36",
+      "dimension": "every extracted knowledge rule resolves to a measurement",
+      "measure": "knowledge_extractions_unmeasured",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-37",
+      "dimension": "every capability increase is evidenced, lineaged, replayable, certifiable and governed",
+      "measure": "elevations_unevidenced",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-38",
+      "dimension": "every self-evolution step binds to a located owner outside this programme",
+      "measure": "self_evolution_steps_unbound",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-39",
+      "dimension": "every declared readiness dimension resolves to a located owner",
+      "measure": "readiness_owners_unresolved",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-40",
+      "dimension": "no semantic identity is derived from an input the invariants permit to evolve",
+      "measure": "semantic_identity_mutable_inputs",
+      "comparator": "==",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "UCL-V-41",
+      "dimension": "relationships whose target carries no registered constitutional identity stay within the disclosed bound",
+      "measure": "relationships_without_target_identity",
+      "comparator": "<=",
+      "expect": 291,
+      "blocking": true,
+      "bound_finding": "UCL-F-004"
+    },
+    {
+      "id": "UCL-V-42",
+      "dimension": "the DISTINCT artifacts the Universal Registry does not admit stay within the disclosed bound — the disclosed condition itself, counted once per artifact rather than once per edge that reaches it",
+      "measure": "unadmitted_target_artifacts",
+      "comparator": "<=",
+      "expect": 85,
+      "blocking": true,
+      "bound_finding": "UCL-F-005"
+    }
+  ],
+  "exit_criteria": [
+    {
+      "id": "UCL-EX-01",
+      "statement": "the Universal Constitutional Lifecycle exists as an executable constitutional capability: the stage graph is discovered from Canonical Constitutional Metadata, normalized to Canonical Knowledge Objects, ordered topologically, and traversed to a deterministic run record"
+    },
+    {
+      "id": "UCL-EX-02",
+      "statement": "the lifecycle is graph-driven rather than enumeration-driven: neither the engine nor this declaration contains a stage, a stage name, an ordering or a capability, so a future stage is admitted by appending declared metadata"
+    },
+    {
+      "id": "UCL-EX-03",
+      "statement": "constitutional discovery is implementation-independent: no CKO and no relation originates from implementation source, and every CKO carries the provenance and discovery class that originated it"
+    },
+    {
+      "id": "UCL-EX-04",
+      "statement": "constitutional discovery is serialization-independent: providers declare a format, the engine dispatches to a registered reader, more than one reader is exercised by a real provider, and an unregistered format is reported rather than fatal"
+    },
+    {
+      "id": "UCL-EX-05",
+      "statement": "every lifecycle stage is bound to a canonical owner and a constitutional authority the repository already legislated, and no capability is dispositioned CREATE"
+    },
+    {
+      "id": "UCL-EX-06",
+      "statement": "the constitutional graphs the amendment names are each composed from CKO kinds and relation types, and the graph type registry is itself open and discoverable"
+    },
+    {
+      "id": "UCL-EX-07",
+      "statement": "no architectural bound exists: thirty-two expansion axes each resolve to a located admission path, and no bound token appears in the engine or any manifest"
+    },
+    {
+      "id": "UCL-EX-08",
+      "statement": "the lifecycle does not terminate: re-entry is declared, and no located instrument claims a terminal constitutional state"
+    },
+    {
+      "id": "UCL-EX-09",
+      "statement": "the substrate is reusable by every capability without modification, because the traversal is a pure function of the discovered graph and names no capability"
+    },
+    {
+      "id": "UCL-EX-10",
+      "statement": "deterministic replay and fixed-point convergence are preserved: the registers are a pure function of located metadata, and re-rendering the committed state produces no drift"
+    },
+    {
+      "id": "UCL-EX-11",
+      "statement": "every constitutionally governed entity holds exactly one Canonical Knowledge Object, that object is its immutable constitutional identity, and every register, graph, projection, measurement and certificate this programme emits is derived from it"
+    },
+    {
+      "id": "UCL-EX-12",
+      "statement": "no derived artifact is Repository Truth: the registers and the model this programme writes are never read back as a metadata source, so no view can become a source"
+    },
+    {
+      "id": "UCL-EX-13",
+      "statement": "relationships are first-class Canonical Knowledge Objects with their own immutable semantic identity, and every constitutional graph is composed from entity CKOs and relationship CKOs"
+    },
+    {
+      "id": "UCL-EX-14",
+      "statement": "semantic identity is invariant: it is derived only from what an entity IS, so representation, serialization, storage, transport, runtime, implementation and location may all evolve without disturbing it"
+    },
+    {
+      "id": "UCL-EX-15",
+      "statement": "every completed execution extracts engineering knowledge that becomes Canonical Knowledge Objects and is referred to the located knowledge home for registration, so engineering knowledge accumulates constitutionally across future cycles"
+    },
+    {
+      "id": "UCL-EX-16",
+      "statement": "every execution measures and records Constitutional, Engineering and Autonomous Engineering Capability Increase, each carrying evidence, lineage, replay, certification and a governing authority"
+    },
+    {
+      "id": "UCL-EX-17",
+      "statement": "the substrate may self-evolve only through Repository Truth, Canonical Governance, Validation, Verification, Certification, Replay and Deterministic Fixed Point, each step owned outside this programme"
+    },
+    {
+      "id": "UCL-EX-18",
+      "statement": "Ω-E04 certifies Ω-E05 readiness across every declared dimension, each measured against a located owner rather than waived"
+    }
+  ],
+  "findings": [
+    {
+      "id": "UCL-F-001",
+      "class": "MEASURED-PROPERTY-COVERAGE",
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "title": "Property conformance is measured per stage and held at full coverage by a zero bound",
+      "detail": "The ten declared properties are evaluated per discovered stage against located metadata, and every stage currently exhibits every property. The bound is held at zero rather than removed, so the dimension is a RATCHET: if a future stage is admitted that does not exhibit a declared property, or a located instrument stops declaring what a property is measured from, the count rises above the bound and the gate closes. A dimension that only passed because nothing measured it would be the defect this programme exists to prevent.",
+      "why_not_repaired": "Nothing is presently divergent. The finding is retained because the bound must name a disposing finding to be admissible, and because the ratchet is the reason the bound is zero rather than absent.",
+      "referred_to": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "bound_measure": "stage_property_failures"
+    },
+    {
+      "id": "UCL-F-002",
+      "class": "MEASURED-OBLIGATION-COVERAGE",
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "title": "One applicable obligation is unbound, and it is unbound by a decision rather than an omission",
+      "detail": "Eleven obligations are evaluated against forty-five discovered stages. Applicability is determined first, so the inapplicable cases are reported rather than counted: registration is not applicable where the Universal Registry does not admit the zone the owner lives in — operational memory is deliberately barred from consuming a permanent corpus identity, so its absence from the registry is the exclusion authority working correctly — and replay and fixed-point proof are not applicable to a stage the repository declares constitutionally but does not execute. After applicability, exactly ONE obligation remains unbound, down from four. The THREE that belonged to gap discovery are bound: that stage's manifest node now declares a governance-gate binding to G-06 alongside its executable-stage binding, so certification is met directly and validation and verification follow transitively through the same edge — gap discovery measures 11/11. The ONE that remains belongs to certification: it is a pipeline member, so replay is in scope, but the pipeline declares STAGE-UCCEP non-reentrant as deliberate defence in depth against a recursion that would stop the repository converging. The bound equals the measured total exactly, so it carries no slack and any regression closes the gate.",
+      "why_not_repaired": "THE REMAINING ONE IS NOT REPAIRED BECAUSE REPAIRING IT WOULD COST MORE THAN IT BUYS. Flipping STAGE-UCCEP's reentrancy binds this obligation and re-arms the exact recursion the pipeline documents itself as defending against; rfp-declaration.json records that trade at the stage and states that UCL will report obligations=1unbound for this reason, permanently and by choice. A deficiency that names its cause is worth more than a counter driven to zero.\n\nTHE THREE THAT WERE REPAIRED WERE REPAIRED OVER THIS FINDING'S OWN OBJECTION, BY AN OWNER DECISION, AND THAT IS RECORDED HERE RATHER THAN QUIETLY DROPPED. This finding previously held that 'declaring a gate for gap discovery ... would amend another owner's record to improve this programme's own report'. The objection has force and is not withdrawn: G-06 is declared in uccep-bindings.json as the Repository Truth Gate owned by 00-BOOK/tools/ukb.py, and nothing in UCCEP's own record says that gate certifies gap discovery — the binding is asserted by this programme's manifest, and UCCEP has not been asked to agree. What weighed against it: gap discovery's three siblings in the same root zone each already declare exactly such a binding (G-04, G-05, G-08), so the absence read as an omission rather than a principle, and the stage's own authority line names Repository Truth as what a gap is measured against. The owner decided on that basis. If UCCEP later declines the binding, this is the paragraph to reopen.",
+      "referred_to": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "bound_measure": "stage_obligation_failures"
+    },
+    {
+      "id": "UCL-F-003",
+      "class": "HISTORICAL-TOKEN-DISAMBIGUATION",
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "title": "The token UCL is recorded historically against rejected non-UCOS concepts",
+      "detail": "The assimilation register records identifiers UCL-001 through UCL-015 as NOT-UCOS, IDEA, HISTORICAL-EVIDENCE-ONLY, NO_CURRENT_FORM, dispositioned REJECT and RETAIN-AS-HISTORY. Those are concept identifiers in the assimilation concept space. This programme's home is UCL-000001 in the programme-home space and consumes no corpus identity at all, so the two do not collide; the coincidence is recorded here so a future reader does not mistake this programme for the rejected concepts or vice versa.",
+      "why_not_repaired": "Nothing is defective. Recorded history is never rewritten, and disambiguation is the appropriate remedy rather than a rename that would erase the historical record's usefulness.",
+      "referred_to": "00-MASTER/UAKOS-CLOSURE-008/assimilation.json",
+      "bound_measure": null
+    },
+    {
+      "id": "UCL-F-004",
+      "class": "MEASURED-TARGET-IDENTITY-COVERAGE",
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "title": "Some relationship targets carry no registered constitutional identity",
+      "detail": "A relationship's constitutional identity derives from the semantic identities of its participants. Where a target is a located artifact that the Universal Registry does not admit — overwhelmingly operational memory, which is deliberately barred from consuming a permanent corpus identity — the target has no registered constitutional identity to derive from. Those relationships are counted and reported. Their handles remain distinct, so no relationship is lost or conflated in the graph. The bound is a RATCHET held at exactly the measured value, so it is re-tightened whenever governed records are lawfully admitted. It moved from 92 to 98 when Ω-E05 declared PROGRAM-000021 in the aggregate certifier: that programme delegates to six located owners, every one of which is operational memory the registry deliberately does not admit, so each delegation is exactly this disclosed condition and not a new one. The delta was measured against the committed reading — six added, none removed — rather than assumed, and no other relationship moved. It moved from 98 to 217 under P0-ULTIMATE-CLOSURE-001 by the same method and the same rule. The snapshot was re-taken against the reading at which the ratchet was last set (Ω-E05), and the delta was measured BY IDENTITY, not by count: the DISTINCT artifacts the registry does not admit went 83 → 84 — exactly one added, `intelligence/UCOS-RIE-CAPABILITY-CATALOG.json`, and none removed. Every one of the 119 relationships added reaches that single artifact: they are the 119 capability facts the knowledge store authored from the catalogue they were each derived from, so the relationship count moved by 119 while the disclosed condition moved by ONE. The added target is this disclosed condition in its strongest form. It is not merely a target the registry declines to admit but one whose registration `00-BOOK/tools/config.py` proves UNSATISFIABLE: every RIE output embeds the sha256 of the 00-BOOK/DATA projections that registration itself regenerates, so the bytes that would have to be registered are a function of the register that records them — a self-referential relation with no fixpoint. No target that COULD carry an identity is in this population: measured at this commit, the eligibility universe (`ukb.eligibility_universe()`, 1232 paths) and the registered artifact set (`00-BOOK/DATA/artifacts.json`, 1232 paths) are identical in both directions, so eligible-but-unregistered is 0. UCL-V-42 was added at the same time to bound the disclosed condition on the axis that measures it — one count per unadmitted ARTIFACT rather than one per edge reaching it — because a relationship ratchet cannot distinguish a new unadmitted corner of the corpus from more edges into an already-disclosed one. It moved from 217 to 274 under DEC-ADR-0014 (adr/0014) by the same method and the same rule. The snapshot was re-taken against the reading at which the ratchet was last set (P0-ULTIMATE-CLOSURE-001, commit de9b9f3e), and the delta was measured BY IDENTITY, not by count: the DISTINCT artifacts the registry does not admit went 84 -> 85 — exactly one added, `engine/constitution/stages.py`, and none removed. That artifact entered the graph as a relationship target through commit 8bad683f (P0-LIFECYCLE-CLOSURE-001, which realized all 45 lifecycle stages), a lawful admission of governed records. It is this disclosed condition in its ordinary form and not a new one: `00-BOOK/tools/ukb.py::eligibility_universe()` contains NO `engine/**/*.py` at all, so engine source is categorically outside the corpus eligibility universe and its registration is unavailable rather than merely declined. The 57 relationships added all reach already-disclosed corners plus that single new one — knowledge objects grew 130 -> 142 over the same span — so the edge count moved by 57 while the disclosed condition moved by ONE, which is exactly the conflation UCL-V-42 exists to separate. The decisive condition holds: of the 85 unadmitted targets, ZERO could carry a constitutional identity. The drift is not caused by the change being certified — measured at clean HEAD with all Phase 4 changes stashed, the counts are byte-identical at 274 and 85. Evidence lineage: UCL-GAP-CLOSURE-REPORT.md. DISCLOSED CORRECTION: the sentence above asserting that eligible-but-unregistered is 0 was true when written and is no longer — measured now, the eligibility universe holds 1425 paths against 1233 registered artifacts, so 192 documents are eligible and unregistered. That repository-wide claim was stronger than this bound requires; the operative condition is about the unadmitted TARGET population and still holds exactly. The 192 are recorded as UCL-F-006 and referred to REG-AUTO-001, because resolving them is a CORPUS_REGISTRATION mutation minting permanent, append-only, never-renumberable identities and may not be bundled into a bound re-tightening. It moved from 290 to 291 when the twelve stale pipeline producers were regenerated to their own output (commit b99069b8), a lawful admission of governed records: the committed registers were missing rows their producers generate from committed inputs, and UCOS-RFP-001 had been reporting exactly that residue. The delta was measured BY IDENTITY against the reading at which the ratchet was last set, not by count: the DISTINCT artifacts the registry does not admit went 84 -> 85 — exactly one added, `intelligence/UCOS-RIE-CAPABILITY-CATALOG.json`, and none removed. That artifact is the one this finding already analysed: its registration is not declined but UNSATISFIABLE, because every RIE output embeds the sha256 of the 00-BOOK/DATA projections that registration itself regenerates. It re-entered the graph as a target because regenerating that catalogue is what closed UCOS-RIB-001's GATE-07 uncatalogued_units, the coordinate framework having been built and never catalogued. The 148 relationships added reach that artifact and other already-disclosed corners, so the edge count moved by 148 while the disclosed condition moved by ONE — exactly the conflation UCL-V-42 exists to separate, and UCL-V-42 holds at 85 <= 85. The decisive condition still holds: of the 85 unadmitted targets, ZERO could carry a constitutional identity.",
+      "why_not_repaired": "The remedy would be to substitute the target's PATH into the identity, and a path is a location that the invariants expressly permit to evolve — using it would convert a location change into an identity change, which is the defect this invariant exists to prevent. Registering operational memory to obtain an identity would instead violate the exclusion authority. The condition is therefore reported and referred to the registry owner.",
+      "referred_to": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+      "bound_measure": "relationships_without_target_identity"
+    },
+    {
+      "id": "UCL-F-005",
+      "class": "MEASURED-UNADMITTED-TARGET-SURFACE",
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "title": "The graph reaches a bounded set of artifacts the Universal Registry does not admit",
+      "detail": "UCL-F-004 counts the EDGES that reach an artifact carrying no registered constitutional identity. This finding counts the ARTIFACTS themselves — the disclosed condition, once per artifact rather than once per edge. The two measures answer different constitutional questions and only this one answers 'how much of the corpus has the graph reached that the registry cannot name?'. The distinction is not theoretical: 119 capability facts each citing the one generated catalogue they were derived from move UCL-F-004's measure by 119 and this one by ONE. Measured at the commit that declared this finding: 84 distinct artifacts, classified against the executable eligibility authority in `00-BOOK/tools/config.py` — 1 generated intelligence projection (`intelligence/UCOS-RIE-*`, registration unsatisfiable by the self-referential-hash argument recorded in that file), operational memory under `00-MASTER/**` (UCOS-RECON-C1: execution state must never consume permanent corpus identities), directories (not artifacts), the generator's own machinery under `00-BOOK/tools/**` (the registry must not list itself), source files whose extension is outside INCLUDE_EXTENSIONS, generated registers under `00-BOOK/DATA` and `00-BOOK/CONTROL-TOWER`, and CI configuration under `.github/`. Eligible-but-unregistered is 0 and is structurally so: `ukb.eligibility_universe()` and the registered artifact set are held identical by `ukb.py enforce --pre` and `register.sh --guard`, both of which run in the canonical verification path. The bound is a RATCHET held at exactly the measured value, on the same discipline as UCL-F-004 and for the same reason UMB-005 §1 gives: a count is a snapshot of membership, never a declared capacity. A single new unadmitted artifact closes this gate even where the edge ratchet still has slack. It moved from 84 to 85 under DEC-ADR-0014 (adr/0014): exactly one artifact added, `engine/constitution/stages.py`, none removed, measured by identity against the reading at which the ratchet was last set. The added artifact is ineligible for corpus registration — `eligibility_universe()` admits no `engine/**/*.py` — so the disclosed condition is unchanged in kind. Of the 85 unadmitted targets, ZERO could carry a constitutional identity, which is the condition this bound rests on. Evidence lineage: UCL-GAP-CLOSURE-REPORT.md.",
+      "why_not_repaired": "Every artifact in the population is one the registry deliberately does not admit, and for three distinct reasons repository law states rather than infers: generated projections are re-derived and never hand-registered (GOV-005 §5.3), operational memory must never consume permanent corpus identities (UCOS-RECON-C1), and the generator must not register its own machinery or its own output. Admitting any of them to obtain an identity would violate the authority that excludes it; for the RIE family it would additionally be unsatisfiable, having no fixpoint. The condition is therefore reported and bounded rather than repaired, and referred to the same registry owner as UCL-F-004.",
+      "referred_to": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+      "bound_measure": "unadmitted_target_artifacts"
+    }
+  ],
+  "law_source": {
+    "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+    "anchor": "LXXVII"
+  },
+  "$identity_handle_comment": "IDENTITY VERSUS HANDLE. `cko_id` is a local HANDLE — it names the adapter that normalized the record, so it is an implementation characteristic and may change. `semantic_id` is the CONSTITUTIONAL IDENTITY and is derived exclusively from immutable constitutional identity fields. A digest is used, but only over those fields: a digest over anything mutable would be a fingerprint masquerading as an identity. Digests are additionally used for integrity, replay and deterministic evidence — the graph digest and the run identity — and neither of those is ever treated as a constitutional identity.",
+  "$derived_counters_comment": "Counters whose value is a population of a declared adapter's objects. Declared here so the engine names no adapter: it loops over these records and counts. Adding a counter of this shape is an append, and the engine gains no branch.",
+  "derived_counters": [
+    {
+      "id": "lineage_records_discovered",
+      "adapter": "SRC-LINEAGE",
+      "note": "append-only recorded snapshot chains projected as the lineage graph"
+    },
+    {
+      "id": "knowledge_objects_discovered",
+      "adapter": "SRC-KNOWLEDGE",
+      "note": "canonical knowledge objects in the located knowledge home"
+    },
+    {
+      "id": "registry_artifacts_discovered",
+      "adapter": "SRC-REGISTRY",
+      "note": "registered artifacts in the Universal Registry"
+    }
+  ]
+}

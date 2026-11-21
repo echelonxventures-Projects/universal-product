@@ -1,0 +1,171 @@
+{
+  "generated_at": "2026-07-16T04:57:06+00:00",
+  "generator_version": "1.0.0-adv",
+  "signal_count": 15,
+  "subject_count": 8,
+  "dimensions": {
+    "build": {
+      "status": "BLOCKED",
+      "signal_source": "GITHUB_ACTIONS",
+      "as_of": "2026-07-15T08:05:00Z"
+    },
+    "unit_testing": {
+      "status": "BLOCKED",
+      "signal_source": "GITHUB_ACTIONS",
+      "as_of": "2026-07-15T08:05:00Z"
+    },
+    "deployment": {
+      "status": "IN_PROGRESS",
+      "signal_source": "KUBERNETES",
+      "as_of": "2026-07-15T08:33:00Z"
+    },
+    "production": {
+      "status": "BLOCKED",
+      "signal_source": "PROMETHEUS",
+      "as_of": "2026-07-15T08:22:00Z"
+    },
+    "operational": {
+      "status": "BLOCKED",
+      "signal_source": "PROMETHEUS",
+      "as_of": "2026-07-15T08:22:00Z"
+    },
+    "security": {
+      "status": "BLOCKED",
+      "signal_source": "TRIVY",
+      "as_of": "2026-07-15T08:12:00Z"
+    },
+    "quality": {
+      "status": "BLOCKED",
+      "signal_source": "SONARQUBE",
+      "as_of": "2026-07-15T08:44:00Z"
+    },
+    "implementation": {
+      "status": "IMPLEMENTED",
+      "signal_source": "GIT",
+      "as_of": "2026-07-16T09:56:37+05:30"
+    }
+  },
+  "subjects": {
+    "UCOS-IMP-000009": {
+      "build": {
+        "state": "IMPLEMENTED",
+        "source": "GITHUB_ACTIONS",
+        "as_of": "2026-07-15T08:00:00Z",
+        "evidence": "gha://run/1001",
+        "signal_id": "USIG-000000001"
+      },
+      "unit_testing": {
+        "state": "TESTED",
+        "source": "GITHUB_ACTIONS",
+        "as_of": "2026-07-15T08:00:00Z",
+        "evidence": "gha://run/1001",
+        "signal_id": "USIG-000000002"
+      },
+      "deployment": {
+        "state": "IN_PROGRESS",
+        "source": "KUBERNETES",
+        "as_of": "2026-07-15T08:33:00Z",
+        "evidence": "ucos-staging",
+        "signal_id": "USIG-000000006"
+      }
+    },
+    "UCOS-IMP-000015": {
+      "build": {
+        "state": "BLOCKED",
+        "source": "GITHUB_ACTIONS",
+        "as_of": "2026-07-15T08:05:00Z",
+        "evidence": "gha://run/1002",
+        "signal_id": "USIG-000000003"
+      },
+      "unit_testing": {
+        "state": "BLOCKED",
+        "source": "GITHUB_ACTIONS",
+        "as_of": "2026-07-15T08:05:00Z",
+        "evidence": "gha://run/1002",
+        "signal_id": "USIG-000000004"
+      },
+      "security": {
+        "state": "BLOCKED",
+        "source": "TRIVY",
+        "as_of": "2026-07-15T08:12:00Z",
+        "evidence": "trivy://scan/2002",
+        "signal_id": "USIG-000000012"
+      }
+    },
+    "UCOS-RUN-000006": {
+      "deployment": {
+        "state": "DEPLOYED",
+        "source": "KUBERNETES",
+        "as_of": "2026-07-15T08:30:00Z",
+        "evidence": "ucos-prod",
+        "signal_id": "USIG-000000005"
+      },
+      "production": {
+        "state": "BLOCKED",
+        "source": "PROMETHEUS",
+        "as_of": "2026-07-15T08:22:00Z",
+        "evidence": "grafana://d/exec",
+        "signal_id": "USIG-000000009"
+      },
+      "operational": {
+        "state": "BLOCKED",
+        "source": "PROMETHEUS",
+        "as_of": "2026-07-15T08:22:00Z",
+        "evidence": "grafana://d/exec",
+        "signal_id": "USIG-000000010"
+      }
+    },
+    "UCOS-RUN-000001": {
+      "production": {
+        "state": "PRODUCTION",
+        "source": "PROMETHEUS",
+        "as_of": "2026-07-15T08:20:00Z",
+        "evidence": "grafana://d/runtime",
+        "signal_id": "USIG-000000007"
+      },
+      "operational": {
+        "state": "PRODUCTION",
+        "source": "PROMETHEUS",
+        "as_of": "2026-07-15T08:20:00Z",
+        "evidence": "grafana://d/runtime",
+        "signal_id": "USIG-000000008"
+      }
+    },
+    "UCOS-ARCH-000019": {
+      "security": {
+        "state": "APPROVED",
+        "source": "TRIVY",
+        "as_of": "2026-07-15T08:10:00Z",
+        "evidence": "trivy://scan/2001",
+        "signal_id": "USIG-000000011"
+      }
+    },
+    "UCOS-IMP-000011": {
+      "quality": {
+        "state": "APPROVED",
+        "source": "SONARQUBE",
+        "as_of": "2026-07-15T08:40:00Z",
+        "evidence": "sonarqube://project/knowledge-graph-engine",
+        "signal_id": "USIG-000000013"
+      }
+    },
+    "UCOS-IMP-000010": {
+      "quality": {
+        "state": "BLOCKED",
+        "source": "SONARQUBE",
+        "as_of": "2026-07-15T08:44:00Z",
+        "evidence": "sonarqube://project/identity-platform",
+        "signal_id": "USIG-000000014"
+      }
+    },
+    "UCOS-BOOK-000000": {
+      "implementation": {
+        "state": "IMPLEMENTED",
+        "source": "GIT",
+        "as_of": "2026-07-16T09:56:37+05:30",
+        "evidence": "git:4a0f999",
+        "signal_id": "USIG-000000015"
+      }
+    }
+  }
+}

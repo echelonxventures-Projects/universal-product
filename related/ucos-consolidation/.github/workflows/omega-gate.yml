@@ -1,0 +1,249 @@
+# UCOS-OMEGA-001 — Universal Discovery gate.
+#
+# WHAT THIS PROGRAMME REPLACED, stated as the measurement that produced it.
+#
+# Every governance control in this repository quantified over a list somebody wrote down. The
+# lists were correct on the day they were written and silently wrong afterwards, and every
+# omission below was found by READING the lists rather than by any control firing:
+#
+#   SOURCE_TREES = ("engine", "platform")   five other roots existed; 35,333 statements
+#   engine/recursive_knowledge              a PEP 420 namespace directory an __init__.py
+#                                           predicate could not see; 2,849 statements
+#   service, data, application,             188 test modules and 3,995 PASSING tests that
+#     infrastructure, intelligence          no testpaths entry collected, for months
+#   scripts/                                in no list at all; found by discovery's first run
+#
+# One root cause: a list of what exists agrees with itself forever. It has no term for what it
+# omits, so it cannot report its own incompleteness.
+#
+# THE Ω INVERSION. Governance stops comparing reality against a curated list and derives its
+# scope FROM reality. The population is `git ls-files '*.py'`; every scope, authority,
+# denominator and threshold is a function of it. A top-level tree that does not exist yet is
+# already governed — the commit that creates `quantum/` puts it inside every measurement here
+# with no edit to any file, and platform/tests/test_coverage_scope.py proves that by building
+# five such trees and measuring that discovery already accounts for them.
+#
+# This workflow is one of the two invocation planes UEC-L-06 requires; the other is the
+# `omega`/`omega-gate` target family in the Makefile. Deleting either fails UEC-L-02.
+#
+# STDLIB ONLY. The gate installs nothing: discovery reads git and parses Python with `ast`, so
+# the measurement cannot depend on a package resolving. Exit 0 all five criteria hold, 1 a
+# criterion refused, 2 FAULT (no verdict could be produced).
+
+name: omega-gate
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: omega-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  omega:
+    name: UCOS-OMEGA-001 five criteria
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Discovery's boundary is `git ls-files`, so the work tree must be a real one.
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: The gate — all five Ω criteria, fail-closed
+        # Invoked by the GATE MODULE PATH, matching the Makefile target. UEC-L-06 requires an
+        # enforcement artifact to be reachable from two independent invocation PLANES, so that
+        # deleting one leaves a signal: `make` and `ci` are those two here.
+        run: python3 -m engine.universal_discovery.gate
+
+      - name: The derived scope, printed so the denominator is auditable
+        run: python3 -m engine.universal_discovery --scope
+
+      - name: Determinism — two runs over one tree are byte-identical
+        run: |
+          python3 -m engine.universal_discovery --json > /tmp/omega-first.json
+          python3 -m engine.universal_discovery --json > /tmp/omega-second.json
+          cmp /tmp/omega-first.json /tmp/omega-second.json \
+            || { echo "the Ω surface is not deterministic over one tree" >&2; exit 1; }
+          echo "deterministic: two renders are identical"
+
+      - name: Read-only — the gate wrote nothing to the work tree
+        run: |
+          # The gate is read-only by construction; `--seal` is the only writing mode and this
+          # job never passes it. Asserted rather than trusted, because a gate that dirties the
+          # tree is seen as drift by the Registration Gate and gets suppressed.
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "the omega gate modified the work tree:" >&2
+            git status --porcelain >&2
+            exit 1
+          fi
+          echo "read-only confirmed"
+
+  soundness:
+    name: UCOS-OMEGA-001 sealed state is measured, not authored
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: No ratchet is a number, and every bound is a measurement
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          state = Path("00-MASTER/UCOS-OMEGA-001/omega-ratchet.json")
+          assert state.is_file(), "the Ω-4 sealed state is absent, so no bound is enforced"
+          document = json.loads(state.read_text(encoding="utf-8"))
+          assert document["schema"] == "ucos-omega-ratchet", document["schema"]
+          assert document["best"], "the sealed state records no best-ever value"
+
+          KINDS = {"MONOTONIC", "CONVERGENT", "DENSITY", "ENTROPY"}
+          for metric, kind in document["kinds"].items():
+              assert kind in KINDS, f"{metric} declares kind {kind!r}"
+
+          # Every bound must bind a declared kind, and every kind a bound. A bound with no kind
+          # cannot be compared; a kind with no bound enforces nothing.
+          assert set(document["best"]) == set(document["kinds"]), (
+              "the sealed bounds and the declared kinds name different metric sets"
+          )
+
+          # A justification excuses a REGRESSION and must say why. A floor excuses only a STALL
+          # and must say why. Keeping them separate is load-bearing: when one entry served both,
+          # a single sentence about an unreachable zero also excused unlimited growth forever.
+          for entry in document.get("justifications", []):
+              assert entry["reason"].strip(), f"{entry['metric']} is justified with no reason"
+              assert entry["metric"] in document["best"], entry["metric"]
+          for entry in document.get("floors", []):
+              assert entry["reason"].strip(), f"{entry['metric']} declares a floor with no reason"
+              assert entry["metric"] in document["best"], entry["metric"]
+              assert document["kinds"][entry["metric"]] == "CONVERGENT", (
+                  f"{entry['metric']} declares a floor but is not CONVERGENT; only a metric "
+                  "required to trend to zero can have a floor to argue about"
+              )
+              assert float(entry["value"]) >= 0
+
+          # A re-seed drops a metric's bound, which is the one operation here that can make a
+          # refusal disappear. It is legitimate when a measurement DEFECT is fixed and must always
+          # leave a written record, or the drop is indistinguishable from a drop taken to pass.
+          for entry in document.get("corrections", []):
+              assert entry["reason"].strip(), (
+                  f"{entry['metric']} was re-seeded with no written correction"
+              )
+              assert entry["metric"] in document["best"], (
+                  f"{entry['metric']} records a correction but has no bound, so the metric was "
+                  "dropped rather than re-seeded"
+              )
+          print(
+              f"sealed state sound: {len(document['best'])} measured bounds, "
+              f"{len(document.get('floors', []))} argued floors, "
+              f"{len(document.get('justifications', []))} justified regressions, "
+              f"{len(document.get('corrections', []))} recorded re-seeds"
+          )
+          PY
+
+      - name: No configuration enumerates the denominator any more
+        run: |
+          python3 - <<'PY'
+          import tomllib
+          from pathlib import Path
+
+          config = tomllib.loads(Path("pyproject.toml").read_text(encoding="utf-8"))
+          ini = config["tool"]["pytest"]["ini_options"]
+
+          flags = [a for a in ini["addopts"] if a.startswith("--cov=")]
+          assert not flags, f"the denominator is enumerated in addopts again: {flags}"
+          assert "testpaths" not in ini, "testpaths is declared again"
+          assert "source" not in config["tool"]["coverage"]["run"], (
+              "[tool.coverage.run] source is declared again"
+          )
+          assert "engine.universal_discovery.pytest_scope" in ini["addopts"], (
+              "the scope-injection plugin is not loaded, so pytest-cov receives no derived "
+              "denominator and coverage would measure whatever it happened to import"
+          )
+          # omit must stay PATTERNS: a suite under a tree nobody has created yet is already
+          # omitted only because the pattern names no tree.
+          for entry in config["tool"]["coverage"]["run"]["omit"]:
+              assert entry.startswith("*"), (
+                  f"omit entry {entry!r} names a path rather than a pattern, so a new tree's "
+                  "suite would enter the denominator"
+              )
+          print("no enumeration: the denominator is derived")
+          PY
+
+  non_vacuity:
+    name: UCOS-OMEGA-001 non-vacuity (the gate can close, and discovery can refuse)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: An empty population is a FAULT, not a pass
+        run: |
+          # THE MOST DANGEROUS DEFECT THIS PROGRAMME COULD HAVE. Every Ω invariant is
+          # vacuously true over an empty world, so an empty answer would convert "this
+          # repository is ungoverned" into "this repository is fully governed".
+          mkdir -p /tmp/empty && cd /tmp/empty && git init -q
+          cd "$GITHUB_WORKSPACE"
+          set +e
+          python3 -m engine.universal_discovery --root /tmp/empty
+          status=$?
+          set -e
+          if [ "$status" -ne 2 ]; then
+            echo "an empty repository did not FAULT (exit $status); it must never report a pass" >&2
+            exit 1
+          fi
+          echo "empty population correctly FAULTED"
+
+      - name: A tightened bound closes the gate
+        run: |
+          python3 - <<'PY'
+          # The gate must be able to REFUSE, or it is decoration. Every sealed bound is driven
+          # to zero — a regression on every metric at once — and at least one refusal must
+          # follow. This never writes to the sealed state; it compares in memory.
+          import sys
+
+          from engine.universal_discovery import graph, ratchet, surface
+
+          omega = surface.build(".")
+          tightened = ratchet.Ratchet(
+              {
+                  "best": {name: 0.0 for name, *_ in surface.metrics(omega.artifacts, graph.ImportGraph(".", ()))},
+                  "kinds": {name: kind for name, kind, *_ in surface.metrics(omega.artifacts, graph.ImportGraph(".", ()))},
+              }
+          )
+          observations = [
+              tightened.observe(name, kind, value, subject)
+              for name, kind, value, subject, _ratio in surface.metrics(
+                  omega.artifacts, graph.ImportGraph(".", ())
+              )
+              if value > 0
+          ]
+          refused = ratchet.refusals(observations)
+          if not refused:
+              print("every bound was driven to zero and nothing refused", file=sys.stderr)
+              raise SystemExit(1)
+          print(f"non-vacuous: {len(refused)} refusals when every bound is tightened")
+          PY

@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "AMC-06",
+      "certification_id": "UCOS-CERT-AMC-06-e95086b05372c21e",
+      "entry_hash": "0d6a7e13f94c16020ca6a7f0c50533d43c7234d219d6d062c972f9ef519296c5",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "e95086b05372c21e32075b313d31151a3a09080a0c343636e6cce10a4c438819",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-INTERACTION-ucos.application.interaction.foundation-c6a5f6c39a7da8ee",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "0d6a7e13f94c16020ca6a7f0c50533d43c7234d219d6d062c972f9ef519296c5",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

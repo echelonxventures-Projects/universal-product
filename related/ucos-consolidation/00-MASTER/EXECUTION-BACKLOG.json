@@ -1,0 +1,851 @@
+{
+  "artifact_id": "UCOS-EXECUTION-BACKLOG-001",
+  "title": "Repository-Wide Closure Execution Backlog",
+  "date": "2026-09-01",
+  "authority": "PHASE E7 — EXECUTION BACKLOG",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "DERIVED",
+    "relation": "PROJECTION",
+    "articles": [
+      "UCKP-ART-16",
+      "UCKP-ART-18"
+    ],
+    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+    "effect": "UCKP-ART-16 makes every governance decision discoverable, replayable and auditable; this backlog is the discoverable record of what the measured closure gap requires, not a decision that any of it is done. UCKP-ART-18 requires reuse before creation: each item names the canonical object it extends rather than authoring a rival. The top-level `authority` field names the programme phase that produced this list and confers no standing of its own."
+  },
+  "scope": "All 33 producers, MB7-MB24, 718-1,174 hours work",
+  "schema": "execution-backlog",
+  "version": "1.0.0",
+  "summary": {
+    "total_tasks": 234,
+    "total_producers": 33,
+    "threats_covered": [
+      "MB7",
+      "MB14",
+      "MB15",
+      "MB16",
+      "MB17",
+      "MB18",
+      "MB22",
+      "MB23",
+      "MB24"
+    ],
+    "estimated_hours": {
+      "minimum": 718,
+      "maximum": 1174,
+      "median": 946
+    },
+    "waves": 7,
+    "dependencies": "explicit per task"
+  },
+  "backlog": [
+    {
+      "id": "W0-001",
+      "wave": 0,
+      "threat": null,
+      "producer": null,
+      "action": "Create CODEOWNERS entries for authority files",
+      "priority": "CRITICAL",
+      "effort_hours": {
+        "min": 2,
+        "max": 4,
+        "estimate": 3
+      },
+      "dependencies": [],
+      "evidence_required": [
+        ".github/CODEOWNERS file exists",
+        "Entry for engine/uckp/law.py",
+        "Entry for 00-BOOK/DATA/*-authority.json"
+      ],
+      "closure_criteria": "CODEOWNERS committed, authority files require review",
+      "assignable_to": "governance-lead",
+      "blocking": [
+        "W1-*"
+      ]
+    },
+    {
+      "id": "W0-002",
+      "wave": 0,
+      "threat": null,
+      "producer": null,
+      "action": "Implement stage-registry-invariants in verify.sh",
+      "priority": "HIGH",
+      "effort_hours": {
+        "min": 4,
+        "max": 8,
+        "estimate": 6
+      },
+      "dependencies": [],
+      "evidence_required": [
+        "verify.sh contains stage-registry-invariants",
+        "Stage scans generated-artifact-registry.json",
+        "Stage enforces MB19, MB21 (false positives, prevention only)"
+      ],
+      "closure_criteria": "./verify.sh --full includes stage, exits 1 on violations",
+      "assignable_to": "infrastructure-engineer",
+      "blocking": []
+    },
+    {
+      "id": "W0-003",
+      "wave": 0,
+      "threat": "MB20",
+      "producer": null,
+      "action": "Audit evidence-universe.json completeness",
+      "priority": "MEDIUM",
+      "effort_hours": {
+        "min": 8,
+        "max": 12,
+        "estimate": 10
+      },
+      "dependencies": [],
+      "evidence_required": [
+        "All evidence surfaces classified",
+        "DEBUG/IMPROVEMENT surfaces identified",
+        "Certification artifacts cross-referenced"
+      ],
+      "closure_criteria": "MB20 status changed from UNPROVEN to REAL_THREAT or FALSE_POSITIVE",
+      "assignable_to": "evidence-analyst",
+      "blocking": [
+        "W5-MB20-*"
+      ]
+    },
+    {
+      "id": "W0-004",
+      "wave": 0,
+      "threat": null,
+      "producer": null,
+      "action": "Create validator template library",
+      "priority": "HIGH",
+      "effort_hours": {
+        "min": 16,
+        "max": 24,
+        "estimate": 20
+      },
+      "dependencies": [],
+      "evidence_required": [
+        "00-BOOK/tools/validator_template.py exists",
+        "Template provides: provenance verification pattern",
+        "Template provides: equivalence verification pattern",
+        "Template provides: invariant verification pattern",
+        "Documentation for each pattern"
+      ],
+      "closure_criteria": "Template library tested, reusable for Wave 2",
+      "assignable_to": "platform-architect",
+      "blocking": [
+        "W2-*"
+      ],
+      "optimization": "Reduces Wave 2 effort by 20% (38-64 hours savings)"
+    }
+  ],
+  "wave_1_authority_externalization": {
+    "description": "Identify and document authority corpus for all 32 OPEN producers",
+    "task_pattern": {
+      "id_template": "W1-{producer}",
+      "wave": 1,
+      "threat": "MB7",
+      "action_template": "Identify authority corpus for {producer}",
+      "priority_mapping": {
+        "UCOS-RIB-001": "CRITICAL",
+        "UCOS-RIE-001": "CRITICAL",
+        "UAIE-000001": "HIGH",
+        "UCOS-AEE-001": "HIGH",
+        "UCOS-UGA-001": "HIGH",
+        "UCOS-UAR-001": "HIGH",
+        "UCOS-URAT-001": "HIGH",
+        "default": "MEDIUM"
+      },
+      "effort_hours": {
+        "min": 2,
+        "max": 4,
+        "estimate": 3
+      },
+      "dependencies_template": [
+        "W0-001"
+      ],
+      "evidence_required_template": [
+        "00-BOOK/DATA/{producer}-authority.json exists",
+        "Authority sources enumerated (authored files)",
+        "Constitutional superior documented (if applicable)",
+        "Input closure verified against authority"
+      ],
+      "closure_criteria_template": "Authority corpus peer-reviewed, authority manifest committed",
+      "assignable_to_template": "producer-owner-{producer}"
+    },
+    "producers": [
+      "ACEE-000001",
+      "BASELINE-001",
+      "MCOS-000001",
+      "P0-LIFECYCLE-CLOSURE-001",
+      "UAIE-000001",
+      "UAKOS-CLOSURE-008",
+      "UAKOS-CLOSURE-009",
+      "UAKOS-PHASE-001A-R1",
+      "UAKOS-PHASE-003R",
+      "UAUE-000001",
+      "UCDA-000001",
+      "UCEF-000001",
+      "UCL-000001",
+      "UCOS-AEE-001",
+      "UCOS-MXR-001",
+      "UCOS-NUCLEUS-001",
+      "UCOS-RIB-001",
+      "UCOS-RIE-001",
+      "UCOS-UAR-001",
+      "UCOS-UCAF-001",
+      "UCOS-UFEP-001",
+      "UCOS-UGA-001",
+      "UCOS-URAT-001",
+      "UCOS-USIS-WAVE0",
+      "UCOS-UTCE-001",
+      "UEI-000001",
+      "UER-000001",
+      "UIS-001",
+      "UKAP-001",
+      "UMK-000001",
+      "UPF-000001",
+      "URRC-000001"
+    ],
+    "total_tasks": 32,
+    "total_effort": {
+      "min": 64,
+      "max": 128,
+      "estimate": 96
+    }
+  },
+  "wave_2_independent_validators": {
+    "description": "Create independent validators for all 32 OPEN producers (MB7 closure)",
+    "task_pattern": {
+      "id_template": "W2-{producer}",
+      "wave": 2,
+      "threat": "MB7",
+      "action_template": "Implement independent validator for {producer}",
+      "priority_mapping": {
+        "UCOS-RIB-001": "CRITICAL",
+        "UCOS-RIE-001": "CRITICAL",
+        "UAIE-000001": "HIGH",
+        "UCOS-AEE-001": "HIGH",
+        "UCOS-UGA-001": "HIGH",
+        "UCOS-UAR-001": "HIGH",
+        "UCOS-URAT-001": "HIGH",
+        "default": "MEDIUM"
+      },
+      "effort_hours": {
+        "min": 6,
+        "max": 10,
+        "estimate": 8,
+        "note": "With validator template library, reduces to 5-8 hours"
+      },
+      "dependencies_template": [
+        "W0-004",
+        "W1-{producer}"
+      ],
+      "evidence_required_template": [
+        "00-BOOK/tools/{producer}_verify.py exists",
+        "Validator does NOT import {producer}_engine",
+        "Validator reads {producer}-authority.json",
+        "Validator has test suite",
+        "Validator tests pass"
+      ],
+      "closure_criteria_template": "Validator code reviewed, tests pass, ready for Wave 3 attacks",
+      "assignable_to_template": "validator-engineer-{producer}"
+    },
+    "producers": 32,
+    "total_tasks": 32,
+    "total_effort": {
+      "min": 192,
+      "max": 320,
+      "estimate": 256,
+      "with_template_optimization": {
+        "min": 160,
+        "max": 256,
+        "estimate": 208
+      }
+    }
+  },
+  "wave_3_attack_verification": {
+    "description": "Create attack reproducers and verify independent validators catch them",
+    "task_pattern": {
+      "id_template": "W3-{producer}",
+      "wave": 3,
+      "threat": "MB7",
+      "action_template": "Create attack reproducers for {producer} and verify detection",
+      "priority_mapping": "matches Wave 2",
+      "effort_hours": {
+        "min": 3,
+        "max": 5,
+        "estimate": 4
+      },
+      "dependencies_template": [
+        "W2-{producer}"
+      ],
+      "evidence_required_template": [
+        "attacks/{producer}_attack_invented.sh exists",
+        "attacks/{producer}_attack_permutation.sh exists",
+        "attacks/{producer}_attack_truncation.sh exists",
+        "{producer}-attack-results.json shows gate_exit=0, verifier_exit=1 for all 3",
+        "MB7 closure proof documented"
+      ],
+      "closure_criteria_template": "3 attacks proven, self-validation passes wrong output, independent validator catches",
+      "assignable_to_template": "validator-engineer-{producer}"
+    },
+    "producers": 32,
+    "total_tasks": 32,
+    "total_effort": {
+      "min": 96,
+      "max": 160,
+      "estimate": 128
+    }
+  },
+  "wave_4_bootstrap_integrity": {
+    "description": "Verify bootstrap closure, regeneration commands, and determinism (MB14, MB18, MB22, MB23)",
+    "subwaves": [
+      {
+        "id": "W4A",
+        "name": "Bootstrap Graph Construction (MB18)",
+        "tasks": [
+          {
+            "id": "W4A-001",
+            "wave": 4,
+            "threat": "MB18",
+            "producer": null,
+            "action": "Implement bootstrap dependency graph builder",
+            "priority": "HIGH",
+            "effort_hours": {
+              "min": 20,
+              "max": 30,
+              "estimate": 25
+            },
+            "dependencies": [
+              "W1-*"
+            ],
+            "evidence_required": [
+              "00-BOOK/tools/bootstrap_graph.py exists",
+              "Graph builder reads generated-artifact-registry.json",
+              "Graph enumerates all GENERATED_DETERMINISTIC dependencies",
+              "Cycle detection algorithm implemented"
+            ],
+            "closure_criteria": "Graph builder tested, ready for execution",
+            "assignable_to": "platform-architect"
+          },
+          {
+            "id": "W4A-002",
+            "wave": 4,
+            "threat": "MB18",
+            "producer": null,
+            "action": "Execute bootstrap graph construction and cycle detection",
+            "priority": "HIGH",
+            "effort_hours": {
+              "min": 20,
+              "max": 30,
+              "estimate": 25
+            },
+            "dependencies": [
+              "W4A-001"
+            ],
+            "evidence_required": [
+              "bootstrap-graph.json generated",
+              "bootstrap-cycle-report.json shows 0 cycles OR lists cycles for remediation",
+              "Bootstrap completeness verified"
+            ],
+            "closure_criteria": "No cycles OR cycles remediated, MB18 status CLOSED",
+            "assignable_to": "platform-architect",
+            "blocking": [
+              "W4B-*",
+              "W4C-*",
+              "W4D-*"
+            ]
+          }
+        ],
+        "total_effort": {
+          "min": 40,
+          "max": 60,
+          "estimate": 50
+        }
+      },
+      {
+        "id": "W4B",
+        "name": "Fresh-Clone Bootstrap Tests (MB14)",
+        "task_pattern": {
+          "id_template": "W4B-{producer}",
+          "wave": 4,
+          "threat": "MB14",
+          "action_template": "Create and execute fresh-clone bootstrap test for {producer}",
+          "priority": "MEDIUM",
+          "effort_hours": {
+            "min": 2,
+            "max": 2,
+            "estimate": 2
+          },
+          "dependencies_template": [
+            "W4A-002"
+          ],
+          "evidence_required_template": [
+            "platform/tests/test_fresh_clone_{producer}.py exists",
+            "Test passes in isolated environment",
+            "{producer}-fresh-clone-test.log shows PASS"
+          ],
+          "closure_criteria_template": "Test passes, MB14 closed for {producer}",
+          "assignable_to_template": "test-engineer-{producer}"
+        },
+        "producers": 32,
+        "total_tasks": 32,
+        "total_effort": {
+          "min": 64,
+          "max": 64,
+          "estimate": 64
+        }
+      },
+      {
+        "id": "W4C",
+        "name": "Regeneration Command Verification (MB22)",
+        "task_pattern": {
+          "id_template": "W4C-{producer}",
+          "wave": 4,
+          "threat": "MB22",
+          "action_template": "Verify regeneration commands for {producer}",
+          "priority": "MEDIUM",
+          "effort_hours": {
+            "min": 3,
+            "max": 4,
+            "estimate": 3.5
+          },
+          "dependencies_template": [
+            "W4A-002"
+          ],
+          "evidence_required_template": [
+            "platform/tests/test_regeneration_{producer}.py exists",
+            "Test executes declared regeneration_command",
+            "Test passes, output matches current",
+            "{producer}-regeneration-test.log shows PASS"
+          ],
+          "closure_criteria_template": "Regeneration verified, MB22 closed for {producer}",
+          "assignable_to_template": "test-engineer-{producer}"
+        },
+        "producers": 32,
+        "total_tasks": 32,
+        "total_effort": {
+          "min": 96,
+          "max": 128,
+          "estimate": 112
+        }
+      },
+      {
+        "id": "W4D",
+        "name": "Determinism Verification (MB23)",
+        "task_pattern": {
+          "id_template": "W4D-{producer}",
+          "wave": 4,
+          "threat": "MB23",
+          "action_template": "Verify deterministic claims for {producer}",
+          "priority": "MEDIUM",
+          "effort_hours": {
+            "min": 2,
+            "max": 3,
+            "estimate": 2.5
+          },
+          "dependencies_template": [
+            "W4A-002"
+          ],
+          "evidence_required_template": [
+            "platform/tests/test_determinism_{producer}.py exists",
+            "Test runs generator twice",
+            "Outputs byte-identical",
+            "{producer}-determinism-test.log shows PASS"
+          ],
+          "closure_criteria_template": "Determinism verified OR claim downgraded, MB23 closed for {producer}",
+          "assignable_to_template": "test-engineer-{producer}"
+        },
+        "producers": 32,
+        "total_tasks": 32,
+        "total_effort": {
+          "min": 64,
+          "max": 96,
+          "estimate": 80
+        }
+      }
+    ],
+    "total_tasks": 98,
+    "total_effort": {
+      "min": 264,
+      "max": 348,
+      "estimate": 306
+    }
+  },
+  "wave_5_constitutional_alignment": {
+    "description": "Verify constitutional superior claims (MB24)",
+    "note": "Runs parallel with Wave 4",
+    "task_pattern": {
+      "id_template": "W5-{producer}",
+      "wave": 5,
+      "threat": "MB24",
+      "action_template": "Implement and verify constitutional alignment for {producer}",
+      "priority_mapping": {
+        "UCOS-UGA-001": "CRITICAL",
+        "default": "MEDIUM"
+      },
+      "effort_hours": {
+        "min": 4,
+        "max": 8,
+        "estimate": 6
+      },
+      "dependencies_template": [
+        "W1-{producer}",
+        "W2-{producer}"
+      ],
+      "evidence_required_template": [
+        "00-BOOK/tools/{producer}_constitutional_verify.py exists",
+        "Verifier reads constitutional_superior authority",
+        "Misalignment attack test passes (verifier rejects)",
+        "{producer}-constitutional-alignment-results.json documented"
+      ],
+      "closure_criteria_template": "Constitutional alignment verified, MB24 closed for {producer}",
+      "assignable_to_template": "constitutional-analyst-{producer}"
+    },
+    "producers_affected": [
+      "UCOS-UGA-001",
+      "Registry itself",
+      "Others TBD in Wave 1"
+    ],
+    "estimated_producers": 10,
+    "total_tasks": 10,
+    "total_effort": {
+      "min": 40,
+      "max": 80,
+      "estimate": 60
+    }
+  },
+  "wave_6_ci_integration": {
+    "description": "Integrate all validators and tests into CI enforcement chain",
+    "tasks": [
+      {
+        "id": "W6-001",
+        "wave": 6,
+        "threat": null,
+        "producer": null,
+        "action": "Design CI integration pattern for per-producer validators",
+        "priority": "HIGH",
+        "effort_hours": {
+          "min": 8,
+          "max": 12,
+          "estimate": 10
+        },
+        "dependencies": [
+          "W3-*"
+        ],
+        "evidence_required": [
+          "CI integration template documented",
+          "verify.sh stage pattern defined",
+          "UVI registry update procedure defined"
+        ],
+        "closure_criteria": "Integration pattern tested on 2 producers",
+        "assignable_to": "ci-engineer"
+      },
+      {
+        "id": "W6-002",
+        "wave": 6,
+        "threat": null,
+        "producer": null,
+        "action": "Implement cross-cutting CI stages",
+        "priority": "HIGH",
+        "effort_hours": {
+          "min": 16,
+          "max": 24,
+          "estimate": 20
+        },
+        "dependencies": [
+          "W4A-002"
+        ],
+        "evidence_required": [
+          "verify.sh contains stage-bootstrap-integrity",
+          "verify.sh contains stage-determinism",
+          "verify.sh contains stage-registry-invariants (from W0)"
+        ],
+        "closure_criteria": "./verify.sh --full runs all cross-cutting stages",
+        "assignable_to": "ci-engineer"
+      }
+    ],
+    "per_producer_integration": {
+      "task_pattern": {
+        "id_template": "W6-{producer}",
+        "wave": 6,
+        "threat": "MB7",
+        "action_template": "Integrate {producer} validator into CI",
+        "priority": "MEDIUM",
+        "effort_hours": {
+          "min": 1,
+          "max": 1,
+          "estimate": 1
+        },
+        "dependencies_template": [
+          "W6-001",
+          "W3-{producer}"
+        ],
+        "evidence_required_template": [
+          "verify.sh contains stage-{producer}-validation",
+          "00-MASTER/UVI-000001/uvi-declaration.json lists stage",
+          "./verify.sh --full runs {producer} validator",
+          "Validator cannot be bypassed"
+        ],
+        "closure_criteria_template": "{producer} validator CI-enforced, MB7 CERTIFIED for {producer}",
+        "assignable_to_template": "ci-engineer"
+      },
+      "producers": 32,
+      "total_tasks": 32,
+      "total_effort": {
+        "min": 32,
+        "max": 32,
+        "estimate": 32
+      }
+    },
+    "total_tasks": 34,
+    "total_effort": {
+      "min": 56,
+      "max": 68,
+      "estimate": 62
+    }
+  },
+  "wave_7_certification": {
+    "description": "Document closure, update registry, produce certifications",
+    "tasks": [
+      {
+        "id": "W7-001",
+        "wave": 7,
+        "threat": null,
+        "producer": null,
+        "action": "Update generated-artifact-registry.json with independent_validation fields",
+        "priority": "HIGH",
+        "effort_hours": {
+          "min": 24,
+          "max": 32,
+          "estimate": 28
+        },
+        "dependencies": [
+          "W6-*"
+        ],
+        "evidence_required": [
+          "All 367 artifacts have independent_validation field OR justification why not",
+          "Validation strategies documented",
+          "Registry validates against schema"
+        ],
+        "closure_criteria": "Registry updated, committed",
+        "assignable_to": "documentation-lead"
+      },
+      {
+        "id": "W7-002",
+        "wave": 7,
+        "threat": null,
+        "producer": null,
+        "action": "Compile per-producer closure certificates",
+        "priority": "MEDIUM",
+        "effort_hours": {
+          "min": 32,
+          "max": 48,
+          "estimate": 40
+        },
+        "dependencies": [
+          "W6-*"
+        ],
+        "evidence_required": [
+          "32 closure certificates generated (one per OPEN producer)",
+          "Each certificate documents: threats closed, evidence locations, CI integration",
+          "Certificates stored in 00-MASTER/{producer}/"
+        ],
+        "closure_criteria": "All 32 certificates reviewed and committed",
+        "assignable_to": "certification-analyst"
+      },
+      {
+        "id": "W7-003",
+        "wave": 7,
+        "threat": null,
+        "producer": null,
+        "action": "Execute repository-wide certification audit",
+        "priority": "HIGH",
+        "effort_hours": {
+          "min": 24,
+          "max": 32,
+          "estimate": 28
+        },
+        "dependencies": [
+          "W7-001",
+          "W7-002"
+        ],
+        "evidence_required": [
+          "./verify.sh --full passes",
+          "All 33 producers CERTIFIED",
+          "MB7-MB24 all CLOSED",
+          "Repository certification report generated"
+        ],
+        "closure_criteria": "Repository certified, 100% closure achieved",
+        "assignable_to": "certification-lead"
+      },
+      {
+        "id": "W7-004",
+        "wave": 7,
+        "threat": null,
+        "producer": null,
+        "action": "Update knowledge base and operator documentation",
+        "priority": "MEDIUM",
+        "effort_hours": {
+          "min": 16,
+          "max": 24,
+          "estimate": 20
+        },
+        "dependencies": [
+          "W7-003"
+        ],
+        "evidence_required": [
+          "00-BOOK registries updated",
+          "Validation architecture documented",
+          "Operator runbooks created",
+          "Threat registry (MB7-MB24) updated with CLOSED status"
+        ],
+        "closure_criteria": "Documentation complete, knowledge base updated",
+        "assignable_to": "documentation-lead"
+      }
+    ],
+    "total_tasks": 4,
+    "total_effort": {
+      "min": 96,
+      "max": 136,
+      "estimate": 116
+    }
+  },
+  "effort_summary": {
+    "by_wave": {
+      "Wave 0": {
+        "min": 30,
+        "max": 48,
+        "estimate": 39
+      },
+      "Wave 1": {
+        "min": 64,
+        "max": 128,
+        "estimate": 96
+      },
+      "Wave 2": {
+        "min": 160,
+        "max": 256,
+        "estimate": 208
+      },
+      "Wave 3": {
+        "min": 96,
+        "max": 160,
+        "estimate": 128
+      },
+      "Wave 4": {
+        "min": 264,
+        "max": 348,
+        "estimate": 306
+      },
+      "Wave 5": {
+        "min": 40,
+        "max": 80,
+        "estimate": 60
+      },
+      "Wave 6": {
+        "min": 56,
+        "max": 68,
+        "estimate": 62
+      },
+      "Wave 7": {
+        "min": 96,
+        "max": 136,
+        "estimate": 116
+      }
+    },
+    "total": {
+      "min": 806,
+      "max": 1224,
+      "estimate": 1015
+    },
+    "note": "After deduplication (144 hours), revised: 662-1,080 hours"
+  },
+  "assignment_roles": {
+    "governance-lead": {
+      "responsibilities": [
+        "CODEOWNERS",
+        "policy",
+        "review enforcement"
+      ],
+      "estimated_tasks": 10,
+      "estimated_hours": 30
+    },
+    "infrastructure-engineer": {
+      "responsibilities": [
+        "verify.sh stages",
+        "CI infrastructure",
+        "cross-cutting tools"
+      ],
+      "estimated_tasks": 15,
+      "estimated_hours": 80
+    },
+    "platform-architect": {
+      "responsibilities": [
+        "validator template",
+        "bootstrap graph",
+        "architecture decisions"
+      ],
+      "estimated_tasks": 8,
+      "estimated_hours": 100
+    },
+    "validator-engineer": {
+      "responsibilities": [
+        "per-producer validators",
+        "attack reproducers"
+      ],
+      "estimated_tasks": 64,
+      "estimated_hours": 400
+    },
+    "test-engineer": {
+      "responsibilities": [
+        "fresh-clone tests",
+        "regeneration tests",
+        "determinism tests"
+      ],
+      "estimated_tasks": 96,
+      "estimated_hours": 256
+    },
+    "constitutional-analyst": {
+      "responsibilities": [
+        "constitutional alignment",
+        "authority governance"
+      ],
+      "estimated_tasks": 10,
+      "estimated_hours": 60
+    },
+    "ci-engineer": {
+      "responsibilities": [
+        "CI integration",
+        "UVI registry updates"
+      ],
+      "estimated_tasks": 35,
+      "estimated_hours": 65
+    },
+    "certification-analyst": {
+      "responsibilities": [
+        "closure certificates",
+        "evidence compilation"
+      ],
+      "estimated_tasks": 12,
+      "estimated_hours": 70
+    },
+    "documentation-lead": {
+      "responsibilities": [
+        "registry updates",
+        "knowledge base",
+        "runbooks"
+      ],
+      "estimated_tasks": 8,
+      "estimated_hours": 64
+    }
+  },
+  "execution_notes": {
+    "parallelization": "Waves 1-3 highly parallelizable per producer. Wave 4 subwaves partially sequential. Wave 5 runs parallel with Wave 4.",
+    "coordination": "Daily standups recommended for 4+ workers. Weekly checkpoints for milestones.",
+    "risk_management": "Validator complexity, bootstrap cycles, CI integration failures are highest risks. Mitigations defined in CRITICAL-PATH-ANALYSIS.md.",
+    "quality_gates": "Each wave has evidence requirements. No wave proceeds until predecessor evidence validated.",
+    "traceability": "Every task has explicit evidence required and closure criteria. No subjective completion."
+  }
+}

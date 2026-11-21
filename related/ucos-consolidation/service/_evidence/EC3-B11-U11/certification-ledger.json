@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "USM",
+      "certification_id": "UCOS-CERT-USM-312abed8081da1d5",
+      "entry_hash": "3020330b64ea36ee1bc6f4c380610d532b748a0fc98d28b0b47a29f0c1ac502e",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "312abed8081da1d54964195d78482e9076aa438aa8f826ba134faa4e07a6a33b",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "3020330b64ea36ee1bc6f4c380610d532b748a0fc98d28b0b47a29f0c1ac502e",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

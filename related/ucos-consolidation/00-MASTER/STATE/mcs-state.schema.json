@@ -1,0 +1,86 @@
+{
+  "schema_dialect": "json-schema-draft-2020-12 (local, no remote refs)",
+  "title": "MCS Machine State (mirror of MCP-002 Master State)",
+  "description": "Storage-agnostic logical schema for the dynamic operational state of UCOS Omega-infinity. Canonical source is MCP-002-MASTER-STATE.md; this JSON is a regenerated projection (Markdown wins on divergence). A future SQL/graph/document backend is a projection of this same logical model.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["mcs_version", "authority", "captured_head", "repository", "current", "next_authorized_capability"],
+  "properties": {
+    "mcs_version": { "type": "string", "description": "MCS subsystem version, e.g. 1.0" },
+    "authority": { "const": "NONE", "description": "MCS holds no authority; DERIVED TRUTH only" },
+    "captured_head": { "type": "string", "description": "git short HEAD at which this state was verified" },
+    "captured_utc": { "type": "string", "description": "UTC timestamp of capture" },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["origin", "branch", "head", "working_tree", "sync"],
+      "properties": {
+        "origin": { "type": "string" },
+        "branch": { "type": "string" },
+        "head": { "type": "string" },
+        "working_tree": { "enum": ["CLEAN", "DIRTY"] },
+        "sync": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["ahead", "behind"],
+          "properties": {
+            "ahead": { "type": "integer", "minimum": 0 },
+            "behind": { "type": "integer", "minimum": 0 }
+          }
+        }
+      }
+    },
+    "current": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["program", "phase", "band", "work_package", "capability", "capability_state"],
+      "properties": {
+        "program": { "type": "string" },
+        "phase": { "type": "string" },
+        "band": { "type": "string" },
+        "work_package": { "type": "string" },
+        "capability": { "type": "string" },
+        "capability_state": {
+          "enum": ["PLANNED", "AUTHORIZED", "ACTIVE", "IMPLEMENTED", "VALIDATED", "CERTIFIED", "FROZEN", "ARCHIVED"]
+        },
+        "milestone": { "type": "string" }
+      }
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description", "blocking"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "scope": { "type": "string" },
+          "blocking": { "type": "boolean" }
+        }
+      }
+    },
+    "risks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "description"],
+        "properties": {
+          "id": { "type": "string" },
+          "description": { "type": "string" },
+          "mitigation": { "type": "string" }
+        }
+      }
+    },
+    "next_authorized_capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mep_ref", "text"],
+      "properties": {
+        "mep_ref": { "type": "string", "description": "MEP-NN reference in MCP-003" },
+        "text": { "type": "string" }
+      }
+    }
+  }
+}

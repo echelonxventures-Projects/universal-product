@@ -1,0 +1,24 @@
+{
+  "definitions": {
+    "BRC-1": "Completeness — all eleven realization units U01…U11 present in the inventory.",
+    "BRC-2": "Certification — every unit U01…U11 is CCE-CERTIFIED (reused by reference).",
+    "BRC-3": "Meta-class coverage — concern units cover exactly the ten meta-classes DMC-01…10.",
+    "BRC-4": "Dependency closure — the unit founding graph is acyclic and downward-only.",
+    "BRC-5": "Reuse integrity — every unit reuses EL-1/prior units by reference; no redefinition.",
+    "BRC-6": "Meta-model integration — U11 closes DMI-01…07 over the ten meta-classes.",
+    "BRC-7": "Traceability — the band lineage is rooted and closes to the 10-DATA anchor.",
+    "BRC-8": "Determinism — the completion record recomputes byte-identically."
+  },
+  "readiness_criteria": {
+    "BRC-1": true,
+    "BRC-2": true,
+    "BRC-3": true,
+    "BRC-4": true,
+    "BRC-5": true,
+    "BRC-6": true,
+    "BRC-7": true,
+    "BRC-8": true
+  },
+  "ready": true,
+  "unit": "EC3-B10-U12"
+}

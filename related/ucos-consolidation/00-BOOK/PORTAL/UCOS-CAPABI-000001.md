@@ -1,0 +1,16 @@
+# UCOS-CAPABI-000001 — CAPABILITY COVERAGE CLOSURE DETERMINATION
+
+Breadcrumbs: [UCOS-BOOK-000000](UCOS-BOOK-000000.md) › [UCOS-CAPABI-000001](UCOS-CAPABI-000001.md)
+
+- Volume: VOL-000  ·  Status: ACTIVE  ·  Twin: [—]
+- Native: —  ·  Program: CAPABI
+- Parent: [UCOS-BOOK-000000](UCOS-BOOK-000000.md)
+- Source: [CAPABILITY-COVERAGE-CLOSURE-DETERMINATION.md](../../CAPABILITY-COVERAGE-CLOSURE-DETERMINATION.md)
+
+## Children (forward)
+- (none)
+
+## Backlinks (reverse)
+- [UCOS-BOOK-000000](UCOS-BOOK-000000.md) —Child→
+
+Return: [Portal Index](index.md) · [Master Index](../UCOS-BOOK-000000-UNIVERSAL-MASTER-KNOWLEDGE-BOOK.md)

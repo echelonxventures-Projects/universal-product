@@ -1,0 +1,44 @@
+{
+  "backward": [
+    "InfrastructureCapability",
+    "INFRASTRUCTURE-006",
+    "INFRASTRUCTURE-005",
+    "INFRASTRUCTURE-001",
+    "ARCH-INFRASTRUCTURE-001",
+    "13-INFRASTRUCTURE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-INFRA-CAPABILITY-ucos.infrastructure.capability.foundation-0ecdd206025821e0",
+    "EC3-B13-U01-VALIDATION-EVIDENCE",
+    "EC3-B13-U01-CCE-CERTIFICATION",
+    "EC3-B13-U01-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "aec646f",
+  "meta_class": "InfrastructureCapability",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "PL-F2",
+    "SF-2"
+  ],
+  "substrate_reuse": {
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the capability)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity, no parallel model)",
+    "ENG-004": "infrastructure.capability_meta.InfrastructureCapabilityKind + type_tag (typing)",
+    "ENG-005": "reference identifiers (platform/enable/behavior refs; no new construct)",
+    "PL-F2": "PLATFORM-006 capability construct bound by reference (ICAP-01); not redefined",
+    "RL-F2": "hosting/delivery behavior bound by reference (UIL-10); no runtime concern redefined",
+    "SF-2": "hosted/delivered service capability bound by reference (UIL-06); not redefined"
+  },
+  "target_id": "UCOS-INFRA-CAPABILITY-ucos.infrastructure.capability.foundation-0ecdd206025821e0",
+  "trace_format": "ucos-infrastructure-traceability/1.0.0",
+  "unit": "EC3-B13-U01"
+}

@@ -1,0 +1,264 @@
+{
+  "accepted": true,
+  "blocking_failures": [],
+  "blueprint_id": "AMC-05",
+  "checks_run": [
+    "behavior-by-reference",
+    "foundation-reuse-integrity",
+    "founding-acyclic",
+    "lifecycle-valid",
+    "meta-class-single",
+    "meta-constraints",
+    "meta-relationships-closed",
+    "non-constitutive",
+    "provisional-state-disclosure",
+    "technology-independence",
+    "traceability-rooted",
+    "workflow-branch-determinacy",
+    "workflow-classified",
+    "workflow-consumes-operation",
+    "workflow-holds-state",
+    "workflow-identified-objectbound",
+    "workflow-operations-partition",
+    "workflow-process-records-state",
+    "workflow-sequence-explicit",
+    "workflow-sequences-steps",
+    "workflow-steps-partition",
+    "workflow-typed",
+    "workflow-value-fidelity"
+  ],
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 23,
+    "total": 23
+  },
+  "evidence_format": "ucos-validation-evidence/1.0.0",
+  "findings": [
+    {
+      "check_id": "behavior-by-reference",
+      "details": {
+        "behavior_ref": "ENG-005:RL-F2:runtime.workflow-sequence"
+      },
+      "message": "behavior-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "SF-2"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "lifecycle-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "AMC-05"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "AMK-01",
+          "AMK-02",
+          "AMK-03",
+          "AMK-05",
+          "AMK-07"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "AMR-04",
+          "AMR-06",
+          "AMR-10",
+          "AMR-11",
+          "AMR-13"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "technology-independence",
+      "details": {},
+      "message": "technology-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 6
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-branch-determinacy",
+      "details": {
+        "arrangement": "process"
+      },
+      "message": "workflow-branch-determinacy satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-classified",
+      "details": {
+        "arrangement": "process",
+        "kind": "Process-Workflow"
+      },
+      "message": "workflow-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-consumes-operation",
+      "details": {
+        "consumed_operation_count": 2
+      },
+      "message": "workflow-consumes-operation satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-holds-state",
+      "details": {
+        "state_ref": "ENG-005:AMC-07:ucos.application.state.foundation"
+      },
+      "message": "workflow-holds-state satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-identified-objectbound",
+      "details": {
+        "workflow_id": "UCOS-WORKFLOW-ucos.application.workflow.foundation-6a93c59ed2059159"
+      },
+      "message": "workflow-identified-objectbound satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-operations-partition",
+      "details": {
+        "consumed_operation_count": 2
+      },
+      "message": "workflow-operations-partition satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-process-records-state",
+      "details": {
+        "arrangement": "process"
+      },
+      "message": "workflow-process-records-state satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-sequence-explicit",
+      "details": {
+        "arrangement": "process"
+      },
+      "message": "workflow-sequence-explicit satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-sequences-steps",
+      "details": {
+        "sequenced_step_count": 2
+      },
+      "message": "workflow-sequences-steps satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-steps-partition",
+      "details": {
+        "sequenced_step_count": 2
+      },
+      "message": "workflow-steps-partition satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-typed",
+      "details": {
+        "type_tag": "ucos.application.workflow.foundation"
+      },
+      "message": "workflow-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "workflow-value-fidelity",
+      "details": {
+        "value_digest": "6a93c59ed205915948600d17b3fd21b8336e8edfe004921a19b9244460d43036"
+      },
+      "message": "workflow-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-WORKFLOW-ucos.application.workflow.foundation-6a93c59ed2059159",
+  "verdict": "pass"
+}

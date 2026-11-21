@@ -1,0 +1,209 @@
+{
+  "accepted": true,
+  "blueprint_id": "AMC-09",
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 20,
+    "total": 20
+  },
+  "findings": [
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "DF-2"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {
+        "founding": "vacuous (reference-only)"
+      },
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "lifecycle-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "AMC-09"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "AMK-01",
+          "AMK-02",
+          "AMK-03",
+          "AMK-05",
+          "AMK-07"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "AMR-08",
+          "AMR-09",
+          "AMR-10",
+          "AMR-14"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-behavior-by-reference",
+      "details": {
+        "behavior_ref": "ENG-005:RL-F2:runtime.security-evaluate.RUNTIME-010"
+      },
+      "message": "security-behavior-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-classified",
+      "details": {
+        "facet": "confidentiality",
+        "kind": "Confidentiality-Record"
+      },
+      "message": "security-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-classifies-boundary",
+      "details": {
+        "secured_count": 2
+      },
+      "message": "security-classifies-boundary satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-data-by-reference",
+      "details": {
+        "data_count": 1
+      },
+      "message": "security-data-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-evaluative-nonenforcing",
+      "details": {
+        "governing_law": "UAL-14"
+      },
+      "message": "security-evaluative-nonenforcing satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-governance-by-reference",
+      "details": {
+        "governance_count": 1
+      },
+      "message": "security-governance-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-identified-objectbound",
+      "details": {
+        "security_id": "UCOS-SECURITY-ucos.application.security.foundation-22c4f6543bd9f76c"
+      },
+      "message": "security-identified-objectbound satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-no-new-connection",
+      "details": {},
+      "message": "security-no-new-connection satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-typed",
+      "details": {
+        "type_tag": "ucos.application.security.foundation"
+      },
+      "message": "security-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "security-value-fidelity",
+      "details": {
+        "value_digest": "22c4f6543bd9f76c9104e47d80fd6af64c44710e99e95a16f44683bf520149d9"
+      },
+      "message": "security-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "technology-independence",
+      "details": {},
+      "message": "technology-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 6
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-SECURITY-ucos.application.security.foundation-22c4f6543bd9f76c",
+  "verdict": "pass"
+}

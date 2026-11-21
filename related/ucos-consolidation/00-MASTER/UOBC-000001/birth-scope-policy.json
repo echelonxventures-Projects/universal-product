@@ -1,0 +1,197 @@
+{
+  "policy_id": "UOBC-BSP-001",
+  "name": "Universal Birth Scope Policy",
+  "version": "1.0",
+  "extends": "UOBC-000001",
+  "authority": "NONE — DERIVED TRUTH. This policy legislates no identity and opens no counter. It is the machine-readable form of a rule already determined in prose by SCOPE-B-BIRTH-GOVERNANCE-DETERMINATION.md §1.2, under the identity authority UCKP-ART-05 declared SUPREME at 00-BOOK/DATA/constitutional-authority-alignment.json. It extends the scope of application of UOBC-000001; it does not extend UOBC's authority, add a plane, or admit a namespace.",
+
+  "$why_this_exists": "SCOPE-B-BIRTH-GOVERNANCE-DETERMINATION.md §1.2 determined which object kinds require a birth record and which must never hold one independently. That determination lived only in prose, so nothing measured it: a generated artifact could be given an independent constitutional identity, a birth record could be recorded against a subject that does not exist, and the adoption gap could widen silently. This file is that determination expressed as data, and engine/object_birth measures it. It is the same upgrade UCPA-000001 performed for the root ontology — a ratified rule that nothing computed.",
+
+  "$not_a_second_authority": "A second identity authority is recognised by the counter it advances; the declared mint marker is 'category_seq', held solely by the ID Ledger. This policy holds no counter, mints nothing, issues no identifier, declares no namespace and admits no object. It classifies objects that already exist, against kinds declared here, using selectors evaluated over registries that already exist (UGA object registry, generated-artifact registry, birth ledger). Deleting this file removes a measurement and changes no identity.",
+
+  "$granularity_comment": "Birth granularity is the CONSTITUTIONAL OBJECT, never the path. UOBC's own rationale: 'A path-derived identity is an address, not an identity, and an address changes when a file moves.' A capability is born once as a package; its module files are addresses within it. A test suite is born once; its test files are addresses within it.",
+
+  "$selector_comment": "Kinds are evaluated IN DECLARED ORDER and the FIRST match wins. That is what makes classification both total and single-valued without a uniqueness check that could pass while two selectors silently overlapped: overlap is resolved by order, and totality is guaranteed by the final catch-all kind, which BSP-L-02 requires to exist. A selector names only fields the source registries already carry.",
+
+  "kinds": [
+    {
+      "object_kind": "GENERATED_ARTIFACT",
+      "birth_required": false,
+      "enforcement": "MANDATORY_ABSENCE",
+      "selector": { "in_generated_registry": true },
+      "reason": "Its constitutional identity is its producer's. An independent identity would let a derived surface diverge from what produced it, which is precisely what derived truth forbids.",
+      "authority": "SCOPE-B-BIRTH-GOVERNANCE-DETERMINATION.md §3; 00-BOOK/DATA/generated-artifact-registry.json",
+      "validation_rule": "no_birth_record_exists",
+      "producer_relationship": "IDENTITY_HELD_BY_PRODUCER"
+    },
+    {
+      "object_kind": "DERIVED_REGISTER",
+      "birth_required": false,
+      "enforcement": "MANDATORY_ABSENCE",
+      "selector": { "uga_lifecycle": "GENERATED" },
+      "reason": "A producer-emitted surface carried in version control. Same rule as GENERATED_ARTIFACT, reached by a different registry, so the absence holds even where the generated-artifact registry has not yet enumerated it.",
+      "authority": "SCOPE-B-BIRTH-GOVERNANCE-DETERMINATION.md §3; UGA lifecycle state GENERATED",
+      "validation_rule": "no_birth_record_exists",
+      "producer_relationship": "IDENTITY_HELD_BY_PRODUCER"
+    },
+    {
+      "object_kind": "TEST_SUITE",
+      "birth_required": true,
+      "enforcement": "DISCLOSED_ADOPTION",
+      "adoption": "DEFERRED",
+      "adoption_gap": "G11",
+      "granularity": "suite",
+      "selector": { "uga_object_class": "TEST_OBJECT" },
+      "reason": "A test suite is the constitutional object that verifies a capability; its identity must survive the file being renamed or split.",
+      "authority": "SCOPE-B-BIRTH-GOVERNANCE-DETERMINATION.md §1.2",
+      "validation_rule": "birth_coverage_disclosed",
+      "producer_relationship": "AUTHORED"
+    },
+    {
+      "object_kind": "PROGRAMME_DECLARATION",
+      "birth_required": true,
+      "enforcement": "DISCLOSED_ADOPTION",
+      "adoption": "DEFERRED",
+      "adoption_gap": "G11",
+      "granularity": "declaration",
+      "selector": { "uga_object_class": "DATA_OBJECT", "path_prefix": "00-MASTER/" },
+      "reason": "A programme declaration is the constitutional object a programme IS. Its identity must survive relocation of the file.",
+      "authority": "SCOPE-B-BIRTH-GOVERNANCE-DETERMINATION.md §1.2",
+      "validation_rule": "birth_coverage_disclosed",
+      "producer_relationship": "AUTHORED"
+    },
+    {
+      "object_kind": "CAPABILITY_PACKAGE",
+      "birth_required": true,
+      "enforcement": "DISCLOSED_ADOPTION",
+      "adoption": "DEFERRED",
+      "adoption_gap": "G11",
+      "granularity": "package",
+      "selector": { "uga_object_class": "EXECUTABLE_OBJECT", "path_prefix": "engine/", "basename": "__init__.py" },
+      "reason": "A capability is the constitutional object; a module file is an address within it. Born once, as a package.",
+      "authority": "SCOPE-B-BIRTH-GOVERNANCE-DETERMINATION.md §1.2",
+      "validation_rule": "birth_coverage_disclosed",
+      "producer_relationship": "AUTHORED"
+    },
+    {
+      "object_kind": "DETERMINATION",
+      "birth_required": true,
+      "enforcement": "DISCLOSED_ADOPTION",
+      "adoption": "DEFERRED",
+      "adoption_gap": "G11",
+      "granularity": "document",
+      "selector": { "path_suffix": "-DETERMINATION.md" },
+      "reason": "A determination is a constitutional act. It is the class already carrying the largest born population (17 records).",
+      "authority": "SCOPE-B-BIRTH-GOVERNANCE-DETERMINATION.md §1.2",
+      "validation_rule": "birth_coverage_disclosed",
+      "producer_relationship": "AUTHORED"
+    },
+    {
+      "object_kind": "CORPUS_DOCUMENT",
+      "birth_required": false,
+      "enforcement": "GOVERNED_ELSEWHERE",
+      "selector": { "uga_object_class": "DOCUMENT_ARTIFACT" },
+      "reason": "Governed by UMB-IMP-001 in artifacts.json, with its own parent lineage (1,232 of 1,233). A second identity plane over it would be duplicate authority.",
+      "authority": "00-BOOK/MASTER-BOOK/UMB-IMP-001-AUTOMATIC-REGISTRATION-AND-ENFORCEMENT-REALIZATION.md",
+      "validation_rule": "governed_elsewhere",
+      "producer_relationship": "AUTHORED"
+    },
+    {
+      "object_kind": "TOOLING",
+      "birth_required": false,
+      "enforcement": "GOVERNED_ELSEWHERE",
+      "selector": { "uga_object_class": "TOOLING_OBJECT" },
+      "reason": "The registration engine and its data home. 'A registry must not register itself; NOT therefore exempt from identity' — it holds repository-plane identity.",
+      "authority": "00-MASTER/UCOS-UGA-001/uga-declaration.json object_classes.TOOLING_OBJECT",
+      "validation_rule": "governed_elsewhere",
+      "producer_relationship": "AUTHORED"
+    },
+    {
+      "object_kind": "CONFIGURATION",
+      "birth_required": false,
+      "enforcement": "NOT_REQUIRED",
+      "selector": { "uga_object_class": "CONFIGURATION_OBJECT" },
+      "reason": "Parameterises execution and holds no constitutional standing of its own.",
+      "authority": "SCOPE-B-BIRTH-GOVERNANCE-DETERMINATION.md §1.2",
+      "validation_rule": "not_required",
+      "producer_relationship": "AUTHORED"
+    },
+    {
+      "object_kind": "ADDRESSED_OBJECT",
+      "birth_required": false,
+      "enforcement": "NOT_REQUIRED",
+      "selector": { "catch_all": true },
+      "reason": "THE TOTALITY GUARANTEE. Every governed object the kinds above do not claim lands here and is addressed on the repository plane rather than born on the constitutional plane. It is never anonymous: it holds a UGA universal_id, owner, type and lifecycle. A future object kind nobody has imagined is classified here on the day it appears, with no engine change — and is promoted by declaring a kind above this one, never by editing code.",
+      "authority": "UNIVERSAL-IDENTITY-MIGRATION-DETERMINATION.md — 0 anonymous objects; UGA classification is total",
+      "validation_rule": "not_required",
+      "producer_relationship": "AUTHORED"
+    }
+  ],
+
+  "$subject_resolution_comment": "How a birth record's URN maps back to the object it names, so BSP-L-04 can ask whether a born subject is of a kind that may be born. Declared per namespace, never inferred in code.",
+  "subject_resolution": [
+    { "namespace": "ucos.engine", "local_name_pattern": "^engine\\.", "resolves_to": "PACKAGE", "path_from": "dots_to_slashes" },
+    { "namespace": "ucos.engine", "local_name_pattern": "^test_", "resolves_to": "TEST_SUITE", "path_from": "test_basename" },
+    { "namespace": "ucos.determination", "local_name_pattern": ".", "resolves_to": "DOCUMENT", "path_from": "name_plus_md" },
+    { "namespace": "ucos.master", "local_name_pattern": ".", "resolves_to": "PROGRAMME", "path_from": "master_dir" },
+    { "namespace": "ucos.cmg", "local_name_pattern": ".", "resolves_to": "PROGRAMME", "path_from": "master_dir" }
+  ],
+
+  "$coverage_comment": "MEASURED, NOT ASSERTED. Floors are keyed by the SUBJECT CLASS a birth record resolves to under subject_resolution — not by the object_kind a file classifies to. The two are deliberately different axes: object_kind answers 'may this file be born', subject_class answers 'what did this birth record name'. Keying the floor by object_kind would compare a count of birth records against a population of files and report a number that means nothing. Each floor was measured at the baseline this policy was written, and BSP-L-06 refuses any decrease. This is the UISD ISD-L-07 ratchet applied to birth adoption: it does not demand backfill of the deferred population — G11 forbids a verification-time backfill — but it makes the adoption level a number that can only move one way.",
+  "coverage_floors": [
+    { "subject_class": "PACKAGE", "born_at_baseline": 6 },
+    { "subject_class": "TEST_SUITE", "born_at_baseline": 7 },
+    { "subject_class": "DOCUMENT", "born_at_baseline": 17 },
+    { "subject_class": "PROGRAMME", "born_at_baseline": 5 }
+  ],
+
+  "laws": [
+    {
+      "id": "BSP-L-01",
+      "title": "The policy is structurally usable",
+      "statement": "Every declared kind shall carry object_kind, birth_required, reason, authority, validation_rule and producer_relationship. Every validation_rule shall name an implemented check, and every implemented check shall be claimed by at least one kind.",
+      "check": "policy_is_structurally_usable"
+    },
+    {
+      "id": "BSP-L-02",
+      "title": "Classification is total and single-valued",
+      "statement": "Exactly one kind shall declare catch_all, it shall be declared last, and every governed object shall resolve to exactly one kind under first-match-wins evaluation.",
+      "check": "classification_is_total"
+    },
+    {
+      "id": "BSP-L-03",
+      "title": "No derived object holds an independent birth",
+      "statement": "No object whose kind declares enforcement MANDATORY_ABSENCE shall hold a birth record. A generated artifact's identity is its producer's.",
+      "check": "no_derived_object_is_born"
+    },
+    {
+      "id": "BSP-L-04",
+      "title": "Every birth record names a subject that may be born",
+      "statement": "Every record in the birth ledger shall resolve, under the declared subject_resolution, to a subject that EXISTS, and that subject shall not be of a kind declaring enforcement MANDATORY_ABSENCE. Stated as a prohibition rather than as 'birth_required must be true' because the two axes are different: a subject may legitimately be born while the deferred-adoption population around it is not, and the defect this law exists to catch is a birth record for something generated, or for something that is not there at all.",
+      "check": "every_birth_subject_may_be_born"
+    },
+    {
+      "id": "BSP-L-05",
+      "title": "Adoption is disclosed, never silent",
+      "statement": "Every kind requiring birth shall declare an adoption state, and any kind whose adoption is DEFERRED shall name the gap that owns the deferral. An undisclosed adoption gap is refused; a disclosed one is not.",
+      "check": "adoption_is_disclosed"
+    },
+    {
+      "id": "BSP-L-06",
+      "title": "Birth coverage is a ratchet",
+      "statement": "For every subject class carrying a declared floor, the measured number of birth records resolving to that class shall be greater than or equal to that floor. Adoption may rise and may hold; it may not fall.",
+      "check": "coverage_does_not_regress"
+    }
+  ],
+
+  "$law_checks": "Each law names exactly one check. engine/object_birth/scope.py implements exactly that set of names, and the contract refuses BOTH directions: a law naming an absent check is manual governance, and a check no law claims is dead code wearing the appearance of enforcement (the GP-4 defect recorded in GATE-PURITY-DETERMINATION.md).",
+
+  "gate": {
+    "home": "engine/object_birth/gate.py",
+    "invocation": "python -m engine.object_birth.gate --gate",
+    "$integration": "Measured by the EXISTING UOBC stage in ./verify.sh. No new verification stage is created: birth scope is part of the birth contract, and a second stage would be a second place to look for one subject.",
+    "fail_closed": true
+  },
+
+  "certification_boundary": "Certifies that the six declared laws were measured against the declared registries. Certifies no object, no identity, no adoption level, and no birth record."
+}

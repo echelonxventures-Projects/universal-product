@@ -1,0 +1,263 @@
+name: UCI-000001 Universal Certification Integrity Gate
+
+# UCI-000001 — Universal Certification Integrity.
+#
+# WHAT THIS GATE MEASURES, AND WHY THE REPOSITORY COULD NOT MEASURE IT BEFORE.
+#
+# Every coverage control here governed a NUMERATOR. The denominator was declared twice --
+# `addopts` carries one `--cov=` flag per package and `[tool.coverage.run] source` carries one
+# path per package -- and UCOS-COV-SCOPE-001 reconciled those two copies against EACH OTHER.
+# Nothing compared either of them to the executable surface.
+#
+# Measured at b51f6f84 over 1,524 tracked non-test Python files carrying 183,310 statements:
+# 905 files are inside the denominator and 619 are not. A reported 97.9% was therefore a true
+# statement about 52% of the surface, and executable-surface coverage was 44.9%.
+#
+# The largest omissions, each measured:
+#   * all 39 00-MASTER/*/*_engine.py gate engines (20,359 statements) -- every one an
+#     enforcement artifact UEC-000001 governs BY NAME, several of them verify.sh certification
+#     stages, and the executed fraction of each unknown. A gate whose covered fraction is
+#     unknown can rot into a no-op and keep reporting OPEN.
+#   * 00-BOOK/tools/ including ukb.py, the registration enforcement the entire corpus plane
+#     depends on, claimed by no coverage scope and no governance inventory.
+#   * intelligence/ (5,565 statements) -- inside pytest `testpaths`, inside no `--cov` flag.
+#     Collection and denominator were separate questions and nothing asked whether they agreed.
+#   * engine/recursive_knowledge (2,849 statements) -- an implicit namespace package, invisible
+#     to a scope control that enumerated candidates by asking whether `__init__.py` existed.
+#
+# THIS WORKFLOW IS ONE OF THE TWO INVOCATION PLANES UEC-L-06 REQUIRES. The other is the
+# `uci-gate` Makefile target. Deleting either one now fails UEC-L-02 (a governed enforcement
+# artifact went missing) rather than silently unbinding the six laws, and the reverse binding is
+# checked below: this file's own path must appear in UEC-000001's governed inventory.
+#
+# Exit semantics of the gate:
+#   0  OPEN   -- every blocking law measured and holds
+#   1  CLOSED -- a blocking law measured and REFUSED
+#   2  FAULT  -- no verdict reachable; the declaration or the surface could not be measured.
+#               1 and 2 are deliberately distinct: "the surface is governed" and "the surface
+#               could not be enumerated" are different facts, and a gate that collapsed them
+#               would let a broken enumerator certify an empty repository.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uci-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  declaration-soundness:
+    name: UCI-000001 declaration is data, not code
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Every declared ratchet binds a measurement, declares a KIND, and every law blocks
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          document = json.loads(
+              Path("00-MASTER/UCI-000001/uci-declaration.json").read_text(encoding="utf-8")
+          )
+
+          # A law with blocking:false is not a law. The switch would be reachable by exactly the
+          # mutation the law detects, so the absence of such a switch is asserted rather than
+          # assumed.
+          for law in document["laws"]:
+              assert law["blocking"] is True, f"{law['id']} is declared non-blocking"
+
+          # Ω-4. Each key declares a DIRECTION, never a number. A numeric value here would be a
+          # measurement taken on one afternoon, and this repository has twice had to rewrite such
+          # values (607 -> 65, 570 -> 27) with the rewrite indistinguishable from a retreat. The
+          # bound each run is held to lives in 00-MASTER/UCI-000001/uci-ratchet.json and is sealed
+          # FROM a measurement, so it cannot be authored.
+          KINDS = {"MONOTONIC", "CONVERGENT", "DENSITY", "ENTROPY"}
+          ratchet = {k: v for k, v in document["ratchet"].items() if not k.startswith("$")}
+          assert ratchet, "the declaration carries no ratchets, so it enforces nothing"
+          for key, value in ratchet.items():
+              assert value in KINDS, (
+                  f"ratchet.{key} = {value!r}; under Ω-4 a ratchet declares one of {sorted(KINDS)} "
+                  "and never a numeric ceiling"
+              )
+              assert not isinstance(value, (int, float)), (
+                  f"ratchet.{key} is a number again; a static ceiling is a historical snapshot "
+                  "that any change of scale forces somebody to rewrite"
+              )
+
+          # Two-way binding: the declaration and the measurement table must name one set. A
+          # ratchet with no measurement looks like enforcement and is not; a measurement with no
+          # ratchet is recorded and enforced by nothing.
+          measures = {law["measure"] for law in document["laws"]}
+          orphan = sorted(set(ratchet) - measures)
+          assert not orphan, f"these ratchets bind no declared law: {orphan}"
+          print(f"declaration sound: {len(document['laws'])} laws, {len(ratchet)} ratchet directions")
+          PY
+
+      - name: The sealed bounds are measurements, not authored numbers
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          state = Path("00-MASTER/UCI-000001/uci-ratchet.json")
+          assert state.is_file(), "the Ω-4 sealed state is absent, so no bound is enforced"
+          document = json.loads(state.read_text(encoding="utf-8"))
+          assert document["schema"] == "ucos-omega-ratchet", document["schema"]
+          assert document["best"], "the sealed state records no best-ever value"
+          for metric, reason in (
+              (entry["metric"], entry["reason"]) for entry in document.get("justifications", [])
+          ):
+              assert reason.strip(), (
+                  f"the regression justification for {metric} states no reason; an unexplained "
+                  "regression is the ceiling rewrite Ω-4 exists to replace"
+              )
+              assert metric in document["best"], (
+                  f"{metric} is justified but has no measured bound, so the justification excuses "
+                  "nothing that is measured"
+              )
+          print(f"sealed state sound: {len(document['best'])} measured bounds")
+          PY
+
+  non-vacuity:
+    name: UCI-000001 non-vacuity suite (every law reachable in BOTH directions)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the pinned test toolchain
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[dev]"
+
+      # The coverage floor belongs to ./verify.sh in ec1-ci.yml and is deliberately not
+      # duplicated here; this job measures the suite, not the denominator.
+      - name: Non-vacuity suite
+        run: |
+          python -m pytest engine/tests/unit/test_certification_integrity.py \
+            -o addopts= --no-cov -q
+
+      - name: The randomized-order plugin is inactive by default and non-vacuous when seeded
+        run: |
+          python3 - <<'PY'
+          from engine.certification_integrity import pytest_shuffle
+
+          # Inactive without a seed: loading the plugin in a normal run must be a no-op, or every
+          # existing green run silently changes meaning and UVI-L-08's deterministic sharding
+          # contract stops being measurable.
+          items = [1, 2, 3, 4, 5]
+          original = list(items)
+          pytest_shuffle.pytest_collection_modifyitems(items)
+          assert items == original, "the plugin reordered a run that declared no seed"
+
+          # Non-vacuous when seeded, and reproducible under one seed -- an order-dependent
+          # failure that cannot be replayed is an anecdote.
+          base = list(range(50))
+          assert pytest_shuffle.shuffled(base, 7) != base
+          assert pytest_shuffle.shuffled(base, 7) == pytest_shuffle.shuffled(base, 7)
+          assert pytest_shuffle.shuffled(base, 7) != pytest_shuffle.shuffled(base, 8)
+          assert sorted(pytest_shuffle.shuffled(base, 7)) == base, "the permutation lost items"
+          print("shuffle: inactive unseeded, reproducible and non-vacuous when seeded")
+          PY
+
+  gate:
+    name: UCI-000001 gate (fail-closed)
+    needs: [declaration-soundness, non-vacuity]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # stdlib only -- the capability installs nothing. It reads tracked content and reports what
+      # it says, so a dependency would widen the surface without widening the measurement.
+      - name: Certification integrity gate
+        run: python3 -m engine.certification_integrity.gate --gate --quiet
+
+      - name: Determinism and tree purity (two runs, byte-compared)
+        run: |
+          before="$(git status --porcelain)"
+          python3 -m engine.certification_integrity.gate --json --quiet > /tmp/uci-1.json
+          python3 -m engine.certification_integrity.gate --json --quiet > /tmp/uci-2.json
+          diff -u /tmp/uci-1.json /tmp/uci-2.json \
+            || { echo "UCI report is not deterministic over one tree" >&2; exit 1; }
+          after="$(git status --porcelain)"
+          [ "$before" = "$after" ] \
+            || { echo "the gate mutated the working tree; it is declared read-only" >&2; exit 1; }
+          echo "two runs byte-identical, working tree unchanged"
+
+      - name: The report carries no clock reading and no machine path
+        run: |
+          python3 - <<'PY'
+          import json
+          import re
+
+          with open("/tmp/uci-1.json", encoding="utf-8") as handle:
+              text = handle.read()
+          json.loads(text)
+          assert not re.search(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}", text), "a timestamp leaked in"
+          for fragment in ("/home/runner", "/Users/", "/private/var"):
+              assert fragment not in text, f"a machine path leaked in: {fragment}"
+          print("report is machine- and clock-independent")
+          PY
+
+      - name: This workflow, the gate, the target and the declaration are governed by UEC-000001
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+
+          # The reverse binding. UEC-L-06 requires two independent invocation planes, and a
+          # workflow that is not in UEC's governed inventory can be deleted without UEC-L-02
+          # noticing -- which would reduce this capability to a single plane in silence.
+          governed = {
+              entry["identity"]
+              for entry in json.loads(
+                  Path("00-MASTER/UEC-000001/uec-declaration.json").read_text(encoding="utf-8")
+              )["governed_enforcement"]
+          }
+          for identity in (
+              ".github/workflows/uci-gate.yml",
+              "engine/certification_integrity/gate.py",
+              "uci-gate",
+              "00-MASTER/UCI-000001/uci-declaration.json",
+          ):
+              assert identity in governed, (
+                  f"{identity} is not in UEC-000001's governed enforcement inventory, so it is a "
+                  "protection nothing knows it depends on"
+              )
+          print("all four UCI enforcement artifacts are governed by UEC-000001")
+          PY
+
+      - name: Diagnostic render on failure
+        if: failure()
+        run: python3 -m engine.certification_integrity.gate || true

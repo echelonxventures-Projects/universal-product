@@ -1,0 +1,460 @@
+{
+  "bindings": [
+    {
+      "catalogue_ids": [
+        "RC-17",
+        "RC-56"
+      ],
+      "disposition": "COMPOSE",
+      "gap": "The name has no single home in the repository. Recorded as a genuine naming absence and discharged by composition, not by creating a new engine.",
+      "homes": [
+        "engine/kernel/__init__.py",
+        "platform/universal_pipeline/service.py"
+      ],
+      "homes_declared": 2,
+      "homes_resolved": 2,
+      "id": "UAEP-CAP-01",
+      "name": "Universal Autonomous Engineering Meta-System",
+      "replacement_prohibited": true,
+      "symbols": [
+        "UniversalPipelinePlatform"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-56"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/service.py"
+      ],
+      "homes_declared": 1,
+      "homes_resolved": 1,
+      "id": "UAEP-CAP-02",
+      "name": "Universal Autonomous Engineering Platform",
+      "replacement_prohibited": true,
+      "symbols": [
+        "UniversalPipelinePlatform"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-56"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/__init__.py",
+        "platform/universal_pipeline/catalog/uapf-pipelines.json"
+      ],
+      "homes_declared": 2,
+      "homes_resolved": 2,
+      "id": "UAEP-CAP-03",
+      "name": "Universal Autonomous Pipeline Framework",
+      "replacement_prohibited": true,
+      "symbols": []
+    },
+    {
+      "catalogue_ids": [
+        "RC-56"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/orchestrator.py"
+      ],
+      "homes_declared": 1,
+      "homes_resolved": 1,
+      "id": "UAEP-CAP-04",
+      "name": "Universal Work Orchestrator",
+      "replacement_prohibited": true,
+      "symbols": [
+        "UniversalWorkOrchestrator",
+        "OrchestrationTick"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-56"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/gateway.py"
+      ],
+      "homes_declared": 1,
+      "homes_resolved": 1,
+      "id": "UAEP-CAP-05",
+      "name": "Universal Integration Gateway",
+      "replacement_prohibited": true,
+      "symbols": [
+        "UniversalPipelineGateway",
+        "GatewayTransaction"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-56"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/identity.py"
+      ],
+      "homes_declared": 1,
+      "homes_resolved": 1,
+      "id": "UAEP-CAP-06",
+      "name": "Universal Meta Object Engine",
+      "replacement_prohibited": true,
+      "symbols": [
+        "meta_model",
+        "register_object_kind"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-56",
+        "RC-20"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/registry.py",
+        "engine/registry/__init__.py"
+      ],
+      "homes_declared": 2,
+      "homes_resolved": 2,
+      "id": "UAEP-CAP-07",
+      "name": "Universal Registry Engine",
+      "replacement_prohibited": true,
+      "symbols": [
+        "PipelineRegistry",
+        "PipelineRegistryEntry"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-56",
+        "RC-44"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/identity.py",
+        "platform/identity/__init__.py"
+      ],
+      "homes_declared": 2,
+      "homes_resolved": 2,
+      "id": "UAEP-CAP-08",
+      "name": "Universal Identity Engine",
+      "replacement_prohibited": true,
+      "symbols": [
+        "Identity"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-56"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/dependencies.py"
+      ],
+      "homes_declared": 1,
+      "homes_resolved": 1,
+      "id": "UAEP-CAP-09",
+      "name": "Universal Relationship Engine",
+      "replacement_prohibited": true,
+      "symbols": [
+        "DependencyManager",
+        "DependencyClosure"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-16",
+        "RC-56"
+      ],
+      "disposition": "EXTEND",
+      "gap": "The name 'Universal Graph Engine' has no home; the capability does, under the name 'Universal Knowledge Graph'. Recorded as a naming difference, not a missing capability.",
+      "homes": [
+        "engine/graph/__init__.py",
+        "platform/universal_pipeline/registry.py"
+      ],
+      "homes_declared": 2,
+      "homes_resolved": 2,
+      "id": "UAEP-CAP-10",
+      "name": "Universal Graph Engine",
+      "replacement_prohibited": true,
+      "symbols": [
+        "PipelineRegistry"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-56"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/events.py"
+      ],
+      "homes_declared": 1,
+      "homes_resolved": 1,
+      "id": "UAEP-CAP-11",
+      "name": "Universal Event Engine",
+      "replacement_prohibited": true,
+      "symbols": [
+        "PipelineEventBus",
+        "register_event_category"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-56"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/state.py"
+      ],
+      "homes_declared": 1,
+      "homes_resolved": 1,
+      "id": "UAEP-CAP-12",
+      "name": "Universal State Engine",
+      "replacement_prohibited": true,
+      "symbols": [
+        "state_machine",
+        "legal_transitions"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-56"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/governance.py"
+      ],
+      "homes_declared": 1,
+      "homes_resolved": 1,
+      "id": "UAEP-CAP-13",
+      "name": "Universal Policy Engine",
+      "replacement_prohibited": true,
+      "symbols": [
+        "PipelineGovernance",
+        "GovernanceVerdict"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-12",
+        "RC-56"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "engine/discovery/__init__.py",
+        "platform/universal_pipeline/discovery.py"
+      ],
+      "homes_declared": 2,
+      "homes_resolved": 2,
+      "id": "UAEP-CAP-14",
+      "name": "Universal Discovery Engine",
+      "replacement_prohibited": true,
+      "symbols": [
+        "PipelineDiscovery",
+        "load_catalog"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-56"
+      ],
+      "disposition": "REUSE",
+      "gap": "",
+      "homes": [
+        "platform/universal_pipeline/execution.py"
+      ],
+      "homes_declared": 1,
+      "homes_resolved": 1,
+      "id": "UAEP-CAP-15",
+      "name": "Universal Execution Engine",
+      "replacement_prohibited": true,
+      "symbols": [
+        "PipelineRuntime",
+        "ExecutionUnit"
+      ]
+    },
+    {
+      "catalogue_ids": [
+        "RC-50",
+        "RC-32"
+      ],
+      "disposition": "EXTEND",
+      "gap": "The name 'Universal Repository Truth Engine' has no single home. The capability is held by three existing owners and is bound to all of them; the absence of one merged engine is recorded rather than closed by building one.",
+      "homes": [
+        "platform/repository_intelligence/__init__.py",
+        "intelligence/rie/__init__.py",
+        "00-BOOK/tools/ukb.py",
+        "00-BOOK/DATA/id-ledger.json"
+      ],
+      "homes_declared": 4,
+      "homes_resolved": 4,
+      "id": "UAEP-CAP-16",
+      "name": "Universal Repository Truth Engine",
+      "replacement_prohibited": true,
+      "symbols": []
+    }
+  ],
+  "blocking_failures": [],
+  "counts": {
+    "capabilities": 16,
+    "compose": 1,
+    "extend": 2,
+    "gaps_disclosed": 3,
+    "homes_declared": 25,
+    "homes_resolved": 25,
+    "pipeline_types_declared": 15,
+    "pipeline_types_seeded": 21,
+    "reuse": 13,
+    "symbols_declared": 24,
+    "validations": 11,
+    "validations_measured": 11,
+    "validations_satisfied": 11
+  },
+  "determination": "PLATFORM BOUND — EVERY NAMED CAPABILITY RESOLVES IN REPOSITORY TRUTH",
+  "exit_criteria": [
+    {
+      "criterion": "every named capability of the agreement is bound to a home that exists",
+      "id": "UAEP-EXIT-01"
+    },
+    {
+      "criterion": "no capability is realised by an artifact this programme created",
+      "id": "UAEP-EXIT-02"
+    },
+    {
+      "criterion": "every blocking validation is satisfied and the gate is OPEN",
+      "id": "UAEP-EXIT-03"
+    },
+    {
+      "criterion": "the register is reproducible: two renders of the committed declaration are byte-identical",
+      "id": "UAEP-EXIT-04"
+    }
+  ],
+  "gate": "OPEN",
+  "programme": {
+    "authority": "NONE (DERIVED TRUTH)",
+    "disclosure": "AUTHORITY = NONE. Nothing in this programme confers constitutional force, ratifies a determination, or supersedes a canonical owner. Every binding is a pointer to an artifact that exists independently of this programme and remains owned by its own authority. The only facts this programme asserts are measured from Repository Truth at render time and are re-measurable by re-running the engine.",
+    "governing_instrument": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+    "id": "UAEP-000001",
+    "mission": "Bind every capability named in the Universal Autonomous Engineering Platform agreement to the canonical home that already realises it, so that the agreement lives in Repository Truth rather than in conversation. This programme creates no engine, no registry, no catalogue, no identity and no pipeline. Where a canonical owner already holds a capability it is bound by pointer; where the named capability has no single home it is declared a COMPOSE over homes that already exist; where the home exists under a different canonical name that difference is recorded rather than resolved by renaming.",
+    "name": "Universal Autonomous Engineering Platform — Capability Binding Register",
+    "version": "1.0.0"
+  },
+  "seal_sha256": "ac285c5a1d44a04dfecfc67e0f70a25126347201ba584e748b3b506970bc7326",
+  "validations": [
+    {
+      "blocking": true,
+      "dimension": "Every declared home resolves in Repository Truth",
+      "failures": [],
+      "id": "UAEP-VAL-01",
+      "measured": true,
+      "obligation": "no capability may be bound to a path that does not exist",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "Every declared catalogue id exists in the canonical capability catalogue",
+      "failures": [],
+      "id": "UAEP-VAL-02",
+      "measured": true,
+      "obligation": "a binding may not cite a capability record that is absent",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "Every declared symbol resolves in one of its capability's homes",
+      "failures": [],
+      "id": "UAEP-VAL-03",
+      "measured": true,
+      "obligation": "a binding may not name a class or function that does not exist",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "Reuse before create",
+      "failures": [],
+      "id": "UAEP-VAL-04",
+      "measured": true,
+      "obligation": "no capability may be bound to a home inside this programme's own directory",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "Exactly one disposition per capability from the declared set",
+      "failures": [],
+      "id": "UAEP-VAL-05",
+      "measured": true,
+      "obligation": "totality and closure over the disposition vocabulary",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "No capability is unbound",
+      "failures": [],
+      "id": "UAEP-VAL-06",
+      "measured": true,
+      "obligation": "every capability names at least one home",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "Every declared vocabulary is open",
+      "failures": [],
+      "id": "UAEP-VAL-07",
+      "measured": true,
+      "obligation": "each vocabulary names a registrar that exists in its declared home",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "Every declared pipeline type is registered in the seed vocabulary",
+      "failures": [],
+      "id": "UAEP-VAL-08",
+      "measured": true,
+      "obligation": "the named pipeline categories must be admitted by the framework, not by this programme",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "No two capabilities claim an identical home set",
+      "failures": [],
+      "id": "UAEP-VAL-09",
+      "measured": true,
+      "obligation": "an identical binding for two capabilities would be duplicate authority over one home",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "No capability declares replacement of a protected owner",
+      "failures": [],
+      "id": "UAEP-VAL-10",
+      "measured": true,
+      "obligation": "a capability whose bound catalogue record prohibits replacement must be bound by REUSE, EXTEND or COMPOSE",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "Every recorded gap names the reason it is not closed",
+      "failures": [],
+      "id": "UAEP-VAL-11",
+      "measured": true,
+      "obligation": "a declared gap must carry a non-empty justification, so an absence is disclosed rather than hidden",
+      "satisfied": true
+    }
+  ]
+}

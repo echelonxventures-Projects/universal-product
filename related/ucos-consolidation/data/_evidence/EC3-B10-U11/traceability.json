@@ -1,0 +1,52 @@
+{
+  "backward": [
+    "UDM",
+    "DATA-005",
+    "DATA-004",
+    "DATA-003",
+    "DATA-001",
+    "ARCH-DATA-001",
+    "10-DATA@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-METAMODEL-ucos.data.metamodel.universal-09e277250f3892df",
+    "EC3-B10-U11-VALIDATION-EVIDENCE",
+    "EC3-B10-U11-CCE-CERTIFICATION",
+    "EC3-B10-U11-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "30a2a02",
+  "meta_class": "UDM",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "PL-F2"
+  ],
+  "substrate_reuse": {
+    "DMC-01..10": "the ten CERTIFIED concern-meta-class realizations — referenced, not owned",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the meta-model record)",
+    "ENG-004": "meta-class + meta-relationship typing discipline (ENG-004)",
+    "ENG-005": "meta-relationship edges + member certification references (§3 / DMR-01…12)",
+    "PL-F2": "PLATFORM composition concern — bound by reference (DMR-12 composed-as)",
+    "RL-F2": "RUNTIME behaviour concern — bound by reference (DMR-11 behaves-as)",
+    "member_DMC-01": "EC3-B10-U01 (DMC-01 Datum; UCOS-CERT-DMC-01-51e5964b38741e30) — integrated by reference, not owned",
+    "member_DMC-02": "EC3-B10-U03 (DMC-02 Entity; UCOS-CERT-DMC-02-def41470d3bac196) — integrated by reference, not owned",
+    "member_DMC-03": "EC3-B10-U02 (DMC-03 Attribute; UCOS-CERT-DMC-03-c57d36d3dbb2763d) — integrated by reference, not owned",
+    "member_DMC-04": "EC3-B10-U10 (DMC-04 Relationship; UCOS-CERT-DMC-04-29b2b5d6ede59cce) — integrated by reference, not owned",
+    "member_DMC-05": "EC3-B10-U04 (DMC-05 Schema; UCOS-CERT-DMC-05-e9edc215907c8695) — integrated by reference, not owned",
+    "member_DMC-06": "EC3-B10-U05 (DMC-06 Storage; UCOS-CERT-DMC-06-aa8d65c34494943a) — integrated by reference, not owned",
+    "member_DMC-07": "EC3-B10-U06 (DMC-07 Lifecycle; UCOS-CERT-DMC-07-10cb52fd186c7693) — integrated by reference, not owned",
+    "member_DMC-08": "EC3-B10-U07 (DMC-08 Governance-Object; UCOS-CERT-DMC-08-07e9db1834b26c10) — integrated by reference, not owned",
+    "member_DMC-09": "EC3-B10-U08 (DMC-09 Quality-Object; UCOS-CERT-DMC-09-a384f960567e9ffb) — integrated by reference, not owned",
+    "member_DMC-10": "EC3-B10-U09 (DMC-10 Security-Object; UCOS-CERT-DMC-10-afa02b108e3ca0c5) — integrated by reference, not owned"
+  },
+  "target_id": "UCOS-METAMODEL-ucos.data.metamodel.universal-09e277250f3892df",
+  "trace_format": "ucos-data-traceability/1.0.0",
+  "unit": "EC3-B10-U11"
+}

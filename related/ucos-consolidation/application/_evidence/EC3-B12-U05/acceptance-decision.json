@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "AMC-05",
+  "target_id": "UCOS-WORKFLOW-ucos.application.workflow.foundation-6a93c59ed2059159",
+  "verdict": "pass"
+}

@@ -1,0 +1,79 @@
+# TASK-000033 — EC-1 Determinism CI Gate (EPIC-004).
+# Proves constitutional determinism (IMP-007 §5): the same certified blueprint,
+# compiler, and environment definition must produce byte-identical output every
+# time. The gate runs the reproducibility harness, detects any byte-level
+# divergence, FAILS the build on divergence, and preserves the reproducibility
+# and determinism evidence as CI artifacts. Action versions pinned to major tags
+# (DE-04). The certified corpus is never modified (DP-03).
+name: EC-1 Determinism Gate
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+# CI throughput: supersede in-flight runs for the same ref. Pure run-scheduling —
+# no change to the determinism gate behavior or evidence.
+concurrency:
+  group: ec1-determinism-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  determinism:
+    name: Reproducibility (double-build · fail-on-divergence)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (pinned toolchain)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Install (pinned dev dependencies)
+        run: python -m pip install --upgrade pip && python -m pip install -e ".[dev]"
+
+      - name: Reproducibility execution + diff detection + fail-on-divergence
+        # ec1-determinism runs double_build("BP-DATA-0001"), compares generated
+        # source / manifests / SBOM / signatures / publication payloads byte for
+        # byte, writes evidence, and exits non-zero on ANY divergence.
+        run: |
+          python -m engine.determinism.reproduce BP-DATA-0001 \
+            --evidence-dir determinism-evidence
+
+      - name: Determinism integration tests (double-build + divergence detection)
+        # --no-cov BECAUSE THE FLOOR IS THE WHOLE SUITE'S, NOT THIS SUBSET'S. pyproject's
+        # addopts carry --cov-fail-under=90, derived over the entire corpus; three test
+        # files exercise a fraction of it and reported "total of 27 is less than
+        # fail-under=90". The job then failed for measuring less than everything, which is
+        # what it was asked to do. The coverage floor belongs to ./verify.sh in ec1-ci.yml
+        # and is deliberately not duplicated here — the same reasoning mutation-gate.yml
+        # already records, and the form fourteen other workflows already use.
+        run: >
+          python -m pytest engine/tests/integration/test_determinism.py
+          engine/tests/unit/test_reproduce.py engine/tests/unit/test_hermetic.py -q --no-cov
+
+      - name: Publish reproducibility & determinism evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: determinism-evidence
+          path: determinism-evidence/
+          if-no-files-found: warn

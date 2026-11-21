@@ -1,0 +1,1563 @@
+{
+  "programme": {
+    "id": "UAUE-000001",
+    "name": "Universal Autonomous Evolution — Evolution Transaction Register",
+    "version": "1.0.0",
+    "authority": "NONE (DERIVED TRUTH)",
+    "governing_instrument": "engine/uckp/law.py",
+    "governing_article": "UCKP-ART-14",
+    "governed_by": "UCKP-LAW-0001 Article 14 (Append-Only Evolution) enforcing UCKP-INV-13",
+    "operational_home": "00-MASTER/UAUE-000001",
+    "mission": "Make autonomous universal evolution a measurable transaction rather than a described intention. Every canonical phase of the perpetual evolution cycle already has a located owner in this repository, and two programmes already measure that fact: UEI-000001 binds each evolution CAPABILITY to the home that realises it, and UCOS-AEE-001 asserts convergence of the LOOP over those homes. Neither produces the thing the loop is supposed to operate on: an identified, evidence-backed evolution object for a specific subject, carried through discovery, understanding, planning, simulation, execution, measurement, validation, verification, certification, learning and state transition, and landed in a history that survives the process that wrote it. This programme is that transaction plane. It discovers evolution candidates from artifacts other owners already produce, derives one evolution object per phase per candidate through the identity rule the nucleus evolution transaction already uses, measures every mandated field, and projects the result through the canonical Article 14 ledger. It creates no evolution model, no lifecycle, no registry, no certifier and no knowledge system.",
+    "disclosure": "AUTHORITY = NONE. This programme legislates nothing, ratifies nothing, mints no corpus identity, mutates no repository state and owns no capability. Every phase of the loop is bound by pointer to an owner that exists independently of this programme and remains governed by its own authority. Execution is bound to the constitutional mutation gateway and is never performed here: this engine is a measurement and never a second mutation path. Where this register and a canonical owner differ, the canonical owner governs. Certification standing is CERTIFIED-PROVISIONAL and cannot exceed the standing of the owners it binds.",
+    "non_duplication": "No stage of the evolution cycle is declared here; the cycle is read from the canonical stage authority at run time and the gate closes if a canonical stage is not claimed by exactly one phase of this register. No object is registered in a new registry; every evolution object identity is derived by the same content-addressed rule the nucleus evolution transaction already applies. No certificate is issued; certification is a set of proofs over what located owners already determined. No history store is created; the history file is the canonical projection of the Article 14 ledger and is rehydrated through that ledger's own loader, so reading it re-runs the ledger's append rules rather than trusting the bytes."
+  },
+  "boundaries": [
+    {
+      "id": "AUE-BND-01",
+      "other_owner": "engine/uckp/evolution.py",
+      "other_subject": "the law of the perpetual evolution cycle — which stages exist, in what order, and that none is terminal (UCKP-ART-14 / INV-13)",
+      "this_subject": "one transaction traversing that cycle for one subject",
+      "why_not_duplicate": "This register declares no stage. It reads the stage set from that module and fails closed if a stage it does not claim appears there. A law and an instance of the law are not two authorities over one thing."
+    },
+    {
+      "id": "AUE-BND-02",
+      "other_owner": "engine/nucleus/evolution.py",
+      "other_subject": "the generational evolution transaction for a registered nucleus subject — generation numbering, supersession, capability monotonicity",
+      "this_subject": "the pre-registration transaction: turning an observed condition into an evolution candidate with a derived identity, before any subject is registered to evolve",
+      "why_not_duplicate": "The identity derivation rule is reused, not reimplemented: the same content-addressed prefix and width. Nothing here assigns a generation, and nothing here writes a nucleus ledger."
+    },
+    {
+      "id": "AUE-BND-03",
+      "other_owner": "00-MASTER/UEI-000001/uei_engine.py",
+      "other_subject": "binding each mandated evolution CAPABILITY to the repository home that realises it, and measuring that the binding still resolves",
+      "this_subject": "binding each evolution INSTANCE to the capabilities UEI already located, and measuring that the instance carries every mandated field",
+      "why_not_duplicate": "Capability and instance are different subjects. UEI answers 'can the platform observe, plan, simulate?'. This register answers 'did this candidate get observed, planned and simulated, and where is the evidence?'. Removing either leaves a question no other owner answers."
+    },
+    {
+      "id": "AUE-BND-04",
+      "other_owner": "00-MASTER/UCOS-AEE-001/aee_engine.py",
+      "other_subject": "convergence of the observation vector produced by re-executing located owners across consecutive iterations",
+      "this_subject": "the evolution objects the loop operates on",
+      "why_not_duplicate": "AEE measures whether the loop settles. This register measures what the loop carried. AEE observes this programme's determination as one more owner verdict; this programme never re-executes AEE and never asserts convergence, so there is no cycle between them."
+    },
+    {
+      "id": "AUE-BND-05",
+      "other_owner": "engine/constitution/gateway.py",
+      "other_subject": "the only path by which repository truth may be mutated — the seven-stage proposal pipeline and its monopoly on a clean state seal",
+      "this_subject": "the record that an evolution was authorised to travel that path, and the refusal to offer any other path",
+      "why_not_duplicate": "This engine performs no mutation. Its execution phase measures that a controlled execution owner is bound and resolves; it never proposes, applies or seals. A second mutation path is exactly what this register exists to make visible, not to provide."
+    },
+    {
+      "id": "AUE-BND-06",
+      "other_owner": "engine/nucleus/lifecycle.py",
+      "other_subject": "the forty-five stage constitutional lifecycle and its derived ordering",
+      "this_subject": "the lifecycle state carried by one evolution object",
+      "why_not_duplicate": "No lifecycle stage, transition or ordering is declared here. The lifecycle state field names a state the lifecycle owner defines; this register measures its presence, never its meaning."
+    },
+    {
+      "id": "AUE-BND-07",
+      "other_owner": "engine/universal_certification/pipeline.py",
+      "other_subject": "issuing certificates against the certification rule suite",
+      "this_subject": "proving that an evolution satisfies the declared conditions of certifiability",
+      "why_not_duplicate": "No certificate is issued here and no certification rule is re-judged. The certification phase measures whether each declared proof holds over the evolution objects; the certificate itself remains the located owner's to issue."
+    },
+    {
+      "id": "AUE-BND-08",
+      "other_owner": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "other_subject": "exactly one disposition per discovered repository unit, and the implementation queue derived from it",
+      "this_subject": "exactly one evolution chain per discovered evolution candidate",
+      "why_not_duplicate": "A unit is a thing that exists; a candidate is a change that does not yet exist. This register consumes RIB's gap measurement as a discovery source and derives no unit, no disposition and no queue."
+    },
+    {
+      "id": "AUE-BND-09",
+      "other_owner": "00-MASTER/P0-FINAL-CLOSURE-002/final_closure_engine.py",
+      "other_subject": "byte-level fixed point of the canonical regeneration chain across consecutive rounds and pristine clones",
+      "this_subject": "determinism of this programme's own render, proven by rendering twice in one process",
+      "why_not_duplicate": "This register makes no fixed-point claim about the repository. It proves only that its own output is a function of its own declaration, which is the precondition Phase 8 needs from every producer it measures."
+    },
+    {
+      "id": "AUE-BND-10",
+      "other_owner": "00-BOOK/DATA/observation-universe.json",
+      "other_subject": "the separation of Identity Truth from Observation Truth, and which observation kinds may reach a canonical artifact",
+      "this_subject": "the evolution objects derived from observations other owners already recorded",
+      "why_not_duplicate": "No observation kind is declared here and no observation value is minted. Every discovery source is a committed, sealed artifact of a located owner, so what enters this register is that owner's derived truth and not a fresh reading of the working tree."
+    }
+  ],
+  "classifications": [
+    {
+      "id": "IMPLEMENTED",
+      "meaning": "every declared owner home resolves, every declared symbol is bound in it, and a gate is declared and resolves",
+      "rank": 4,
+      "rule": "every_declared_home_resolves_with_its_symbols_and_the_gate_is_wired"
+    },
+    {
+      "id": "PARTIALLY_IMPLEMENTED",
+      "meaning": "at least one declared owner home resolves with its symbols, but a declared home, symbol or gate does not",
+      "rank": 3,
+      "rule": "at_least_one_declared_home_resolves"
+    },
+    {
+      "id": "MISSING",
+      "meaning": "no declared owner home resolves, so the phase has no realisation in repository truth",
+      "rank": 0,
+      "rule": "no_declared_home_resolves"
+    },
+    {
+      "id": "DUPLICATE",
+      "meaning": "two phases resolve to an identical owner home set, which would be two authorities over one home",
+      "rank": 1,
+      "rule": "another_phase_declares_an_identical_home_set"
+    },
+    {
+      "id": "FUTURE_EVOLUTION",
+      "meaning": "the phase is declared with no owner home at all and is carried as a disclosed absence rather than closed by building a new engine",
+      "rank": 2,
+      "rule": "no_home_is_declared"
+    }
+  ],
+  "stage_authority": {
+    "home": "engine/uckp/evolution.py",
+    "enum_symbol": "EvolutionStage",
+    "cycle_symbol": "EVOLUTION_CYCLE",
+    "length_symbol": "CYCLE_LENGTH",
+    "successor_symbol": "next_stage",
+    "terminal_symbol": "is_terminal",
+    "vocabulary_symbol": "evolution_stage_vocabulary",
+    "vocabulary_id": "uckp.evolution-stage",
+    "ledger_symbol": "EvolutionLedger",
+    "record_symbol": "EvolutionRecord",
+    "document_symbol": "to_document",
+    "rehydration_symbol": "from_document",
+    "basis": "The stage set is read from this module rather than restated here, so this register cannot drift from the law it claims to traverse. Every stage the module declares must be claimed by exactly one phase below; a stage appended under Article 17 closes this gate until a phase claims it, which is how an open-world cycle stays governed instead of quietly growing an unowned stage."
+  },
+  "identity": {
+    "prefix": "UCOS-EVO-",
+    "width": 12,
+    "derivation_home": "engine/nucleus/evolution.py",
+    "derivation_symbol": "Evolution",
+    "digest_home": "engine/uckp/canonical.py",
+    "digest_symbol": "content_hash",
+    "inputs": [
+      "candidate_class",
+      "subject_identity",
+      "reason",
+      "authority",
+      "object_kind"
+    ],
+    "basis": "The identity of an evolution object is the content-addressed digest of what makes it that evolution, truncated to the same width the nucleus evolution transaction already uses. Nothing is minted, no corpus serial is consumed and no registry is written, so this register cannot become a second identity authority. Because identity is derived from meaning rather than from arrival order, the same candidate observed twice yields the same evolution id and the history does not fork.",
+    "anonymity_rule": "An evolution object whose identity does not match the digest of its own declared inputs, or whose subject identity is empty, is anonymous. Anonymous evolution is refused, not reported."
+  },
+  "phases": [
+    {
+      "id": "AUE-P-01",
+      "ordinal": 1,
+      "name": "Discover",
+      "duty": "turn a condition observed by a located owner into an evolution candidate with a reason and a subject",
+      "canonical_stages": [
+        "observe"
+      ],
+      "produces": "AUE-OBJ-01",
+      "owners": [
+        {
+          "home": "intelligence/rie/discovery.py",
+          "symbols": [
+            "discover",
+            "Capability"
+          ]
+        },
+        {
+          "home": "intelligence/rie/analysis.py",
+          "symbols": [
+            "repository_health",
+            "execution_frontier",
+            "aeos_readiness"
+          ]
+        },
+        {
+          "home": "platform/universal_control_plane/evolution.py",
+          "symbols": [
+            "Observation",
+            "EvolutionEngine"
+          ]
+        }
+      ],
+      "gate": "make rib-gate",
+      "evidence": [
+        "intelligence/UCOS-RIE-AEOS-READINESS.json",
+        "intelligence/UCOS-RIE-EXECUTION-FRONTIER.json",
+        "00-MASTER/UCOS-RIB-001/rib.json"
+      ],
+      "reuse": "Discovery is not performed against the working tree. It reads the sealed derived-truth artifacts the repository intelligence engine and the integration blueprint already publish, so a candidate is always attributable to an owner that measured it.",
+      "authority": "UCOS-RIE-001 — Repository Intelligence Engine (derived truth); discovery may only report what a located owner measured"
+    },
+    {
+      "id": "AUE-P-02",
+      "ordinal": 2,
+      "name": "Understand",
+      "duty": "answer why to evolve, what changes, what depends on it, what can break, and what evidence supports it",
+      "canonical_stages": [
+        "learn",
+        "impact-analysis",
+        "dependency-analysis"
+      ],
+      "produces": "AUE-OBJ-02",
+      "owners": [
+        {
+          "home": "engine/uckp/ucko.py",
+          "symbols": [
+            "UniversalConstitutionalKnowledgeObject",
+            "UCKO"
+          ]
+        },
+        {
+          "home": "engine/knowledge/model.py",
+          "symbols": [
+            "KnowledgeKind",
+            "RelationType",
+            "KnowledgeAuthority"
+          ]
+        },
+        {
+          "home": "platform/validation_intelligence/analyzers.py",
+          "symbols": []
+        }
+      ],
+      "gate": "make ucl-gate",
+      "evidence": [
+        "intelligence/UCOS-RIE-DEPENDENCY-GRAPH.json",
+        "intelligence/UCOS-RIE-PROGRESS.json"
+      ],
+      "reuse": "Meaning, relationship kinds and authority tiers are the knowledge model's to define. Understanding here is the composition of the candidate with the dependency and progress measurements those owners publish.",
+      "authority": "engine/uckp/law.py UCKP-ART-02 — the knowledge model owns meaning, relationship kind and authority tier"
+    },
+    {
+      "id": "AUE-P-03",
+      "ordinal": 3,
+      "name": "Plan",
+      "duty": "produce objectives, steps, dependencies, risk, acceptance criteria and a rollback strategy under the governing authority",
+      "canonical_stages": [
+        "reason",
+        "authority-resolution"
+      ],
+      "produces": "AUE-OBJ-03",
+      "owners": [
+        {
+          "home": "intelligence/realization/planning.py",
+          "symbols": [
+            "PlanningEngine",
+            "build_plan"
+          ]
+        },
+        {
+          "home": "platform/universal_assurance/planning.py",
+          "symbols": []
+        },
+        {
+          "home": "engine/constitution/planner.py",
+          "symbols": []
+        }
+      ],
+      "gate": "make uaep-gate",
+      "evidence": [
+        "intelligence/realization/planning.py",
+        "platform/universal_assurance/planning.py"
+      ],
+      "reuse": "Three planners already exist — realization waves, assurance obligations and the execution plan the mutation gateway certifies against. No fourth planner is written; the plan object records which of them governs each step.",
+      "authority": "URI-000001 — the realization planning authority, with the assurance policy as the obligation source"
+    },
+    {
+      "id": "AUE-P-04",
+      "ordinal": 4,
+      "name": "Simulate",
+      "duty": "predict impact, validate dependencies and evaluate risk before anything is executed",
+      "canonical_stages": [
+        "simulate"
+      ],
+      "produces": "AUE-OBJ-04",
+      "owners": [
+        {
+          "home": "platform/universal_assurance/determinism.py",
+          "symbols": []
+        },
+        {
+          "home": "engine/constitution/replay.py",
+          "symbols": []
+        },
+        {
+          "home": "engine/nucleus/lifecycle.py",
+          "symbols": [
+            "replay",
+            "LifecycleExecution"
+          ]
+        }
+      ],
+      "gate": "make final-closure-gate",
+      "evidence": [
+        "00-MASTER/P0-LIFECYCLE-CLOSURE-001/UCOS-LIFECYCLE-REPLAY.json"
+      ],
+      "reuse": "Simulation is replay against a candidate state rather than a new predictive engine: the replay owners already prove that executing a plan twice reaches one digest, which is the only impact prediction that can be verified rather than believed.",
+      "authority": "engine/uckp/law.py UCKP-ART-13 — replay is the only impact prediction that can be verified rather than believed"
+    },
+    {
+      "id": "AUE-P-05",
+      "ordinal": 5,
+      "name": "Execute",
+      "duty": "carry the plan through the single authorised mutation path, under identity, authority, evidence and gates",
+      "canonical_stages": [
+        "implementation"
+      ],
+      "produces": "AUE-OBJ-05",
+      "owners": [
+        {
+          "home": "engine/constitution/gateway.py",
+          "symbols": [
+            "Mutation",
+            "PIPELINE",
+            "pipeline_order",
+            "propose",
+            "apply"
+          ]
+        },
+        {
+          "home": "engine/constitution/state.py",
+          "symbols": []
+        },
+        {
+          "home": "engine/runtime/execution/__init__.py",
+          "symbols": []
+        }
+      ],
+      "gate": "./verify.sh",
+      "evidence": [
+        "engine/constitution/gateway.py",
+        "engine/tests/constitution/test_gateway_and_assimilation.py"
+      ],
+      "reuse": "The gateway is the only producer of a clean state seal, so it is the only path by which an executed evolution can become repository truth. This register records the authorisation and refuses to offer an alternative; it performs no mutation itself, which is why no bypass can originate here.",
+      "authority": "UCOS-CMG-EXEC-000001 — the constitutional mutation gateway, sole producer of a clean state seal"
+    },
+    {
+      "id": "AUE-P-06",
+      "ordinal": 6,
+      "name": "Measure",
+      "duty": "observe the result after execution and compare expected against actual, recording the deviation",
+      "canonical_stages": [
+        "replay"
+      ],
+      "produces": "AUE-OBJ-06",
+      "owners": [
+        {
+          "home": "platform/universal_control_plane/evolution.py",
+          "symbols": [
+            "Observation",
+            "EvolutionEngine",
+            "DEFAULT_ORDERINGS",
+            "DEFAULT_DIMENSIONS"
+          ]
+        },
+        {
+          "home": "platform/universal_assurance/measurement.py",
+          "symbols": []
+        },
+        {
+          "home": "engine/nucleus/lineage.py",
+          "symbols": [
+            "EVOLVED",
+            "LineageLedger",
+            "ledger_for"
+          ]
+        }
+      ],
+      "gate": "make aee-gate",
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/aee.json"
+      ],
+      "reuse": "The control-plane evolution engine already classifies a delta as promoted, regressed, improved, modified or unchanged against declared orderings. Measurement reuses that classification instead of inventing a verdict word.",
+      "authority": "UCOS-CTRL-000001 — the universal control plane, which owns delta classification against declared orderings"
+    },
+    {
+      "id": "AUE-P-07",
+      "ordinal": 7,
+      "name": "Validate",
+      "duty": "establish correctness, completeness, consistency, compatibility, traceability and reproducibility of the change",
+      "canonical_stages": [
+        "validation"
+      ],
+      "produces": "AUE-OBJ-07",
+      "owners": [
+        {
+          "home": "platform/universal_assurance/orchestrator.py",
+          "symbols": [
+            "AssuranceOrchestrator",
+            "AssuranceOutcome",
+            "DeterministicCore"
+          ]
+        },
+        {
+          "home": "engine/uckp/validation.py",
+          "symbols": [
+            "ConstitutionalValidator",
+            "validate_universe"
+          ]
+        },
+        {
+          "home": "engine/validation/executor.py",
+          "symbols": []
+        }
+      ],
+      "gate": "./verify.sh",
+      "evidence": [
+        "engine/uckp/validation.py",
+        "platform/universal_assurance/orchestrator.py"
+      ],
+      "reuse": "The assurance orchestrator already stages validation planning, generation, execution and evidence collection and already fails a run whose declared metric could not be measured. No validation dimension is re-implemented; each is bound to it.",
+      "authority": "UCOS-EPIC-014 — the universal assurance orchestrator, with the UCKP invariant probes beneath it"
+    },
+    {
+      "id": "AUE-P-08",
+      "ordinal": 8,
+      "name": "Verify",
+      "duty": "prove identity, dependency, evidence, governance and lifecycle integrity, and readiness to certify",
+      "canonical_stages": [
+        "verification"
+      ],
+      "produces": "AUE-OBJ-08",
+      "owners": [
+        {
+          "home": "verify.sh",
+          "symbols": []
+        },
+        {
+          "home": "00-CMG/tools/cmg_validate.py",
+          "symbols": []
+        },
+        {
+          "home": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+          "symbols": []
+        },
+        {
+          "home": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+          "symbols": []
+        }
+      ],
+      "gate": "./verify.sh",
+      "evidence": [
+        "verify.sh",
+        ".github/workflows/ec1-ci.yml",
+        ".github/workflows/rib-gate.yml"
+      ],
+      "reuse": "Verification is the canonical entry point plus the gates it already runs. This register names which gate discharges which integrity dimension and measures that the gate is wired; it never restates a gate's verdict as its own.",
+      "authority": "verify.sh — the single canonical verification entry point and the gates it runs"
+    },
+    {
+      "id": "AUE-P-09",
+      "ordinal": 9,
+      "name": "Certify",
+      "duty": "prove the evolution was authorised, understood, planned, executed, evidenced, validated, verified and recorded",
+      "canonical_stages": [
+        "certification"
+      ],
+      "produces": "AUE-OBJ-09",
+      "owners": [
+        {
+          "home": "engine/universal_certification/pipeline.py",
+          "symbols": [
+            "CertificationPipeline",
+            "CertificationOutcome"
+          ]
+        },
+        {
+          "home": "platform/universal_assurance/certification.py",
+          "symbols": []
+        },
+        {
+          "home": "platform/certification/ledger.py",
+          "symbols": []
+        }
+      ],
+      "gate": "make aee-gate",
+      "evidence": [
+        "engine/universal_certification/pipeline.py",
+        "platform/universal_assurance/certification.py"
+      ],
+      "reuse": "The certification pipeline issues certificates and the assurance layer adapts inputs to it without re-judging. This phase adds only the proofs that are specific to an evolution transaction and could not be expressed as a certification rule over a static object.",
+      "authority": "UCOS-EPIC-006 — the universal certification pipeline, sole issuer of certificates"
+    },
+    {
+      "id": "AUE-P-10",
+      "ordinal": 10,
+      "name": "Learn",
+      "duty": "assimilate the outcome so the next cycle starts from what this one established",
+      "canonical_stages": [
+        "knowledge-assimilation"
+      ],
+      "produces": "AUE-OBJ-10",
+      "owners": [
+        {
+          "home": "engine/knowledge/store.py",
+          "symbols": []
+        },
+        {
+          "home": "intelligence/rie/knowledge.py",
+          "symbols": [
+            "policy_for",
+            "CATEGORY_POLICY"
+          ]
+        },
+        {
+          "home": "engine/constitution/assimilation.py",
+          "symbols": []
+        }
+      ],
+      "gate": "make assimilate-gate",
+      "evidence": [
+        "00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py"
+      ],
+      "reuse": "Assimilation already has an owner and a gate. Learning here is the record of which outcome was assimilated by whom, so that a learned outcome cannot exist without a located assimilator.",
+      "authority": "UAKOS-CLOSURE-008 — the assimilation authority"
+    },
+    {
+      "id": "AUE-P-11",
+      "ordinal": 11,
+      "name": "Evolve",
+      "duty": "transition state, append the history record, and continue — never terminate",
+      "canonical_stages": [
+        "state-transition",
+        "continuation"
+      ],
+      "produces": "AUE-OBJ-11",
+      "owners": [
+        {
+          "home": "engine/uckp/evolution.py",
+          "symbols": [
+            "EvolutionLedger",
+            "EvolutionRecord",
+            "next_stage",
+            "is_terminal",
+            "from_document"
+          ]
+        },
+        {
+          "home": "engine/uckp/state.py",
+          "symbols": []
+        },
+        {
+          "home": "engine/nucleus/evolution.py",
+          "symbols": [
+            "Evolution",
+            "EvolutionLedger"
+          ]
+        }
+      ],
+      "gate": "make uaue-gate",
+      "evidence": [
+        "00-MASTER/UAUE-000001/UAUE-EVOLUTION-HISTORY.json",
+        "engine/tests/uckp/test_evolution_rehydration.py"
+      ],
+      "reuse": "State transition and continuation are the Article 14 ledger's own semantics. The history this register writes is that ledger's canonical document and is read back through that ledger's loader, so the append-only claim is re-verified on every read instead of being asserted once.",
+      "authority": "engine/uckp/law.py UCKP-ART-14 — append-only evolution, enforcing UCKP-INV-13"
+    }
+  ],
+  "object_kinds": [
+    {
+      "id": "AUE-OBJ-01",
+      "name": "Evolution Intent Object",
+      "phase": "AUE-P-01",
+      "mandated": true,
+      "purpose": "the recorded intention to evolve one subject for one reason, derived from an owner's measurement rather than from a human feature request"
+    },
+    {
+      "id": "AUE-OBJ-02",
+      "name": "Evolution Understanding Object",
+      "phase": "AUE-P-02",
+      "mandated": true,
+      "purpose": "why the evolution matters, what it changes, what depends on it, what it can break, and what evidence supports each of those answers"
+    },
+    {
+      "id": "AUE-OBJ-03",
+      "name": "Evolution Plan Object",
+      "phase": "AUE-P-03",
+      "mandated": true,
+      "purpose": "objectives, steps, dependencies, risk, the criteria each later phase will be judged against, and the rollback strategy"
+    },
+    {
+      "id": "AUE-OBJ-04",
+      "name": "Evolution Simulation Object",
+      "phase": "AUE-P-04",
+      "mandated": false,
+      "purpose": "the predicted impact, dependency resolution and risk evaluation obtained before execution. Additional to the mandated set: without it, execution would be permitted with no prior evaluation, which the controlled-execution rule forbids"
+    },
+    {
+      "id": "AUE-OBJ-05",
+      "name": "Evolution Execution Object",
+      "phase": "AUE-P-05",
+      "mandated": true,
+      "purpose": "the record that the plan was carried through the single authorised mutation path under identity, authority, evidence and gates"
+    },
+    {
+      "id": "AUE-OBJ-06",
+      "name": "Evolution Observation Object",
+      "phase": "AUE-P-06",
+      "mandated": true,
+      "purpose": "the post-execution measurement — expected result, actual result, deviation — attributed to the owner that measured it"
+    },
+    {
+      "id": "AUE-OBJ-07",
+      "name": "Evolution Validation Object",
+      "phase": "AUE-P-07",
+      "mandated": true,
+      "purpose": "the verdict of each declared validation dimension over this evolution, with the failures that produced it"
+    },
+    {
+      "id": "AUE-OBJ-08",
+      "name": "Evolution Verification Object",
+      "phase": "AUE-P-08",
+      "mandated": true,
+      "purpose": "the integrity verdicts and the gate that discharges each of them"
+    },
+    {
+      "id": "AUE-OBJ-09",
+      "name": "Evolution Certification Object",
+      "phase": "AUE-P-09",
+      "mandated": true,
+      "purpose": "the proofs that make this evolution certifiable, and the located owner that would issue the certificate"
+    },
+    {
+      "id": "AUE-OBJ-10",
+      "name": "Evolution Learning Object",
+      "phase": "AUE-P-10",
+      "mandated": false,
+      "purpose": "what the outcome established and which assimilator holds it. Additional to the mandated set: a loop that cannot record what it learned repeats itself"
+    },
+    {
+      "id": "AUE-OBJ-11",
+      "name": "Evolution History Object",
+      "phase": "AUE-P-11",
+      "mandated": true,
+      "purpose": "the append-only record of the whole transaction — who, what, why, when in logical time, where, context, evidence, decision, impact, validation, certification"
+    }
+  ],
+  "required_fields": [
+    {
+      "id": "AUE-FLD-01",
+      "field": "evolution_id",
+      "name": "Evolution ID",
+      "non_empty": true,
+      "derivation": "the content-addressed digest of the object's declared identity inputs, prefixed and truncated by the identity rule"
+    },
+    {
+      "id": "AUE-FLD-02",
+      "field": "subject_identity",
+      "name": "Subject Identity",
+      "non_empty": true,
+      "derivation": "the subject the discovery source named, carried unchanged through every phase so one chain always describes one subject"
+    },
+    {
+      "id": "AUE-FLD-03",
+      "field": "previous_state",
+      "name": "Previous State",
+      "non_empty": true,
+      "derivation": "the condition the discovering owner measured, stated as the state that exists now"
+    },
+    {
+      "id": "AUE-FLD-04",
+      "field": "target_state",
+      "name": "Target State",
+      "non_empty": true,
+      "derivation": "the condition under which the discovering owner would no longer report this candidate"
+    },
+    {
+      "id": "AUE-FLD-05",
+      "field": "reason",
+      "name": "Reason",
+      "non_empty": true,
+      "derivation": "the discovering owner's own words for why the condition is a condition, never a restatement invented here"
+    },
+    {
+      "id": "AUE-FLD-06",
+      "field": "context",
+      "name": "Context",
+      "non_empty": true,
+      "derivation": "the source artifact, the selector within it and the candidate class, so the candidate can be re-derived from the artifact that produced it"
+    },
+    {
+      "id": "AUE-FLD-07",
+      "field": "dependencies",
+      "name": "Dependencies",
+      "non_empty": false,
+      "derivation": "the owner homes this phase binds, plus the phases this phase depends on. May legitimately be empty only for a phase with no declared owner, which is itself a disclosed absence"
+    },
+    {
+      "id": "AUE-FLD-08",
+      "field": "evidence",
+      "name": "Evidence",
+      "non_empty": true,
+      "derivation": "the resolving artifact paths the phase declared, filtered to those that exist. An evolution object with no resolving evidence is refused"
+    },
+    {
+      "id": "AUE-FLD-09",
+      "field": "plan",
+      "name": "Plan",
+      "non_empty": true,
+      "derivation": "the plan objective and the planner that governs it, carried into every downstream object so no phase runs unplanned"
+    },
+    {
+      "id": "AUE-FLD-10",
+      "field": "execution_record",
+      "name": "Execution Record",
+      "non_empty": true,
+      "derivation": "the authorised execution path, its gate, and whether the path resolves. Never an assertion that a mutation happened"
+    },
+    {
+      "id": "AUE-FLD-11",
+      "field": "validation_result",
+      "name": "Validation Result",
+      "non_empty": true,
+      "derivation": "the aggregate verdict of the declared validation dimensions measured over this object"
+    },
+    {
+      "id": "AUE-FLD-12",
+      "field": "verification_result",
+      "name": "Verification Result",
+      "non_empty": true,
+      "derivation": "the aggregate verdict of the declared verification dimensions, each attributed to the gate that discharges it"
+    },
+    {
+      "id": "AUE-FLD-13",
+      "field": "certification_result",
+      "name": "Certification Result",
+      "non_empty": true,
+      "derivation": "the aggregate verdict of the declared certification proofs over this object"
+    },
+    {
+      "id": "AUE-FLD-14",
+      "field": "lifecycle_state",
+      "name": "Lifecycle State",
+      "non_empty": true,
+      "derivation": "the canonical stage this phase claims, taken from the stage authority. A lifecycle state this register invented would be a second lifecycle"
+    }
+  ],
+  "discovery_duties": [
+    {
+      "id": "AUE-DUTY-01",
+      "duty": "repository changes",
+      "satisfied_by": [
+        "AUE-SRC-06",
+        "AUE-SRC-08"
+      ]
+    },
+    {
+      "id": "AUE-DUTY-02",
+      "duty": "capability gaps",
+      "satisfied_by": [
+        "AUE-SRC-01",
+        "AUE-SRC-02"
+      ]
+    },
+    {
+      "id": "AUE-DUTY-03",
+      "duty": "knowledge gaps",
+      "satisfied_by": [
+        "AUE-SRC-03"
+      ]
+    },
+    {
+      "id": "AUE-DUTY-04",
+      "duty": "validation failures",
+      "satisfied_by": [
+        "AUE-SRC-04",
+        "AUE-SRC-06"
+      ]
+    },
+    {
+      "id": "AUE-DUTY-05",
+      "duty": "optimization opportunities",
+      "satisfied_by": [
+        "AUE-SRC-05"
+      ]
+    },
+    {
+      "id": "AUE-DUTY-06",
+      "duty": "new relationships",
+      "satisfied_by": [
+        "AUE-SRC-07"
+      ]
+    },
+    {
+      "id": "AUE-DUTY-07",
+      "duty": "unknown objects",
+      "satisfied_by": [
+        "AUE-SRC-09"
+      ]
+    },
+    {
+      "id": "AUE-DUTY-08",
+      "duty": "authority surface gaps in this repository's own canonical owners",
+      "satisfied_by": [
+        "AUE-SRC-08"
+      ]
+    }
+  ],
+  "discovery_sources": [
+    {
+      "id": "AUE-SRC-01",
+      "name": "declared spine gaps",
+      "owner": "UCOS-RIE-001",
+      "path": "intelligence/UCOS-RIE-AEOS-READINESS.json",
+      "selector": [
+        "known_spine_gaps"
+      ],
+      "form": "list_of_objects",
+      "candidate_class": "CAPABILITY_GAP",
+      "fields": {
+        "id": "id",
+        "subject": "missing",
+        "severity": "severity"
+      },
+      "reason_template": "the repository intelligence engine measures this capability as named and not implemented",
+      "target_template": "the named capability resolves to a home that exists and the readiness artifact no longer lists it",
+      "include_when": []
+    },
+    {
+      "id": "AUE-SRC-02",
+      "name": "blocked capability",
+      "owner": "UCOS-RIE-001",
+      "path": "intelligence/UCOS-RIE-EXECUTION-FRONTIER.json",
+      "selector": [
+        "blocked"
+      ],
+      "form": "list_of_objects",
+      "candidate_class": "BLOCKED_CAPABILITY",
+      "fields": {
+        "subject": "capability",
+        "reason": "blocked_by"
+      },
+      "reason_template": "the execution frontier records this capability as blocked",
+      "target_template": "the blocking condition is discharged and the frontier no longer records the block",
+      "include_when": []
+    },
+    {
+      "id": "AUE-SRC-03",
+      "name": "knowledge and readiness gaps",
+      "owner": "UCOS-RIE-001",
+      "path": "intelligence/UCOS-RIE-AEOS-READINESS.json",
+      "selector": [
+        "not_ready_because"
+      ],
+      "form": "list_of_strings",
+      "candidate_class": "KNOWLEDGE_GAP",
+      "fields": {},
+      "reason_template": "the readiness determination names this as a reason the platform is not ready",
+      "target_template": "the reason is discharged and no longer appears in the readiness determination",
+      "include_when": []
+    },
+    {
+      "id": "AUE-SRC-04",
+      "name": "integration gap classes",
+      "owner": "UCOS-RIB-001",
+      "path": "00-MASTER/UCOS-RIB-001/rib.json",
+      "selector": [
+        "gaps"
+      ],
+      "form": "list_of_objects",
+      "candidate_class": "VALIDATION_GAP",
+      "fields": {
+        "id": "id",
+        "subject": "subject",
+        "reason": "class",
+        "count": "count"
+      },
+      "reason_template": "the integration blueprint measures a non-empty gap class",
+      "target_template": "the gap class measures zero members",
+      "include_when": [
+        {
+          "field": "count",
+          "op": "gt",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "id": "AUE-SRC-05",
+      "name": "dimension optimization opportunities",
+      "owner": "UCOS-RIE-001",
+      "path": "intelligence/UCOS-RIE-PROGRESS.json",
+      "selector": [
+        "per_dimension"
+      ],
+      "form": "mapping_of_objects",
+      "candidate_class": "OPTIMIZATION",
+      "fields": {
+        "reason": "status",
+        "severity": "source"
+      },
+      "reason_template": "the progress measurement records this dimension below full reconciliation",
+      "target_template": "the dimension reconciles to its full score without a stale measurement",
+      "include_when": [
+        {
+          "field": "reconciled_score",
+          "op": "lt",
+          "value": 1.0
+        }
+      ]
+    },
+    {
+      "id": "AUE-SRC-06",
+      "name": "convergence findings",
+      "owner": "UCOS-AEE-001",
+      "path": "00-MASTER/UCOS-AEE-001/aee.json",
+      "selector": [
+        "findings"
+      ],
+      "form": "list_of_objects",
+      "candidate_class": "GOVERNANCE_FINDING",
+      "fields": {
+        "id": "id",
+        "subject": "owner",
+        "reason": "detail",
+        "severity": "class"
+      },
+      "reason_template": "the autonomous evolution loop records a finding against a located owner",
+      "target_template": "the finding is discharged by its owner and the loop no longer records it",
+      "include_when": []
+    },
+    {
+      "id": "AUE-SRC-07",
+      "name": "critical-path relationships",
+      "owner": "UCOS-RIE-001",
+      "path": "intelligence/UCOS-RIE-EXECUTION-FRONTIER.json",
+      "selector": [
+        "critical_path"
+      ],
+      "form": "list_of_strings",
+      "candidate_class": "RELATIONSHIP",
+      "fields": {},
+      "reason_template": "the critical path declares an ordering relationship this register must carry rather than re-derive",
+      "target_template": "the relationship is discharged and leaves the critical path",
+      "include_when": []
+    },
+    {
+      "id": "AUE-SRC-08",
+      "name": "authority surface obligations",
+      "owner": "UAUE-000001",
+      "path": null,
+      "selector": [
+        "authority_symbols"
+      ],
+      "form": "symbol_obligation",
+      "candidate_class": "AUTHORITY_SYMBOL_GAP",
+      "fields": {
+        "id": "id",
+        "subject": "home",
+        "reason": "why"
+      },
+      "reason_template": "a canonical authority does not expose a surface this register depends on",
+      "target_template": "the declared symbol is bound in the declared home",
+      "include_when": []
+    },
+    {
+      "id": "AUE-SRC-09",
+      "name": "unknown object probe",
+      "owner": "UAUE-000001",
+      "path": null,
+      "selector": [
+        "unknown_probe"
+      ],
+      "form": "unknown_probe",
+      "candidate_class": "UNKNOWN_OBJECT",
+      "fields": {},
+      "reason_template": "an object that exists in no registry, bears no declared class and names no known owner must still traverse the loop",
+      "target_template": "the unknown object is discovered, identified, understood, planned, executed, validated, verified and certified with no new registry, authority, engine or governance patch",
+      "include_when": []
+    }
+  ],
+  "authority_symbols": [
+    {
+      "id": "AUE-SYM-01",
+      "home": "engine/uckp/evolution.py",
+      "symbol": "from_document",
+      "why": "the Article 14 ledger could project itself to a canonical document and could not read one back, so a published evolution history could never be re-verified: the append-only claim was true inside one process and unfalsifiable between processes",
+      "phase": "AUE-P-11"
+    },
+    {
+      "id": "AUE-SYM-02",
+      "home": "engine/uckp/evolution.py",
+      "symbol": "LEDGER_SCHEMA",
+      "why": "a rehydrator that cannot name the schema it accepts will accept any document that happens to have a records array",
+      "phase": "AUE-P-11"
+    },
+    {
+      "id": "AUE-SYM-03",
+      "home": "engine/nucleus/evolution.py",
+      "symbol": "Evolution",
+      "why": "the identity derivation rule this register reuses lives on that class; if it moves, every evolution id here becomes unattributable",
+      "phase": "AUE-P-01"
+    },
+    {
+      "id": "AUE-SYM-04",
+      "home": "engine/constitution/gateway.py",
+      "symbol": "pipeline_order",
+      "why": "the execution phase binds to a derived pipeline order; a hardcoded order would let a stage be skipped silently",
+      "phase": "AUE-P-05"
+    },
+    {
+      "id": "AUE-SYM-05",
+      "home": "engine/uckp/vocabulary.py",
+      "symbol": "extended_with",
+      "why": "the unknown-evolution proof requires that the stage vocabulary admits a term no stage declares; without this surface the cycle would be a closed set",
+      "phase": "AUE-P-01"
+    }
+  ],
+  "unknown_probe": {
+    "id": "AUE-UNK-01",
+    "subject": "uaue.unknown-subject/1.0.0",
+    "subject_class": "an object that exists in no registry, bears no declared class, names no known owner and belongs to no reality model this repository has modelled",
+    "unknown_stage_term": "future.stage",
+    "must_not_require": [
+      "a new registry",
+      "a new authority",
+      "a new engine",
+      "a new schema",
+      "a manual governance patch",
+      "an architecture modification"
+    ],
+    "basis": "The probe is not a test fixture kept beside the code; it is a candidate carried through the same controller as every other candidate. If the controller needed to know what the subject was, the probe would fail — which is exactly the property that must be measured rather than claimed."
+  },
+  "self_evolution": {
+    "id": "AUE-SELF-01",
+    "subject_identity": "engine/uckp/evolution.py",
+    "detected_by": "AUE-SRC-08",
+    "gap": "the canonical Article 14 evolution ledger exposed no inverse of its canonical projection, so an evolution history could be written and never read back under the ledger's own append rules",
+    "previous_state": "EvolutionLedger exposes to_document and fingerprint and no loader; EvolutionRecord.from_dict exists but nothing rehydrates a ledger",
+    "target_state": "EvolutionLedger exposes from_document, which replays every record through append so a skipped, reordered or renumbered record is refused on load exactly as it is refused on write, and LEDGER_SCHEMA names the document form it accepts",
+    "required_symbols": [
+      "from_document",
+      "LEDGER_SCHEMA",
+      "LEDGER_VERSION"
+    ],
+    "home": "engine/uckp/evolution.py",
+    "authority": "engine/uckp/law.py UCKP-ART-14",
+    "executed_through": "AUE-P-05",
+    "evidence": [
+      "engine/uckp/evolution.py",
+      "engine/tests/uckp/test_evolution_rehydration.py"
+    ],
+    "basis": "This is the programme's own demonstration that the platform can detect a gap in itself, understand it, plan it, execute it through a located owner and have the closure measured for ever after. The measurement stays live: if the surface is removed, this register reopens the candidate and the gate closes."
+  },
+  "history": {
+    "file": "UAUE-EVOLUTION-HISTORY.json",
+    "schema": "ucos-uaue-evolution-history",
+    "version": "1.0.0",
+    "append_only": true,
+    "projection_of": {
+      "home": "engine/uckp/evolution.py",
+      "ledger_symbol": "EvolutionLedger",
+      "document_symbol": "to_document",
+      "rehydration_symbol": "from_document"
+    },
+    "records": [
+      {
+        "id": "AUE-HIS-01",
+        "dimension": "who",
+        "derivation": "the located owner home that measured the condition, and the authority the phase resolves under"
+      },
+      {
+        "id": "AUE-HIS-02",
+        "dimension": "what",
+        "derivation": "the subject identity together with the previous and target state"
+      },
+      {
+        "id": "AUE-HIS-03",
+        "dimension": "why",
+        "derivation": "the discovering owner's reason, carried verbatim"
+      },
+      {
+        "id": "AUE-HIS-04",
+        "dimension": "when",
+        "derivation": "the logical position in the perpetual cycle — cycle number, stage, and sequence within the ledger. Never a wall clock: a wall clock would make the history unreplayable and would make this artifact drift on every render"
+      },
+      {
+        "id": "AUE-HIS-05",
+        "dimension": "where",
+        "derivation": "the source artifact and selector the candidate was derived from"
+      },
+      {
+        "id": "AUE-HIS-06",
+        "dimension": "context",
+        "derivation": "the candidate class and the phase that produced the object"
+      },
+      {
+        "id": "AUE-HIS-07",
+        "dimension": "evidence",
+        "derivation": "the resolving evidence paths of the phase"
+      },
+      {
+        "id": "AUE-HIS-08",
+        "dimension": "decision",
+        "derivation": "the classification of the phase and the verdict of the object"
+      },
+      {
+        "id": "AUE-HIS-09",
+        "dimension": "impact",
+        "derivation": "the deviation between expected and actual recorded by the measurement phase"
+      },
+      {
+        "id": "AUE-HIS-10",
+        "dimension": "validation",
+        "derivation": "the validation verdict of the object"
+      },
+      {
+        "id": "AUE-HIS-11",
+        "dimension": "certification",
+        "derivation": "the certification verdict of the object"
+      }
+    ],
+    "queryable_by": [
+      "evolution_id",
+      "subject_identity",
+      "candidate_class",
+      "phase",
+      "canonical_stage",
+      "cycle",
+      "lifecycle_state"
+    ],
+    "immutability_rule": "The history is the canonical document of an append-only ledger and is loaded back through that ledger, so a mutated history is refused on read rather than trusted. Because every record identity is content-addressed, a record cannot be rewritten without changing its identity, and a changed identity is a different record."
+  },
+  "validations": [
+    {
+      "id": "AUE-VAL-01",
+      "dimension": "Correctness",
+      "obligation": "every evolution object's identity equals the digest of its own declared identity inputs",
+      "blocking": true
+    },
+    {
+      "id": "AUE-VAL-02",
+      "dimension": "Completeness",
+      "obligation": "every evolution object carries every mandated field, and every field declared non-empty is non-empty",
+      "blocking": true
+    },
+    {
+      "id": "AUE-VAL-03",
+      "dimension": "Consistency",
+      "obligation": "every canonical stage of the evolution cycle is claimed by exactly one phase, and every phase produces exactly one object kind",
+      "blocking": true
+    },
+    {
+      "id": "AUE-VAL-04",
+      "dimension": "Compatibility",
+      "obligation": "every declared owner home resolves in repository truth and every declared symbol is bound in it",
+      "blocking": true
+    },
+    {
+      "id": "AUE-VAL-05",
+      "dimension": "Traceability",
+      "obligation": "every candidate resolves to a discovery source that exists, and every mandated object kind is produced",
+      "blocking": true
+    },
+    {
+      "id": "AUE-VAL-06",
+      "dimension": "Reproducibility",
+      "obligation": "two renders of one declaration over one repository state are byte-identical",
+      "blocking": true
+    }
+  ],
+  "verifications": [
+    {
+      "id": "AUE-VER-01",
+      "dimension": "Identity integrity",
+      "obligation": "no evolution object is anonymous and no two distinct objects share an identity",
+      "bound_gate": "make uaue-gate",
+      "blocking": true
+    },
+    {
+      "id": "AUE-VER-02",
+      "dimension": "Dependency integrity",
+      "obligation": "every phase dependency names an earlier phase, so the loop has no backward edge that would make an object depend on its own successor",
+      "bound_gate": "make rib-gate",
+      "blocking": true
+    },
+    {
+      "id": "AUE-VER-03",
+      "dimension": "Evidence integrity",
+      "obligation": "every evolution object carries at least one resolving evidence path",
+      "bound_gate": "./verify.sh",
+      "blocking": true
+    },
+    {
+      "id": "AUE-VER-04",
+      "dimension": "Governance integrity",
+      "obligation": "every phase names a gate, and every named gate is wired into the repository's verification surface",
+      "bound_gate": "00-CMG/tools/cmg-gate.sh",
+      "blocking": true
+    },
+    {
+      "id": "AUE-VER-05",
+      "dimension": "Lifecycle integrity",
+      "obligation": "every object's lifecycle state is a stage the canonical stage authority declares",
+      "bound_gate": "make ucl-gate",
+      "blocking": true
+    },
+    {
+      "id": "AUE-VER-06",
+      "dimension": "Certification readiness",
+      "obligation": "no phase is classified MISSING or DUPLICATE",
+      "bound_gate": "make aee-gate",
+      "blocking": true
+    }
+  ],
+  "certifications": [
+    {
+      "id": "AUE-CRT-01",
+      "proof": "was authorized",
+      "obligation": "every object resolves under a named authority and a named gate",
+      "blocking": true
+    },
+    {
+      "id": "AUE-CRT-02",
+      "proof": "was understood",
+      "obligation": "every chain produces an understanding object answering why, what, what depends, what breaks and what evidence",
+      "blocking": true
+    },
+    {
+      "id": "AUE-CRT-03",
+      "proof": "was planned",
+      "obligation": "every chain produces a plan object and every downstream object carries the plan",
+      "blocking": true
+    },
+    {
+      "id": "AUE-CRT-04",
+      "proof": "was executed correctly",
+      "obligation": "every chain's execution object binds the single authorised mutation path and that path resolves",
+      "blocking": true
+    },
+    {
+      "id": "AUE-CRT-05",
+      "proof": "has evidence",
+      "obligation": "no object carries an empty evidence set",
+      "blocking": true
+    },
+    {
+      "id": "AUE-CRT-06",
+      "proof": "has validation",
+      "obligation": "every object carries a measured validation verdict",
+      "blocking": true
+    },
+    {
+      "id": "AUE-CRT-07",
+      "proof": "has verification",
+      "obligation": "every object carries a measured verification verdict",
+      "blocking": true
+    },
+    {
+      "id": "AUE-CRT-08",
+      "proof": "has history",
+      "obligation": "every object appears in the history projection and the projection rehydrates through the canonical ledger",
+      "blocking": true
+    }
+  ],
+  "mandatory": [
+    {
+      "id": "AUE-MAN-01",
+      "invariant": "zero anonymous evolution objects",
+      "measure": "anonymous_objects",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "AUE-MAN-02",
+      "invariant": "zero unmanaged changes",
+      "measure": "unmanaged_objects",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "AUE-MAN-03",
+      "invariant": "zero missing evolution history",
+      "measure": "objects_absent_from_history",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "AUE-MAN-04",
+      "invariant": "zero missing evidence",
+      "measure": "objects_without_evidence",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "AUE-MAN-05",
+      "invariant": "zero missing validation",
+      "measure": "objects_without_validation",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "AUE-MAN-06",
+      "invariant": "zero missing verification",
+      "measure": "objects_without_verification",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "AUE-MAN-07",
+      "invariant": "zero uncertified evolution",
+      "measure": "objects_without_certification",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "AUE-MAN-08",
+      "invariant": "zero duplicate evolution authorities",
+      "measure": "duplicate_authorities",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "AUE-MAN-09",
+      "invariant": "zero lifecycle bypass",
+      "measure": "lifecycle_bypasses",
+      "expect": 0,
+      "blocking": true
+    },
+    {
+      "id": "AUE-MAN-10",
+      "invariant": "zero uncontrolled mutation",
+      "measure": "uncontrolled_mutations",
+      "expect": 0,
+      "blocking": true
+    }
+  ],
+  "exit_criteria": [
+    {
+      "id": "AUE-EXIT-01",
+      "phase": "AUE-001",
+      "criterion": "every capability of the loop is classified against repository truth and the classification matrix is rendered",
+      "measure": "unclassified_capability_surface",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-02",
+      "phase": "AUE-002",
+      "criterion": "every mandated evolution object kind exists and carries every mandated field",
+      "measure": "object_kinds_or_mandated_fields_unmet",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-03",
+      "phase": "AUE-003",
+      "criterion": "every declared discovery duty is satisfied by at least one resolving source, and discovery yields at least one candidate",
+      "measure": "discovery_duties_unsatisfied",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-04",
+      "phase": "AUE-004",
+      "criterion": "every candidate produces an understanding object answering all five understanding questions",
+      "measure": "understanding_questions_unanswered",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-05",
+      "phase": "AUE-005",
+      "criterion": "every candidate produces a plan object carrying objectives, steps, dependencies, risk, criteria and rollback",
+      "measure": "plan_components_missing",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-06",
+      "phase": "AUE-006",
+      "criterion": "no execution object exists without a preceding simulation object",
+      "measure": "executions_without_simulation",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-07",
+      "phase": "AUE-007",
+      "criterion": "every execution object binds the single authorised mutation path and no second mutation path is offered",
+      "measure": "executions_without_the_single_mutation_path",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-08",
+      "phase": "AUE-008",
+      "criterion": "every chain produces an observation object recording expected, actual and deviation",
+      "measure": "observations_without_expected_actual_deviation",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-09",
+      "phase": "AUE-009",
+      "criterion": "every declared validation dimension is measured and satisfied",
+      "measure": "validation_dimensions_unsatisfied",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-10",
+      "phase": "AUE-010",
+      "criterion": "every declared verification dimension is measured, satisfied and bound to a wired gate",
+      "measure": "verification_dimensions_unsatisfied_or_ungated",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-11",
+      "phase": "AUE-011",
+      "criterion": "every declared certification proof is measured and satisfied",
+      "measure": "certification_proofs_unsatisfied",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-12",
+      "phase": "AUE-012",
+      "criterion": "the controller traverses every phase for every candidate with no phase-specific or subject-specific branch",
+      "measure": "controller_subject_specific_branches",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-13",
+      "phase": "AUE-013",
+      "criterion": "the history projection contains every object, rehydrates through the canonical ledger and is queryable by every declared key",
+      "measure": "history_projection_gaps",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-14",
+      "phase": "AUE-014",
+      "criterion": "the self-evolution subject's gap is measured closed and its required symbols resolve",
+      "measure": "self_evolution_unclosed",
+      "expect": 0
+    },
+    {
+      "id": "AUE-EXIT-15",
+      "phase": "AUE-015",
+      "criterion": "the unknown-object probe traverses every phase, and the stage vocabulary admits a stage term no stage declares",
+      "measure": "unknown_subject_or_vocabulary_unmet",
+      "expect": 0
+    }
+  ],
+  "plan_contract": {
+    "id": "AUE-PLAN-01",
+    "objectives_from": "target_state",
+    "steps_from": "phases",
+    "dependencies_from": "phase owner homes and the preceding phase in the loop",
+    "risk_from": "the severity the discovering owner recorded, defaulting to the candidate class when the source declares no severity",
+    "validation_criteria_from": "validations",
+    "verification_criteria_from": "verifications",
+    "certification_criteria_from": "certifications",
+    "rollback_strategy": "Every step of every plan is discharged by a located owner through the constitutional mutation gateway, and the gateway is the only producer of a clean state seal. Rollback is therefore not a compensating action invented per plan: a mutation that fails any gateway stage never reaches truth, so the prior state is not restored but never left. Where a step has already reached truth, rollback is a further evolution of the same subject under the same gateway — which is why this register records no delete path and no out-of-band revert.",
+    "basis": "The plan is composed from the declaration rather than authored per candidate, so a candidate no owner can plan for cannot silently acquire a plan. Every criterion a later phase will judge the evolution against is named in the plan before that phase runs."
+  },
+  "registers": [
+    {
+      "file": "00-UAUE-DASHBOARD.md",
+      "renderer": "dashboard",
+      "title": "Universal Autonomous Evolution — Dashboard"
+    },
+    {
+      "file": "01-AUTONOMOUS-EVOLUTION-CAPABILITY-MATRIX.md",
+      "renderer": "capability_matrix",
+      "title": "Autonomous Evolution Capability Matrix",
+      "purpose": "the deliverable of architecture discovery: every capability of the loop classified against repository truth"
+    },
+    {
+      "file": "02-EVOLUTION-OBJECT-MODEL.md",
+      "renderer": "object_model",
+      "title": "Universal Evolution Object Model",
+      "purpose": "the object kinds, the mandated fields, and the proof that every kind carries every field"
+    },
+    {
+      "file": "03-EVOLUTION-CANDIDATE-REGISTER.md",
+      "renderer": "candidates",
+      "title": "Evolution Candidate Register",
+      "purpose": "what the discovery engine found, from which owner's measurement, and why each is a candidate"
+    },
+    {
+      "file": "04-EVOLUTION-UNDERSTANDING-REGISTER.md",
+      "renderer": "phase_objects",
+      "phase": "AUE-P-02",
+      "title": "Evolution Understanding Register",
+      "purpose": "why evolve, what changes, what depends on it, what can break, what evidence supports it"
+    },
+    {
+      "file": "05-EVOLUTION-PLAN-REGISTER.md",
+      "renderer": "phase_objects",
+      "phase": "AUE-P-03",
+      "title": "Evolution Plan Register",
+      "purpose": "objectives, steps, dependencies, risk, the criteria each later phase is judged against, and rollback"
+    },
+    {
+      "file": "06-EVOLUTION-SIMULATION-REGISTER.md",
+      "renderer": "phase_objects",
+      "phase": "AUE-P-04",
+      "title": "Evolution Simulation Register",
+      "purpose": "impact prediction, dependency validation and risk evaluation obtained before any execution"
+    },
+    {
+      "file": "07-CONTROLLED-EXECUTION-REGISTER.md",
+      "renderer": "phase_objects",
+      "phase": "AUE-P-05",
+      "title": "Controlled Evolution Execution Register",
+      "purpose": "the single authorised mutation path, and the record that no second path is offered"
+    },
+    {
+      "file": "08-EVOLUTION-OBSERVATION-LOOP.md",
+      "renderer": "phase_objects",
+      "phase": "AUE-P-06",
+      "title": "Evolution Observation Loop",
+      "purpose": "expected result, actual result and deviation, attributed to the owner that measured it"
+    },
+    {
+      "file": "09-EVOLUTION-VALIDATION-REPORT.md",
+      "renderer": "validation_report",
+      "title": "Evolution Validation Report",
+      "purpose": "correctness, completeness, consistency, compatibility, traceability, reproducibility"
+    },
+    {
+      "file": "10-EVOLUTION-VERIFICATION-REPORT.md",
+      "renderer": "verification_report",
+      "title": "Evolution Verification Report",
+      "purpose": "identity, dependency, evidence, governance and lifecycle integrity, and certification readiness"
+    },
+    {
+      "file": "11-EVOLUTION-CERTIFICATION-REPORT.md",
+      "renderer": "certification_report",
+      "title": "Evolution Certification Report",
+      "purpose": "the eight proofs that make an evolution certifiable"
+    },
+    {
+      "file": "12-AUTONOMOUS-EVOLUTION-CONTROLLER.md",
+      "renderer": "controller",
+      "title": "Autonomous Evolution Controller",
+      "purpose": "the conductor: the traversal order, and the proof that it is independent of domain, technology, vendor and implementation"
+    },
+    {
+      "file": "13-EVOLUTION-HISTORY-REGISTER.md",
+      "renderer": "history",
+      "title": "Evolution History Register",
+      "purpose": "who, what, why, when in logical time, where, context, evidence, decision, impact, validation, certification"
+    },
+    {
+      "file": "14-SELF-EVOLUTION-PROOF.md",
+      "renderer": "self_evolution",
+      "title": "Self Evolution Proof",
+      "purpose": "the platform detecting a gap in itself, planning it, executing it through a located owner, and measuring the closure for ever after"
+    },
+    {
+      "file": "15-UNKNOWN-EVOLUTION-PROOF.md",
+      "renderer": "unknown_evolution",
+      "title": "Infinite Unknown Evolution Proof",
+      "purpose": "an object of no known class traversing the whole loop with no new registry, authority, engine, schema or governance patch"
+    },
+    {
+      "file": "16-MANDATORY-VALIDATION-LEDGER.md",
+      "renderer": "mandatory_ledger",
+      "title": "Mandatory Validation Ledger",
+      "purpose": "the ten zero-tolerance invariants, each measured"
+    },
+    {
+      "file": "17-NON-DUPLICATION-BOUNDARY-REGISTER.md",
+      "renderer": "boundaries",
+      "title": "Non-Duplication Boundary Register",
+      "purpose": "for every adjacent owner, the subject it holds, the subject this register holds, and why they are not the same subject"
+    }
+  ]
+}

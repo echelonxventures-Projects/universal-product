@@ -1,0 +1,2616 @@
+{
+ "schema": "ucos-cmg-constitution-registry",
+ "version": "1.1.0",
+ "authority": "NONE (DERIVED TRUTH) \u2014 this file asserts nothing. It is the machine-readable projection of CMG-000001 declared at CMG-000001 Article XV.3 and Article LIX.5. Where this file and the canonical source disagree, the canonical source governs and this file SHALL be corrected.",
+ "canonical_source": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+ "canonical_source_version": "1.3",
+ "verified_by": "00-CMG/tools/cmg_validate.py",
+ "notes": "Zero hard coding: the validator contains no member of any enumeration below. Every kind, state, transition, relationship, tier, namespace, artifact, concern, vacancy, gap and open question is carried here as configuration (CMG-000001 CMG-L-08, LXVI.5).",
+ "identifier_families": [
+  {
+   "prefix": "CMG-P",
+   "meaning": "Governance Principle",
+   "article": "IX"
+  },
+  {
+   "prefix": "CMG-L",
+   "meaning": "Governance Law",
+   "article": "X"
+  },
+  {
+   "prefix": "CMG-INV",
+   "meaning": "Governance Invariant",
+   "article": "XI"
+  },
+  {
+   "prefix": "CMG-K",
+   "meaning": "Constitutional Kind",
+   "article": "XIII"
+  },
+  {
+   "prefix": "CMG-S",
+   "meaning": "Meta-lifecycle State",
+   "article": "XXV"
+  },
+  {
+   "prefix": "CMG-T",
+   "meaning": "State Transition",
+   "article": "XXVI"
+  },
+  {
+   "prefix": "CMG-R",
+   "meaning": "Relationship Type",
+   "article": "XXXIV"
+  },
+  {
+   "prefix": "CMG-DLG",
+   "meaning": "Delegation",
+   "article": "LXXXII"
+  },
+  {
+   "prefix": "CMG-RET",
+   "meaning": "Retained Concern",
+   "article": "LXXXII"
+  },
+  {
+   "prefix": "CMG-GAP",
+   "meaning": "Constitutional Gap",
+   "article": "LXXVIII"
+  },
+  {
+   "prefix": "CMG-OQ",
+   "meaning": "Open Constitutional Question",
+   "article": "LXXVIII"
+  }
+ ],
+ "closed_enumerations": [
+  {
+   "enumeration": "identifier_families",
+   "article": "V.3",
+   "closing_invariant": "CMG-INV-09",
+   "reason": "Extensible by amendment only; a new family is a new normative vocabulary."
+  },
+  {
+   "enumeration": "invariants",
+   "article": "XI.13",
+   "closing_invariant": "CMG-INV-09",
+   "reason": "Invariants are the immutable checking apparatus; an open invariant set cannot serve as ground."
+  },
+  {
+   "enumeration": "lifecycle_phases",
+   "article": "XXIV.3",
+   "closing_invariant": "CMG-INV-09",
+   "reason": "Phases are defined by binding force, of which there are exactly three conditions: not yet, now, no longer."
+  },
+  {
+   "enumeration": "unknown_concept_dispositions",
+   "article": "LXXVII.3",
+   "closing_invariant": "CMG-INV-09",
+   "reason": "Exhaustive by construction over (owned/unowned) x (in-scope/out-of-scope) x (meta/substantive/non-constitutional)."
+  }
+ ],
+ "conformance_map": [
+  {
+   "n": 1,
+   "section": "Vision",
+   "article": "I"
+  },
+  {
+   "n": 2,
+   "section": "Mission",
+   "article": "II"
+  },
+  {
+   "n": 3,
+   "section": "Purpose",
+   "article": "III"
+  },
+  {
+   "n": 4,
+   "section": "Definitions",
+   "article": "IV"
+  },
+  {
+   "n": 5,
+   "section": "Terminology",
+   "article": "V"
+  },
+  {
+   "n": 6,
+   "section": "Constitution Theory",
+   "article": "VI"
+  },
+  {
+   "n": 7,
+   "section": "Meta Governance Theory",
+   "article": "VII"
+  },
+  {
+   "n": 8,
+   "section": "Governance Philosophy",
+   "article": "VIII"
+  },
+  {
+   "n": 9,
+   "section": "Governance Principles",
+   "article": "IX"
+  },
+  {
+   "n": 10,
+   "section": "Governance Laws",
+   "article": "X"
+  },
+  {
+   "n": 11,
+   "section": "Governance Invariants",
+   "article": "XI"
+  },
+  {
+   "n": 12,
+   "section": "Constitution Classification",
+   "article": "XII"
+  },
+  {
+   "n": 13,
+   "section": "Constitution Taxonomy",
+   "article": "XIII"
+  },
+  {
+   "n": 14,
+   "section": "Constitution Ontology",
+   "article": "XIV"
+  },
+  {
+   "n": 15,
+   "section": "Constitution Registry Model",
+   "article": "XV"
+  },
+  {
+   "n": 16,
+   "section": "Authority Hierarchy",
+   "article": "XVI"
+  },
+  {
+   "n": 17,
+   "section": "Authority Resolution",
+   "article": "XVII"
+  },
+  {
+   "n": 18,
+   "section": "Authority Delegation",
+   "article": "XVIII"
+  },
+  {
+   "n": 19,
+   "section": "Authority Boundaries",
+   "article": "XIX"
+  },
+  {
+   "n": 20,
+   "section": "Ownership Model",
+   "article": "XX"
+  },
+  {
+   "n": 21,
+   "section": "Stewardship Model",
+   "article": "XXI"
+  },
+  {
+   "n": 22,
+   "section": "Accountability Model",
+   "article": "XXII"
+  },
+  {
+   "n": 23,
+   "section": "Responsibility Model",
+   "article": "XXIII"
+  },
+  {
+   "n": 24,
+   "section": "Constitution Lifecycle",
+   "article": "XXIV"
+  },
+  {
+   "n": 25,
+   "section": "Lifecycle States",
+   "article": "XXV"
+  },
+  {
+   "n": 26,
+   "section": "State Transitions",
+   "article": "XXVI"
+  },
+  {
+   "n": 27,
+   "section": "Lifecycle Governance",
+   "article": "XXVII"
+  },
+  {
+   "n": 28,
+   "section": "Versioning Model",
+   "article": "XXVIII"
+  },
+  {
+   "n": 29,
+   "section": "Semantic Versioning",
+   "article": "XXIX"
+  },
+  {
+   "n": 30,
+   "section": "Constitution Identity",
+   "article": "XXX"
+  },
+  {
+   "n": 31,
+   "section": "Identifier Rules",
+   "article": "XXXI"
+  },
+  {
+   "n": 32,
+   "section": "Naming Standards",
+   "article": "XXXII"
+  },
+  {
+   "n": 33,
+   "section": "Namespace Standards",
+   "article": "XXXIII"
+  },
+  {
+   "n": 34,
+   "section": "Constitution Relationships",
+   "article": "XXXIV"
+  },
+  {
+   "n": 35,
+   "section": "Dependency Model",
+   "article": "XXXV"
+  },
+  {
+   "n": 36,
+   "section": "Impact Analysis",
+   "article": "XXXVI"
+  },
+  {
+   "n": 37,
+   "section": "Traceability Model",
+   "article": "XXXVII"
+  },
+  {
+   "n": 38,
+   "section": "Composition Rules",
+   "article": "XXXVIII"
+  },
+  {
+   "n": 39,
+   "section": "Inheritance Rules",
+   "article": "XXXIX"
+  },
+  {
+   "n": 40,
+   "section": "Reuse Rules",
+   "article": "XL"
+  },
+  {
+   "n": 41,
+   "section": "Extension Rules",
+   "article": "XLI"
+  },
+  {
+   "n": 42,
+   "section": "Modification Rules",
+   "article": "XLII"
+  },
+  {
+   "n": 43,
+   "section": "Amendment Framework",
+   "article": "XLIII"
+  },
+  {
+   "n": 44,
+   "section": "Ratification Framework",
+   "article": "XLIV"
+  },
+  {
+   "n": 45,
+   "section": "Review Framework",
+   "article": "XLV"
+  },
+  {
+   "n": 46,
+   "section": "Approval Framework",
+   "article": "XLVI"
+  },
+  {
+   "n": 47,
+   "section": "Publication Framework",
+   "article": "XLVII"
+  },
+  {
+   "n": 48,
+   "section": "Distribution Framework",
+   "article": "XLVIII"
+  },
+  {
+   "n": 49,
+   "section": "Compliance Framework",
+   "article": "XLIX"
+  },
+  {
+   "n": 50,
+   "section": "Validation Framework",
+   "article": "L"
+  },
+  {
+   "n": 51,
+   "section": "Certification Framework",
+   "article": "LI"
+  },
+  {
+   "n": 52,
+   "section": "Audit Framework",
+   "article": "LII"
+  },
+  {
+   "n": 53,
+   "section": "Evidence Framework",
+   "article": "LIII"
+  },
+  {
+   "n": 54,
+   "section": "Conflict Resolution",
+   "article": "LIV"
+  },
+  {
+   "n": 55,
+   "section": "Exception Handling",
+   "article": "LV"
+  },
+  {
+   "n": 56,
+   "section": "Risk Governance",
+   "article": "LVI"
+  },
+  {
+   "n": 57,
+   "section": "Decision Governance",
+   "article": "LVII"
+  },
+  {
+   "n": 58,
+   "section": "Repository Integration",
+   "article": "LVIII"
+  },
+  {
+   "n": 59,
+   "section": "Canonical Object Integration",
+   "article": "LIX"
+  },
+  {
+   "n": 60,
+   "section": "Generator Integration",
+   "article": "LX"
+  },
+  {
+   "n": 61,
+   "section": "Knowledge Integration",
+   "article": "LXI"
+  },
+  {
+   "n": 62,
+   "section": "Implementation Integration",
+   "article": "LXII"
+  },
+  {
+   "n": 63,
+   "section": "Runtime Integration",
+   "article": "LXIII"
+  },
+  {
+   "n": 64,
+   "section": "Security Integration",
+   "article": "LXIV"
+  },
+  {
+   "n": 65,
+   "section": "AI Integration",
+   "article": "LXV"
+  },
+  {
+   "n": 66,
+   "section": "Automation Integration",
+   "article": "LXVI"
+  },
+  {
+   "n": 67,
+   "section": "Evolution Framework",
+   "article": "LXVII"
+  },
+  {
+   "n": 68,
+   "section": "Backward Compatibility",
+   "article": "LXVIII"
+  },
+  {
+   "n": 69,
+   "section": "Forward Compatibility",
+   "article": "LXIX"
+  },
+  {
+   "n": 70,
+   "section": "Migration Governance",
+   "article": "LXX"
+  },
+  {
+   "n": 71,
+   "section": "Deprecation Governance",
+   "article": "LXXI"
+  },
+  {
+   "n": 72,
+   "section": "Supersession Governance",
+   "article": "LXXII"
+  },
+  {
+   "n": 73,
+   "section": "Archival Governance",
+   "article": "LXXIII"
+  },
+  {
+   "n": 74,
+   "section": "Recovery Governance",
+   "article": "LXXIV"
+  },
+  {
+   "n": 75,
+   "section": "Continuity Governance",
+   "article": "LXXV"
+  },
+  {
+   "n": 76,
+   "section": "Future Constitutional Expansion",
+   "article": "LXXVI"
+  },
+  {
+   "n": 77,
+   "section": "Unknown Future Concepts",
+   "article": "LXXVII"
+  },
+  {
+   "n": 78,
+   "section": "Gap Analysis",
+   "article": "LXXVIII"
+  },
+  {
+   "n": 79,
+   "section": "Completeness Verification",
+   "article": "LXXIX"
+  },
+  {
+   "n": 80,
+   "section": "Constitutional Readiness Certification",
+   "article": "LXXX"
+  }
+ ],
+ "closing_articles": [
+  {
+   "article": "LXXXI",
+   "title": "Meta-Constitutional Supremacy, Derivation, and Jurisdiction"
+  },
+  {
+   "article": "LXXXII",
+   "title": "Delegation Register"
+  },
+  {
+   "article": "LXXXIII",
+   "title": "Constitutional Integrity"
+  },
+  {
+   "article": "LXXXIV",
+   "title": "Normative References"
+  },
+  {
+   "article": "LXXXV",
+   "title": "Versioning"
+  },
+  {
+   "article": "LXXXVI",
+   "title": "Constitutional Conclusion"
+  }
+ ],
+ "namespaces": [
+  {
+   "token": "CMG",
+   "width": 6,
+   "owner": "CMG-000001",
+   "status": "ESTABLISHED",
+   "article": "XXXI.6"
+  },
+  {
+   "token": "CEP",
+   "width": 3,
+   "owner": "CEP-000",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "CONST",
+   "width": 2,
+   "owner": "CONST-01",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "DATA",
+   "width": 3,
+   "owner": "DATA-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "RUNTIME",
+   "width": 3,
+   "owner": "RUNTIME-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "APPLICATION",
+   "width": 3,
+   "owner": "APPLICATION-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "INFRASTRUCTURE",
+   "width": 3,
+   "owner": "INFRASTRUCTURE-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "SERVICE",
+   "width": 3,
+   "owner": "SERVICE-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "PLATFORM",
+   "width": 3,
+   "owner": "PLATFORM-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "SECURITY",
+   "width": 3,
+   "owner": "SECURITY-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "CAT",
+   "width": 3,
+   "owner": "CAT-000",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "REF",
+   "width": 3,
+   "owner": "REF-000",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "AUTH-INF",
+   "width": 3,
+   "owner": "AUTH-INF-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "STATUS",
+   "width": 3,
+   "owner": "STATUS-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "REG-AUTO",
+   "width": 3,
+   "owner": "REG-AUTO-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "UCI",
+   "width": 3,
+   "owner": "UCI-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  },
+  {
+   "token": "GOV-INT",
+   "width": 3,
+   "owner": "GOV-INT-001",
+   "status": "RECOGNIZED-LEGACY",
+   "article": "XXXIII.7"
+  }
+ ],
+ "kinds": [
+  {
+   "id": "CMG-K-01",
+   "kind": "Meta-Constitution",
+   "binding": "Recognition only"
+  },
+  {
+   "id": "CMG-K-02",
+   "kind": "Charter",
+   "binding": "Process"
+  },
+  {
+   "id": "CMG-K-03",
+   "kind": "Constitution",
+   "binding": "Substantive"
+  },
+  {
+   "id": "CMG-K-04",
+   "kind": "Law",
+   "binding": "Substantive, atomic"
+  },
+  {
+   "id": "CMG-K-05",
+   "kind": "Principle",
+   "binding": "Directional"
+  },
+  {
+   "id": "CMG-K-06",
+   "kind": "Invariant",
+   "binding": "Absolute"
+  },
+  {
+   "id": "CMG-K-07",
+   "kind": "Theory",
+   "binding": "Explanatory"
+  },
+  {
+   "id": "CMG-K-08",
+   "kind": "Ontology",
+   "binding": "Definitional"
+  },
+  {
+   "id": "CMG-K-09",
+   "kind": "Taxonomy",
+   "binding": "Definitional"
+  },
+  {
+   "id": "CMG-K-10",
+   "kind": "Registry Model",
+   "binding": "Structural"
+  },
+  {
+   "id": "CMG-K-11",
+   "kind": "Nucleus",
+   "binding": "Compositional"
+  },
+  {
+   "id": "CMG-K-12",
+   "kind": "Universe",
+   "binding": "Compositional"
+  },
+  {
+   "id": "CMG-K-13",
+   "kind": "Foundation",
+   "binding": "Structural"
+  },
+  {
+   "id": "CMG-K-14",
+   "kind": "Engine",
+   "binding": "Executable"
+  },
+  {
+   "id": "CMG-K-15",
+   "kind": "Capability",
+   "binding": "Functional"
+  },
+  {
+   "id": "CMG-K-16",
+   "kind": "Canonical Object",
+   "binding": "Identity"
+  },
+  {
+   "id": "CMG-K-17",
+   "kind": "Determination",
+   "binding": "Decisional"
+  },
+  {
+   "id": "CMG-K-18",
+   "kind": "Certification",
+   "binding": "Attestive"
+  },
+  {
+   "id": "CMG-K-19",
+   "kind": "Ratification",
+   "binding": "Constitutive"
+  },
+  {
+   "id": "CMG-K-20",
+   "kind": "Freeze Record",
+   "binding": "Preservative"
+  },
+  {
+   "id": "CMG-K-21",
+   "kind": "Amendment",
+   "binding": "Evolutionary"
+  },
+  {
+   "id": "CMG-K-22",
+   "kind": "Interpretation Instrument",
+   "binding": "Interpretive"
+  },
+  {
+   "id": "CMG-K-23",
+   "kind": "Glossary",
+   "binding": "Definitional"
+  },
+  {
+   "id": "CMG-K-24",
+   "kind": "Deferral Register",
+   "binding": "Custodial"
+  }
+ ],
+ "standings": [
+  "META",
+  "FOUNDATIONAL",
+  "DERIVED",
+  "INTERPRETIVE",
+  "DECLARATIVE",
+  "LATENT"
+ ],
+ "reaches": [
+  "CORPUS-WIDE",
+  "PROGRAM-SCOPED",
+  "DOMAIN-SCOPED",
+  "ARTIFACT-SCOPED",
+  "FEDERATION-SCOPED"
+ ],
+ "phases": [
+  "PRE-EFFECT",
+  "IN-EFFECT",
+  "POST-EFFECT"
+ ],
+ "states": [
+  {
+   "id": "CMG-S-01",
+   "state": "DISCOVERED",
+   "phase": "PRE-EFFECT"
+  },
+  {
+   "id": "CMG-S-02",
+   "state": "DECLARED",
+   "phase": "PRE-EFFECT"
+  },
+  {
+   "id": "CMG-S-03",
+   "state": "REGISTERED",
+   "phase": "PRE-EFFECT"
+  },
+  {
+   "id": "CMG-S-04",
+   "state": "VALIDATED",
+   "phase": "PRE-EFFECT"
+  },
+  {
+   "id": "CMG-S-05",
+   "state": "CERTIFIED",
+   "phase": "PRE-EFFECT"
+  },
+  {
+   "id": "CMG-S-06",
+   "state": "PROVISIONAL",
+   "phase": "IN-EFFECT"
+  },
+  {
+   "id": "CMG-S-07",
+   "state": "RATIFIED",
+   "phase": "IN-EFFECT"
+  },
+  {
+   "id": "CMG-S-08",
+   "state": "FROZEN",
+   "phase": "IN-EFFECT"
+  },
+  {
+   "id": "CMG-S-09",
+   "state": "AMENDING",
+   "phase": "IN-EFFECT"
+  },
+  {
+   "id": "CMG-S-10",
+   "state": "DEPRECATED",
+   "phase": "IN-EFFECT"
+  },
+  {
+   "id": "CMG-S-11",
+   "state": "SUPERSEDED",
+   "phase": "POST-EFFECT"
+  },
+  {
+   "id": "CMG-S-12",
+   "state": "RETIRED",
+   "phase": "POST-EFFECT"
+  },
+  {
+   "id": "CMG-S-13",
+   "state": "ARCHIVED",
+   "phase": "POST-EFFECT"
+  },
+  {
+   "id": "CMG-S-14",
+   "state": "VOID",
+   "phase": "POST-EFFECT"
+  }
+ ],
+ "transitions": [
+  {
+   "id": "CMG-T-01",
+   "from": "DISCOVERED",
+   "to": "DECLARED"
+  },
+  {
+   "id": "CMG-T-02",
+   "from": "DECLARED",
+   "to": "REGISTERED"
+  },
+  {
+   "id": "CMG-T-03",
+   "from": "REGISTERED",
+   "to": "VALIDATED"
+  },
+  {
+   "id": "CMG-T-04",
+   "from": "VALIDATED",
+   "to": "CERTIFIED"
+  },
+  {
+   "id": "CMG-T-05",
+   "from": "CERTIFIED",
+   "to": "RATIFIED"
+  },
+  {
+   "id": "CMG-T-06",
+   "from": "CERTIFIED",
+   "to": "PROVISIONAL"
+  },
+  {
+   "id": "CMG-T-07",
+   "from": "PROVISIONAL",
+   "to": "RATIFIED"
+  },
+  {
+   "id": "CMG-T-08",
+   "from": "RATIFIED",
+   "to": "FROZEN"
+  },
+  {
+   "id": "CMG-T-09",
+   "from": "PROVISIONAL",
+   "to": "FROZEN"
+  },
+  {
+   "id": "CMG-T-10",
+   "from": "RATIFIED",
+   "to": "AMENDING"
+  },
+  {
+   "id": "CMG-T-11",
+   "from": "FROZEN",
+   "to": "AMENDING"
+  },
+  {
+   "id": "CMG-T-12",
+   "from": "AMENDING",
+   "to": "RATIFIED"
+  },
+  {
+   "id": "CMG-T-13",
+   "from": "AMENDING",
+   "to": "PROVISIONAL"
+  },
+  {
+   "id": "CMG-T-14",
+   "from": "*IN-EFFECT",
+   "to": "DEPRECATED"
+  },
+  {
+   "id": "CMG-T-15",
+   "from": "DEPRECATED",
+   "to": "SUPERSEDED"
+  },
+  {
+   "id": "CMG-T-16",
+   "from": "*IN-EFFECT",
+   "to": "SUPERSEDED"
+  },
+  {
+   "id": "CMG-T-17",
+   "from": "DEPRECATED",
+   "to": "RETIRED"
+  },
+  {
+   "id": "CMG-T-18",
+   "from": "SUPERSEDED",
+   "to": "ARCHIVED"
+  },
+  {
+   "id": "CMG-T-19",
+   "from": "RETIRED",
+   "to": "ARCHIVED"
+  },
+  {
+   "id": "CMG-T-20",
+   "from": "ARCHIVED",
+   "to": "REGISTERED"
+  },
+  {
+   "id": "CMG-T-21",
+   "from": "*PRE-EFFECT",
+   "to": "VOID"
+  },
+  {
+   "id": "CMG-T-22",
+   "from": "REGISTERED",
+   "to": "DECLARED"
+  }
+ ],
+ "relationship_types": [
+  {
+   "id": "CMG-R-01",
+   "type": "DERIVES-AUTHORITY-FROM",
+   "inverse": "CONFERS-AUTHORITY-ON",
+   "acyclic": true
+  },
+  {
+   "id": "CMG-R-02",
+   "type": "SUBORDINATE-TO",
+   "inverse": "SUPERIOR-TO",
+   "acyclic": true
+  },
+  {
+   "id": "CMG-R-03",
+   "type": "ORTHOGONAL-TO",
+   "inverse": "ORTHOGONAL-TO",
+   "acyclic": false
+  },
+  {
+   "id": "CMG-R-04",
+   "type": "DELEGATES-TO",
+   "inverse": "OWNS-FOR",
+   "acyclic": false
+  },
+  {
+   "id": "CMG-R-05",
+   "type": "DEPENDS-ON",
+   "inverse": "REQUIRED-BY",
+   "acyclic": true
+  },
+  {
+   "id": "CMG-R-06",
+   "type": "REFINES",
+   "inverse": "REFINED-BY",
+   "acyclic": true
+  },
+  {
+   "id": "CMG-R-07",
+   "type": "COMPOSES",
+   "inverse": "COMPOSED-INTO",
+   "acyclic": true
+  },
+  {
+   "id": "CMG-R-08",
+   "type": "INHERITS-FROM",
+   "inverse": "INHERITED-BY",
+   "acyclic": true
+  },
+  {
+   "id": "CMG-R-09",
+   "type": "EXTENDS",
+   "inverse": "EXTENDED-BY",
+   "acyclic": true
+  },
+  {
+   "id": "CMG-R-10",
+   "type": "AMENDS",
+   "inverse": "AMENDED-BY",
+   "acyclic": true
+  },
+  {
+   "id": "CMG-R-11",
+   "type": "SUPERSEDES",
+   "inverse": "SUPERSEDED-BY",
+   "acyclic": true
+  },
+  {
+   "id": "CMG-R-12",
+   "type": "INTERPRETS",
+   "inverse": "INTERPRETED-BY",
+   "acyclic": false
+  },
+  {
+   "id": "CMG-R-13",
+   "type": "CERTIFIES",
+   "inverse": "CERTIFIED-BY",
+   "acyclic": false
+  },
+  {
+   "id": "CMG-R-14",
+   "type": "RATIFIES",
+   "inverse": "RATIFIED-BY",
+   "acyclic": false
+  },
+  {
+   "id": "CMG-R-15",
+   "type": "CONFLICTS-WITH",
+   "inverse": "CONFLICTS-WITH",
+   "acyclic": false,
+   "must_not_persist": true
+  },
+  {
+   "id": "CMG-R-16",
+   "type": "TRACES-TO",
+   "inverse": "TRACED-FROM",
+   "acyclic": true
+  }
+ ],
+ "tiers": [
+  {
+   "id": "T0",
+   "name": "Constitutional Source Corpus",
+   "subordinate_to": [],
+   "occupancy": "LOCATED"
+  },
+  {
+   "id": "T1",
+   "name": "Constitutional Authority",
+   "subordinate_to": [
+    "T0"
+   ],
+   "occupancy": "LOCATED",
+   "closure_record": "UCOS-RAT-002 (Constituent Authority AUTH-13 via RA-Omega-Infinity)",
+   "occupant": "UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS"
+  },
+  {
+   "id": "T1M",
+   "name": "Meta-Constitutional Authority",
+   "subordinate_to": [
+    "T1"
+   ],
+   "occupancy": "LOCATED"
+  },
+  {
+   "id": "T2",
+   "name": "Program Authority",
+   "subordinate_to": [
+    "T1"
+   ],
+   "occupancy": "LOCATED"
+  },
+  {
+   "id": "T2I",
+   "name": "Interpretive Authority",
+   "subordinate_to": [
+    "T1"
+   ],
+   "occupancy": "LOCATED"
+  },
+  {
+   "id": "T3",
+   "name": "Domain Authority",
+   "subordinate_to": [
+    "T1M",
+    "T2",
+    "T2I"
+   ],
+   "occupancy": "LOCATED"
+  },
+  {
+   "id": "T4",
+   "name": "Execution Authority",
+   "subordinate_to": [
+    "T3"
+   ],
+   "occupancy": "LOCATED"
+  },
+  {
+   "id": "T5",
+   "name": "Derived-Truth Authority",
+   "subordinate_to": [
+    "T4"
+   ],
+   "occupancy": "LOCATED"
+  }
+ ],
+ "orthogonal_tier_pairs": [
+  [
+   "T1M",
+   "T2"
+  ],
+  [
+   "T2I",
+   "T2"
+  ],
+  [
+   "T2I",
+   "T1M"
+  ]
+ ],
+ "vacancies": [],
+ "artifacts": [
+  {
+   "id": "CMG-000001",
+   "name": "Constitutional Meta Governance Constitution",
+   "path": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+   "kind": "CMG-K-01",
+   "standing": "META",
+   "reach": "CORPUS-WIDE",
+   "tier": "T1M",
+   "state": "RATIFIED",
+   "version": "1.3",
+   "superiors": [
+    "UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS"
+   ],
+   "depends_on": [
+    "CEP-000",
+    "CEP-001",
+    "CEP-002",
+    "CEP-003",
+    "CEP-004",
+    "CEP-005",
+    "CEP-006",
+    "CEP-007",
+    "CEP-008",
+    "CEP-009",
+    "CEP-010",
+    "AUTH-INF-001",
+    "STATUS-001",
+    "REG-AUTO-001",
+    "UCI-001"
+   ],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CEP-000",
+   "name": "Constitutional Engineering Charter",
+   "path": "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md",
+   "kind": "CMG-K-02",
+   "standing": "FOUNDATIONAL",
+   "reach": "PROGRAM-SCOPED",
+   "tier": "T2",
+   "state": "RATIFIED",
+   "version": "1.0",
+   "superiors": [
+    "UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CEP-001",
+   "name": "Constitutional Engineering Constitution",
+   "path": "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "PROGRAM-SCOPED",
+   "tier": "T2",
+   "state": "RATIFIED",
+   "version": "1.1",
+   "superiors": [
+    "CEP-000"
+   ],
+   "depends_on": [
+    "CEP-000"
+   ],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CEP-002",
+   "name": "Constitutional Governance Constitution",
+   "path": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "PROGRAM-SCOPED",
+   "tier": "T2",
+   "state": "RATIFIED",
+   "version": "1.2",
+   "superiors": [
+    "CEP-001"
+   ],
+   "depends_on": [
+    "CEP-000",
+    "CEP-001"
+   ],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CEP-003",
+   "name": "Constitutional Execution Constitution",
+   "path": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "PROGRAM-SCOPED",
+   "tier": "T2",
+   "state": "RATIFIED",
+   "version": "1.0",
+   "superiors": [
+    "CEP-002"
+   ],
+   "depends_on": [
+    "CEP-000",
+    "CEP-001",
+    "CEP-002"
+   ],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CEP-004",
+   "name": "Constitutional Validation Constitution",
+   "path": "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "PROGRAM-SCOPED",
+   "tier": "T2",
+   "state": "RATIFIED",
+   "version": "1.0",
+   "superiors": [
+    "CEP-003"
+   ],
+   "depends_on": [
+    "CEP-000",
+    "CEP-001",
+    "CEP-002",
+    "CEP-003"
+   ],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CEP-005",
+   "name": "Constitutional Certification Constitution",
+   "path": "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "PROGRAM-SCOPED",
+   "tier": "T2",
+   "state": "RATIFIED",
+   "version": "1.0",
+   "superiors": [
+    "CEP-004"
+   ],
+   "depends_on": [
+    "CEP-000",
+    "CEP-001",
+    "CEP-002",
+    "CEP-003",
+    "CEP-004"
+   ],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CEP-006",
+   "name": "Constitutional Ratification Constitution",
+   "path": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "PROGRAM-SCOPED",
+   "tier": "T2",
+   "state": "RATIFIED",
+   "version": "1.0",
+   "superiors": [
+    "CEP-005"
+   ],
+   "depends_on": [
+    "CEP-000",
+    "CEP-001",
+    "CEP-002",
+    "CEP-003",
+    "CEP-004",
+    "CEP-005"
+   ],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CEP-007",
+   "name": "Constitutional Freeze Constitution",
+   "path": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "PROGRAM-SCOPED",
+   "tier": "T2",
+   "state": "RATIFIED",
+   "version": "1.0",
+   "superiors": [
+    "CEP-006"
+   ],
+   "depends_on": [
+    "CEP-000",
+    "CEP-001",
+    "CEP-002",
+    "CEP-003",
+    "CEP-004",
+    "CEP-005",
+    "CEP-006"
+   ],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CEP-008",
+   "name": "Constitutional Evidence and Traceability Constitution",
+   "path": "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "PROGRAM-SCOPED",
+   "tier": "T2",
+   "state": "RATIFIED",
+   "version": "1.0",
+   "superiors": [
+    "CEP-007"
+   ],
+   "depends_on": [
+    "CEP-000",
+    "CEP-001",
+    "CEP-002",
+    "CEP-003",
+    "CEP-004",
+    "CEP-005",
+    "CEP-006",
+    "CEP-007"
+   ],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CEP-009",
+   "name": "Constitutional Amendment and Evolution Constitution",
+   "path": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "PROGRAM-SCOPED",
+   "tier": "T2",
+   "state": "RATIFIED",
+   "version": "1.1",
+   "superiors": [
+    "CEP-008"
+   ],
+   "depends_on": [
+    "CEP-000",
+    "CEP-001",
+    "CEP-002",
+    "CEP-003",
+    "CEP-004",
+    "CEP-005",
+    "CEP-006",
+    "CEP-007",
+    "CEP-008"
+   ],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CEP-010",
+   "name": "Constitutional Audit, Compliance and Assurance Constitution",
+   "path": "00-CEP/CEP-010-CONSTITUTIONAL-AUDIT-COMPLIANCE-ASSURANCE-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "PROGRAM-SCOPED",
+   "tier": "T2",
+   "state": "RATIFIED",
+   "version": "1.0",
+   "superiors": [
+    "CEP-009"
+   ],
+   "depends_on": [
+    "CEP-000",
+    "CEP-001",
+    "CEP-002",
+    "CEP-003",
+    "CEP-004",
+    "CEP-005",
+    "CEP-006",
+    "CEP-007",
+    "CEP-008",
+    "CEP-009"
+   ],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "AUTH-INF-001",
+   "name": "Infinite Evolution, Universal Identity and Unbounded Expansion Constitution",
+   "path": "00-BOOK/CONTROL-TOWER/UCOS-\u03a9\u221e-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+   "kind": "CMG-K-22",
+   "standing": "INTERPRETIVE",
+   "reach": "CORPUS-WIDE",
+   "tier": "T2I",
+   "state": "RATIFIED",
+   "version": "1.0",
+   "superiors": [
+    "UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "STATUS-001",
+   "name": "Status Determination Standard",
+   "path": "00-BOOK/CONTROL-TOWER/UCOS-\u03a9\u221e-STATUS-001-STATUS-DETERMINATION-STANDARD.md",
+   "kind": "CMG-K-10",
+   "standing": "DERIVED",
+   "reach": "CORPUS-WIDE",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "AUTH-INF-001"
+   ],
+   "depends_on": [
+    "AUTH-INF-001"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "REG-AUTO-001",
+   "name": "Automatic Artifact Registration Standard",
+   "path": "00-BOOK/CONTROL-TOWER/UCOS-\u03a9\u221e-REG-AUTO-001-AUTOMATIC-ARTIFACT-REGISTRATION-STANDARD.md",
+   "kind": "CMG-K-10",
+   "standing": "DERIVED",
+   "reach": "CORPUS-WIDE",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "STATUS-001"
+   ],
+   "depends_on": [
+    "STATUS-001"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "UCI-001",
+   "name": "Universal Change Intelligence and Regeneration Standard",
+   "path": "00-BOOK/CONTROL-TOWER/UCOS-\u03a9\u221e-UCI-001-UNIVERSAL-CHANGE-INTELLIGENCE-AND-REGENERATION-STANDARD.md",
+   "kind": "CMG-K-10",
+   "standing": "DERIVED",
+   "reach": "CORPUS-WIDE",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "REG-AUTO-001"
+   ],
+   "depends_on": [
+    "STATUS-001",
+    "REG-AUTO-001"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "GOV-INT-001",
+   "name": "Governance Integration and Execution Architecture Determination",
+   "path": "00-BOOK/CONTROL-TOWER/UCOS-\u03a9\u221e-GOV-INT-001-GOVERNANCE-INTEGRATION-AND-EXECUTION-ARCHITECTURE-DETERMINATION.md",
+   "kind": "CMG-K-17",
+   "standing": "DERIVED",
+   "reach": "CORPUS-WIDE",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "UCI-001"
+   ],
+   "depends_on": [
+    "STATUS-001",
+    "REG-AUTO-001",
+    "UCI-001"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "UCOS-BOOK-000000",
+   "name": "Universal Master Knowledge Book",
+   "path": "00-BOOK/UCOS-BOOK-000000-UNIVERSAL-MASTER-KNOWLEDGE-BOOK.md",
+   "kind": "CMG-K-10",
+   "standing": "FOUNDATIONAL",
+   "reach": "CORPUS-WIDE",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "AUTH-INF-001"
+   ],
+   "depends_on": [
+    "REG-AUTO-001",
+    "STATUS-001"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "TECH-CONST-001",
+   "name": "Technology Constitution",
+   "path": "02-MASTER/UCOS-\u03a9\u221e-TECHNOLOGY-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "CORPUS-WIDE",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "AUTH-INF-001"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CONST-01",
+   "name": "Repository Closure Constitution",
+   "path": "00-MASTER/UAKOS-CLOSURE-006/CONST-01-REPOSITORY-CLOSURE-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "FROZEN",
+   "version": "1.0",
+   "superiors": [
+    "CEP-002"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CONST-02",
+   "name": "Repository Integrity Constitution",
+   "path": "00-MASTER/UAKOS-CLOSURE-006/CONST-02-REPOSITORY-INTEGRITY-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "FROZEN",
+   "version": "1.0",
+   "superiors": [
+    "CONST-01"
+   ],
+   "depends_on": [
+    "CONST-01"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CONST-03",
+   "name": "Vision Assimilation Constitution",
+   "path": "00-MASTER/UAKOS-CLOSURE-006/CONST-03-VISION-ASSIMILATION-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "FROZEN",
+   "version": "1.0",
+   "superiors": [
+    "CONST-01"
+   ],
+   "depends_on": [
+    "CONST-01"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CONST-04",
+   "name": "Architectural Completeness Constitution",
+   "path": "00-MASTER/UAKOS-CLOSURE-006/CONST-04-ARCHITECTURAL-COMPLETENESS-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "FROZEN",
+   "version": "1.0",
+   "superiors": [
+    "CONST-01"
+   ],
+   "depends_on": [
+    "CONST-01"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CONST-05",
+   "name": "Repository State Machine",
+   "path": "00-MASTER/UAKOS-CLOSURE-006/CONST-05-REPOSITORY-STATE-MACHINE.md",
+   "kind": "CMG-K-10",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "FROZEN",
+   "version": "1.0",
+   "superiors": [
+    "CONST-01"
+   ],
+   "depends_on": [
+    "CONST-01"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CONST-06",
+   "name": "Closure Metrics Constitution",
+   "path": "00-MASTER/UAKOS-CLOSURE-006/CONST-06-CLOSURE-METRICS-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "FROZEN",
+   "version": "1.0",
+   "superiors": [
+    "CONST-01"
+   ],
+   "depends_on": [
+    "CONST-01"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CONST-07",
+   "name": "Successor Governance Constitution",
+   "path": "00-MASTER/UAKOS-CLOSURE-006/CONST-07-SUCCESSOR-GOVERNANCE-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "CORPUS-WIDE",
+   "tier": "T3",
+   "state": "FROZEN",
+   "version": "1.0",
+   "superiors": [
+    "CONST-01"
+   ],
+   "depends_on": [
+    "CONST-01"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CONST-08",
+   "name": "Pipeline Constitution",
+   "path": "00-MASTER/UAKOS-CLOSURE-006/CONST-08-PIPELINE-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "FROZEN",
+   "version": "1.0",
+   "superiors": [
+    "CONST-01"
+   ],
+   "depends_on": [
+    "CONST-01"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CONST-09",
+   "name": "Repository Lifecycle Constitution",
+   "path": "00-MASTER/UAKOS-CLOSURE-006/CONST-09-REPOSITORY-LIFECYCLE-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "FROZEN",
+   "version": "1.0",
+   "superiors": [
+    "CONST-01"
+   ],
+   "depends_on": [
+    "CONST-01"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CONST-10",
+   "name": "Long-Term Evolution Constitution",
+   "path": "00-MASTER/UAKOS-CLOSURE-006/CONST-10-LONG-TERM-EVOLUTION-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "CORPUS-WIDE",
+   "tier": "T3",
+   "state": "FROZEN",
+   "version": "1.0",
+   "superiors": [
+    "CONST-01"
+   ],
+   "depends_on": [
+    "CONST-01"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CONST-11",
+   "name": "Constitutional Glossary",
+   "path": "00-MASTER/UAKOS-CLOSURE-006/CONST-11-CONSTITUTIONAL-GLOSSARY.md",
+   "kind": "CMG-K-23",
+   "standing": "FOUNDATIONAL",
+   "reach": "CORPUS-WIDE",
+   "tier": "T3",
+   "state": "FROZEN",
+   "version": "1.0",
+   "superiors": [
+    "CONST-01"
+   ],
+   "depends_on": [
+    "CONST-01"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "AB-001-07",
+   "name": "Change Control Constitution",
+   "path": "00-MASTER/UCOS-AB-001/07-CHANGE-CONTROL-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "CEP-007"
+   ],
+   "depends_on": [
+    "CEP-007",
+    "CEP-009"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "EG-001-01",
+   "name": "Engineering Governance Constitution",
+   "path": "00-MASTER/UCOS-EG-001/01-ENGINEERING-GOVERNANCE-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "CEP-002"
+   ],
+   "depends_on": [
+    "CEP-002"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "UMA-001-01",
+   "name": "Universal Measurement Authority Constitution",
+   "path": "00-MASTER/UCOS-UMA-001/01-UNIVERSAL-MEASUREMENT-AUTHORITY-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "CEP-002"
+   ],
+   "depends_on": [
+    "CEP-002"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "NUCLEUS-001-02",
+   "name": "Nucleus Constitutional Model",
+   "path": "00-MASTER/UCOS-NUCLEUS-001/02-NUCLEUS-CONSTITUTIONAL-MODEL.md",
+   "kind": "CMG-K-11",
+   "standing": "FOUNDATIONAL",
+   "reach": "CORPUS-WIDE",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "CEP-002"
+   ],
+   "depends_on": [
+    "CEP-002"
+   ],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "DATA-001",
+   "name": "Universal Data Constitution",
+   "path": "10-DATA/DATA-001-UNIVERSAL-DATA-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "TECH-CONST-001"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "RUNTIME-001",
+   "name": "Universal Runtime Constitution",
+   "path": "08-RUNTIME/RUNTIME-001-UNIVERSAL-RUNTIME-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "TECH-CONST-001"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "APPLICATION-001",
+   "name": "Universal Application Constitution",
+   "path": "12-APPLICATION/APPLICATION-001-UNIVERSAL-APPLICATION-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "TECH-CONST-001"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "INFRASTRUCTURE-001",
+   "name": "Universal Infrastructure Constitution",
+   "path": "13-INFRASTRUCTURE/INFRASTRUCTURE-001-UNIVERSAL-INFRASTRUCTURE-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "TECH-CONST-001"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "SERVICE-001",
+   "name": "Universal Service Constitution",
+   "path": "11-SERVICE/SERVICE-001-UNIVERSAL-SERVICE-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "TECH-CONST-001"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "PLATFORM-001",
+   "name": "Universal Platform Constitution",
+   "path": "09-PLATFORM/PLATFORM-001-UNIVERSAL-PLATFORM-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "TECH-CONST-001"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "SECURITY-001",
+   "name": "Universal Security Constitution",
+   "path": "14-SECURITY/SECURITY-001-UNIVERSAL-SECURITY-CONSTITUTION.md",
+   "kind": "CMG-K-03",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "TECH-CONST-001"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "CAT-000",
+   "name": "Universal Canonical Runtime Catalog Constitution",
+   "path": "03-CATALOGS/UCOS-\u03a9\u221e-UNIVERSAL-CANONICAL-RUNTIME-CATALOG-CONSTITUTION.md",
+   "kind": "CMG-K-10",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "TECH-CONST-001"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "REF-000",
+   "name": "Universal Reference Architecture Constitution",
+   "path": "04-REFERENCE/UCOS-\u03a9\u221e-UNIVERSAL-REFERENCE-ARCHITECTURE-CONSTITUTION.md",
+   "kind": "CMG-K-10",
+   "standing": "FOUNDATIONAL",
+   "reach": "DOMAIN-SCOPED",
+   "tier": "T3",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "TECH-CONST-001"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null
+  },
+  {
+   "id": "UCKP-LAW-0001",
+   "name": "UCKP Root Constitutional Law",
+   "path": "engine/uckp/law.py",
+   "kind": "CMG-K-14",
+   "standing": "FOUNDATIONAL",
+   "reach": "CORPUS-WIDE",
+   "tier": "T4",
+   "state": "PROVISIONAL",
+   "version": "1.0",
+   "superiors": [
+    "UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS"
+   ],
+   "depends_on": [],
+   "lineage_predecessor": null,
+   "$version_format": "NORMALISED 1.0.0 -> 1.0, WHICH IS NOT A VERSION CHANGE. This was the only artifact of 44 in this registry written with three components; 39 sit at 1.0, two at 1.1 and two at 1.2, and base_version is 1.0. BLN-VAL-17 compares the recorded version against the base as STRINGS, so 1.0.0 read as a progression above base and demanded a matching Version-Incremented event in the change ledger. No such event exists, and none should: the ledger holds exactly six Version-Incremented events for the four artifacts genuinely above base, and ZERO naming UCKP-LAW-0001 or its identity UCOS-ENGINE-000496. The law has never been incremented and is at base. Writing the event would have fabricated a progression that never happened \u2014 precisely what BLN-VAL-17 exists to catch \u2014 so the FORMAT is corrected rather than the history invented."
+  },
+  {
+   "id": "UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS",
+   "name": "The ratified Absolute Constitutional Laws \u2014 the UCOS Omega Infinity constitution of substance (SRC-02 supreme per RAT-11/SUP-14/CONF-07; canon ratified at RAT-08/09)",
+   "path": "02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md",
+   "kind": "CMG-K-01",
+   "standing": "FOUNDATIONAL",
+   "reach": "CORPUS-WIDE",
+   "tier": "T1",
+   "state": "RATIFIED",
+   "version": "1.0",
+   "superiors": [],
+   "depends_on": [],
+   "lineage_predecessor": null,
+   "ratified_by": "UCOS-RAT-002 (occupancy declared by the constituent act at T1; CEP-000 5.5 Tier 1)",
+   "$why": "T1 was held by VAC-01, a placeholder for exactly this occupant: the ratified constitution of substance presupposed by CEP-000 5.5. UCOS-RAT-002 D-RAT-02-02 locates the occupant, so the placeholder retires and the superior edges that pointed at the vacancy now point at the authority they always meant. The vacancy and the acts that closed it remain recorded in the tier row, the closed open questions, and the determination file; the list carries open vacancies only (IV.11)."
+  }
+ ],
+ "concerns": [
+  {
+   "id": "CMG-DLG-01",
+   "concern": "constitutional-engineering-process-and-program-authority",
+   "owner": "CEP-000",
+   "disposition": "REUSE",
+   "basis": "CEP-000 \u00a71.4, \u00a75.1-5.6, \u00a77.1, \u00a732"
+  },
+  {
+   "id": "CMG-DLG-02",
+   "concern": "governance-operation-jurisdiction-ownership-assignment-escalation-and-conflict-resolution",
+   "owner": "CEP-002",
+   "disposition": "REUSE",
+   "basis": "CEP-002 Art 4, 5.1, 12, 13, 23"
+  },
+  {
+   "id": "CMG-DLG-03",
+   "concern": "execution-operation",
+   "owner": "CEP-003",
+   "disposition": "REUSE",
+   "basis": "CEP-003 Art II.1, IV, V"
+  },
+  {
+   "id": "CMG-DLG-04",
+   "concern": "validation-operation",
+   "owner": "CEP-004",
+   "disposition": "REUSE",
+   "basis": "CEP-004 Art II.1, III, IV.3, XIX"
+  },
+  {
+   "id": "CMG-DLG-05",
+   "concern": "certification-operation",
+   "owner": "CEP-005",
+   "disposition": "REUSE",
+   "basis": "CEP-005 Art I, VI, XIV, XV"
+  },
+  {
+   "id": "CMG-DLG-06",
+   "concern": "ratification-operation-and-finality",
+   "owner": "CEP-006",
+   "disposition": "REUSE",
+   "basis": "CEP-006 Art I.4, VI, XI, XII, XVI, XVII"
+  },
+  {
+   "id": "CMG-DLG-07",
+   "concern": "freeze-immutability-baselines-and-supersession-mechanics",
+   "owner": "CEP-007",
+   "disposition": "REUSE",
+   "basis": "CEP-007 Art VI, VIII-X, XIII-XVI"
+  },
+  {
+   "id": "CMG-DLG-08",
+   "concern": "evidence-and-traceability-operation",
+   "owner": "CEP-008",
+   "disposition": "REUSE",
+   "basis": "CEP-008 Art IV, VI, X-XII, XVI"
+  },
+  {
+   "id": "CMG-DLG-09",
+   "concern": "amendment-and-evolution-operation",
+   "owner": "CEP-009",
+   "disposition": "REUSE",
+   "basis": "CEP-009 Art IV, VI-XVI"
+  },
+  {
+   "id": "CMG-DLG-10",
+   "concern": "compliance-monitoring-and-assurance-operation",
+   "owner": "CEP-010",
+   "disposition": "REUSE",
+   "basis": "CEP-010 Art VI, X-XVII"
+  },
+  {
+   "id": "CMG-DLG-11",
+   "concern": "audit-operation-drift-and-contradiction-detection",
+   "owner": "CEP-010",
+   "disposition": "REUSE",
+   "basis": "CEP-010 Art I.5, VII-IX, XVIII"
+  },
+  {
+   "id": "CMG-DLG-12",
+   "concern": "constitutional-interpretation",
+   "owner": "AUTH-INF-001",
+   "disposition": "REUSE",
+   "basis": "AUTH-INF-001 interpretive scope"
+  },
+  {
+   "id": "CMG-DLG-13",
+   "concern": "artifact-registration-identity-allocation-and-classification",
+   "owner": "REG-AUTO-001",
+   "disposition": "REUSE",
+   "basis": "REG-AUTO-001"
+  },
+  {
+   "id": "CMG-DLG-14",
+   "concern": "status-determination-and-validity",
+   "owner": "STATUS-001",
+   "disposition": "REUSE",
+   "basis": "STATUS-001"
+  },
+  {
+   "id": "CMG-DLG-15",
+   "concern": "change-intelligence-regeneration-and-synchronization",
+   "owner": "UCI-001",
+   "disposition": "REUSE",
+   "basis": "UCI-001"
+  },
+  {
+   "id": "CMG-DLG-16",
+   "concern": "governance-integration-and-execution-architecture",
+   "owner": "GOV-INT-001",
+   "disposition": "REUSE",
+   "basis": "GOV-INT-001 \u00a72.3"
+  },
+  {
+   "id": "CMG-DLG-17",
+   "concern": "repository-truth-knowledge-content-and-canonical-homes",
+   "owner": "UCOS-BOOK-000000",
+   "disposition": "REUSE",
+   "basis": "UKB is the sole owner of Repository Truth (CONST-07 \u00a73; CONST-11)"
+  },
+  {
+   "id": "CMG-DLG-18",
+   "concern": "repository-closure-specification",
+   "owner": "CONST-01",
+   "disposition": "REUSE",
+   "basis": "CONST-01"
+  },
+  {
+   "id": "CMG-DLG-19",
+   "concern": "successor-governance-and-program-remit-separation",
+   "owner": "CONST-07",
+   "disposition": "REUSE",
+   "basis": "CONST-07 \u00a73 Separation Invariants"
+  },
+  {
+   "id": "CMG-DLG-20",
+   "concern": "long-term-evolution-admissible-path-for-architectural-ideas",
+   "owner": "CONST-10",
+   "disposition": "REUSE",
+   "basis": "CONST-10"
+  },
+  {
+   "id": "CMG-DLG-21",
+   "concern": "constitutional-glossary-and-frozen-terminology",
+   "owner": "CONST-11",
+   "disposition": "REUSE",
+   "basis": "CONST-11"
+  },
+  {
+   "id": "CMG-DLG-22",
+   "concern": "architecture-baseline-change-control",
+   "owner": "AB-001-07",
+   "disposition": "REUSE",
+   "basis": "UCOS-AB-001/07"
+  },
+  {
+   "id": "CMG-DLG-23",
+   "concern": "engineering-governance-and-implementation-admission",
+   "owner": "EG-001-01",
+   "disposition": "REUSE",
+   "basis": "UCOS-EG-001/01"
+  },
+  {
+   "id": "CMG-DLG-24",
+   "concern": "measurement-authority",
+   "owner": "UMA-001-01",
+   "disposition": "REUSE",
+   "basis": "UCOS-UMA-001/01"
+  },
+  {
+   "id": "CMG-DLG-25",
+   "concern": "technology-selection-and-constraint",
+   "owner": "TECH-CONST-001",
+   "disposition": "REUSE",
+   "basis": "Technology Constitution"
+  },
+  {
+   "id": "CMG-DLG-26",
+   "concern": "nucleus-and-universe-composition-model",
+   "owner": "NUCLEUS-001-02",
+   "disposition": "REUSE",
+   "basis": "UCOS-NUCLEUS-001/02"
+  },
+  {
+   "id": "CMG-DLG-27",
+   "concern": "domain-substance-data",
+   "owner": "DATA-001",
+   "disposition": "REUSE",
+   "basis": "DATA-001"
+  },
+  {
+   "id": "CMG-DLG-28",
+   "concern": "domain-substance-runtime",
+   "owner": "RUNTIME-001",
+   "disposition": "REUSE",
+   "basis": "RUNTIME-001"
+  },
+  {
+   "id": "CMG-DLG-29",
+   "concern": "domain-substance-application",
+   "owner": "APPLICATION-001",
+   "disposition": "REUSE",
+   "basis": "APPLICATION-001"
+  },
+  {
+   "id": "CMG-DLG-30",
+   "concern": "domain-substance-infrastructure",
+   "owner": "INFRASTRUCTURE-001",
+   "disposition": "REUSE",
+   "basis": "INFRASTRUCTURE-001"
+  },
+  {
+   "id": "CMG-DLG-31",
+   "concern": "domain-substance-service",
+   "owner": "SERVICE-001",
+   "disposition": "REUSE",
+   "basis": "SERVICE-001"
+  },
+  {
+   "id": "CMG-DLG-32",
+   "concern": "domain-substance-platform",
+   "owner": "PLATFORM-001",
+   "disposition": "REUSE",
+   "basis": "PLATFORM-001"
+  },
+  {
+   "id": "CMG-DLG-33",
+   "concern": "domain-substance-security",
+   "owner": "SECURITY-001",
+   "disposition": "REUSE",
+   "basis": "SECURITY-001"
+  },
+  {
+   "id": "CMG-DLG-34",
+   "concern": "canonical-runtime-catalog-model",
+   "owner": "CAT-000",
+   "disposition": "REUSE",
+   "basis": "CAT-000"
+  },
+  {
+   "id": "CMG-DLG-35",
+   "concern": "universal-reference-architecture-model",
+   "owner": "REF-000",
+   "disposition": "REUSE",
+   "basis": "REF-000"
+  },
+  {
+   "id": "CMG-DLG-36",
+   "concern": "generation-frameworks",
+   "owner_paths": [
+    "05-GENERATION"
+   ],
+   "disposition": "REUSE",
+   "basis": "Generation program zone"
+  },
+  {
+   "id": "CMG-DLG-37",
+   "concern": "implementation-orchestration-and-realization",
+   "owner_paths": [
+    "06-IMPLEMENTATION"
+   ],
+   "disposition": "REUSE",
+   "basis": "Implementation program zone"
+  },
+  {
+   "id": "CMG-DLG-38",
+   "concern": "engineering-foundation-identity-object-type-and-relationship-architectures",
+   "owner_paths": [
+    "07-ENGINEERING/UCOS-\u03a9\u221e-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md",
+    "07-ENGINEERING/UCOS-\u03a9\u221e-UNIVERSAL-OBJECT-SYSTEM-MASTER-ARCHITECTURE.md",
+    "07-ENGINEERING/UCOS-\u03a9\u221e-UNIVERSAL-TYPE-SYSTEM-MASTER-ARCHITECTURE.md",
+    "07-ENGINEERING/UCOS-\u03a9\u221e-UNIVERSAL-RELATIONSHIP-REFERENCE-SYSTEM-MASTER-ARCHITECTURE.md"
+   ],
+   "disposition": "REUSE",
+   "basis": "Engineering foundation instruments"
+  },
+  {
+   "id": "CMG-DLG-39",
+   "concern": "intelligence-substrate-sciences-universes-and-intelligence-registries",
+   "owner_paths": [
+    "15-UNIVERSAL-SCIENCE-INTELLIGENCE"
+   ],
+   "disposition": "REUSE",
+   "basis": "USIS program zone"
+  },
+  {
+   "id": "CMG-DLG-40",
+   "concern": "enforcement-machinery-gates-and-guards",
+   "owner_paths": [
+    "Makefile",
+    "verify.sh",
+    "repo-ops.sh",
+    "00-BOOK/tools/ukb.py",
+    "00-BOOK/tools/register.sh",
+    ".github/workflows/ucos-registration-gate.yml",
+    ".github/workflows/ec1-ci.yml",
+    ".github/workflows/determinism.yml"
+   ],
+   "disposition": "REUSE",
+   "basis": "Located enforcement chain; bound at CMG-000001 LXVI.4 and LXVI.7"
+  },
+  {
+   "id": "CMG-DLG-41",
+   "concern": "repository-integrity",
+   "owner": "CONST-02",
+   "disposition": "REUSE",
+   "basis": "CONST-02 (DOMAIN A)"
+  },
+  {
+   "id": "CMG-DLG-42",
+   "concern": "vision-assimilation",
+   "owner": "CONST-03",
+   "disposition": "REUSE",
+   "basis": "CONST-03 (DOMAIN B)"
+  },
+  {
+   "id": "CMG-DLG-43",
+   "concern": "architectural-completeness-as-distinct-from-closure",
+   "owner": "CONST-04",
+   "disposition": "REUSE",
+   "basis": "CONST-04"
+  },
+  {
+   "id": "CMG-DLG-44",
+   "concern": "repository-state-machine",
+   "owner": "CONST-05",
+   "disposition": "REUSE",
+   "basis": "CONST-05"
+  },
+  {
+   "id": "CMG-DLG-45",
+   "concern": "closure-metrics-computation",
+   "owner": "CONST-06",
+   "disposition": "REUSE",
+   "basis": "CONST-06"
+  },
+  {
+   "id": "CMG-DLG-46",
+   "concern": "single-canonical-closure-pipeline",
+   "owner": "CONST-08",
+   "disposition": "REUSE",
+   "basis": "CONST-08"
+  },
+  {
+   "id": "CMG-DLG-47",
+   "concern": "repository-lifecycle",
+   "owner": "CONST-09",
+   "disposition": "REUSE",
+   "basis": "CONST-09"
+  },
+  {
+   "id": "CMG-DLG-48",
+   "concern": "constitutional-engineering-operational-law-invariants-and-artifact-state-model",
+   "owner": "CEP-001",
+   "disposition": "REUSE",
+   "basis": "CEP-001 Art I (LAW-1..11), Art VII (INV-1..8), Art VIII (state model), Art XXIV"
+  },
+  {
+   "id": "CMG-DLG-49",
+   "concern": "deferral-register-lifecycle-states-entry-exit-review-cadence-and-custody",
+   "owner": "CEP-002",
+   "disposition": "REUSE",
+   "basis": "CEP-002 Art 27 (added by CEP-002-AMD-001 under Art 21); refines CMG-DLG-02; paired artifact transitions owned at CEP-001 Art VIII.2/VIII.7 (CMG-DLG-48); closes CMG-GAP-02, answers CMG-OQ-04; recorded at CMG-000001 LXXVIII.8"
+  },
+  {
+   "id": "CMG-DLG-50",
+   "concern": "canonical-object-identity-registry-relationship-graph-and-invariant-validation",
+   "owner": "UCKP-LAW-0001",
+   "disposition": "REUSE",
+   "basis": "engine/uckp/law.py UCKP-ART-01, -02, -05, -08; recognized orthogonal (not subordinate) under engine/uckp/alignment.py (UCOS-CAA-001), which binds CMG-000001 under role ORTHOGONAL in 00-BOOK/DATA/constitutional-authority-alignment.json; added by amendment AMD-002"
+  },
+  {
+   "id": "CMG-RET-01",
+   "concern": "definition-of-constitution-and-constitutional-artifact",
+   "owner": "CMG-000001",
+   "disposition": "RETAIN",
+   "basis": "CMG-000001 Art IV, VI"
+  },
+  {
+   "id": "CMG-RET-02",
+   "concern": "recognition-of-constitutionality-and-the-constitution-registry",
+   "owner": "CMG-000001",
+   "disposition": "RETAIN",
+   "basis": "CMG-000001 Art XII, XV"
+  },
+  {
+   "id": "CMG-RET-03",
+   "concern": "classification-taxonomy-and-ontology-of-constitutional-objects",
+   "owner": "CMG-000001",
+   "disposition": "RETAIN",
+   "basis": "CMG-000001 Art XII-XIV"
+  },
+  {
+   "id": "CMG-RET-04",
+   "concern": "constitutional-precedence-lattice-and-authority-resolution",
+   "owner": "CMG-000001",
+   "disposition": "RETAIN",
+   "basis": "CMG-000001 Art XVI, XVII"
+  },
+  {
+   "id": "CMG-RET-05",
+   "concern": "allocation-of-concerns-to-owners-and-the-delegation-register",
+   "owner": "CMG-000001",
+   "disposition": "RETAIN",
+   "basis": "CMG-000001 Art XVIII, LXXXII"
+  },
+  {
+   "id": "CMG-RET-06",
+   "concern": "recording-of-vacancies-gaps-and-open-constitutional-questions",
+   "owner": "CMG-000001",
+   "disposition": "RETAIN",
+   "basis": "CMG-000001 Art XVII.4, LXXVIII"
+  },
+  {
+   "id": "CMG-RET-07",
+   "concern": "meta-level-identity-identifier-naming-and-namespace-rules",
+   "owner": "CMG-000001",
+   "disposition": "RETAIN",
+   "basis": "CMG-000001 Art XXX-XXXIII"
+  },
+  {
+   "id": "CMG-RET-08",
+   "concern": "meta-lifecycle-phase-model-and-mapping-to-located-state-model",
+   "owner": "CMG-000001",
+   "disposition": "RETAIN",
+   "basis": "CMG-000001 Art XXIV-XXVII"
+  },
+  {
+   "id": "CMG-RET-09",
+   "concern": "admission-of-new-constitutional-kinds-and-unknown-future-concepts",
+   "owner": "CMG-000001",
+   "disposition": "RETAIN",
+   "basis": "CMG-000001 Art LXXVI, LXXVII"
+  },
+  {
+   "id": "CMG-RET-10",
+   "concern": "meta-constitutional-completeness-verification-and-readiness-certification-criteria",
+   "owner": "CMG-000001",
+   "disposition": "RETAIN",
+   "basis": "CMG-000001 Art LXXIX, LXXX"
+  },
+  {
+   "id": "CMG-RET-11",
+   "concern": "meta-constitutional-invariants-and-their-mechanical-verification",
+   "owner": "CMG-000001",
+   "disposition": "RETAIN",
+   "basis": "CMG-000001 Art XI, L"
+  },
+  {
+   "id": "CMG-DLG-51",
+   "concern": "absolute-constitutional-laws-canonicity",
+   "owner": "UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS",
+   "disposition": "RETAINED",
+   "basis": "RAT-08/09 ratified the law canon; UCOS-RAT-002 D-RAT-02-02 makes its register the occupant of T1"
+  }
+ ],
+ "gaps": [
+  {
+   "id": "CMG-GAP-01",
+   "gap": "No instrument defined what a Constitution is, or which artifacts are constitutions",
+   "severity": "STRUCTURAL",
+   "disposition": "CLOSED",
+   "closed_by": "Articles IV, XII-XV"
+  },
+  {
+   "id": "CMG-GAP-02",
+   "gap": "The Deferral Register is referenced across located instruments with no owner for its lifecycle",
+   "severity": "MINOR",
+   "disposition": "CLOSED",
+   "closed_by": "Kind CMG-K-24 (XIII.6), LV.8, CEP-002 Article 27 (CEP-002-AMD-001) as lifecycle owner, CEP-001 Art VIII.2/VIII.7 DEFERRED exit transitions (CEP-001-AMD-001), recognized at CMG-DLG-49 and recorded at CMG-000001 LXXVIII.8",
+   "open_question": "CMG-OQ-04",
+   "open_question_status": "CLOSED"
+  },
+  {
+   "id": "CMG-GAP-03",
+   "gap": "Multiple disjoint precedence statements existed with no single lattice; some pairs were unrankable",
+   "severity": "STRUCTURAL",
+   "disposition": "CLOSED",
+   "closed_by": "Articles XVI, XVII, LIV"
+  },
+  {
+   "id": "CMG-GAP-04",
+   "gap": "The Tier-1 superior authority presupposed by the located charter is not a located ratified artifact",
+   "severity": "STRUCTURAL-EXTERNAL",
+   "disposition": "CLOSED",
+   "closed_by": "VAC-01 closed at UCOS-RAT-002",
+   "open_question": "CMG-OQ-02"
+  },
+  {
+   "id": "CMG-GAP-05",
+   "gap": "No located owner governs the identifier namespace of top-level meta instruments",
+   "severity": "MINOR",
+   "disposition": "CLOSED-FOR-CMG-NAMESPACE",
+   "closed_by": "Article XXXIII"
+  },
+  {
+   "id": "CMG-GAP-06",
+   "gap": "No located instrument governs a program-completion ceremony",
+   "severity": "MINOR",
+   "disposition": "CLOSED",
+   "closed_by": "UCOS-RAT-002 D-RAT-02-05",
+   "open_question": "CMG-OQ-05",
+   "reason": "Substantive process concern outside meta jurisdiction (XIX.2)"
+  },
+  {
+   "id": "CMG-GAP-07",
+   "gap": "Latent constitutions may exist: artifacts functioning as law without recognition",
+   "severity": "STRUCTURAL",
+   "disposition": "CLOSED",
+   "closed_by": "XII.5 and LII.2"
+  },
+  {
+   "id": "CMG-GAP-08",
+   "gap": "Concern was not a first-class entity, so duplicate authority was structurally undetectable",
+   "severity": "STRUCTURAL",
+   "disposition": "CLOSED",
+   "closed_by": "XIV.3-XIV.4 and CMG-INV-02"
+  },
+  {
+   "id": "CMG-GAP-09",
+   "gap": "No mechanism existed to admit a concept that does not yet exist without amendment",
+   "severity": "STRUCTURAL",
+   "disposition": "CLOSED",
+   "closed_by": "Articles LXXVI and LXXVII"
+  }
+ ],
+ "open_questions": [
+  {
+   "id": "CMG-OQ-01",
+   "question": "Which authority is competent to ratify CMG-000001?",
+   "requires": "EXPLICIT RATIFICATION",
+   "blocks": "Nothing; the act is recorded and CMG-000001 stands RATIFIED",
+   "status": "CLOSED",
+   "answer": "The Constituent Authority (AUTH-13), acting through its chartered organ RA-Omega-Infinity (AUTH-14), is competent; it ratified CMG-000001 under P.6/CEP-006 by UCOS-RAT-002. This instrument records and recognizes the act; it did not ratify itself (XLIV.7).",
+   "closed_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CMG-OQ-02",
+   "question": "Which artifact, if any, occupies Tier T1 (Constitutional Authority over substance)?",
+   "requires": "EXPLICIT RATIFICATION",
+   "blocks": "Nothing; VAC-01 located and standing elevated",
+   "status": "CLOSED",
+   "answer": "T1 is occupied by the ratified constitution of substance (CEP-000 5.5 Tier 1); VAC-01 closed. Dependent T1M/T2/T2I standing elevated per D-RAT-02-03.",
+   "closed_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CMG-OQ-03",
+   "question": "Is the meta axis T1M correctly declared orthogonal to the process axis T2 rather than superior or subordinate?",
+   "requires": "EXPLICIT RATIFICATION",
+   "blocks": "Nothing; the lattice is final",
+   "status": "CLOSED",
+   "answer": "The lattice of XVI/XVII/LIV is final; SUP-14/CONF-07 fixed precedence under the ratified founding.",
+   "closed_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CMG-OQ-04",
+   "question": "Who owns the Deferral Register lifecycle?",
+   "requires": "OWNERSHIP ALLOCATION BY THE ALLOCATING AUTHORITY",
+   "status": "CLOSED",
+   "answer": "CEP-002, by its Article 27 (CEP-002-AMD-001 under CEP-002 Art 21). Allocated by Governance Authority under CEP-002 Art 1.2/7.2/14.2; recognized, not allocated, by CMG-000001 at CMG-DLG-49 and LXXVIII.8",
+   "blocks": "Nothing; CMG-GAP-02 IS CLOSED and the allocation IS recorded at CMG-000001 LXXVIII.8"
+  },
+  {
+   "id": "CMG-OQ-05",
+   "question": "Who owns program-completion ceremony?",
+   "requires": "OWNERSHIP ALLOCATION BY THE PROCESS OWNER",
+   "blocks": "Nothing; GAP-06 closed by referral to its located owner",
+   "status": "CLOSED",
+   "answer": "Program-completion ceremony is owned by RA-Omega-Infinity under the GOV-11 ratification-audit procedure; the meta layer holds no jurisdiction over the process and took none.",
+   "closed_by": "UCOS-RAT-002"
+  },
+  {
+   "id": "CMG-OQ-06",
+   "question": "Does admission of the CMG namespace and zone require amendment of any located registration or classification instrument?",
+   "requires": "DETERMINATION BY THE REGISTRATION AUTHORITY",
+   "blocks": "Nothing; recognition is achieved without editing shared machinery per LVIII.6",
+   "status": "CLOSED",
+   "closed_by": "REG-AUTO-001 SECTION 21 (the located registration/classification authority; concern CMG-DLG-13)",
+   "determination": "NO amendment of any located registration or classification instrument is required; recognition is total by construction (existing CLASSIFY_RULE, self-declared metadata, deterministic path-derived catch-all). The authority requires instead an append-only reconciled-set record, enforced by the existing classification gate.",
+   "closure_recorded": [
+    "CMG-000001 LXXVIII.7",
+    "00-BOOK/CONTROL-TOWER/UCOS-\u03a9\u221e-REG-AUTO-001-AUTOMATIC-ARTIFACT-REGISTRATION-STANDARD.md SECTION 21"
+   ],
+   "closure_evidence": "REG-AUTO-001 SECTION 21.11; classification gate PASS with reconciled set CMG declared and zero reconciled-set drift",
+   "affects_readiness": false
+  },
+  {
+   "id": "CMG-OQ-07",
+   "question": "Shall CMG-INV-01..12 be adopted corpus-wide, or remain invariants of the meta layer only?",
+   "requires": "EXPLICIT RATIFICATION",
+   "blocks": "Nothing; adoption is per-instrument",
+   "status": "CLOSED",
+   "answer": "CMG-INV-01..12 remain the meta layer own conformance rules enforced by the single gate of LXVI.7; corpus-wide effect arises only through each instrument citation. No extension is made by this record.",
+   "closed_by": "UCOS-RAT-002"
+  }
+ ],
+ "readiness": {
+  "subject": "Constitutional Readiness",
+  "outcome_values": [
+   "READY",
+   "READY-PROVISIONAL",
+   "NOT-READY"
+  ],
+  "declared_ceiling": "READY",
+  "ceiling_reason": "Every condition that held the ceiling provisional is discharged: VAC-01 located; OQ-01/02/03/05/07 closed by the constituent act; the gap register fully dispositioned. LXXX.4 condition no longer obtains.",
+  "issued_by": "The located certification owner (CEP-005) - never by CMG-000001 (LI.1, LI.6) - re-issuing the ceiling on the record of the constituent acts EC-1 (UCOS-RAT-001) and D-RAT-02-01..07 (UCOS-RAT-002)"
+ }
+}

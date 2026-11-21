@@ -1,0 +1,26 @@
+[
+  {
+    "source_event_id": "sonar-5001",
+    "as_of": "2026-07-15T08:40:00Z",
+    "path_hint": "KNOWLEDGE-GRAPH-ENGINE",
+    "quality_gate": "OK",
+    "maintainability": "A",
+    "coverage": 82.1,
+    "code_smells": 14,
+    "bugs": 0,
+    "duplication": 1.2,
+    "dashboard": "sonarqube://project/knowledge-graph-engine"
+  },
+  {
+    "source_event_id": "sonar-5002",
+    "as_of": "2026-07-15T08:44:00Z",
+    "path_hint": "IDENTITY-PLATFORM",
+    "quality_gate": "ERROR",
+    "maintainability": "D",
+    "coverage": 41.7,
+    "code_smells": 233,
+    "bugs": 9,
+    "duplication": 12.8,
+    "dashboard": "sonarqube://project/identity-platform"
+  }
+]

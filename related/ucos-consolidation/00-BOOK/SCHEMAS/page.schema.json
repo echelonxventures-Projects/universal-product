@@ -1,0 +1,63 @@
+{
+  "title": "UCOS Ω∞ Universal Page",
+  "description": "A Universal Page. Every page carries a globally unique, immutable, append-only Universal Page Number (UPN) and the navigation metadata required for recursive bidirectional navigation. UPNs are never renumbered and never reused.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["upn", "artifact_id", "volume", "status", "version"],
+  "properties": {
+    "upn": {
+      "type": "string",
+      "description": "Universal Page Number.",
+      "pattern": "^UPN-[0-9]{9,}$"
+    },
+    "artifact_id": {
+      "type": "string",
+      "description": "Universal Artifact ID this page belongs to.",
+      "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$"
+    },
+    "parent_id": {
+      "type": ["string", "null"],
+      "description": "Parent artifact Universal ID.",
+      "default": null
+    },
+    "volume": { "type": "string", "pattern": "^VOL-[0-9]{3}$" },
+    "status": {
+      "type": "string",
+      "enum": [
+        "NOT_STARTED", "PLANNED", "IN_PROGRESS", "BLOCKED", "UNDER_REVIEW",
+        "APPROVED", "IMPLEMENTED", "TESTED", "CERTIFIED", "DEPLOYED",
+        "PRODUCTION", "FROZEN", "SUPERSEDED", "RETIRED", "ACTIVE", "COMPLETE", "FINAL"
+      ]
+    },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "header": { "$ref": "#/$defs/header" },
+    "footer": { "$ref": "#/$defs/footer" }
+  },
+  "$defs": {
+    "header": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["book_name", "artifact_id", "volume", "upn", "status", "version"],
+      "properties": {
+        "book_name": { "type": "string", "const": "UCOS Ω∞ Universal Master Knowledge Book" },
+        "artifact_id": { "type": "string" },
+        "volume": { "type": "string" },
+        "upn": { "type": "string" },
+        "status": { "type": "string" },
+        "version": { "type": "string" }
+      }
+    },
+    "footer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["previous_page", "next_page", "parent_page", "volume_index", "master_index"],
+      "properties": {
+        "previous_page": { "type": ["string", "null"], "description": "UPN of previous page, or null at book start." },
+        "next_page": { "type": ["string", "null"], "description": "UPN of next page, or null at book end." },
+        "parent_page": { "type": ["string", "null"], "description": "UPN of the parent artifact's first page." },
+        "volume_index": { "type": "string", "description": "UPN of the owning volume's index page." },
+        "master_index": { "type": "string", "description": "UPN of the Master Index (Volume 000).", "default": "UPN-000000001" }
+      }
+    }
+  }
+}

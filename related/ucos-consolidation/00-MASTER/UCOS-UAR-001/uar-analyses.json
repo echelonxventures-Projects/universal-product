@@ -1,0 +1,324 @@
+{
+  "$comment": "UCOS-UAR-001: Universal Analysis Registry. DATA DECLARATION ONLY. Adding an analysis is an entry here; no engine change required.",
+  "programme": "UCOS-UAR-001",
+  "title": "Universal Analysis Registry",
+  "authority": "NONE — DERIVED TRUTH",
+  "description": "Enumerates every located analysis capability in the repository. The registry is the single answer to 'which analyses exist and who owns them'. Open by registration: adding a future analysis is a data edit, never an engine change.",
+  "analyses": [
+    {
+      "id": "UAR-VI-01",
+      "name": "cross-capability-consistency",
+      "owner": "platform/validation_intelligence",
+      "home": "platform/validation_intelligence/analyzers.py",
+      "kind": "validation-intelligence-dimension"
+    },
+    {
+      "id": "UAR-VI-02",
+      "name": "repository-completeness",
+      "owner": "platform/validation_intelligence",
+      "home": "platform/validation_intelligence/analyzers.py",
+      "kind": "validation-intelligence-dimension"
+    },
+    {
+      "id": "UAR-VI-03",
+      "name": "contract-compatibility",
+      "owner": "platform/validation_intelligence",
+      "home": "platform/validation_intelligence/analyzers.py",
+      "kind": "validation-intelligence-dimension"
+    },
+    {
+      "id": "UAR-VI-04",
+      "name": "architecture-compliance",
+      "owner": "platform/validation_intelligence",
+      "home": "platform/validation_intelligence/analyzers.py",
+      "kind": "validation-intelligence-dimension"
+    },
+    {
+      "id": "UAR-VI-05",
+      "name": "runtime-compatibility",
+      "owner": "platform/validation_intelligence",
+      "home": "platform/validation_intelligence/analyzers.py",
+      "kind": "validation-intelligence-dimension"
+    },
+    {
+      "id": "UAR-VI-06",
+      "name": "version-compatibility",
+      "owner": "platform/validation_intelligence",
+      "home": "platform/validation_intelligence/analyzers.py",
+      "kind": "validation-intelligence-dimension"
+    },
+    {
+      "id": "UAR-VI-07",
+      "name": "governance-compliance",
+      "owner": "platform/validation_intelligence",
+      "home": "platform/validation_intelligence/analyzers.py",
+      "kind": "validation-intelligence-dimension"
+    },
+    {
+      "id": "UAR-RIE-01",
+      "name": "capability-discovery",
+      "owner": "intelligence/rie",
+      "home": "intelligence/rie/engine.py",
+      "kind": "repository-intelligence-analysis"
+    },
+    {
+      "id": "UAR-RIE-02",
+      "name": "repository-health",
+      "owner": "intelligence/rie",
+      "home": "intelligence/rie/engine.py",
+      "kind": "repository-intelligence-analysis"
+    },
+    {
+      "id": "UAR-RIE-03",
+      "name": "progress-measurement",
+      "owner": "intelligence/rie",
+      "home": "intelligence/rie/engine.py",
+      "kind": "repository-intelligence-analysis"
+    },
+    {
+      "id": "UAR-RIE-04",
+      "name": "execution-frontier",
+      "owner": "intelligence/rie",
+      "home": "intelligence/rie/engine.py",
+      "kind": "repository-intelligence-analysis"
+    },
+    {
+      "id": "UAR-RIE-05",
+      "name": "aeos-readiness",
+      "owner": "intelligence/rie",
+      "home": "intelligence/rie/engine.py",
+      "kind": "repository-intelligence-analysis"
+    },
+    {
+      "id": "UAR-RIE-06",
+      "name": "digital-twin-projection",
+      "owner": "intelligence/rie",
+      "home": "intelligence/rie/engine.py",
+      "kind": "repository-intelligence-analysis"
+    },
+    {
+      "id": "UAR-RIE-07",
+      "name": "dependency-graph",
+      "owner": "intelligence/rie",
+      "home": "intelligence/rie/engine.py",
+      "kind": "repository-intelligence-analysis"
+    },
+    {
+      "id": "UAR-RIB-01",
+      "name": "capability-graph",
+      "owner": "00-MASTER/UCOS-RIB-001",
+      "home": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "kind": "integration-analysis"
+    },
+    {
+      "id": "UAR-RIB-02",
+      "name": "duplicate-detection",
+      "owner": "00-MASTER/UCOS-RIB-001",
+      "home": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "kind": "integration-analysis"
+    },
+    {
+      "id": "UAR-RIB-03",
+      "name": "gap-detection",
+      "owner": "00-MASTER/UCOS-RIB-001",
+      "home": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "kind": "integration-analysis"
+    },
+    {
+      "id": "UAR-RIB-04",
+      "name": "cycle-detection",
+      "owner": "00-MASTER/UCOS-RIB-001",
+      "home": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "kind": "integration-analysis"
+    },
+    {
+      "id": "UAR-RIB-05",
+      "name": "disposition-classification",
+      "owner": "00-MASTER/UCOS-RIB-001",
+      "home": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "kind": "integration-analysis"
+    },
+    {
+      "id": "UAR-RIB-06",
+      "name": "reuse-analysis",
+      "owner": "00-MASTER/UCOS-RIB-001",
+      "home": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "kind": "integration-analysis"
+    },
+    {
+      "id": "UAR-CL-01",
+      "name": "concept-homing",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002",
+      "home": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "kind": "closure-analysis"
+    },
+    {
+      "id": "UAR-CL-02",
+      "name": "duplicate-concept-detection",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002",
+      "home": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "kind": "closure-analysis"
+    },
+    {
+      "id": "UAR-CL-03",
+      "name": "orphan-concept-detection",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002",
+      "home": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "kind": "closure-analysis"
+    },
+    {
+      "id": "UAR-CL-04",
+      "name": "conversation-only-detection",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002",
+      "home": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "kind": "closure-analysis"
+    },
+    {
+      "id": "UAR-CL-05",
+      "name": "upload-only-detection",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002",
+      "home": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "kind": "closure-analysis"
+    },
+    {
+      "id": "UAR-CL-06",
+      "name": "content-hash-duplicate-detection",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002",
+      "home": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "kind": "closure-analysis"
+    },
+    {
+      "id": "UAR-AIE-01",
+      "name": "register-plane-consistency",
+      "owner": "00-MASTER/UAIE-000001",
+      "home": "00-MASTER/UAIE-000001/uaie_engine.py",
+      "kind": "architectural-intelligence-analysis"
+    },
+    {
+      "id": "UAR-AIE-02",
+      "name": "faculty-binding-resolution",
+      "owner": "00-MASTER/UAIE-000001",
+      "home": "00-MASTER/UAIE-000001/uaie_engine.py",
+      "kind": "architectural-intelligence-analysis"
+    },
+    {
+      "id": "UAR-AIE-03",
+      "name": "architectural-faculty-closure",
+      "owner": "00-MASTER/UAIE-000001",
+      "home": "00-MASTER/UAIE-000001/uaie_engine.py",
+      "kind": "architectural-intelligence-analysis"
+    },
+    {
+      "id": "UAR-UCAF-01",
+      "name": "tier-projection-fidelity",
+      "owner": "00-MASTER/UCOS-UCAF-001",
+      "home": "00-MASTER/UCOS-UCAF-001/ucaf_engine.py",
+      "kind": "constitutional-authority-analysis"
+    },
+    {
+      "id": "UAR-UCAF-02",
+      "name": "tier-occupancy-corroboration",
+      "owner": "00-MASTER/UCOS-UCAF-001",
+      "home": "00-MASTER/UCOS-UCAF-001/ucaf_engine.py",
+      "kind": "constitutional-authority-analysis"
+    },
+    {
+      "id": "UAR-UCAF-03",
+      "name": "executable-authority-token-classification",
+      "owner": "00-MASTER/UCOS-UCAF-001",
+      "home": "00-MASTER/UCOS-UCAF-001/ucaf_engine.py",
+      "kind": "constitutional-authority-analysis"
+    },
+    {
+      "id": "UAR-UCAF-04",
+      "name": "authority-realization-binding",
+      "owner": "00-MASTER/UCOS-UCAF-001",
+      "home": "00-MASTER/UCOS-UCAF-001/ucaf_engine.py",
+      "kind": "constitutional-authority-analysis"
+    },
+    {
+      "id": "UAR-BLN-01",
+      "name": "baseline-succession-resolution",
+      "owner": "00-MASTER/BASELINE-001",
+      "home": "00-MASTER/BASELINE-001/baseline_engine.py",
+      "kind": "baseline-inheritance-analysis"
+    },
+    {
+      "id": "UAR-BLN-02",
+      "name": "baseline-currency-divergence",
+      "owner": "00-MASTER/BASELINE-001",
+      "home": "00-MASTER/BASELINE-001/baseline_engine.py",
+      "kind": "baseline-inheritance-analysis"
+    },
+    {
+      "id": "UAR-BLN-03",
+      "name": "baseline-citation-closure",
+      "owner": "00-MASTER/BASELINE-001",
+      "home": "00-MASTER/BASELINE-001/baseline_engine.py",
+      "kind": "baseline-inheritance-analysis"
+    },
+    {
+      "id": "UAR-BLN-04",
+      "name": "constitutional-version-progression",
+      "owner": "00-MASTER/BASELINE-001",
+      "home": "00-MASTER/BASELINE-001/baseline_engine.py",
+      "kind": "baseline-inheritance-analysis"
+    },
+    {
+      "id": "UAR-BLN-05",
+      "name": "inheritance-clause-binding",
+      "owner": "00-MASTER/BASELINE-001",
+      "home": "00-MASTER/BASELINE-001/baseline_engine.py",
+      "kind": "baseline-inheritance-analysis"
+    },
+    {
+      "id": "UAR-UIS-01",
+      "name": "identity-plane-crosswalk",
+      "owner": "00-MASTER/UIS-001",
+      "home": "00-MASTER/UIS-001/uis_engine.py",
+      "kind": "identity-conformance-analysis"
+    },
+    {
+      "id": "UAR-UIS-02",
+      "name": "single-identity-authority-verification",
+      "owner": "00-MASTER/UIS-001",
+      "home": "00-MASTER/UIS-001/uis_engine.py",
+      "kind": "identity-conformance-analysis"
+    },
+    {
+      "id": "UAR-UIS-03",
+      "name": "identity-law-conformance",
+      "owner": "00-MASTER/UIS-001",
+      "home": "00-MASTER/UIS-001/uis_engine.py",
+      "kind": "identity-conformance-analysis"
+    },
+    {
+      "id": "UAR-UIS-04",
+      "name": "identity-namespace-governance",
+      "owner": "00-MASTER/UIS-001",
+      "home": "00-MASTER/UIS-001/uis_engine.py",
+      "kind": "identity-conformance-analysis"
+    },
+    {
+      "id": "UAR-UIS-05",
+      "name": "identity-admission-class",
+      "owner": "00-MASTER/UIS-001",
+      "home": "00-MASTER/UIS-001/uis_engine.py",
+      "kind": "identity-conformance-analysis"
+    },
+    {
+      "id": "UAR-UIS-06",
+      "name": "universal-bookkeeping-binding",
+      "owner": "00-MASTER/UIS-001",
+      "home": "00-MASTER/UIS-001/uis_engine.py",
+      "kind": "identity-conformance-analysis"
+    },
+    {
+      "id": "UAR-UIS-07",
+      "name": "unbounded-lawful-expansion",
+      "owner": "00-MASTER/UIS-001",
+      "home": "00-MASTER/UIS-001/uis_engine.py",
+      "kind": "identity-conformance-analysis"
+    }
+  ]
+}

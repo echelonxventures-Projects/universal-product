@@ -1,0 +1,49 @@
+{
+  "backward": [
+    "SecurityFacet",
+    "INFRASTRUCTURE-013",
+    "INFRASTRUCTURE-005",
+    "INFRASTRUCTURE-001",
+    "ARCH-INFRASTRUCTURE-001",
+    "13-INFRASTRUCTURE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "facet": "integrity",
+  "forward": [
+    "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+    "EC3-B13-U08-INTEGRITY-VALIDATION-EVIDENCE",
+    "EC3-B13-U08-INTEGRITY-CCE-CERTIFICATION",
+    "EC3-B13-U08-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "990336f",
+  "meta_class": "SecurityFacet",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "IsolationBoundary",
+    "DATA-014",
+    "SERVICE-014",
+    "APPLICATION-013"
+  ],
+  "substrate_reuse": {
+    "APPLICATION-013": "application security classification reused by reference (Authorization)",
+    "DATA-014": "data security classification reused by reference (Confidentiality/Integrity)",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+    "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+    "ENG-004": "infrastructure.security type_tag (typed construct)",
+    "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+    "IsolationBoundary": "INFRASTRUCTURE-011 (U05) reused by reference (Isolation facet)",
+    "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+    "SERVICE-014": "service security classification reused by reference (Integrity)"
+  },
+  "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+  "trace_format": "ucos-infrastructure-traceability/1.0.0",
+  "unit": "EC3-B13-U08"
+}

@@ -1,0 +1,30 @@
+{
+  "artifact_id": "UCOS-UFI-ADOPTION-URAT-001",
+  "title": "Independence declaration — UCOS-URAT-001",
+  "authority": "NONE — DERIVED TRUTH. This file confers no authority and states no rule. It names which instrument UCOS-URAT-001's registers must be verified AGAINST, and where the reviewed templates for those registers live.",
+  "constitutional_superior": "UCKP-LAW-0001",
+  "schema": "ucos-independence-declaration",
+  "version": "1.0.0",
+  "owner": "UCOS-URAT-001",
+  "framework": "00-BOOK/tools/ufi.py",
+  "$why_this_adoption_is_the_test_of_the_framework": [
+    "UCOS-UCTX-001 is the capability the framework was extracted FROM, so its passing proves",
+    "only that the extraction was faithful. This is the first capability the framework was not",
+    "written for, and nothing in 00-BOOK/tools/ufi.py mentions it.",
+    "",
+    "WHAT IS DELIBERATELY ABSENT FROM `authorities`. 00-MASTER/UCOS-URAT-001/urat.json is NOT",
+    "listed, although it is the richest structured description of this capability in the",
+    "repository. It is the producer's own OUTPUT — the generated-artifact registry declares it",
+    "as one of the five artifacts urat_engine.py writes. Verifying the registers against it",
+    "would put the validator back inside the loop it exists to break: a uniformly wrong engine",
+    "writes a wrong urat.json and wrong registers that agree with it perfectly.",
+    "",
+    "So the corpus is the ONE authored instrument, and it is smaller and poorer than the",
+    "generated one. That is the correct trade and it is the point of the exercise."
+  ],
+  "authorities": [
+    "00-MASTER/UCOS-URAT-001/urat-declaration.json"
+  ],
+  "surfaces": { "glob": "00-MASTER/UCOS-URAT-001/*.md" },
+  "manifest": "00-BOOK/DATA/independence/urat-template-manifest.json"
+}

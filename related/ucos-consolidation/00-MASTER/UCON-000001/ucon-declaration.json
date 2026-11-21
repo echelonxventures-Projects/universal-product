@@ -1,0 +1,2186 @@
+{
+  "artifact_id": "UCON-000001",
+  "name": "Universal Construct Foundation",
+  "version": "1.0.0",
+  "authority": "NONE — DERIVED TRUTH. UCON-000001 legislates no ontology, mints no identity scheme, owns no existence vocabulary and certifies nothing. It binds to the authorities that already own each concern: UMK-000001 owns open-by-registration classification, UCOS-CEU-001 owns the existence and epistemic vocabularies, UCKP-ART-05 owns identity, UCXI-000001 owns context and location axes, CMG-000002 owns temporal coordinates, UOBC-000001 owns birth. What UCON-000001 adds is one thing no owner supplies: a total, traceable disposition for every presented construct, and a governed home for the unknown, the contradictory and the undecidable.",
+  "constitutional_superior": "UMK-000001 (open-world classification) · UCOS-CEU-001 (existence and epistemic states) · UCKP-LAW-0001 Art-13 (canonical serialisation)",
+  "$why_this_exists": "Measured, before this artifact: the repository could REFUSE an unknown construct (engine/kernel/errors.py::MetaTypeUnknownError), could REPORT a conflict as a recomputed three-string finding with no identity (engine/knowledge/intelligence.py::ConflictFinding), and could RECORD a non-closed measurement cell (engine/uicm/gap.py::Gap, which by its own docstring carries no status because 'a closure is only ever a measurement'). None of those is a governed home. A construct whose classifying kind was unregistered was rejected and left no record; a contradiction was derived on each run and stored nowhere; an unknown was a coercion-failure message. The foundational principle — that any presented construct can be represented, governed, traced and disposed without constitutional redesign — was therefore true of the DECLARATIONS and false of the RUNTIME. This artifact moves it into the runtime and makes the move measurable.",
+  "$not_a_second_authority": "This is not a second kernel, a second registry or a second existence vocabulary. It does not re-declare a contradiction form (engine/ceu/catalog.py already registers one), does not re-declare existence or epistemic states (SEED_EXISTENCE_STATES, SEED_EPISTEMIC_STATES already do), does not mint identifiers (engine/uckp/identity.py and engine/registry/universal/identity.py already do), and does not re-implement the canonical digest (engine/uckp/canonical.py already does). Every reality state below either NAMES the UCOS-CEU-001 row it derives from or discloses that no row exists and why. Law UCON-L-14 imports the CEU seeds and refuses a binding CEU does not carry, so this file cannot drift into a private copy of somebody else's vocabulary.",
+  "principle": {
+    "statement": "The system shall remain permanently capable of representing, governing, verifying, tracing, researching, evolving and integrating any presented construct — including constructs that are unknown, undiscovered, hypothetical, contradictory, unverified, undecidable, unobservable, future-originated, or currently unrepresentable within existing frameworks — without constitutional redesign.",
+    "admission_implies": [
+      "governed representation",
+      "a traceable disposition",
+      "a recorded lineage",
+      "a queryable reality assessment"
+    ],
+    "admission_does_not_imply": [
+      "truth",
+      "correctness",
+      "feasibility",
+      "verification",
+      "reality",
+      "permission to certify",
+      "permission to publish",
+      "permission to execute"
+    ],
+    "$enforcement": "The two lists above are not decoration. 'admission_does_not_imply' is enforced by the conjunction in reality.permits(): an operational act is permitted only when BOTH the active disposition and the active reality state permit it. ADMIT permits certify; HYPOTHETICAL does not; so an admitted hypothetical construct cannot be certified, and law UCON-L-11 proves it by exercising the whole disposition x reality cross-product rather than asserting it.",
+    "refused_claims": [
+      "complete future knowledge",
+      "guaranteed first discovery",
+      "guaranteed first publication",
+      "guaranteed scientific supremacy",
+      "completeness over all unknown constructs",
+      "an upper bound on the number of constructs, kinds, dispositions, reality states, ontologies, verifiers, axes or temporal systems"
+    ],
+    "$refused_claims_are_measured": "Law UCON-L-13 scans this module for the permanence and completeness vocabulary these claims would require, and refuses any occurrence outside a declared preserved site. The absence of the claim is a ratchet, not a promise.",
+    "$claim_scan": {
+      "roots": [
+        "engine/construct/"
+      ],
+      "extensions": [
+        ".py"
+      ],
+      "phrases": [
+        "guaranteed first",
+        "complete future knowledge",
+        "scientific supremacy",
+        "infinite knowledge",
+        "infinite truth",
+        "completeness over all",
+        "provably complete",
+        "guaranteed discovery",
+        "all possible constructs"
+      ],
+      "preserved_sites": [],
+      "$phrases": "The vocabulary an unverifiable guarantee would have to use. Scanned across this capability's own source on every run by law UCON-L-13. The phrases live HERE, in data, and never in engine/construct/*.py — which is why the detector cannot match its own source and needs no exemption for itself.",
+      "$preserved_sites": "Empty, and it is a ratchet rather than a boast: a legitimate future occurrence is admitted by declaring it here with its reason, and an undeclared occurrence closes the gate. A site declared here whose occurrence has since gone is also a failure, so the list cannot rot."
+    }
+  },
+  "operational_acts": [
+    {
+      "id": "reference",
+      "definition": "Name the construct, read it, and trace it. Never withheld: withholding it would make a governed record unreadable, which is indistinguishable from having dropped it."
+    },
+    {
+      "id": "depend_on",
+      "definition": "Declare a dependency edge onto the construct, so another construct's correctness rests on it."
+    },
+    {
+      "id": "derive_from",
+      "definition": "Produce a new construct whose lineage names this one. Permitted for hypotheses and unknowns, because research is derivation from what is not yet known."
+    },
+    {
+      "id": "certify",
+      "definition": "Assert the construct as certified truth. Requires both a disposition and a reality state that permit it — this is the act 'admission does not imply truth' is about."
+    },
+    {
+      "id": "publish",
+      "definition": "Present the construct outside the governed boundary as a finding."
+    },
+    {
+      "id": "execute",
+      "definition": "Let the construct drive behaviour — run it, apply it, or enforce it."
+    }
+  ],
+  "dispositions": [
+    {
+      "id": "ADMIT",
+      "title": "Admitted to governed representation",
+      "definition": "The construct is represented, traceable and available to the acts its reality state also permits. It is not thereby true.",
+      "terminal": false,
+      "permits": [
+        "reference",
+        "depend_on",
+        "derive_from",
+        "certify",
+        "publish",
+        "execute"
+      ],
+      "successors": [
+        "TRANSFORM",
+        "RESEARCH",
+        "QUARANTINE",
+        "DEFER",
+        "ESCALATE",
+        "UNDECIDABLE",
+        "REJECT"
+      ]
+    },
+    {
+      "id": "TRANSFORM",
+      "title": "Requires transformation before admission",
+      "definition": "The construct is representable only after a declared transformation — most commonly the registration of its classifying kind, which is one governed act, never a code change.",
+      "terminal": false,
+      "permits": [
+        "reference",
+        "derive_from"
+      ],
+      "successors": [
+        "ADMIT",
+        "RESEARCH",
+        "ESCALATE",
+        "REJECT",
+        "DEFER",
+        "QUARANTINE",
+        "UNDECIDABLE"
+      ]
+    },
+    {
+      "id": "RESEARCH",
+      "title": "Referred to research",
+      "definition": "The construct is not decidable on present evidence and becomes the subject of a research construct. This is the disposition that makes an unknown productive rather than discarded.",
+      "terminal": false,
+      "permits": [
+        "reference",
+        "derive_from"
+      ],
+      "successors": [
+        "ADMIT",
+        "TRANSFORM",
+        "QUARANTINE",
+        "DEFER",
+        "ESCALATE",
+        "UNDECIDABLE",
+        "REJECT"
+      ]
+    },
+    {
+      "id": "QUARANTINE",
+      "title": "Quarantined",
+      "definition": "The construct is retained and readable but may not be depended on, derived from, certified, published or executed. Contradiction and unattributed provenance land here — retained because discarding a contradiction destroys the evidence that a contradiction exists.",
+      "terminal": false,
+      "permits": [
+        "reference"
+      ],
+      "successors": [
+        "ADMIT",
+        "TRANSFORM",
+        "RESEARCH",
+        "DEFER",
+        "ESCALATE",
+        "UNDECIDABLE",
+        "REJECT"
+      ]
+    },
+    {
+      "id": "DEFER",
+      "title": "Deferred pending a dependency",
+      "definition": "A named prerequisite is unresolved. Deferral records what is being waited for, so a wait cannot become a silent drop.",
+      "terminal": false,
+      "permits": [
+        "reference"
+      ],
+      "successors": [
+        "ADMIT",
+        "TRANSFORM",
+        "RESEARCH",
+        "QUARANTINE",
+        "ESCALATE",
+        "UNDECIDABLE",
+        "REJECT"
+      ]
+    },
+    {
+      "id": "ESCALATE",
+      "title": "Escalated to an authority",
+      "definition": "No declared rule decides this construct, or the presenter asked for an authority. This is the catch-all, and it is deliberately non-destructive: an unmatched construct is a gap in the rule set, and the honest answer is 'an authority must decide', never 'discard'.",
+      "terminal": false,
+      "permits": [
+        "reference"
+      ],
+      "successors": [
+        "ADMIT",
+        "TRANSFORM",
+        "RESEARCH",
+        "QUARANTINE",
+        "DEFER",
+        "UNDECIDABLE",
+        "REJECT"
+      ]
+    },
+    {
+      "id": "UNDECIDABLE",
+      "title": "Undecidable under the present framework",
+      "definition": "No decision procedure available to the present framework decides this construct. Non-terminal on purpose: a future framework may decide what this one cannot, and a terminal UNDECIDABLE would be a claim about all future frameworks.",
+      "terminal": false,
+      "permits": [
+        "reference",
+        "derive_from"
+      ],
+      "successors": [
+        "ADMIT",
+        "TRANSFORM",
+        "RESEARCH",
+        "QUARANTINE",
+        "DEFER",
+        "ESCALATE",
+        "REJECT"
+      ]
+    },
+    {
+      "id": "REJECT",
+      "title": "Rejected",
+      "definition": "The construct is refused the operational acts beyond reference. It is still REPRESENTED — the record of the rejection, its rule and its rationale is retained, because a rejection that leaves no record is indistinguishable from a construct that was silently ignored. Non-terminal: new evidence readmits.",
+      "terminal": false,
+      "permits": [
+        "reference"
+      ],
+      "successors": [
+        "ADMIT",
+        "TRANSFORM",
+        "RESEARCH",
+        "QUARANTINE",
+        "DEFER",
+        "ESCALATE",
+        "UNDECIDABLE"
+      ]
+    }
+  ],
+  "$dispositions": "Open by registration, not by enumeration: engine/construct/extension.py::register_disposition admits a new disposition as a construct of kind 'disposition', and law UCON-L-09 exercises that admission in memory on every run. The eight above are the declared MINIMUM, and 'closed_set' is false in every document this capability emits.",
+  "reality_states": [
+    {
+      "id": "VERIFIED",
+      "title": "Verified",
+      "definition": "Independently confirmed against a declared verifier, with the verifier's own assumptions and limitations recorded.",
+      "evidence_floor": 2,
+      "independent_sources_floor": 2,
+      "permits": [
+        "reference",
+        "depend_on",
+        "derive_from",
+        "certify",
+        "publish",
+        "execute"
+      ],
+      "successors": [
+        "CONTRADICTED",
+        "OBSERVED",
+        "UNKNOWN",
+        "UNDECIDABLE"
+      ],
+      "ceu_binding": {
+        "population": "existence-state",
+        "member": "actual"
+      }
+    },
+    {
+      "id": "REPRODUCED",
+      "title": "Reproduced",
+      "definition": "Observed more than once, by more than one source, with agreeing results.",
+      "evidence_floor": 2,
+      "independent_sources_floor": 2,
+      "permits": [
+        "reference",
+        "depend_on",
+        "derive_from",
+        "certify",
+        "publish",
+        "execute"
+      ],
+      "successors": [
+        "VERIFIED",
+        "CONTRADICTED",
+        "OBSERVED",
+        "UNKNOWN",
+        "UNDECIDABLE"
+      ],
+      "ceu_binding": {
+        "population": "existence-state",
+        "member": "actual"
+      }
+    },
+    {
+      "id": "OBSERVED",
+      "title": "Observed",
+      "definition": "One observation is recorded. Not reproduced, so not certifiable.",
+      "evidence_floor": 1,
+      "independent_sources_floor": 1,
+      "permits": [
+        "reference",
+        "depend_on",
+        "derive_from",
+        "publish"
+      ],
+      "successors": [
+        "REPRODUCED",
+        "VERIFIED",
+        "CONTRADICTED",
+        "THEORETICAL",
+        "UNKNOWN",
+        "UNDECIDABLE"
+      ],
+      "ceu_binding": {
+        "population": "existence-state",
+        "member": "actual"
+      }
+    },
+    {
+      "id": "THEORETICAL",
+      "title": "Theoretical",
+      "definition": "Derived from a model that is itself governed. No observation is claimed.",
+      "evidence_floor": 0,
+      "independent_sources_floor": 0,
+      "permits": [
+        "reference",
+        "depend_on",
+        "derive_from"
+      ],
+      "successors": [
+        "OBSERVED",
+        "CONTRADICTED",
+        "HYPOTHETICAL",
+        "UNKNOWN",
+        "UNDECIDABLE"
+      ],
+      "ceu_binding": {
+        "population": "existence-state",
+        "member": "predicted"
+      }
+    },
+    {
+      "id": "HYPOTHETICAL",
+      "title": "Hypothetical",
+      "definition": "Entertained without commitment. The state a research object starts in.",
+      "evidence_floor": 0,
+      "independent_sources_floor": 0,
+      "permits": [
+        "reference",
+        "derive_from"
+      ],
+      "successors": [
+        "THEORETICAL",
+        "OBSERVED",
+        "CONTRADICTED",
+        "UNKNOWN",
+        "UNDECIDABLE"
+      ],
+      "ceu_binding": {
+        "population": "existence-state",
+        "member": "hypothetical"
+      }
+    },
+    {
+      "id": "CONTRADICTED",
+      "title": "Contradicted",
+      "definition": "Confirmed claims about this construct conflict, and the conflict stands unresolved. Retained, never deleted: the contradiction is the evidence.",
+      "evidence_floor": 1,
+      "independent_sources_floor": 2,
+      "permits": [
+        "reference"
+      ],
+      "successors": [
+        "HYPOTHETICAL",
+        "THEORETICAL",
+        "OBSERVED",
+        "UNKNOWN",
+        "UNDECIDABLE"
+      ],
+      "ceu_binding": {
+        "population": "epistemic-state",
+        "member": "contradicted"
+      }
+    },
+    {
+      "id": "UNKNOWN",
+      "title": "Unknown",
+      "definition": "Nothing is established. A state, not an absence, and not a failure.",
+      "evidence_floor": 0,
+      "independent_sources_floor": 0,
+      "permits": [
+        "reference"
+      ],
+      "successors": [
+        "HYPOTHETICAL",
+        "THEORETICAL",
+        "OBSERVED",
+        "REPRODUCED",
+        "VERIFIED",
+        "CONTRADICTED",
+        "UNDECIDABLE"
+      ],
+      "ceu_binding": {
+        "population": "epistemic-state",
+        "member": "unknown"
+      }
+    },
+    {
+      "id": "UNDECIDABLE",
+      "title": "Undecidable",
+      "definition": "No decision procedure available to the present framework settles the question. Distinct from UNKNOWN, which is an absence of evidence, and distinct from the CEU row 'impossible', which is exclusion by a stated constraint.",
+      "evidence_floor": 0,
+      "independent_sources_floor": 0,
+      "permits": [
+        "reference",
+        "derive_from"
+      ],
+      "successors": [
+        "UNKNOWN",
+        "HYPOTHETICAL",
+        "THEORETICAL",
+        "CONTRADICTED"
+      ],
+      "ceu_binding": null,
+      "binding_gap": {
+        "gap_id": "UCON-G-01",
+        "finding": "UCOS-CEU-001 declares no epistemic row for 'no decision procedure exists'. Its nearest row, 'impossible', means excluded by a stated constraint, which is a different claim: an undecidable proposition is not excluded, it is unsettleable by the present framework.",
+        "referred_to": "UCOS-CEU-001 (engine/ceu/catalog.py::SEED_EPISTEMIC_STATES)",
+        "remediation": "CEU registers an 'undecidable' epistemic row, after which this binding is declared and the gap closes. Until then the state is declared here and its lack of a CEU row is disclosed rather than papered over with the wrong row."
+      }
+    }
+  ],
+  "$reality_states": "Reality status is independent of disposition by construction, not by convention. No reality state is terminal (law UCON-L-10): VERIFIED names CONTRADICTED among its successors, because falsification must remain reachable from every state including the strongest one. A framework in which VERIFIED were terminal would be asserting that some verification can never be overturned.",
+  "initial_reality_state": "UNKNOWN",
+  "$initial_reality_state": "The state a construct is in before any evidence is assessed. It is declared rather than defaulted in code, because 'what do we assume when we know nothing' is exactly the kind of assumption that must not be silent. UNKNOWN is chosen because it is a state and not an absence: assuming HYPOTHETICAL would attribute a hypothesis nobody made, and assuming THEORETICAL would attribute a model nobody declared.",
+  "facets": {
+    "none": {
+      "required_fields": [],
+      "optional_fields": [],
+      "definition": "The default. A construct carries a payload the foundation does not interpret."
+    },
+    "kind": {
+      "required_fields": [
+        "definition"
+      ],
+      "optional_fields": [
+        "facet",
+        "parent"
+      ],
+      "definition": "The reflective facet: a construct that declares a new construct kind."
+    },
+    "unknown": {
+      "required_fields": [
+        "unknown_class",
+        "domain",
+        "formulation"
+      ],
+      "optional_fields": [
+        "dependencies",
+        "evidence_gaps"
+      ],
+      "definition": "An unknown as a first-class governed object: what is not known, in which domain, stated precisely enough to be researched."
+    },
+    "contradiction": {
+      "required_fields": [
+        "left",
+        "right",
+        "contradiction_class",
+        "resolution_state"
+      ],
+      "optional_fields": [
+        "detected_by",
+        "dependencies"
+      ],
+      "definition": "A contradiction as a first-class governed object. 'left' and 'right' name the constructs that conflict; neither is deleted."
+    },
+    "research": {
+      "required_fields": [
+        "hypothesis",
+        "research_state"
+      ],
+      "optional_fields": [
+        "findings",
+        "open_questions",
+        "future_work",
+        "confidence",
+        "dependencies"
+      ],
+      "definition": "A research object. Confidence is a reference to a UCXI KNOWLEDGE context, never a number invented here."
+    },
+    "discovery": {
+      "required_fields": [
+        "opportunity",
+        "priority",
+        "impact"
+      ],
+      "optional_fields": [
+        "evidence_gaps",
+        "dependencies"
+      ],
+      "definition": "A governed discovery object: a named opportunity with a declared priority and impact."
+    },
+    "verifier": {
+      "required_fields": [
+        "verifies",
+        "assumptions",
+        "limitations"
+      ],
+      "optional_fields": [
+        "lineage_of",
+        "supersedes"
+      ],
+      "definition": "A verifier as a governed construct. 'assumptions' and 'limitations' are REQUIRED: a verifier that declares neither cannot be verified, and law UCON-L-12 refuses it."
+    },
+    "extension": {
+      "required_fields": [
+        "extension_point",
+        "subject"
+      ],
+      "optional_fields": [
+        "supersedes",
+        "lineage_of"
+      ],
+      "definition": "An extension of a governed framework — an ontology, a governance rule, a location axis, a temporal system, an identity namespace."
+    }
+  },
+  "construct_kinds": {
+    "$openness": "This list is a SEED, not a universe. engine/construct/registry.py derives the set of registered kinds from what has been registered and consults no table, exactly as engine/kernel/registry.py::metatype_exists does. 'construct-kind' classifies itself, which is the fixed point that makes registration the only extension mechanism.",
+    "reflective_root": "construct-kind",
+    "seed_reality_state": "OBSERVED",
+    "$seed_reality_state": "The reality state a declared seed kind is presented in. It is declared rather than written into engine/construct/registry.py because 'how real is a kind we declared' is a claim, and claims belong in the declaration. OBSERVED is correct and deliberately modest: one source — this declaration — records the kind. It is not REPRODUCED, because a second independent source has not declared it, and it is not VERIFIED, because nothing independently confirmed it.",
+    "seed": [
+      {
+        "kind": "construct-kind",
+        "title": "Construct Kind",
+        "facet": "kind",
+        "parent": null,
+        "definition": "The reflective root. A kind is itself a construct, so declaring a new category is one governed registration and never an edit to this foundation."
+      },
+      {
+        "kind": "entity",
+        "title": "Entity",
+        "facet": "none",
+        "parent": null,
+        "definition": "A thing that is."
+      },
+      {
+        "kind": "concept",
+        "title": "Concept",
+        "facet": "none",
+        "parent": null,
+        "definition": "A thing that is thought."
+      },
+      {
+        "kind": "relationship",
+        "title": "Relationship",
+        "facet": "none",
+        "parent": null,
+        "definition": "A thing that holds between things."
+      },
+      {
+        "kind": "structure",
+        "title": "Structure",
+        "facet": "none",
+        "parent": null,
+        "definition": "An arrangement of things."
+      },
+      {
+        "kind": "capability",
+        "title": "Capability",
+        "facet": "none",
+        "parent": null,
+        "definition": "Something a system can do."
+      },
+      {
+        "kind": "ontology",
+        "title": "Ontology",
+        "facet": "extension",
+        "parent": null,
+        "definition": "A governed account of what kinds of things there are. An ontology is a construct, so an ontology may declare an ontology."
+      },
+      {
+        "kind": "taxonomy",
+        "title": "Taxonomy",
+        "facet": "extension",
+        "parent": "ontology",
+        "definition": "A governed classification within an ontology."
+      },
+      {
+        "kind": "governance-model",
+        "title": "Governance Model",
+        "facet": "extension",
+        "parent": null,
+        "definition": "A governed account of how decisions are made. Governance is a construct, so governance is governable."
+      },
+      {
+        "kind": "governance-rule",
+        "title": "Governance Rule",
+        "facet": "extension",
+        "parent": "governance-model",
+        "definition": "One enforceable rule within a governance model."
+      },
+      {
+        "kind": "verifier",
+        "title": "Verifier",
+        "facet": "verifier",
+        "parent": null,
+        "definition": "A mechanism that decides whether something holds. A verifier is a construct, so verification is verifiable."
+      },
+      {
+        "kind": "intelligence-model",
+        "title": "Intelligence Model",
+        "facet": "none",
+        "parent": null,
+        "definition": "A governed account of how a system knows and decides."
+      },
+      {
+        "kind": "mathematics-model",
+        "title": "Mathematics Model",
+        "facet": "none",
+        "parent": null,
+        "definition": "A governed account of a mathematical structure or system."
+      },
+      {
+        "kind": "physics-model",
+        "title": "Physics Model",
+        "facet": "none",
+        "parent": null,
+        "definition": "A governed account of physical law."
+      },
+      {
+        "kind": "computation-model",
+        "title": "Computation Model",
+        "facet": "none",
+        "parent": null,
+        "definition": "A governed account of what may be computed and how."
+      },
+      {
+        "kind": "knowledge-model",
+        "title": "Knowledge Model",
+        "facet": "none",
+        "parent": null,
+        "definition": "A governed account of how knowledge is formed, held and superseded."
+      },
+      {
+        "kind": "reality-model",
+        "title": "Reality Model",
+        "facet": "none",
+        "parent": null,
+        "definition": "A governed account of what is the case, and in which reality."
+      },
+      {
+        "kind": "temporal-model",
+        "title": "Temporal Model",
+        "facet": "none",
+        "parent": null,
+        "definition": "A governed account of time. Delegates every coordinate to CMG-000002."
+      },
+      {
+        "kind": "temporal-system",
+        "title": "Temporal System",
+        "facet": "extension",
+        "parent": "temporal-model",
+        "definition": "One declared reference system a temporal coordinate resolves through — Earth, Mars, lunar, mission-elapsed, logical, or unknown."
+      },
+      {
+        "kind": "location-model",
+        "title": "Location Model",
+        "facet": "none",
+        "parent": null,
+        "definition": "A governed account of where. Delegates every frame to UCXI-000001."
+      },
+      {
+        "kind": "location-axis",
+        "title": "Location Axis",
+        "facet": "extension",
+        "parent": "location-model",
+        "definition": "One axis a reference frame may declare — universe, reality, galaxy, system, planet, region, coordinate framework, or an axis nobody has needed yet."
+      },
+      {
+        "kind": "economic-model",
+        "title": "Economic Model",
+        "facet": "none",
+        "parent": null,
+        "definition": "A governed account of value and exchange."
+      },
+      {
+        "kind": "identity-model",
+        "title": "Identity Model",
+        "facet": "none",
+        "parent": null,
+        "definition": "A governed account of who or what something is. Delegates minting to UCKP-ART-05."
+      },
+      {
+        "kind": "identity-namespace",
+        "title": "Identity Namespace",
+        "facet": "extension",
+        "parent": "identity-model",
+        "definition": "One declared naming authority within an identity model. Federated by construction: a namespace names its parent authority, so no single authority is assumed."
+      },
+      {
+        "kind": "unknown",
+        "title": "Unknown",
+        "facet": "unknown",
+        "parent": null,
+        "definition": "Something not known, registered so that it is governed rather than merely absent."
+      },
+      {
+        "kind": "question",
+        "title": "Question",
+        "facet": "unknown",
+        "parent": "unknown",
+        "definition": "An unresolved question — an unknown stated interrogatively."
+      },
+      {
+        "kind": "contradiction",
+        "title": "Contradiction",
+        "facet": "contradiction",
+        "parent": null,
+        "definition": "Two governed claims that cannot both hold. Registered, retained and traceable."
+      },
+      {
+        "kind": "research-object",
+        "title": "Research Object",
+        "facet": "research",
+        "parent": null,
+        "definition": "A hypothesis under investigation, with its evidence, findings, open questions and future work."
+      },
+      {
+        "kind": "discovery-object",
+        "title": "Discovery Object",
+        "facet": "discovery",
+        "parent": null,
+        "definition": "A governed discovery opportunity with priority, impact and evidence gaps."
+      },
+      {
+        "kind": "disposition",
+        "title": "Disposition",
+        "facet": "extension",
+        "parent": null,
+        "definition": "A disposition is a construct, which is what makes the disposition set open by registration rather than fixed by this file."
+      },
+      {
+        "kind": "reality-state",
+        "title": "Reality State",
+        "facet": "extension",
+        "parent": "reality-model",
+        "definition": "A reality state is a construct, which is what makes the reality vocabulary open by registration."
+      },
+      {
+        "kind": "future-unknown-model",
+        "title": "Future Unknown Model",
+        "facet": "none",
+        "parent": null,
+        "definition": "The declared placeholder for a category nobody has yet conceived. It exists so that 'we did not anticipate this' is a registration and not a redesign — and it is deliberately NOT a fallback: nothing is classified into it automatically, because a default bucket is how an unclassifiable construct stops being visible."
+      }
+    ],
+    "registration_dispositions": [
+      "ADMIT"
+    ],
+    "$registration_dispositions": "The dispositions under which a registration of a construct kind takes EFFECT. Declared here because it was previously a disposition name written into engine/construct/registry.py, which is precisely the closure this capability exists to inventory. ADMIT alone is correct and deliberately strict: a kind registration that was itself told to TRANSFORM has not happened yet, and one that was QUARANTINED — because a contradiction names it — must stop being effective until the contradiction is dispositioned. The consequence is intended: instances of a kind whose registration is quarantined revert to TRANSFORM rather than continuing to admit."
+  },
+  "unknown_classes": {
+    "$openness": "Open by registration. A class this list does not name is registered as a construct of kind 'construct-kind' with facet 'unknown', never added by editing an enum. Law UCON-L-08 exercises that path in memory on every run.",
+    "seed": [
+      {
+        "id": "unknown-mathematics",
+        "definition": "A mathematical structure, object or result that is not established."
+      },
+      {
+        "id": "unknown-physics",
+        "definition": "A physical law, quantity or mechanism that is not established."
+      },
+      {
+        "id": "unknown-ontology",
+        "definition": "A category of thing for which no governed account exists."
+      },
+      {
+        "id": "unknown-intelligence",
+        "definition": "A mode of knowing or deciding that is not characterised."
+      },
+      {
+        "id": "unknown-governance",
+        "definition": "A way decisions could be made that is not characterised."
+      },
+      {
+        "id": "unknown-reality-model",
+        "definition": "A candidate account of what is the case, not established."
+      },
+      {
+        "id": "unknown-temporal-model",
+        "definition": "A candidate account of time, not established."
+      },
+      {
+        "id": "unknown-location-model",
+        "definition": "A candidate account of where, not established."
+      },
+      {
+        "id": "unknown-computation-model",
+        "definition": "A candidate account of computation, not established."
+      },
+      {
+        "id": "unknown-knowledge-form",
+        "definition": "A form knowledge could take that is not characterised."
+      },
+      {
+        "id": "unknown-economic-model",
+        "definition": "A candidate account of value and exchange, not established."
+      },
+      {
+        "id": "unknown-identity-model",
+        "definition": "A candidate account of identity, not established."
+      },
+      {
+        "id": "unknown-future-domain",
+        "definition": "A domain that does not yet exist as a domain."
+      },
+      {
+        "id": "unknown-unclassified",
+        "definition": "An unknown whose class is itself unknown. Declared explicitly so that a second-order unknown has a home, and NOT used as a fallback: the disposition engine escalates rather than classifying here silently."
+      }
+    ]
+  },
+  "contradiction_classes": {
+    "$openness": "Open by registration, on the same path as unknown_classes.",
+    "seed": [
+      {
+        "id": "logical",
+        "definition": "The two claims cannot both be true under the declared logic."
+      },
+      {
+        "id": "evidential",
+        "definition": "Two bodies of evidence support incompatible conclusions."
+      },
+      {
+        "id": "authority-conflict",
+        "definition": "Two authorities have decided the same question differently."
+      },
+      {
+        "id": "temporal",
+        "definition": "The claims are incompatible only under a shared temporal frame, and the frames differ."
+      },
+      {
+        "id": "framework",
+        "definition": "The claims are incompatible only when translated between frameworks, and the translation is itself contested."
+      },
+      {
+        "id": "measurement",
+        "definition": "Two measurements of the same quantity disagree beyond their declared uncertainty."
+      },
+      {
+        "id": "undetermined",
+        "definition": "A conflict is established but its class is not. Declared so that 'we know these conflict but not why' is recordable."
+      }
+    ],
+    "resolution_states": [
+      {
+        "id": "open",
+        "contradicting": true,
+        "definition": "Registered, unresolved, and lawful to leave unresolved."
+      },
+      {
+        "id": "under-research",
+        "contradicting": true,
+        "definition": "A research construct derives from this contradiction."
+      },
+      {
+        "id": "resolved-by-supersession",
+        "contradicting": false,
+        "definition": "One side was superseded by a declared authority. The superseded side is retained."
+      },
+      {
+        "id": "resolved-by-reframing",
+        "contradicting": false,
+        "definition": "The conflict dissolved under a newly declared framework or temporal frame."
+      },
+      {
+        "id": "resolved-by-evidence",
+        "contradicting": false,
+        "definition": "New evidence settled the question."
+      },
+      {
+        "id": "undecidable",
+        "contradicting": true,
+        "definition": "No decision procedure available to the present framework resolves it."
+      }
+    ],
+    "$contradicting": "'contradicting' is what makes a resolution state operational rather than descriptive: a contradiction in a contradicting state quarantines the constructs it names, and one in a non-contradicting state does not. Declaring the flag here is what keeps that decision out of engine/construct/registry.py, where it would have been an undeclared policy embedded in a membership test."
+  },
+  "research_states": [
+    {
+      "id": "open",
+      "definition": "The hypothesis is stated and no work has begun."
+    },
+    {
+      "id": "in-progress",
+      "definition": "Evidence is being gathered."
+    },
+    {
+      "id": "evidence-gathered",
+      "definition": "Evidence exists and has not yet been evaluated."
+    },
+    {
+      "id": "findings-recorded",
+      "definition": "Findings exist. They may support, refute or fail to settle the hypothesis."
+    },
+    {
+      "id": "refuted",
+      "definition": "The hypothesis was refuted. A refutation is a finding, not a failure, and the object is retained."
+    },
+    {
+      "id": "supported",
+      "definition": "The hypothesis is supported. Support is not certification; certification requires a reality state that permits it."
+    },
+    {
+      "id": "inconclusive",
+      "definition": "The evidence does not settle the hypothesis, and it is not undecidable either."
+    },
+    {
+      "id": "undecidable",
+      "definition": "No decision procedure available to the present framework settles the hypothesis."
+    },
+    {
+      "id": "superseded",
+      "definition": "A later research object supersedes this one. Retained for lineage."
+    }
+  ],
+  "discovery": {
+    "priority_scale": [
+      {
+        "id": "P0",
+        "rank": 0,
+        "definition": "Blocks a governed decision now."
+      },
+      {
+        "id": "P1",
+        "rank": 1,
+        "definition": "Blocks a governed decision within the current programme."
+      },
+      {
+        "id": "P2",
+        "rank": 2,
+        "definition": "Material, unscheduled."
+      },
+      {
+        "id": "P3",
+        "rank": 3,
+        "definition": "Recorded, unscheduled."
+      },
+      {
+        "id": "PU",
+        "rank": 4,
+        "definition": "Priority not established. Declared so that an unprioritised opportunity is visible rather than absent."
+      }
+    ],
+    "impact_scale": [
+      {
+        "id": "constitutional",
+        "rank": 0,
+        "definition": "Would change what the system may represent."
+      },
+      {
+        "id": "architectural",
+        "rank": 1,
+        "definition": "Would change how the system is built."
+      },
+      {
+        "id": "operational",
+        "rank": 2,
+        "definition": "Would change how the system runs."
+      },
+      {
+        "id": "local",
+        "rank": 3,
+        "definition": "Would change one capability."
+      },
+      {
+        "id": "unassessed",
+        "rank": 4,
+        "definition": "Impact not established."
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "UCON-DS-01",
+        "selector": "facet_is",
+        "facet": "unknown",
+        "priority": "P1",
+        "impact": "architectural",
+        "opportunity": "An unknown is registered and no research or discovery construct derives from it.",
+        "definition": "Every registered unknown is a discovery opportunity. This is the source that makes 'unknowns automatically become research objects' a mechanism rather than an instruction."
+      },
+      {
+        "source_id": "UCON-DS-02",
+        "selector": "facet_is",
+        "facet": "contradiction",
+        "priority": "P0",
+        "impact": "architectural",
+        "opportunity": "A contradiction stands and nothing derives from it.",
+        "definition": "A contradiction that nobody is investigating is the highest-value discovery in the system: two governed claims are known to conflict and the conflict is unattended."
+      },
+      {
+        "source_id": "UCON-DS-03",
+        "selector": "disposition_is",
+        "disposition": "ESCALATE",
+        "priority": "P0",
+        "impact": "constitutional",
+        "opportunity": "A construct reached the catch-all, so no declared rule decided it.",
+        "definition": "An escalation is evidence of a gap in the rule set itself, which is why its impact is constitutional: the question is not what to do with this construct but why the governance had nothing to say about it."
+      },
+      {
+        "source_id": "UCON-DS-04",
+        "selector": "disposition_is",
+        "disposition": "UNDECIDABLE",
+        "priority": "P2",
+        "impact": "constitutional",
+        "opportunity": "A construct is undecidable under the present framework.",
+        "definition": "Recorded as a discovery rather than closed, because a future framework may decide what this one cannot. P2 rather than P0: undecidability is a known limit, not a surprise."
+      },
+      {
+        "source_id": "UCON-DS-05",
+        "selector": "unresolved_dependency",
+        "priority": "P2",
+        "impact": "operational",
+        "opportunity": "A construct names a dependency no registered construct satisfies.",
+        "definition": "The dependency may be future, may be misnamed, or may belong to an owner who has not presented it. All three are discoveries; none is a defect that should be silently tolerated."
+      },
+      {
+        "source_id": "UCON-DS-06",
+        "selector": "has_facet_violation",
+        "priority": "P3",
+        "impact": "local",
+        "opportunity": "A construct was presented without the fields its facet requires.",
+        "definition": "Recorded rather than refused at presentation, so the attempt remains visible. The discovery is what the presenter was unable to supply."
+      }
+    ],
+    "$selectors": {
+      "implemented_in": "engine/construct/views.py::SELECTORS",
+      "claimed": [
+        "disposition_is",
+        "facet_is",
+        "has_facet_violation",
+        "unresolved_dependency"
+      ],
+      "$two_way_binding": "Refused in both directions at load by Declaration.validate, on the same terms as the disposition operators: a source naming an unimplemented selector is manual discovery, and an implemented selector no source claims is a discovery path nothing walks."
+    },
+    "derived_key_prefixes": {
+      "research": "research-of",
+      "discovery": "discovery-of"
+    },
+    "$derived_key_prefixes": "Derived natural keys are declared so that idempotence is a property of the declaration rather than of a string literal in the engine. Promotion and discovery both mint a natural key from the subject's identity, so the identifier is a function of what the object is ABOUT — which is what makes running discovery twice mint nothing the second time (law UCON-L-07)."
+  },
+  "disposition_rules": {
+    "$totality": "Ordered, first-match-wins, and the LAST rule must be the catch-all. Law UCON-L-02 refuses a rule set whose last member is not marked catch_all, refuses a catch_all anywhere but last, and refuses more than one. This is what makes disposition a TOTAL function rather than a lookup that can miss.",
+    "$catch_all_is_escalate": "The catch-all disposition is ESCALATE, and law UCON-L-03 refuses any other. A catch-all of REJECT would silently discard exactly the constructs the rule set failed to anticipate, which is the failure mode this whole artifact exists to prevent.",
+    "rules": [
+      {
+        "rule_id": "UCON-DR-01",
+        "disposition": "ESCALATE",
+        "when": [
+          {
+            "operator": "escalation_requested"
+          }
+        ],
+        "rationale": "The presenter asked for an authority. Honouring that is cheaper than discovering later that a rule decided something a human meant to decide.",
+        "catch_all": false
+      },
+      {
+        "rule_id": "UCON-DR-02",
+        "disposition": "UNDECIDABLE",
+        "when": [
+          {
+            "operator": "declared_undecidable"
+          }
+        ],
+        "rationale": "A presenter or verifier states that no decision procedure available to the present framework applies. Recording that is more useful than forcing a verdict the framework cannot support.",
+        "catch_all": false
+      },
+      {
+        "rule_id": "UCON-DR-03",
+        "disposition": "QUARANTINE",
+        "when": [
+          {
+            "operator": "has_contradiction"
+          }
+        ],
+        "rationale": "A registered contradiction names this construct. It is retained and readable and may not be depended on, derived from, certified, published or executed until the contradiction is dispositioned. Discarding it would destroy the evidence that the contradiction exists.",
+        "catch_all": false
+      },
+      {
+        "rule_id": "UCON-DR-04",
+        "disposition": "TRANSFORM",
+        "when": [
+          {
+            "operator": "kind_unregistered"
+          }
+        ],
+        "rationale": "The classifying kind is not registered. The transformation is one governed registration, never a schema change — which is precisely why an unregistered kind is TRANSFORM and not REJECT.",
+        "catch_all": false
+      },
+      {
+        "rule_id": "UCON-DR-05",
+        "disposition": "RESEARCH",
+        "when": [
+          {
+            "operator": "kind_in",
+            "kinds": [
+              "unknown",
+              "question"
+            ]
+          }
+        ],
+        "rationale": "An unknown is productive, not defective. Every unknown-kinded construct becomes the subject of a research construct.",
+        "catch_all": false
+      },
+      {
+        "rule_id": "UCON-DR-06",
+        "disposition": "RESEARCH",
+        "when": [
+          {
+            "operator": "research_state_in",
+            "states": [
+              "open",
+              "in-progress",
+              "evidence-gathered"
+            ]
+          }
+        ],
+        "rationale": "A research object whose work is unfinished stays in research. Promoting it on the strength of a partial evidence set is how an unfinished investigation becomes a claim.",
+        "catch_all": false
+      },
+      {
+        "rule_id": "UCON-DR-07",
+        "disposition": "DEFER",
+        "when": [
+          {
+            "operator": "has_unresolved_dependency"
+          }
+        ],
+        "rationale": "A named prerequisite is absent from the registry. Deferral records what is being waited for.",
+        "catch_all": false
+      },
+      {
+        "rule_id": "UCON-DR-08",
+        "disposition": "QUARANTINE",
+        "when": [
+          {
+            "operator": "attribute_equals",
+            "field": "provenance",
+            "value": "unattributed"
+          }
+        ],
+        "rationale": "A construct whose origin cannot be attributed is retained and readable but may not be depended on. Rejecting it would lose the record that an unattributable construct was presented.",
+        "catch_all": false
+      },
+      {
+        "rule_id": "UCON-DR-09",
+        "disposition": "RESEARCH",
+        "when": [
+          {
+            "operator": "reality_status_in",
+            "states": [
+              "UNKNOWN",
+              "HYPOTHETICAL"
+            ]
+          },
+          {
+            "operator": "evidence_count_below",
+            "count": 1
+          }
+        ],
+        "rationale": "Nothing is established and no evidence is offered. That is a research subject, not a verdict.",
+        "catch_all": false
+      },
+      {
+        "rule_id": "UCON-DR-10",
+        "disposition": "ADMIT",
+        "when": [
+          {
+            "operator": "evidence_present"
+          }
+        ],
+        "rationale": "Evidence is offered and no prior rule objected. Admission is governed representation and nothing more: what the construct may then DO is decided by the conjunction of this disposition and its reality state.",
+        "catch_all": false
+      },
+      {
+        "rule_id": "UCON-DR-11",
+        "disposition": "ESCALATE",
+        "when": [
+          {
+            "operator": "always"
+          }
+        ],
+        "rationale": "No declared rule decided this construct. That is a gap in the rule set, and the honest disposition is that an authority must decide. This rule is why no presented construct can be silently ignored.",
+        "catch_all": true
+      }
+    ],
+    "$operators": {
+      "implemented_in": "engine/construct/disposition.py::OPERATORS",
+      "claimed": [
+        "always",
+        "attribute_equals",
+        "declared_undecidable",
+        "escalation_requested",
+        "evidence_count_below",
+        "evidence_present",
+        "has_contradiction",
+        "has_unresolved_dependency",
+        "kind_in",
+        "kind_unregistered",
+        "reality_status_in",
+        "research_state_in"
+      ],
+      "$two_way_binding": "Law UCON-L-04 refuses in both directions: a rule naming an operator OPERATORS does not implement is manual governance, and an operator OPERATORS implements that no rule claims is dead code wearing an engine's costume. Both are hard failures, so the claimed list above cannot drift from either the rules or the source."
+    },
+    "catch_all_disposition": "ESCALATE",
+    "$catch_all_disposition": "The disposition the catch-all rule must assign. Declared so that law UCON-L-03 measures the rule against a stated expectation rather than against a literal in its own source: editing UCON-DR-11 to REJECT then fails the law instead of silently changing what happens to every construct the rule set failed to anticipate. The law also measures a structural half that no declaration can fake — the catch-all disposition must be non-terminal and must reach every other declared disposition in one step, so falling through forecloses nothing."
+  },
+  "extension_points": {
+    "$principle": "Every self-extension in this capability travels the SAME path — register a construct — so there is one extension mechanism to verify rather than nine. Each point below names the owner it extends, the construct kind that carries the extension, and the law that exercises the admission in memory on every run.",
+    "points": [
+      {
+        "point_id": "UCON-EP-01",
+        "subject": "construct kind",
+        "kind": "construct-kind",
+        "owner": "UCON-000001 (bound to UMK-000001's open-by-registration invariant)",
+        "admission": "register_kind",
+        "exercised_by": "UCON-L-08"
+      },
+      {
+        "point_id": "UCON-EP-02",
+        "subject": "disposition",
+        "kind": "disposition",
+        "owner": "UCON-000001",
+        "admission": "register_disposition",
+        "exercised_by": "UCON-L-09"
+      },
+      {
+        "point_id": "UCON-EP-03",
+        "subject": "reality state",
+        "kind": "reality-state",
+        "owner": "UCON-000001 (bound to UCOS-CEU-001 vocabularies)",
+        "admission": "register_reality_state",
+        "exercised_by": "UCON-L-09"
+      },
+      {
+        "point_id": "UCON-EP-04",
+        "subject": "ontology",
+        "kind": "ontology",
+        "owner": "01-WORKING/ONTOLOGY-REGISTER.md via UCPA-000001",
+        "admission": "register_extension",
+        "exercised_by": "UCON-L-09"
+      },
+      {
+        "point_id": "UCON-EP-05",
+        "subject": "governance rule",
+        "kind": "governance-rule",
+        "owner": "engine/governance (UCOS-CEL-0001 for execution law)",
+        "admission": "register_extension",
+        "exercised_by": "UCON-L-09"
+      },
+      {
+        "point_id": "UCON-EP-06",
+        "subject": "verifier",
+        "kind": "verifier",
+        "owner": "UVI-000001",
+        "admission": "register_verifier",
+        "exercised_by": "UCON-L-12"
+      },
+      {
+        "point_id": "UCON-EP-07",
+        "subject": "location axis",
+        "kind": "location-axis",
+        "owner": "UCXI-000001 (engine/context/location.py::AXIS_DERIVATION)",
+        "admission": "register_extension",
+        "exercised_by": "UCON-L-09"
+      },
+      {
+        "point_id": "UCON-EP-08",
+        "subject": "temporal system",
+        "kind": "temporal-system",
+        "owner": "CMG-000002 (engine/temporal)",
+        "admission": "register_extension",
+        "exercised_by": "UCON-L-09"
+      },
+      {
+        "point_id": "UCON-EP-09",
+        "subject": "identity namespace",
+        "kind": "identity-namespace",
+        "owner": "UCKP-ART-05 (00-MASTER/UOBC-000001/uobc-birth-contract.json::namespace_policy)",
+        "admission": "register_extension",
+        "exercised_by": "UCON-L-09"
+      }
+    ],
+    "probe_key_prefix": "UCON-PROBE",
+    "$probe_key_prefix": "Every extension exercised in memory by law UCON-L-09 carries this prefix on its natural key, so a probe can never be mistaken for a governed registration and a probe that leaked into a persisted record is identifiable by inspection. The prefix is declared rather than written into engine/construct/extension.py so that the collision-safety property is a property of the declaration.",
+    "$admissions": {
+      "implemented_in": "engine/construct/extension.py::ADMISSIONS",
+      "claimed": [
+        "register_disposition",
+        "register_extension",
+        "register_kind",
+        "register_reality_state",
+        "register_verifier"
+      ],
+      "$two_way_binding": "Refused in both directions at load, on the same terms as the operators and selectors: a point naming an unimplemented admission is an extension path that cannot be walked, and an implemented admission no point claims is an extension path nothing exercises."
+    }
+  },
+  "audit": {
+    "$standing": "MEASURE FIRST. This section configures an inventory, not a migration. Nothing in engine/construct/audit.py edits, rewrites or migrates any closure mechanism it finds; it reads, counts, classifies and reports. The ratchet below is what keeps the inventory honest between runs.",
+    "roots": [
+      "engine",
+      "platform",
+      "intelligence",
+      "knowledge",
+      "realization",
+      "service",
+      "application",
+      "infrastructure"
+    ],
+    "extensions": [
+      ".py"
+    ],
+    "exclude_dir_names": [
+      "tests",
+      "__pycache__",
+      "catalog"
+    ],
+    "exclude_dir_prefixes": [
+      ".",
+      "__"
+    ],
+    "closure_forms": [
+      {
+        "form": "ENUM_CLASS",
+        "detection": "a ClassDef whose bases include Enum, IntEnum, StrEnum, Flag or IntFlag",
+        "limitation": "A member set fixed in source. A future member is a code edit, a release and a migration of every persisted value.",
+        "migration": "Move the member set to a declaration and derive membership from a registry, keeping the enum only where the vocabulary is a closed internal state machine the code branches on exhaustively."
+      },
+      {
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "detection": "a module-level UPPER_SNAKE assignment whose value is a frozenset(...) call or a set literal",
+        "limitation": "A membership test against a fixed population. Extension requires a source edit.",
+        "migration": "Read the population from the owner's declaration; keep the constant as a cache of what was read."
+      },
+      {
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "detection": "a module-level UPPER_SNAKE assignment whose value is a tuple of constants or of constant tuples",
+        "limitation": "An ordered fixed vocabulary, frequently a seed table. Benign when the runtime does not consult it after seeding; a closure when it is the authority.",
+        "migration": "Establish whether the runtime consults it after seeding. If it does, move it to a declaration; if it does not, disclose it as a seed."
+      },
+      {
+        "form": "FIXED_DISPATCH_TABLE",
+        "detection": "a module-level UPPER_SNAKE assignment whose value is a dict literal",
+        "limitation": "A fixed dispatch table. The set of behaviours the module can perform is decided in source, so a new behaviour is a code change.",
+        "migration": "Where the table maps a declared name to an implementation, bind it two-way to the declaration so neither side can drift; where it maps data to data, move it to a declaration."
+      },
+      {
+        "form": "POPULATION_ASSERTION",
+        "detection": "a comparison of the form len(X) == N, or a name containing 'count' compared to an integer literal",
+        "limitation": "An assertion that a population has exactly N members. A new member breaks it, which is the good case; the bad case is when it silently pins a vocabulary.",
+        "migration": "Assert a floor or a declared expectation rather than an exact count, or derive N from the declaration."
+      }
+    ],
+    "risk_tiers": [
+      {
+        "tier": "R1-CONSTITUTIONAL",
+        "definition": "The closure decides what the system may represent. A new member cannot be added without a constitutional amendment.",
+        "criterion": "the module is named by a declared constitutional owner"
+      },
+      {
+        "tier": "R2-ARCHITECTURAL",
+        "definition": "The closure decides how a capability is built. A new member requires a code change plus a migration.",
+        "criterion": "the closure is consulted by more than one package"
+      },
+      {
+        "tier": "R3-LOCAL",
+        "definition": "The closure is internal to one module and a new member is a local edit.",
+        "criterion": "the closure is consulted only within its own module"
+      },
+      {
+        "tier": "R4-DELIBERATE",
+        "definition": "The closure is intentional and disclosed, with a named closing invariant and an amendment path.",
+        "criterion": "the closure appears in disclosed_closures with intentional true"
+      }
+    ],
+    "$risk_assignment": "Risk is DECLARED per module prefix below, never inferred from a keyword. An inferred tier would manufacture the classification the audit is supposed to measure. A module prefix this list does not name yields tier R3-LOCAL and is counted in the backlog, which is the conservative answer rather than a flattering one.",
+    "declared_tiers": [
+      {
+        "prefix": "engine/kernel/",
+        "tier": "R1-CONSTITUTIONAL",
+        "owner": "UMK-000001"
+      },
+      {
+        "prefix": "engine/root_ontology/",
+        "tier": "R1-CONSTITUTIONAL",
+        "owner": "UCPA-000001"
+      },
+      {
+        "prefix": "engine/uckp/",
+        "tier": "R1-CONSTITUTIONAL",
+        "owner": "UCKP-LAW-0001"
+      },
+      {
+        "prefix": "engine/ceu/",
+        "tier": "R1-CONSTITUTIONAL",
+        "owner": "UCOS-CEU-001"
+      },
+      {
+        "prefix": "engine/construct/",
+        "tier": "R1-CONSTITUTIONAL",
+        "owner": "UCON-000001"
+      },
+      {
+        "prefix": "engine/context/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "UCXI-000001"
+      },
+      {
+        "prefix": "engine/temporal/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "CMG-000002"
+      },
+      {
+        "prefix": "engine/knowledge/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "EPIC-UKDA"
+      },
+      {
+        "prefix": "engine/registry/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "UCOS-EPIC-001"
+      },
+      {
+        "prefix": "engine/governance/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "ENGINEERING-EXECUTION-ONLY"
+      },
+      {
+        "prefix": "engine/constitution/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "UCOS-CEL-0001"
+      },
+      {
+        "prefix": "engine/uaue/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "UAUE-000001"
+      },
+      {
+        "prefix": "engine/verification_intelligence/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "UVI-000001"
+      },
+      {
+        "prefix": "engine/universal_certification/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "UCOS-UCE-001"
+      },
+      {
+        "prefix": "platform/foundation/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "EC-2 platform foundation"
+      },
+      {
+        "prefix": "platform/identity/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "EC-2 identity programme"
+      },
+      {
+        "prefix": "platform/security/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "EC-2 security programme"
+      },
+      {
+        "prefix": "engine/recursive_knowledge/",
+        "tier": "R2-ARCHITECTURAL",
+        "owner": "URKE-000001"
+      }
+    ],
+    "governed_scope": [
+      "engine/certification_integrity/",
+      "engine/construct/",
+      "engine/enforcement_closure/",
+      "engine/ledger_authority/",
+      "engine/omega_governance/",
+      "engine/omega_infinite/",
+      "engine/recursive_knowledge/",
+      "engine/universal_discovery/"
+    ],
+    "undeclared_tier": "R3-LOCAL",
+    "deliberate_tier": "R4-DELIBERATE",
+    "$deliberate_tier": "The tier a DISCLOSED, intentional closure takes, whatever its module prefix says. Declared because the R4 criterion is a property of the disclosure rather than of the module, and because assigning disclosed closures their prefix tier instead would leave R4 permanently empty — a declared tier nothing can ever occupy is a closure in the risk model itself.",
+    "$undeclared_tier": "The tier a module takes when no declared prefix claims it. Declared here rather than defaulted in engine/construct/audit.py because 'what do we assume about code nobody has classified' is an assumption, and an unnamed assumption in a risk classifier is how a constitutional closure comes to be counted as a local one. R3-LOCAL is the conservative choice for a RATCHET — it keeps the closure counted in the backlog without asserting an owner the declaration does not name.",
+    "$governed_scope": "The scope in which an undisclosed closure is a VIOLATION rather than a backlog entry. It began as exactly this capability, because a capability that ratchets everybody else's code before its own has inverted the obligation. Widening this list is how the audit converts backlog into enforcement, one owner at a time, and each widening is a decision with a named owner rather than a sweep. FIRST WIDENING: engine/recursive_knowledge/ (owner URKE-000001), admitted after UCON-000001 had already ratcheted its own eight closures, so the obligation is discharged before it is extended. The widening was not a convenience: URKE-000001 authored four closures outside governed scope, which the ratchet correctly refused as a population increase over the declared baseline. Enforcing disclosure on them is the honest remedy; raising the baseline to accommodate them would have been the dishonest one, and this declaration forbids it. UCI-000001 joined at d9296d32: engine/certification_integrity/ carries twelve closures, all disclosed below. Widening governed_scope rather than raising the baseline is the sanctioned path recorded in engine/construct/audit.py:31 — outside the scope a population may hold or fall and never rise, so a new capability that adds closures must bring them inside and disclose them. UCI-000001 joined at d9296d32: engine/certification_integrity/ carries twelve closures, all disclosed below. Widening governed_scope rather than raising the baseline is the sanctioned path recorded in engine/construct/audit.py:31 -- outside the scope a population may hold or fall and never rise, so a new capability that adds closures must bring them inside and disclose them. UCOS-OMEGA-001 joined during the recovery integration: engine/universal_discovery/, engine/omega_governance/ and engine/omega_infinite/ carry sixteen closures between them (UCON-CL-33..48), every one disclosed here. The ratchet had correctly refused them as a population increase over the declared baseline and the baseline was NOT touched, because this declaration forbids that remedy. The packages were measured before admission: all reachable, all MEASURED under Omega-5, and carrying no closures beyond these sixteen, so the widening admits exactly the obligation it discharges and brings no backlog with it. UCOS-LEDGER-AUTHORITY-001 joined in the same integration, and its admission is the clearest case this list has recorded: the module did not gain three closures, it gained a MEASUREMENT. It was 00-BOOK/tools/ledger_authority.py, outside every audit root, so IDENTITY_MAPS, MONOTONIC_COUNTERS and NON_ALLOCATION_KEYS had always existed and had never been counted. Relocating it into engine/ so a coverage source could name it (UCI-L-01) also brought its closures into view, and the ratchet correctly refused them -- FIXED_DISPATCH_TABLE 446->447, FIXED_VOCABULARY_TUPLE 477->478, FROZEN_MEMBERSHIP_SET 239->240. Raising the baseline to absorb newly VISIBLE debt would convert an improvement in measurement into a permanent allowance, which is precisely the dishonest remedy this declaration forbids. All three are disclosed as UCON-CL-49..51.",
+    "disclosed_closures": [
+      {
+        "closure_id": "UCON-CL-01",
+        "module": "engine/construct/disposition.py",
+        "symbol": "OPERATORS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The predicate primitives a declared rule may use. Closed in source and TWO-WAY BOUND to disposition_rules by law UCON-L-04: a rule naming an absent operator and an operator no rule claims are both hard failures, so neither side can drift from the other.",
+        "admission": "Implement the predicate here and declare a rule that uses it. Both halves are required, which is the intended cost: an operator is executable governance and must not be addable by data alone.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-02",
+        "module": "engine/construct/views.py",
+        "symbol": "SELECTORS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The selectors a declared discovery source may use. Two-way bound to discovery.sources at load, on the same terms as OPERATORS.",
+        "admission": "Implement the selector here and declare a discovery source that claims it.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-03",
+        "module": "engine/construct/extension.py",
+        "symbol": "ADMISSIONS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The admission paths an extension point may name. Two-way bound to extension_points.points at load; every entry is exercised in memory on every run by law UCON-L-09.",
+        "admission": "Implement the admission here and declare an extension point that names it.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-04",
+        "module": "engine/construct/audit.py",
+        "symbol": "DETECTORS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The closure forms this audit can detect. Two-way bound to audit.closure_forms at load. Deliberately self-referential: this very table is one of the closures the audit reports, which is what makes the audit subject to its own measurement.",
+        "admission": "Implement the detector here and declare the closure form, its limitation and its migration path.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-05",
+        "module": "engine/construct/contract.py",
+        "symbol": "LAW_CHECKS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The implemented law checks. Two-way bound to laws by Declaration.validate: a law naming an unimplemented check is manual governance, and a check no law claims is dead code that looks like enforcement.",
+        "admission": "Implement the check here and declare the law that claims it.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-06",
+        "module": "engine/construct/audit.py",
+        "symbol": "_ENUM_BASES",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "intentional": true,
+        "closing_invariant": "The Python base names that make a class a closed enumeration. Closed because the Python language closes it: this is a fact about the standard library's enum module, not a UCOS vocabulary.",
+        "admission": "The standard library introduces a new enumeration base, after which it is added here. There is no governed decision to make.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-07",
+        "module": "engine/construct/audit.py",
+        "symbol": "len(node.targets)",
+        "form": "POPULATION_ASSERTION",
+        "intentional": true,
+        "closing_invariant": "A structural arity check on a Python AST assignment node, not a population pin. The audit measures single-target module-level assignments; this comparison is how it recognises one, and it asserts nothing about how many targets Python permits.",
+        "admission": "None is needed, and that is the disclosure. This is a declared FALSE POSITIVE of the POPULATION_ASSERTION detector, retained rather than suppressed: narrowing the detector so that it stopped matching here would also stop it matching the real population pins it exists to find, and rewriting the comparison to evade its own detector would be the audit gaming itself. The honest form is to detect it, disclose it, and say why it is not a finding.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-08",
+        "module": "engine/construct/evidence.py",
+        "symbol": "_PRODUCED",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The evidence records this module actually writes, mapped to the payload key each occupies. Closed in source and two-way bound to evidence.records by evidence.assert_complete: a declared record nothing produces and a produced record the declaration does not name are both refused. Closed deliberately, because a writer that could be told to write an arbitrary record by data alone would be a writer whose output set nobody governs.",
+        "admission": "Implement the write here and declare the record in evidence.records. Both halves are required.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-09",
+        "module": "engine/recursive_knowledge/contract.py",
+        "symbol": "LAW_CHECKS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The thirty-two implemented URKE law checks, mapped to the check that measures each declared law. Closed in source and two-way bound to URKE-000001's declared laws: contract.available_checks() publishes the implemented set and the declaration is validated against it, so a law naming an unimplemented check is manual governance wearing a law's name, and a check no law claims is dead code that looks like enforcement. Both directions are refused at load, so neither side can drift.",
+        "admission": "Implement the check here and declare the law in urke-declaration.json that claims it. Both halves are required, which is the intended cost: a law check is executable governance and must not be addable by data alone.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-10",
+        "module": "engine/recursive_knowledge/contract.py",
+        "symbol": "PARITY_MEASURES",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The measures a declared URKE parity layer may name. Closed in source and two-way bound to the declared parity layers on the same terms as UCON-CL-09: contract.available_parity_measures() publishes the implemented set, and a parity layer naming an unimplemented measure is refused at load.",
+        "admission": "Implement the measure here and declare a parity layer that claims it.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-11",
+        "module": "engine/recursive_knowledge/contract.py",
+        "symbol": "_OPENNESS",
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "intentional": true,
+        "closing_invariant": "The admission names URKE-L-09 exercises when it proves that admitting members nobody declared moves no byte of the package. FORWARD-BOUND ONLY: every member must be an exercisable admission, and admission.exercise refuses a name it does not implement, so the tuple cannot name a fiction. It is a probe vocabulary rather than an authority — no runtime behaviour is dispatched through it, and deleting a member weakens a law's coverage without changing what the capability can represent.",
+        "admission": "Implement the admission in engine/recursive_knowledge/admission.py and add its name here so URKE-L-09 exercises it.",
+        "gap": "The reverse binding does not hold. admission.available_admissions() publishes fourteen admissions and _OPENNESS names thirteen: 'admit_architecture_proposal' is implemented and exercisable but is not exercised by URKE-L-09, so the openness law under-covers its own subject by one member and nothing refuses that. Measured during UCON-000001 closure attribution, not asserted from prose. Remediation: bind _OPENNESS two-way to admission.available_admissions() so an implemented admission that no openness probe exercises is refused at load, in the same manner as UCON-CL-09 and UCON-CL-10. Owner URKE-000001. Disclosed here rather than silently corrected, because editing another owner's source to make this audit's disclosure look complete would be the audit gaming itself."
+      },
+      {
+        "closure_id": "UCON-CL-12",
+        "module": "engine/recursive_knowledge/evidence.py",
+        "symbol": "_PRODUCED",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The evidence records URKE-000001 actually writes, mapped to the payload key each occupies. Closed in source and two-way bound to the declaration's evidence_records by evidence.assert_complete: a declared record nothing produces and a produced record the declaration does not name are both refused. The same closure, on the same grounds, as UCON-CL-08 in this capability — a writer whose output set could be extended by data alone would be a writer whose output set nobody governs.",
+        "admission": "Implement the write here and declare the record in URKE-000001's evidence_records. Both halves are required.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-13",
+        "module": "engine/enforcement_closure/discovery.py",
+        "symbol": "STRATEGIES",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The locator strategies a declared discovery rule may name. Closed in source and refused rather than skipped: `discover()` raises EnforcementError on an unknown strategy, so a declaration cannot disable a rule by misspelling it. Skipping silently would be omission dressed as configuration, which is the defect class UEC-000001 exists to close — so this closure is load-bearing rather than incidental.",
+        "admission": "Implement the locator here and name it in a declared discovery rule's `strategy`. Both halves are required: a strategy is executable governance and must not be addable by data alone.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-14",
+        "module": "engine/enforcement_closure/contract.py",
+        "symbol": "LAW_CHECKS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The twelve computable UEC laws, mapped from the check name each declared law names. Closed in source and TWO-WAY BOUND by `_require_two_way_law_binding`: a law naming an absent check and a check no law declares are both faults. The same closure on the same grounds as UCON-CL-05 in this capability; one-way binding is the BC-1 shape, where the register declared R-01..R-09, the predicates implemented R-01..R-08, and classify() returned ERROR for every subject.",
+        "admission": "Implement the check here and declare a law that names it. Both halves are required.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-15",
+        "module": "engine/enforcement_closure/contract.py",
+        "symbol": "RATCHETED",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The measurements carrying a two-sided ceiling, mapped to the law that reports each. Closed in source because a ratcheted measurement whose ceiling could be introduced by data alone would let a new debt class arrive already capped. Bound in both directions: `_ratcheted` refuses a measurement with no declared ceiling, and UEC-L-11 refuses a ceiling above the measurement, so neither the code nor the declaration can carry a ratchet the other does not.",
+        "admission": "Implement the measurement here, register it with its law id, and declare its ceiling in UEC-000001's `ratchet`. All three are required.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-16",
+        "module": "engine/enforcement_closure/declaration.py",
+        "symbol": "DIGEST_EXCLUSIONS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The fields excluded from UEC's certification identity, each mapped to the reason it cannot change a verdict. Closed in source DELIBERATELY, and it is the inverse of the usual closure argument: inclusion in the identity is the default, so this table is the complete enumeration of exemptions rather than of admissions. `_check_digest_exclusions` refuses an exclusion naming a field the declaration does not carry, so the list cannot silently widen when a field is renamed. Measured against the defect it answers: `engine/construct/declaration.py:digest_payload` includes a chosen projection with its exclusions undocumented, and flipping `blocking` on UCON-L-01 leaves declaration_digest byte-identical while contract.py:1018 makes the verdict depend on it.",
+        "admission": "Add the field name here together with a stated reason it cannot alter any verdict, and prove it in test_enforcement_closure.py — a mutation of the field must NOT move the digest. Excluding a field that can change a verdict is refused by the mutation suite.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-17",
+        "module": "engine/enforcement_closure/contract.py",
+        "symbol": "DIGEST_MARKERS",
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "intentional": true,
+        "closing_invariant": "The three source spellings that constitute a certification identity — `content_hash` (Layer Zero), a bare `sha256`, and a local `digest`/`seal` helper. Closed DELIBERATELY: this repository mints digests three ways, and a detector recognising only one of them would report a false absence for two thirds of the surface, which is worse than no measurement because it would name innocent packages.",
+        "admission": "Add the spelling here. No declaration change is required — this is a heuristic over source text rather than a governed vocabulary, which is why the closure is disclosed WITH a standing gap rather than presented as complete.",
+        "gap": "UEC-L-08 measures only the NECESSARY condition — that a certification identity exists somewhere in the consuming package. It does NOT measure the SUFFICIENT condition, that every semantic edit moves it. A fourth digest spelling would be missed until added here, and a package that mints a digest it never applies to its declaration would pass. `engine/construct` passes UEC-L-08 and still carries the defect proven by execution: flipping `blocking` on UCON-L-01 leaves declaration_digest at 192c63af… byte-identical while contract.py:1018 makes the verdict depend on it. The sufficient condition is measured by mutation for UEC's own declaration only (test_enforcement_closure.py::test_every_semantic_mutation_moves_the_certification_identity) and for none of the other eighteen. Recorded as an open gap rather than closed by a green tick."
+      },
+      {
+        "closure_id": "UCON-CL-18",
+        "module": "engine/construct/declaration.py",
+        "symbol": "DIGEST_EXCLUSIONS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The parsed fields deliberately outside this declaration's certification identity. Closed in source BY DESIGN and in the safe direction: the digest INCLUDES every field of `Declaration` by default (derived from `dataclasses.fields`), so this table can only ever REMOVE coverage, never add it, and each entry must state why the field cannot reach a verdict. Two-way bound by `test_construct_foundation.py`, which fails on an undeclared omission in one direction and on an exclusion naming a field this declaration no longer has in the other. This table exists because the OPPOSITE convention — a hand-listed inclusion projection — is the measured defect it replaced: eleven keys were listed, ten collapsed to bare identifiers, and flipping `blocking` on UCON-L-01 left the digest byte-identical at 192c63af while the verdict depended on it.",
+        "admission": "Add the field name here WITH the reason it cannot alter a verdict, and the suite will hold you to it in both directions. Deliberately expensive: an entry here removes a value from the identity that certifies this programme, so it is a governance act rather than a data edit.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-19",
+        "module": "engine/recursive_knowledge/declaration.py",
+        "symbol": "DIGEST_EXCLUSIONS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The same construct as UCON's, over URKE's declaration, and closed on the same terms: inclusion is the default over all 115 parsed fields and this table only subtracts. It replaced a thirteen-key inclusion projection under which flipping `blocking` on URKE-L-01 left the digest byte-identical at af30af45 while `contract.py` chose OPEN or CLOSED from that flag, and under which 101 of 115 parsed fields were outside the identity entirely.",
+        "admission": "Add the field name here with the reason it cannot alter a verdict. `test_recursive_knowledge.py` refuses a stale exclusion, so the disclosure cannot outlive the field it describes.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-20",
+        "module": "engine/enforcement_closure/contract.py",
+        "symbol": "IDENTITY_MUTATIONS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The generic semantic mutations UEC-L-13 applies to every governed declaration exposing the uniform identity interface. Closed in source on purpose: a mutation set that could be EXTENDED BY DATA would let the subject of a measurement choose the measurement, which is the certification bypass this law exists to refuse. Each entry targets a value a programme's own contract reads to reach a verdict — a law's blocking flag, its statement, its bound check, the declared authority, the declared version — so a surviving mutant is a demonstrated bypass rather than a theoretical one. Non-vacuity is held by the ratchet `declarations_with_uniform_identity`, which fails in BOTH directions.",
+        "admission": "Add the mutation here, in code, alongside a test that proves it kills on a forged incomplete identity. Adding one is intended to be a source change reviewed as governance: the set is the definition of 'semantic', and widening it silently by data would make the law mean whatever the last edit said it meant.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-21",
+        "module": "engine/certification_integrity/classify.py",
+        "symbol": "RULES",
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "intentional": true,
+        "closing_invariant": "The ordered uncovered-line classification rules. Closed and ORDER-BEARING — first match wins, so a typing-only line is classified impossible before it is classified defensive. The closure IS the safety property: CLASS_EXECUTABLE is the default, so a line can only leave the class that costs work by matching a rule stated here and checkable by a reader.",
+        "admission": "Add a rule carrying its class, id, description and pattern. Widening this set retires coverage debt without writing tests, which is exactly why it is source-closed and reviewed rather than data-driven.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-22",
+        "module": "engine/certification_integrity/contract.py",
+        "symbol": "RATCHETED",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "measurement key -> (law id, callable). Closed and TWO-WAY BOUND to uci-declaration.json: contract.measure refuses a declared ceiling that binds no measurement (UCI-L-07), and _ratcheted refuses a measurement with no declared ceiling. Neither side can drift from the other.",
+        "admission": "Implement the measurement so that it returns offending identities, register it here with its law id, and declare its ceiling in the declaration. All three are required — the gate refuses any two of the three.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-23",
+        "module": "engine/certification_integrity/contract.py",
+        "symbol": "LAWS",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "law id -> Law. Closed because a law is executable governance: test_every_law_in_the_table_is_declared refuses a law measured here but absent from the declaration, and the workflow's declaration-soundness job refuses any law declared blocking:false.",
+        "admission": "Add the Law here and declare it in the declaration's laws array with blocking true. There is no field to make a law non-blocking, because the switch would be reachable by the mutation the law detects.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-24",
+        "module": "engine/certification_integrity/coverage_data.py",
+        "symbol": "len(unique)",
+        "form": "POPULATION_ASSERTION",
+        "intentional": true,
+        "closing_invariant": "A population assertion inside coverage_data._relative: how many source roots a bare coverage filename resolves under. Closed at 'exactly one' because one is the only case in which the coverage document determines file identity at all. More than one is the measured `coverage xml` defect and resolves to a marked ambiguous key rather than to a guess.",
+        "admission": "Not widenable, and the assertion IS the finding rather than a guard against one: CoverageReport.body_is_incomplete records 57,938 statements absent from a document whose header still claims them.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-25",
+        "module": "engine/certification_integrity/coverage_data.py",
+        "symbol": "len(preferred)",
+        "form": "POPULATION_ASSERTION",
+        "intentional": true,
+        "closing_invariant": "The companion population assertion for the package-hint disambiguation path, with the same standing as the one above: exactly one candidate, or the name is treated as unresolved.",
+        "admission": "Not widenable. Guessing between candidates is what produced a false shard-equivalence finding — 19 files reported present in one run and absent in the other with every line set identical.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-26",
+        "module": "engine/certification_integrity/immutable.py",
+        "symbol": "SEAL_ENV",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The pinned git identity and both timestamps for the frozen extraction's sealing commit. Closed BECAUSE IT MUST BE: every field is fixed so the sealing commit's SHA is a pure function of the archived bytes, verified deterministic across two independent extractions (b2c9f886d56b462b71133c18193a149f1a39a9cd both times). An open set here would make the seal a clock reading rather than a content address.",
+        "admission": "It must not be widened. Any additional or varying field breaks content-addressing, which is the single property that makes a frozen certification run citable.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-27",
+        "module": "engine/certification_integrity/inventory.py",
+        "symbol": "CLASSIFICATION_RULES",
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "intentional": true,
+        "closing_invariant": "The ordered file-classification rules. Closed and ORDER-BEARING for the same reason as classify.RULES: classification decides whether a file's absence from the coverage denominator is a defect or a governed exclusion, so reclassifying is the cheapest possible way to retire debt and must not be addable by data.",
+        "admission": "Add a rule carrying its id, class, description and pattern. FILE_EXECUTABLE remains the default and nothing may reach a cheaper class by omission.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-28",
+        "module": "engine/certification_integrity/model.py",
+        "symbol": "CLASSES_REQUIRING_MEASUREMENT",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "intentional": true,
+        "closing_invariant": "The file classes that MUST be inside the coverage denominator. Closed at exactly {executable, tooling} because those two are the classes for which 'we do not know what fraction of this executed' is not an acceptable answer. tooling is included deliberately: 00-BOOK/tools/ukb.py is the registration enforcement the whole corpus plane depends on, and calling it tooling describes its directory, not a reason its executed fraction may be unknown.",
+        "admission": "Add a class here only with an argument for why its executed fraction must be known. Removing one is how an entire category would leave the denominator silently, so this set is the thing UCI-L-01 quantifies over.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-29",
+        "module": "engine/certification_integrity/model.py",
+        "symbol": "LOCAL_PLANES",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "intentional": true,
+        "closing_invariant": "The invocation planes runnable without CI. Closed because the distinction it draws — can this be verified on a developer's machine — is a fact about the three texts in surface.PLANE_SOURCES, not an open set.",
+        "admission": "Add a plane type to model.PLANE_TYPES and decide which side it falls on. A plane in neither LOCAL_PLANES nor AUTOMATED_PLANES is invisible to the single-point-of-failure question, which is the question these two sets exist to answer.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-30",
+        "module": "engine/certification_integrity/model.py",
+        "symbol": "AUTOMATED_PLANES",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "intentional": true,
+        "closing_invariant": "The invocation planes runnable without a developer. Closed for the same reason as LOCAL_PLANES, and deliberately narrow: every workflow file collapses into one 'ci' plane, which is precisely what makes UCI-L-05 stricter than UEC-L-06 and why an engine invoked from thirty-three workflows still counts as one plane here.",
+        "admission": "As LOCAL_PLANES.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-31",
+        "module": "engine/certification_integrity/model.py",
+        "symbol": "REMEDY",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "uncovered-line class -> obliged remedy. Closed and TOTAL over LINE_CLASSES: UncoveredLine.remedy indexes it directly, so a class with no remedy raises rather than defaulting to a cheap one. That is deliberate — a class with no remedy would be a place to put lines.",
+        "admission": "Add the class to LINE_CLASSES and its remedy here. The KeyError on a missing entry is the enforcement, not an oversight.",
+        "gap": null
+      },
+      {
+        "closure_id": "UCON-CL-32",
+        "module": "engine/certification_integrity/surface.py",
+        "symbol": "PLANE_SOURCES",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "invoking text -> plane type, for the three fixed texts (Makefile, verify.sh, scripts/ucos-env.sh). Closed and two-way bound to model.PLANE_TYPES. Workflows are deliberately NOT enumerated: they are discovered from git ls-files and all collapse into the single 'ci' plane, so a new workflow requires no edit here.",
+        "admission": "Add the text and its plane type. A text that is none of the three named is a new invocation plane and must be argued as one, because plane COUNT is what UCI-L-05 refuses below two.",
+        "gap": null
+      },
+      {
+        "admission": "A disposition joins when it is one under which an unowned artifact is a defect. Removing one requires the argument TRANSIENT already carries: a written reason why an artifact in that disposition cannot have a durable owner.",
+        "closing_invariant": "The dispositions under which a MISSING authority is a finding rather than a fact. Closed because its complement is the whole content: exactly one disposition (TRANSIENT) may carry authority NONE, and it may because transience is the only self-justifying claim -- an artifact declared not to persist cannot acquire a durable owner. A fifth disposition admitted to this set would be a fifth way to own nothing, which is the finding Omega-2 exists to count.",
+        "closure_id": "UCON-CL-33",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/universal_discovery/model.py",
+        "symbol": "AUTHORITY_REQUIRED"
+      },
+      {
+        "admission": "A disposition joins only with a stated reason why artifacts holding it belong in a coverage denominator. Widening it makes the measured percentage HARDER to satisfy, which is the safe direction; narrowing it requires a measured property, never a preference.",
+        "closing_invariant": "The dispositions that enter the executable-surface DENOMINATOR. Closed because it is a denominator: GENERATED and ARCHIVED are excluded because their bytes are owned elsewhere and TRANSIENT because it does not persist, so the ratio cannot be flattered by reclassification alone -- moving an artifact out of the denominator requires it to measurably acquire one of those properties.",
+        "closure_id": "UCON-CL-34",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/universal_discovery/model.py",
+        "symbol": "SURFACE_DISPOSITIONS"
+      },
+      {
+        "admission": "A kind joins when it is declared in RATCHET_KINDS and falls toward better. A kind whose better direction is up is not added here -- it is expressed as its complement, so this set stays equal to the kind vocabulary rather than becoming a second, divergent one.",
+        "closing_invariant": "The ratchet kinds whose better direction is DOWN, which is currently all four. Closed so ONE comparison serves every kind: a metric whose better direction is up is expressed as its complement rather than given a per-metric sign, because a sign convention held per metric is a convention that gets got wrong exactly once and then reports a regression as an improvement.",
+        "closure_id": "UCON-CL-35",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/universal_discovery/model.py",
+        "symbol": "LOWER_IS_BETTER"
+      },
+      {
+        "admission": "A kind joins when its value is a ratio. The entry is a rendering decision and carries no governance consequence, so the amendment is a one-line edit with no migration.",
+        "closing_invariant": "The kinds whose value is a ratio rather than a count, consulted only for FORMATTING. Closed deliberately in one place: the alternative is a second table in the reporting path, and two tables describing one vocabulary is exactly the divergence that lets a density be printed as a count.",
+        "closure_id": "UCON-CL-36",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/universal_discovery/ratchet.py",
+        "symbol": "RATIO_KINDS"
+      },
+      {
+        "admission": "A basename joins only if Python itself gives it module identity. The set tracks the language's rule, so it changes when Python does and not otherwise.",
+        "closing_invariant": "The dunder basenames that ARE real module identities. Closed by the LANGUAGE rather than by preference: __init__ is what makes a directory a package and __main__ is what `python -m` executes. Measured consequence of omitting them -- every __main__.py in the repository read as unreachable while verify.sh, the Makefile and CI all invoked it, costing eight CLI entry points their reachability verdict.",
+        "closure_id": "UCON-CL-37",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/universal_discovery/discovery.py",
+        "symbol": "IMPORTABLE_DUNDERS"
+      },
+      {
+        "admission": "A basename joins when the test runner itself gives it a support role. It tracks pytest's mechanism rather than this repository's conventions, so a project layout change does not reach it.",
+        "closing_invariant": "Modules that support a suite without being one, so a directory holding only these plus test modules is still a test directory. Closed on pytest's own mechanisms: conftest.py is its fixture mechanism and __init__.py is how a test tree becomes importable, so neither is source under measurement.",
+        "closure_id": "UCON-CL-38",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "gap": "Detected as a closure and it is one: a runner other than pytest would name different support modules. Disclosed rather than parameterised because the repository declares pytest as its collection plane, and a parameter nothing varies is a wider surface with no second caller.",
+        "intentional": true,
+        "module": "engine/universal_discovery/discovery.py",
+        "symbol": "TEST_SUPPORT_MODULES"
+      },
+      {
+        "admission": "The literal changes only if the meaning of a path segment changes. It bounds no population and must never be widened to stand for one.",
+        "closing_invariant": "Not a population bound. `len(parts)` counts the SEGMENTS of one path being classified -- `len(parts) < 2` skips a root-level file and `len(parts) == 2` recognises a direct child -- so the literal is the depth at which a package name becomes derivable, not a bound on anything discovered.",
+        "closure_id": "UCON-CL-39",
+        "form": "POPULATION_ASSERTION",
+        "gap": "Detected because the detector is deliberately syntactic: it sees `len(...) == N` and cannot tell a path arity from a population count. An exemption would need a semantic rule the audit does not have, so it is disclosed instead.",
+        "intentional": true,
+        "module": "engine/universal_discovery/discovery.py",
+        "symbol": "len(parts)"
+      },
+      {
+        "admission": "The literal changes only if 'exactly one claimant' stops meaning unambiguous. It bounds no discovered population.",
+        "closing_invariant": "Not a population bound. `len(inherited) == 1` is the UNAMBIGUITY test for authority inheritance: exactly one importer authority means the artifact inherits it, and two or more means the question is contested and resolution must fall through to the next rule. The literal is the definition of unambiguous, not a limit on importers.",
+        "closure_id": "UCON-CL-40",
+        "form": "POPULATION_ASSERTION",
+        "gap": "Detected as a closure because the detector is syntactic. Disclosed rather than exempted, as with every other arity test in this inventory.",
+        "intentional": true,
+        "module": "engine/universal_discovery/authority.py",
+        "symbol": "len(inherited)"
+      },
+      {
+        "admission": "The literal changes only if the depth at which ancestry becomes derivable changes. It bounds no discovered population.",
+        "closing_invariant": "Not a population bound. `len(parts) > 2` and `len(parts) == 2` distinguish a module nested inside a sub-package from one directly under a root, which is what decides whether ancestry names `root.subpackage` or `root`. Path arity, not population.",
+        "closure_id": "UCON-CL-41",
+        "form": "POPULATION_ASSERTION",
+        "gap": "Detected syntactically, as with UCON-CL-39. Disclosed for the same reason.",
+        "intentional": true,
+        "module": "engine/universal_discovery/authority.py",
+        "symbol": "len(parts)"
+      },
+      {
+        "admission": "A pair joins when a new KIND of orchestration text exists -- not when a new file of an existing kind is added, which the prefix matching already covers.",
+        "closing_invariant": "Orchestration TEXTS grouped into the plane type each belongs to. Closed over KINDS of text rather than over this repository's particular files, and that is what keeps it open in the direction that matters: every workflow collapses into `ci`, so a new workflow or a new shell entry point joins its plane with no edit here. The tuple would only need amending if a genuinely new KIND of orchestration appeared.",
+        "closure_id": "UCON-CL-42",
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/universal_discovery/graph.py",
+        "symbol": "ORCHESTRATION_PLANES"
+      },
+      {
+        "admission": "A name joins if the language gains another dynamic-import primitive. It tracks Python, not this repository.",
+        "closing_invariant": "The two Python functions that import by computed name. Closed because the language closes it: `importlib.import_module` and `__import__` are what dynamic import IS, and the match is made on the AST callee rather than on the source text -- a string containing the pattern is data and only a call is a call.",
+        "closure_id": "UCON-CL-43",
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/universal_discovery/graph.py",
+        "symbol": "_DYNAMIC_FUNCTIONS"
+      },
+      {
+        "admission": "A name joins when a directive names a further state as required. Removing one is a constitutional act, because it retires a concept the vocabulary promised to carry.",
+        "closing_invariant": "The thirteen states the Phase 2 directive names as its MINIMUM set. Closed on purpose and in the safe direction: it is a floor rather than a ceiling, so the registry may hold any number of further states and this tuple only asserts that none of the thirteen has been renamed away. Holding it as data is what makes 'every required state is a declared first-class entity' checkable by execution instead of by a reviewer.",
+        "closure_id": "UCON-CL-44",
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/omega_governance/state.py",
+        "symbol": "REQUIRED_STATE_NAMES"
+      },
+      {
+        "admission": "A combination joins when a deliverable requires a further separation to be expressible. The list constrains nothing an artifact may hold -- it only names what the model must not be unable to say.",
+        "closing_invariant": "The five combinations Deliverable Omega-2.5 requires the model to be able to express, each named as a pair of positions a single-slot disposition cannot hold at once. Closed because it is a REQUIREMENTS list rather than a vocabulary: it states what must be expressible, and `separation_report` discharges it by execution rather than by a paragraph asserting it.",
+        "closure_id": "UCON-CL-45",
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/omega_governance/state.py",
+        "symbol": "SEPARATIONS"
+      },
+      {
+        "admission": "The literal changes only when the probe's own fixture changes. It is not a bound on any discovered population and must never be widened to stand for one.",
+        "closing_invariant": "len(population) == 1 over a SYNTHETIC one-artifact stream built inside this probe. Closed because the fixture is closed: the probe declares the provider, the provider yields exactly one artifact, and the assertion proves discovery neither dropped nor invented one. It bounds no repository population.",
+        "closure_id": "UCON-CL-46",
+        "form": "POPULATION_ASSERTION",
+        "gap": "Detected as a closure but it is an assertion inside a self-proof, not a vocabulary. The probe constructs a one-artifact synthetic stream and checks that the space returned exactly what the provider produced, so the population it bounds is the probe's own fixture and it cannot constrain any repository population. Disclosed rather than exempted because the detector is deliberately syntactic, and an exemption would need a semantic rule the audit does not have.",
+        "intentional": true,
+        "module": "engine/omega_infinite/evidence.py",
+        "symbol": "len(population)"
+      },
+      {
+        "admission": "A directory joins when it is a tool's cache or metadata store rather than content. Because the value is a default rather than a rule, the honest alternative is always available: pass a different set at construction and metadata() records it.",
+        "closing_invariant": "A DEFAULT, not a policy, and that distinction is what makes the closure safe: the set is replaceable per instance and is ALWAYS reported in metadata(), so a caller who discovers under different exclusions says so in the evidence rather than silently. Its members are version-control and tool-cache directories, whose contents are never the artifacts a discovery is about.",
+        "closure_id": "UCON-CL-47",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/omega_infinite/filesystem_provider.py",
+        "symbol": "DEFAULT_EXCLUSIONS"
+      },
+      {
+        "admission": "A flag joins only if enumerating tracked content requires it, and it must be a literal here rather than a parameter: a caller-supplied argument would reintroduce the injection surface this tuple exists to remove.",
+        "closing_invariant": "The fixed argv prefix for enumerating tracked content: git ls-files -z --cached --exclude-standard. CLOSED AS A SECURITY PROPERTY rather than as a vocabulary -- no shell, ever, and no interpolation of caller data into a command string. The tuple is the single place the command exists, so 'what does this run' has one answer, and the -z form is load-bearing because a path containing a newline must not split a record.",
+        "closure_id": "UCON-CL-48",
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/omega_infinite/git_provider.py",
+        "symbol": "_LS_FILES"
+      },
+      {
+        "admission": "A map joins when the ledger gains one, and the entry states which field of its records holds the permanent identifier. That is the whole amendment: no code changes, because every measurement in this module reads this table rather than naming a map.",
+        "closing_invariant": "The append-only identity maps the ledger carries, each bound to the field holding its PERMANENT identifier. CLOSED BECAUSE ALLOCATION SCOPE MUST BE ONE SCOPE -- the D0.1 defect was a run reporting from `by_object` while also allocating into `by_observation`, which a second, divergent list of maps is exactly how you reintroduce. A map absent from this table is not silently ignored: commit() surfaces it as `unmeasured_maps` and refuses the write rather than measuring it against a vocabulary that does not describe it.",
+        "closure_id": "UCON-CL-49",
+        "form": "FIXED_DISPATCH_TABLE",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/ledger_authority/__init__.py",
+        "symbol": "IDENTITY_MAPS"
+      },
+      {
+        "admission": "A cursor joins when the ledger gains a scalar that may only ever increase. Adding one is a one-line edit here and needs no change to the append-only check, which quantifies over this tuple.",
+        "closing_invariant": "The scalar allocation cursors, whose defining property is monotonicity. CLOSED AS AN APPEND-ONLY PROPERTY: a rewound cursor reissues an identifier that has already been handed out, so the set of names that rule covers has to be stated somewhere a reader can check rather than inferred from a naming convention a future key could silently fail to match.",
+        "closure_id": "UCON-CL-50",
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/ledger_authority/__init__.py",
+        "symbol": "MONOTONIC_COUNTERS"
+      },
+      {
+        "admission": "A key joins only with a written reason for why its movement is not an allocation, as `history` carries in a comment at the declaration site. The conservative direction is the default: anything absent here is surfaced rather than excused.",
+        "closing_invariant": "Top-level ledger keys whose movement is NOT an identity allocation. CLOSED IN THE SAFE DIRECTION, which is what makes it admissible: an unknown key is not covered by this set and is therefore reported as `unmeasured_maps`, so forgetting to add a member causes a REFUSAL rather than a silent pass. The set can only ever make the measurement narrower, never broader, and every member is a key that carries no permanent identifier.",
+        "closure_id": "UCON-CL-51",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/ledger_authority/__init__.py",
+        "symbol": "NON_ALLOCATION_KEYS"
+      },
+      {
+        "admission": "Append the variable name to the tuple. Data alone, and all three subprocess spawn sites in this package read the same tuple through immutable.clean_environment, so admitting a variable admits it at every site at once rather than at the one whose failure was noticed. engine/tests/unit/test_certification_integrity_execution.py exercises the path instead of asserting it: one test pins both families, and one runs a real measuring subprocess under forged bootstrap variables and refuses if any data file appears beside the outer session's.",
+        "closing_invariant": "CLOSED BY AN AUTHORITY OUTSIDE THIS REPOSITORY, which is why it cannot be derived here. The members are the environment variables through which coverage.py and pytest-cov bootstrap a measuring subprocess — COVERAGE_FILE plus the four COV_CORE_* variables written by pytest-cov's .pth — and that is the tool's published contract, not this repository's vocabulary. Nothing in this tree can enumerate them, so exhaustiveness is not claimed. Correctness is held BEHAVIOURALLY instead: a variable that matters and is missing from this tuple causes a measuring subprocess to contribute data to a file it does not own, and the end-to-end test above refuses on exactly that, so the failure is caught where the consequence occurs rather than asserted where the list is written.",
+        "closure_id": "UCON-CL-52",
+        "form": "FIXED_VOCABULARY_TUPLE",
+        "gap": null,
+        "intentional": true,
+        "module": "engine/certification_integrity/immutable.py",
+        "symbol": "AMBIENT_MEASUREMENT_VARS"
+      },
+      {
+        "closure_id": "UCON-CL-53",
+        "module": "engine/omega_infinite/direct_callers.py",
+        "symbol": "DECLARED_DIRECT",
+        "form": "FIXED_DISPATCH_TABLE",
+        "intentional": true,
+        "closing_invariant": "The modules permitted to invoke the version-control tool directly. Closed in source and TWO-WAY BOUND to the measured population by INV-AGN-02: a declared module that no longer invokes the tool is a stale exemption, and an invoking module absent from this table raises the direct-caller count above its ceiling. Neither side can drift from the other. The sibling closure this module began with, a hardcoded tuple of source roots, was OPENED rather than disclosed — it now reads audit.roots from this declaration, which removed a closed enumeration and a second answer to a question this file already answers.",
+        "admission": "Append an entry naming the module and a written reason why it must invoke the tool directly. The reason is required and a test refuses one shorter than a sentence, which is the intended cost: an exemption without a stated reason is a silent one, and this table exists to end that silence for a facility the repository declares substitutable."
+      },
+      {
+        "closure_id": "UCON-CL-54",
+        "module": "engine/omega_infinite/direct_callers.py",
+        "symbol": "_SPAWNS",
+        "form": "FROZEN_MEMBERSHIP_SET",
+        "intentional": true,
+        "closing_invariant": "The standard library's process-starting entry points. Closed because the runtime closed it: these are the names `subprocess` and `os` actually expose to start a process, and the set is a fact about the interpreter rather than a policy of this repository. It exists so the direct-caller detector can tell a module that SPAWNS the tool from one that merely NAMES it — a distinction two modules were miscounted on before this predicate required it.",
+        "admission": "Append the name when the runtime gains a new way to start a process, or when a repository policy admits a spawning wrapper of its own. Both are deliberate acts: a name absent here is invisible to the ratchet, so adding one widens what the guard can see and leaving one out narrows it silently, which is why the set is stated rather than inferred from imports."
+      }
+    ],
+    "baseline": {
+      "$definition": "The closure population measured outside governed_scope at the moment this declaration was authored. It is a RATCHET: the audit fails when the population outside governed scope EXCEEDS the baseline, and the baseline is lowered — never raised — as owners close their own closures. It is not a target, and it certifies nothing about the closures it counts.",
+      "measured_at": "logical:ucos-repository-history@1#UCON-000001-authoring",
+      "ENUM_CLASS": 246,
+      "FROZEN_MEMBERSHIP_SET": 239,
+      "FIXED_VOCABULARY_TUPLE": 477,
+      "POPULATION_ASSERTION": 35,
+      "$why_a_ratchet_and_not_a_gate": "A gate demanding zero closures today would be closed on the day it was written and would then be disabled, which is worse than a ratchet that holds. UISD-000001 §ISD-L-07 established the pattern in this repository: a detector that cannot pass is a detector that gets removed.",
+      "FIXED_DISPATCH_TABLE": 446
+    }
+  },
+  "laws": [
+    {
+      "law_id": "UCON-L-01",
+      "statement": "Every presented construct is recorded and carries exactly one active disposition.",
+      "check": "every_construct_is_disposed",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-02",
+      "statement": "The disposition rule set is total: exactly one catch-all rule exists and it is last.",
+      "check": "disposition_is_total",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-03",
+      "statement": "The catch-all disposition is non-destructive — it is ESCALATE, never REJECT.",
+      "check": "catch_all_is_non_destructive",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-04",
+      "statement": "Every declared operator is implemented and every implemented operator is claimed by a rule.",
+      "check": "operators_are_two_way_bound",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-05",
+      "statement": "No presented construct is dropped: the registry population equals the presented population, whatever the dispositions were.",
+      "check": "nothing_is_silently_ignored",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-06",
+      "statement": "Unknowns, contradictions, research objects and discovery objects are representable, and every unknown is transformable into a research object.",
+      "check": "unknown_and_contradiction_are_first_class",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-07",
+      "statement": "Recursive discovery reaches a fixed point: discovery run twice over one state mints nothing new.",
+      "check": "discovery_reaches_a_fixed_point",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-08",
+      "statement": "A future kind is admissible by registration alone — the foundation's source is unchanged by admitting a category it has never seen.",
+      "check": "future_kinds_need_no_redesign",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-09",
+      "statement": "Every declared extension point is exercisable: the admission is performed in memory and the framework it extends still answers.",
+      "check": "extension_points_are_exercisable",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-10",
+      "statement": "No disposition and no reality state is terminal, and every reality state is reachable from UNKNOWN.",
+      "check": "no_state_is_terminal",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-11",
+      "statement": "Reality status is independent of disposition: the whole cross-product is representable, and neither module derives the other.",
+      "check": "reality_is_independent_of_admission",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-12",
+      "statement": "A verifier declares its own assumptions and limitations, and a verifier that declares neither is refused.",
+      "check": "verification_is_itself_verifiable",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-13",
+      "statement": "This capability declares no permanence and no completeness over unknown constructs.",
+      "check": "no_completeness_claim_is_declared",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-14",
+      "statement": "Every reality state binds to a UCOS-CEU-001 row that CEU actually carries, or discloses that no row exists and why.",
+      "check": "vocabulary_is_not_duplicated",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-15",
+      "statement": "The closure inventory holds: no undisclosed closure inside governed scope, and the population outside it does not exceed the declared baseline.",
+      "check": "closure_inventory_holds",
+      "blocking": true
+    },
+    {
+      "law_id": "UCON-L-16",
+      "statement": "The foundation is deterministic and writes nothing: two measurements of one state produce identical bytes.",
+      "check": "measurement_is_deterministic",
+      "blocking": true
+    }
+  ],
+  "$law_checks": "engine/construct/contract.py::LAW_CHECKS. The binding is two-way (engine/construct/model.py::Declaration.validate): a law naming a check that is not implemented is manual governance, and a check that is implemented but no law claims is dead code that looks like enforcement. Both are refused at load, so the live path is never the unmeasured one.",
+  "self_application": {
+    "subject_of_own_laws": "UCON-000001",
+    "$statement": "The foundation is a construct. Its kinds, dispositions, reality states, verifier and laws are constructs of the kinds it declares, admitted through the registry it provides and disposed by the engine it implements. Law UCON-L-09 exercises that on every run.",
+    "declares_independent_lifecycle": false,
+    "lifecycle_owner": "UCL-000001 (derived) · UCIC-001 (owner)",
+    "declares_authority_over": [],
+    "identity_plane": "urn:ucos:ucko:<namespace>:<local_name> — derived through engine/uckp/identity.py. This capability mints no identifier of its own and holds no counter.",
+    "namespace": "ucos.construct",
+    "$namespace_disclosure": {
+      "gap_id": "UCON-G-02",
+      "finding": "'ucos.construct' is not among the declared namespaces in 00-MASTER/UOBC-000001/uobc-birth-contract.json::namespace_policy.declared_namespaces, whose own $open_world note states that an unlisted namespace is refused by the gate and that admitting one is an edit to that file.",
+      "referred_to": "UOBC-000001",
+      "remediation": "UOBC declares the namespace, after which constructs minted by this capability carry birth records under it. Until then this capability derives identity for in-memory constructs and registers no birth record, which is why it appears in no birth ledger and claims no birth."
+    }
+  },
+  "evidence": {
+    "home": ".ucos/construct/",
+    "$home": "Untracked by design. Evidence here is a RECORD of a measurement, never Repository Truth, and deleting the whole directory changes no verdict.",
+    "records": [
+      {
+        "record": "construct-foundation-report.json",
+        "producer": "engine/construct/evidence.py::build",
+        "content": "the full measurement: every law, every refusal, the registry summary, the disposition distribution and the closure inventory summary"
+      },
+      {
+        "record": "closure-inventory.json",
+        "producer": "engine/construct/evidence.py::write_inventory",
+        "content": "the complete extensibility audit inventory — every located closure with its module, symbol, form, tier, owner, limitation and migration path"
+      }
+    ]
+  },
+  "gate": {
+    "invocation": "python -m engine.construct.gate --gate",
+    "exit_open": 0,
+    "exit_closed": 1,
+    "exit_fault": 2,
+    "$exit_codes": "'A law was measured and refused' and 'no verdict could be reached' are different facts. Collapsing them would let an unreadable declaration pass as whichever was more convenient.",
+    "writes": "nothing unless --evidence is passed, and then only under evidence.home",
+    "verify_stage_label": "universal construct foundation (UCON-000001, every construct disposed and nothing silently ignored)"
+  },
+  "closed_set": false,
+  "upper_limit": null
+}

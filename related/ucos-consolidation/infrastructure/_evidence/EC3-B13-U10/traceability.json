@@ -1,0 +1,41 @@
+{
+  "backward": [
+    "InfrastructureDependency",
+    "INFRASTRUCTURE-018",
+    "INFRASTRUCTURE-005",
+    "INFRASTRUCTURE-001",
+    "ARCH-INFRASTRUCTURE-001",
+    "13-INFRASTRUCTURE@b7e7657"
+  ],
+  "basis": "reuses",
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.compute-reuses-capability-dc0d4c4b66fe141c",
+    "EC3-B13-U10-COMPUTE_REUSES_CAPABILITY-VALIDATION-EVIDENCE",
+    "EC3-B13-U10-COMPUTE_REUSES_CAPABILITY-CCE-CERTIFICATION",
+    "EC3-B13-U10-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "5ed500b",
+  "meta_class": "InfrastructureDependency",
+  "rooted": true,
+  "source_ref": "ENG-005:EC3-B13-U02:infrastructure.compute",
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005"
+  ],
+  "substrate_reuse": {
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+    "ENG-002": "python frozen object (immutable objecthood; the dependency as object)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+    "ENG-004": "infrastructure.integration type_tag (typed construct)",
+    "ENG-005": "the dependsOn reference itself — specialization of the frozen reference"
+  },
+  "target_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.compute-reuses-capability-dc0d4c4b66fe141c",
+  "target_ref": "ENG-005:EC3-B13-U01:infrastructure.capability",
+  "trace_format": "ucos-infrastructure-traceability/1.0.0",
+  "unit": "EC3-B13-U10"
+}

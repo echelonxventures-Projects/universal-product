@@ -1,0 +1,198 @@
+{
+  "artifact_id": "UCCFA-000001",
+  "name": "Universal Coordinate Framework Alignment",
+  "version": "1.0",
+  "authority": "NONE — DERIVED TRUTH. This declaration legislates no ontology. The Universal Coordinate Framework is owned by 01-WORKING/ONTOLOGY-REGISTER.md PART B (bound as canonical_owner below) and its standing is fixed by SUP-02. This programme binds what that register already carries so that a gate can measure it, and it can introduce nothing.",
+  "$why_this_exists": "UCPA-000001 records that 'the root ontology was correct and unenforced — ONT-02, ONT-03 and ONT-04 appeared in no .py and no .json file anywhere, so no gate measured them.' The same is true of the layer beside it, and it was measured rather than assumed: ONT-05 through ONT-10 appear in NO .py file in this repository, so no gate measures any of them. Outside the register only ONT-06 appears in a governed data file (00-MASTER/UAKOS-CLOSURE-008/assimilation.json); ONT-07 through ONT-10 appear in none. All five do occur in one tracked vendored evidence document, which is the record of an external run and governs nothing — an earlier wording of this paragraph said they appeared in no data file at all, which that document makes false. LAW Ω∞-000 requires every entity to be representable through nine dimensions; four are root primitives bound by UCPA-000001 and five are these coordinates, declared since July and measured by nothing.",
+  "$not_a_second_authority": "A second ontology authority would be recognisable by its ability to introduce an element the register does not carry. This one cannot: coordinate_binding is measured against PART B of the canonical owner (UCCFA-L-01) and its standing against the ratification record (UCCFA-L-02). It also may not restate a root primitive: UCPA owns those, and an element appearing in both bindings is a duplication UCKP-ART-03 makes void (UCCFA-L-03).",
+  "principle": "A coordinate is not a name in a document. It is a question something must be able to answer about where, when, how large, to whom and from which frame a statement holds. The five coordinates are settled law; this programme only makes them measurable.",
+  "ontology_source": {
+    "canonical_owner": "01-WORKING/ONTOLOGY-REGISTER.md",
+    "owner_part": "PART B — UNIVERSAL COORDINATE FRAMEWORK",
+    "ratification_record": "01-WORKING/SUPERSESSION-REGISTER.md",
+    "ratified_by": "SUP-02",
+    "authoritative_source": "SRC-03",
+    "universal_equation": "REALITY = EXISTENCE + RELATIONSHIP + TRANSFORMATION + SPACE + TIME + SCALE + OBSERVER + PERSPECTIVE."
+  },
+  "coordinate_binding": [
+    {
+      "id": "ONT-06",
+      "element": "SPACE",
+      "standing": "COORDINATE",
+      "answers": "Answers \"Where?\"",
+      "authoritative": "SRC-03",
+      "ratified_by": "SUP-02",
+      "basis": "01-WORKING/SUPERSESSION-REGISTER.md SUP-02, FROZEN: 'SPACE-TIME (root vs coordinate)' resolved in favour of SRC-03 — Space & Time are the Universal Coordinate Framework, not root primitives. The coordinate standing of every element below derives from that ratification, and from PART B of the canonical owner which carries them under that heading."
+    },
+    {
+      "id": "ONT-07",
+      "element": "TIME",
+      "standing": "COORDINATE",
+      "answers": "Answers \"When?\" (Past/Present/Future/Timeless/Infinite)",
+      "authoritative": "SRC-03",
+      "ratified_by": "SUP-02",
+      "basis": "01-WORKING/SUPERSESSION-REGISTER.md SUP-02, FROZEN: 'SPACE-TIME (root vs coordinate)' resolved in favour of SRC-03 — Space & Time are the Universal Coordinate Framework, not root primitives. The coordinate standing of every element below derives from that ratification, and from PART B of the canonical owner which carries them under that heading."
+    },
+    {
+      "id": "ONT-08",
+      "element": "SCALE",
+      "standing": "COORDINATE",
+      "answers": "Answers \"How Large?\" (Quantum→…→Universal→Infinite)",
+      "authoritative": "SRC-03",
+      "ratified_by": "SUP-02",
+      "basis": "01-WORKING/SUPERSESSION-REGISTER.md SUP-02, FROZEN: 'SPACE-TIME (root vs coordinate)' resolved in favour of SRC-03 — Space & Time are the Universal Coordinate Framework, not root primitives. The coordinate standing of every element below derives from that ratification, and from PART B of the canonical owner which carries them under that heading."
+    },
+    {
+      "id": "ONT-09",
+      "element": "OBSERVER",
+      "standing": "COORDINATE",
+      "answers": "Answers \"Who Observes?\"",
+      "authoritative": "SRC-03",
+      "ratified_by": "SUP-02",
+      "basis": "01-WORKING/SUPERSESSION-REGISTER.md SUP-02, FROZEN: 'SPACE-TIME (root vs coordinate)' resolved in favour of SRC-03 — Space & Time are the Universal Coordinate Framework, not root primitives. The coordinate standing of every element below derives from that ratification, and from PART B of the canonical owner which carries them under that heading."
+    },
+    {
+      "id": "ONT-10",
+      "element": "PERSPECTIVE",
+      "standing": "COORDINATE",
+      "answers": "Answers \"From Which Frame Of Reference?\"",
+      "authoritative": "SRC-03",
+      "ratified_by": "SUP-02",
+      "basis": "01-WORKING/SUPERSESSION-REGISTER.md SUP-02, FROZEN: 'SPACE-TIME (root vs coordinate)' resolved in favour of SRC-03 — Space & Time are the Universal Coordinate Framework, not root primitives. The coordinate standing of every element below derives from that ratification, and from PART B of the canonical owner which carries them under that heading."
+    }
+  ],
+  "ratified_standing": [
+    {
+      "supersession_id": "SUP-02",
+      "element": "SPACE",
+      "requires_standing": "COORDINATE",
+      "evidence_phrase": "Universal Coordinate Framework"
+    },
+    {
+      "supersession_id": "SUP-02",
+      "element": "TIME",
+      "requires_standing": "COORDINATE",
+      "evidence_phrase": "Universal Coordinate Framework"
+    },
+    {
+      "supersession_id": "SUP-02",
+      "element": "SCALE",
+      "requires_standing": "COORDINATE",
+      "evidence_phrase": "Universal Coordinate Framework"
+    },
+    {
+      "supersession_id": "SUP-02",
+      "element": "OBSERVER",
+      "requires_standing": "COORDINATE",
+      "evidence_phrase": "Universal Coordinate Framework"
+    },
+    {
+      "supersession_id": "SUP-02",
+      "element": "PERSPECTIVE",
+      "requires_standing": "COORDINATE",
+      "evidence_phrase": "Universal Coordinate Framework"
+    }
+  ],
+  "laws": [
+    {
+      "id": "UCCFA-L-01",
+      "title": "Every bound coordinate is an element PART B already declares",
+      "statement": "For each entry in coordinate_binding, the ONT id, the element name and the question it answers shall all be found in PART B of the canonical owner. A coordinate this declaration names but the register does not carry is an invented coordinate and is refused.",
+      "check": "every_coordinate_is_declared_by_the_register"
+    },
+    {
+      "id": "UCCFA-L-02",
+      "title": "Standing is the standing the ratification record gives",
+      "statement": "For each entry in ratified_standing, SUP-02 shall carry the evidence phrase quoted. A coordinate claiming a standing the record does not grant is refused.",
+      "check": "standing_matches_the_ratification_record"
+    },
+    {
+      "id": "UCCFA-L-03",
+      "title": "No element is both a root primitive and a coordinate",
+      "statement": "No element in coordinate_binding shall appear in UCPA-000001's primitive_binding. SUP-07 ratified the root ontology as exactly four primitives and refused the five-primitive form; an element bound in both places is a second authoring of one determination, which UCKP-ART-03 makes void.",
+      "check": "no_element_is_both_primitive_and_coordinate"
+    },
+    {
+      "id": "UCCFA-L-04",
+      "title": "The coordinate set is total over the Universal Equation",
+      "statement": "Every coordinate term of the Universal Equation quoted in ontology_source shall appear in coordinate_binding, and no term of it that UCPA binds as a primitive shall.",
+      "check": "the_coordinate_set_is_total_over_the_equation"
+    },
+    {
+      "id": "UCCFA-L-05",
+      "title": "The superseded root element is dispositioned, not dropped",
+      "statement": "The element named in superseded_root_element shall be carried by PART A of the canonical owner, shall be recorded there as superseded by the declared supersession id, shall appear in neither UCPA-000001's primitive_binding nor this declaration's coordinate_binding, and every coordinate it resolves into shall be bound here. An element that a ratification retired from one standing and that no declaration then takes up is governed by nothing, and a question nothing answers is what UCKP-ART-06 forbids.",
+      "check": "the_superseded_element_is_dispositioned"
+    },
+    {
+      "id": "UCCFA-L-06",
+      "title": "UCPA and UCCFA together are exactly the nine dimensions of LAW Ω∞-000",
+      "statement": "The dimensions LAW Ω∞-000 requires every entity to be representable through shall be partitioned exactly between UCPA-000001's primitive_binding and this declaration's coordinate_binding: every one of the nine shall be bound by exactly one of the two, and neither shall bind anything the law does not name. The law is carried by 02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md. A dimension bound by both is the duplication UCKP-ART-03 makes void; a dimension bound by neither is a constitutional requirement nothing measures.",
+      "check": "the_two_bindings_are_the_omega_law_dimensions"
+    },
+    {
+      "id": "UCCFA-L-07",
+      "title": "Every absolute constitutional law the register carries is measured where it is carried",
+      "statement": "The canonical register 02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md carries the twenty-one ratified absolute laws Ω∞-000 through Ω∞-020, each as its own verbatim row. Every one of the twenty-one shall be found, exactly once, carrying a non-empty statement; no row outside that set shall be counted. A law the register carries that this programme cannot count is a ratified law no executable measures, a row that appears twice is a home that competes with itself, and the texts live ONLY in the register — a second store of a verbatim law is the duplication UCKP-ART-03 voids.",
+      "check": "every_absolute_law_is_counted_where_it_is_carried"
+    }
+  ],
+  "gate": {
+    "module": "engine.coordinate_framework.gate",
+    "mode": "OBSERVE",
+    "writes": "nothing, including gitignored paths",
+    "exit_codes": {
+      "0": "OPEN — every law holds",
+      "1": "CLOSED — a law was measured and refused",
+      "2": "FAULT — no verdict could be reached"
+    }
+  },
+  "certification_boundary": "Certifies that the six declared laws were measured against the declared surfaces at the declared paths. Certifies no ontology, no coordinate, no baseline, and no artifact other than this programme's own declaration.",
+  "baseline": "HEAD 5f8016c5",
+  "$superseded_root_element_comment": "PART A carries ONT-01..ONT-05, and UCPA-000001 binds only ONT-01..ONT-04. ONT-05 SPACE-TIME is therefore bound by neither declaration, and that silence is the gap this section closes. SUP-02 — the ratification this programme already cites — is precisely what adjudicated it: in SRC-01/09/10 SPACE-TIME was a root-chain element carrying Ω-LAW-02; in SRC-02/03 it is not a root primitive, because Space and Time are two axes of the Universal Coordinate Framework. The register records the outcome as 'coordinate, not root'. An element that resolves INTO this programme's coordinates belongs in this programme's disposition, and UCKP-ART-06 is the reason it may not simply be omitted: a facet may be unattested, but an absent one is an unanswerable question.",
+  "superseded_root_element": {
+    "id": "ONT-05",
+    "element": "SPACE-TIME",
+    "standing": "SUPERSEDED",
+    "superseded_by": "SUP-02",
+    "resolves_into": [
+      "ONT-06",
+      "ONT-07"
+    ],
+    "retired_law": "Ω-LAW-02",
+    "evidence_phrase": "coordinate, not root",
+    "bound_as_primitive_by": null,
+    "bound_as_coordinate_here": false,
+    "note": "Retained for provenance, never edited: supersession is the forward channel, so the superseded form is classified rather than removed."
+  },
+  "$law_source_comment": "UCCFA-L-06 measures an installed constitutional law rather than this programme's own convenience. Ω∞-000 names nine dimensions — BEING EXISTENCE RELATIONSHIP TRANSFORMATION SPACE TIME SCALE OBSERVER PERSPECTIVE — and UCPA binds four of them while this binds five. The Universal Equation quoted in ontology_source is the same partition minus BEING, which is the axiom above reality rather than a term of it; UCCFA-L-04 measures that eight-term form and UCCFA-L-06 the nine-dimension one, so neither source is taken on trust from the other.",
+  "omega_law_binding": {
+    "law_id": "Ω∞-000",
+    "carried_by": "02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md",
+    "dimensions": [
+      "BEING",
+      "EXISTENCE",
+      "RELATIONSHIP",
+      "TRANSFORMATION",
+      "SPACE",
+      "TIME",
+      "SCALE",
+      "OBSERVER",
+      "PERSPECTIVE"
+    ],
+    "bound_by_ucpa": [
+      "BEING",
+      "EXISTENCE",
+      "RELATIONSHIP",
+      "TRANSFORMATION"
+    ],
+    "bound_here": [
+      "SPACE",
+      "TIME",
+      "SCALE",
+      "OBSERVER",
+      "PERSPECTIVE"
+    ]
+  },
+  "$law_binding_comment": "Each law NAMES the check that measures it, and the engine resolves that name at runtime. The first version held the binding as a module-level dict in the engine instead, which UCON-L-15 counts as a FIXED_DISPATCH_TABLE and refused: 447 against a declared ceiling of 446, and that ratchet may hold or fall but never rise. Renaming the table out of the detector's sight would have been a bypass; removing it is the fix, and it is the better shape anyway — a seventh law is admitted by declaring it and writing its function, with no table to remember to edit. The binding stays two-way: a declared law whose check does not exist is refused, and a check no declared law names is refused too."
+}

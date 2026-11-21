@@ -1,0 +1,95 @@
+{
+  "all_units_certified": true,
+  "unit": "EC3-B10-U12",
+  "unit_count": 11,
+  "units": [
+    {
+      "certification_id": "UCOS-CERT-DMC-01-51e5964b38741e30",
+      "certified": true,
+      "concern_doc": "DATA-001…005 (DOE-01 root)",
+      "meta_class": "DMC-01",
+      "name": "Datum",
+      "unit": "EC3-B10-U01"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-03-c57d36d3dbb2763d",
+      "certified": true,
+      "concern_doc": "DATA-007",
+      "meta_class": "DMC-03",
+      "name": "Attribute",
+      "unit": "EC3-B10-U02"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-02-def41470d3bac196",
+      "certified": true,
+      "concern_doc": "DATA-006",
+      "meta_class": "DMC-02",
+      "name": "Entity",
+      "unit": "EC3-B10-U03"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-05-e9edc215907c8695",
+      "certified": true,
+      "concern_doc": "DATA-009",
+      "meta_class": "DMC-05",
+      "name": "Schema",
+      "unit": "EC3-B10-U04"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-06-aa8d65c34494943a",
+      "certified": true,
+      "concern_doc": "DATA-010",
+      "meta_class": "DMC-06",
+      "name": "Storage",
+      "unit": "EC3-B10-U05"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-07-10cb52fd186c7693",
+      "certified": true,
+      "concern_doc": "DATA-011",
+      "meta_class": "DMC-07",
+      "name": "Lifecycle",
+      "unit": "EC3-B10-U06"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-08-07e9db1834b26c10",
+      "certified": true,
+      "concern_doc": "DATA-012",
+      "meta_class": "DMC-08",
+      "name": "Governance-Object",
+      "unit": "EC3-B10-U07"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-09-a384f960567e9ffb",
+      "certified": true,
+      "concern_doc": "DATA-013",
+      "meta_class": "DMC-09",
+      "name": "Quality-Object",
+      "unit": "EC3-B10-U08"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-10-afa02b108e3ca0c5",
+      "certified": true,
+      "concern_doc": "DATA-014",
+      "meta_class": "DMC-10",
+      "name": "Security-Object",
+      "unit": "EC3-B10-U09"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-04-29b2b5d6ede59cce",
+      "certified": true,
+      "concern_doc": "DATA-008",
+      "meta_class": "DMC-04",
+      "name": "Relationship",
+      "unit": "EC3-B10-U10"
+    },
+    {
+      "certification_id": "UCOS-CERT-UDM-9f3f055879bb2b43",
+      "certified": true,
+      "concern_doc": "DATA-005",
+      "meta_class": "UDM",
+      "name": "Universal Data Meta-Model",
+      "unit": "EC3-B10-U11"
+    }
+  ]
+}

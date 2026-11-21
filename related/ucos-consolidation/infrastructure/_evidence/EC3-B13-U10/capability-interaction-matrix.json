@@ -1,0 +1,140 @@
+{
+  "artifact": "EC3-B13-U10-CAPABILITY-INTERACTION-MATRIX",
+  "axis": [
+    "capability",
+    "compute",
+    "network",
+    "storage",
+    "environment",
+    "topology",
+    "resilience",
+    "security",
+    "governance"
+  ],
+  "cell_semantics": "matrix[source][target] = grounding basis of source dependsOn target",
+  "indegree": {
+    "capability": 5,
+    "compute": 3,
+    "environment": 4,
+    "governance": 0,
+    "network": 3,
+    "resilience": 2,
+    "security": 1,
+    "storage": 3,
+    "topology": 3
+  },
+  "interaction_count": 24,
+  "matrix": {
+    "capability": {
+      "capability": "",
+      "compute": "",
+      "environment": "",
+      "governance": "",
+      "network": "",
+      "resilience": "",
+      "security": "",
+      "storage": "",
+      "topology": ""
+    },
+    "compute": {
+      "capability": "reuses",
+      "compute": "",
+      "environment": "",
+      "governance": "",
+      "network": "",
+      "resilience": "",
+      "security": "",
+      "storage": "",
+      "topology": ""
+    },
+    "environment": {
+      "capability": "",
+      "compute": "contains",
+      "environment": "",
+      "governance": "",
+      "network": "contains",
+      "resilience": "",
+      "security": "",
+      "storage": "provisions",
+      "topology": ""
+    },
+    "governance": {
+      "capability": "evaluates",
+      "compute": "evaluates",
+      "environment": "evaluates",
+      "governance": "",
+      "network": "evaluates",
+      "resilience": "evaluates",
+      "security": "evaluates",
+      "storage": "evaluates",
+      "topology": "evaluates"
+    },
+    "network": {
+      "capability": "reuses",
+      "compute": "",
+      "environment": "",
+      "governance": "",
+      "network": "",
+      "resilience": "",
+      "security": "",
+      "storage": "",
+      "topology": ""
+    },
+    "resilience": {
+      "capability": "",
+      "compute": "",
+      "environment": "sustains",
+      "governance": "",
+      "network": "",
+      "resilience": "",
+      "security": "",
+      "storage": "",
+      "topology": "arranges"
+    },
+    "security": {
+      "capability": "evaluates",
+      "compute": "evaluates",
+      "environment": "evaluates",
+      "governance": "",
+      "network": "evaluates",
+      "resilience": "evaluates",
+      "security": "",
+      "storage": "evaluates",
+      "topology": "evaluates"
+    },
+    "storage": {
+      "capability": "reuses",
+      "compute": "",
+      "environment": "",
+      "governance": "",
+      "network": "",
+      "resilience": "",
+      "security": "",
+      "storage": "",
+      "topology": ""
+    },
+    "topology": {
+      "capability": "",
+      "compute": "",
+      "environment": "arranges",
+      "governance": "",
+      "network": "",
+      "resilience": "",
+      "security": "",
+      "storage": "",
+      "topology": ""
+    }
+  },
+  "outdegree": {
+    "capability": 0,
+    "compute": 1,
+    "environment": 3,
+    "governance": 8,
+    "network": 1,
+    "resilience": 2,
+    "security": 7,
+    "storage": 1,
+    "topology": 1
+  },
+  "unit": "EC3-B13-U10"
+}

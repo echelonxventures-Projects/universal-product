@@ -1,0 +1,446 @@
+{
+  "artifact_id": "UCOS-MUTATION-GOVERNANCE-BOUNDARY-001",
+  "title": "Mutation Governance Boundary — which authority governs which class of mutation",
+  "authority": "AUTHORED REPOSITORY TRUTH, HELD SUBORDINATE UNDER UCKP-LAW-0001. This artifact declares the boundary; it does not create a new authority and governs nothing itself.",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "EXECUTION",
+    "relation": "PROJECTION",
+    "articles": [
+      "UCKP-ART-10",
+      "UCKP-ART-16"
+    ],
+    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+    "effect": "This artifact already said of itself that it creates no authority and governs nothing. UCKP-ART-10 — execution never owns knowledge — is the article that sentence is true UNDER. It owns which mutation classes exist and which authority disposes of each; it may never own knowledge."
+  },
+  "constitutional_basis": "UCKP-LAW-0001 (engine/uckp/law.py), UCOS-CAA-001, UCOS-CMG-EXEC-000001 Requirement 004, GOV-005, UCOS-CL-016",
+  "schema": "ucos-mutation-governance-boundary",
+  "version": "1.1.0",
+  "determination": "OPTION B — SOURCE MUTATIONS ARE OUTSIDE THE CONSTITUTIONAL MUTATION GATEWAY",
+  "why_this_determination": [
+    "The question was live because a source mutation (be46a300, touching intelligence/rie/evidence.py,",
+    "scripts/ucos-env.sh and .gitignore) was applied with no gateway record, and the closure matrix",
+    "could not say whether that was a bypass or simply out of scope.",
+    "",
+    "It is out of scope, and the evidence is structural rather than interpretive:",
+    "",
+    "  * engine/constitution/gateway.py::PIPELINE operates on `Population` and",
+    "    `ConstitutionalMetadata` values. Its stages take a `Context` holding `base` and",
+    "    `candidate` populations, and `apply()` returns a new population plus a StateSeal.",
+    "  * Neither gateway.py nor state.py imports `pathlib`, opens a file, reads or writes text,",
+    "    or invokes git. Measured directly: a search for Path / open( / read_text / write_text /",
+    "    git across both modules returns nothing.",
+    "  * Its enforcement mechanism is that it is the ONLY producer of a clean StateSeal, and",
+    "    engine.constitution.state refuses to verify, certify, register, measure or govern under a",
+    "    dirty or mismatched seal. That mechanism binds constitutional TRUTH operations. There is",
+    "    no seal check anywhere on the path that writes a .py file to disk, and adding one would",
+    "    require the gateway to grow a filesystem it deliberately does not have.",
+    "",
+    "So CMG governs mutations of CONSTITUTIONAL TRUTH — law, population, metadata, registry state.",
+    "A source-file mutation is a different class of act, and the repository already governs it, but",
+    "through a chain that had never been written down. That absence is what made the earlier bypass",
+    "unanswerable. It is written down here."
+  ],
+  "authorities": [
+    {
+      "authority": "UCOS-CMG-EXEC-000001 — Constitutional Mutation Gateway",
+      "implementation": "engine/constitution/gateway.py",
+      "governs": [
+        "mutation of a constitutional Population",
+        "creation or amendment of ConstitutionalMetadata",
+        "constitutional registration and truth update"
+      ],
+      "does_not_govern": [
+        "source files on disk",
+        "generated artifacts",
+        "the working tree",
+        "the git object database"
+      ],
+      "lifecycle": [
+        "proposal",
+        "evidence",
+        "validation",
+        "verification",
+        "certification",
+        "registration",
+        "truth_update"
+      ],
+      "enforcement": "sole producer of a clean StateSeal; engine.constitution.state refuses the five truth operations without one"
+    },
+    {
+      "authority": "pre-commit hook",
+      "implementation": "scripts/ucos-env.sh::ucos_ruff_gate",
+      "governs": [
+        "the INTENDED MUTATION boundary — tracked/staged source content at commit time"
+      ],
+      "does_not_govern": [
+        "untracked filesystem debris",
+        "generated artifact identity",
+        "repository-wide state"
+      ],
+      "enforcement": "blocks the commit"
+    },
+    {
+      "authority": "verify.sh — canonical verification entry point",
+      "implementation": "verify.sh",
+      "governs": [
+        "lint and format of the governed source roots",
+        "the full canonical test corpus",
+        "the coverage quality gate (--cov-fail-under=90)",
+        "governance enforcement, registry schema validation, meta-constitutional conformance"
+      ],
+      "does_not_govern": [
+        "filesystem contamination",
+        "generated artifact convergence",
+        "clone reproducibility"
+      ],
+      "enforcement": "non-zero exit on any failing stage"
+    },
+    {
+      "authority": "UCOS-RIB-001 — Repository Integration Blueprint",
+      "implementation": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "governs": [
+        "repository integrity including the git object database (GATE-02)",
+        "filesystem contamination and exclusion classification (GATE-12, VAL-11, VAL-12)",
+        "duplicate capability (GATE-09)",
+        "validation obligations (GATE-04)"
+      ],
+      "does_not_govern": [
+        "source correctness",
+        "test outcomes",
+        "convergence over time"
+      ],
+      "enforcement": "rib.json:gate CLOSED"
+    },
+    {
+      "authority": "UCOS-AEE-001 — Autonomous Evolution Engine",
+      "implementation": "00-MASTER/UCOS-AEE-001/aee_engine.py",
+      "governs": [
+        "convergence of the observation vector across iterations (CONV-01..07)"
+      ],
+      "does_not_govern": [
+        "byte-level repository closure — explicitly disclaimed in its own certification (AEE-F-002)"
+      ],
+      "enforcement": "converged=false, gate_exit=1"
+    },
+    {
+      "authority": "Phase 8 — fixed-point verification",
+      "implementation": "00-MASTER/P0-FINAL-CLOSURE-002/final_closure_engine.py",
+      "governs": [
+        "byte-level idempotence of the canonical chain across consecutive rounds"
+      ],
+      "does_not_govern": [
+        "reproducibility in a different environment"
+      ],
+      "enforcement": "fixed point not proven"
+    },
+    {
+      "authority": "Phase 9 — pristine-clone certification",
+      "implementation": "00-MASTER/P0-FINAL-CLOSURE-002/final_closure_engine.py",
+      "governs": [
+        "reproduction of canonical artifacts from a clean clone of the certified commit"
+      ],
+      "does_not_govern": [
+        "environmental observational outputs explicitly classified non-canonical"
+      ],
+      "enforcement": "canonical variance non-zero"
+    },
+    {
+      "authority": "REG-AUTO-001 — Corpus Registration Transaction",
+      "implementation": "00-BOOK/tools/register.sh",
+      "governs": [
+        "CORPUS_REGISTRATION — by_path allocation in 00-BOOK/DATA/id-ledger.json",
+        "corpus registration entries in 00-BOOK/DATA/artifacts.json",
+        "Universal ID and page-range allocation for a newly eligible artifact"
+      ],
+      "does_not_govern": [
+        "any mutation reached through a verification path — allocation from a verifier is a boundary violation regardless of the flag it was reached through",
+        "constitutional identity (urn:ucos:ucko:…), which is UCKP-ART-05 and is derived, never allocated",
+        "the by_object index of the same ledger, which uga_engine.py allocates and which is not a declared mutation class"
+      ],
+      "$why_this_entry_was_missing": "CORPUS_REGISTRATION has named REG-AUTO-001 as its governed_by since the class was declared, but this array was never extended to match, so the register named an authority it did not list. The invariant 'every named authority resolves to an implementation that exists in the tree' still held — register.sh exists — which is why nothing failed and the asymmetry survived. Recorded as G-5 in the MUTATION CLASSIFICATION DETERMINATION RECORD and closed here. Existing authority semantics are unchanged: no entry above is altered and no governs claim is transferred."
+    }
+  ],
+  "mutation_classes": [
+    {
+      "class": "CONSTITUTIONAL_TRUTH",
+      "examples": [
+        "Population amendment",
+        "ConstitutionalMetadata creation"
+      ],
+      "governed_by": "UCOS-CMG-EXEC-000001"
+    },
+    {
+      "class": "SOURCE",
+      "examples": [
+        "engine/**/*.py",
+        "platform/**/*.py",
+        "intelligence/**/*.py",
+        "scripts/*.sh",
+        "pyproject.toml"
+      ],
+      "governed_by": "pre-commit → verify.sh → UCOS-RIB-001 → UCOS-AEE-001 → Phase 8 → Phase 9"
+    },
+    {
+      "class": "GENERATED_ARTIFACT",
+      "examples": [
+        "intelligence/UCOS-RIE-*.json",
+        "00-MASTER/UCOS-RIB-001/*.md",
+        "00-MASTER/UCOS-AEE-001/aee.json"
+      ],
+      "governed_by": "UCOS-GENERATED-ARTIFACT-REGISTRY-001 → producer → Phase 8 → Phase 9"
+    },
+    {
+      "class": "EXCLUSION",
+      "examples": [
+        ".gitignore"
+      ],
+      "governed_by": "UCOS-EXCLUSION-REGISTER-001 → UCOS-RIB-001 GATE-12"
+    },
+    {
+      "class": "REPOSITORY_STATE",
+      "examples": [
+        ".git/refs",
+        ".git/index",
+        "working tree contamination"
+      ],
+      "governed_by": "UCOS-RIB-001 GATE-02 / GATE-12"
+    },
+    {
+      "class": "CORPUS_REGISTRATION",
+      "examples": [
+        "00-BOOK/DATA/id-ledger.json (by_path allocation, category_seq, page_cursor)",
+        "00-BOOK/DATA/artifacts.json (corpus registration entries)",
+        "Universal ID + page-range allocation for a newly eligible artifact"
+      ],
+      "governed_by": "REG-AUTO-001 → 00-BOOK/tools/register.sh (ukb.py build --mint)",
+      "$why_this_class_was_missing": "Corpus registration was not a declared class at all, so this register's own invariant 'no mutation class is ungoverned' was VACUOUSLY satisfied for it. id-ledger.json is neither an authored input nor a generated output: it carries no generated_at stamp, it never appears as a canonical_path in generated-artifact-registry.json, and allocate() derives sequence numbers from arrival order, a monotone page cursor and a wall clock — so it cannot be recomputed from the tree. Because no authority claimed the class, nothing forbade a verification command from performing it, and register.sh --guard duly minted 140 permanent identities from inside ./verify.sh --full.",
+      "$mutation_is_explicit": "ukb.py build now OBSERVES by default and allocates only under --mint, which register.sh Phase 1 passes and no other caller does. The pattern is taken verbatim from uga_engine.py, which already threads mint: bool through epoch1_identity and build so that cmd_gate can call build(mint=False).",
+      "does_not_govern": [
+        "verify.sh — the verification plane observes CORPUS_REGISTRATION and may never perform it",
+        "any ./verify.sh mode (--fast, --change, --integration, --full)",
+        "constitutional identity (urn:ucos:ucko:…), which is UCKP-ART-05 and is derived, never allocated"
+      ]
+    },
+    {
+      "class": "GOVERNED_DECLARATION",
+      "examples": [
+        "00-MASTER/UISD-000001/uisd-declaration.json",
+        "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+        "00-MASTER/UAUE-000001/uaue-evolution.json",
+        "00-MASTER/UPF-000001/upf-provider.json",
+        "00-MASTER/UVI-000001/uvi-declaration.json",
+        "00-MASTER/UOBC-000001/uobc-birth-contract.json"
+      ],
+      "governed_by": "the owning programme authority declared by the artifact itself (owner-parameterised) → verify.sh (observation only) → Phase 8 → Phase 9",
+      "membership_criteria": [
+        "authored — absent from producer_homes and carrying no generated_at stamp",
+        "repository-controlled — tracked by version control",
+        "declaration-bearing — carries a declaration block (programme, manifest, authority, laws, axes or equivalent)",
+        "programme-owned — resolves to exactly one owning programme or universe",
+        "engine-consumed — read by an engine that holds no copy of its content",
+        "non-generated — absent from generated-artifact-registry.json canonical_path",
+        "non-executable — not **/*.py and not **/*.sh"
+      ],
+      "grants_only_mutation_ownership": "Class 6 defines WHO MAY MUTATE a governed declaration and nothing else. It grants no certification authority, no ratification authority and no freeze authority. CEP-009 I.1 reserves those: amendment authority 'SHALL confer no acceptance, certification, ratification, or freeze itself'. Certification remains with the existing chain and freeze with CEP-007.",
+      "does_not_govern": [
+        "certification, ratification or freeze of the artifact — reserved by CEP-009 I.1 and CEP-007",
+        "verify.sh, which observes a governed declaration and may never author one",
+        "artifacts that are generated, which remain GENERATED_ARTIFACT wherever they live"
+      ],
+      "$why_governed_by_is_owner_parameterised": "Every other class names a fixed authority chain because its members share one authority. Governed declarations do not: UISD-000001 owns its declaration, UCL-000001 owns the stage manifest, UAUE-000001 owns its evolution declaration. A fixed chain would have to name a party that owns none of them — SOURCE's chain observes every one of these files and owns none — which would make programme ownership invisible to mutation governance exactly where it is load-bearing. The authority is therefore read from the artifact, and CEP-009 I.3 supplies the constraint that keeps it single: amendment authority SHALL be single per artifact lineage.",
+      "$why_this_class_was_missing": "The register classified by example and its invariants quantified over classes rather than over artifacts, so an artifact belonging to no class violated nothing. uisd-declaration.json matched no example in any of the six classes, is not among the 345 canonical_path entries of generated-artifact-registry.json, and appears as input_closure to none of them — authored, owned, engine-consumed and unclassified. Six certified mutations to it proved execution validity and could not prove governance validity, because no stage of verify.sh evaluates mutation class. This is the same vacuity CORPUS_REGISTRATION records above, relocated rather than closed."
+    },
+    {
+      "class": "AUTHORED_DOCUMENT",
+      "examples": [
+        "adr/*.md (Architectural Decision Records)",
+        "00-CEP/*.md (constitutional instruments)",
+        "*-DETERMINATION-REPORT.md",
+        "*-ASSESSMENT-REPORT.md",
+        "*-CERTIFICATION-REPORT.md",
+        "*-CLOSURE-REPORT.md"
+      ],
+      "governed_by": "the authority the artifact declares of itself (owner-parameterised, read from an Authority or Deciders self-declaration) → verify.sh (observation only) → Phase 8 → Phase 9",
+      "membership_criteria": [
+        "markdown — the path ends .md",
+        "authored — absent from producer_homes",
+        "repository-controlled — tracked by version control",
+        "non-generated — absent from generated-artifact-registry.json canonical_path",
+        "self-declared-authority — carries an Authority or Deciders field in its own opening metadata block, bold-label or two-column-table form"
+      ],
+      "grants_only_mutation_ownership": "Class 7 defines WHO MAY MUTATE an authored governance document and nothing else. It grants no certification authority, no ratification authority and no freeze authority — the same CEP-009 I.1 reservation Class 6 states, applied to prose instead of declarations. Certification remains with the existing chain and freeze with CEP-007.",
+      "does_not_govern": [
+        "certification, ratification or freeze of the artifact — reserved by CEP-009 I.1 and CEP-007",
+        "verify.sh, which observes an authored document and may never author one",
+        "artifacts that are generated, which remain GENERATED_ARTIFACT wherever they live",
+        "JSON declarations already carrying a declaration block — those remain GOVERNED_DECLARATION; R-06 precedes R-08 and a JSON path never satisfies the markdown criterion"
+      ],
+      "$why_governed_by_is_owner_parameterised": "The same reasoning as GOVERNED_DECLARATION, applied to prose: an ADR's Deciders and a constitution's Authority are each self-declared by the artifact, not by a shared external chain, and CEP-009 I.3 keeps that authority single per lineage.",
+      "$why_this_class_was_missing": "The classification rules (EX-015/EX-016) covered paths and JSON declarations but named no rule for markdown. Every constitution, ADR, decision document, determination report and assessment report this program produces — including every ADR registered as a UCDA decision this session — resolved to the UNRESOLVED terminal, exactly the population the terminal's own $conformance_is_not_claimed_here note named as expected: 'root-level *.md including the Master Implementation Plan artifacts.' A tracked, authored, self-attributed governance document is not an unclassified artifact; this closes that gap the same way GOVERNED_DECLARATION closed it for JSON."
+    },
+    {
+      "class": "GOVERNED_ANALYSIS",
+      "examples": [
+        "*-DETERMINATION.md",
+        "*-DETERMINATION-REPORT.md",
+        "*-ANALYSIS.md",
+        "*-ASSESSMENT-DETERMINATION.md",
+        "PHASE-*-EXECUTION-COMPLETION-REPORT.md",
+        "MASTER-EXECUTION-ADMISSION-MATRIX.md",
+        "BLOCKER-ELIMINATION-DETERMINATION.md",
+        "100-PERCENT-IMPLEMENTATION-READINESS-CERTIFICATION.md"
+      ],
+      "governed_by": "the authority the analysis declares of itself (owner-parameterised, read from Authority field) → Repository Intelligence → verify.sh (observation only)",
+      "membership_criteria": [
+        "markdown — the path ends .md",
+        "authored — absent from producer_homes",
+        "repository-controlled — tracked by version control",
+        "non-generated — absent from generated-artifact-registry.json canonical_path",
+        "analysis-artifact — carries determination/analysis/assessment/execution/matrix/readiness/admission/blocker/gap in filename",
+        "self-declared-authority — carries Authority field in opening metadata block"
+      ],
+      "grants_only_mutation_ownership": "Class 8 defines WHO MAY MUTATE a governed analysis artifact and nothing else. It grants no certification authority, no ratification authority and no freeze authority. Certification remains with the existing chain.",
+      "does_not_govern": [
+        "certification, ratification or freeze of the artifact",
+        "verify.sh, which observes an analysis and may never author one",
+        "artifacts that are generated, which remain GENERATED_ARTIFACT"
+      ],
+      "$why_this_class_was_added": "Phase 1B Violation 4 resolution. Determination, analysis, and assessment artifacts are a distinct class from AUTHORED_DOCUMENT (which covers ADRs, constitutions, general documentation). Analysis artifacts follow specific governance patterns: they document findings, they reference evidence, they have determinations, and they are often superseded by newer analyses. Separating them into GOVERNED_ANALYSIS provides explicit governance for analytical work products.",
+      "$distinction_from_authored_document": "AUTHORED_DOCUMENT (Class 7) covers general governance prose (ADRs, constitutions, policy documents). GOVERNED_ANALYSIS (Class 8) covers analytical work products (determinations, assessments, execution reports, matrices). The distinction is functional: analyses document findings and evidence; documents declare policy and decisions. R-09 is declared at PRECEDENCE 8 and evaluates BEFORE R-08, so an analysis artifact is classified GOVERNED_ANALYSIS rather than the more general AUTHORED_DOCUMENT, and R-08 takes the authored documents that are not analyses. This is the only ordering under which either class is reachable: R-09's criteria are R-08's plus `analysis-artifact`, so the reverse order makes Class 8 provably empty. See `$why_r09_precedes_r08` on classification_rules. `platform/tests/test_mutation_classification.py` pins R-09 winning for an artifact that satisfies both, and pins a non-zero GOVERNED_ANALYSIS population over the live corpus so the class cannot silently become vacuous again."
+    }
+  ],
+  "classification_rules": {
+    "$why": "Until this section existed the register classified by EXAMPLE. Not one of its keys was a rule, pattern, glob, match, regex, path or predicate, so no artifact outside an example list resolved to a class — and the invariants quantified over classes rather than artifacts, which made that silence vacuously lawful. This section replaces example-matching with a decidable resolution.",
+    "properties": {
+      "deterministic": "Resolution is a pure function of the subject and the repository at one commit. It reads no clock, no environment and no caller ordering.",
+      "total": "Every mutation subject resolves. A subject matching no rule resolves to the declared terminal below — never to nothing, and never to a default.",
+      "unique": "Exactly one class. The predicates are written to be disjoint; the ordering is a tie-break of last resort and never a substitute for disjointness, because two classes would be two authorities and UCKP-ART-18 refuses that.",
+      "repository_evaluable": "Every predicate is decidable from tracked repository state alone — a path, a registry membership, or a declared field."
+    },
+    "$subject_domain": "The domain is MUTATION SUBJECTS, not only paths. Most subjects are tracked paths; CONSTITUTIONAL_TRUTH is not — its subjects are Population and ConstitutionalMetadata objects reached through engine/constitution/gateway.py. A rule set written over paths alone would silently exclude class 0, so the domain is stated rather than assumed.",
+    "evaluation": "ORDERED PRECEDENCE — rules are evaluated in the order declared, and the first rule whose predicate holds assigns the class.",
+    "rules": [
+      {
+        "precedence": 1,
+        "id": "R-01",
+        "class": "REPOSITORY_STATE",
+        "predicate": "subject is a path under .git/, or is working-tree contamination — present in the working tree and neither tracked nor governed by an exclusion register"
+      },
+      {
+        "precedence": 2,
+        "id": "R-02",
+        "class": "EXCLUSION",
+        "predicate": "subject is an exclusion instrument: .gitignore, or 00-BOOK/DATA/exclusion-register.json"
+      },
+      {
+        "precedence": 3,
+        "id": "R-03",
+        "class": "CORPUS_REGISTRATION",
+        "predicate": "subject is 00-BOOK/DATA/id-ledger.json or 00-BOOK/DATA/artifacts.json, or is a Universal ID or page-range allocation"
+      },
+      {
+        "precedence": 4,
+        "id": "R-04",
+        "class": "GENERATED_ARTIFACT",
+        "predicate": "subject is a canonical_path in 00-BOOK/DATA/generated-artifact-registry.json"
+      },
+      {
+        "precedence": 5,
+        "id": "R-05",
+        "class": "CONSTITUTIONAL_TRUTH",
+        "predicate": "subject is a Population or ConstitutionalMetadata object mutated through engine/constitution/gateway.py — an object predicate, not a path predicate"
+      },
+      {
+        "precedence": 6,
+        "id": "R-06",
+        "class": "GOVERNED_DECLARATION",
+        "predicate": "subject is a tracked path satisfying every one of the seven membership_criteria declared on the GOVERNED_DECLARATION class"
+      },
+      {
+        "precedence": 7,
+        "id": "R-07",
+        "class": "SOURCE",
+        "predicate": "subject is a tracked executable or build-configuration path: **/*.py, **/*.sh, or a build manifest such as pyproject.toml"
+      },
+      {
+        "precedence": 8,
+        "id": "R-09",
+        "class": "GOVERNED_ANALYSIS",
+        "predicate": "subject is a tracked, non-generated markdown path with (determination|analysis|assessment|execution|matrix|readiness|admission|blocker|gap) in the filename, satisfying the six membership_criteria declared on GOVERNED_ANALYSIS"
+      },
+      {
+        "precedence": 9,
+        "id": "R-08",
+        "class": "AUTHORED_DOCUMENT",
+        "predicate": "subject is a tracked, non-generated markdown path satisfying every one of the five membership_criteria declared on the AUTHORED_DOCUMENT class"
+      }
+    ],
+    "$why_r09_precedes_r08": "SPECIFIC BEFORE GENERAL — the ordering rule every rule cascade obeys, and the one this register briefly violated. R-09's six membership criteria are R-08's five plus `analysis-artifact`, so R-09 STRICTLY IMPLIES R-08. With R-08 evaluated first, R-09 could never fire for any subject in any repository state: GOVERNED_ANALYSIS was measured at 0 of 6751 tracked paths while `validate_rule_coverage` reported no problem, because a two-sided declared/implemented check cannot see a rule that is declared, implemented and unreachable. Correcting the ORDER rather than weakening either predicate keeps both classes mutually exclusive by construction — R-09 takes the analysis artifacts, R-08 takes the authored documents that are not analyses — and keeps every criterion as declared. It shifts no authority: both classes are owner-parameterised on the artifact's own Authority/Deciders self-declaration, so the artifacts that move from Class 7 to Class 8 keep exactly the mutation owner they already had. `validate_rule_reachability` in platform/repository_intelligence/mutation_classification.py now refuses this shape statically, so the defect cannot be reintroduced by an edit to this file.",
+    "$rules_expected_to_claim_no_tracked_path": {
+      "R-01": "REPOSITORY_STATE claims paths that EXIST but are ABSENT from version control. A corpus enumerated by `git ls-files` therefore contains none of its subjects by construction, and a non-zero count here would mean the tracked-path query itself is wrong. Measured over the working tree rather than the index, this rule does claim subjects.",
+      "R-05": "CONSTITUTIONAL_TRUTH's subjects are Population and ConstitutionalMetadata OBJECTS reached through the gateway, not paths — the class states this in $subject_domain and `_r05_constitutional_truth` refuses any PATH subject outright. It is excused from a path census because a path census is not its domain, never because it has nothing to claim."
+    },
+    "$why_this_excuse_list_exists": "`validate_rule_population` refuses any rule that claims no subject over the live corpus. Zero is not automatically a fault — these two rules claim zero for stated structural reasons — but an unexplained zero always is: R-09 sat at zero over all 6751 tracked paths while every report read green. Naming the exceptions here makes each one arguable and makes every other zero a refusal. An entry that stops being true is itself refused, so this list cannot rot into a blanket exemption.",
+    "terminal": {
+      "class": "UNRESOLVED",
+      "effect": "FAILS CLOSED",
+      "is_diagnostic_only": "UNRESOLVED is not a mutation class and confers no authority. It names the absence of one. A subject reaching it is an artifact nobody has assigned an authority to, and it must never be read as a permissive default.",
+      "$why_not_a_default": "A default class would silently confer an authority no owner claimed, which is precisely how CORPUS_REGISTRATION and GOVERNED_DECLARATION each came to be missing. The pattern is taken from generated-artifact-registry.json input_classifications, whose UNKNOWN reads: 'Unclassified. FAILS CLOSED — a canonical artifact may not depend on an input nobody has classified.'"
+    },
+    "$conformance_is_not_claimed_here": "This section DECLARES the rules. It does not assert that the repository satisfies them, and no such claim may be read from its presence. Evaluation is EX-016, migration of existing artifacts is EX-017, and the gate that measures conformance is EX-018 — none of which is performed by this change. Measured at the commit that introduced this section, the expected UNRESOLVED population is: root-level *.md including the Master Implementation Plan artifacts; the majority of 00-MASTER/**/*.json outside the examples above; and the by_object index of 00-BOOK/DATA/id-ledger.json, which allocates permanent identities from the shared category_seq counter and is not a declared class. The invariants below are therefore a declared TARGET, and the gate that will measure them is expected to fail on first run."
+  },
+  "gate": {
+    "artifact_id": "EX-018",
+    "module": "platform.repository_intelligence.mutation_gate",
+    "authority": "NONE — DERIVED TRUTH. The gate owns no mutation class, writes no register and decides no artifact's owner. H-06/CR-09 owns this boundary; EX-018 measures whether it is still decidable.",
+    "$why_the_laws_live_here": "THE LAWS ARE DATA, exactly as the rules are. A law table held as a constant in the gate module would be a second vocabulary beside this register, extendable only by a code edit — the closure form UCON-000001 names FIXED_DISPATCH_TABLE and whose declared migration is 'where it maps data to data, move it to a declaration'. Declaring them here means a new law is a register edit plus a check, and the gate refuses a declared law it cannot measure and a measured law nothing declares, in both directions.",
+    "exit_codes": {
+      "0": "OPEN — every law measured and held",
+      "1": "CLOSED — a law was measured and refused",
+      "2": "FAULT — this register was absent or unreadable, so no law could be measured. Deliberately distinct from 1: collapsing them would let an unreadable register pass as whichever answer happened to be convenient."
+    },
+    "$unresolved_is_reported_not_refused": "The terminal population is printed on every run and does not move the verdict. It is a governance question with an owner — 3612 of 6755 tracked paths reach it, almost all because they declare no Authority — and a gate that refused on it would be legislating a policy nobody has adopted. Reporting it means it cannot be quietly forgotten; refusing on it would mean this gate had taken a decision that is not its to take.",
+    "laws": [
+      {
+        "law_id": "MGB-L-01",
+        "title": "Every declared rule has a predicate, and every predicate a declared rule.",
+        "blocking": true,
+        "$why": "A declared rule nobody evaluates is prose; an implemented predicate no rule declares is dead code wearing the appearance of enforcement. Measured when R-09 was declared with no predicate at all, which made classify() return ERROR for EVERY subject in the corpus rather than only for an analysis artifact."
+      },
+      {
+        "law_id": "MGB-L-02",
+        "title": "No declared rule is unreachable, and precedence is a total order.",
+        "blocking": true,
+        "$why": "The side MGB-L-01 is structurally blind to. A rule whose criteria are a strict superset of an earlier rule's implies that rule, is reached second and can never fire in ANY repository state. R-09 sat in exactly that shape while coverage reported no problem and GOVERNED_ANALYSIS claimed 0 of 6751 tracked paths."
+      },
+      {
+        "law_id": "MGB-L-03",
+        "title": "Every declared rule claims a subject, or the register declares why it cannot.",
+        "blocking": true,
+        "$why": "Reachable in principle is not reached in fact. A criterion narrowed until nothing satisfies it passes every static check and still classifies nothing. Zero is excused only where $rules_expected_to_claim_no_tracked_path names the rule and states the reason, and a stale excuse is itself a refusal."
+      }
+    ]
+  },
+
+  "invariants": [
+    "Every mutation class names exactly one governing authority chain.",
+    "No mutation class is claimed by two authorities as primary.",
+    "No mutation class is ungoverned — there is no class whose governed_by is empty.",
+    "Every named authority resolves to an implementation that exists in the tree.",
+    "The EXCLUSION class is governed by a register, never by the exclusion mechanism itself — this is the UCOS-CL-001 correction stated as a boundary rule.",
+    "CORPUS_REGISTRATION is performed only under an explicit --mint invocation from the REG-AUTO-001 transaction; a verification path that allocates a Universal ID is a boundary violation regardless of which flag it was reached through.",
+    "Every tracked artifact resolves to exactly one mutation class. Failure: unclassified artifact.",
+    "No artifact resolves to more than one mutation class. Failure: authority ambiguity.",
+    "Every mutation class resolves to an owning authority. Failure: ungoverned mutation path."
+  ],
+  "recurrence_prevention": [
+    "The bypass at be46a300 was not a rule violation; it was an undeclared boundary. A source",
+    "mutation had no gateway to take and no written statement that it did not need one, so the",
+    "question could only be answered by reading the gateway's imports. This artifact makes the",
+    "answer declarative and testable: test_mutation_governance_boundary.py asserts that every",
+    "class is governed, that no class is doubly claimed, and that every named implementation",
+    "exists. A future mutation class added without an authority fails that test."
+  ]
+}

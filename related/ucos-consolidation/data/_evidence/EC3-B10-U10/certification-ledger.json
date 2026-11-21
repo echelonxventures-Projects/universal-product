@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "DMC-04",
+      "certification_id": "UCOS-CERT-DMC-04-29b2b5d6ede59cce",
+      "entry_hash": "d0e4ef567b76eb2b41b6bfec81c07ce538856f2e3597615bd5f794f3e77e42a8",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "29b2b5d6ede59ccea5ca3c1a54ea32a8441c7a9bfa76da12025a0c45eaaf0f31",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-RELATIONSHIP-ucos.data.relationship.foundation-def27c54fe382f98",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "d0e4ef567b76eb2b41b6bfec81c07ce538856f2e3597615bd5f794f3e77e42a8",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

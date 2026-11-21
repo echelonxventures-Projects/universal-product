@@ -1,0 +1,523 @@
+{
+  "catalog_id": "uapf.canonical",
+  "format": "uapf-pipeline-catalog/1.0.0",
+  "description": "UAPF-000001 canonical pipeline catalogue. AUTHORITY = NONE (DERIVED TRUTH): this file legislates nothing and owns no capability. It is the DECLARATION of the two pipelines the Universal Continuous Evolution & Implementation mission specifies, expressed as data so they are Repository Truth rather than conversation. Every stage, edge, gate, policy, obligation and capability below is read by platform.universal_pipeline.discovery and derived into an executable plan by platform.universal_pipeline.contracts.PipelinePlan; nothing here is interpreted by bespoke code. Adding a pipeline, a stage, an edge, a gate, a policy or a whole new pipeline CATEGORY is an edit to this file alone.",
+  "pipeline_types": [
+    {
+      "pipeline_type": "evolution",
+      "description": "admission of newly discovered concepts into canonical truth"
+    },
+    {
+      "pipeline_type": "implementation",
+      "description": "realization of an approved implementation unit in code"
+    }
+  ],
+  "pipelines": [
+    {
+      "pipeline_id": "uapf.evolution",
+      "pipeline_type": "evolution",
+      "version": "1.0.0",
+      "strategy": "parallel-waves",
+      "description": "The Continuous Evolution Pipeline. Every discovered item — knowledge, research, idea, architecture, capability, optimization, governance improvement, implementation opportunity, validation opportunity, automation opportunity, intelligence opportunity — enters here and is either admitted to canonical truth with an identity, or refused with a stated reason. The seventeen stages are the mission's seventeen acts, and the requires edges are the real evidential order between them: reuse analysis cannot precede canonical knowledge discovery, impact analysis cannot precede dependency discovery, and nothing may be registered before it is certified.",
+      "governance": {
+        "authority": "NONE (DERIVED TRUTH)",
+        "obligations": [
+          "repository.truth.synchronized"
+        ],
+        "evidence_required": true
+      },
+      "security": {
+        "required_permissions": [
+          "execute"
+        ],
+        "classification": "internal"
+      },
+      "capabilities": [
+        {
+          "capability_id": "capability.canonical-registration",
+          "contract": {
+            "name": "uapf.canonical.registration",
+            "version": "1.0.0"
+          },
+          "direction": "provides",
+          "description": "a concept admitted to canonical truth, bearing a canonical identity"
+        },
+        {
+          "capability_id": "capability.repository-truth",
+          "contract": {
+            "name": "uapf.repository.truth",
+            "version": "1.0.0"
+          },
+          "direction": "provides",
+          "description": "the synchronized account of what the repository canonically holds"
+        }
+      ],
+      "policies": [
+        {
+          "policy_id": "policy.knowledge-once",
+          "obligation": "knowledge.once",
+          "blocking": true,
+          "description": "Knowledge Once — a concept is homed exactly once; a second home is a duplicate, not a copy."
+        },
+        {
+          "policy_id": "policy.reuse-first",
+          "obligation": "reuse.first",
+          "blocking": true,
+          "description": "Reuse First — an existing canonical owner is extended, never paralleled."
+        },
+        {
+          "policy_id": "policy.no-parallel-authority",
+          "obligation": "authority.single",
+          "blocking": true,
+          "description": "No Parallel Authority — a concern has exactly one canonical authority."
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "context-assimilation",
+          "handler": "uapf.record",
+          "requires": [],
+          "description": "Assimilate the submitted context. The root stage: nothing can be reasoned about before it is read."
+        },
+        {
+          "stage_id": "repository-truth-discovery",
+          "handler": "uapf.record",
+          "requires": [
+            "context-assimilation"
+          ],
+          "description": "Discover what Repository Truth already holds, so the concept is judged against the repository and not against an assumption about it."
+        },
+        {
+          "stage_id": "canonical-knowledge-discovery",
+          "handler": "uapf.record",
+          "requires": [
+            "repository-truth-discovery"
+          ],
+          "description": "Locate the canonical knowledge bearing on the concept — the owner that would be extended if one exists."
+        },
+        {
+          "stage_id": "reuse-analysis",
+          "handler": "uapf.record",
+          "requires": [
+            "canonical-knowledge-discovery"
+          ],
+          "policies": [
+            "policy.reuse-first"
+          ],
+          "description": "Determine what is reused rather than created. Depends on canonical knowledge discovery because reuse cannot be assessed against knowledge not yet located."
+        },
+        {
+          "stage_id": "duplicate-detection",
+          "handler": "uapf.record",
+          "requires": [
+            "canonical-knowledge-discovery"
+          ],
+          "policies": [
+            "policy.knowledge-once"
+          ],
+          "description": "Detect an existing home for the concept. Runs beside reuse analysis: both read the same canonical knowledge and neither depends on the other."
+        },
+        {
+          "stage_id": "dependency-discovery",
+          "handler": "uapf.record",
+          "requires": [
+            "repository-truth-discovery"
+          ],
+          "description": "Discover what the concept depends on and what depends on it."
+        },
+        {
+          "stage_id": "impact-analysis",
+          "handler": "uapf.record",
+          "requires": [
+            "dependency-discovery"
+          ],
+          "description": "Derive the transitive blast radius from the discovered dependency edges."
+        },
+        {
+          "stage_id": "gap-analysis",
+          "handler": "uapf.record",
+          "requires": [
+            "reuse-analysis",
+            "duplicate-detection"
+          ],
+          "description": "What remains genuinely absent once reuse and duplication are accounted for. This is the stage that distinguishes a real gap from a thing that already exists elsewhere."
+        },
+        {
+          "stage_id": "conflict-detection",
+          "handler": "uapf.record",
+          "requires": [
+            "gap-analysis",
+            "impact-analysis"
+          ],
+          "policies": [
+            "policy.no-parallel-authority"
+          ],
+          "description": "Detect contradiction with existing canonical truth, including a second authority for one concern."
+        },
+        {
+          "stage_id": "constitutional-validation",
+          "handler": "uapf.gate",
+          "requires": [
+            "conflict-detection"
+          ],
+          "gates": [
+            {
+              "gate_id": "GATE.constitutional",
+              "obligation": "constitutional.baseline",
+              "blocking": true,
+              "description": "The constitutional baseline the concept is validated against must be named. Blocking: validation against an unnamed baseline is not validation."
+            }
+          ],
+          "description": "Validate the concept against the constitutional baseline."
+        },
+        {
+          "stage_id": "architectural-validation",
+          "handler": "uapf.gate",
+          "requires": [
+            "conflict-detection"
+          ],
+          "gates": [
+            {
+              "gate_id": "GATE.architectural",
+              "obligation": "architecture.baseline",
+              "blocking": true,
+              "description": "The architectural baseline must be named, for the same reason."
+            },
+            {
+              "gate_id": "GATE.regression",
+              "obligation": "architecture.regression.measured",
+              "blocking": false,
+              "description": "Advisory: architectural regression measured. Recorded as a finding rather than blocking, so a measurement can be taken before it is enforced."
+            }
+          ],
+          "description": "Validate the concept against the frozen architectural baseline."
+        },
+        {
+          "stage_id": "verification",
+          "handler": "uapf.gate",
+          "requires": [
+            "constitutional-validation",
+            "architectural-validation"
+          ],
+          "gates": [
+            {
+              "gate_id": "GATE.verification",
+              "obligation": "verification.independent",
+              "blocking": true,
+              "description": "Verification must be independent of the validation it verifies."
+            }
+          ],
+          "description": "Independently verify that both validations actually hold."
+        },
+        {
+          "stage_id": "certification",
+          "handler": "uapf.gate",
+          "requires": [
+            "verification"
+          ],
+          "gates": [
+            {
+              "gate_id": "GATE.certification",
+              "obligation": "certification.criteria",
+              "blocking": true,
+              "description": "The criteria certification is granted against must be declared."
+            }
+          ],
+          "description": "Certify the verified concept. Nothing downstream may proceed without this."
+        },
+        {
+          "stage_id": "canonical-identity-assignment",
+          "handler": "uapf.record",
+          "requires": [
+            "certification"
+          ],
+          "description": "Mint the concept's canonical identity. After certification, never before: an identity minted for an uncertified concept is permanent and unretractable."
+        },
+        {
+          "stage_id": "canonical-registration",
+          "handler": "uapf.record",
+          "requires": [
+            "canonical-identity-assignment"
+          ],
+          "description": "Register the concept in the canonical registry under its minted identity."
+        },
+        {
+          "stage_id": "repository-registration",
+          "handler": "uapf.record",
+          "requires": [
+            "canonical-registration"
+          ],
+          "description": "Bind the registered concept to its repository home, closing traceability."
+        },
+        {
+          "stage_id": "implementation-readiness-assessment",
+          "handler": "uapf.record",
+          "requires": [
+            "repository-registration"
+          ],
+          "description": "Assess readiness for the Build Pipeline. The terminal stage: only a constitutionally approved implementation unit leaves here."
+        }
+      ]
+    },
+    {
+      "pipeline_id": "uapf.build",
+      "pipeline_type": "implementation",
+      "version": "1.0.0",
+      "strategy": "parallel-waves",
+      "description": "The Continuous Build Pipeline. Consumes an implementation unit the Evolution Pipeline certified as READY and carries it to a synchronized repository. It REQUIRES capability.canonical-registration, which uapf.evolution PROVIDES — so the dependency between the two pipelines is derived from these capability declarations and is never stated twice. The seven synchronization stages run in one wave because they update seven independent projections of the same committed change; the repository validation stage then depends on all seven, which is what makes ./verify.sh the last word rather than a parallel opinion.",
+      "governance": {
+        "authority": "NONE (DERIVED TRUTH)",
+        "obligations": [
+          "implementation.unit.certified"
+        ],
+        "evidence_required": true
+      },
+      "security": {
+        "required_permissions": [
+          "execute"
+        ],
+        "classification": "internal"
+      },
+      "capabilities": [
+        {
+          "capability_id": "capability.canonical-registration",
+          "contract": {
+            "name": "uapf.canonical.registration",
+            "version": "1.0.0"
+          },
+          "direction": "requires",
+          "description": "the Build Pipeline only accepts units the Evolution Pipeline registered"
+        },
+        {
+          "capability_id": "capability.repository-truth",
+          "contract": {
+            "name": "uapf.repository.truth",
+            "version": "1.0.0"
+          },
+          "direction": "requires",
+          "description": "synchronization targets the canonical account of repository truth"
+        },
+        {
+          "capability_id": "capability.verified-implementation",
+          "contract": {
+            "name": "uapf.verified.implementation",
+            "version": "1.0.0"
+          },
+          "direction": "provides",
+          "description": "an implementation validated, verified, certified and synchronized"
+        }
+      ],
+      "policies": [
+        {
+          "policy_id": "policy.gateway-only",
+          "obligation": "gateway.admitted",
+          "blocking": true,
+          "description": "Nothing bypasses the gateway — execution requires an admission."
+        },
+        {
+          "policy_id": "policy.forward-only",
+          "obligation": "correction.forward-only",
+          "blocking": true,
+          "description": "Forward-Only Compensation — correction is a new change, never an edit of recorded truth."
+        }
+      ],
+      "stages": [
+        {
+          "stage_id": "discover-dependencies",
+          "handler": "uapf.record",
+          "requires": [],
+          "description": "Discover the unit's dependency closure before anything is reserved."
+        },
+        {
+          "stage_id": "reserve-execution",
+          "handler": "uapf.gate",
+          "requires": [
+            "discover-dependencies"
+          ],
+          "policies": [
+            "policy.gateway-only"
+          ],
+          "gates": [
+            {
+              "gate_id": "GATE.reservation",
+              "obligation": "gateway.admitted",
+              "blocking": true,
+              "description": "The unit must hold a gateway admission before execution is reserved."
+            }
+          ],
+          "description": "Reserve the unit for execution. The reservation is the cut, and the cut is single-wave."
+        },
+        {
+          "stage_id": "execute-implementation",
+          "handler": "uapf.record",
+          "requires": [
+            "reserve-execution"
+          ],
+          "description": "Realize the unit in code."
+        },
+        {
+          "stage_id": "execute-integration",
+          "handler": "uapf.record",
+          "requires": [
+            "execute-implementation"
+          ],
+          "description": "Integrate the realization with the existing canonical structures."
+        },
+        {
+          "stage_id": "execute-validation",
+          "handler": "uapf.gate",
+          "requires": [
+            "execute-integration"
+          ],
+          "gates": [
+            {
+              "gate_id": "GATE.validation",
+              "obligation": "validation.rules.executed",
+              "blocking": true,
+              "description": "The validation rule set actually executed must be named."
+            }
+          ],
+          "description": "Validate the integrated implementation against declared rules."
+        },
+        {
+          "stage_id": "execute-verification",
+          "handler": "uapf.gate",
+          "requires": [
+            "execute-validation"
+          ],
+          "gates": [
+            {
+              "gate_id": "GATE.verification",
+              "obligation": "verification.independent",
+              "blocking": true,
+              "description": "Verification is independent of the validation it verifies."
+            }
+          ],
+          "description": "Verify that the validation holds."
+        },
+        {
+          "stage_id": "execute-certification",
+          "handler": "uapf.gate",
+          "requires": [
+            "execute-verification"
+          ],
+          "gates": [
+            {
+              "gate_id": "GATE.certification",
+              "obligation": "certification.criteria",
+              "blocking": true,
+              "description": "The certification criteria must be declared."
+            }
+          ],
+          "description": "Certify the verified implementation. Synchronization follows certification, never precedes it."
+        },
+        {
+          "stage_id": "update-repository-truth",
+          "handler": "uapf.record",
+          "requires": [
+            "execute-certification"
+          ],
+          "policies": [
+            "policy.forward-only"
+          ],
+          "description": "Synchronize Repository Truth."
+        },
+        {
+          "stage_id": "update-registries",
+          "handler": "uapf.record",
+          "requires": [
+            "execute-certification"
+          ],
+          "description": "Synchronize the registries."
+        },
+        {
+          "stage_id": "update-dependency-graph",
+          "handler": "uapf.record",
+          "requires": [
+            "execute-certification"
+          ],
+          "description": "Synchronize the dependency graph."
+        },
+        {
+          "stage_id": "update-capability-graph",
+          "handler": "uapf.record",
+          "requires": [
+            "execute-certification"
+          ],
+          "description": "Synchronize the capability graph."
+        },
+        {
+          "stage_id": "update-ontology",
+          "handler": "uapf.record",
+          "requires": [
+            "execute-certification"
+          ],
+          "description": "Synchronize the ontology."
+        },
+        {
+          "stage_id": "update-taxonomy",
+          "handler": "uapf.record",
+          "requires": [
+            "execute-certification"
+          ],
+          "description": "Synchronize the taxonomy."
+        },
+        {
+          "stage_id": "update-evidence",
+          "handler": "uapf.record",
+          "requires": [
+            "execute-certification"
+          ],
+          "description": "Record the evidence."
+        },
+        {
+          "stage_id": "update-traceability",
+          "handler": "uapf.record",
+          "requires": [
+            "execute-certification"
+          ],
+          "description": "Close traceability from identity to artefact."
+        },
+        {
+          "stage_id": "execute-repository-validation",
+          "handler": "uapf.gate",
+          "requires": [
+            "update-repository-truth",
+            "update-registries",
+            "update-dependency-graph",
+            "update-capability-graph",
+            "update-ontology",
+            "update-taxonomy",
+            "update-evidence",
+            "update-traceability"
+          ],
+          "gates": [
+            {
+              "gate_id": "GATE.repository",
+              "obligation": "repository.validation.executed",
+              "blocking": true,
+              "description": "Repository validation must have executed over every synchronized projection."
+            }
+          ],
+          "description": "Validate the repository as a whole, after every projection is synchronized."
+        },
+        {
+          "stage_id": "execute-verify-sh",
+          "handler": "uapf.gate",
+          "requires": [
+            "execute-repository-validation"
+          ],
+          "gates": [
+            {
+              "gate_id": "GATE.verify-sh",
+              "obligation": "verify.sh.passed",
+              "blocking": true,
+              "description": "./verify.sh — the canonical verification entry point — must have passed. The terminal blocking gate of the Build Pipeline."
+            }
+          ],
+          "description": "Run the canonical verification entry point. The last word on whether the change stands."
+        }
+      ]
+    }
+  ]
+}

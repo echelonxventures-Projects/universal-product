@@ -1,0 +1,115 @@
+name: BASELINE-001 Baseline Inheritance Gate
+
+# WHAT THIS ADDS: nothing constitutional. BASELINE-001 is the already-located owner of certified
+# constitutional baselines, and its register, origin record, certificate and continuation
+# classification are APPEND-ONLY records. This workflow runs the MEASUREMENT that derives the
+# baseline chain from those records. It creates no baseline, advances no baseline, certifies
+# nothing, ratifies nothing and freezes nothing; AUTHORITY = NONE (DERIVED TRUTH).
+#
+# WHAT IT BINDS TO: the baseline model is owned by 00-CEP/CEP-007 Article VIII (concern
+# CMG-DLG-07); the naming scheme and the advancement criteria by 00-MASTER/RELEASE-001 §3.1/§3.3;
+# the inheritance and lineage rules by 00-CMG/CMG-000001 Articles XXXIX and XXVIII; the evolution
+# version history by 00-MASTER/EVOLUTION-001 §6; the ratification ceiling by 00-CEP/CEP-006 I.4.
+# None of those is created, moved, split or restated here. The gate is bound into the aggregate
+# constitutional gate as G-23 (CK-BASELINE, CK-BASELINE-SELF), so it is also executed there.
+#
+# RECORD IMMUTABILITY is proved mechanically, not asserted: --check-record-immutability requires
+# write set ∩ canonical record set = ∅ AND that every record present in the programme home is a
+# member of the protected set, so the protected set cannot be narrowed to make room for a
+# generated page. The replay job additionally proves the committed records were not touched.
+#
+# EXIT SEMANTICS: 0 gate OPEN · 1 gate CLOSED · 2 fail-closed abort (no verdict may be asserted).
+# STANDING: CERTIFIED-PROVISIONAL; Tier T1 VACANT (VAC-01 · CMG-OQ-02 · UCCEP-F-004).
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: baseline-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Declaration integrity — every owner, anchor and claimant resolves and is protected
+        run: python3 00-MASTER/BASELINE-001/baseline_engine.py --check-declaration
+      - name: Zero enumeration — no discovered baseline, release or identity is a literal in the engine
+        run: python3 00-MASTER/BASELINE-001/baseline_engine.py --check-no-enumeration
+      - name: Write scope — every emitted target resolves inside the programme home
+        run: python3 00-MASTER/BASELINE-001/baseline_engine.py --check-write-scope
+      - name: Determinism — two renders are byte-identical and the seal is stable
+        run: python3 00-MASTER/BASELINE-001/baseline_engine.py --check-determinism
+      - name: Knowledge once — no baseline is defined in the declaration; every one is discovered
+        run: python3 00-MASTER/BASELINE-001/baseline_engine.py --check-knowledge-once
+      - name: Record immutability — write set intersect canonical record set is empty
+        run: python3 00-MASTER/BASELINE-001/baseline_engine.py --check-record-immutability
+      - name: No elevation — no baseline is raised above the standing its record carries
+        run: python3 00-MASTER/BASELINE-001/baseline_engine.py --check-no-elevation
+
+  baseline-gate:
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Baseline Inheritance Gate (fail-closed)
+        run: python3 00-MASTER/BASELINE-001/baseline_engine.py --gate
+      - name: Replay — the committed registers are the product of the declaration
+        run: |
+          python3 00-MASTER/BASELINE-001/baseline_engine.py --render --quiet
+          git diff --exit-code -- 00-MASTER/BASELINE-001 \
+            || { echo "BASELINE-001 REPLAY DRIFT — committed registers are not the product of the declaration" >&2; exit 1; }
+      - name: Append-only proof — no canonical baseline record was modified by the run
+        run: |
+          git diff --exit-code -- \
+            00-MASTER/BASELINE-001/BASELINE-REGISTRY.md \
+            00-MASTER/BASELINE-001/CERTIFIED-BASELINE-RECORD.md \
+            00-MASTER/BASELINE-001/FINAL-BASELINE-CERTIFICATE.md \
+            00-MASTER/BASELINE-001/REMAINING-ROADMAP-CLASSIFICATION.md \
+            || { echo "BASELINE-001 APPEND-ONLY VIOLATION — a canonical record was modified" >&2; exit 1; }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: baseline-001-registers
+          if-no-files-found: warn
+          path: |
+            00-MASTER/BASELINE-001/*.md
+            00-MASTER/BASELINE-001/baseline.json

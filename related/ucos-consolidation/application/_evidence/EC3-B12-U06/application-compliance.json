@@ -1,0 +1,76 @@
+{
+  "compliance_format": "ucos-application-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "interaction-typed",
+        "interaction-identified-objectbound"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UAL-03), identified and objecthood-bound (UAL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UAL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "interaction-presents-data"
+      ],
+      "id": "C3",
+      "note": "the interaction presents its exchanged data as DF-2 data by reference (AMR-14 / INT-06 / UAL-13); the capability-delivery-via-SF-2 clause (UAL-06) is scoped to the Feature/Capability units (AMC-02/04) — an interaction engages a feature and presents its data, it does not itself deliver capability by consuming operations",
+      "requirement": "Delivers capability via SF-2 operations under contract; I/O is DF-2 by ref (UAL-06/13).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "interaction-classified",
+        "interaction-direction-decidable",
+        "interaction-surface-abstract"
+      ],
+      "id": "C4",
+      "note": "materially exercised at the interaction level: the interaction is typed and declares a decidable direction (input/command/query/response) over an abstract presentation surface (UAL-11 / INT-01/03/07, THE governing law of AMC-06); module boundedness (UAL-07) and feature-contract explicitness (UAL-08) are scoped to the Module (AMC-03) and Feature (AMC-04) units",
+      "requirement": "Modules bounded, features explicit, interactions typed (UAL-07/08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "founding-acyclic",
+        "meta-relationships-closed",
+        "interaction-engages-feature"
+      ],
+      "id": "C5",
+      "note": "the interaction engages its feature by ENG-005 reference through the founding engaged-through edge (AMR-05, Feature → Interaction) with no self-founding, so its founding graph is acyclic (AMK-03 / INT-C3); structural module/application composition (UAL-09) is the Composition concern (AMC-08)",
+      "requirement": "Composition uses ENG-005 references; founding structure acyclic (UAL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "behavior-by-reference",
+        "lifecycle-valid",
+        "interaction-holds-state"
+      ],
+      "id": "C6",
+      "note": "exercised at the interaction level: the interaction binds the frozen RL-F2 event/state concern by reference (behaves-as, AMR-11) and holds/advances interaction/session state forward-only (holds-state, AMR-06) — UAL-10/12; it re-founds no runtime or state concern",
+      "requirement": "Workflow/process and state bind to RL-F2/SF-2 by reference (UAL-10/12).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive",
+        "technology-independence"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (UAL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "APPLICATION-001 §12",
+  "target_id": "UCOS-INTERACTION-ucos.application.interaction.foundation-c6a5f6c39a7da8ee"
+}

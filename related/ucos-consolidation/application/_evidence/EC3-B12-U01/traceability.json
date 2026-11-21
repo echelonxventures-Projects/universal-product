@@ -1,0 +1,45 @@
+{
+  "backward": [
+    "AMC-01",
+    "APPLICATION-005",
+    "APPLICATION-001",
+    "ARCH-APPLICATION-001",
+    "12-APPLICATION@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-APPLICATION-ucos.application.foundation-b93c1ea878f442ea",
+    "EC3-B12-U01-VALIDATION-EVIDENCE",
+    "EC3-B12-U01-CCE-CERTIFICATION",
+    "EC3-B12-U01-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "3899a1f",
+  "meta_class": "AMC-01",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "PL-F2",
+    "DF-2",
+    "SF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "presented/represented data by reference (AMR-14) — scoped to Feature unit (AMC-04)",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the application)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity; no parallel model)",
+    "ENG-004": "application.application_meta.ApplicationKind + type_tag (ENG-004 typing, by ref)",
+    "ENG-005": "reference identifiers (capability/behavior/composition refs; no new construct)",
+    "PL-F2": "experience composition bound by reference (AMR-12; PLATFORM-009); none redefined",
+    "RL-F2": "state/interaction/workflow behavior bound by reference (AMR-11/06); none redefined",
+    "SF-2": "delivered capability via contracted operation by ref (AMR-13) — scoped to Feature"
+  },
+  "target_id": "UCOS-APPLICATION-ucos.application.foundation-b93c1ea878f442ea",
+  "trace_format": "ucos-application-traceability/1.0.0",
+  "unit": "EC3-B12-U01"
+}

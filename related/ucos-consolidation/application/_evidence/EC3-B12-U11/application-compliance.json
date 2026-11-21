@@ -1,0 +1,74 @@
+{
+  "compliance_format": "ucos-application-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "metamodel-typed",
+        "metamodel-identified"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UAL-03), identified and objecthood-bound (UAL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UAL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "application-value-fidelity"
+      ],
+      "id": "C3",
+      "requirement": "Delivers capability via SF-2 operations under contract; I/O is DF-2 by ref (UAL-06/13).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-class-single",
+        "meta-relationships-closed",
+        "metamodel-totality",
+        "metamodel-map-resolves"
+      ],
+      "id": "C4",
+      "requirement": "Modules bounded, features explicit, interactions typed (UAL-07/08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-relationships-closed",
+        "founding-acyclic",
+        "metamodel-map-resolves"
+      ],
+      "id": "C5",
+      "materially_exercised": true,
+      "note": "the Universal Application Meta-Model closes over exactly the fourteen meta-relationships AMR-01…14 (AMI-02) — including composed-of(AMR-02), groups(AMR-03), engaged-through(AMR-05), and assembled-by(AMR-07) — keeps the founding meta-graph (AMR-02/03/05) acyclic (AMI-04), and resolves every map edge within the closure or the frozen EL-1/RL-F2/PL-F2/SF-2/DF-2 foundations (§9) — each meta-relationship being an ENG-005 reference introducing no new connection construct (UAL-09 at the meta level)",
+      "requirement": "Composition uses ENG-005 references; founding structure acyclic (UAL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity",
+        "metamodel-map-resolves"
+      ],
+      "id": "C6",
+      "requirement": "Workflow/process and state bind to RL-F2/SF-2 by reference (UAL-10/12).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "technology-independence",
+        "non-constitutive"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (UAL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "APPLICATION-001 §12",
+  "target_id": "UCOS-METAMODEL-ucos.application.metamodel.universal-2c2de069de3e71ff"
+}

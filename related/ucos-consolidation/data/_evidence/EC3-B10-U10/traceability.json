@@ -1,0 +1,40 @@
+{
+  "backward": [
+    "DMC-04",
+    "DATA-008",
+    "DATA-005",
+    "DATA-001",
+    "ARCH-DATA-001",
+    "10-DATA@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-RELATIONSHIP-ucos.data.relationship.foundation-def27c54fe382f98",
+    "EC3-B10-U10-VALIDATION-EVIDENCE",
+    "EC3-B10-U10-CCE-CERTIFICATION",
+    "EC3-B10-U10-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "30a2a02",
+  "meta_class": "DMC-04",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005"
+  ],
+  "substrate_reuse": {
+    "DMC-02": "data.entity.Entity — a CERTIFIED relates endpoint (DMR-03); referenced only",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the relationship record)",
+    "ENG-004": "data.relationship_meta.RelationshipKind + type_tag (ENG-004 typing discipline)",
+    "ENG-005": "related-endpoint + RUNTIME navigation identity references (DMR-03/11)",
+    "RL-F2": "RUNTIME policy — navigation/integrity-check bound by reference (DMR-11 / §7)",
+    "founding_root": "EC3-B10-U02 (DMC-03; UCOS-CERT-DMC-03-c57d36d3dbb2763d) → EC3-B10-U01 (DMC-01; UCOS-CERT-DMC-01-51e5964b38741e30) — transitive relates root",
+    "founding_unit": "EC3-B10-U03 (DMC-02; UCOS-CERT-DMC-02-def41470d3bac196) — relates endpoints, DMR-03"
+  },
+  "target_id": "UCOS-RELATIONSHIP-ucos.data.relationship.foundation-def27c54fe382f98",
+  "trace_format": "ucos-data-traceability/1.0.0",
+  "unit": "EC3-B10-U10"
+}

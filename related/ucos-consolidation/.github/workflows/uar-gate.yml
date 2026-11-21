@@ -1,0 +1,136 @@
+name: UCOS-UAR-001 Analysis Registry Gate
+
+# UCOS-UAR-001 — the Universal Analysis Registry (which analyses exist and who owns them).
+#
+# WHY THIS WORKFLOW EXISTS. `IMPLEMENT-001` D00 `EB-01` measured this programme as
+# PARTIALLY REALIZED: the declaration, the engine and the Makefile targets existed, but no
+# automated plane executed them. The engine was reachable only by a human typing `make`,
+# which `REG-AUTO-001` P7 forbids as a basis for enforcement ("enforceability by tooling
+# gates, not author discipline") and which `00-MASTER/UCCEP-000000/uccep-bindings.json`
+# classifies as MANUAL governance — itself a finding. This workflow is the discharge named
+# by D02 §4: ">=1 Makefile target AND >=1 workflow AND >=1 test".
+#
+# This workflow adds NO new validator, engine, registry or capability. It runs the engine
+# that already exists over the declaration that already exists. Adding an analysis is an
+# entry in 00-MASTER/UCOS-UAR-001/uar-analyses.json and requires no change here — no
+# analysis, owner, kind or home is enumerated in this file.
+#
+# AUTHORITY = NONE (DERIVED TRUTH). Stdlib only; the engine writes nothing outside
+# 00-MASTER/UCOS-UAR-001/.
+#
+# Exit semantics of the gate:
+#   0  every declared analysis has a unique id and a resolving home (gate OPEN)
+#   1  an id collides or a home no longer resolves (gate CLOSED)
+#   2  fail-closed abort — the declaration is missing or declares nothing, so no verdict
+#      may be asserted
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uar-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: UAR self-guards (declaration · zero-enumeration · write-scope · determinism)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Declaration integrity (every analysis has a unique id and a resolving home)
+        run: python3 00-MASTER/UCOS-UAR-001/uar_engine.py --check-declaration
+
+      - name: Zero-enumeration / data-driven proof (no declared id is hardcoded in the engine)
+        run: python3 00-MASTER/UCOS-UAR-001/uar_engine.py --check-no-enumeration
+
+      - name: Forbidden-write guard (every write target resolves inside the programme home)
+        run: python3 00-MASTER/UCOS-UAR-001/uar_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical rendering across runs, no timestamps)
+        run: python3 00-MASTER/UCOS-UAR-001/uar_engine.py --check-determinism
+
+  registry-gate:
+    name: Analysis Registry Gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Analysis Registry Gate (fail-closed)
+        run: python3 00-MASTER/UCOS-UAR-001/uar_engine.py --gate
+
+      # The gate regenerates uar.json as a side effect of gating. A drift here means the
+      # committed register is not the product of the committed declaration.
+      - name: Replay drift (the committed register is the product of the declaration)
+        run: |
+          git diff --exit-code -- 00-MASTER/UCOS-UAR-001 \
+            || { echo "UCOS-UAR-001 REPLAY DRIFT — the committed register is not the product of the declaration" >&2; exit 1; }
+          echo "UCOS-UAR-001 replay: no drift"
+
+      # THE JOB RAN PYTEST WITHOUT INSTALLING IT. python3 on the runner is the hosted
+      # interpreter, which carries no pytest, so this step failed with "No module named
+      # pytest" — an environment fault reported as a registry-binding failure. It passes
+      # locally only because a developer's venv already has the toolchain, which is the
+      # same local-versus-CI divergence EIP-018 records for verify.sh itself.
+      - name: Install the pinned test toolchain
+        run: |
+          python -m pip install --disable-pip-version-check \
+            "pytest==8.3.4" "pytest-cov==6.0.0" "coverage==7.15.2"
+
+      # --no-cov because pyproject's addopts carry a 90% floor derived over the whole
+      # corpus; one test file cannot reach it and would fail for measuring less than
+      # everything, exactly as the determinism job did.
+      - name: Registry binding test (the gate is reachable in both directions)
+        run: python -m pytest engine/tests/unit/test_uar_analysis_registry.py -q --no-cov
+
+      - name: Publish the analysis registry determination
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uar-analysis-registry
+          path: |
+            00-MASTER/UCOS-UAR-001/uar.json
+            00-MASTER/UCOS-UAR-001/uar-analyses.json
+          if-no-files-found: warn

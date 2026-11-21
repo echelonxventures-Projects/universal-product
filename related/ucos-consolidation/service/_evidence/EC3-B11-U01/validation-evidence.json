@@ -1,0 +1,201 @@
+{
+  "accepted": true,
+  "blocking_failures": [],
+  "blueprint_id": "SMC-01",
+  "checks_run": [
+    "composition-by-reference",
+    "execution-by-reference",
+    "foundation-reuse-integrity",
+    "founding-acyclic",
+    "lifecycle-valid",
+    "meta-class-single",
+    "meta-constraints",
+    "meta-relationships-closed",
+    "non-constitutive",
+    "provisional-state-disclosure",
+    "service-classified",
+    "service-identified-objectbound",
+    "service-realizes-capability",
+    "service-typed",
+    "service-value-fidelity",
+    "technology-independence",
+    "traceability-rooted"
+  ],
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 17,
+    "total": 17
+  },
+  "evidence_format": "ucos-validation-evidence/1.0.0",
+  "findings": [
+    {
+      "check_id": "composition-by-reference",
+      "details": {
+        "composition_ref": "ENG-005:PL-F2:PLATFORM-008.service"
+      },
+      "message": "composition-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "execution-by-reference",
+      "details": {
+        "behavior_ref": "ENG-005:RL-F2:runtime.execution"
+      },
+      "message": "execution-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "PL-F2",
+          "DF-2"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "lifecycle-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "SMC-01"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "SMK-01",
+          "SMK-05",
+          "SMK-06"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "SMR-01",
+          "SMR-10",
+          "SMR-11",
+          "SMR-12"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "service-classified",
+      "details": {
+        "kind": "Atomic-Service"
+      },
+      "message": "service-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "service-identified-objectbound",
+      "details": {
+        "service_id": "UCOS-SERVICE-ucos.service.foundation-3e18fbbb2b7bcac8"
+      },
+      "message": "service-identified-objectbound satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "service-realizes-capability",
+      "details": {
+        "capability_ref": "ENG-005:CAPABILITY:ucos.service.capability.foundation"
+      },
+      "message": "service-realizes-capability satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "service-typed",
+      "details": {
+        "type_tag": "ucos.service.foundation"
+      },
+      "message": "service-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "service-value-fidelity",
+      "details": {
+        "value_digest": "3e18fbbb2b7bcac892bf729eed45345857bd2f4a2fca6d56d54c49ee845f7a98"
+      },
+      "message": "service-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "technology-independence",
+      "details": {},
+      "message": "technology-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 5
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-SERVICE-ucos.service.foundation-3e18fbbb2b7bcac8",
+  "verdict": "pass"
+}

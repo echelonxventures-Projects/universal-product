@@ -1,0 +1,281 @@
+name: UAUE-000001 Autonomous Universal Evolution Gate
+
+# UAUE-000001 — the evolution transaction plane.
+#
+# This workflow adds NO lifecycle, registry, authority, certifier, identity system or history
+# store. Every one of those already has a located owner, and the declaration at
+# 00-MASTER/UAUE-000001/uaue-evolution.json binds each position of the perpetual evolution cycle
+# to that owner by pointer:
+#
+#   engine/uckp/evolution.py      owns the cycle itself — which stages exist, in what order, and
+#                                 that none is terminal (UCKP-ART-14 enforcing INV-13). The stage
+#                                 set is READ from there at run time and declared nowhere here.
+#   engine/nucleus/evolution.py   owns the identity derivation rule every evolution object reuses.
+#                                 Nothing is minted; identity is derived from meaning, so the same
+#                                 candidate observed twice does not fork the history.
+#   engine/constitution/gateway.py is the ONLY path by which repository truth may be mutated.
+#                                 This register records that an execution was AUTHORISED to travel
+#                                 it and never that a mutation happened.
+#   engine/uckp/vocabulary.py     owns the open stage vocabulary, which is what allows an unknown
+#                                 subject to occupy a stage nobody has legislated.
+#
+# WHY THIS RUNS IN CI. Epoch 3 left eleven deterministic phase functions and no conductor: the
+# traversal existed only inside a test helper, which meant the claim being made — that this
+# repository can evolve an arbitrary subject without being told what it is — was demonstrated by
+# the test suite rather than by the platform. Epoch 4 moved the traversal and the fixed-point
+# settlement into engine/uaue/controller.py, and this workflow is what keeps them true over a
+# fresh checkout of the committed HEAD rather than over one developer's working tree.
+#
+# WHAT THE GATE PROVES, and the defect class each obligation closes:
+#   1  the declaration rehydrates into a usable authority — otherwise every other answer here is
+#      unattributable rather than merely unknown;
+#   2  every declared position resolves to an owner that exists, binds the symbols it is read
+#      through, and names a WIRED gate — a gate that exists only as a string in a declaration
+#      discharges nothing, which is exactly the defect this workflow's own target closed;
+#   3  every canonical stage of the cycle is claimed by exactly one position — zero would be an
+#      ungoverned stage of a governed cycle, two would be two authorities over one stage;
+#   4  every dependency resolves and every position dependency points at an earlier position, so
+#      the loop is orderable and no effect is predicted from something that is not there;
+#   5  conducting the same candidates twice produces byte-identical runs, identical run identities
+#      and the same number of settlement rounds — determinism about the PATH, not only the
+#      destination, or the settlement bound would be unmeasurable;
+#   6  the declared UNKNOWN subject — an object in no registry, of no declared class, owned by
+#      nobody — traverses every position to a settled, certified run, requiring no new registry,
+#      authority, engine, schema, governance patch or architecture change. This is the only
+#      obligation that measures what the programme is FOR, and it is measured by conducting it;
+#   7  every declared MANDATORY invariant is measured against its declared expectation — a
+#      blocking invariant nothing evaluates is of UNKNOWN compliance and must never be presumed
+#      satisfied, so an unmeasurable measure closes the gate rather than passing it;
+#   8  every declared REGISTER has an implemented renderer and renders bytes that reproduce on
+#      another process and another machine. Until Epoch 6 the declaration named eighteen registers
+#      and nothing produced any of them, so every certification proof was measured in memory and
+#      discarded — a certification nobody can read is indistinguishable from one nobody performed;
+#   9  the repository's own verification entry point INVOKES this gate fail-closed. Three positions
+#      name ./verify.sh as the gate that closes them, and while the wiring measurement asked only
+#      whether that file exists, the gate could report every declared gate wired over a pipeline
+#      that had never heard of this programme. A gate invoked only by hand discharges nothing.
+#  10  every declared EXIT CRITERION of every implementation phase is measured against its declared
+#      expectation. Fifteen criteria were declared, loaded and rendered while nothing evaluated
+#      them, so the programme's own definition of done was prose that read identically whether it
+#      held or not — an unmeasured obligation is of UNKNOWN compliance, never a satisfied one.
+#
+# NON-VACUITY. A gate that cannot fail measures nothing, so the suite drives each obligation to
+# CLOSED by an explicit mutation: an absent owner home, an unwired gate, an unresolved dependency,
+# an unpermitted execution path, an unmeasurable criterion, a starved settlement ceiling. Eight
+# distinct refusals are exercised, including all seven the mission requires.
+#
+# EXECUTION IS AUTHORISATION ONLY. The controller performs no mutation and holds no write path:
+# ``execution_authorized`` and ``mutation_performed`` are carried as separate fields precisely so
+# that a reader cannot mistake one for the other, and the suite asserts the second is false. The
+# single module of the package that writes anything writes one declared projection inside this
+# programme's own operational home, and a write-scope test measures that bound.
+#
+# Exit codes:
+#   0  every obligation satisfied (gate OPEN)
+#   1  an obligation was measured and refused (gate CLOSED), or the committed projection drifted
+#   2  fail-closed abort — the declaration is unusable, so no verdict may be asserted
+#
+# Standing: CERTIFIED-PROVISIONAL. AUTHORITY = NONE (DERIVED TRUTH). This programme legislates
+# nothing; where its register and a canonical owner differ, the canonical owner governs, and its
+# certification standing cannot exceed the standing of the owners it binds.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uaue-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  authority-verification:
+    name: Authority rehydration (the declaration is read from its owners, never restated)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout committed HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only. The engine package imports nothing outside engine/, so this installs nothing:
+      # a rehydration that needed a dependency would be a rehydration that could fail for a reason
+      # unrelated to the declaration.
+      - name: Rehydrate the authority and print what it resolved to
+        run: python3 -m engine.uaue.gate --quiet --json > /tmp/uaue-report.json
+
+      # The stage set belongs to UCKP Article 14 and is read at run time. If it were copied into
+      # this register, a stage appended there would leave this register silently stale; instead the
+      # loader refuses until a position claims it, which is what this asserts.
+      - name: The canonical stage set is read from its owner and claimed exactly once
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          report = json.load(open("/tmp/uaue-report.json"))
+          stages = next(o for o in report["obligations"] if o["id"] == "UAUE-GATE-03")
+          positions = next(o for o in report["obligations"] if o["id"] == "UAUE-GATE-02")
+          for entry in (stages, positions):
+              print(f"{entry['id']}: {entry['detail']}")
+              if not entry["satisfied"]:
+                  print(f"::error::{entry['id']} — {entry['detail']}")
+                  sys.exit(1)
+          PY
+
+  uaue-validation:
+    name: UAUE capability suite (four suites, including the mutations that drive the gate CLOSED)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout committed HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install pinned test toolchain
+        run: python -m pip install --disable-pip-version-check "pytest==8.3.4" "pytest-cov==6.0.0" "coverage==7.15.2"
+
+      # --no-cov: these suites gate the evolution capability, not repository coverage. The
+      # coverage floor is owned by ./verify.sh in ec1-ci.yml and is not duplicated here.
+      - name: Authority rehydration suite (the loader's refusals, and classifier non-vacuity)
+        run: python -m pytest engine/tests/unit/test_uaue_evolution_authority.py -q --no-cov
+
+      - name: Lifecycle suite (eleven positions, the unknown probe, and the no-mutation property)
+        run: python -m pytest engine/tests/unit/test_uaue_evolution_engine.py -q --no-cov
+
+      - name: Refusal suite (every guard in the engine has a mutation that reaches it)
+        run: python -m pytest engine/tests/unit/test_uaue_engine_refusals.py -q --no-cov
+
+      - name: Controller suite (traversal, replay, unknown object, seven refusals, fixed point)
+        run: python -m pytest engine/tests/unit/test_uaue_controller.py -q --no-cov
+
+      # The register surface is the Epoch-6 publication layer, and a surface that produces files is
+      # exactly the kind of capability that can look present while being absent. The suite renders
+      # every declared register, poisons a renderer to prove the irreproducibility guard fires, and
+      # deletes one to prove an unimplemented renderer refuses the whole surface instead of
+      # silently writing seventeen files.
+      - name: Register surface suite (determinism, purity, drift, and the guards that can fire)
+        run: python -m pytest engine/tests/unit/test_uaue_register_surface.py -q --no-cov
+
+      # The exit criteria are the declaration's own definition of phase completion. The suite
+      # proves every measure is computed, that an uncomputable measure is a refusal rather than a
+      # zero, and that the obligation closes when a criterion is unmet.
+      - name: Exit criteria suite (the programme's definition of done, measured)
+        run: python -m pytest engine/tests/unit/test_uaue_exit_criteria.py -q --no-cov
+
+      - name: The canonical Article 14 ledger still rehydrates its own projection
+        run: python -m pytest engine/tests/uckp/test_evolution_rehydration.py -q --no-cov
+
+  deterministic-replay:
+    name: Deterministic replay (same input, same authority, same context, same digest)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout committed HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Two independent processes, not two calls in one process. An in-process replay could pass on
+      # a memoised result; a cross-process replay cannot, which is the only form of the claim that
+      # is worth making about an artifact meant to survive the process that wrote it.
+      - name: Conduct every candidate twice in two separate processes and compare
+        run: |
+          python3 -m engine.uaue.gate --quiet --json > /tmp/uaue-run-a.json
+          python3 -m engine.uaue.gate --quiet --json > /tmp/uaue-run-b.json
+          diff -q /tmp/uaue-run-a.json /tmp/uaue-run-b.json \
+            || { echo "::error::UAUE-000001 is not deterministic across processes"; exit 1; }
+          echo "UAUE-000001 replay: two processes, one report"
+
+      # The history is the canonical document of an append-only ledger, so it must be the pure
+      # product of the declaration and the measured tree. A hand-edited history is a failure here
+      # rather than a fact anywhere.
+      # The whole declared surface — the history projection AND the eighteen registers — is
+      # compared, first by the gate's own byte comparison and then by re-rendering and asking git.
+      # A gate that proved the history replayed while eighteen registers drifted would be measuring
+      # the smaller half of its own output.
+      - name: Replay drift (the committed surface is a replay of the declaration)
+        run: |
+          python3 -m engine.uaue.gate --replay --quiet
+          python3 -m engine.uaue.gate --render --quiet
+          git diff --exit-code -- 00-MASTER/UAUE-000001 \
+            || { echo "::error::UAUE-000001 REPLAY DRIFT — the committed surface is not the product of the declaration"; exit 1; }
+          echo "UAUE-000001 surface: no drift across history projection and 18 registers"
+
+      # No wall-clock reaches the projection. Logical time only — cycle and stage ordinal — because
+      # a timestamp would make two projections of one state differ and destroy every measurement
+      # above it.
+      - name: No wall-clock is emitted into the projection
+        run: |
+          python3 - <<'PY'
+          import json, re, sys
+          document = json.load(open("00-MASTER/UAUE-000001/UAUE-EVOLUTION-HISTORY.json"))
+          blob = json.dumps(document)
+          stamps = re.findall(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}", blob)
+          if stamps:
+              print(f"::error::the history projection emits a wall clock: {stamps[:3]}")
+              sys.exit(1)
+          print(f"history projection: {len(document['ledger']['records'])} records, no wall clock")
+          PY
+
+  evolution-gate:
+    name: Autonomous Universal Evolution Gate (fresh checkout, fail-closed)
+    runs-on: ubuntu-latest
+    needs: [authority-verification, uaue-validation, deterministic-replay]
+    steps:
+      - name: Checkout committed HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Autonomous Universal Evolution Gate (every obligation, each fail-closed)
+        run: python3 -m engine.uaue.gate --gate
+
+      # The obligation the whole programme exists to make measurable, asserted separately so that a
+      # failure names it directly rather than as one line of a six-line report.
+      - name: The unknown subject traversed the loop and required nothing new
+        run: |
+          python3 -m engine.uaue.gate --quiet --json > /tmp/uaue-report.json
+          python3 - <<'PY'
+          import json, sys
+          report = json.load(open("/tmp/uaue-report.json"))
+          unknown = next(o for o in report["obligations"] if o["id"] == "UAUE-GATE-06")
+          print(f"UAUE-GATE-06: {unknown['detail']}")
+          if not unknown["satisfied"]:
+              print(f"::error::UAUE-GATE-06 — {unknown['detail']}")
+              sys.exit(1)
+          uncertified = [r for r in report["runs"] if not r["certified"]]
+          if uncertified:
+              print(f"::error::{len(uncertified)} conducted runs are not certified")
+              for run in uncertified[:5]:
+                  print(f"  {run['subject_identity']}: {run['refusals']}")
+              sys.exit(1)
+          print(f"{len(report['runs'])} conducted runs, all certified")
+          PY
+
+      - name: Publish the evolution history projection
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uaue-evolution-history
+          path: |
+            00-MASTER/UAUE-000001/UAUE-EVOLUTION-HISTORY.json
+            00-MASTER/UAUE-000001/uaue-evolution.json
+            00-MASTER/UAUE-000001/*.md
+
+      - name: Name the failing obligation
+        if: failure()
+        run: python3 -m engine.uaue.gate || true

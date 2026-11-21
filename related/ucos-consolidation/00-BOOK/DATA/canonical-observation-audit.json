@@ -1,0 +1,199 @@
+{
+  "artifact_id": "UCOS-UGA-001",
+  "authority": "NONE — DERIVED TRUTH. Measurement of repository state.",
+  "producer": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+  "determinism": "No wall clock. Timestamps are ledger first_seen values.",
+  "phase": "1 — Forensic Inventory of mutable observations in canonical identity",
+  "authority_binding": "UCOS-OBSERVATION-UNIVERSE-001",
+  "swept": "every CANONICAL .json entry in the generated-artifact registry, against the wider OBSERVATION_SIGNATURES detection set — not only the keys an enforced rule already names, so an unidentified leak is a measurement and never a surprise.",
+  "total_sites": 15,
+  "open_violations": 0,
+  "entries": [
+    {
+      "object_id": "COA-000001",
+      "artifact": "00-MASTER/P0-LIFECYCLE-CLOSURE-001/UCOS-LIFECYCLE-REALIZATION.json",
+      "producer": "00-MASTER/P0-LIFECYCLE-CLOSURE-001/lifecycle_closure_engine.py",
+      "observation_type": "ENVIRONMENT_STATE",
+      "current_location": "$.stages[44].coverage",
+      "classification": "CANDIDATE — signature present, not yet under an enforced rule",
+      "enforced_by_rule": false,
+      "remediation": "replace the reading with the P0-LIFECYCLE-CLOSURE-001 observation identity and write the value to that programme's evidence surface",
+      "observation_identities_available": []
+    },
+    {
+      "object_id": "COA-000002",
+      "artifact": "00-MASTER/UAKOS-CLOSURE-009/requirements.json",
+      "producer": "00-MASTER/UAKOS-CLOSURE-009/requirement_engine.py",
+      "observation_type": "ENVIRONMENT_STATE",
+      "current_location": "$.requirements[549].coverage",
+      "classification": "CANDIDATE — signature present, not yet under an enforced rule",
+      "enforced_by_rule": false,
+      "remediation": "replace the reading with the UAKOS-CLOSURE-009 observation identity and write the value to that programme's evidence surface",
+      "observation_identities_available": []
+    },
+    {
+      "object_id": "COA-000003",
+      "artifact": "00-MASTER/UCDA-000001/ucda.json",
+      "producer": "00-MASTER/UCDA-000001/ucda_engine.py",
+      "observation_type": "ENVIRONMENT_STATE",
+      "current_location": "$.decisions[150].coverage",
+      "classification": "CANDIDATE — signature present, not yet under an enforced rule",
+      "enforced_by_rule": false,
+      "remediation": "replace the reading with the UCDA-000001 observation identity and write the value to that programme's evidence surface",
+      "observation_identities_available": []
+    },
+    {
+      "object_id": "COA-000004",
+      "artifact": "00-MASTER/UCOS-RIB-001/rib.json",
+      "producer": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "observation_type": "WORKING_TREE_STATE",
+      "current_location": "$.repository.contamination.contamination_entries",
+      "classification": "REMEDIATED — carries an observation identity, not a reading",
+      "enforced_by_rule": true,
+      "remediation": "none — already an observation reference",
+      "observation_identities_available": [
+        "UCOS-OBS-000003",
+        "UCOS-OBS-000004"
+      ]
+    },
+    {
+      "object_id": "COA-000005",
+      "artifact": "00-MASTER/UCOS-RIB-001/rib.json",
+      "producer": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "observation_type": "WORKING_TREE_STATE",
+      "current_location": "$.repository.deleted",
+      "classification": "REMEDIATED — carries an observation identity, not a reading",
+      "enforced_by_rule": false,
+      "remediation": "none — already an observation reference",
+      "observation_identities_available": [
+        "UCOS-OBS-000003",
+        "UCOS-OBS-000004"
+      ]
+    },
+    {
+      "object_id": "COA-000006",
+      "artifact": "00-MASTER/UCOS-RIB-001/rib.json",
+      "producer": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "observation_type": "WORKING_TREE_STATE",
+      "current_location": "$.repository.dirty_entries",
+      "classification": "REMEDIATED — carries an observation identity, not a reading",
+      "enforced_by_rule": true,
+      "remediation": "none — already an observation reference",
+      "observation_identities_available": [
+        "UCOS-OBS-000003",
+        "UCOS-OBS-000004"
+      ]
+    },
+    {
+      "object_id": "COA-000007",
+      "artifact": "00-MASTER/UCOS-RIB-001/rib.json",
+      "producer": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "observation_type": "WORKING_TREE_STATE",
+      "current_location": "$.metrics.dirty_entries_outside_generated",
+      "classification": "REMEDIATED — carries an observation identity, not a reading",
+      "enforced_by_rule": true,
+      "remediation": "none — already an observation reference",
+      "observation_identities_available": [
+        "UCOS-OBS-000003",
+        "UCOS-OBS-000004"
+      ]
+    },
+    {
+      "object_id": "COA-000008",
+      "artifact": "00-MASTER/UCOS-RIB-001/rib.json",
+      "producer": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "observation_type": "WORKING_TREE_STATE",
+      "current_location": "$.repository.modified",
+      "classification": "REMEDIATED — carries an observation identity, not a reading",
+      "enforced_by_rule": false,
+      "remediation": "none — already an observation reference",
+      "observation_identities_available": [
+        "UCOS-OBS-000003",
+        "UCOS-OBS-000004"
+      ]
+    },
+    {
+      "object_id": "COA-000009",
+      "artifact": "00-MASTER/UCOS-RIB-001/rib.json",
+      "producer": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "observation_type": "WORKING_TREE_STATE",
+      "current_location": "$.repository.untracked",
+      "classification": "REMEDIATED — carries an observation identity, not a reading",
+      "enforced_by_rule": false,
+      "remediation": "none — already an observation reference",
+      "observation_identities_available": [
+        "UCOS-OBS-000003",
+        "UCOS-OBS-000004"
+      ]
+    },
+    {
+      "object_id": "COA-000010",
+      "artifact": "00-MASTER/UCOS-RIB-001/rib.json",
+      "producer": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "observation_type": "WORKING_TREE_STATE",
+      "current_location": "$.repository.working_tree",
+      "classification": "REMEDIATED — carries an observation identity, not a reading",
+      "enforced_by_rule": false,
+      "remediation": "none — already an observation reference",
+      "observation_identities_available": [
+        "UCOS-OBS-000003",
+        "UCOS-OBS-000004"
+      ]
+    },
+    {
+      "object_id": "COA-000011",
+      "artifact": "00-MASTER/UCOS-UGA-001/03-AUDIT-UNIVERSE.json",
+      "producer": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+      "observation_type": "ENVIRONMENT_STATE",
+      "current_location": "$.events[5701].timestamp",
+      "classification": "CANDIDATE — signature present, not yet under an enforced rule",
+      "enforced_by_rule": false,
+      "remediation": "replace the reading with the UCOS-UGA-001 observation identity and write the value to that programme's evidence surface",
+      "observation_identities_available": []
+    },
+    {
+      "object_id": "COA-000012",
+      "artifact": "00-MASTER/UCOS-URAT-001/urat.json",
+      "producer": "00-MASTER/UCOS-URAT-001/urat_engine.py",
+      "observation_type": "ENVIRONMENT_STATE",
+      "current_location": "$.coverage",
+      "classification": "CANDIDATE — signature present, not yet under an enforced rule",
+      "enforced_by_rule": false,
+      "remediation": "replace the reading with the UCOS-URAT-001 observation identity and write the value to that programme's evidence surface",
+      "observation_identities_available": []
+    },
+    {
+      "object_id": "COA-000013",
+      "artifact": "intelligence/UCOS-IMP-BASELINE-001.evidence.json",
+      "producer": "intelligence/rie/engine.py",
+      "observation_type": "ENVIRONMENT_STATE",
+      "current_location": "$.coverage",
+      "classification": "CANDIDATE — signature present, not yet under an enforced rule",
+      "enforced_by_rule": false,
+      "remediation": "replace the reading with the UCOS-RIE-001 observation identity and write the value to that programme's evidence surface",
+      "observation_identities_available": []
+    },
+    {
+      "object_id": "COA-000014",
+      "artifact": "intelligence/UCOS-IMP-BASELINE-001.evidence.json",
+      "producer": "intelligence/rie/engine.py",
+      "observation_type": "ENVIRONMENT_STATE",
+      "current_location": "$.corpus.generated_at",
+      "classification": "CANDIDATE — signature present, not yet under an enforced rule",
+      "enforced_by_rule": false,
+      "remediation": "replace the reading with the UCOS-RIE-001 observation identity and write the value to that programme's evidence surface",
+      "observation_identities_available": []
+    },
+    {
+      "object_id": "COA-000015",
+      "artifact": "00-MASTER/CAEM-001/07-MANDATE-DISPOSITION.json",
+      "producer": "00-MASTER/CAEM-001/caem_engine.py",
+      "observation_type": "ENVIRONMENT_STATE",
+      "current_location": "$.concepts.coverage",
+      "classification": "CANDIDATE — signature present, not yet under an enforced rule",
+      "enforced_by_rule": false,
+      "remediation": "replace the reading with the CAEM-001 observation identity and write the value to that programme's evidence surface",
+      "observation_identities_available": []
+    }
+  ]
+}

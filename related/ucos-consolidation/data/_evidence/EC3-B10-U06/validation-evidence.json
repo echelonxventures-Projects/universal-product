@@ -1,0 +1,264 @@
+{
+  "accepted": true,
+  "blocking_failures": [],
+  "blueprint_id": "DMC-07",
+  "checks_run": [
+    "data-value-fidelity",
+    "foundation-reuse-integrity",
+    "founding-acyclic",
+    "lifecycle-behaves-by-reference",
+    "lifecycle-classified",
+    "lifecycle-forward-only",
+    "lifecycle-identified",
+    "lifecycle-independence",
+    "lifecycle-named",
+    "lifecycle-single-state",
+    "lifecycle-states-closed",
+    "lifecycle-transitions-guarded",
+    "lifecycle-transitions-recorded",
+    "lifecycle-transitions-subject",
+    "lifecycle-typed",
+    "lifecycle-valid",
+    "lifecycle-versioned",
+    "meta-class-single",
+    "meta-constraints",
+    "meta-relationships-closed",
+    "non-constitutive",
+    "provisional-state-disclosure",
+    "traceability-rooted"
+  ],
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 23,
+    "total": 23
+  },
+  "evidence_format": "ucos-validation-evidence/1.0.0",
+  "findings": [
+    {
+      "check_id": "data-value-fidelity",
+      "details": {
+        "value_digest": "805e97651fec0d5141b361eba22f7fdd5169c23fcfb8c0d5bf7b311e459f9788"
+      },
+      "message": "data-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-004",
+          "ENG-005"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-behaves-by-reference",
+      "details": {
+        "state_ref": "UCOS-RUNTIME-REF:state.defined"
+      },
+      "message": "lifecycle-behaves-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-classified",
+      "details": {
+        "facet": "Definitional-State"
+      },
+      "message": "lifecycle-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-forward-only",
+      "details": {
+        "transitions": 4
+      },
+      "message": "lifecycle-forward-only satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-identified",
+      "details": {
+        "lifecycle_id": "UCOS-LIFECYCLE-ucos.data.lifecycle.foundation-805e97651fec0d51"
+      },
+      "message": "lifecycle-identified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-independence",
+      "details": {},
+      "message": "lifecycle-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-named",
+      "details": {
+        "name": "ucos.data.lifecycle.foundation"
+      },
+      "message": "lifecycle-named satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-single-state",
+      "details": {
+        "current_state": "DEFINED"
+      },
+      "message": "lifecycle-single-state satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-states-closed",
+      "details": {
+        "states": [
+          "DEFINED",
+          "ACTIVE",
+          "DEPRECATED",
+          "SUPERSEDED",
+          "RETIRED"
+        ]
+      },
+      "message": "lifecycle-states-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-transitions-guarded",
+      "details": {
+        "guards": 4
+      },
+      "message": "lifecycle-transitions-guarded satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-transitions-recorded",
+      "details": {
+        "events": 4
+      },
+      "message": "lifecycle-transitions-recorded satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-transitions-subject",
+      "details": {
+        "transitions": "UCOS-ENTITY-ucos.data.entity.foundation-b014125ab4fbbe4f"
+      },
+      "message": "lifecycle-transitions-subject satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-typed",
+      "details": {
+        "type_tag": "ucos.core.lifecycle"
+      },
+      "message": "lifecycle-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "lifecycle-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-versioned",
+      "details": {
+        "version": "1.0.0"
+      },
+      "message": "lifecycle-versioned satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "DMC-07"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "DLA-K1",
+          "DLA-K3",
+          "DLA-K4",
+          "DMK-01",
+          "DMK-03"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "DMR-06",
+          "DMR-10",
+          "DMR-11"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 6
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-LIFECYCLE-ucos.data.lifecycle.foundation-805e97651fec0d51",
+  "verdict": "pass"
+}

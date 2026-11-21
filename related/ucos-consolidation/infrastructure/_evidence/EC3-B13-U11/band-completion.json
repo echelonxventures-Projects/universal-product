@@ -1,0 +1,167 @@
+{
+  "all_units_certified": true,
+  "band_class": "BAND-13",
+  "band_id": "UCOS-BAND13-ucos.infrastructure.band13.completion-58610bf5cfb2df8c",
+  "dependency_acyclic": true,
+  "integration": {
+    "all_concerns_certified": true,
+    "all_edges_certified": true,
+    "all_nodes_present": true,
+    "graph_acyclic": true,
+    "graph_downward_only": true,
+    "leaf_closure_complete": true,
+    "ownership_disjoint": true,
+    "uimm_determination_complete": true
+  },
+  "integration_closed": true,
+  "inventory_complete": true,
+  "meta_class_coverage_complete": true,
+  "meta_class_ownership_disjoint": true,
+  "meta_classes_covered": [
+    "AvailabilityTopology",
+    "Cluster",
+    "ComputeResource",
+    "Distribution",
+    "Environment",
+    "GovernanceFacet",
+    "InfrastructureCapability",
+    "InfrastructureDependency",
+    "IsolationBoundary",
+    "Locality",
+    "NetworkResource",
+    "Node",
+    "ProvisioningProcess",
+    "ScalingArrangement",
+    "SecurityFacet",
+    "StorageHostingResource",
+    "Topology"
+  ],
+  "meta_model_certification_id": "7c89e922223abe8c3f8db5ceb85a1840e6130cccbce7fb37a2a328aa7d476260",
+  "meta_model_id": "7c89e922223abe8c3f8db5ceb85a1840e6130cccbce7fb37a2a328aa7d476260",
+  "meta_model_unit": "EC3-B13-U10",
+  "name": "ucos.infrastructure.band13.completion",
+  "non_constitutive": true,
+  "non_projection": true,
+  "reuses_by_reference": true,
+  "state": "DEFINED",
+  "structure_digest": "58610bf5cfb2df8cd5bc16dc3fb44d750f3ee95d26582798a20160cc81783470",
+  "substrate_refs": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005",
+    "CCE"
+  ],
+  "type_tag": "ucos.core.band-completion",
+  "unit_count": 10,
+  "units": [
+    {
+      "certification_id": "afe5f834fc70b09784cfe0192244673d029b8ca1082f579b42bdab0d2f64d83b",
+      "certified": true,
+      "concern_doc": "INFRASTRUCTURE-006",
+      "meta_classes": [
+        "InfrastructureCapability"
+      ],
+      "name": "Universal Infrastructure Capability",
+      "unit": "EC3-B13-U01"
+    },
+    {
+      "certification_id": "7653185f131306ebba6e19552501bacfa89382475f07d1383de929e288118cb8",
+      "certified": true,
+      "concern_doc": "INFRASTRUCTURE-007",
+      "meta_classes": [
+        "ComputeResource"
+      ],
+      "name": "Universal Infrastructure Compute",
+      "unit": "EC3-B13-U02"
+    },
+    {
+      "certification_id": "8b2ffd4964acd46545bc23fa3c50a61a92cced77a9a2ff7fab6e32c6874e861f",
+      "certified": true,
+      "concern_doc": "INFRASTRUCTURE-008",
+      "meta_classes": [
+        "NetworkResource"
+      ],
+      "name": "Universal Infrastructure Network",
+      "unit": "EC3-B13-U03"
+    },
+    {
+      "certification_id": "155f783add94d7b769017ab01805e70a072e56106295425b1488222334ea360f",
+      "certified": true,
+      "concern_doc": "INFRASTRUCTURE-009",
+      "meta_classes": [
+        "StorageHostingResource"
+      ],
+      "name": "Universal Infrastructure Storage-Hosting",
+      "unit": "EC3-B13-U04"
+    },
+    {
+      "certification_id": "f7a4241db99c9d2d60fffe441dff84e3ed52d44990b446c7c76f4366b118d4ae",
+      "certified": true,
+      "concern_doc": "INFRASTRUCTURE-011",
+      "meta_classes": [
+        "Locality",
+        "IsolationBoundary",
+        "Node",
+        "Cluster",
+        "Environment",
+        "ProvisioningProcess"
+      ],
+      "name": "Universal Infrastructure Environment & Provisioning",
+      "unit": "EC3-B13-U05"
+    },
+    {
+      "certification_id": "e0f66304b79b6ad9ce9ab28c7449de3be1da4ab05436fd9e898d1e7f824ca47f",
+      "certified": true,
+      "concern_doc": "INFRASTRUCTURE-010",
+      "meta_classes": [
+        "Topology",
+        "Distribution"
+      ],
+      "name": "Universal Infrastructure Topology & Distribution",
+      "unit": "EC3-B13-U06"
+    },
+    {
+      "certification_id": "afdd120e61d7e333775f98c0769838f92b4094055ecf50487c85d8a4d2b21ffa",
+      "certified": true,
+      "concern_doc": "INFRASTRUCTURE-012",
+      "meta_classes": [
+        "AvailabilityTopology",
+        "ScalingArrangement"
+      ],
+      "name": "Universal Infrastructure Resilience & Availability",
+      "unit": "EC3-B13-U07"
+    },
+    {
+      "certification_id": "5953f0d91f7d29b772e535a82274533b7902f47658b0bbe0aa68e12e72d0229b",
+      "certified": true,
+      "concern_doc": "INFRASTRUCTURE-013",
+      "meta_classes": [
+        "SecurityFacet"
+      ],
+      "name": "Universal Infrastructure Security",
+      "unit": "EC3-B13-U08"
+    },
+    {
+      "certification_id": "7df6764db9ee02d7ef238e9cbe6dbc6d4bc489cf3e9b7bca5176391803ee216b",
+      "certified": true,
+      "concern_doc": "INFRASTRUCTURE-014",
+      "meta_classes": [
+        "GovernanceFacet"
+      ],
+      "name": "Universal Infrastructure Governance",
+      "unit": "EC3-B13-U09"
+    },
+    {
+      "certification_id": "7c89e922223abe8c3f8db5ceb85a1840e6130cccbce7fb37a2a328aa7d476260",
+      "certified": true,
+      "concern_doc": "INFRASTRUCTURE-005",
+      "meta_classes": [
+        "InfrastructureDependency"
+      ],
+      "name": "Universal Infrastructure Integration (UIMM)",
+      "unit": "EC3-B13-U10"
+    }
+  ],
+  "version": "1.0.0"
+}

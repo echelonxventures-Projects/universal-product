@@ -1,0 +1,217 @@
+{
+  "accepted": true,
+  "blueprint_id": "SMC-07",
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 20,
+    "total": 20
+  },
+  "findings": [
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "DF-2"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {
+        "acyclic": true
+      },
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "lifecycle-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "SMC-07"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "SMK-01",
+          "SMK-02",
+          "SMK-05",
+          "SMK-07"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "SMR-02",
+          "SMR-05",
+          "SMR-06",
+          "SMR-10",
+          "SMR-11",
+          "SMR-13"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "orchestration-classified",
+      "details": {
+        "kind": "Sequential-Orchestration"
+      },
+      "message": "orchestration-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "orchestration-contract-bound",
+      "details": {
+        "contract_ref": "ENG-005:SOE-03:ucos.service.contract.foundation"
+      },
+      "message": "orchestration-contract-bound satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "orchestration-coordinates-steps",
+      "details": {
+        "steps": 3
+      },
+      "message": "orchestration-coordinates-steps satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "orchestration-coordination-acyclic",
+      "details": {
+        "execution_plan": [
+          "ENG-005:SOE-05:ucos.service.operation.foundation",
+          "ENG-005:SOE-05:ucos.service.operation.secondary",
+          "ENG-005:SOE-05:ucos.service.operation.tertiary"
+        ]
+      },
+      "message": "orchestration-coordination-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "orchestration-data-by-reference",
+      "details": {
+        "data_refs": 1
+      },
+      "message": "orchestration-data-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "orchestration-identified-objectbound",
+      "details": {
+        "orchestration_id": "UCOS-ORCHESTRATION-ucos.service.orchestration.foundation-19e52f93764681e8"
+      },
+      "message": "orchestration-identified-objectbound satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "orchestration-runtime-reuse",
+      "details": {
+        "behavior_ref": "ENG-005:RL-F2:RUNTIME-009.workflow",
+        "runtime_concern": "RUNTIME-009"
+      },
+      "message": "orchestration-runtime-reuse satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "orchestration-topology-valid",
+      "details": {
+        "kind": "Sequential-Orchestration",
+        "steps": 3
+      },
+      "message": "orchestration-topology-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "orchestration-typed",
+      "details": {
+        "type_tag": "ucos.service.orchestration.foundation"
+      },
+      "message": "orchestration-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "service-value-fidelity",
+      "details": {
+        "value_digest": "19e52f93764681e87ab5228eba55be38cdf133588afd09330b2ec93131bd86be"
+      },
+      "message": "service-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "technology-independence",
+      "details": {},
+      "message": "technology-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 7
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-ORCHESTRATION-ucos.service.orchestration.foundation-19e52f93764681e8",
+  "verdict": "pass"
+}

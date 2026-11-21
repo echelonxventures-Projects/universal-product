@@ -1,0 +1,313 @@
+{
+  "artifact_id": "UCOS-UGA-001",
+  "authority": "NONE — DERIVED TRUTH. Measurement of repository state.",
+  "producer": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+  "determinism": "No wall clock. Timestamps are ledger first_seen values.",
+  "epoch": "5 — Governance Enforcement",
+  "gate": "FAIL_CLOSED",
+  "passed": 30,
+  "total": 30,
+  "result": "PASS",
+  "invariants": [
+    {
+      "id": "UGA-INV-01",
+      "name": "EVERY_OBJECT_HAS_UNIVERSAL_ID",
+      "result": "PASS",
+      "measured": 7178,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "UGA-INV-02",
+      "name": "EVERY_OBJECT_HAS_OWNER",
+      "result": "PASS",
+      "measured": 7178,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "UGA-INV-03",
+      "name": "EVERY_OBJECT_REGISTERED",
+      "result": "PASS",
+      "measured": 7178,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "UGA-INV-04",
+      "name": "EVERY_CANONICAL_ARTIFACT_HAS_INPUT_CLOSURE",
+      "result": "PASS",
+      "measured": 437,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "UGA-INV-05",
+      "name": "EVERY_GENERATED_INPUT_HAS_PRODUCER",
+      "result": "PASS",
+      "measured": 18,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "Strengthened by this programme: a producer must now be an IDENTIFIED OBJECT, not merely a declared path string. Before assimilation all 29 declared producers were anonymous."
+    },
+    {
+      "id": "UGA-INV-06",
+      "name": "EVERY_GENERATED_INPUT_HAS_BOOTSTRAP_PATH",
+      "result": "PASS",
+      "measured": 18,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "Pre-existing DECLARED-OPEN condition, recorded by the generated-artifact registry itself in `bootstrap_gaps`. Not introduced by this programme. Measured by reading the bootstrap script rather than trusting the registry's own claim — which also showed the registry's gap note to be STALE: provenance_engine.py IS invoked, so realization/ is the only true gap."
+    },
+    {
+      "id": "UGA-INV-07",
+      "name": "EVERY_CERTIFICATION_HAS_EVIDENCE_BOUNDARY",
+      "result": "PASS",
+      "measured": 11,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "UGA-INV-08",
+      "name": "NO_CANONICAL_ARTIFACT_DEPENDS_ON_UNCLASSIFIED_OBSERVATION",
+      "result": "PASS",
+      "measured": 437,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "UGA-INV-09",
+      "name": "NO_ARCHITECTURE_DEPENDS_ON_FINITE_INSTANCE",
+      "result": "PASS",
+      "measured": 90,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "UCOS-ACFV-000001 and the constitutional corpus discuss finite domains as EXAMPLES; naming one in prose is not a dependency. The invariant is meaningful only where a finite instance could become STRUCTURAL — in the keys, classes and rules of the foundation itself. Scanning prose would produce noise and would gate on discussion rather than on architecture."
+    },
+    {
+      "id": "UGA-INV-10",
+      "name": "EVERY_MUTATION_HAS_AUDIT_EVENT",
+      "result": "PASS",
+      "measured": 5487,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "LEDGER-INV-01",
+      "name": "IDENTITY_LEDGER_HAS_ONE_WRITE_PATH",
+      "result": "PASS",
+      "measured": 2318,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "Every identity-ledger write must route through engine/ledger_authority/__init__.py so the allocation report is derived from the on-disk pre-image. A direct write can report an allocation it does not know it made — the defect that let a run print minted=0 while permanently allocating an observation identity. SCOPE: this measures source-visible write paths — the ledger named beside a write primitive, and a ledger reference handed one call deep to a function that writes its parameter. It does NOT establish what a writer does once the chokepoint hands it the path; that is enforced at runtime, where commit() compares the persisted document against the authorized one and restores the pre-image on divergence."
+    },
+    {
+      "id": "OBS-INV-01",
+      "name": "EVERY_OBSERVATION_HAS_UNIVERSAL_IDENTITY",
+      "result": "PASS",
+      "measured": 7,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "OBS-INV-02",
+      "name": "NO_CANONICAL_ARTIFACT_EMBEDS_AN_OBSERVATION_VALUE",
+      "result": "PASS",
+      "measured": 8,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "Structural scan driven by the registry's forbidden_canonical_keys. A key holding a well-formed observation id is compliant; a key holding anything else — including an empty list, whose presence still encodes the reading — is the value itself."
+    },
+    {
+      "id": "OBS-INV-03",
+      "name": "EVERY_OBSERVATION_REFERENCE_RESOLVES_TO_A_DECLARED_KIND",
+      "result": "PASS",
+      "measured": 7,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "OBS-INV-04",
+      "name": "EVERY_OBSERVATION_HAS_AN_EVIDENCE_SURFACE",
+      "result": "PASS",
+      "measured": 7,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "OBS-INV-05",
+      "name": "NO_CERTIFICATION_ARTIFACT_OBSERVES_ITS_OWN_PRODUCT",
+      "result": "PASS",
+      "measured": 7,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "OBS-INV-06",
+      "name": "OBSERVATION_IDENTITY_IS_VALUE_INDEPENDENT",
+      "result": "PASS",
+      "measured": 7,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "OBS-INV-07",
+      "name": "CANONICAL_ARTIFACTS_CARRY_NO_MUTABLE_REPOSITORY_OBSERVATION",
+      "result": "PASS",
+      "measured": 15,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "Detection sweep, not the enforced rule set — see 00-BOOK/DATA/canonical-observation-audit.json for every site and its classification."
+    },
+    {
+      "id": "OBS-INV-08",
+      "name": "EVERY_OBSERVATION_HAS_UNIVERSAL_OBSERVATION_IDENTITY",
+      "result": "PASS",
+      "measured": 7,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "A reference that resolves to nothing is worse than the value it replaced."
+    },
+    {
+      "id": "OBS-INV-09",
+      "name": "CERTIFICATION_REFERENCES_EVIDENCE_NEVER_EMBEDS_IT",
+      "result": "PASS",
+      "measured": 7,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "The remedy is relocation. An observation removed from identity with nowhere to land is deletion of evidence, which is forbidden."
+    },
+    {
+      "id": "OBS-INV-10",
+      "name": "OBSERVATION_CHANGE_DOES_NOT_MUTATE_CANONICAL_IDENTITY",
+      "result": "PASS",
+      "measured": 8,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": ""
+    },
+    {
+      "id": "OBS-INV-12",
+      "name": "EVERY_PRODUCER_DECLARES_THE_OBSERVATION_SOURCES_IT_READS",
+      "result": "PASS",
+      "measured": 40,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "Measured over the producer's SOURCE with docstrings, comments and dictionary-literal keys blanked, and over the producers the generated-artifact registry names rather than a list kept here. A token a module DECLARES is not a token it reads: three producers describe an already-closed leak in prose, and this engine holds the detection vocabulary itself as dict keys. A guard that cannot tell a declaration from a call site reports violations that do not exist, and an invariant that cries wolf gets suppressed. Both directions are checked — an undeclared read AND a declared source no call site exercises, because a stale declaration is a false assurance."
+    },
+    {
+      "id": "OBS-INV-13",
+      "name": "EVERY_CANONICAL_ARTIFACT_PROVES_ITS_ANCESTRY",
+      "result": "PASS",
+      "measured": 2741,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "A clean immediate input_closure says nothing about a contaminated grandparent. Ancestry is walked transitively through the registry's own producer relation and is DERIVED, never authored — a second copy of the dependency graph would be a second answer to the same question."
+    },
+    {
+      "id": "CAA-INV-01",
+      "name": "EXACTLY_ONE_SUPREME_CONSTITUTIONAL_AUTHORITY",
+      "result": "PASS",
+      "measured": 18,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "The supreme authority is read from engine/uckp/law.py itself, not from a copy of it. A binding that named a law the law does not hold would otherwise certify against its own transcription."
+    },
+    {
+      "id": "CAA-INV-02",
+      "name": "EVERY_AUTHORITY_CLAIM_NAMES_ITS_CONSTITUTIONAL_SUPERIOR",
+      "result": "PASS",
+      "measured": 148,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "Swept over every tracked JSON, not a chosen directory: a rival authority is most useful to whoever writes it exactly where nobody is sweeping. An instrument that disclaims authority needs no superior — it asserts nothing, so there is nothing to derive — and the disclaiming tokens are the non-constitutional classes UCOS-UCAF-001 already legislates rather than a set invented here. Role ORTHOGONAL is exempt from this sweep for the same reason it is exempt from CAA-INV-03: it names no superior to claim, by definition of the role (CAA-INV-08)."
+    },
+    {
+      "id": "CAA-INV-03",
+      "name": "NO_SUBORDINATE_INSTRUMENT_CLAIMS_INDEPENDENT_AUTHORITY",
+      "result": "PASS",
+      "measured": 17,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "Both directions are checked. A binding that says an instrument is subordinate while the instrument says nothing is a claim about a file rather than a property of it, and it would pass a one-sided check unchanged."
+    },
+    {
+      "id": "CAA-INV-04",
+      "name": "EXACTLY_ONE_IDENTITY_AUTHORITY",
+      "result": "PASS",
+      "measured": 7436,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "Not an assertion that there is one mint — a recomputation of the derivation over every identifier all three declared maps hold, plus a sweep for a second counter anywhere in the tree. Injectivity is a count, and every id is carried through verbatim, so a pass here is also the proof that no identifier was rewritten."
+    },
+    {
+      "id": "CAA-INV-05",
+      "name": "EXACTLY_ONE_RELATIONSHIP_GRAPH_MODEL_OWNER",
+      "result": "PASS",
+      "measured": 32,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "The emitted kinds are read off the graphs this run actually produced, across every surface the register declares, never off a declared list — a surface that quietly emits one more kind is the case worth catching, and a list would report itself either way. A surface whose reporter cannot be measured is a violation, never a skip."
+    },
+    {
+      "id": "CAA-INV-06",
+      "name": "EVIDENCE_AND_OBSERVATION_REMAIN_SEPARATE_TRUTHS",
+      "result": "PASS",
+      "measured": 5,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "The separation was already drawn by two registers; what it lacked was an article making it binding. UCKP-ART-13 is that article: a reading taken outside the commit boundary is not an input the commit contains, so admitting one into a canonical digest destroys the fixed point by construction."
+    },
+    {
+      "id": "CAA-INV-07",
+      "name": "NO_INSTRUMENT_DECLARES_A_RIVAL_OBJECT_MODEL",
+      "result": "PASS",
+      "measured": 24,
+      "violation_count": 0,
+      "violations": [],
+      "violations_truncated": 0,
+      "note": "A class list that cites no model reads exactly like a second model. This does not forbid object classes — it requires the instrument that declares them to say which model they project, which is the difference between an extension and a rival."
+    }
+  ]
+}

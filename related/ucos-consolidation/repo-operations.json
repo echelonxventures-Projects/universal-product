@@ -1,0 +1,78 @@
+{
+  "repository_id": "UCOS-CONSOLIDATION",
+  "epic_id": "EPIC-PLAT-003",
+  "stages": [
+    {
+      "stage_id": "environment-doctor",
+      "kind": "command",
+      "params": { "command": "doctor" }
+    },
+    {
+      "stage_id": "canonical-verification",
+      "kind": "command",
+      "params": { "command": "verify" }
+    },
+    {
+      "stage_id": "coverage-report",
+      "kind": "coverage",
+      "params": { "path": "coverage.xml", "min_percent": 90 }
+    },
+    {
+      "stage_id": "architecture-freeze",
+      "kind": "freeze",
+      "params": { "subject": "working-tree" }
+    },
+    {
+      "stage_id": "repository-acceptance",
+      "kind": "acceptance",
+      "params": {
+        "coverage_from_measurement": true,
+        "facts": {
+          "repository_id": "UCOS-CONSOLIDATION",
+          "epic_id": "EPIC-PLAT-003",
+          "context_assimilated": true,
+          "constitution_discovered": true,
+          "discovered_repositories": ["UCOS-CONSOLIDATION"],
+          "units": [
+            {
+              "unit_id": "repository-operations",
+              "owner": "platform",
+              "implemented": true,
+              "validated": true,
+              "certified": true,
+              "registered": true,
+              "traceability": [
+                "requirement",
+                "design",
+                "implementation",
+                "test",
+                "certification"
+              ]
+            }
+          ],
+          "dependencies": [
+            { "dependency_id": "engine.acceptance", "resolved": true, "pinned": true }
+          ],
+          "reuse": [
+            { "capability": "repository-verification", "reused": true, "justified": true }
+          ],
+          "inventory": {
+            "expected": ["repository-operations"],
+            "present": ["repository-operations"],
+            "content_hashes": { "repository-operations": "ec2-plat-003" },
+            "responsibilities": { "operational-verification": ["repository-operations"] }
+          },
+          "coverage": [],
+          "integrations": [
+            { "point": "engine.acceptance", "satisfied": true },
+            { "point": "engine.validation", "satisfied": true },
+            { "point": "engine.certification", "satisfied": true }
+          ],
+          "architecture_violations": [],
+          "health": { "critical_issues": [], "warnings": [] },
+          "freeze_blockers": []
+        }
+      }
+    }
+  ]
+}

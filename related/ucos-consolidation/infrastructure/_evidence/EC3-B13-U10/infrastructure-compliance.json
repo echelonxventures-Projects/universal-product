@@ -1,0 +1,62 @@
+{
+  "compliant": true,
+  "conditions": [
+    {
+      "id": "C1",
+      "status": "pass",
+      "validation_checks": [
+        "dependency-typed",
+        "dependency-identified"
+      ]
+    },
+    {
+      "id": "C2",
+      "status": "pass",
+      "validation_checks": [
+        "foundation-reuse-integrity"
+      ]
+    },
+    {
+      "id": "C3",
+      "status": "pass",
+      "validation_checks": [
+        "dependency-reference-only",
+        "dependency-endpoints-resolve"
+      ]
+    },
+    {
+      "id": "C4",
+      "status": "pass",
+      "validation_checks": [
+        "authority-boundary",
+        "dependency-reference-only"
+      ]
+    },
+    {
+      "id": "C5",
+      "status": "pass",
+      "validation_checks": [
+        "dependency-downward-acyclic",
+        "meta-relationships-closed",
+        "founding-acyclic"
+      ]
+    },
+    {
+      "id": "C6",
+      "status": "pass",
+      "validation_checks": [
+        "lifecycle-valid"
+      ]
+    },
+    {
+      "id": "C7",
+      "status": "pass",
+      "validation_checks": [
+        "technology-independence",
+        "non-constitutive",
+        "no-secret-material"
+      ]
+    }
+  ],
+  "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+}

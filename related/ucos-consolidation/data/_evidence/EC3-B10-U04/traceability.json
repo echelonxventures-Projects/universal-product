@@ -1,0 +1,39 @@
+{
+  "backward": [
+    "DMC-05",
+    "DATA-009",
+    "DATA-005",
+    "DATA-001",
+    "ARCH-DATA-001",
+    "10-DATA@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-SCHEMA-ucos.data.schema.foundation-9c2e6c6c67fee5d6",
+    "EC3-B10-U04-VALIDATION-EVIDENCE",
+    "EC3-B10-U04-CCE-CERTIFICATION",
+    "EC3-B10-U04-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "30a2a02",
+  "meta_class": "DMC-05",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005"
+  ],
+  "substrate_reuse": {
+    "DMC-02": "data.entity.Entity — the CERTIFIED describes target (DMR-04); referenced only",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the schema)",
+    "ENG-004": "data.schema_meta.SchemaKind + type_tag + element types (ENG-004 typing)",
+    "ENG-005": "described-subject + member-schema identity references (DMR-04/12; by reference)",
+    "founding_root": "EC3-B10-U02 (DMC-03; UCOS-CERT-DMC-03-c57d36d3dbb2763d) → EC3-B10-U01 (DMC-01; UCOS-CERT-DMC-01-51e5964b38741e30) — transitive describes root",
+    "founding_unit": "EC3-B10-U03 (DMC-02; UCOS-CERT-DMC-02-def41470d3bac196) — describes target, DMR-04"
+  },
+  "target_id": "UCOS-SCHEMA-ucos.data.schema.foundation-9c2e6c6c67fee5d6",
+  "trace_format": "ucos-data-traceability/1.0.0",
+  "unit": "EC3-B10-U04"
+}

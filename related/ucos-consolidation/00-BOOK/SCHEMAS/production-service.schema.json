@@ -1,0 +1,30 @@
+{
+  "title": "UCOS Ω∞ Production Service Entity",
+  "description": "A live production service (UKB-007) with SLO/SLA, live metrics, and incidents. All metrics are computed from Prometheus/Grafana/OTel/K8s signals; never hand-entered.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["universal_id", "name"],
+  "properties": {
+    "universal_id": { "type": "string", "pattern": "^UCOS-SVC-[0-9]{6}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "version_live": { "type": ["string", "null"], "default": null },
+    "environment": { "type": ["string", "null"], "pattern": "^UCOS-ENV-[0-9]{6}$", "default": null },
+    "owner": { "type": ["string", "null"], "default": null },
+    "slo": {
+      "type": "object", "additionalProperties": false, "default": {},
+      "properties": {
+        "availability_target": { "type": ["number", "null"], "default": null },
+        "latency_p99_ms_target": { "type": ["number", "null"], "default": null },
+        "error_rate_target": { "type": ["number", "null"], "default": null },
+        "window": { "type": ["string", "null"], "default": null }
+      }
+    },
+    "live": {
+      "type": "object", "additionalProperties": true, "default": {},
+      "description": "Latest observed availability, latency p50/p95/p99, error_rate, error_budget_remaining."
+    },
+    "incidents": { "type": "array", "items": { "type": "object", "additionalProperties": true }, "default": [] },
+    "deployed_by": { "type": ["string", "null"], "pattern": "^UCOS-DEP-[0-9]{6}$", "default": null },
+    "derived_status": { "type": "string", "default": "NOT_STARTED" }
+  }
+}

@@ -1,0 +1,124 @@
+{
+  "artifact_id": "UCOS-RIE-DEPENDENCY-GRAPH",
+  "authority": "NONE (derived truth)",
+  "classification": "ADDITIVE INTELLIGENCE (machine-readable) — derived, non-authoritative",
+  "content_hash": "971776a0cc576e98057453f472cc09d6b492d195380df277b734d1e331c15f93",
+  "depends_on_acyclic": true,
+  "evidence_state": {
+    "evidence_files": {
+      "00-BOOK/DATA/artifacts.json": "aa096e10c9cc0b9ff0a04da62746892dea54153893b3f9633783072584fb4abe",
+      "00-BOOK/DATA/certification.json": "493c11ef1c1a084a7afad786296384857d8333160458e019fcfe3a3d132261a1",
+      "00-BOOK/DATA/control-tower.json": "3afbb9b010911fad12eaca81793e7039935140f58930fefb00784a04d48fdaec",
+      "00-BOOK/DATA/twin.json": "c50247cea005c7c40ce60e45bbcceca231cc9836efa24f263da03c2312da4128",
+      "00-BOOK/DATA/volumes.json": "bca13cfe0aaf66f50d10637463be8ab952bc2acdbecac66894c21018b6a897b5"
+    }
+  },
+  "evidence_timestamp": "2026-09-13T23:56:07+00:00",
+  "generation": {
+    "anchor": "the containing commit — owned by version control, never restated here (UCOS-RFP-001 RFP-2)",
+    "generator": "UCOS-RIE-001 Repository Intelligence Engine",
+    "generator_version": "1.0.0",
+    "input_hash": "e90d065033a34cc1c4ef51c91909bef4a7edc840cdae3ce21a42ad2e453ad402",
+    "input_hash_basis": "sha256 over the canonical evidence fingerprint — every 00-BOOK/DATA evidence file hash, which together pin the tracked state these outputs derive from. Coverage measurement (TEST_EXECUTION_STATE) is excluded per UCOS-P0-FCL-002-FIX-001 — it is not canonical identity input.",
+    "output_hash_field": "content_hash"
+  },
+  "layered_architecture_bottom_up": [
+    "LAW Ω∞-000",
+    "MIP v2 (28 universes · 25 directives) + ARCH-001..004",
+    "UCGF + GOV-001..006",
+    "Domain constitutions (02-MASTER) + bands 03-13",
+    "CIOA spec → CCE spec",
+    "EC-1 engine/",
+    "EC-2 platform/ (composes EC-1)",
+    "UKB/UKBX + control-tower/twin/artifacts",
+    "MCS (00-MASTER)",
+    "[FUTURE] AEOS execution spine",
+    "[FUTURE] adapters + universal CLI"
+  ],
+  "producer": "UCOS-RIE-001 Repository Intelligence Engine v1.0.0",
+  "program_edge_count": 16,
+  "program_edges": [
+    {
+      "count": 1,
+      "from": "ARCH",
+      "to": "CAT"
+    },
+    {
+      "count": 1,
+      "from": "ARCH",
+      "to": "CONSOLIDATION"
+    },
+    {
+      "count": 1,
+      "from": "CAT",
+      "to": "ARCH"
+    },
+    {
+      "count": 1,
+      "from": "CEP",
+      "to": "IMP"
+    },
+    {
+      "count": 1,
+      "from": "DATA",
+      "to": "PLATFORM"
+    },
+    {
+      "count": 1,
+      "from": "EES",
+      "to": "CONSOLIDATION"
+    },
+    {
+      "count": 1,
+      "from": "ENG",
+      "to": "ARCH"
+    },
+    {
+      "count": 1,
+      "from": "GEN",
+      "to": "REF"
+    },
+    {
+      "count": 1,
+      "from": "IMP",
+      "to": "CEP"
+    },
+    {
+      "count": 1,
+      "from": "IMP",
+      "to": "CONSOLIDATION"
+    },
+    {
+      "count": 1,
+      "from": "PLATFORM",
+      "to": "RUN"
+    },
+    {
+      "count": 1,
+      "from": "REF",
+      "to": "ARCH"
+    },
+    {
+      "count": 1,
+      "from": "RUN",
+      "to": "ARCH"
+    },
+    {
+      "count": 1,
+      "from": "SERVICE",
+      "to": "DATA"
+    },
+    {
+      "count": 1,
+      "from": "UMB",
+      "to": "ADV"
+    },
+    {
+      "count": 1,
+      "from": "USIS",
+      "to": "SERVICE"
+    }
+  ],
+  "title": "Dependency Intelligence Graph",
+  "total_corpus_edges": 13811
+}

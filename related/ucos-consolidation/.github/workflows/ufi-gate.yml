@@ -1,0 +1,129 @@
+name: UFI — Universal Formal Independence (every declared adopter)
+
+# MB7: a producer validated only by its own programme can be shown CONSISTENT and never
+# CORRECT. Measured over this repository: `validation_owner` equals `owner` for every entry
+# of the generated-artifact registry, NO producer has a test inside its own home, and 16 of
+# 33 producers have no producer-specific validator anywhere.
+#
+# 00-BOOK/tools/ufi.py is the shared implementation of the three checks that close it —
+# provenance, record integrity, completeness. A producer ADOPTS it by declaring its own
+# authorities and its own manifest in 00-BOOK/DATA/independence/. The code is shared so a
+# rule fixed once is fixed for everyone; the AUTHORITY is never shared, because one
+# instrument every adopter's truth derives from is the rival authority UCKP-ART-03 voids.
+#
+# WHY THIS WORKFLOW EXISTS SEPARATELY FROM verify.sh. `./verify.sh` runs the same verifier
+# as a declared UVI stage. This is the leg that does not depend on anyone choosing to run
+# it, and — more importantly — it is where the claim is RE-MEASURED rather than asserted.
+# A verifier that exists is not a verifier that works.
+#
+# AUTHORITY = NONE (DERIVED TRUTH). Stdlib only. ufi.py writes nothing.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ufi-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  formal-independence:
+    name: Formal independence (every declared adopter)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Adopters whose surfaces are generated products must be built before they are read.
+      - name: Bootstrap the generated surfaces the adopters declare
+        run: |
+          set -euo pipefail
+          python3 00-BOOK/tools/ukctx.py build
+          python3 00-MASTER/UCOS-URAT-001/urat_engine.py
+
+      - name: Verify every declared adopter (fail-closed)
+        run: python3 00-BOOK/tools/ufi.py --all
+
+      # NON-VACUITY, GENERIC. A check that passes because it measures nothing is worse than
+      # no check: it reports closure over an empty set. This introduces a sentence that no
+      # adopter's authority declares, into EVERY adopter's first surface, and REQUIRES the
+      # verifier to refuse. It is the measurement that would fail if ufi.py were corrupted
+      # into accepting everything — which is attack MB7-A8, and is otherwise undetectable
+      # by a verifier, because a verifier cannot verify itself.
+      - name: Non-vacuity — undeclared text MUST be refused, for every adopter
+        run: |
+          set -euo pipefail
+          python3 - <<'PROBE'
+          import glob, json, os, subprocess, sys
+          sys.path.insert(0, "00-BOOK/tools")
+          import ufi
+          decls = [f for f in sorted(glob.glob("00-BOOK/DATA/independence/*.json"))
+                   if "template-manifest" not in f]
+          assert decls, "no adopter declared: the gate would pass by verifying nothing"
+          failed = []
+          for d in decls:
+              surfaces = sorted(set(ufi.resolve(json.loads(ufi.read(d))["surfaces"], ufi.REPO)))
+              target = surfaces[0]
+              original = ufi.read(os.path.join(ufi.REPO, target))
+              with open(os.path.join(ufi.REPO, target), "a", encoding="utf-8") as fh:
+                  fh.write("\nTHIS SENTENCE IS DECLARED BY NO INSTRUMENT IN THIS REPOSITORY.\n")
+              rc = subprocess.run([sys.executable, "00-BOOK/tools/ufi.py", d],
+                                  capture_output=True).returncode
+              open(os.path.join(ufi.REPO, target), "w", encoding="utf-8").write(original)
+              print(f"{d}: injected undeclared text -> exit {rc}")
+              if rc == 0:
+                  failed.append(d)
+          if failed:
+              print("::error::the verifier ACCEPTED text no authority declares, for: "
+                    + ", ".join(failed))
+              print("Either the checks are broken or the manifest admits anything. In both")
+              print("cases the independence claim for those adopters is withdrawn.")
+              sys.exit(1)
+          print("non-vacuity holds: every adopter's verifier refused undeclared text.")
+          PROBE
+
+      # THE FAIL-OPEN DIRECTION. Checks 1 and 2 fail CLOSED if their declarations are
+      # emptied — no templates means nothing is admitted. Completeness is the opposite: an
+      # empty `required_projections` retires the obligation silently and the verifier goes
+      # on passing. That is attack MB7-A10, and it is the one direction the verifier cannot
+      # notice, because there is nothing left to notice.
+      - name: Completeness must be DECLARED, not merely checked
+        run: |
+          set -euo pipefail
+          python3 - <<'PROBE'
+          import glob, json, sys
+          bad = []
+          for f in sorted(glob.glob("00-BOOK/DATA/independence/*template-manifest*.json")
+                          + glob.glob("00-BOOK/DATA/*template-manifest*.json")):
+              if not json.load(open(f)).get("required_projections"):
+                  bad.append(f)
+          if bad:
+              print("::error::these manifests declare no completeness obligation: "
+                    + ", ".join(bad))
+              print("An emptied `required_projections` retires the obligation silently and")
+              print("the verifier keeps passing. Omission would stop being detected.")
+              sys.exit(1)
+          print("every adopter declares at least one completeness obligation.")
+          PROBE
+
+      # Deletion binding: a gate nothing invokes is documentation.
+      - name: ./verify.sh and the UVI stage registry still invoke the framework
+        run: |
+          set -euo pipefail
+          grep -q "00-BOOK/tools/ufi.py --all" verify.sh \
+            || { echo "::error::verify.sh no longer invokes the UFI adopters stage"; exit 1; }
+          grep -q "independent producer verification (UFI, every declared adopter)" \
+            00-MASTER/UVI-000001/uvi-declaration.json \
+            || { echo "::error::the UVI stage registry no longer declares the UFI stage"; exit 1; }
+          echo "enforcement binding holds."

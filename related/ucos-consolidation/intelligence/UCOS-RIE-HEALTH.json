@@ -1,0 +1,105 @@
+{
+  "artifact_id": "UCOS-RIE-HEALTH",
+  "authority": "NONE (derived truth)",
+  "certification": {
+    "digital_twin_verdict": "CERTIFIED",
+    "domains": "10/10",
+    "standard": "UMB-017 Digital Twin Certification (non-terminal; AUTH-INF-001 CR-INF-011)"
+  },
+  "classification": "ADDITIVE INTELLIGENCE (machine-readable) — derived, non-authoritative",
+  "code": {
+    "roots": {
+      "application": {
+        "loc": 23741,
+        "root": "application",
+        "source_files": 67,
+        "test_files": 45,
+        "test_functions": 1082
+      },
+      "data": {
+        "loc": 23577,
+        "root": "data",
+        "source_files": 73,
+        "test_files": 49,
+        "test_functions": 932
+      },
+      "engine": {
+        "loc": 154666,
+        "root": "engine",
+        "source_files": 525,
+        "test_files": 349,
+        "test_functions": 7438
+      },
+      "infrastructure": {
+        "loc": 22603,
+        "root": "infrastructure",
+        "source_files": 67,
+        "test_files": 47,
+        "test_functions": 876
+      },
+      "intelligence": {
+        "loc": 16247,
+        "root": "intelligence",
+        "source_files": 65,
+        "test_files": 7,
+        "test_functions": 344
+      },
+      "platform": {
+        "loc": 126331,
+        "root": "platform",
+        "source_files": 449,
+        "test_files": 351,
+        "test_functions": 6158
+      },
+      "service": {
+        "loc": 20464,
+        "root": "service",
+        "source_files": 79,
+        "test_files": 53,
+        "test_functions": 1038
+      }
+    },
+    "total_loc": 387629,
+    "total_tests": 17868
+  },
+  "content_hash": "618de512441135803ff4424f40b6ea950d705e982adff0f629bca479216721db",
+  "corpus": {
+    "artifacts": 1689,
+    "edges": 13811,
+    "pages": 13187,
+    "status_histogram": {
+      "ACTIVE": 1568,
+      "CERTIFIED": 7,
+      "COMPLETE": 63,
+      "FINAL": 9,
+      "FROZEN": 27,
+      "UNDER_REVIEW": 15
+    },
+    "volumes": 25
+  },
+  "evidence_state": {
+    "evidence_files": {
+      "00-BOOK/DATA/artifacts.json": "aa096e10c9cc0b9ff0a04da62746892dea54153893b3f9633783072584fb4abe",
+      "00-BOOK/DATA/certification.json": "493c11ef1c1a084a7afad786296384857d8333160458e019fcfe3a3d132261a1",
+      "00-BOOK/DATA/control-tower.json": "3afbb9b010911fad12eaca81793e7039935140f58930fefb00784a04d48fdaec",
+      "00-BOOK/DATA/twin.json": "c50247cea005c7c40ce60e45bbcceca231cc9836efa24f263da03c2312da4128",
+      "00-BOOK/DATA/volumes.json": "bca13cfe0aaf66f50d10637463be8ab952bc2acdbecac66894c21018b6a897b5"
+    }
+  },
+  "evidence_timestamp": "2026-09-13T23:56:07+00:00",
+  "generation": {
+    "anchor": "the containing commit — owned by version control, never restated here (UCOS-RFP-001 RFP-2)",
+    "generator": "UCOS-RIE-001 Repository Intelligence Engine",
+    "generator_version": "1.0.0",
+    "input_hash": "e90d065033a34cc1c4ef51c91909bef4a7edc840cdae3ce21a42ad2e453ad402",
+    "input_hash_basis": "sha256 over the canonical evidence fingerprint — every 00-BOOK/DATA evidence file hash, which together pin the tracked state these outputs derive from. Coverage measurement (TEST_EXECUTION_STATE) is excluded per UCOS-P0-FCL-002-FIX-001 — it is not canonical identity input.",
+    "output_hash_field": "content_hash"
+  },
+  "health_flags": {
+    "corpus_present": true,
+    "twin_certified": true
+  },
+  "overall": "HEALTHY",
+  "producer": "UCOS-RIE-001 Repository Intelligence Engine v1.0.0",
+  "title": "Repository Health Report"
+}

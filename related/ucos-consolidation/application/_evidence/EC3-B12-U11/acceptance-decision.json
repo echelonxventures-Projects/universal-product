@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "UAM",
+  "target_id": "UCOS-METAMODEL-ucos.application.metamodel.universal-2c2de069de3e71ff",
+  "verdict": "pass"
+}

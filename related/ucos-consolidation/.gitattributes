@@ -1,0 +1,35 @@
+# UCOS Ω∞ — merge classes. Three, and the class decides the driver.
+#
+# DERIVED — re-derived from the tree by `ukb.py build`. A textual merge of a derived
+# register is meaningless even when git accepts it. Regenerate; never merge.
+00-BOOK/DATA/artifacts.json         merge=ucos-regenerate
+00-BOOK/DATA/relationships.json     merge=ucos-regenerate
+00-BOOK/DATA/change-ledger.json     merge=ucos-regenerate
+00-BOOK/DATA/control-tower.json     merge=ucos-regenerate
+00-BOOK/DATA/volumes.json           merge=ucos-regenerate
+00-BOOK/DATA/certification.json     merge=ucos-regenerate
+00-BOOK/REGISTRIES/**               merge=ucos-regenerate
+00-BOOK/CONTROL-TOWER/**            merge=ucos-regenerate
+00-BOOK/PORTAL/**                   merge=ucos-regenerate
+
+# IRREVERSIBLE — permanent append-only allocations. Union by key, and REFUSE when one
+# key carries two values: that is an identity collision, and ART-05 forbids reissue, so
+# it must stop the merge loudly rather than resolve quietly. NEVER regenerate: re-deriving
+# would reissue identity.
+00-BOOK/DATA/id-ledger.json         merge=ucos-union-ledger
+
+# APPEND-ONLY COORDINATION — line-oriented so two agents appending never conflict.
+00-BOOK/DATA/claims.jsonl           merge=union
+00-BOOK/DATA/mint-requests.jsonl    merge=union
+
+# DECLARATIONS — authored truth. A conflict here is a real disagreement between two
+# agents and is resolved by a person, never by a driver.
+00-BOOK/DATA/context-authority.json                   -merge
+00-BOOK/DATA/constitutional-authority-alignment.json  -merge
+00-BOOK/DATA/allocation-permits.json                  -merge
+00-BOOK/DATA/exclusion-register.json                  -merge
+00-BOOK/DATA/mutation-governance-boundary.json        -merge
+00-BOOK/DATA/evidence-universe.json                   -merge
+00-BOOK/DATA/observation-universe.json                -merge
+00-BOOK/DATA/generated-artifact-registry.json         -merge
+00-MASTER/**/*-declaration.json                       -merge

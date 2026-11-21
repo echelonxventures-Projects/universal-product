@@ -1,0 +1,29 @@
+{
+  "authority": "NONE — DERIVED TRUTH. Measurement only; this file certifies nothing and creates no authority.",
+  "phase": 6,
+  "question": "Does Repository Truth permit UNCONDITIONAL CERTIFICATION under any condition?",
+  "outcome": "POSSIBLE AFTER VACANCY RESOLUTION",
+  "outcome_from_inside_the_corpus": "PROHIBITED",
+  "governing_authorities": [
+    "CEP-000 §5.3",
+    "CEP-000 §5.4",
+    "CEP-000 §6.5",
+    "CEP-006 I.4",
+    "CEP-006 I.5",
+    "CEP-006 XII.2",
+    "CEP-006 XII.3",
+    "CMG-000001 X.12 (CMG-L-12)",
+    "CMG-000001 LI.6",
+    "CMG-000001 XVII.4",
+    "CMG-REGISTRY VAC-01",
+    "CMG-REGISTRY CMG-OQ-02",
+    "UCCEP-F-004"
+  ],
+  "exact_condition": "An out-of-corpus constituent ratification act that identifies and ratifies the artifact occupying Tier T1, followed by CMG-000001 XVII.4(d) re-run of authority resolution.",
+  "executable_evidence": "00-MASTER/UCOS-URAT-001/urat.json :: finality_ceiling.unreachable_in_corpus == ['FINALIZED']",
+  "maximum_attainable_in_corpus_state": "CERTIFIED-PROVISIONAL",
+  "is_provisional_a_deficiency": {
+    "answer": "NO",
+    "basis": "CEP-006 XII.3 — PROVISIONAL 'is non-blocking to engineering progression and blocking only to declared constitutional finality.' Reaching CERTIFIED-PROVISIONAL with zero blocking failures IS the ceiling, not a shortfall."
+  }
+}

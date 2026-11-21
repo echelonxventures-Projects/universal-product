@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "NetworkResource",
+      "certification_id": "UCOS-CERT-NetworkResource-02d144efede49479",
+      "entry_hash": "8b2ffd4964acd46545bc23fa3c50a61a92cced77a9a2ff7fab6e32c6874e861f",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "02d144efede49479ae18594c8d6d6b77efa2178cebb438364676adaba1a6440e",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-NETWORK-ucos.infrastructure.network.foundation-7dd7e556add9c97b",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "8b2ffd4964acd46545bc23fa3c50a61a92cced77a9a2ff7fab6e32c6874e861f",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

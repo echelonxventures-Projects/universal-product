@@ -1,0 +1,48 @@
+{
+  "backward": [
+    "AMC-09",
+    "APPLICATION-013",
+    "APPLICATION-005",
+    "APPLICATION-001",
+    "ARCH-APPLICATION-001",
+    "12-APPLICATION@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-SECURITY-ucos.application.security.foundation-22c4f6543bd9f76c",
+    "EC3-B12-U09-VALIDATION-EVIDENCE",
+    "EC3-B12-U09-CCE-CERTIFICATION",
+    "EC3-B12-U09-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "1aae24a",
+  "meta_class": "AMC-09",
+  "referenced_units": [
+    "AMC-01",
+    "AMC-04",
+    "DF-2",
+    "RL-F2"
+  ],
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "confidentiality/integrity data bound by reference (AMR-14; DATA-014); none redefined",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the security record)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity; no parallel model)",
+    "ENG-004": "application.security_meta.SecurityKind + type_tag (ENG-004 typing, by reference)",
+    "ENG-005": "reference identifiers (subject/governance/data/behavior refs; no new construct)",
+    "RL-F2": "security-evaluate policy + security-record event bound by reference (§7); none redef"
+  },
+  "target_id": "UCOS-SECURITY-ucos.application.security.foundation-22c4f6543bd9f76c",
+  "trace_format": "ucos-application-security-traceability/1.0.0",
+  "unit": "EC3-B12-U09"
+}

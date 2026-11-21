@@ -1,0 +1,314 @@
+{
+  "$comment": "UCOS-EPIC-014 — the reference self-check assurance run. This configuration describes the Universal Assurance capability itself as an assurance subject: the seven validation domains and seven intelligence dimensions are populated with the capability's own facts, and the repository-truth attestation is the UAKOS-CLOSURE-002 closure. It is a known-good, fully-decidable run, so `ucos-assure selfcheck` is a deterministic, gate-able proof that the whole ten-stage pipeline plans, generates, executes, collects evidence, certifies, registers and reasons end to end. It is data, not code: nothing here is enumerated in the engine.",
+  "policy_path": "",
+  "evidence_dir": "",
+  "approver": "",
+  "subject": {
+    "subject_id": "UCOS-ASSURANCE-SELFCHECK",
+    "version": "1.0.0",
+    "blueprint_id": "BP-ASSURANCE-0001",
+    "validation_facts": {
+      "architecture": {
+        "layers": ["platform", "engine"],
+        "dependencies": [
+          { "from": "platform", "to": "engine" },
+          { "from": "platform", "to": "platform" }
+        ],
+        "changed_paths": [
+          "platform/universal_assurance/policy.py",
+          "platform/universal_assurance/orchestrator.py",
+          "platform/tests/test_universal_assurance_policy.py"
+        ]
+      },
+      "implementation": {
+        "modules": [
+          { "id": "platform.universal_assurance.contracts", "present": true },
+          { "id": "platform.universal_assurance.policy", "present": true },
+          { "id": "platform.universal_assurance.planning", "present": true },
+          { "id": "platform.universal_assurance.generation", "present": true },
+          { "id": "platform.universal_assurance.execution", "present": true },
+          { "id": "platform.universal_assurance.evidence", "present": true },
+          { "id": "platform.universal_assurance.certification", "present": true },
+          { "id": "platform.universal_assurance.registry", "present": true },
+          { "id": "platform.universal_assurance.intelligence", "present": true },
+          { "id": "platform.universal_assurance.measurement", "present": true },
+          { "id": "platform.universal_assurance.determinism", "present": true },
+          { "id": "platform.universal_assurance.orchestrator", "present": true }
+        ],
+        "entrypoints": [{ "name": "ucos-assure", "resolved": true }],
+        "open_markers": 0
+      },
+      "dependency": {
+        "dependencies": [
+          {
+            "id": "platform.universal_validation",
+            "version": "1.0.0",
+            "provider": "platform.universal_validation"
+          },
+          {
+            "id": "platform.validation_intelligence",
+            "version": "1.0.0",
+            "provider": "platform.validation_intelligence"
+          },
+          {
+            "id": "engine.universal_certification",
+            "version": "1.0.0",
+            "provider": "engine.universal_certification"
+          },
+          {
+            "id": "platform.foundation",
+            "version": "1.0.0",
+            "provider": "platform.foundation"
+          }
+        ],
+        "providers": [
+          "platform.universal_validation",
+          "platform.validation_intelligence",
+          "engine.universal_certification",
+          "platform.foundation"
+        ],
+        "edges": [
+          { "from": "platform.universal_validation", "to": "platform.foundation" },
+          { "from": "platform.validation_intelligence", "to": "platform.foundation" },
+          { "from": "engine.universal_certification", "to": "platform.foundation" }
+        ]
+      },
+      "registry": {
+        "entries": [
+          {
+            "id": "UCOS-ASSURANCE-POLICY-001",
+            "kind": "policy",
+            "content_hash": "policy"
+          },
+          {
+            "id": "UCOS-EPIC-014",
+            "kind": "capability",
+            "content_hash": "capability"
+          }
+        ],
+        "references": [{ "from": "UCOS-EPIC-014", "to": "UCOS-ASSURANCE-POLICY-001" }]
+      },
+      "schema": {
+        "schemas": {
+          "ucos-assurance-policy/1.0.0": {
+            "version": "1.0.0",
+            "required": ["policy", "obligations"]
+          },
+          "ucos-assurance-report/1.0.0": {
+            "version": "1.0.0",
+            "required": ["subject_id", "verdict"]
+          }
+        },
+        "records": [
+          {
+            "schema": "ucos-assurance-policy/1.0.0",
+            "fields": { "policy": "UCOS-ASSURANCE-POLICY-001", "obligations": 43 }
+          },
+          {
+            "schema": "ucos-assurance-report/1.0.0",
+            "fields": { "subject_id": "UCOS-ASSURANCE-SELFCHECK", "verdict": "pass" }
+          }
+        ]
+      },
+      "runtime": {
+        "disclosure": {
+          "asserts_constitutional_finality": false,
+          "authority": "ENGINEERING-EXECUTION-ONLY",
+          "disclosure_id": "EC-1-PROVISIONAL-STATE",
+          "gate": "EC-1",
+          "gate_open": true,
+          "standard": "DE-05",
+          "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+        },
+        "units": [
+          {
+            "runtime_id": "UCOS-RUN-BP-ASSURANCE-0001-0f1e2d3c4b5a6978",
+            "package_sha256": "0f1e2d3c4b5a69788796a5b4c3d2e1f00f1e2d3c4b5a69788796a5b4c3d2e1f0",
+            "image_reference": "ucos/universal-assurance@sha256:0f1e2d3c4b5a69788796a5b4c3d2e1f00f1e2d3c4b5a69788796a5b4c3d2e1f0"
+          }
+        ]
+      },
+      "quality": {
+        "line_percent": 90.0,
+        "min_percent": 90.0,
+        "tests": { "passed": 1, "failed": 0 },
+        "lint_violations": 0
+      }
+    },
+    "intelligence_facts": {
+      "cross_capability_consistency": {
+        "capabilities": [
+          {
+            "id": "validation-planning",
+            "provides": ["assurance.validation-plan"],
+            "requires": ["assurance.policy"]
+          },
+          {
+            "id": "validation-generation",
+            "provides": ["assurance.validation-suite"],
+            "requires": ["assurance.validation-plan"]
+          },
+          {
+            "id": "validation-execution",
+            "provides": ["assurance.validation-execution"],
+            "requires": ["assurance.validation-suite"]
+          },
+          {
+            "id": "evidence-collection",
+            "provides": ["assurance.evidence-bundle"],
+            "requires": ["assurance.validation-execution"]
+          },
+          {
+            "id": "certification-planning",
+            "provides": ["assurance.certification-plan"],
+            "requires": ["assurance.policy"]
+          },
+          {
+            "id": "certification-execution",
+            "provides": ["assurance.certificate"],
+            "requires": ["assurance.certification-plan", "assurance.validation-execution"]
+          },
+          {
+            "id": "certification-evidence",
+            "provides": ["assurance.certification-evidence"],
+            "requires": ["assurance.certificate"]
+          },
+          {
+            "id": "certification-registry",
+            "provides": ["assurance.certification-registry"],
+            "requires": ["assurance.certification-evidence"]
+          },
+          {
+            "id": "validation-intelligence",
+            "provides": ["assurance.validation-intelligence"],
+            "requires": ["assurance.validation-suite"]
+          },
+          {
+            "id": "certification-intelligence",
+            "provides": ["assurance.certification-intelligence"],
+            "requires": ["assurance.certification-registry", "assurance.evidence-bundle"]
+          },
+          {
+            "id": "assurance-policy",
+            "provides": ["assurance.policy"],
+            "requires": []
+          }
+        ]
+      },
+      "repository_completeness": {
+        "required_artifacts": [
+          { "id": "policy-document", "present": true },
+          { "id": "selfcheck-configuration", "present": true },
+          { "id": "cli-entrypoint", "present": true },
+          { "id": "test-suite", "present": true }
+        ],
+        "gaps": 0,
+        "coverage": { "covered": 10, "total": 10 }
+      },
+      "contract_compatibility": {
+        "baseline": [
+          {
+            "name": "ucos-assurance-policy",
+            "version": "1.0.0",
+            "required_fields": ["policy", "obligations"]
+          },
+          {
+            "name": "ucos-assurance-report",
+            "version": "1.0.0",
+            "required_fields": ["subject_id", "verdict"]
+          }
+        ],
+        "candidate": [
+          {
+            "name": "ucos-assurance-policy",
+            "version": "1.0.0",
+            "required_fields": ["policy", "obligations"]
+          },
+          {
+            "name": "ucos-assurance-report",
+            "version": "1.0.0",
+            "required_fields": ["subject_id", "verdict"]
+          }
+        ]
+      },
+      "architecture_compliance": {
+        "policies": [
+          { "id": "DP-03-certified-corpus-read-only", "compliant": true },
+          { "id": "TP-01-no-invented-verdict", "compliant": true },
+          { "id": "AR-03-versioned-contracts", "compliant": true },
+          { "id": "IMP-007-deterministic-identity", "compliant": true }
+        ],
+        "changed_paths": [
+          "platform/universal_assurance/policy.py",
+          "platform/universal_assurance/orchestrator.py"
+        ]
+      },
+      "runtime_compatibility": {
+        "required": {
+          "interfaces": [
+            "platform.universal_validation.UniversalValidationEngine",
+            "platform.validation_intelligence.ContinuousValidationIntelligenceEngine",
+            "engine.universal_certification.CertificationPipeline"
+          ],
+          "abi": "1.0.0"
+        },
+        "provided": {
+          "interfaces": [
+            "platform.universal_validation.UniversalValidationEngine",
+            "platform.validation_intelligence.ContinuousValidationIntelligenceEngine",
+            "engine.universal_certification.CertificationPipeline"
+          ],
+          "abi": "1.0.0"
+        }
+      },
+      "version_compatibility": {
+        "components": [
+          {
+            "id": "platform.universal_assurance",
+            "version": "1.0.0",
+            "requires": {
+              "platform.universal_validation": ">=1.0.0",
+              "platform.validation_intelligence": ">=1.0.0",
+              "engine.universal_certification": ">=1.0.0"
+            }
+          },
+          { "id": "platform.universal_validation", "version": "1.0.0" },
+          { "id": "platform.validation_intelligence", "version": "1.0.0" },
+          { "id": "engine.universal_certification", "version": "1.0.0" }
+        ]
+      },
+      "governance_compliance": {
+        "controls": [
+          { "id": "policy-driven-no-enumeration", "satisfied": true },
+          { "id": "fail-closed-obligations", "satisfied": true },
+          { "id": "evidence-required-every-determination", "satisfied": true },
+          { "id": "append-only-registry", "satisfied": true },
+          { "id": "forbidden-write-scope-enforced", "satisfied": true }
+        ],
+        "authority": "ENGINEERING-EXECUTION-ONLY",
+        "disclosure": {
+          "asserts_constitutional_finality": false,
+          "authority": "ENGINEERING-EXECUTION-ONLY",
+          "disclosure_id": "EC-1-PROVISIONAL-STATE",
+          "gate": "EC-1",
+          "gate_open": true,
+          "standard": "DE-05",
+          "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+        }
+      }
+    },
+    "repository_truth": {
+      "snapshot_id": "UAKOS-CLOSURE-002",
+      "content_sha256": "8432609e10e719c68432609e10e719c68432609e10e719c68432609e10e719c6",
+      "total_concepts": 434,
+      "homed_concepts": 434,
+      "gaps": {},
+      "closed": true
+    },
+    "observations": {
+      "coverage_line_percent": 90.0,
+      "lint_violations": 0,
+      "open_markers": 0
+    }
+  }
+}

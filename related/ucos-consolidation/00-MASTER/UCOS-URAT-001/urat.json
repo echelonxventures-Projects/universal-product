@@ -1,0 +1,888 @@
+{
+  "authority_registry": {
+    "authorities": 34,
+    "owner": "00-MASTER/UCOS-UCAF-001/ucaf.json"
+  },
+  "blocking_failures": [],
+  "by_state": {
+    "PROVISIONAL": 6
+  },
+  "counts": {
+    "attributions_derived": 4,
+    "attributions_recorded": 2,
+    "discovered": 17,
+    "excluded": 11,
+    "records": 6,
+    "records_admitting_freeze": 6,
+    "records_valid": 6,
+    "registry_rules": 6,
+    "registry_rules_bound": 6,
+    "states_declared": 9,
+    "transitions_declared": 13,
+    "transitions_in_corpus": 11,
+    "unaccounted": 0
+  },
+  "coverage": {
+    "discovered": [
+      "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "00-CEP/STAGE-04-S4-06-INFRASTRUCTURE-013-SECURITY-RATIFICATION-AND-INFRASTRUCTURE-014-NEXT-FRONTIER-DETERMINATION.md",
+      "00-CEP/STAGE-04-S4-11-INFRASTRUCTURE-014-GOVERNANCE-PROVISIONAL-RATIFICATION.md",
+      "00-CEP/STAGE-04-S4-12-INFRASTRUCTURE-005-UIMM-INTEGRATION-PROVISIONAL-RATIFICATION.md",
+      "00-CMG/CMG-000014-CONSTITUTIONAL-OPEN-QUESTIONS-FOR-RATIFICATION.md",
+      "00-MASTER/UAKOS-CLOSURE-002/56-CONSTITUTIONAL-RATIFICATION-RECOMMENDATION.md",
+      "00-MASTER/UAKOS-CLOSURE-002/62-RATIFICATION-RECOMMENDATION.md",
+      "00-MASTER/UCOS-CRAT-001/00-RATIFICATION-CHARTER.md",
+      "00-MASTER/UCOS-CRAT-001/01-CONSTITUTIONAL-RATIFICATION.md",
+      "00-MASTER/UCOS-CRAT-001/02-USIS-RATIFICATION.md",
+      "00-MASTER/UCOS-CRAT-001/03-UNIVERSAL-CONTEXT-ASSIMILATION-LAW-RATIFICATION.md",
+      "00-MASTER/UCOS-CRAT-001/04-CANONICAL-OWNERSHIP-RATIFICATION.md",
+      "00-MASTER/UCOS-CRAT-001/06-GOVERNANCE-RATIFICATION.md",
+      "00-MASTER/UCOS-CRAT-001/09-RATIFICATION-CERTIFICATE.md",
+      "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md",
+      "02-MASTER/UCOS-RAT-002-CONSTITUENT-RATIFICATION-AND-TIER-1-CLOSURE-DETERMINATION.md",
+      "02-MASTER/UCOS-Ω∞-CONSTITUTIONAL-RATIFICATION-REPORT.md"
+    ],
+    "excluded": [
+      {
+        "class": "CONSTITUTIVE-INSTRUMENT",
+        "path": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+        "reason": "The ratification constitution legislates how ratification operates. It is the law under which records are made, not a record."
+      },
+      {
+        "class": "ANALYSIS",
+        "path": "00-CMG/CMG-000014-CONSTITUTIONAL-OPEN-QUESTIONS-FOR-RATIFICATION.md",
+        "reason": "Declared NON-NORMATIVE by its own front matter. It records the open questions referred to explicit ratification; it determines nothing."
+      },
+      {
+        "class": "RECOMMENDATION",
+        "path": "00-MASTER/UAKOS-CLOSURE-002/56-CONSTITUTIONAL-RATIFICATION-RECOMMENDATION.md",
+        "reason": "A recommendation carries no determination. CEP-006 VII.1 requires a decision to yield exactly one outcome; a recommendation yields none."
+      },
+      {
+        "class": "RECOMMENDATION",
+        "path": "00-MASTER/UAKOS-CLOSURE-002/62-RATIFICATION-RECOMMENDATION.md",
+        "reason": "A recommendation carries no determination."
+      },
+      {
+        "class": "CHARTER",
+        "path": "00-MASTER/UCOS-CRAT-001/00-RATIFICATION-CHARTER.md",
+        "reason": "The charter of the ratification programme, not one of its determinations. Its determinations are rolled up in the certificate registered as URAT-REC-02."
+      },
+      {
+        "class": "COMPONENT-OF-REGISTERED-RECORD",
+        "path": "00-MASTER/UCOS-CRAT-001/01-CONSTITUTIONAL-RATIFICATION.md",
+        "reason": "A component determination rolled up into the certificate registered as URAT-REC-02, and carried there as evidence. Registering it separately would breach CEP-006 XVI.2 uniqueness."
+      },
+      {
+        "class": "COMPONENT-OF-REGISTERED-RECORD",
+        "path": "00-MASTER/UCOS-CRAT-001/02-USIS-RATIFICATION.md",
+        "reason": "Component of URAT-REC-02; carried there as evidence."
+      },
+      {
+        "class": "COMPONENT-OF-REGISTERED-RECORD",
+        "path": "00-MASTER/UCOS-CRAT-001/03-UNIVERSAL-CONTEXT-ASSIMILATION-LAW-RATIFICATION.md",
+        "reason": "Component of URAT-REC-02; carried there as evidence."
+      },
+      {
+        "class": "COMPONENT-OF-REGISTERED-RECORD",
+        "path": "00-MASTER/UCOS-CRAT-001/04-CANONICAL-OWNERSHIP-RATIFICATION.md",
+        "reason": "Component of URAT-REC-02; carried there as evidence."
+      },
+      {
+        "class": "COMPONENT-OF-REGISTERED-RECORD",
+        "path": "00-MASTER/UCOS-CRAT-001/06-GOVERNANCE-RATIFICATION.md",
+        "reason": "Component of URAT-REC-02; carried there as evidence."
+      },
+      {
+        "class": "ANALYSIS",
+        "path": "02-MASTER/UCOS-Ω∞-CONSTITUTIONAL-RATIFICATION-REPORT.md",
+        "reason": "A phase report that was, by mandate, analysis-only and declined to perform the constituent act. The act it identified is registered as URAT-REC-01."
+      }
+    ],
+    "registered": [
+      "00-CEP/STAGE-04-S4-06-INFRASTRUCTURE-013-SECURITY-RATIFICATION-AND-INFRASTRUCTURE-014-NEXT-FRONTIER-DETERMINATION.md",
+      "00-CEP/STAGE-04-S4-11-INFRASTRUCTURE-014-GOVERNANCE-PROVISIONAL-RATIFICATION.md",
+      "00-CEP/STAGE-04-S4-12-INFRASTRUCTURE-005-UIMM-INTEGRATION-PROVISIONAL-RATIFICATION.md",
+      "00-MASTER/UCOS-CRAT-001/09-RATIFICATION-CERTIFICATE.md",
+      "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md",
+      "02-MASTER/UCOS-RAT-002-CONSTITUENT-RATIFICATION-AND-TIER-1-CLOSURE-DETERMINATION.md"
+    ],
+    "unaccounted": []
+  },
+  "determination": "RATIFICATION-REGISTRY-BOUND",
+  "exit_criteria": [
+    {
+      "criterion": "the registry CEP-006 Article XVI mandates exists, so a located ratification is no longer deemed non-existent under XVI.4",
+      "id": "URAT-EX-01"
+    },
+    {
+      "criterion": "every registered record is verified against the located act that determined it, by anchor and by content digest",
+      "id": "URAT-EX-02"
+    },
+    {
+      "criterion": "every registered record attributes an authority that resolves in the located authority registry",
+      "id": "URAT-EX-03"
+    },
+    {
+      "criterion": "the in-corpus PROVISIONAL ceiling is enforced by the registry, not merely described",
+      "id": "URAT-EX-04"
+    },
+    {
+      "criterion": "coverage over the discovery surface is complete: no located ratification instrument is unaccounted for",
+      "id": "URAT-EX-05"
+    }
+  ],
+  "finality_ceiling": {
+    "basis": "Ratification Authority within the corpus SHALL confer only PROVISIONAL acceptance",
+    "in_corpus_ceiling": [
+      "PROVISIONAL"
+    ],
+    "unreachable_in_corpus": [
+      "FINALIZED"
+    ]
+  },
+  "findings": [
+    {
+      "blocking": false,
+      "class": "MEASURED-GOVERNANCE-GAP",
+      "disposition": "IMPLEMENTED",
+      "evidence": [
+        "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+        "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md",
+        "00-MASTER/UCOS-CRAT-001/09-RATIFICATION-CERTIFICATE.md"
+      ],
+      "id": "URAT-F-001",
+      "note": "CEP-006 XVI.1 mandates a Ratification Registry and XVI.4 deems any ratification absent from it non-existent. No registry existed, so five located and committed ratification acts could not be relied upon by any gate. Closed by implementing the registry and admitting the located acts, not by performing any ratification.",
+      "owner": "00-MASTER/UCOS-URAT-001/urat-declaration.json",
+      "title": "Located ratification acts were constitutionally invisible because the registry CEP-006 mandates did not exist"
+    },
+    {
+      "blocking": false,
+      "class": "MEASURED-GOVERNANCE-GAP",
+      "disposition": "REGISTERED",
+      "evidence": [
+        "00-CEP/STAGE-04-S4-11-INFRASTRUCTURE-014-GOVERNANCE-PROVISIONAL-RATIFICATION.md",
+        "00-CEP/STAGE-04-S4-12-INFRASTRUCTURE-005-UIMM-INTEGRATION-PROVISIONAL-RATIFICATION.md",
+        "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md"
+      ],
+      "id": "URAT-F-002",
+      "note": "CEP-006 XVII.1 requires a record to record its Ratification Authority. Only the exogenous constituent act names its ratifier. For the other four the attribution is DERIVED from CEP-006 Article I — the instrument that establishes in-corpus Ratification Authority and, at I.4, authorises it to confer PROVISIONAL acceptance. The registry marks these attributions derived rather than recorded, so the difference is visible instead of smoothed over. Making the acts name their own authority is an amendment to those acts and belongs to their owners.",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "title": "Four of five located ratification acts do not name their ratifying authority in their own text"
+    },
+    {
+      "blocking": false,
+      "class": "DECLARED-SCOPE-BOUNDARY",
+      "disposition": "GOVERNED",
+      "evidence": [
+        "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+        "09-DR-RAT-11-ASSESSMENT.md"
+      ],
+      "id": "URAT-F-003",
+      "note": "The two transitions into FINALIZED are declared requires_out_of_corpus, and this engine holds no authority to perform any transition at all. The ceiling is therefore enforced structurally: no edit to this declaration can produce a FINALIZED record, because a record's state must also be located in the act that determined it. CEP-007 III.2 nevertheless admits PROVISIONAL to the freeze lifecycle, so the ceiling caps finality without blocking freeze.",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "title": "FINALIZED is unreachable from inside this repository, by construction and not by omission"
+    }
+  ],
+  "gate": "OPEN",
+  "gate_exit": 0,
+  "preconditions": [
+    {
+      "id": "URAT-PRE-01",
+      "named_in_clause": true,
+      "owner": "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "owner_resolved": true,
+      "precondition": "closed validation"
+    },
+    {
+      "id": "URAT-PRE-02",
+      "named_in_clause": true,
+      "owner": "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "owner_resolved": true,
+      "precondition": "active certification"
+    },
+    {
+      "id": "URAT-PRE-03",
+      "named_in_clause": true,
+      "owner": "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md",
+      "owner_resolved": true,
+      "precondition": "rooted-and-closed traceability"
+    },
+    {
+      "id": "URAT-PRE-04",
+      "named_in_clause": true,
+      "owner": "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md",
+      "owner_resolved": true,
+      "precondition": "preservation of frozen work"
+    }
+  ],
+  "programme": {
+    "authority": "NONE — DERIVED TRUTH. This programme performs no ratification, confers no acceptance and upgrades no state. It implements the registry CEP-006 Article XVI mandates, and records only what a located ratification act already determined.",
+    "disclosure": "**DISCLOSURE.** CERTIFIED-PROVISIONAL. Every record in this registry is PROVISIONAL: CEP-006 I.4 caps in-corpus ratification at PROVISIONAL acceptance pending an out-of-corpus finality authority. FINALIZED is unreachable from inside this repository by construction. Where this registry and a located ratification act differ, the located act governs.",
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "00-BOOK/DATA/",
+      "00-CEP/",
+      "00-CMG/",
+      "01-WORKING/",
+      "02-MASTER/"
+    ],
+    "governing_instruments": [
+      "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md"
+    ],
+    "id": "UCOS-URAT-001",
+    "name": "Universal Ratification Registry",
+    "operational_home": "00-MASTER/UCOS-URAT-001/",
+    "version": "1.0"
+  },
+  "records": [
+    {
+      "admits_to_freeze": true,
+      "artifact": "The constitutional order of the repository — document supremacy, root ontology, invariant set, law canon and authority chain, as fixed by the exogenous constituent act EC-1",
+      "authority": "AUTH-13",
+      "authority_attribution": "RECORDED",
+      "authority_basis_located": true,
+      "authority_resolved": true,
+      "evidence": [
+        {
+          "digest": "dfb00c53931ccb92",
+          "reference": "01-WORKING/AUTHORITY-REGISTER.md",
+          "resolved": true
+        },
+        {
+          "digest": "7328ac44248dfa9b",
+          "reference": "01-WORKING/SUPERSESSION-REGISTER.md",
+          "resolved": true
+        },
+        {
+          "digest": "d3ad3c0d7438be3d",
+          "reference": "02-MASTER/UCOS-Ω∞-CONSTITUTIONAL-DECISION-REGISTER.md",
+          "resolved": true
+        },
+        {
+          "digest": "c7c3aadf1090c797",
+          "reference": "09-DR-RAT-11-ASSESSMENT.md",
+          "resolved": true
+        }
+      ],
+      "evidence_resolved": 4,
+      "id": "URAT-REC-01",
+      "lineage_predecessor": null,
+      "outcome": "RATIFIED at the derived-truth layer by the exogenous constituent authority; constitutional finality not claimed",
+      "preconditions_claimed": true,
+      "preconditions_satisfied": [
+        "URAT-PRE-01",
+        "URAT-PRE-02",
+        "URAT-PRE-03",
+        "URAT-PRE-04"
+      ],
+      "program_state_hash": "187ff2ae04995da7914746dbff778b8c433a64b313a23be9db408eaeabe6bf5e",
+      "record": "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md",
+      "record_digest": "3625ea5f92c8acc1",
+      "record_resolved": true,
+      "state": "PROVISIONAL",
+      "state_basis": {
+        "anchor": "the maximum in-corpus certification state is",
+        "owner": "09-DR-RAT-11-ASSESSMENT.md"
+      },
+      "state_basis_located": true,
+      "state_declared": true,
+      "valid": true,
+      "verdict_anchor_located": true
+    },
+    {
+      "admits_to_freeze": true,
+      "artifact": "The repository foundation — repository constitution, universal context assimilation law, knowledge-once principle, single canonical source of truth, canonical ownership model and repository governance",
+      "authority": "CEP-006::RATIFICATION",
+      "authority_attribution": "DERIVED",
+      "authority_basis_located": true,
+      "authority_resolved": true,
+      "evidence": [
+        {
+          "digest": "32929770f55c2472",
+          "reference": "00-MASTER/UCOS-CRAT-001/01-CONSTITUTIONAL-RATIFICATION.md",
+          "resolved": true
+        },
+        {
+          "digest": "74ffd5d005524c08",
+          "reference": "00-MASTER/UCOS-CRAT-001/02-USIS-RATIFICATION.md",
+          "resolved": true
+        },
+        {
+          "digest": "0266fca4373724be",
+          "reference": "00-MASTER/UCOS-CRAT-001/03-UNIVERSAL-CONTEXT-ASSIMILATION-LAW-RATIFICATION.md",
+          "resolved": true
+        },
+        {
+          "digest": "76d93296701ecf84",
+          "reference": "00-MASTER/UCOS-CRAT-001/04-CANONICAL-OWNERSHIP-RATIFICATION.md",
+          "resolved": true
+        },
+        {
+          "digest": "34fe102d51106d71",
+          "reference": "00-MASTER/UCOS-CRAT-001/06-GOVERNANCE-RATIFICATION.md",
+          "resolved": true
+        },
+        {
+          "digest": "92dc365ca578c2cb",
+          "reference": "00-MASTER/UCOS-CVER-001/01-CONSTITUTIONAL-VERIFICATION-REPORT.md",
+          "resolved": true
+        }
+      ],
+      "evidence_resolved": 6,
+      "id": "URAT-REC-02",
+      "lineage_predecessor": null,
+      "outcome": "RATIFIED (DERIVED) on complete repository evidence with zero in-corpus blockers; constitutional finality recorded as pending",
+      "preconditions_claimed": true,
+      "preconditions_satisfied": [
+        "URAT-PRE-01",
+        "URAT-PRE-02",
+        "URAT-PRE-03",
+        "URAT-PRE-04"
+      ],
+      "program_state_hash": "f11fc9555a41515f4e3011432775655b174c926c0d916754260414d17a0dc55f",
+      "record": "00-MASTER/UCOS-CRAT-001/09-RATIFICATION-CERTIFICATE.md",
+      "record_digest": "f1eadbd72b84301a",
+      "record_resolved": true,
+      "state": "PROVISIONAL",
+      "state_basis": {
+        "anchor": "CONSTITUTIONAL FINALITY: PROVISIONAL",
+        "owner": "00-MASTER/UCOS-CRAT-001/09-RATIFICATION-CERTIFICATE.md"
+      },
+      "state_basis_located": true,
+      "state_declared": true,
+      "valid": true,
+      "verdict_anchor_located": true
+    },
+    {
+      "admits_to_freeze": true,
+      "artifact": "INFRASTRUCTURE-013 Universal Infrastructure Security (U08, C15 SecurityFacet)",
+      "authority": "CEP-006::RATIFICATION",
+      "authority_attribution": "DERIVED",
+      "authority_basis_located": true,
+      "authority_resolved": true,
+      "evidence": [
+        {
+          "digest": "2c96025039a9a230",
+          "reference": "00-CEP/STAGE-04-S4-05-SECURITY-VALIDATION-CERTIFICATION-FREEZE-READINESS.md",
+          "resolved": true
+        },
+        {
+          "digest": "ce305871887f9f52",
+          "reference": "00-CEP/STAGE-04-S4-03-INFRASTRUCTURE-013-SECURITY-REALIZATION-EXECUTION-PLAN.md",
+          "resolved": true
+        },
+        {
+          "digest": "d7d4683c9b8a03be",
+          "reference": "00-CEP/STAGE-04-S4-02-INFRASTRUCTURE-013-SECURITY-FACTORY-ADMISSION.md",
+          "resolved": true
+        }
+      ],
+      "evidence_resolved": 3,
+      "id": "URAT-REC-03",
+      "lineage_predecessor": null,
+      "outcome": "admitted as a member of the constitutional corpus at PROVISIONAL acceptance, pending out-of-corpus finality",
+      "preconditions_claimed": true,
+      "preconditions_satisfied": [
+        "URAT-PRE-01",
+        "URAT-PRE-02",
+        "URAT-PRE-03",
+        "URAT-PRE-04"
+      ],
+      "program_state_hash": "c2ee260add54522b46d94102c4b586ef54d258d4115b02126ccd8e9064a8170f",
+      "record": "00-CEP/STAGE-04-S4-06-INFRASTRUCTURE-013-SECURITY-RATIFICATION-AND-INFRASTRUCTURE-014-NEXT-FRONTIER-DETERMINATION.md",
+      "record_digest": "49bd9552a81482a0",
+      "record_resolved": true,
+      "state": "PROVISIONAL",
+      "state_basis": {
+        "anchor": "ratification lifecycle RATIFYING → PROVISIONAL",
+        "owner": "00-CEP/STAGE-04-S4-06-INFRASTRUCTURE-013-SECURITY-RATIFICATION-AND-INFRASTRUCTURE-014-NEXT-FRONTIER-DETERMINATION.md"
+      },
+      "state_basis_located": true,
+      "state_declared": true,
+      "valid": true,
+      "verdict_anchor_located": true
+    },
+    {
+      "admits_to_freeze": true,
+      "artifact": "INFRASTRUCTURE-014 Universal Infrastructure Governance (EC3-B13-U09, C16 GovernanceFacet)",
+      "authority": "CEP-006::RATIFICATION",
+      "authority_attribution": "DERIVED",
+      "authority_basis_located": true,
+      "authority_resolved": true,
+      "evidence": [
+        {
+          "digest": "e2234173e8915d1b",
+          "reference": "00-CEP/STAGE-04-S4-09-INFRASTRUCTURE-014-GOVERNANCE-VALIDATION.md",
+          "resolved": true
+        },
+        {
+          "digest": "346983b508e4ebf6",
+          "reference": "00-CEP/STAGE-04-S4-10-INFRASTRUCTURE-014-GOVERNANCE-CERTIFICATION.md",
+          "resolved": true
+        },
+        {
+          "digest": "0c65160ca13e63ad",
+          "reference": "00-CEP/STAGE-04-S4-07-INFRASTRUCTURE-014-GOVERNANCE-FACTORY-ADMISSION.md",
+          "resolved": true
+        }
+      ],
+      "evidence_resolved": 3,
+      "id": "URAT-REC-04",
+      "lineage_predecessor": null,
+      "outcome": "provisionally ratified; in-corpus ratification authority is engineering-readiness only",
+      "preconditions_claimed": true,
+      "preconditions_satisfied": [
+        "URAT-PRE-01",
+        "URAT-PRE-02",
+        "URAT-PRE-03",
+        "URAT-PRE-04"
+      ],
+      "program_state_hash": "50b9928cfab95531eff076b0a32e77167c6229e6c7b49c39579c804e03693c95",
+      "record": "00-CEP/STAGE-04-S4-11-INFRASTRUCTURE-014-GOVERNANCE-PROVISIONAL-RATIFICATION.md",
+      "record_digest": "fd0bafb2c8d184fe",
+      "record_resolved": true,
+      "state": "PROVISIONAL",
+      "state_basis": {
+        "anchor": "(RATIFYING → PROVISIONAL)",
+        "owner": "00-CEP/STAGE-04-S4-11-INFRASTRUCTURE-014-GOVERNANCE-PROVISIONAL-RATIFICATION.md"
+      },
+      "state_basis_located": true,
+      "state_declared": true,
+      "valid": true,
+      "verdict_anchor_located": true
+    },
+    {
+      "admits_to_freeze": true,
+      "artifact": "INFRASTRUCTURE-005 Universal Infrastructure Integration (UIMM, EC3-B13-U10)",
+      "authority": "CEP-006::RATIFICATION",
+      "authority_attribution": "DERIVED",
+      "authority_basis_located": true,
+      "authority_resolved": true,
+      "evidence": [
+        {
+          "digest": "49bd9552a81482a0",
+          "reference": "00-CEP/STAGE-04-S4-06-INFRASTRUCTURE-013-SECURITY-RATIFICATION-AND-INFRASTRUCTURE-014-NEXT-FRONTIER-DETERMINATION.md",
+          "resolved": true
+        }
+      ],
+      "evidence_resolved": 1,
+      "id": "URAT-REC-05",
+      "lineage_predecessor": null,
+      "outcome": "provisionally ratified; in-corpus ratification authority is engineering-readiness only",
+      "preconditions_claimed": true,
+      "preconditions_satisfied": [
+        "URAT-PRE-01",
+        "URAT-PRE-02",
+        "URAT-PRE-03",
+        "URAT-PRE-04"
+      ],
+      "program_state_hash": "a89e6457095f41f7669153e578c729d19b85b5dbb816811b217cf9e9447fab8a",
+      "record": "00-CEP/STAGE-04-S4-12-INFRASTRUCTURE-005-UIMM-INTEGRATION-PROVISIONAL-RATIFICATION.md",
+      "record_digest": "93ddde8a64507b90",
+      "record_resolved": true,
+      "state": "PROVISIONAL",
+      "state_basis": {
+        "anchor": "(RATIFYING → PROVISIONAL)",
+        "owner": "00-CEP/STAGE-04-S4-12-INFRASTRUCTURE-005-UIMM-INTEGRATION-PROVISIONAL-RATIFICATION.md"
+      },
+      "state_basis_located": true,
+      "state_declared": true,
+      "valid": true,
+      "verdict_anchor_located": true
+    },
+    {
+      "admits_to_freeze": true,
+      "artifact": "CMG-000001 and the Tier-1 occupancy — the meta-governance constitution ratified by the Constituent Authority, the vacant tier located, and the standing of the T1M/T2/T2I instruments elevated with it",
+      "authority": "AUTH-13",
+      "authority_attribution": "RECORDED",
+      "authority_basis_located": true,
+      "authority_resolved": true,
+      "evidence": [
+        {
+          "digest": "b4382690af20e657",
+          "reference": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+          "resolved": true
+        },
+        {
+          "digest": "a17e0a0ab88a50af",
+          "reference": "00-CMG/CMG-REGISTRY.json",
+          "resolved": true
+        },
+        {
+          "digest": "c7c3aadf1090c797",
+          "reference": "09-DR-RAT-11-ASSESSMENT.md",
+          "resolved": true
+        },
+        {
+          "digest": "3625ea5f92c8acc1",
+          "reference": "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md",
+          "resolved": true
+        }
+      ],
+      "evidence_resolved": 4,
+      "id": "URAT-REC-06",
+      "lineage_predecessor": null,
+      "outcome": "RATIFIED at the derived-truth layer by the Constituent Authority (AUTH-13) through RA-Ω∞ (AUTH-14): T1 occupied, VAC-01 retired, dependent standing elevated, the readiness ceiling re-issued READY by the located certification owner; constitutional finality remains CEP-006 I.4's reservation",
+      "preconditions_claimed": true,
+      "preconditions_satisfied": [
+        "URAT-PRE-01",
+        "URAT-PRE-02",
+        "URAT-PRE-03",
+        "URAT-PRE-04"
+      ],
+      "program_state_hash": "0dc072f2ada80af657111aafb76a22089b4c0e9f880a9e6f43a5993475b8e996",
+      "record": "02-MASTER/UCOS-RAT-002-CONSTITUENT-RATIFICATION-AND-TIER-1-CLOSURE-DETERMINATION.md",
+      "record_digest": "edd6083c67567f28",
+      "record_resolved": true,
+      "state": "PROVISIONAL",
+      "state_basis": {
+        "anchor": "readiness IS READY under LXXX.3",
+        "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md"
+      },
+      "state_basis_located": true,
+      "state_declared": true,
+      "valid": true,
+      "verdict_anchor_located": true
+    }
+  ],
+  "registry_rules": [
+    {
+      "bound": true,
+      "id": "URAT-RULE-01",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "rule": "uniqueness — every accepted artifact holds exactly one canonical record, and no duplicate ratification authority is admitted"
+    },
+    {
+      "bound": true,
+      "id": "URAT-RULE-02",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "rule": "append-only in lineage, content-addressed, and reconciled against repository truth at boot"
+    },
+    {
+      "bound": true,
+      "id": "URAT-RULE-03",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "rule": "a ratification absent from the registry is deemed non-existent and reliance upon it is prohibited"
+    },
+    {
+      "bound": true,
+      "id": "URAT-RULE-04",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "rule": "the registry is operational memory and holds no authority over constitutional content"
+    },
+    {
+      "bound": true,
+      "id": "URAT-RULE-05",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "rule": "in-corpus ratification confers only PROVISIONAL acceptance pending out-of-corpus finality"
+    },
+    {
+      "bound": true,
+      "id": "URAT-RULE-06",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "rule": "ratification authority is never self-conferred by execution authority"
+    }
+  ],
+  "seal_sha256": "546c2f5b1027d3d0dfeef685549801311517d5b649b49c324b3e95a29fb1494f",
+  "states": [
+    {
+      "admits_to_freeze": false,
+      "id": "URAT-ST-01",
+      "located_in_clause": true,
+      "state": "NOT_ELIGIBLE",
+      "terminal": false
+    },
+    {
+      "admits_to_freeze": false,
+      "id": "URAT-ST-02",
+      "located_in_clause": true,
+      "state": "ELIGIBLE",
+      "terminal": false
+    },
+    {
+      "admits_to_freeze": false,
+      "id": "URAT-ST-03",
+      "located_in_clause": true,
+      "state": "DELIBERATING",
+      "terminal": false
+    },
+    {
+      "admits_to_freeze": true,
+      "id": "URAT-ST-04",
+      "located_in_clause": true,
+      "state": "ACCEPTED",
+      "terminal": false
+    },
+    {
+      "admits_to_freeze": true,
+      "id": "URAT-ST-05",
+      "located_in_clause": true,
+      "state": "PROVISIONAL",
+      "terminal": false
+    },
+    {
+      "admits_to_freeze": false,
+      "id": "URAT-ST-06",
+      "located_in_clause": true,
+      "state": "DEFERRED",
+      "terminal": false
+    },
+    {
+      "admits_to_freeze": false,
+      "id": "URAT-ST-07",
+      "located_in_clause": true,
+      "state": "REJECTED",
+      "terminal": false
+    },
+    {
+      "admits_to_freeze": false,
+      "id": "URAT-ST-08",
+      "located_in_clause": true,
+      "state": "APPEALING",
+      "terminal": false
+    },
+    {
+      "admits_to_freeze": true,
+      "id": "URAT-ST-09",
+      "located_in_clause": true,
+      "state": "FINALIZED",
+      "terminal": true
+    }
+  ],
+  "transitions": [
+    {
+      "from": "NOT_ELIGIBLE",
+      "performable_in_corpus": true,
+      "requires_out_of_corpus": false,
+      "to": "ELIGIBLE"
+    },
+    {
+      "from": "ELIGIBLE",
+      "performable_in_corpus": true,
+      "requires_out_of_corpus": false,
+      "to": "DELIBERATING"
+    },
+    {
+      "from": "DELIBERATING",
+      "performable_in_corpus": true,
+      "requires_out_of_corpus": false,
+      "to": "ACCEPTED"
+    },
+    {
+      "from": "DELIBERATING",
+      "performable_in_corpus": true,
+      "requires_out_of_corpus": false,
+      "to": "PROVISIONAL"
+    },
+    {
+      "from": "DELIBERATING",
+      "performable_in_corpus": true,
+      "requires_out_of_corpus": false,
+      "to": "DEFERRED"
+    },
+    {
+      "from": "DELIBERATING",
+      "performable_in_corpus": true,
+      "requires_out_of_corpus": false,
+      "to": "REJECTED"
+    },
+    {
+      "from": "ACCEPTED",
+      "performable_in_corpus": false,
+      "requires_out_of_corpus": true,
+      "to": "FINALIZED"
+    },
+    {
+      "from": "PROVISIONAL",
+      "performable_in_corpus": false,
+      "requires_out_of_corpus": true,
+      "to": "FINALIZED"
+    },
+    {
+      "from": "PROVISIONAL",
+      "performable_in_corpus": true,
+      "requires_out_of_corpus": false,
+      "to": "REJECTED"
+    },
+    {
+      "from": "DEFERRED",
+      "performable_in_corpus": true,
+      "requires_out_of_corpus": false,
+      "to": "ELIGIBLE"
+    },
+    {
+      "from": "REJECTED",
+      "performable_in_corpus": true,
+      "requires_out_of_corpus": false,
+      "to": "APPEALING"
+    },
+    {
+      "from": "APPEALING",
+      "performable_in_corpus": true,
+      "requires_out_of_corpus": false,
+      "to": "DELIBERATING"
+    },
+    {
+      "from": "APPEALING",
+      "performable_in_corpus": true,
+      "requires_out_of_corpus": false,
+      "to": "REJECTED"
+    }
+  ],
+  "validations": [
+    {
+      "blocking": true,
+      "dimension": "STATE-VOCABULARY-BOUND",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-01",
+      "measured": true,
+      "obligation": "every declared state appears in the located clause that fixes the state vocabulary",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "TRANSITION-SET-BOUND",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-02",
+      "measured": true,
+      "obligation": "the located clause that fixes the legal transitions is present, and every declared transition names declared states",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "RECORD-RESOLVES",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-03",
+      "measured": true,
+      "obligation": "every registered record names a located act that resolves",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "VERDICT-LOCATED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-04",
+      "measured": true,
+      "obligation": "every registered record's verdict anchor is present in the act's own text",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "STATE-LOCATED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-05",
+      "measured": true,
+      "obligation": "every registered record's state is a declared state and its state basis anchor is present in the named owner",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "AUTHORITY-RESOLVES",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-06",
+      "measured": true,
+      "obligation": "every registered record attributes an authority that resolves in the located authority registry, with a located basis clause",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "PRECONDITIONS-CLAIMED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-07",
+      "measured": true,
+      "obligation": "every registered record carries a precondition anchor present in the act, and every declared precondition is bound to a located owner",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "EVIDENCE-RESOLVES",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-08",
+      "measured": true,
+      "obligation": "every evidence reference of every registered record resolves in the repository",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "RECORD-COMPLETE",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-09",
+      "measured": true,
+      "obligation": "every registered record populates every field CEP-006 XVII.1 requires",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "UNIQUENESS",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-10",
+      "measured": true,
+      "obligation": "no two records name the same artifact, the same act, or a duplicate authority for one artifact",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "LINEAGE-LEGAL",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-11",
+      "measured": true,
+      "obligation": "every recorded lineage predecessor exists, the lineage is acyclic, and every implied transition is a declared legal transition",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "REGISTRY-RULES-BOUND",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-12",
+      "measured": true,
+      "obligation": "every declared registry rule binds to a located clause whose text is present",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "NO-CONFERRAL",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-13",
+      "measured": true,
+      "obligation": "no record reaches a state requiring the out-of-corpus finality authority, and no record's state exceeds the in-corpus ceiling",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "COVERAGE-ACCOUNTED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-14",
+      "measured": true,
+      "obligation": "every discovered ratification instrument is either registered or excluded with a class and a reason",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "BOOT-RECONCILED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "URAT-VAL-15",
+      "measured": true,
+      "obligation": "every registered record and every evidence reference is reconciled against repository truth, and a content digest is computed for each",
+      "satisfied": true
+    }
+  ]
+}

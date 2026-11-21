@@ -1,0 +1,212 @@
+{
+  "artifact_id": "UCOS-UGA-001",
+  "title": "Universal Governance Assimilation — bringing every existing object under constitutional control",
+  "authority": "AUTHORED REPOSITORY TRUTH, HELD AS A PROJECTION UNDER UCKP-LAW-0001. This declaration states which version-controlled objects exist, how each is owned, what produced it, and which evidence class its governance records belong to. Every one of those is a statement about the REPOSITORY, and UCKP-ART-04 makes the repository a projection and persistence binding — never an authority. It remains upstream of the engine that reads it and must never be produced by one; what it is not, and never was, is the top of its own chain.",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "PROJECTION",
+    "relation": "PROJECTION",
+    "articles": ["UCKP-ART-04", "UCKP-ART-05", "UCKP-ART-07", "UCKP-ART-11"],
+    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+    "object_model": "UCKO — engine/uckp/ucko.py",
+    "effect": "This programme owns the REPOSITORY REALITY PROJECTION and nothing above it. What an object IS (UCKP-ART-02), what an identity IS (UCKP-ART-05) and what a relationship IS (UCKP-ART-07) are law, and are not restated here.",
+    "why_this_changes_no_measurement": "Not one of the 5757 objects, 32902 edges or 20 invariants below is affected. The programme measured what nothing else could and keeps every finding. The only thing that changes is that the warrant is now named, so a gate can tell this projection apart from an authority nobody vetted."
+  },
+  "constitutional_basis": "UCKP-LAW-0001 (engine/uckp/law.py), UCOS-CAA-001, GOV-005 §5.1/§5.3, UMB-IMP-001, UCOS-EVIDENCE-UNIVERSE-001, UCOS-GENERATED-ARTIFACT-REGISTRY-001, EXEC-REG-001",
+  "schema": "ucos-universal-governance-assimilation",
+  "version": "1.0.0",
+
+  "why_this_exists": [
+    "The corpus registration boundary is DOCUMENT-ONLY: config.INCLUDE_EXTENSIONS is (.md, .txt, .docx, .json).",
+    "Measured consequence at the time of authoring: 1936 version-controlled executable and configuration",
+    "objects inside the governance boundary carried NO universal identity, NO owner and NO lifecycle.",
+    "Among them were all 29 producers named by the generated-artifact registry. The corpus therefore governed",
+    "1233 artifacts by naming the engines that produce them, while those engines were themselves anonymous",
+    "objects — the precise condition the identity authority exists to forbid.",
+    "This is not a missing document. It is a missing OBJECT CLASS. The identity authority, the audit universe,",
+    "the evidence universe and the relationship graph all already exist and all already work; they simply had",
+    "no term for a thing that executes rather than a thing that is read.",
+    "Assimilation, not migration: nothing is moved. Every object that already exists is brought under the",
+    "control of the authority that already governs the corpus."
+  ],
+
+  "one_identity_authority": {
+    "ledger": "00-BOOK/DATA/id-ledger.json",
+    "rule": "There is exactly ONE identity authority. This programme mints from the SAME ledger and the SAME category_seq counter as the corpus. It creates no second authority and no second sequence.",
+    "map": "by_object",
+    "precedent": "EXEC-REG-001 established `by_execution` as an append-only map sharing the one identity authority. `by_object` is the same construction for a second object class.",
+    "page_allocation": "NONE. Pages are a BOOK concept. Executable objects consume no page range, so page_cursor is never advanced and the corpus page layout is bit-for-bit unaffected.",
+
+    "constitutional_law_of_identity": {
+      "article": "UCKP-ART-05",
+      "home": "engine/uckp/identity.py",
+      "standing_of_this_ledger": "PERSISTENCE — the one storage binding of Article 5 in this repository, not a rival to it.",
+      "two_planes_one_authority": "engine/uckp/identity.py mints the identity of a constitutional OBJECT: a pure, clock-free, storage-free URN. This ledger mints the identity of a REPOSITORY object: an append-only UCOS-<CATEGORY>-<NNNNNN> serial frozen at first sight. engine/uckp/law.py holds both — UCOS-ENGINE-000496 names the FILE and urn:ucos:ucko:ucos:UCKP-LAW-0001 names the LAW. They were never competing for one subject; until UCOS-CAA-001 nothing said so, and an undeclared subordination is indistinguishable from a rival.",
+      "derivation": "engine.uckp.alignment.repository_local_urn — total over every id this ledger holds, pure, and injective. The identifier is carried through VERBATIM as the URN's local name: urn:ucos:ucko:ucos-repository:<UCOS-ID>.",
+      "ids_preserved": "ALL. Nothing is re-minted, renumbered, reissued or retired. A derivation that reshaped an identifier would be a re-mint wearing a projection's clothes, and Article 5 says an identity once minted never changes.",
+      "measured_by": "CAA-INV-04, which recomputes the derivation over every id in every map and fails on any collision or any id it cannot carry through."
+    }
+  },
+
+  "relationship_graph_ownership": {
+    "model_owner": {
+      "authority": "UCKP-ART-07",
+      "home": "engine/uckp/graph.py",
+      "owns": "What a relationship IS — every object a node, every dependency an edge, and every relationship executable, because a relationship that cannot be resolved is not one."
+    },
+    "this_programme_owns": "The POPULATION, not the model. 04-RELATIONSHIP-GRAPH.json measures the repository-object edge set and declares no relationship class of its own.",
+    "kind_bindings": "00-BOOK/DATA/constitutional-authority-alignment.json :: relationship_graph_resolution.relationship_kind_bindings — every kind this programme emits, bound to the class and relation term engine/uckp/vocabulary.py actually holds.",
+    "may_never": "Declare a relationship kind that names no class in the model above it. A seventh kind is one appended entry in the binding (UCKP-ART-17) and never a new model.",
+    "measured_by": "CAA-INV-05"
+  },
+
+  "object_model": {
+    "model": "UCKO — the Universal Constitutional Knowledge Object",
+    "home": "engine/uckp/ucko.py",
+    "article": "UCKP-ART-02",
+    "determination": "UCOS-UCOM-001-UNIVERSAL-CONSTITUTIONAL-OBJECT-MODEL-DETERMINATION.md",
+    "what_object_classes_below_are": "PROJECTIONS of that model onto the version-control boundary. They answer 'which KIND of repository thing is this', which is a taxonomy question the object model already provides a facet for. They do not answer 'what is an object', and a class added below declares no new model.",
+    "why_this_is_stated": "Seven object classes named in a declaration that cites no model read exactly like a rival object model. CAA-INV-07 measures that no instrument declares one, and this block is what makes the measurement pass truthfully rather than by absence of a keyword.",
+    "measured_by": "CAA-INV-07"
+  },
+
+  "object_classes": {
+    "DOCUMENT_ARTIFACT": {
+      "definition": "A readable corpus artifact already registered by UMB-IMP-001 in 00-BOOK/DATA/artifacts.json.",
+      "governed_by": "UMB-IMP-001 (pre-existing). This programme registers NOTHING here; it only unions the class into the object view.",
+      "id_category": null
+    },
+    "EXECUTABLE_OBJECT": {
+      "definition": "Version-controlled source that executes: a Python module or a shell script that is not a test.",
+      "governed_by": "UCOS-UGA-001",
+      "id_category": "ENGINE"
+    },
+    "TEST_OBJECT": {
+      "definition": "Version-controlled source whose purpose is to verify another object (tests/ directory, test_*.py or *_test.py).",
+      "governed_by": "UCOS-UGA-001",
+      "id_category": "TESTOBJ"
+    },
+    "CONFIGURATION_OBJECT": {
+      "definition": "Version-controlled declarative configuration that parameterises execution (.yml, .yaml, .toml, .cfg, .ini, .gitignore).",
+      "governed_by": "UCOS-UGA-001",
+      "id_category": "CONFIG"
+    },
+    "TOOLING_OBJECT": {
+      "definition": "The governance machinery itself — the registration engine and its data home (00-BOOK/tools/, 00-BOOK/DATA/). Excluded from the corpus it registers, because a registry must not register itself; NOT therefore exempt from identity.",
+      "governed_by": "UCOS-UGA-001",
+      "id_category": "TOOLING"
+    },
+    "DATA_OBJECT": {
+      "definition": "A version-controlled .json that is neither a registered corpus artifact nor governance machinery.",
+      "governed_by": "UCOS-UGA-001",
+      "id_category": "DATAOBJ"
+    },
+    "EXCLUDED_DOCUMENT": {
+      "definition": "A readable version-controlled document the corpus registry does not carry — Operational Memory under 00-MASTER/ and the generated projections under 00-BOOK/CONTROL-TOWER, REGISTRIES, VOLUMES and PORTAL.",
+      "governed_by": "UCOS-UGA-001",
+      "id_category": "EXDOC",
+      "why_this_class_is_required": "Exclusion from CORPUS REGISTRATION is a statement about WHICH REGISTER LISTS a document — the corpus must not register its own machinery or its own projections. It was never a licence to exist anonymously. Measurement at authoring time: 2584 such documents held no identity of any kind. Under 'nothing can exist without identity' they are governed here, by the authority that already excluded them, rather than being forced into a book schema that has no term for them."
+    }
+  },
+
+  "ownership_rules": [
+    {"pattern": "00-MASTER/<PROGRAM>/...", "owner": "<PROGRAM>", "why": "Operational Memory is organised by programme; the programme directory IS the owner."},
+    {"pattern": "00-BOOK/tools/... | 00-BOOK/DATA/...", "owner": "UCOS-UKB-TOOLING", "why": "The registration engine and its data home are one custodial unit."},
+    {"pattern": "<top>/<module>/...", "owner": "<top>/<module>", "why": "The capability module directory is the unit of custody in the code tree."},
+    {"pattern": "<top>/<file>", "owner": "<top>", "why": "A file directly under a top-level tree is owned by that tree."},
+    {"pattern": "<file> at repository root", "owner": "UCOS-REPOSITORY-ROOT", "why": "Root-level operational files are owned by the repository itself."}
+  ],
+  "ownership_rule_property": "TOTAL. The rules are ordered and the last is unconditional, so every path resolves to exactly one owner and 'unowned' is structurally unreachable rather than merely unobserved.",
+
+  "lifecycle_states": {
+    "AUTHORED": "Hand-written source. Its bytes are a human decision.",
+    "GENERATED": "Emitted by a declared producer. Named as a canonical_path in the generated-artifact registry.",
+    "RETIRED": "Previously minted an identity, no longer carried by version control. Identity is retained (append-only) and never reissued."
+  },
+
+  "evidence_binding": {
+    "rule": "Every surface this programme emits is NON_CANONICAL and belongs to a class of the closed set in UCOS-EVIDENCE-UNIVERSE-001 (AUDIT, DEBUG, IMPROVEMENT, EXECUTION, VALIDATION). No sixth class is created.",
+    "surfaces": [
+      {"path": "00-MASTER/UCOS-UGA-001/00-EXISTENCE-INVENTORY.json", "class": "VALIDATION", "retention": "REGENERATED", "input_classification": "TRACKED_DETERMINISTIC"},
+      {"path": "00-MASTER/UCOS-UGA-001/01-EXECUTABLE-OBJECT-REGISTRY.json", "class": "VALIDATION", "retention": "REGENERATED", "input_classification": "TRACKED_DETERMINISTIC"},
+      {"path": "00-MASTER/UCOS-UGA-001/02-UNIVERSAL-OBJECT-REGISTRY.json", "class": "VALIDATION", "retention": "REGENERATED", "input_classification": "TRACKED_DETERMINISTIC"},
+      {"path": "00-MASTER/UCOS-UGA-001/03-AUDIT-UNIVERSE.json", "class": "AUDIT", "retention": "APPEND_ONLY_DERIVED", "input_classification": "TRACKED_DETERMINISTIC"},
+      {"path": "00-MASTER/UCOS-UGA-001/04-RELATIONSHIP-GRAPH.json", "class": "VALIDATION", "retention": "REGENERATED", "input_classification": "TRACKED_DETERMINISTIC"},
+      {"path": "00-MASTER/UCOS-UGA-001/05-GOVERNANCE-INVARIANTS.json", "class": "VALIDATION", "retention": "REGENERATED", "input_classification": "TRACKED_DETERMINISTIC"},
+      {"path": "00-MASTER/UCOS-UGA-001/06-SELF-OBSERVATION.json", "class": "IMPROVEMENT", "retention": "REGENERATED", "input_classification": "TRACKED_DETERMINISTIC"},
+      {"path": "00-MASTER/UCOS-UGA-001/07-CERTIFICATION.json", "class": "VALIDATION", "retention": "REGENERATED", "input_classification": "TRACKED_DETERMINISTIC"},
+      {"path": "00-MASTER/UCOS-UGA-001/08-OBSERVATION-REGISTRY.json", "class": "VALIDATION", "retention": "REGENERATED", "input_classification": "TRACKED_DETERMINISTIC"},
+      {"path": "00-BOOK/DATA/canonical-observation-audit.json", "class": "VALIDATION", "retention": "REGENERATED", "input_classification": "TRACKED_DETERMINISTIC"},
+      {"path": "00-MASTER/UCOS-UGA-001/00-UGA-DASHBOARD.md", "class": "VALIDATION", "retention": "REGENERATED", "input_classification": "TRACKED_DETERMINISTIC"}
+    ]
+  },
+
+  "determinism_contract": {
+    "rule": "No output of this engine contains a wall clock. Every timestamp reproduced in an output is a `first_seen` frozen in the append-only ledger at mint time.",
+    "why": "A generated artifact stamped with the current time can never hold a fixed point: the second run differs from the first by construction. Excluding the clock makes byte-identical re-run the DEFAULT rather than an achievement, so Phase-8 fixed-point and Phase-9 pristine-clone are checkable by plain file comparison.",
+    "consequence": "Re-running the engine with no repository change is a no-op on disk."
+  },
+
+  "epochs": [
+    {"n": 0,  "name": "Existence Discovery",        "goal": "No unknown existence.",                    "success": "unknown_objects == 0"},
+    {"n": 1,  "name": "Universal Identity Authority","goal": "Nothing exists anonymously.",             "success": "anonymous_objects == 0"},
+    {"n": 2,  "name": "Universal Object Registry",  "goal": "Every object has owner/producer/lifecycle/dependency/evidence/validation.", "success": "unregistered_objects == 0"},
+    {"n": 3,  "name": "Evidence + Audit Universe",  "goal": "Everything is traceable and explainable.", "success": "missing_evidence_boundary == 0"},
+    {"n": 4,  "name": "Relationship Graph",         "goal": "Every relationship is discoverable.",      "success": "hidden_dependencies == 0"},
+    {"n": 5,  "name": "Governance Enforcement",     "goal": "Prevent regression.",                      "success": "invalid_admission == 0"},
+    {"n": 6,  "name": "Self Observation",           "goal": "The platform can observe itself.",         "success": "observation emitted"},
+    {"n": 7,  "name": "Self Analysis",              "goal": "The platform understands its deviations.", "success": "every deviation classified"},
+    {"n": 8,  "name": "Self Planning",              "goal": "The platform proposes its own remediation.","success": "every deviation has a plan"},
+    {"n": 9,  "name": "Evolution",                  "goal": "Controlled self-improvement only.",        "success": "no uncontrolled evolution"},
+    {"n": 10, "name": "Certification",              "goal": "Proof generation.",                        "success": "proof emitted with evidence"},
+    {"n": 11, "name": "Phase 8 / Phase 9",          "goal": "Fixed point and pristine clone.",          "success": "variance == 0"}
+  ],
+
+  "invariants": [
+    {"id": "UGA-INV-01", "name": "EVERY_OBJECT_HAS_UNIVERSAL_ID",        "fails_closed": true},
+    {"id": "UGA-INV-02", "name": "EVERY_OBJECT_HAS_OWNER",               "fails_closed": true},
+    {"id": "UGA-INV-03", "name": "EVERY_OBJECT_REGISTERED",              "fails_closed": true},
+    {"id": "UGA-INV-04", "name": "EVERY_CANONICAL_ARTIFACT_HAS_INPUT_CLOSURE", "fails_closed": true},
+    {"id": "UGA-INV-05", "name": "EVERY_GENERATED_INPUT_HAS_PRODUCER",   "fails_closed": true},
+    {"id": "UGA-INV-06", "name": "EVERY_GENERATED_INPUT_HAS_BOOTSTRAP_PATH", "fails_closed": true},
+    {"id": "UGA-INV-07", "name": "EVERY_CERTIFICATION_HAS_EVIDENCE_BOUNDARY", "fails_closed": true},
+    {"id": "UGA-INV-08", "name": "NO_CANONICAL_ARTIFACT_DEPENDS_ON_UNCLASSIFIED_OBSERVATION", "fails_closed": true},
+    {"id": "UGA-INV-09", "name": "NO_ARCHITECTURE_DEPENDS_ON_FINITE_INSTANCE", "fails_closed": true},
+    {"id": "UGA-INV-10", "name": "EVERY_MUTATION_HAS_AUDIT_EVENT",       "fails_closed": true}
+  ],
+
+  "$caa_comment": [
+    "Constitutional Authority Alignment. The statements, the roles and the articles they enforce",
+    "live in 00-BOOK/DATA/constitutional-authority-alignment.json and, above that, in",
+    "engine/uckp/alignment.py. They are NOT restated here — this list is the addressing that lets",
+    "UGA-INV-09's structural scan reach them and the dashboard report them.",
+    "",
+    "They are measured by this engine because this engine is the repository reality projection and",
+    "they are measurements of repository reality, and because doing it here means the gate verify.sh",
+    "ALREADY runs enforces them. A second gate for the invariants that forbid a second authority",
+    "would be a joke with a straight face."
+  ],
+  "alignment_invariants": [
+    {"id": "CAA-INV-01", "name": "EXACTLY_ONE_SUPREME_CONSTITUTIONAL_AUTHORITY",      "fails_closed": true},
+    {"id": "CAA-INV-02", "name": "EVERY_AUTHORITY_CLAIM_NAMES_ITS_CONSTITUTIONAL_SUPERIOR", "fails_closed": true},
+    {"id": "CAA-INV-03", "name": "NO_SUBORDINATE_INSTRUMENT_CLAIMS_INDEPENDENT_AUTHORITY", "fails_closed": true},
+    {"id": "CAA-INV-04", "name": "EXACTLY_ONE_IDENTITY_AUTHORITY",                    "fails_closed": true},
+    {"id": "CAA-INV-05", "name": "EXACTLY_ONE_RELATIONSHIP_GRAPH_MODEL_OWNER",        "fails_closed": true},
+    {"id": "CAA-INV-06", "name": "EVIDENCE_AND_OBSERVATION_REMAIN_SEPARATE_TRUTHS",   "fails_closed": true},
+    {"id": "CAA-INV-07", "name": "NO_INSTRUMENT_DECLARES_A_RIVAL_OBJECT_MODEL",       "fails_closed": true}
+  ],
+
+  "finite_instance_tokens": {
+    "tokens": ["earth", "mars", "galaxy", "multiverse", "solar system", "milky way", "human civilization", "physical universe"],
+    "scope": "The governance foundation's OWN declarations and registries (this file and every surface listed in evidence_binding).",
+    "why_scoped": "UCOS-ACFV-000001 and the constitutional corpus discuss finite domains as EXAMPLES; naming one in prose is not a dependency. The invariant is meaningful only where a finite instance could become STRUCTURAL — in the keys, classes and rules of the foundation itself. Scanning prose would produce noise and would gate on discussion rather than on architecture.",
+    "rule": "No object class, owner rule, id category, relationship kind or invariant of this foundation may be predicated on a finite instance."
+  },
+
+  "non_goals": [
+    "Creating a second identity authority, a second registry of documents, or a second audit log.",
+    "Modifying 00-BOOK/DATA/artifacts.json, the corpus page layout, or any byte the corpus registration transaction owns.",
+    "Registering executable objects as BOOK artifacts. Code has no title, no page range and no volume; forcing it into the book schema would corrupt both."
+  ]
+}

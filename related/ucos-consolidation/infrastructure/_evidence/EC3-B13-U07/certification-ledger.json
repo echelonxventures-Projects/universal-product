@@ -1,0 +1,29 @@
+{
+  "count": 2,
+  "entries": [
+    {
+      "blueprint_id": "Resilience",
+      "certification_id": "UCOS-CERT-Resilience-fce626555044854a",
+      "entry_hash": "774ede429789c30062e0ea0e1db26c3def1a730a6adfe80cc79057621bf94d0c",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "fce626555044854a4d6b3d140603dd637dd5e6ce9a08f46f210f0416b7957537",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-AVAILABILITYTOPOLOGY-ucos.infrastructure.availabilitytopology.foundation-ae91e052c7c64012",
+      "version": "1.0.0"
+    },
+    {
+      "blueprint_id": "Resilience",
+      "certification_id": "UCOS-CERT-Resilience-a7c39ff45bf254a6",
+      "entry_hash": "afdd120e61d7e333775f98c0769838f92b4094055ecf50487c85d8a4d2b21ffa",
+      "prev_hash": "774ede429789c30062e0ea0e1db26c3def1a730a6adfe80cc79057621bf94d0c",
+      "record_sha256": "a7c39ff45bf254a6ceffd2e2faaa90eab8278b046c8b2b3f38614086be8650df",
+      "sequence": 1,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-SCALINGARRANGEMENT-ucos.infrastructure.scalingarrangement.foundation-1a2d220020b155fb",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "afdd120e61d7e333775f98c0769838f92b4094055ecf50487c85d8a4d2b21ffa",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

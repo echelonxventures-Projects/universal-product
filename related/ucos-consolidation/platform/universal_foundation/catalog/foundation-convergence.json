@@ -1,0 +1,154 @@
+{
+  "register_id": "ucos.foundation.convergence",
+  "$comment": "THE convergence register. Six constitutional models, each with exactly ONE canonical implementation, and every surface that once did or could answer the same question declared with the relation it now stands in. Relations are VERIFIED, not asserted: a SUPERSEDED surface must be absent from the working tree, a DELEGATES surface must really import the canonical owner (measured over its import graph), and a PROJECTION must hold no executable determination. Adding a model or a subordinate is an entry here and requires NO change to convergence.py.",
+  "duplication": {
+    "$comment": "UFC-14 content duplication. The governed roots are NOT declared here: they are DERIVED from each model's canonical_package, so a model added above is measured here automatically and no root can be enumerated, forgotten or hardcoded. What IS declared is every exclusion, because an exclusion narrows a constitutional measurement and must therefore be visible, justified and countable rather than buried in the engine.",
+    "excluded_segments": ["__pycache__"],
+    "$excluded_segments_rationale": "Compiled residue is regenerated from the source it mirrors, so two identical .pyc files are one implementation observed twice, not two implementations. Under UCOS-URTF-001 this is TRANSIENT and is never Truth, so measuring it would report a duplicate the repository does not have.",
+    "exclude_empty_artifacts": true,
+    "$exclude_empty_rationale": "A zero-byte or whitespace-only artifact declares nothing and implements nothing, so two of them are not two implementations of one model. Package markers are the ordinary case: every package needs one and they are identical by construction. This is a universal property of empty files, not a project fact.",
+    "$no_other_exclusion": "There is deliberately no suffix filter and no name-pattern filter. The Ω-A12 duplicates were byte-identical '* 2.*' siblings, and a measurement that looked for that NAME rather than for identical CONTENT would be the same blind spot wearing a different mask."
+  },
+  "models": [
+    {
+      "model_id": "MODEL-TRUTH",
+      "name": "Repository Truth",
+      "question": "What counts as Truth, and which zone may hold canonical ownership?",
+      "canonical_package": "platform.universal_truth",
+      "canonical_contracts": "platform.universal_truth.contracts:TRUTH_CONTRACTS",
+      "measurement": "platform.universal_truth.policy:default_truth_policy",
+      "rationale": "Truth was previously decided by path literals inside whichever engine needed the answer. It is now one declared zone policy plus one declared eligibility ledger, and every consumer classifies through it.",
+      "subordinates": [
+        {
+          "locator": "platform/universal_ownership/evidence.py",
+          "module": "platform.universal_ownership.evidence",
+          "relation": "delegates",
+          "rationale": "Every ownership evidence provider decides zone eligibility through the composed canonical-home policy rather than carrying its own idea of which locations may own."
+        },
+        {
+          "locator": "platform/universal_assimilation/pipeline.py",
+          "module": "platform.universal_assimilation.pipeline",
+          "relation": "delegates",
+          "rationale": "Assimilation decides whether a declared destination is a legitimate home through the same Truth policy; a source is never homed anywhere the policy refuses."
+        },
+        {
+          "locator": "platform/universal_measurement/policies.py",
+          "module": "platform.universal_measurement.policies",
+          "relation": "delegates",
+          "rationale": "Truth-classification coverage is measured over the partition the policy produced, never over a second classification of the same population."
+        }
+      ]
+    },
+    {
+      "model_id": "MODEL-OWNERSHIP",
+      "name": "Canonical ownership",
+      "question": "Who owns a subject, and on what constitutional evidence?",
+      "canonical_package": "platform.universal_ownership",
+      "canonical_contracts": "platform.universal_ownership.contracts:OWNERSHIP_CONTRACTS",
+      "measurement": "platform.universal_ownership.bootstrap:bootstrap_ownership",
+      "rationale": "Two ownership determinations existed over one population and reported different numbers: the engine-side canonical-home resolver and the Universal Ownership Framework. The framework now holds the model; the engine-side resolver is retired, and its two declaration rules survive as declared evidence providers rather than as a second determination.",
+      "subordinates": [
+        {
+          "locator": "engine/knowledge/homing.py",
+          "relation": "superseded",
+          "rationale": "RETIRED under \u03a9-A07. Its D1 rule now enters the one framework as a declared locator role projected from the closure engine's own measurement, and its D2 rule as the declared-identity evidence provider. The converged determination reproduces its measurement exactly \u2014 151 declared, 390 unresolved over 541 subjects \u2014 and additionally settles the two contests it left recorded, by declared zone precedence instead of a hardcoded realization rule."
+        },
+        {
+          "locator": "engine/tests/knowledge/test_homing.py",
+          "relation": "superseded",
+          "rationale": "The retired determination's tests go with it. The converged determination is tested against the live repository on the platform side, including the reproduction of the retired measurement."
+        },
+        {
+          "locator": "platform/universal_ownership/recommendation.py",
+          "module": "platform.universal_ownership.recommendation",
+          "relation": "delegates",
+          "rationale": "Governance reduction proposes only for subjects the ONE determination left open, and refuses to propose for a declared subject. It reads the determination; it never produces a second one."
+        },
+        {
+          "locator": "platform/universal_foundation/bootstrap.py",
+          "module": "platform.universal_foundation.bootstrap",
+          "relation": "delegates",
+          "rationale": "The project's canonical-home determination is a composition of the one framework from one declared specialisation, not a second implementation of ownership."
+        }
+      ]
+    },
+    {
+      "model_id": "MODEL-ASSIMILATION",
+      "name": "Source assimilation",
+      "question": "How does anything outside Truth become admitted content with a declared home?",
+      "canonical_package": "platform.universal_assimilation",
+      "canonical_contracts": "platform.universal_assimilation.contracts:ASSIMILATION_CONTRACTS",
+      "measurement": "platform.universal_assimilation.bootstrap:bootstrap_assimilation",
+      "rationale": "One pipeline, one open source-kind vocabulary, one adapter registry. A new source format is a registered adapter, never a branch inside a programme engine.",
+      "subordinates": [
+        {
+          "locator": "platform/universal_assimilation/adapters.py",
+          "module": "platform.universal_assimilation.adapters",
+          "relation": "delegates",
+          "rationale": "Every adapter implements the one declared SourceAdapter contract and is resolved through the one registry."
+        }
+      ]
+    },
+    {
+      "model_id": "MODEL-MEASUREMENT",
+      "name": "Measurement",
+      "question": "How is any Foundation determination measured, and what makes it closed?",
+      "canonical_package": "platform.universal_measurement",
+      "canonical_contracts": "platform.universal_measurement.contracts:POLICY_CONTRACTS",
+      "measurement": "platform.universal_measurement.bootstrap:bootstrap_measurement_policies",
+      "rationale": "Measurements that were branches inside one closure engine are now registered policies with declared blocking and precedence. Which measurements bind is a declaration, so two surfaces can no longer disagree about what closed means.",
+      "subordinates": [
+        {
+          "locator": "platform/universal_measurement/catalog/ucos-measurement-policies.json",
+          "relation": "projection",
+          "rationale": "The declared composition is data. It configures the one measurement model and holds no executable determination of its own."
+        },
+        {
+          "locator": "platform/universal_foundation/service.py",
+          "module": "platform.universal_foundation.service",
+          "relation": "delegates",
+          "rationale": "The composed Foundation determination is the policy suite produced by the one measurement engine; the platform computes no headline number beside it."
+        }
+      ]
+    },
+    {
+      "model_id": "MODEL-DEPENDENCY",
+      "name": "Dependency",
+      "question": "What depends on what, and in what order may it be composed?",
+      "canonical_package": "platform.foundation.services",
+      "canonical_contracts": "platform.universal_foundation.bootstrap:FOUNDATION_CONTRACTS",
+      "measurement": "platform.universal_foundation.bootstrap:bootstrap_foundation_constitution",
+      "rationale": "Dependency order is derived from declared service dependencies by the certified service registry, and the Foundation capability register's own dependency order is derived the same way. There is one dependency model, and a cycle is refused rather than resolved.",
+      "subordinates": [
+        {
+          "locator": "platform/universal_foundation/conformance.py",
+          "module": "platform.universal_foundation.conformance",
+          "relation": "delegates",
+          "rationale": "Composition conformance is verified by registering into the certified ServiceRegistry and validating it, so the dependency truth is the registry's and not a second graph."
+        }
+      ]
+    },
+    {
+      "model_id": "MODEL-IMPLEMENTATION",
+      "name": "Implementation and conformance",
+      "question": "What makes a capability a Foundation capability, and who says it conforms?",
+      "canonical_package": "platform.universal_foundation",
+      "canonical_contracts": "platform.universal_foundation.constitution:CONSTITUTION_CONTRACTS",
+      "measurement": "platform.universal_foundation.constitution:foundation_constitution",
+      "rationale": "One Constitution, one article set, one probe per article, one capability register. The Provider Constitution is not superseded and not restated: it is the law of the providers domain and is itself a capability this law governs.",
+      "subordinates": [
+        {
+          "locator": "platform/universal_foundation/catalog/foundation-capabilities.json",
+          "relation": "projection",
+          "rationale": "The governed population is data. UFC-09 is measured by proving no governing module contains any identity from it."
+        },
+        {
+          "locator": "platform/universal_provider/constitution.py",
+          "module": "platform.universal_provider.constitution",
+          "relation": "governed",
+          "rationale": "The Provider Constitution governs PROVIDERS — a strictly narrower subject than Foundation capabilities — and is registered as a capability under the providers domain that UFC-03 governs. It is not superseded and does not delegate by import: it is a narrower authority, and its legitimacy is that it restates none of the Foundation law. That is verified mechanically: its source may contain no Foundation article identity, no Foundation gate identity and not the Foundation constitution identity. A future edit that copied a Foundation article into it would turn it into a second copy of the same law, and this gate would fail."
+        }
+      ]
+    }
+  ]
+}

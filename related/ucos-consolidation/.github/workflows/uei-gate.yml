@@ -1,0 +1,102 @@
+name: UEI-000001 Evolution Intelligence Gate
+
+# UEI-000001 — UCOS Ω∞ Programme Ω∞-001B (Universal Evolution Intelligence).
+#
+# This workflow adds NO new validator, engine or capability. It runs the executable
+# expression of the evolution-intelligence contract declared in
+# 00-MASTER/UEI-000001/uei-evolution.json, which BINDS the observation, learning,
+# optimization, recommendation, impact-analysis, simulation, improvement-discovery,
+# evolution-planning, evolution-execution, continuous-improvement, continuous-optimization,
+# future-prediction, repository-evolution, knowledge-evolution and architecture-evolution
+# capability that already exists and is already certified (platform/observability —
+# EC2-EPIC-013 · engine/knowledge — UKDA · engine/compiler optimization — EPIC-003 ·
+# engine/graph/architecture over the certified knowledge graph — EPIC-010 over EPIC-002 ·
+# engine/determinism — EPIC-004 · engine/runtime/execution — EPIC-005 ·
+# platform/repository_operations · platform/coverage · platform/measurement ·
+# intelligence/rie), and places every one of them under a located governing instrument.
+# Binding a newly proven capability is an entry in that DATA file — this workflow never
+# needs to change, and no capability is enumerated here.
+#
+# Exit semantics of the gate:
+#   0  every mandated capability is covered, every lifecycle step and standing loop is
+#      bound, every capability is governed by a located instrument, and every mandatory
+#      validation and exit criterion is satisfied (gate OPEN)
+#   1  a capability, step, loop, governance obligation, validation or exit criterion is
+#      unsatisfied (gate CLOSED)
+#   2  fail-closed abort — the declaration is unusable, so no verdict may be asserted
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uei-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: UEI self-guards (declaration · zero-enumeration · write-scope · determinism · governance · reuse)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+      - name: Declaration integrity (every home/evidence/instrument/programme reference resolves)
+        run: python3 00-MASTER/UEI-000001/uei_engine.py --check-declaration
+
+      - name: Zero-enumeration / data-driven proof (no capability is hardcoded in the engine)
+        run: python3 00-MASTER/UEI-000001/uei_engine.py --check-no-enumeration
+
+      - name: Forbidden-write guard (no engine, platform, intelligence or corpus artefact is ever written)
+        run: python3 00-MASTER/UEI-000001/uei_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical rendering across runs, no timestamps)
+        run: python3 00-MASTER/UEI-000001/uei_engine.py --check-determinism
+
+      - name: Governance guard (no declared capability is left ungoverned)
+        run: python3 00-MASTER/UEI-000001/uei_engine.py --check-governance
+
+      - name: Reuse-before-create guard (no bound home lies inside this programme's own home)
+        run: python3 00-MASTER/UEI-000001/uei_engine.py --check-reuse-before-create
+
+  evolution-gate:
+    name: Evolution Intelligence Gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Evolution Intelligence Gate (fail-closed)
+        run: python3 00-MASTER/UEI-000001/uei_engine.py --gate
+
+      - name: Publish the evolution determinations
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uei-determinations
+          path: |
+            00-MASTER/UEI-000001/*.md
+            00-MASTER/UEI-000001/uei.json
+            00-MASTER/UEI-000001/evidence/
+          if-no-files-found: warn

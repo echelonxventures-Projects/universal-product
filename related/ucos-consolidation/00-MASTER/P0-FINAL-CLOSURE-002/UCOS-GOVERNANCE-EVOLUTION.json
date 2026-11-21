@@ -1,0 +1,78 @@
+{
+  "authority": "NONE — DERIVED TRUTH. Measurement only; this file certifies nothing and creates no authority.",
+  "phase": 4,
+  "governance_model": "EVOLVABLE",
+  "proof": "UCL-000001 measures nine unboundedness dimensions (UNB-01..09) against AUTH-INF-001 CR-INF-001; all are satisfied at the measured commit. No stage graph, CKO kind, graph type, serialization or capability registry is a closed enumeration; no terminal-state claim exists; the lifecycle re-enters.",
+  "unboundedness_dimensions": [
+    {
+      "id": "UNB-01",
+      "requirement": "the stage graph is not a closed enumeration",
+      "measure": "closed_enumerations_declared",
+      "value": 0,
+      "satisfied": true
+    },
+    {
+      "id": "UNB-02",
+      "requirement": "every expansion axis resolves to a located admission path",
+      "measure": "expansion_axes_unbound",
+      "value": 0,
+      "satisfied": true
+    },
+    {
+      "id": "UNB-03",
+      "requirement": "no located instrument claims a terminal constitutional state",
+      "measure": "terminal_state_claims",
+      "value": 0,
+      "satisfied": true
+    },
+    {
+      "id": "UNB-04",
+      "requirement": "no architectural bound token is declared anywhere in this programme",
+      "measure": "limit_tokens_present",
+      "value": 0,
+      "satisfied": true
+    },
+    {
+      "id": "UNB-05",
+      "requirement": "the lifecycle re-enters, so no stage is terminal",
+      "measure": "reentry_declarations_absent",
+      "value": 0,
+      "satisfied": true
+    },
+    {
+      "id": "UNB-06",
+      "requirement": "the serialization registry is open, not a single hard-wired format",
+      "measure": "serialization_readers_registered",
+      "value": 3,
+      "satisfied": true
+    },
+    {
+      "id": "UNB-07",
+      "requirement": "the capability graph is discovered, never enumerated by this programme",
+      "measure": "capability_nodes_discovered",
+      "value": 1254,
+      "satisfied": true
+    },
+    {
+      "id": "UNB-08",
+      "requirement": "the CKO kind registry is open",
+      "measure": "cko_kind_registry_closed",
+      "value": 0,
+      "satisfied": true
+    },
+    {
+      "id": "UNB-09",
+      "requirement": "the graph type registry is open",
+      "measure": "graph_type_registry_closed",
+      "value": 0,
+      "satisfied": true
+    }
+  ],
+  "can_authority_structures_evolve": true,
+  "can_certification_structures_evolve": true,
+  "can_governance_structures_evolve": true,
+  "can_finality_structures_evolve": false,
+  "can_constitutional_authority_evolve": false,
+  "governing_law_for_the_two_NOs": "CEP-000 §5.3 (Program Authority does not extend to constitutional substance); CEP-000 §5.4 (never self-elevate; no CEP agent SHALL grant itself ratification authority); CEP-006 I.5.",
+  "finding": "Evolution is unbounded WITHIN the corpus and cannot reach outside it. Evolvability therefore does not touch VAC-01: no amount of in-corpus evolution can mint constituent authority."
+}

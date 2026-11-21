@@ -1,0 +1,1048 @@
+{
+  "programme": {
+    "id": "UAIE-000001",
+    "name": "Universal Architectural Intelligence Engine — Faculty Binding and Register-Plane Reasoning Register",
+    "version": "1.0.0",
+    "authority": "NONE (DERIVED TRUTH)",
+    "governing_instrument": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+    "lifecycle_instrument": "00-MASTER/UCEF-000001/02-CONSTITUTIONAL-EVOLUTION-LIFECYCLE-REGISTER.md",
+    "mission": "Reason continuously over Repository Truth. This programme does not replace Repository Truth and does not become a second authority over it. Every architectural faculty it names is already realised by a canonical owner and is bound to that owner by pointer; the binding is then measured, so a rename, a move or a deletion closes the gate instead of quietly invalidating the claim that the repository can reason about itself. The one thing this programme contributes that no located owner held is reasoning ACROSS the register plane: every existing analysis reasons within one substrate, and none reads the registers against each other. That cross-register measurement is declared, registered in the located analysis registry, and is the only capability this programme adds.",
+    "disclosure": "AUTHORITY = NONE. Nothing in this programme confers constitutional force, ratifies a determination, freezes anything, or supersedes a canonical owner. Every faculty binding is a pointer to an artifact that exists independently of this programme and remains owned by its own authority. The only facts asserted are measured from Repository Truth at render time and are re-measurable by re-running the engine. Standing is CERTIFIED-PROVISIONAL: tier T1 is vacant in the meta-constitutional registry, so no determination in this repository can reach RATIFIED."
+  },
+  "admission_determination": {
+    "classification": "SUBSTANTIVE",
+    "meta_registry": "UAIE-REG-03",
+    "admitted_to_meta_registry": false,
+    "disposition": "COMPOSE-AND-EXTEND OVER LOCATED OWNERS",
+    "basis": "00-CMG/CMG-000001 Article LXXVI.2(b) requires a candidate concept to be classified meta-constitutional or substantive and states that a substantive concept SHALL NOT be admitted into CMG. Architectural reasoning over repository artifacts governs no constitution and amends no constitutional process: it is substantive. Article LXXVII.2 therefore routes it to (a) REUSE where a located owner already holds the concern and (b) EXTEND where the concern lies inside a located owner's declared scope and is unaddressed there. Every faculty below takes one of those two outcomes or COMPOSE over several located owners. CREATE was rejected for all ten faculties: each is already realised, which is recorded per faculty in its reuse rationale. Consistent with this determination and with the observed content of the meta-constitutional registry — which recognizes only meta and family constitutional instruments and no substantive programme — this programme is deliberately absent from that registry, and the engine measures that absence rather than asserting it.",
+    "namespace_basis": "No namespace token is claimed in the meta-constitutional registry. Article XLI.5 forbids an EXTEND from introducing a new authority, registry, lifecycle or namespace, and Article LXXVI reserves namespace admission to the meta layer for meta-constitutional constructs only. This programme's identifier is a programme home under 00-MASTER/, which is the convention every other substantive programme in this repository already follows.",
+    "rejected_alternatives": [
+      "CREATE a new architectural reasoning engine in engine/ or platform/ — rejected: the eleven located owners bound below already realise all ten faculties, and a new engine would be a parallel authority over architectural reasoning, which 00-CMG/CMG-000001 CMG-INV-02 forbids.",
+      "CREATE a new analysis registry for architectural intelligence — rejected: 00-MASTER/UCOS-UAR-001 is the located owner of 'which analyses exist and who owns them' and is open by registration, so the contributed analyses below are entries in it rather than a second registry.",
+      "ADMIT this programme into the meta-constitutional registry — rejected under Article LXXVI.2(b): the concept is substantive.",
+      "REDESIGN the architectural layering of engine/graph, platform/repository_intelligence or engine/knowledge/integration — rejected: 00-MASTER/UCEF-000001 records that architectural redesign is not a stage of the constitutional evolution lifecycle, and a traversal requiring it has failed at reuse analysis and must return there."
+    ]
+  },
+  "dispositions": [
+    {
+      "id": "REUSE",
+      "meaning": "the faculty is already realised at a single canonical home and is bound to it as-is; nothing is added"
+    },
+    {
+      "id": "EXTEND",
+      "meaning": "the faculty is realised under a different canonical name or at a narrower scope; the existing owner is bound and the difference is recorded, never resolved by creating a second home"
+    },
+    {
+      "id": "COMPOSE",
+      "meaning": "no single home bears this faculty; it is a composition over two or more homes that already exist, and is bound to all of them"
+    }
+  ],
+  "ontology_anchors": [
+    {
+      "id": "ONT-27",
+      "element": "UNIVERSAL CAPABILITY UNIVERSE",
+      "register": "UAIE-REG-05",
+      "basis": "The capability universe already admits Reason as a first-class capability alongside Observe, Learn, Predict and Evolve, and is declared unlimited and extensible. Architectural reasoning is an instance of an ontology element that already exists, so this programme binds to it and introduces no new ontology element and no change to any declared cardinality (00-CMG/CMG-000001 Article XIV.7)."
+    },
+    {
+      "id": "ONT-29",
+      "element": "MEMORY -> KNOWLEDGE -> INTELLIGENCE -> WISDOM",
+      "register": "UAIE-REG-05",
+      "basis": "The ontology already places Intelligence as the layer that applies organised knowledge. This programme is an Intelligence-layer construct over the Knowledge layer held by the registers; it does not occupy or redefine the Wisdom layer, which governs intelligence and remains with the constitutional instruments."
+    },
+    {
+      "id": "ONT-25",
+      "element": "UNIVERSAL MODEL (10-tuple)",
+      "register": "UAIE-REG-05",
+      "basis": "Every node of the semantic graph this programme reasons over is already expressible in the universal ten-tuple — Identity, Relationship, Capability, Resource, State, Event, Policy, Authority, Constraint, Intent — so the graph needs no new meta-model."
+    }
+  ],
+  "registers": [
+    {
+      "id": "UAIE-REG-01",
+      "subject": "every repository artifact",
+      "path": "00-BOOK/DATA/artifacts.json",
+      "owner": "00-BOOK/tools/ukb.py",
+      "form": "json",
+      "role": "artifact-registry",
+      "probe": {
+        "collection": "artifacts",
+        "field": "path"
+      },
+      "basis": "the universal artifact registry, generated by the knowledge-book tool and never hand-authored; the single answer to what exists"
+    },
+    {
+      "id": "UAIE-REG-02",
+      "subject": "every relationship between artifacts",
+      "path": "00-BOOK/DATA/relationships.json",
+      "owner": "engine/graph/engine.py",
+      "form": "json",
+      "role": null,
+      "probe": null,
+      "basis": "the typed edge set over the artifact registry; the graph substrate, owned by the graph engine and derived, never asserted"
+    },
+    {
+      "id": "UAIE-REG-03",
+      "subject": "every constitution",
+      "path": "00-CMG/CMG-REGISTRY.json",
+      "owner": "00-CMG/tools/cmg_validate.py",
+      "form": "json",
+      "role": "meta-constitutional-registry",
+      "probe": {
+        "collection": "artifacts",
+        "field": "path"
+      },
+      "basis": "the machine-readable projection of the meta-constitutional instrument, holding the recognized constitutional artifacts, their kinds, standings, reaches, tiers, states and the concern-to-owner allocation"
+    },
+    {
+      "id": "UAIE-REG-04",
+      "subject": "every registry",
+      "path": "00-MASTER/MIP-W1-P001/10-UNIVERSAL-REGISTRY-CATALOG.md",
+      "owner": "00-MASTER/MIP-W1-P001",
+      "form": "markdown",
+      "role": null,
+      "probe": null,
+      "basis": "the catalogue of every registry in the corpus, including the check that forbids a duplicate registry; the located answer to which registries exist"
+    },
+    {
+      "id": "UAIE-REG-05",
+      "subject": "every ontology",
+      "path": "01-WORKING/ONTOLOGY-REGISTER.md",
+      "owner": "01-WORKING/ONTOLOGY-REGISTER.md",
+      "form": "markdown",
+      "role": "ontology-register",
+      "probe": null,
+      "basis": "the root ontology register; the anchors this programme binds to are elements of it"
+    },
+    {
+      "id": "UAIE-REG-06",
+      "subject": "every taxonomy",
+      "path": "10-DATA/DATA-004-UNIVERSAL-DATA-TAXONOMY.md",
+      "owner": "10-DATA/DATA-004-UNIVERSAL-DATA-TAXONOMY.md",
+      "form": "markdown",
+      "role": null,
+      "probe": null,
+      "basis": "the family taxonomy instrument reached through the per-family numbering convention; the constitutional taxonomy proper is the kind vocabulary inside UAIE-REG-03 and is reasoned over through that register rather than restated here"
+    },
+    {
+      "id": "UAIE-REG-07",
+      "subject": "every dependency",
+      "path": "intelligence/UCOS-RIE-DEPENDENCY-GRAPH.json",
+      "owner": "intelligence/rie/engine.py",
+      "form": "json",
+      "role": null,
+      "probe": null,
+      "basis": "the sealed derived dependency projection over the corpus, carrying the program edge set, the layering and the acyclicity determination"
+    },
+    {
+      "id": "UAIE-REG-08",
+      "subject": "every ownership relationship",
+      "path": "02-CANONICAL-OWNERSHIP-MATRIX.md",
+      "owner": "02-CANONICAL-OWNERSHIP-MATRIX.md",
+      "form": "markdown",
+      "role": null,
+      "probe": null,
+      "basis": "the single canonical ownership matrix; the human-normative answer to who owns a concept, with its integrity checks and dated addenda"
+    },
+    {
+      "id": "UAIE-REG-09",
+      "subject": "every capability",
+      "path": "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+      "owner": "intelligence/rie/engine.py",
+      "form": "json",
+      "role": "capability-catalogue",
+      "probe": {
+        "collection": "capabilities",
+        "field": "canonical_location"
+      },
+      "basis": "the derived catalogue of realised capabilities, carrying for each one its canonical location, its reuse policy and whether its replacement is prohibited"
+    },
+    {
+      "id": "UAIE-REG-10",
+      "subject": "every analysis",
+      "path": "00-MASTER/UCOS-UAR-001/uar-analyses.json",
+      "owner": "00-MASTER/UCOS-UAR-001/uar_engine.py",
+      "form": "json",
+      "role": "analysis-registry",
+      "probe": {
+        "collection": "analyses",
+        "field": "home"
+      },
+      "basis": "the universal analysis registry: the located, open-by-registration answer to which analyses exist and who owns them. Every faculty below cites its analyses from here, and the analyses this programme contributes are registered here rather than in a second registry"
+    },
+    {
+      "id": "UAIE-REG-11",
+      "subject": "every platform capability binding",
+      "path": "00-MASTER/UAEP-000001/uaep-platform.json",
+      "owner": "00-MASTER/UAEP-000001/uaep_engine.py",
+      "form": "json",
+      "role": null,
+      "probe": {
+        "collection": "capabilities",
+        "field": "homes"
+      },
+      "basis": "the platform capability binding declaration; the precedent this programme follows and one of the registers it reasons across"
+    },
+    {
+      "id": "UAIE-REG-12",
+      "subject": "every validation",
+      "path": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "owner": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "form": "json",
+      "role": null,
+      "probe": null,
+      "basis": "the aggregate constitutional certifier's binding declaration, enumerating every located gate and the check that proves it; the answer to what is validated and by whom"
+    },
+    {
+      "id": "UAIE-REG-13",
+      "subject": "every certification",
+      "path": "00-BOOK/DATA/certification.json",
+      "owner": "00-BOOK/tools/ukb.py",
+      "form": "json",
+      "role": null,
+      "probe": null,
+      "basis": "the derived certification projection over the corpus domains, carrying the verdict per domain"
+    },
+    {
+      "id": "UAIE-REG-14",
+      "subject": "every canonical knowledge object",
+      "path": "knowledge/canonical-knowledge.json",
+      "owner": "engine/knowledge/store.py",
+      "form": "json",
+      "role": null,
+      "probe": null,
+      "basis": "the content-addressed canonical knowledge store, holding each object's universe, authority, lifecycle and ownership"
+    },
+    {
+      "id": "UAIE-REG-15",
+      "subject": "every decision",
+      "path": "knowledge/decisions.json",
+      "owner": "engine/knowledge/store.py",
+      "form": "json",
+      "role": null,
+      "probe": null,
+      "basis": "the canonical machine-readable decision store; the answer to why an architecture is what it is"
+    },
+    {
+      "id": "UAIE-REG-16",
+      "subject": "every universe",
+      "path": "15-UNIVERSAL-SCIENCE-INTELLIGENCE/04-REGISTRIES/USIS-REG-001-UNIVERSE-REGISTRY.md",
+      "owner": "15-UNIVERSAL-SCIENCE-INTELLIGENCE",
+      "form": "markdown",
+      "role": null,
+      "probe": null,
+      "basis": "the located universe registry; universes are also carried as a field on every object in UAIE-REG-14, and both are reasoned over rather than merged"
+    },
+    {
+      "id": "UAIE-REG-17",
+      "subject": "every implementation",
+      "path": "02-IMPLEMENTATION-MANIFEST.md",
+      "owner": "02-IMPLEMENTATION-MANIFEST.md",
+      "form": "markdown",
+      "role": null,
+      "probe": null,
+      "basis": "the implementation manifest; the answer to what has been implemented, complementing the traceability fields carried per artifact in UAIE-REG-01"
+    },
+    {
+      "id": "UAIE-REG-18",
+      "subject": "every evolution baseline and change classification",
+      "path": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+      "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+      "form": "markdown",
+      "role": "evolution-register",
+      "probe": null,
+      "basis": "the located evolution governance model: the closed classification register of change classes and the Constitutional Evolution Contract whose ten obligations every change from the current baseline forward must discharge"
+    },
+    {
+      "id": "UAIE-REG-19",
+      "subject": "every release lifecycle state",
+      "path": "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+      "owner": "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+      "form": "markdown",
+      "role": "release-register",
+      "probe": null,
+      "basis": "the located release lifecycle: the ordered states a change passes through and the evidence each state requires"
+    },
+    {
+      "id": "UAIE-REG-20",
+      "subject": "every baseline",
+      "path": "00-MASTER/BASELINE-001/BASELINE-REGISTRY.md",
+      "owner": "00-MASTER/BASELINE-001/BASELINE-REGISTRY.md",
+      "form": "markdown",
+      "role": "baseline-register",
+      "probe": null,
+      "basis": "the located baseline registry; a baseline record is immutable and a new baseline is a new row, never an edit"
+    }
+  ],
+  "faculties": [
+    {
+      "id": "UAIE-FAC-01",
+      "name": "Repository Semantic Graph",
+      "disposition": "COMPOSE",
+      "canonical_owner": "engine/graph",
+      "objective": "One semantic graph over the entire repository, with every projection derived from it rather than stored beside it.",
+      "reuse": "Already realised twice at two distinct scopes, and both are bound rather than merged. The certified knowledge graph is built over the canonical registers and is the corpus-scope graph; the repository graph is built over the real import surface and is the code-scope graph. The governing knowledge-graph architecture is explicit that there are several roots but one graph, so a third graph store is exactly what must not be created. This programme adds no node kind, no edge kind and no store.",
+      "catalogue_ids": [
+        "RC-16",
+        "RC-51"
+      ],
+      "analyses": [
+        "UAR-RIB-01",
+        "UAR-RIE-07"
+      ],
+      "registers": [
+        "UAIE-REG-01",
+        "UAIE-REG-02",
+        "UAIE-REG-04",
+        "UAIE-REG-05",
+        "UAIE-REG-16"
+      ],
+      "homes": [
+        "engine/graph/model.py",
+        "engine/graph/engine.py",
+        "platform/repository_intelligence/graph.py"
+      ],
+      "symbols": [
+        "KnowledgeGraph",
+        "build_core_graph",
+        "RepositoryGraph",
+        "build_graph"
+      ],
+      "depends_on": [],
+      "evidence": [
+        "00-BOOK/DATA/relationships.json",
+        "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+        "engine/tests/graph"
+      ],
+      "gap": "No single module bears the name used here. The capability is held by two owners at two scopes and is bound to both; the absence of one merged graph module is recorded rather than closed by building a third."
+    },
+    {
+      "id": "UAIE-FAC-02",
+      "name": "Architectural Reasoning Engine",
+      "disposition": "REUSE",
+      "canonical_owner": "engine/graph/architecture",
+      "objective": "Reason across repository artifacts: stratification, layering inversions, blast radius, critical path, impact prediction and reachability.",
+      "reuse": "Already realised as the architecture intelligence engine, which exposes layering, dependency intelligence, blast radius, critical path, impact prediction and semantic reachability over the one corpus graph, and carries pure strongly-connected-component, condensation and topological-order algorithms beside it. Those algorithms are reused, never rewritten: a second implementation of reachability would be a second answer to the same question.",
+      "catalogue_ids": [
+        "RC-16"
+      ],
+      "analyses": [
+        "UAR-VI-04",
+        "UAR-RIB-04"
+      ],
+      "registers": [
+        "UAIE-REG-02",
+        "UAIE-REG-06"
+      ],
+      "homes": [
+        "engine/graph/architecture/engine.py",
+        "engine/graph/architecture/algorithms.py",
+        "engine/graph/architecture/layers.py"
+      ],
+      "symbols": [
+        "ArchitectureIntelligenceEngine",
+        "strongly_connected_components",
+        "topological_order",
+        "condensation",
+        "LayerDependencyGraph"
+      ],
+      "depends_on": [
+        "UAIE-FAC-01"
+      ],
+      "evidence": [
+        "engine/graph/architecture/evidence.py",
+        "engine/graph/architecture/insights.py",
+        "engine/tests/graph"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAIE-FAC-03",
+      "name": "Dependency Intelligence",
+      "disposition": "REUSE",
+      "canonical_owner": "engine/graph/architecture/dependency_intelligence.py",
+      "objective": "Detect dependency inconsistencies: cycles, unresolvable edges, inverted layers and the closure of what depends on what.",
+      "reuse": "Already realised. Dependency intelligence derives transitive dependencies, fan-in, fan-out, hubs and circular-dependency reports over the corpus graph, and the repository dependency dimension derives the same closure over the real import graph. The constitutional dependency plane is separately validated by the meta-constitutional validator's acyclicity invariant, which is bound as evidence rather than reimplemented.",
+      "catalogue_ids": [
+        "RC-16",
+        "RC-51"
+      ],
+      "analyses": [
+        "UAR-RIE-07",
+        "UAR-RIB-04"
+      ],
+      "registers": [
+        "UAIE-REG-07"
+      ],
+      "homes": [
+        "engine/graph/architecture/dependency_intelligence.py",
+        "platform/repository_intelligence/discovery.py"
+      ],
+      "symbols": [
+        "DependencyIntelligence",
+        "detect_circular_dependencies",
+        "discover_dependencies"
+      ],
+      "depends_on": [
+        "UAIE-FAC-01"
+      ],
+      "evidence": [
+        "intelligence/UCOS-RIE-DEPENDENCY-GRAPH.json",
+        "03-DEPENDENCY-GRAPH.md",
+        "00-CMG/tools/cmg_validate.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAIE-FAC-04",
+      "name": "Ownership Intelligence",
+      "disposition": "REUSE",
+      "canonical_owner": "engine/knowledge/integration/ownership.py",
+      "objective": "Detect ownership conflicts: a concept with two owners, an owner with no concept, and a contested claim.",
+      "reuse": "Already realised twice and both are bound. The ownership protocol is the fail-closed constitutional path: it requires exactly one owner and finds overlaps, refusing rather than defaulting. The repository ownership dimension derives declared owners from the code surface and marks a contested record. The meta-constitutional validator independently enforces injectivity of the concern-to-owner mapping and that every concern has exactly one located owner; that is bound as evidence, not restated.",
+      "catalogue_ids": [
+        "RC-18",
+        "RC-51"
+      ],
+      "analyses": [
+        "UAR-CL-01",
+        "UAR-VI-01"
+      ],
+      "registers": [
+        "UAIE-REG-08",
+        "UAIE-REG-03"
+      ],
+      "homes": [
+        "engine/knowledge/integration/ownership.py",
+        "platform/repository_intelligence/discovery.py"
+      ],
+      "symbols": [
+        "OwnershipProtocol",
+        "discover_ownership"
+      ],
+      "depends_on": [
+        "UAIE-FAC-01"
+      ],
+      "evidence": [
+        "02-CANONICAL-OWNERSHIP-MATRIX.md",
+        "00-MASTER/UAKOS-CLOSURE-002/31-CONCEPT-OWNERSHIP-REGISTER.md",
+        "00-CMG/tools/cmg_validate.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAIE-FAC-05",
+      "name": "Duplication Intelligence",
+      "disposition": "REUSE",
+      "canonical_owner": "engine/knowledge/integration/duplication.py",
+      "objective": "Detect duplicate concepts before a second home for one concept is created.",
+      "reuse": "Already realised three times at three scopes, all bound. The duplicate-prevention engine screens a proposed artifact against the knowledge base and refuses on similarity. The repository duplicate dimension detects surface overlap and duplication across modules. The closure engine detects duplicate concepts, duplicate canonical homes and content-hash duplicates across the corpus, and the repository integration blueprint holds the duplicate register. Nothing here is a fourth detector.",
+      "catalogue_ids": [
+        "RC-18",
+        "RC-51"
+      ],
+      "analyses": [
+        "UAR-RIB-02",
+        "UAR-CL-02",
+        "UAR-CL-06"
+      ],
+      "registers": [
+        "UAIE-REG-09",
+        "UAIE-REG-14"
+      ],
+      "homes": [
+        "engine/knowledge/integration/duplication.py",
+        "platform/repository_intelligence/discovery.py",
+        "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py"
+      ],
+      "symbols": [
+        "DuplicatePreventionEngine",
+        "detect_duplicates"
+      ],
+      "depends_on": [
+        "UAIE-FAC-01"
+      ],
+      "evidence": [
+        "06-DUPLICATION-AND-OVERLAP-VERIFICATION.md",
+        "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+        "knowledge/canonical-knowledge.json"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAIE-FAC-06",
+      "name": "Gap Intelligence",
+      "disposition": "REUSE",
+      "canonical_owner": "platform/measurement/gaps.py",
+      "objective": "Detect missing abstractions: structural gaps, completeness gaps, convention gaps and orphan units.",
+      "reuse": "Already realised three times, all bound. The gap engine detects structural and completeness gaps over the truth snapshot and fingerprints the report so a gap set is comparable across runs. The repository gap dimension detects convention gaps over the code surface. The repository integration blueprint holds the gap register and classifies dead engines and unreachable entry points. This programme detects no new gap class of its own.",
+      "catalogue_ids": [
+        "RC-46",
+        "RC-51"
+      ],
+      "analyses": [
+        "UAR-RIB-03",
+        "UAR-CL-03"
+      ],
+      "registers": [
+        "UAIE-REG-17",
+        "UAIE-REG-01"
+      ],
+      "homes": [
+        "platform/measurement/gaps.py",
+        "platform/repository_intelligence/discovery.py",
+        "00-MASTER/UCOS-RIB-001/rib_engine.py"
+      ],
+      "symbols": [
+        "GapEngine",
+        "GapReport",
+        "discover_gaps"
+      ],
+      "depends_on": [
+        "UAIE-FAC-01",
+        "UAIE-FAC-05"
+      ],
+      "evidence": [
+        "04-REPOSITORY-GAP-ANALYSIS.md",
+        "02-GAP-CLASSIFICATION.md",
+        "platform/tests"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAIE-FAC-07",
+      "name": "Evolution Intelligence",
+      "disposition": "REUSE",
+      "canonical_owner": "00-MASTER/UEI-000001/uei_engine.py",
+      "objective": "Recommend constitutional evolution: what should change next, and under which located owner.",
+      "reuse": "Already realised and registered as its own programme. Universal evolution intelligence binds the evolution capabilities to their homes; the autonomous evolution engine closes the observe-recommend loop over located owners; the constitutional evolution framework measures the fifteen-stage lifecycle any new construct must traverse; and the evolution governance model holds the normative process. A recommendation engine here would be a second voice on the same question.",
+      "catalogue_ids": [
+        "RC-33"
+      ],
+      "analyses": [
+        "UAR-RIE-04",
+        "UAR-RIE-03"
+      ],
+      "registers": [
+        "UAIE-REG-15",
+        "UAIE-REG-04",
+        "UAIE-REG-18",
+        "UAIE-REG-20"
+      ],
+      "homes": [
+        "00-MASTER/UEI-000001/uei_engine.py",
+        "00-MASTER/UCOS-AEE-001/aee_engine.py",
+        "00-MASTER/UCEF-000001/ucef_engine.py"
+      ],
+      "symbols": [],
+      "depends_on": [
+        "UAIE-FAC-02",
+        "UAIE-FAC-06"
+      ],
+      "evidence": [
+        "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+        "00-MASTER/UCEF-000001/02-CONSTITUTIONAL-EVOLUTION-LIFECYCLE-REGISTER.md",
+        "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAIE-FAC-08",
+      "name": "Reuse Intelligence",
+      "disposition": "REUSE",
+      "canonical_owner": "engine/knowledge/integration/reuse.py",
+      "objective": "Recommend reuse before creation, and refuse creation where a located owner already holds the concern.",
+      "reuse": "Already realised three times, all bound. The reuse engine assesses a proposed artifact and returns reuse, extend, compose or create; the constitutional pipeline runs that assessment as a mandatory fail-closed stage so creation cannot bypass it; the repository recommendation engine answers the same question over the code surface and returns reuse candidates; and the repository integration blueprint holds the reuse analysis. This programme's own admission determination was produced by applying this faculty, not by inventing another.",
+      "catalogue_ids": [
+        "RC-18",
+        "RC-51"
+      ],
+      "analyses": [
+        "UAR-RIB-06",
+        "UAR-RIB-05"
+      ],
+      "registers": [
+        "UAIE-REG-09",
+        "UAIE-REG-11"
+      ],
+      "homes": [
+        "engine/knowledge/integration/reuse.py",
+        "engine/knowledge/integration/pipeline.py",
+        "platform/repository_intelligence/recommendation.py"
+      ],
+      "symbols": [
+        "ReuseEngine",
+        "ConstitutionalPipeline",
+        "RepositoryRecommendationEngine",
+        "build_recommendations"
+      ],
+      "depends_on": [
+        "UAIE-FAC-04",
+        "UAIE-FAC-05"
+      ],
+      "evidence": [
+        "00-MASTER/UCEF-000001/06-REUSE-AND-DUPLICATION-REGISTER.md",
+        "00-MASTER/UAEP-000001/01-CAPABILITY-BINDING-REGISTER.md",
+        "engine/tests/unit"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAIE-FAC-09",
+      "name": "Constitutional Intelligence",
+      "disposition": "REUSE",
+      "canonical_owner": "engine/knowledge/integration/constitution.py",
+      "objective": "Verify constitutional consistency: that the constitutional plane holds together and that no artifact claims authority it does not have.",
+      "reuse": "Already realised at three scopes, all bound. The integration constitution holds the laws that bind each stage of the constitutional path and refuses an ungrounded artifact. The meta-constitutional validator enforces twelve invariants over the constitutional registry with zero hardcoded enumeration members. The constitutional authority framework resolves authority and audits authority conflicts, and is the register to consult before any programme claims authority — including this one, which claims none. Adding a fourth constitutional checker would be the parallel machinery the meta layer forbids.",
+      "catalogue_ids": [
+        "RC-18"
+      ],
+      "analyses": [
+        "UAR-VI-07",
+        "UAR-VI-03"
+      ],
+      "registers": [
+        "UAIE-REG-03",
+        "UAIE-REG-12"
+      ],
+      "homes": [
+        "engine/knowledge/integration/constitution.py",
+        "00-CMG/tools/cmg_validate.py",
+        "00-MASTER/UCOS-UCAF-001/ucaf_engine.py"
+      ],
+      "symbols": [
+        "IntegrationConstitution",
+        "INTEGRATION_LAWS"
+      ],
+      "depends_on": [
+        "UAIE-FAC-01",
+        "UAIE-FAC-04"
+      ],
+      "evidence": [
+        "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+        "00-MASTER/UCOS-UCAF-001/05-AUTHORITY-AUDIT-LEDGER.md",
+        "00-MASTER/UCCEP-000000/uccep-bindings.json"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAIE-FAC-10",
+      "name": "Completion Intelligence",
+      "disposition": "COMPOSE",
+      "canonical_owner": "platform/validation_intelligence/analyzers.py",
+      "objective": "Determine repository completeness, and determine it as a computed verdict rather than a claim.",
+      "reuse": "Already realised across four owners and bound to all of them, because completeness is answered at four different scopes and no single one of them is the whole answer. The completeness analyzer answers it as a validation dimension over the intelligence target; the reuse, duplication, conflict, gap and completeness verdicts of the reconciliation programme answer it over located owners; traceability closure answers whether every artifact traces with zero orphans; and freeze eligibility answers whether the repository has reached constitutional completion. A fifth completeness verdict would contradict one of the four.",
+      "catalogue_ids": [
+        "RC-62",
+        "RC-07"
+      ],
+      "analyses": [
+        "UAR-VI-02",
+        "UAR-VI-01"
+      ],
+      "registers": [
+        "UAIE-REG-13",
+        "UAIE-REG-10",
+        "UAIE-REG-19"
+      ],
+      "homes": [
+        "platform/validation_intelligence/analyzers.py",
+        "00-MASTER/URRC-000001/urrc_engine.py",
+        "00-MASTER/UCOS-UTCE-001/utce_engine.py",
+        "00-MASTER/UCOS-UFEP-001/ufep_engine.py"
+      ],
+      "symbols": [
+        "DimensionAnalyzer",
+        "RepositoryCompletenessAnalyzer",
+        "CrossCapabilityConsistencyAnalyzer"
+      ],
+      "depends_on": [
+        "UAIE-FAC-03",
+        "UAIE-FAC-06",
+        "UAIE-FAC-09"
+      ],
+      "evidence": [
+        "03-ARCHITECTURAL-COMPLETENESS.md",
+        "08-TRACEABILITY-CLOSURE.md",
+        "05-CONSTITUTIONAL-CLOSURE-CERTIFICATION.md"
+      ],
+      "gap": "No single owner answers completeness for the whole repository. Four located owners answer it at four scopes and all four are bound; the absence of one merged verdict is recorded rather than closed by asserting a fifth."
+    }
+  ],
+  "contributed_analyses": [
+    {
+      "id": "UAR-AIE-01",
+      "name": "register-plane-consistency",
+      "kind": "architectural-intelligence-analysis",
+      "objective": "Measure every path referenced by every declared register of the register plane and report the ones that no longer resolve.",
+      "why_not_already_owned": "Each located analysis reasons within one substrate: the artifact registry validator checks the artifact registry, the meta-constitutional validator checks the constitutional registry, the platform binding engine checks its own bindings, and the analysis registry engine checks its own homes. None reads the registers against each other, so a register that drifts while its own owner stays green is invisible. This analysis is that cross-register reading and nothing more; it re-derives no substrate and duplicates no owner's verdict."
+    },
+    {
+      "id": "UAR-AIE-02",
+      "name": "faculty-binding-resolution",
+      "kind": "architectural-intelligence-analysis",
+      "objective": "Measure whether every named architectural faculty still resolves to a home and a symbol that exist, and to at least one analysis registered in the located analysis registry.",
+      "why_not_already_owned": "The capability catalogue records that a capability exists and where it lives; the analysis registry records that an analysis exists and who owns it. Neither answers whether a named architectural faculty is realised by a registered analysis at a resolving home, which is the join across the two. The platform binding engine performs the analogous join for platform capabilities but is scoped to that agreement and must not be widened to cover a different faculty set."
+    },
+    {
+      "id": "UAR-AIE-03",
+      "name": "architectural-faculty-closure",
+      "kind": "architectural-intelligence-analysis",
+      "objective": "Measure whether the faculty dependency relation is closed and acyclic and whether every declared register of the plane is claimed by at least one faculty.",
+      "why_not_already_owned": "Dependency closure is owned at the artifact, program and constitutional planes by three located owners. None of them holds a faculty plane, because none of them names faculties. This analysis measures closure over the faculty relation this programme declares, and asserts nothing about the planes those owners already own."
+    }
+  ],
+  "validations": [
+    {
+      "id": "UAIE-VAL-01",
+      "dimension": "Every declared faculty home resolves in Repository Truth",
+      "obligation": "no faculty may be bound to a path that does not exist",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-02",
+      "dimension": "Every declared symbol resolves in one of its faculty's homes",
+      "obligation": "a binding may not name a class or function that does not exist, and resolution is by parsing, never by importing the measured module",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-03",
+      "dimension": "Every faculty is realised by at least one registered analysis",
+      "obligation": "each faculty cites one or more analysis identifiers and each resolves in the located analysis registry with a home that exists",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-04",
+      "dimension": "Reuse before create",
+      "obligation": "no faculty may be bound to a home inside this programme's own directory, because that would be this programme realising the faculty rather than reusing it",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-05",
+      "dimension": "Exactly one disposition per faculty from the declared set",
+      "obligation": "totality and closure over the disposition vocabulary; CREATE is not a member of it",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-06",
+      "dimension": "No faculty is unbound",
+      "obligation": "every faculty names at least one home and exactly one canonical owner that resolves",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-07",
+      "dimension": "No two faculties claim an identical home set",
+      "obligation": "an identical binding for two faculties would be duplicate authority over one home",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-08",
+      "dimension": "Ownership is single and located",
+      "obligation": "each faculty's canonical owner resolves on disk and is not claimed as canonical owner by any other faculty",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-09",
+      "dimension": "The faculty dependency relation is closed and acyclic",
+      "obligation": "every declared dependency names a declared faculty, no faculty depends on itself, and the relation admits a total order",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-10",
+      "dimension": "Every declared register of the plane resolves and is readable in its declared form",
+      "obligation": "a register declared as structured data must parse; a register that cannot be read cannot be reasoned over",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-11",
+      "dimension": "Register-plane consistency across registers",
+      "obligation": "every path referenced by every probed register resolves on disk, so no register may point at an artifact another register has lost",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-12",
+      "dimension": "Every declared catalogue identifier exists in the canonical capability catalogue",
+      "obligation": "a faculty may not cite a capability record that is absent, and a faculty citing a record whose replacement is prohibited must resolve at least one of its homes",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-13",
+      "dimension": "Every ontology anchor exists in its declared ontology register",
+      "obligation": "ontology integration is a binding to an element that already exists, so an anchor that is absent from the register closes the gate",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-14",
+      "dimension": "Every contributed analysis is registered in the located analysis registry and duplicates no existing analysis",
+      "obligation": "an analysis this programme adds must appear in the analysis registry owned by this programme, and its name must not already be registered to another owner",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-15",
+      "dimension": "Every recorded gap states why it is not closed",
+      "obligation": "a declared gap must carry a non-empty justification, so an absence is disclosed rather than hidden",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-16",
+      "dimension": "No parallel authority in the meta-constitutional plane",
+      "obligation": "the declared admission determination must match Repository Truth: a programme declared substantive and not admitted to the meta-constitutional registry must in fact be absent from that registry's artifacts and namespace tokens",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-17",
+      "dimension": "Comprehension coverage over the register plane",
+      "obligation": "every declared register is claimed by at least one faculty and every faculty register reference resolves to a declared register, so no part of the plane is unreasoned-over and no faculty reasons over a register that is not declared",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-18",
+      "dimension": "Every Constitutional Evolution Contract obligation binds to a located owner, a named gate and resolving evidence",
+      "obligation": "each of the ten obligations names a non-empty owner, gate and discharge, declares a status from the declared set, and every owner path and evidence path it cites resolves on disk — the verdict of each obligation remains with its own located gate and is never restated here",
+      "blocking": true
+    },
+    {
+      "id": "UAIE-VAL-19",
+      "dimension": "The declared change classification, release state and baseline are members of the registers that own them",
+      "obligation": "the change class label appears in the located evolution register, its release token and the declared release state appear in the located release register, and the declared baseline identifier appears in the located baseline register, so none of the three may drift from the vocabulary that owns it",
+      "blocking": true
+    }
+  ],
+  "exit_criteria": [
+    {
+      "id": "UAIE-EXIT-01",
+      "criterion": "every architectural faculty named by the mission is bound to a home that exists and to a registered analysis that owns it"
+    },
+    {
+      "id": "UAIE-EXIT-02",
+      "criterion": "no faculty is realised by an artifact this programme created, and no capability, registry, authority, lifecycle or namespace is introduced"
+    },
+    {
+      "id": "UAIE-EXIT-03",
+      "criterion": "every subject of comprehension named by the mission resolves to a declared register that resolves on disk and is claimed by a faculty"
+    },
+    {
+      "id": "UAIE-EXIT-04",
+      "criterion": "the register plane is internally consistent: every path any probed register references still exists"
+    },
+    {
+      "id": "UAIE-EXIT-05",
+      "criterion": "the faculty dependency relation is closed and acyclic, so dependency closure over the faculty plane is achieved"
+    },
+    {
+      "id": "UAIE-EXIT-06",
+      "criterion": "every blocking validation is satisfied and the gate is OPEN"
+    },
+    {
+      "id": "UAIE-EXIT-07",
+      "criterion": "the registers are reproducible: two renders of the committed declaration are byte-identical, so the programme has a deterministic fixed point"
+    },
+    {
+      "id": "UAIE-EXIT-08",
+      "criterion": "every Constitutional Evolution Contract obligation is bound to a located owner and a named gate, with its status disclosed and its evidence resolving"
+    },
+    {
+      "id": "UAIE-EXIT-09",
+      "criterion": "the change classification, release state and baseline are drawn from the located registers that own them and are not asserted by this programme"
+    }
+  ],
+  "evolution_contract": {
+    "governing_instrument": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+    "baseline": {
+      "id": "UCOS-BASELINE-002",
+      "register": "UAIE-REG-20",
+      "basis": "the contract binds every change from this baseline forward; the baseline record is immutable and is not edited by this change (Rule R-1)"
+    },
+    "change_classification": {
+      "label": "New capability",
+      "token": "new-capability",
+      "register": "UAIE-REG-18",
+      "token_register": "UAIE-REG-19",
+      "basis": "Exactly one class from the located closed register. The three analyses this programme contributes — reading the declared registers against each other, resolving each named faculty to a registered analysis, and closure over the faculty relation — had no prior existence anywhere in the corpus, which is the definition of this class. It is NOT an extension: an extension expands an existing capability's scope, and no existing capability read across registers to be expanded. It is NOT documentation: the discharge is executable and gate-bound, not a consolidation of existing knowledge. Note the distinction the record must preserve: the CHANGE CLASS is new capability, while the DISPOSITION of each of the ten named architectural faculties is REUSE or COMPOSE over owners that already exist, and CREATE was rejected for all ten. A new change class is not a new authority."
+    },
+    "release_state": {
+      "state": "CERTIFIED",
+      "register": "UAIE-REG-19",
+      "basis": "the located lifecycle admits this state on UCCEP blocking=none with evidence recorded; the terminal RELEASED state is reached by the located owners after the repository commit, and is not claimed here"
+    },
+    "statuses": [
+      {
+        "id": "SATISFIED",
+        "meaning": "the obligation is discharged and its located gate reports the discharge"
+      },
+      {
+        "id": "AWAITING-COMMIT",
+        "meaning": "every artifact the obligation requires exists and is staged, and the located gate reads the committed tree, so the verdict is reachable only after the repository commit"
+      }
+    ],
+    "obligations": [
+      {
+        "id": "EC-OB-01",
+        "obligation": "measure baseline",
+        "owner": "the located baseline registry, the repository integration blueprint and the reality-reconciliation programme",
+        "owner_paths": [
+          "00-MASTER/BASELINE-001/BASELINE-REGISTRY.md",
+          "00-MASTER/UCOS-RIB-001/rib_engine.py",
+          "00-MASTER/URRC-000001/urrc_engine.py"
+        ],
+        "gate": "rib-gate 12/12 · urrc-gate 10/10",
+        "evidence": [
+          "00-MASTER/URRC-000001/urrc.json",
+          "00-MASTER/UCOS-RIB-001/rib.json"
+        ],
+        "discharge": "The baseline was measured before any artifact was authored: the reality-reconciliation gate reports 32/32 deliverables, 14/14 substrate, 60/60 derivations and 10/10 gates OPEN, and the blueprint reports the unit universe, capability graph, duplicate register and gap register the reuse determination was made against. Neither register was edited by this change.",
+        "status": "SATISFIED"
+      },
+      {
+        "id": "EC-OB-02",
+        "obligation": "derive delta",
+        "owner": "the closed classification register of the located evolution governance model",
+        "owner_paths": [
+          "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md"
+        ],
+        "gate": "release lifecycle CLASSIFIED state",
+        "evidence": [
+          "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+          "00-MASTER/UAIE-000001/08-EVOLUTION-CONTRACT-DISCHARGE.md"
+        ],
+        "discharge": "The change carries exactly one class from the located closed register, recorded above with its basis and with the rejected alternatives named. The class label is verified to exist in the evolution register and its release token in the release register, so the classification cannot drift from the vocabulary that owns it.",
+        "status": "SATISFIED"
+      },
+      {
+        "id": "EC-OB-03",
+        "obligation": "reuse existing authority",
+        "owner": "the meta-constitutional totality rule, the canonical ownership matrix and the canonical capability catalogue",
+        "owner_paths": [
+          "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+          "02-CANONICAL-OWNERSHIP-MATRIX.md",
+          "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json"
+        ],
+        "gate": "urrc-gate G-02 reuse-before-create · G-03 non-proliferation · this programme's --check-reuse-before-create · rib-gate GATE-09 zero duplicate capability",
+        "evidence": [
+          "00-MASTER/UAIE-000001/01-FACULTY-BINDING-REGISTER.md",
+          "00-MASTER/UAIE-000001/07-ADMISSION-AND-REUSE-DETERMINATION.md",
+          "00-MASTER/UCOS-UAR-001/uar-analyses.json"
+        ],
+        "discharge": "All ten named architectural faculties are bound by pointer to owners that pre-exist outside this programme: eight REUSE and two COMPOSE, zero created. Every faculty additionally resolves to an analysis already registered in the located analysis registry, and no faculty or canonical owner points inside this programme's own home. Every faculty citing a catalogue record whose replacement is prohibited resolves at least one of that record's homes, so reuse is measured rather than claimed.",
+        "status": "SATISFIED"
+      },
+      {
+        "id": "EC-OB-04",
+        "obligation": "implement",
+        "owner": "the universal capability implementation contract, in the mandated declaration-engine-gate-guards form",
+        "owner_paths": [
+          "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+          "00-MASTER/CAEM-001"
+        ],
+        "gate": "uccep G-13 implementation authorization",
+        "evidence": [
+          "00-MASTER/UAIE-000001/uaie-architecture.json",
+          "00-MASTER/UAIE-000001/uaie_engine.py",
+          "engine/tests/unit/test_uaie_architectural_intelligence.py",
+          ".github/workflows/uaie-gate.yml"
+        ],
+        "discharge": "Implemented in the mandated form: one declaration holding every faculty, owner, home, symbol, analysis, register, probe, anchor, obligation and validation dimension as data; one stdlib-only engine that measures and renders but enumerates nothing; one fail-closed gate; and self-guards over the engine's own surface. Adding anything is a data edit, proven by the zero-enumeration guard over the engine source including its docstring.",
+        "status": "SATISFIED"
+      },
+      {
+        "id": "EC-OB-05",
+        "obligation": "register",
+        "owner": "the atomic artifact registration transaction and the append-only identity ledger",
+        "owner_paths": [
+          "00-BOOK/tools/register.sh",
+          "00-BOOK/tools/ukb.py"
+        ],
+        "gate": "uccep G-06 repository truth · G-07 registry · CK-REG-ENFORCE · CK-REG-VALIDATE · CK-REG-DRIFT",
+        "evidence": [
+          "00-MASTER/UCOS-UAR-001/uar-analyses.json",
+          "00-MASTER/UCCEP-000000/uccep-bindings.json",
+          "02-CANONICAL-OWNERSHIP-MATRIX.md",
+          "00-BOOK/DATA/artifacts.json"
+        ],
+        "discharge": "Registration is complete in every registry that admits this change: three analyses in the located analysis registry, two checks and one gate in the aggregate constitutional certifier, a row and a dated addendum in the canonical ownership matrix, targets in the located build entry point and a gate workflow in CI. The programme home is Operational Memory, which the registration standard excludes from the universal artifact registry by recorded exclusion, so no permanent corpus identity is minted for it — the same treatment every other programme home receives. The registration transaction has been run and reports every eligible artifact registered, classified, validated and synchronized. The drift check reads the COMMITTED tree, so its verdict is reachable only after the repository commit.",
+        "status": "AWAITING-COMMIT"
+      },
+      {
+        "id": "EC-OB-06",
+        "obligation": "validate",
+        "owner": "the validation constitution and the canonical verification entry point",
+        "owner_paths": [
+          "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+          "verify.sh"
+        ],
+        "gate": "uccep G-10 validation · verify.sh 5/5 stages",
+        "evidence": [
+          "00-MASTER/UAIE-000001/05-VALIDATION-REPORT.md",
+          "engine/tests/unit/test_uaie_architectural_intelligence.py"
+        ],
+        "discharge": "The canonical verification entry point passes all five stages including the ninety-percent coverage floor. Every declared validation dimension of this programme is measured and satisfied, and a declared dimension the engine does not measure fails closed rather than reporting satisfied. The suite proves the gate is non-vacuous: distinct mutations each drive it to CLOSED.",
+        "status": "SATISFIED"
+      },
+      {
+        "id": "EC-OB-07",
+        "obligation": "verify",
+        "owner": "the engineering constitution, the repository integration blueprint and the determinism engine",
+        "owner_paths": [
+          "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md",
+          "00-MASTER/UCOS-RIB-001",
+          "engine/determinism"
+        ],
+        "gate": "uccep G-10 · rib-gate · CK-DETERMINISM-BUILD",
+        "evidence": [
+          "00-MASTER/UAIE-000001/03-CROSS-REGISTER-CONSISTENCY.md",
+          "00-MASTER/UAIE-000001/06-CERTIFICATION-REPORT.md"
+        ],
+        "discharge": "Two renders of the committed declaration are byte-identical and the committed registers equal a replay of it, so the programme has a deterministic fixed point of its own. The blueprint's working-tree cleanliness dimension reads the committed tree and is reachable only after the repository commit.",
+        "status": "AWAITING-COMMIT"
+      },
+      {
+        "id": "EC-OB-08",
+        "obligation": "certify",
+        "owner": "the certification constitution and the aggregate constitutional certifier at full tier",
+        "owner_paths": [
+          "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+          "00-MASTER/UCCEP-000000/uccep_engine.py"
+        ],
+        "gate": "uccep G-11 certification, blocking=none at full tier",
+        "evidence": [
+          "00-MASTER/UCCEP-000000/uccep.json",
+          "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md"
+        ],
+        "discharge": "The new gate is bound in the aggregate certifier as two blocking, read-only, fail-closed checks and one gate, and both checks report PASS with no unproven check in scope. Full-tier certification of the whole repository additionally requires the registration drift check, which reads the committed tree.",
+        "status": "AWAITING-COMMIT"
+      },
+      {
+        "id": "EC-OB-09",
+        "obligation": "update evidence",
+        "owner": "the evidence and traceability constitution, the traceability closure engine and the decision assimilation engine",
+        "owner_paths": [
+          "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+          "00-MASTER/UCOS-UTCE-001/utce_engine.py",
+          "00-MASTER/UCDA-000001/ucda_engine.py"
+        ],
+        "gate": "uccep G-12 evidence · G-14 implementation evidence · G-20 constitutional traceability closure",
+        "evidence": [
+          "00-MASTER/UCOS-UTCE-001/utce.json",
+          "00-MASTER/UCDA-000001/ucda.json",
+          "00-MASTER/UAIE-000001/uaie.json"
+        ],
+        "discharge": "Traceability closure reports zero dangling edges, zero unrooted artifacts and zero orphans with the change in place, and the decision assimilation gate is OPEN. Every register this programme emits carries a content seal that moves with the measurement, so evidence cannot be asserted without the measurement that produced it.",
+        "status": "SATISFIED"
+      },
+      {
+        "id": "EC-OB-10",
+        "obligation": "re-measure",
+        "owner": "the repository fixed-point programme, executing its declared pipeline three times from the committed state",
+        "owner_paths": [
+          "00-MASTER/UCOS-RFP-001/rfp_engine.py"
+        ],
+        "gate": "uccep G-15 repository fixed point",
+        "evidence": [
+          "00-MASTER/UCCEP-000000/19-REPOSITORY-FIXED-POINT-CLOSURE.md"
+        ],
+        "discharge": "The fixed-point programme re-executes the declared pipeline three times from the COMMITTED tree and requires zero tracked modifications across passes. Its input is by definition the committed state, so this obligation is reachable only after the repository commit; no alternate mechanism may be substituted for it.",
+        "status": "AWAITING-COMMIT"
+      }
+    ]
+  }
+}

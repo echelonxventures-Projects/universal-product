@@ -1,0 +1,965 @@
+{
+  "$comment": [
+    "BASELINE-001 — UNIVERSAL CONSTITUTIONAL BASELINE INHERITANCE (declaration). This file is",
+    "DATA and is the ONLY place this measurement's capability set, register pointers, scheme",
+    "source, succession reader, inheritance rules, non-inheritance rules, currency claims,",
+    "citation surfaces, version sources, lineage source, validation dimensions and exit criteria",
+    "are stated. baseline_engine.py contains no baseline identifier, no commit identity, no",
+    "ordinal, no state token and no release identifier: everything it registers, resolves,",
+    "validates and reports is READ from here and from the LOCATED records named here.",
+    "",
+    "KNOWLEDGE ONCE — WHY NO BASELINE IS DEFINED IN THIS FILE. The repository already records its",
+    "certified baselines. BASELINE-REGISTRY.md is the canonical, append-only register of them and",
+    "is the located owner of the record; RELEASE-001 §3.1 owns the naming scheme and §3.3 the",
+    "advancement criteria; EVOLUTION-001 §6 owns the evolution version history. This declaration",
+    "RESTATES none of them. It declares WHERE they live and HOW to read them, and DISCOVERS the",
+    "baselines, their ordinals, their commits, their states, their predecessors, their records and",
+    "the advancement criteria at run time. A baseline appended to the located register is therefore",
+    "discovered here automatically; a baseline referenced anywhere but recorded nowhere is",
+    "surfaced as an UNRECORDED BASELINE rather than silently accepted.",
+    "",
+    "WHAT THIS ADDS, AND WHY IT IS NOT A PARALLEL AUTHORITY. It creates no baseline, certifies no",
+    "baseline, advances no baseline, ratifies nothing, freezes nothing and occupies no tier. Its",
+    "authority is NONE — DERIVED TRUTH. No second baseline programme, register, namespace,",
+    "identifier family or lifecycle is created: CMG-INV-02 requires the concern-to-owner map be",
+    "injective and BASELINE-001 already owns certified baseline, so this measurement is held BY",
+    "that owner, inside that owner's home. What no located programme owned is the MEASUREMENT of",
+    "the baseline chain: before this, the chain existed only as prose, so no gate could resolve a",
+    "baseline, detect a missing or duplicated row, detect a break in succession, detect a second",
+    "claimed current baseline, detect a citation of a baseline that was never recorded, or detect",
+    "that a register citing a baseline had gone stale against the register that records it.",
+    "",
+    "WHAT THIS DELIBERATELY DOES NOT DO. It does not advance a baseline: advancement is measured",
+    "against the located criteria and reported, never conferred. It does not edit a record: the",
+    "register is append-only and --check-record-immutability proves mechanically that this",
+    "measurement's write set is disjoint from the located record set. It does not decide a",
+    "divergence between the baseline register and another register that cites a baseline: where a",
+    "located currency claim and the located register disagree, both are MEASURED, both are CITED,",
+    "and a DIVERGES-REFERRED outcome is reported for the claim owner to dispose of under CEP-002",
+    "Article 23. It never converts a measured divergence into an advancement, a certification, a",
+    "ratification or an elevation."
+  ],
+  "programme": {
+    "id": "BASELINE-001",
+    "name": "Universal Constitutional Baseline Inheritance",
+    "version": "1.0",
+    "authority": "NONE — DERIVED TRUTH. This measurement creates no baseline, advances no baseline, certifies nothing, ratifies nothing, freezes nothing and occupies no tier. It reads the located records that already register the repository's certified baselines and reports what they say.",
+    "operational_home": "00-MASTER/BASELINE-001/",
+    "disclosure": "**DISCLOSURE.** CERTIFIED-PROVISIONAL; Tier T1 VACANT. This measurement holds no certification authority, no ratification authority and no freeze authority: it registers, resolves, validates and reports the baselines the repository has already recorded. Where this measurement and a located record differ, the located record governs.",
+    "governing_instruments": [
+      "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md",
+      "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md"
+    ],
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "00-BOOK/DATA/",
+      "00-CEP/",
+      "00-CMG/",
+      "01-WORKING/",
+      "02-MASTER/",
+      "00-MASTER/RELEASE-001/",
+      "00-MASTER/EVOLUTION-001/",
+      "00-MASTER/UAIE-000001/"
+    ]
+  },
+  "$capability_comment": [
+    "The twenty capabilities the baseline model must exhibit. Each names the measure that",
+    "discharges it. A capability whose measure does not run is reported UNDISCHARGED and fails",
+    "closed: absence of a measurement is never evidence of a capability."
+  ],
+  "capabilities": [
+    {
+      "id": "BLN-CAP-01",
+      "capability": "Baseline Registry",
+      "obligation": "every baseline the repository records is registered as an addressable record derived from the located register",
+      "measure": "baselines_registered"
+    },
+    {
+      "id": "BLN-CAP-02",
+      "capability": "Baseline Resolution",
+      "obligation": "every registered baseline resolves to a located evidence block, whether that block is a record file or a section of the register itself",
+      "measure": "records_resolved"
+    },
+    {
+      "id": "BLN-CAP-03",
+      "capability": "Baseline Identification",
+      "obligation": "every registered baseline identifier conforms to the naming scheme its located owner declares",
+      "measure": "identifiers_conformant"
+    },
+    {
+      "id": "BLN-CAP-04",
+      "capability": "Baseline Addressability",
+      "obligation": "the register is dense and monotone in the ordinal of the scheme, so every baseline is addressable and no row is missing, duplicated or out of order",
+      "measure": "ordinals_addressable"
+    },
+    {
+      "id": "BLN-CAP-05",
+      "capability": "Baseline Lineage",
+      "obligation": "the constitutional lineage population is measured, every recorded predecessor resolves, and the declared inheritance relationship type is located rather than assumed",
+      "measure": "lineage_measured"
+    },
+    {
+      "id": "BLN-CAP-06",
+      "capability": "Baseline Succession",
+      "obligation": "every non-origin baseline records an EXPLICIT predecessor that is itself a registered baseline, and the chain is acyclic with exactly one origin and exactly one head",
+      "measure": "successions_linked"
+    },
+    {
+      "id": "BLN-CAP-07",
+      "capability": "Baseline Inheritance",
+      "obligation": "every inheritance rule the corpus legislates binds to a located clause whose text is verified present",
+      "measure": "inheritance_rules_bound"
+    },
+    {
+      "id": "BLN-CAP-08",
+      "capability": "Baseline Version Progression",
+      "obligation": "every constitutional artifact whose recorded version exceeds the base version has a version-increment event in the located change ledger whose target equals the recorded version",
+      "measure": "versions_succeeded"
+    },
+    {
+      "id": "BLN-CAP-09",
+      "capability": "Baseline Evolution",
+      "obligation": "every evolution release the current baseline claims in its chain is recorded in the located evolution register",
+      "measure": "releases_corroborated"
+    },
+    {
+      "id": "BLN-CAP-10",
+      "capability": "Baseline Currency",
+      "obligation": "exactly one baseline carries the located current token, it is the head of the chain, and every located claim of currency is measured against it and reported without being decided",
+      "measure": "currency_claims_measured"
+    },
+    {
+      "id": "BLN-CAP-11",
+      "capability": "Baseline Ratification",
+      "obligation": "the located ratification ceiling is bound and every registered baseline discloses it; no baseline is recorded ratified beyond that ceiling",
+      "measure": "ceiling_disclosed"
+    },
+    {
+      "id": "BLN-CAP-12",
+      "capability": "Baseline Certification",
+      "obligation": "every registered baseline records a certification state drawn from the located state vocabulary, and the state is read rather than conferred",
+      "measure": "certification_states_read"
+    },
+    {
+      "id": "BLN-CAP-13",
+      "capability": "Baseline Authority",
+      "obligation": "the register and this measurement each disclose that they hold no authority, and no authority is inherited by a baseline from its predecessor",
+      "measure": "authority_disclosures"
+    },
+    {
+      "id": "BLN-CAP-14",
+      "capability": "Baseline Traceability",
+      "obligation": "every repository pointer in every baseline record resolves, so no baseline rests on evidence that has since gone",
+      "measure": "pointers_resolved"
+    },
+    {
+      "id": "BLN-CAP-15",
+      "capability": "Baseline Dependency",
+      "obligation": "every machine model the current baseline was measured from resolves, so the derivation of the baseline remains re-readable",
+      "measure": "dependency_models_resolved"
+    },
+    {
+      "id": "BLN-CAP-16",
+      "capability": "Baseline Configuration",
+      "obligation": "the constitutional versions the current baseline records are read from the located constitutional register rather than restated",
+      "measure": "configuration_versions_read"
+    },
+    {
+      "id": "BLN-CAP-17",
+      "capability": "Baseline Scope",
+      "obligation": "every declared scope rule binds to a located clause, so the bounds of a baseline are read from the instruments that set them",
+      "measure": "scope_rules_bound"
+    },
+    {
+      "id": "BLN-CAP-18",
+      "capability": "Baseline Context",
+      "obligation": "every advancement criterion the located scheme owner declares is discovered and corroborated in the current baseline's evidence block",
+      "measure": "criteria_corroborated"
+    },
+    {
+      "id": "BLN-CAP-19",
+      "capability": "Baseline Continuation",
+      "obligation": "the located continuation record resolves and classifies what remains, so the baseline is not read as a claim of completeness it does not make",
+      "measure": "continuation_bound"
+    },
+    {
+      "id": "BLN-CAP-20",
+      "capability": "Baseline Elevation",
+      "obligation": "no baseline is elevated: no registered baseline records the terminal finality token, and this measurement confers no state on any baseline",
+      "measure": "elevation_prohibitions_bound"
+    }
+  ],
+  "$register_comment": [
+    "The located baseline register. Rows are DISCOVERED: the identifier column, the commit column,",
+    "the state column and the record column are read, never declared. id_column is the column",
+    "index of the identifier, which is not column zero because the register's first column is the",
+    "row ordinal — declaring the index is what keeps the reader free of a positional assumption.",
+    "current_token is the exact token the register uses to mark the current baseline; it is",
+    "matched on the upper-cased state cell so that a row which merely mentions being superseded",
+    "as current is not mistaken for the current row."
+  ],
+  "baseline_register": {
+    "id": "BLN-REG-01",
+    "name": "Canonical baseline register",
+    "owner": "00-MASTER/BASELINE-001/BASELINE-REGISTRY.md",
+    "section": "## 1. REGISTRY",
+    "id_column": 1,
+    "id_pattern": "UCOS-BASELINE-[0-9]{3}",
+    "ordinal_column": 0,
+    "columns": {
+      "commit": 2,
+      "branch": 3,
+      "date": 4,
+      "state": 5,
+      "record": 6
+    },
+    "current_token": "CURRENT CONSTITUTIONAL BASELINE",
+    "append_only_anchor": "Records are **added**, never edited, renumbered, reclassified or withdrawn.",
+    "authority_anchor": "AUTHORITY | `NONE — DERIVED TRUTH`",
+    "basis": "00-MASTER/BASELINE-001/BASELINE-REGISTRY.md — the canonical register of certified constitutional baselines, held by BASELINE-001, the already-located baseline authority. RELEASE-001 §5.3's operational suggestion of a directory per baseline is an operational guide, not a law; following it would mint a duplicate canonical home, which CMG-INV-02 and the integration blueprint's Knowledge Once gate both forbid."
+  },
+  "$scheme_comment": [
+    "The naming scheme and the advancement criteria are NOT declared here. They are read from the",
+    "located release lifecycle, which owns both. The ordinal pattern is this declaration's reading",
+    "of the scheme; the anchor is verified present, so a scheme that moves is detected rather than",
+    "silently assumed. The criteria are DISCOVERED from the bulleted list under the criteria",
+    "anchor, so a criterion added by the owner is measured on the next run."
+  ],
+  "scheme_source": {
+    "id": "BLN-SCH-01",
+    "name": "Baseline naming scheme and advancement criteria",
+    "owner": "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+    "scheme_anchor": "UCOS-BASELINE-NNN    Certified baselines (major milestones)",
+    "ordinal_pattern": "^UCOS-BASELINE-(?P<ordinal>[0-9]{3})$",
+    "origin_ordinal": 1,
+    "criteria_anchor": "Baseline advancement criteria",
+    "criteria_item_prefix": "- ",
+    "basis": "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md §3.1 (the UCOS-BASELINE-NNN scheme) and §3.3 (baseline advancement criteria) — the located owner of the release lifecycle and of the version scheme."
+  },
+  "$succession_comment": [
+    "Succession. CMG-000001 XXXIX.6 requires inheritance to be EXPLICIT and prohibits implicit",
+    "inheritance from a containing programme, phase or directory. Row order alone is therefore",
+    "insufficient: a non-origin baseline must RECORD its predecessor. The claim is read from the",
+    "baseline's own evidence block, which is its record file where the record cell resolves to a",
+    "path, and otherwise the section of the register whose heading names the baseline. Both the",
+    "explicit claim and the structural order are measured, and a disagreement between them is a",
+    "failure rather than a resolution in favour of either."
+  ],
+  "succession_source": {
+    "id": "BLN-SUC-01",
+    "predecessor_pattern": "^\\|\\s*Predecessor baseline\\s*\\|(?P<value>[^|]*)\\|",
+    "record_suffix_separators": [
+      " (",
+      " §",
+      " — ",
+      " · "
+    ],
+    "section_prefix": "## ",
+    "basis": "00-CMG/CMG-000001 ARTICLE XXXIX.6 — inheritance SHALL be explicit and implicit inheritance IS PROHIBITED; ARTICLE XXVIII.4 — a superseded version SHALL be reachable from its successor by an explicit lineage link."
+  },
+  "$release_comment": [
+    "The evolution version history is owned by the located evolution governance model, not by this",
+    "measurement. Only one property is measured here, and it is BASELINE-001's own: every",
+    "evolution release the current baseline CLAIMS in its chain must be recorded in that located",
+    "register. Nothing about the release scheme, the release states or the release ordering is",
+    "asserted here, because none of it belongs to this owner."
+  ],
+  "release_source": {
+    "id": "BLN-REL-01",
+    "name": "Located evolution version history",
+    "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+    "section": "## 6. EVOLUTION VERSION HISTORY",
+    "release_pattern": "UCOS-EVO-[0-9]{3}-[A-Z0-9]+",
+    "basis": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md §6 — the evolution version history, cited by RELEASE-001 §3.3's fifth advancement criterion as the record of the complete chain from the prior baseline."
+  },
+  "$version_comment": [
+    "Version progression. CEP-007 XXIV.2 and CEP-009 XXIV.2 both require that any change occur",
+    "only through the amendment model and SHALL increment the version. Nothing measured that the",
+    "increment was recorded. Three located registers are read against each other: the",
+    "constitutional register that records the version in force, the artifact register that maps a",
+    "path to its universal identity, and the change ledger that records the increment event. An",
+    "artifact above the base version whose increment is unrecorded is a break in version",
+    "succession, which is inheritance in its most concrete form."
+  ],
+  "version_sources": {
+    "constitutional": {
+      "id": "BLN-VER-01",
+      "owner": "00-CMG/CMG-REGISTRY.json",
+      "collection_pointer": "artifacts",
+      "id_field": "id",
+      "path_field": "path",
+      "version_field": "version",
+      "base_version": "1.0",
+      "basis": "00-CMG/CMG-000001 ARTICLE XXVIII (versioning model), projected as data in 00-CMG/CMG-REGISTRY.json."
+    },
+    "identity": {
+      "id": "BLN-VER-02",
+      "owner": "00-BOOK/DATA/artifacts.json",
+      "collection_pointer": "artifacts",
+      "path_field": "path",
+      "id_field": "universal_id",
+      "basis": "00-BOOK/MASTER-BOOK/UMB-003 — the universal identity of a repository artifact, projected by the registration transaction."
+    },
+    "ledger": {
+      "id": "BLN-VER-03",
+      "owner": "00-BOOK/DATA/change-ledger.json",
+      "collection_pointer": "change_events",
+      "subject_field": "subject",
+      "kind_field": "kind",
+      "target_field": "to",
+      "increment_token": "Version-Incremented",
+      "basis": "00-BOOK/MASTER-BOOK/UMB-009 (version) and UMB-008 (change) — the located change and version projection; CEP-009 XV.4 requires every version in a lineage to remain individually reproducible and discoverable."
+    },
+    "executable_identity": {
+      "id": "BLN-VER-04",
+      "owner": "00-BOOK/DATA/id-ledger.json",
+      "collection_pointer": "by_object",
+      "id_field": "universal_id",
+      "basis": "UCOS-UGA-001 holds the identity of every EXECUTABLE_OBJECT, keyed by path in by_object. BLN-VER-02 resolves through the corpus registry, whose registration boundary excludes .py by declaration, so a constitutional artifact implemented in code — UCKP-LAW-0001 at engine/uckp/law.py — could never resolve there. Declared as a SECOND source rather than a replacement: the corpus registry remains authoritative for what it holds."
+    }
+  },
+  "$lineage_comment": [
+    "Constitutional lineage. CMG-000001 XI.11 (CMG-INV-11) requires that every lineage predecessor",
+    "resolve to a present artifact, and the located validator checks exactly that. The invariant is",
+    "satisfiable vacuously when no artifact records a predecessor, and a vacuously satisfied",
+    "invariant is indistinguishable from an enforced one unless the population is measured. This",
+    "entry measures the population and reports it, and it verifies that the inheritance",
+    "relationship type the corpus declares is located rather than assumed. It does not populate",
+    "the field: what an artifact inherits from is its own declaration to make, and the field",
+    "belongs to the meta-constitutional register."
+  ],
+  "lineage_source": {
+    "id": "BLN-LIN-01",
+    "owner": "00-CMG/CMG-REGISTRY.json",
+    "collection_pointer": "artifacts",
+    "id_field": "id",
+    "predecessor_field": "lineage_predecessor",
+    "relationship_pointer": "relationship_types",
+    "relationship_type_field": "type",
+    "inheritance_type_token": "INHERITS-FROM",
+    "basis": "00-CMG/CMG-000001 ARTICLE XI.11 (CMG-INV-11 preservation), ARTICLE XXVIII.4/.7 (retention and acyclic append-only lineage), ARTICLE L.3(k) (the validator obligation), and the declared relationship type of Article XXXVII."
+  },
+  "$inheritance_comment": [
+    "Inheritance rules. Rather than restating what a baseline inherits, this measurement binds the",
+    "located clauses that govern ALL inheritance and verifies the clause text is present in the",
+    "located instrument. A rule whose anchor is absent is a binding failure, not a silent pass."
+  ],
+  "inheritance_rules": [
+    {
+      "id": "BLN-INH-01",
+      "rule": "inheritance is the adoption by a subordinate artifact of the obligations and prohibitions of a superior, without restatement",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "IS the adoption by a subordinate artifact of the obligations and prohibitions of a superior"
+    },
+    {
+      "id": "BLN-INH-02",
+      "rule": "inheritance is by reference only; restating an inherited obligation is duplication and violates Knowledge Once",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "Restating an inherited obligation IS duplication and violates Knowledge Once"
+    },
+    {
+      "id": "BLN-INH-03",
+      "rule": "an inheritor shall not weaken an inherited obligation, remove an inherited prohibition or broaden an inherited scope",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "An inheritor SHALL NOT"
+    },
+    {
+      "id": "BLN-INH-04",
+      "rule": "inheritance shall be explicit; implicit inheritance from a containing programme, phase or directory is prohibited",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "Implicit inheritance from a containing program, phase, or directory IS PROHIBITED"
+    },
+    {
+      "id": "BLN-INH-05",
+      "rule": "an inherited obligation shall be re-evaluated when the superior is amended; inheritance is live, not a snapshot",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "Inheritance IS live, not a snapshot"
+    },
+    {
+      "id": "BLN-INH-06",
+      "rule": "a superseded version shall be retained, never deleted, and shall be reachable from its successor by an explicit lineage link",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "never deleted, and SHALL be reachable from its successor by an explicit lineage link"
+    },
+    {
+      "id": "BLN-INH-07",
+      "rule": "version lineage shall be acyclic and append-only",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "Version lineage SHALL be **acyclic and append-only**"
+    },
+    {
+      "id": "BLN-INH-08",
+      "rule": "a baseline is a pure function of the artifact, its bound evidence references and its ratification record, computed deterministically",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "anchor": "A baseline SHALL be a pure function of the frozen artifact, its bound evidence references, and its ratification record"
+    },
+    {
+      "id": "BLN-INH-09",
+      "rule": "supersession is the sole mechanism by which a frozen artifact is evolved",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "anchor": "Supersession SHALL be the sole mechanism by which a frozen artifact is evolved"
+    },
+    {
+      "id": "BLN-INH-10",
+      "rule": "every frozen artifact carries an explicit version and an explicit lineage to its predecessor where one exists",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "anchor": "SHALL carry an explicit version and an explicit lineage to its predecessor"
+    },
+    {
+      "id": "BLN-INH-11",
+      "rule": "every amendment establishes a lineage link from predecessor to successor, and lineage is append-only",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "anchor": "SHALL establish a lineage link from predecessor to successor"
+    },
+    {
+      "id": "BLN-INH-12",
+      "rule": "every version in a lineage remains individually reproducible and discoverable, enabling evolution without historical destruction",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "anchor": "SHALL remain individually reproducible and discoverable"
+    }
+  ],
+  "$non_inheritance_comment": [
+    "Non-inheritance rules. What a successor does NOT inherit is as constitutional as what it",
+    "does, and it was the wholly unmeasured half. Standing, ratification, certification finality",
+    "and authority are never inherited. Each rule below binds to the located clause that says so."
+  ],
+  "non_inheritance_rules": [
+    {
+      "id": "BLN-NIN-01",
+      "rule": "prior ratification shall not carry over to an amended artifact; every amended artifact is required to be re-validated and re-ratified",
+      "owner": "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md",
+      "anchor": "Prior ratification SHALL NOT carry over to an amended artifact"
+    },
+    {
+      "id": "BLN-NIN-02",
+      "rule": "no successor inherits the terminal finality state; a successor to a provisional artifact is itself provisional until independently determined",
+      "owner": "00-CEP/STAGE-02-S2-08-FINALITY-BINDING-ARCHITECTURE.md",
+      "anchor": "No successor inherits FINALIZED"
+    },
+    {
+      "id": "BLN-NIN-03",
+      "rule": "an inheritor shall not inherit authority; authority is allocated, not inherited",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "Authority is allocated, not inherited"
+    },
+    {
+      "id": "BLN-NIN-04",
+      "rule": "a successor shall undergo validation, certification and ratification before it is eligible for freeze; freeze shall not bypass these",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "anchor": "freeze SHALL NOT bypass these"
+    },
+    {
+      "id": "BLN-NIN-05",
+      "rule": "a successor shall not reuse, overwrite or inherit the identity of its predecessor",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "anchor": "SHALL NOT reuse, overwrite, or inherit the identity of its predecessor"
+    },
+    {
+      "id": "BLN-NIN-06",
+      "rule": "eligibility shall be re-determined after any amendment or after any lapse of validation, certification or ratification",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "anchor": "Eligibility SHALL be re-determined after any amendment"
+    }
+  ],
+  "$scope_comment": [
+    "Scope. The bounds of a baseline are read from the instruments that set them, never restated.",
+    "A rule whose anchor is absent in its located owner is a binding failure."
+  ],
+  "scope_rules": [
+    {
+      "id": "BLN-SCP-01",
+      "rule": "certification closes scope and never closes evolution; a certified construct remains eligible for append-only successors",
+      "owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "anchor": "Certification closes scope. Certification never closes evolution"
+    },
+    {
+      "id": "BLN-SCP-02",
+      "rule": "the last member of any ordered set shall not be read as the maximum possible member, so the head of the baseline chain is not a ceiling on it",
+      "owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "anchor": "SHALL NOT be interpreted as the maximum possible member"
+    },
+    {
+      "id": "BLN-SCP-03",
+      "rule": "admission is append-only; no admitted member is renumbered, renamed, reclassified or withdrawn",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "SHALL NOT renumber, rename, reclassify"
+    },
+    {
+      "id": "BLN-SCP-04",
+      "rule": "the constitutional foundation shall not require redesign for the introduction of any future construct",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "anchor": "SHALL NOT require redesign for the introduction of any future constitutional construct"
+    },
+    {
+      "id": "BLN-SCP-05",
+      "rule": "a baseline shall be recomputable and shall yield a byte-identical result on recomputation",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "anchor": "SHALL yield a byte-identical result on recomputation"
+    }
+  ],
+  "$ceiling_comment": [
+    "The ratification ceiling. Every determination in this corpus is capped at provisional standing,",
+    "and no in-repository act can lift the cap. A baseline that recorded the terminal token would be",
+    "an elevation, which is why the token is declared here as a PROHIBITED value and measured as such",
+    "rather than as an accepted state.",
+    "",
+    "WHAT BACKS THE CAP, AFTER UCOS-RAT-002. This comment used to say the cap holds `while the superior",
+    "tier is vacant`, and that reading did not survive the constituent act. UCOS-RAT-002 located T1,",
+    "recorded UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS as its occupant and RETIRED VAC-01, so the located",
+    "projection now records no open vacancy at all. THE CAP DID NOT MOVE WITH IT. Its force comes from",
+    "the anchor clause measured here — finality requires an authority OUTSIDE the corpus — and that",
+    "clause still holds: 00-MASTER/UCOS-URAT-001/urat.json continues to record FINALIZED as unreachable",
+    "in corpus, and the EC-1 gate remains open.",
+    "",
+    "So the vacancy is CORROBORATION, never the basis, and it is measured as DISPOSED rather than as",
+    "PRESENT: an open vacancy backs the cap, and so does a vacancy the tier register records as located,",
+    "because each proves the question is governed rather than lost. Absence of BOTH is still a refusal.",
+    "A projection recording neither an open vacancy nor a located discharge has dropped the record, and",
+    "that is the condition this measure exists to catch. Reading an empty vacancy list as `unbacked`",
+    "read a discharged obligation as a missing one, and refused a corpus that had just satisfied it."
+  ],
+  "ceiling": {
+    "id": "BLN-CEI-01",
+    "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+    "anchor": "Ratification Authority within the corpus SHALL confer only PROVISIONAL acceptance",
+    "disclosure_token": "CERTIFIED-PROVISIONAL",
+    "terminal_token": "FINALIZED",
+    "vacancy_owner": "00-CMG/CMG-REGISTRY.json",
+    "vacancy_pointer": "vacancies",
+    "discharge_pointer": "tiers",
+    "discharge_field": "closure_record",
+    "basis": "00-CEP/CEP-006 ARTICLE I.4 — where finality requires an authority outside the corpus, in-corpus ratification confers only PROVISIONAL acceptance. The vacancy that corroborates the cap is read from the located meta-constitutional projection in either of its two recorded dispositions: OPEN, as an entry under `vacancies`, or LOCATED, as a tier carrying the `closure_record` of the act that discharged it (UCOS-RAT-002 for T1). The cap itself rests on the anchor clause, not on the disposition."
+  },
+  "$certification_comment": [
+    "Certification states. The state of a baseline is READ from the register's state cell and",
+    "checked against the vocabulary the located artifact register uses, so a state invented in the",
+    "register is detected. No state is conferred here."
+  ],
+  "certification_source": {
+    "id": "BLN-CER-01",
+    "owner": "00-BOOK/tools/config.py",
+    "vocabulary_anchor": "STATUS_KEYWORDS",
+    "vocabulary_pattern": "\\(\"(?P<token>[A-Z-]+)\",\\s*\"[A-Z-]+\"\\)",
+    "basis": "00-BOOK/tools/config.py STATUS_KEYWORDS — the located lifecycle-status vocabulary the registration transaction uses to classify an artifact's recorded state."
+  },
+  "$currency_comment": [
+    "Currency claims. A register other than the baseline register may name a baseline as the one in",
+    "force. Where such a claim and the located register disagree, this measurement neither",
+    "silences the claim nor overrides the register: it reads both, cites both, and reports a",
+    "DIVERGES-REFERRED outcome for the claim owner to dispose of under CEP-002 Article 23. No",
+    "claimant is edited by this measurement, and the claimants are named in",
+    "programme.forbidden_write_prefixes so that it cannot be.",
+    "",
+    "kind markdown-field reads a value cell from a Field/Value table by the label in its first",
+    "column. kind json-pointer reads a dotted path out of a located JSON declaration. Neither",
+    "declares the value: the value found is compared against the baseline discovered to be current."
+  ],
+  "currency_claims": [
+    {
+      "id": "BLN-CUR-01",
+      "claimant": "the located release lifecycle's header statement of the baseline in force",
+      "owner": "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+      "kind": "markdown-field",
+      "field": "BASELINE",
+      "referred_to": "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+      "basis": "RELEASE-001 owns the release lifecycle and the version scheme; its header names the baseline it governs from. CEP-002 Article 23.2 reserves disposal of a conflict between governance instruments to the instruments' own precedence, not to a measurement."
+    },
+    {
+      "id": "BLN-CUR-02",
+      "claimant": "the located release lifecycle's version history",
+      "owner": "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+      "kind": "markdown-citations",
+      "section": "### 3.2 Version history",
+      "referred_to": "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+      "basis": "RELEASE-001 §3.2 is the version history the scheme owner keeps; a baseline recorded by the baseline register and absent from it is a divergence between two located registers."
+    },
+    {
+      "id": "BLN-CUR-03",
+      "claimant": "the located evolution governance model's header statement of the baseline in force",
+      "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+      "kind": "markdown-field",
+      "field": "BASELINE",
+      "referred_to": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+      "basis": "EVOLUTION-001 owns post-baseline evolution and names the baseline its principles protect."
+    },
+    {
+      "id": "BLN-CUR-04",
+      "claimant": "the architectural intelligence programme's evolution-contract baseline binding",
+      "owner": "00-MASTER/UAIE-000001/uaie-architecture.json",
+      "kind": "json-pointer",
+      "pointer": "evolution_contract.baseline.id",
+      "referred_to": "00-MASTER/UAIE-000001/uaie-architecture.json",
+      "basis": "UAIE-000001 binds every change it makes to a named baseline; the binding is a currency claim and is measured against the register that records currency."
+    }
+  ],
+  "$citation_comment": [
+    "Citation surfaces. Every baseline-shaped token appearing in these paths must resolve to a",
+    "recorded baseline. This is the machine form of 'no baseline shall be cited that was never",
+    "recorded'. Surfaces are DECLARED so the measurement is auditable and extensible without an",
+    "engine change."
+  ],
+  "citation_surfaces": [
+    "00-MASTER/BASELINE-001",
+    "00-MASTER/RELEASE-001",
+    "00-MASTER/EVOLUTION-001",
+    "00-MASTER/UAIE-000001",
+    "00-MASTER/UCOS-UFEP-001",
+    "00-MASTER/UCCEP-000000",
+    "00-CEP",
+    "00-CMG"
+  ],
+  "citation_surface_extensions": [
+    ".md",
+    ".json"
+  ],
+  "$record_comment": [
+    "The canonical record set. These are the append-only records this measurement may never write.",
+    "They are DECLARED rather than inferred so the protected set is auditable, and the",
+    "--check-record-immutability guard measures two properties, not one: that the write set is",
+    "disjoint from this set, and that every pre-existing record in the programme home is a member",
+    "of it. The second half is what stops a record being quietly dropped from the protected set to",
+    "make room for a generated page: an undeclared record in the home is unprotected, so it fails",
+    "closed. Each record's anchor is verified present, so a record replaced in place by different",
+    "content is detected rather than assumed intact."
+  ],
+  "record_set": {
+    "id": "BLN-REC-01",
+    "basis": "00-MASTER/BASELINE-001/BASELINE-REGISTRY.md — 'Records are added, never edited, renumbered, reclassified or withdrawn.' 00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md §7 rule R-1 — the baseline is never modified directly; rule R-2 — append-only.",
+    "records": [
+      {
+        "id": "BLN-RC-01",
+        "role": "register",
+        "owner": "00-MASTER/BASELINE-001/BASELINE-REGISTRY.md",
+        "anchor": "CANONICAL BASELINE REGISTRY"
+      },
+      {
+        "id": "BLN-RC-02",
+        "role": "origin-record",
+        "owner": "00-MASTER/BASELINE-001/CERTIFIED-BASELINE-RECORD.md",
+        "anchor": "CERTIFIED IMPLEMENTATION BASELINE RECORD"
+      },
+      {
+        "id": "BLN-RC-03",
+        "role": "certificate",
+        "owner": "00-MASTER/BASELINE-001/FINAL-BASELINE-CERTIFICATE.md",
+        "anchor": "PART A — BASELINE PROTECTION (MEASURED)"
+      },
+      {
+        "id": "BLN-RC-04",
+        "role": "continuation",
+        "owner": "00-MASTER/BASELINE-001/REMAINING-ROADMAP-CLASSIFICATION.md",
+        "anchor": "None of these is a missing realization"
+      }
+    ]
+  },
+  "$continuation_comment": [
+    "Continuation. A baseline is complete for the scope it certifies and is never a claim of",
+    "completeness beyond it. The located continuation record classifies what remains, and binding",
+    "it here is what stops the baseline being read as a terminal state."
+  ],
+  "continuation_source": {
+    "id": "BLN-CON-01",
+    "owner": "00-MASTER/BASELINE-001/REMAINING-ROADMAP-CLASSIFICATION.md",
+    "anchor": "None of these is a missing realization",
+    "basis": "00-MASTER/BASELINE-001/REMAINING-ROADMAP-CLASSIFICATION.md — the located classification of what remains after the baseline, held by the baseline owner."
+  },
+  "$elevation_comment": [
+    "Elevation prohibitions. The one thing a baseline measurement must never do is raise the",
+    "standing of what it measures. Each clause below is bound and verified present, and the",
+    "engine's own --check-no-elevation guard measures that no baseline is reported at a standing",
+    "the located register does not record."
+  ],
+  "elevation_prohibitions": [
+    {
+      "id": "BLN-ELV-01",
+      "rule": "freeze preserves only and shall never modify, validate, certify or ratify any artifact",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "anchor": "SHALL preserve only"
+    },
+    {
+      "id": "BLN-ELV-02",
+      "rule": "ratification authority shall never be self-conferred by execution authority and acts only upon an authorization",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "anchor": "SHALL NEVER be self-conferred by Execution Authority"
+    },
+    {
+      "id": "BLN-ELV-03",
+      "rule": "a derived-truth record asserts nothing and is always reconciled against repository reality",
+      "owner": "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md",
+      "anchor": "which assert nothing and are always reconciled against repository reality"
+    }
+  ],
+  "$validation_comment": [
+    "Validation dimensions. Every dimension is measured; a dimension declared here and not",
+    "measured by the engine is reported measured=false, satisfied=false and fails closed.",
+    "blocking true closes the gate. A divergence between two located registers is reported and",
+    "referred, never adjudicated, so BLN-VAL-12 is blocking on the divergence being MEASURED and",
+    "not on which side prevails."
+  ],
+  "validations": [
+    {
+      "id": "BLN-VAL-01",
+      "dimension": "REGISTER-RESOLUTION",
+      "obligation": "the located baseline register resolves and yields at least one recorded baseline",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-02",
+      "dimension": "SCHEME-CONFORMANT",
+      "obligation": "every recorded baseline identifier conforms to the ordinal scheme its located owner declares, and the scheme anchor is present in that owner",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-03",
+      "dimension": "ORDINAL-DENSE",
+      "obligation": "ordinals begin at the located origin ordinal, increase by exactly one, and no identifier or ordinal is duplicated",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-04",
+      "dimension": "RECORD-RESOLVED",
+      "obligation": "every recorded baseline resolves to a located evidence block",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-05",
+      "dimension": "SUCCESSION-EXPLICIT",
+      "obligation": "every non-origin baseline records an explicit predecessor, and the origin records none",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-06",
+      "dimension": "SUCCESSION-CONSISTENT",
+      "obligation": "every explicit predecessor is a recorded baseline and equals the structurally preceding baseline",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-07",
+      "dimension": "SUCCESSION-ACYCLIC",
+      "obligation": "the succession chain is acyclic, has exactly one origin and exactly one head, and covers every recorded baseline",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-08",
+      "dimension": "SINGLE-CURRENT",
+      "obligation": "exactly one recorded baseline carries the located current token",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-09",
+      "dimension": "CURRENT-IS-HEAD",
+      "obligation": "the baseline carrying the current token is the head of the succession chain",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-10",
+      "dimension": "CITATION-RESOLVED",
+      "obligation": "every baseline-shaped reference in the declared surfaces resolves to a recorded baseline",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-11",
+      "dimension": "POINTER-RESOLVED",
+      "obligation": "every repository pointer in every baseline evidence block resolves to an existing path",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-12",
+      "dimension": "CURRENCY-MEASURED",
+      "obligation": "every declared currency claim is read on both sides and carries a decided outcome; an unreadable claim fails closed and a divergence is referred to the claim owner",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-13",
+      "dimension": "INHERITANCE-BOUND",
+      "obligation": "every declared inheritance rule binds to a located clause whose text is present",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-14",
+      "dimension": "NON-INHERITANCE-BOUND",
+      "obligation": "every declared non-inheritance rule binds to a located clause whose text is present",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-15",
+      "dimension": "NO-ELEVATION",
+      "obligation": "no recorded baseline carries the terminal finality token, and every declared elevation prohibition binds to a located clause",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-16",
+      "dimension": "CEILING-DISCLOSED",
+      "obligation": "the located ceiling clause is present, the recorded vacancy is disposed — open in the projection or discharged by a located closing act — and the register discloses the ceiling token",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-17",
+      "dimension": "VERSION-SUCCEEDED",
+      "obligation": "every constitutional artifact whose recorded version exceeds the base version resolves to a universal identity whose located ledger records an increment event reaching that version",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-18",
+      "dimension": "LINEAGE-MEASURED",
+      "obligation": "the constitutional lineage population is measured, every recorded predecessor resolves to a present artifact, and the declared inheritance relationship type is located",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-19",
+      "dimension": "RELEASE-CORROBORATED",
+      "obligation": "every evolution release the current baseline claims in its chain is recorded in the located evolution register",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-20",
+      "dimension": "RECORD-IMMUTABLE",
+      "obligation": "this measurement's write set is disjoint from the located record set, so no append-only baseline record can be modified by it",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-21",
+      "dimension": "CRITERIA-CORROBORATED",
+      "obligation": "every advancement criterion the located scheme owner declares is discovered and corroborated in the current baseline's evidence block",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-22",
+      "dimension": "SCOPE-BOUND",
+      "obligation": "every declared scope rule binds to a located clause whose text is present",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-23",
+      "dimension": "STATE-VOCABULARY",
+      "obligation": "every recorded baseline state names at least one token of the located lifecycle-status vocabulary",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-24",
+      "dimension": "AUTHORITY-DISCLOSED",
+      "obligation": "the located register discloses that it holds no authority, it declares itself append-only, and this measurement discloses the same",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-25",
+      "dimension": "CONTINUATION-BOUND",
+      "obligation": "the located continuation record resolves and its anchor is present, so the baseline is not read as a claim of completeness beyond its scope",
+      "blocking": true
+    },
+    {
+      "id": "BLN-VAL-26",
+      "dimension": "CAPABILITY-DISCHARGED",
+      "obligation": "every declared capability is discharged by a measure that ran",
+      "blocking": true
+    }
+  ],
+  "$exit_comment": [
+    "Exit criteria for the baseline-measurement ceiling this extension exists to lift."
+  ],
+  "exit_criteria": [
+    {
+      "id": "BLN-EX-01",
+      "criterion": "the baseline chain exists as machine-readable, addressable, verified structure derived from the located records, so a baseline can be resolved by a gate rather than read by a person"
+    },
+    {
+      "id": "BLN-EX-02",
+      "criterion": "no baseline is cited anywhere in the declared surfaces that the located register does not record, and no recorded baseline rests on a pointer that no longer resolves"
+    },
+    {
+      "id": "BLN-EX-03",
+      "criterion": "succession is explicit, single-origin, single-headed and acyclic, and the current baseline is the head"
+    },
+    {
+      "id": "BLN-EX-04",
+      "criterion": "every inheritance rule and every non-inheritance rule the corpus legislates is bound to a located clause, so what a successor does and does not inherit is measured rather than assumed"
+    },
+    {
+      "id": "BLN-EX-05",
+      "criterion": "version succession is recorded for every constitutional artifact that has evolved, and the constitutional lineage population is measured rather than vacuously satisfied"
+    },
+    {
+      "id": "BLN-EX-06",
+      "criterion": "every located claim of baseline currency is measured against the register that records currency, and a divergence is cited and referred to the claim owner rather than decided"
+    },
+    {
+      "id": "BLN-EX-07",
+      "criterion": "the append-only records are provably unmodifiable by this measurement, and no baseline is elevated above the located ceiling by it"
+    }
+  ],
+  "$findings_comment": [
+    "Findings this measurement discloses rather than resolves."
+  ],
+  "findings": [
+    {
+      "id": "BLN-F-001",
+      "title": "The baseline chain was prose, so no gate could resolve a baseline",
+      "class": "MEASURED-GOVERNANCE-GAP",
+      "owner": "00-MASTER/BASELINE-001/baseline-declaration.json",
+      "evidence": [
+        "00-MASTER/BASELINE-001/BASELINE-REGISTRY.md",
+        "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md"
+      ],
+      "disposition": "IMPLEMENTED",
+      "blocking": false,
+      "note": "BASELINE-001 was the only located programme in the operational-memory zone with no declaration, no engine and no gate: its register, its origin record, its certificate and its continuation classification were four markdown files. Consequently no gate could resolve which baseline was current, none could detect a missing, duplicated or out-of-order row, none could detect a break in succession, none could detect a baseline cited but never recorded, and none could detect that a recorded baseline had come to rest on evidence that no longer existed. Closed by DERIVING the chain from the located records rather than by authoring a second baseline register."
+    },
+    {
+      "id": "BLN-F-002",
+      "title": "Located registers cite a baseline that the baseline register no longer records as current; the divergence is referred, not decided",
+      "class": "STANDING-REGISTER-DIVERGENCE",
+      "owner": "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+      "evidence": [
+        "00-MASTER/BASELINE-001/BASELINE-REGISTRY.md",
+        "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+        "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md"
+      ],
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "note": "The baseline register records the current certified baseline. The release lifecycle's header, its version history and the evolution governance model's header each still name the baseline that preceded it. Both sides are Repository Truth: the register records currency, and the release lifecycle owns the scheme and the version history. Deciding between them is reserved to the claim owner under CEP-002 Article 23.2; this measurement reads both, cites both, and refers. It does not edit either claimant — both are named in programme.forbidden_write_prefixes precisely so that it cannot."
+    },
+    {
+      "id": "BLN-F-003",
+      "title": "The constitutional lineage invariant is satisfied vacuously, and the inheritance relationship type has no instances",
+      "class": "MEASURED-VACUITY",
+      "owner": "00-CMG/CMG-REGISTRY.json",
+      "evidence": [
+        "00-CMG/CMG-REGISTRY.json",
+        "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md"
+      ],
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "note": "The located meta-constitutional projection carries a lineage-predecessor field on every registered artifact and declares an inheritance relationship type, and the located validator verifies that every recorded predecessor resolves. No artifact records a predecessor and no artifact declares an inheritance edge, so the invariant cannot currently fail and a vacuously satisfied invariant is indistinguishable from an enforced one. This measurement reports the population so the vacuity is visible. It does not populate the field: what an artifact inherits from is its own declaration to make under CMG-000001 XXXIX.6, and the field belongs to the meta-constitutional register, not to the baseline owner."
+    },
+    {
+      "id": "BLN-F-004",
+      "title": "A recorded baseline's measured values are historical; only its pointers are required to remain resolvable",
+      "class": "DECLARED-SCOPE-BOUNDARY",
+      "owner": "00-MASTER/BASELINE-001/BASELINE-REGISTRY.md",
+      "evidence": [
+        "00-MASTER/BASELINE-001/BASELINE-REGISTRY.md",
+        "00-MASTER/UCOS-RFP-001/rfp-declaration.json"
+      ],
+      "disposition": "GOVERNED",
+      "blocking": false,
+      "note": "A baseline is a snapshot: the values it records were measured at the commit it names, and the register is append-only, so requiring a recorded value to still match a live re-measurement would require editing the record and would destroy the very immutability the baseline exists to provide. What this measurement therefore requires of a historical record is that its POINTERS still resolve — that the evidence a baseline was derived from is still present and re-readable — and not that its values still agree. A recorded fixed-point verdict measured against an earlier pipeline declaration remains a true statement about that declaration at that commit."
+    },
+    {
+      "id": "BLN-F-005",
+      "title": "A tag exists in the baseline tag namespace under a convention the located scheme does not declare",
+      "class": "DISCLOSED-OUT-OF-SCOPE-OBSERVATION",
+      "owner": "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+      "evidence": [
+        "00-MASTER/RELEASE-001/RELEASE-LIFECYCLE.md",
+        "00-MASTER/UCOS-PROJ-SYNC-001/PUBLICATION/01-PUBLICATION-REPORT.md"
+      ],
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "note": "The located release lifecycle declares an ordinal baseline scheme and an operational convention of tagging a baseline with it. A version-control tag exists in that namespace formed from an abbreviated commit identity rather than an ordinal, and it is therefore not a citation of the ordinal family and not a recorded baseline. This measurement does not read version control: the containing commit and the tag namespace are owned by version control and are deliberately not restated in a record. The observation is disclosed here for the scheme owner. Nothing in this measurement depends on it."
+    }
+  ]
+}

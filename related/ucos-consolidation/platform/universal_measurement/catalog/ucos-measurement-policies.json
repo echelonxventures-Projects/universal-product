@@ -1,0 +1,60 @@
+{
+  "registry_id": "ucos.measurement.policies",
+  "description": "Declared composition of the Universal Measurement Policy Framework. WHICH measurements bind to a Foundation determination, and HOW strongly each one binds, is declared here rather than fixed in code (UFC-04). A project that must not be blocked by a measurement sets its 'blocking' to false in its own copy of this document; it never edits a policy class. Precedence orders evaluation and reporting deterministically \u2014 highest first, never insertion order (UFC-05). Adding a shipped policy to a project is an entry here; adding a NEW policy is a registered MeasurementPolicy, and neither requires editing the engine.",
+  "policies": [
+    {
+      "policy": "TruthClassificationCoveragePolicy",
+      "blocking": true,
+      "precedence": 900,
+      "$rationale": "An unclassified locator means the Truth policy does not yet cover the population. Blocking: a determination over unclassified Truth is not a determination."
+    },
+    {
+      "policy": "OwnershipCoveragePolicy",
+      "blocking": true,
+      "precedence": 800,
+      "$rationale": "Every subject SHALL carry exactly one declared canonical owner (CEP-002 Art 14). Blocking."
+    },
+    {
+      "policy": "UnresolvedOwnershipPolicy",
+      "blocking": true,
+      "precedence": 700,
+      "$rationale": "The named residue of undeclared ownership. Blocking, so the gate reports WHICH determination is incomplete rather than one opaque percentage."
+    },
+    {
+      "policy": "RemediableOwnershipPolicy",
+      "blocking": false,
+      "precedence": 695,
+      "$rationale": "Partitions the blocking residue rather than re-blocking it: the share whose absence names a located eligibility deficit needs an ACT (register the artifact, give it the declared form, move it out of derived residue), while the remainder is the honest governance floor. Non-blocking for the same reason as EvidenceOnlySourcePolicy \u2014 the disclosure IS the required behaviour, and blocking here would double-count a block UnresolvedOwnershipPolicy already declares."
+    },
+    {
+      "policy": "ContestedOwnershipPolicy",
+      "blocking": true,
+      "precedence": 600,
+      "$rationale": "An unsettled contest is an undecidable precedence and is never broken by a tiebreaker. Blocking."
+    },
+    {
+      "policy": "AssimilationCoveragePolicy",
+      "blocking": true,
+      "precedence": 500,
+      "$rationale": "Every admitted source SHALL reach a declared canonical destination. Blocking."
+    },
+    {
+      "policy": "EvidenceOnlySourcePolicy",
+      "blocking": false,
+      "precedence": 400,
+      "$rationale": "Evidence admitted but never homed is a reported gap, not a closure failure: evidence proves and does not own, so its presence without a home is a legitimate steady state."
+    },
+    {
+      "policy": "UnadaptedSourcePolicy",
+      "blocking": false,
+      "precedence": 300,
+      "$rationale": "A source no adapter can normalise is disclosed rather than silently dropped. Non-blocking: the honest report IS the required behaviour, and blocking here would punish disclosure."
+    },
+    {
+      "policy": "FoundationCompletenessPolicy",
+      "blocking": true,
+      "precedence": 100,
+      "$rationale": "The composite closure determination over every other measurement. Blocking, evaluated last."
+    }
+  ]
+}

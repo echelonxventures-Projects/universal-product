@@ -1,0 +1,52 @@
+{
+  "authority": "NONE \u2014 DERIVED TRUTH. Every value here is a measurement, never a choice.",
+  "best": {
+    "engines_without_tests": 25.0,
+    "executable_outside_denominator": 64.0,
+    "files_with_no_execution_path": 10.0,
+    "single_plane_engines": 14.0,
+    "ungoverned_executables": 26.0,
+    "unmeasured_governance_engines": 41.0
+  },
+  "corrections": [
+    {
+      "metric": "unmeasured_governance_engines",
+      "reason": "Executed fraction unknown for an enforcement engine: 39 -> 40, one unit. The file is engine/substrate/gate.py, and the cause is the named admission of its package to the coverage-scope table (pyproject `[tool.ucos.coverage_scope]`, reviewed the same day): engine.substrate consumes uakp>=0.0.1, which publishes no release, so the gate answers FAULT by design and its suite importorskips. Before the admission the file sat inside the denominator with zero execution — a measured 0% that flattered nothing; after it, the fraction is honestly UNKNOWN. UCI-L-03 exists to count that state, not to hide it, and the count now says precisely what is true: one protection whose executed fraction no environment can know until the upstream substrate ships. WHAT CLOSES IT: when uakp publishes, delete the pyproject entry; the gate returns to the denominator, its suite runs, and this bound falls back to 39. The correction does not excuse a future rise: 40 now binds, and the next unmeasured gate is refused exactly as this one was argued."
+    },
+    {
+      "metric": "unmeasured_governance_engines",
+      "reason": "Executed fraction unknown for an enforcement engine: 40 -> 41, one unit. The file is 00-MASTER/CAEM-001/caem_engine.py, admitted by commit 1726e15f as the producer behind the 1,449-mandate disposition register, and the cause is structural rather than incidental: UEC-000001 locates it as a GATE_ENGINE by its path under 00-MASTER, UEC-L-04 requires it to be invoked (verify.sh stage 6m and `make caem-gate` now do), and it cannot enter a coverage denominator because `00-MASTER` is not a Python identifier — derive_measurable_packages skips any root that is not one, by the language's own rule rather than by a policy here. The engine is therefore owned (UEC-000001), invoked from two independent planes and unmeasurable, which is the exact state UCI-L-03 exists to report rather than the state a coverage setting could reach. COMPENSATION IS NOT AVAILABLE WITHOUT HARMING A LAW: the closure this metric's omega counterpart names is making the engine importable under test rather than only executable as a script, which is a relocation, and relocating it off 00-MASTER breaks UEC-R-01's path-based discovery and UEC-L-04's requirement that an engine be found where it is invoked. A JUSTIFICATION would be the wrong instrument — it permits every future unmeasured engine forever, and what happened here was one bounded, law-driven admission required by the same TODO-003 wiring that closed UEC-L-04's own counterpart. The bound now binds at 41, so the next unmeasured governance engine is refused exactly as this one was argued."
+    }
+  ],
+  "floors": [],
+  "holds": {
+    "engines_without_tests": 2,
+    "executable_outside_denominator": 2,
+    "files_with_no_execution_path": 2,
+    "single_plane_engines": 2,
+    "ungoverned_executables": 2,
+    "unmeasured_governance_engines": 2
+  },
+  "how_to_read": "best[m] is the lowest value of metric m this repository has ever recorded. A run measuring more than best[m] is REFUSED unless justifications names m with a reason. A justification permits one run and never moves best[m], so a regression cannot become the new normal by being explained. holds[m] counts consecutive runs at an unchanged value; a CONVERGENT metric held at a non-zero value for 5 runs is reported STALLED, because an exemption class that stops shrinking has become a convention. floors[m] argues that a particular value IS m's floor and so accepts the stall \u2014 it does NOT excuse a regression, and it is refused as stale the moment m is measured below it.",
+  "justifications": [
+    {
+      "metric": "executable_outside_denominator",
+      "reason": "UCOS-UCTX-001 added six executables under 00-BOOK/tools/ after this bound was sealed at 3c1a2530 \u2014 ufi.py, ukctx.py, ukctx_gate.py, ukctx_verify.py, ukctx_assimilate.py and ukctx_certify.py. The debt is REAL and is not disputed here: every one of them is invoked (verify.sh runs ukctx_gate.py; ukctx.py build regenerates the context projection) and none of them is measured. It cannot be repaid by a coverage setting. \u03a9-1 derives the denominator from tracked module paths, and derive_measurable_packages skips any root that is not a Python identifier \u2014 '00-BOOK' never can be \u2014 so no --cov flag, no source path and no declared exemption can reach these files; an excluded_packages entry naming 00-BOOK.tools would additionally be refused as stale by platform/tests/test_coverage_scope.py, which requires an exempt package to be one the derivation could otherwise have measured. The two routes that would actually repay it are relocating the six into an importable package behind thin 00-BOOK/tools/ shims, or admitting a path-shaped source root to the derivation. Both change the producer chain of generated artifacts and the \u03a9-1 derivation contract, which is an owner decision and not a side effect of a coverage pass. This is recorded as a JUSTIFICATION and not as a floor or a re-seed precisely because a justification does not move best: the repository is still held to the 64 it achieved, the measurement is reported rather than ratified, and the next run that measures 65 or more is refused for the same reason this one was."
+    },
+    {
+      "metric": "ungoverned_executables",
+      "reason": "The same six 00-BOOK/tools/ executables from UCOS-UCTX-001, measured a second way. They are unclaimed because inventory._authority recognises exactly five claimants \u2014 UEC-000001 engines, the UCOS-COV-SCOPE-001 denominator, that declaration's argued exclusions, the pytest omit list and the DP-03 frozen-path guard \u2014 and repository TOOLING under 00-BOOK/tools/ (UCI-C-04) is none of them. One cause, two measurements of it, and the repayment is the same relocation described under executable_outside_denominator. best stays at 26."
+    }
+  ],
+  "kinds": {
+    "engines_without_tests": "CONVERGENT",
+    "executable_outside_denominator": "CONVERGENT",
+    "files_with_no_execution_path": "MONOTONIC",
+    "single_plane_engines": "CONVERGENT",
+    "ungoverned_executables": "CONVERGENT",
+    "unmeasured_governance_engines": "CONVERGENT"
+  },
+  "producer": "engine/universal_discovery/ratchet.py",
+  "schema": "ucos-omega-ratchet",
+  "version": "1.0.0"
+}

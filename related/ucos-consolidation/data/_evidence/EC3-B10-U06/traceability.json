@@ -1,0 +1,40 @@
+{
+  "backward": [
+    "DMC-07",
+    "DATA-011",
+    "DATA-005",
+    "DATA-001",
+    "ARCH-DATA-001",
+    "10-DATA@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-LIFECYCLE-ucos.data.lifecycle.foundation-805e97651fec0d51",
+    "EC3-B10-U06-VALIDATION-EVIDENCE",
+    "EC3-B10-U06-CCE-CERTIFICATION",
+    "EC3-B10-U06-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "30a2a02",
+  "meta_class": "DMC-07",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005"
+  ],
+  "substrate_reuse": {
+    "DMC-02": "data.entity.Entity — the CERTIFIED transitions target (DMR-06); referenced only",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the lifecycle)",
+    "ENG-004": "data.lifecycle_meta.LifecycleState + type_tag (ENG-004 typing discipline)",
+    "ENG-005": "transitioned-entity + RUNTIME state/event/guard identity references (DMR-06/11)",
+    "RL-F2": "RUNTIME state/event/policy — behavior bound by reference (DMR-11 / DLA-07)",
+    "founding_root": "EC3-B10-U02 (DMC-03; UCOS-CERT-DMC-03-c57d36d3dbb2763d) → EC3-B10-U01 (DMC-01; UCOS-CERT-DMC-01-51e5964b38741e30) — transitive transitions root",
+    "founding_unit": "EC3-B10-U03 (DMC-02; UCOS-CERT-DMC-02-def41470d3bac196) — transitions target, DMR-06"
+  },
+  "target_id": "UCOS-LIFECYCLE-ucos.data.lifecycle.foundation-805e97651fec0d51",
+  "trace_format": "ucos-data-traceability/1.0.0",
+  "unit": "EC3-B10-U06"
+}

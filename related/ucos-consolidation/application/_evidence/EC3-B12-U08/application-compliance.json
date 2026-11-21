@@ -1,0 +1,76 @@
+{
+  "compliance_format": "ucos-application-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "composition-typed",
+        "composition-identified-objectbound"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UAL-03), identified and objecthood-bound (UAL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UAL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "composition-assembles-members",
+        "composition-constituents-typed"
+      ],
+      "id": "C3",
+      "note": "capability delivery via SF-2 operations + DF-2 data (UAL-06/13) is scoped to the Feature/Capability units (AMC-02/04); a composition assembles what features deliver, consuming no operation and presenting no data itself — satisfied structurally via the assembled, declared, typed constituents (AMR-07 / CMP-K2)",
+      "requirement": "Delivers capability via SF-2 operations under contract; I/O is DF-2 by ref (UAL-06/13).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "composition-preserves-boundaries",
+        "composition-classified"
+      ],
+      "id": "C4",
+      "note": "for the Composition the module/feature/interaction clauses (UAL-07/08/11) are scoped to the Module (AMC-03), Feature (AMC-04), and Interaction (AMC-06) units; the composition analog is materially exercised — it preserves constituent boundaries and absorbs no identity (CMP-06 / CMP-C3)",
+      "requirement": "Modules bounded, features explicit, interactions typed (UAL-07/08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "composition-by-reference",
+        "founding-acyclic",
+        "composition-no-new-connection",
+        "meta-relationships-closed"
+      ],
+      "id": "C5",
+      "note": "materially exercised — THE governing condition of AMC-08: the composition binds its members, assembled whole, and PL-F2 experience composition by ENG-005 reference (AMR-07/12), introduces no new connection construct (CMP-04/CMP-C2), and proves its founding graph (features→modules→applications) a DAG (CMP-05/CMP-C1 / AMK-03 / UAL-09 — the governing composition law)",
+      "requirement": "Composition uses ENG-005 references; founding structure acyclic (UAL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "composition-behavior-by-reference",
+        "lifecycle-valid"
+      ],
+      "id": "C6",
+      "note": "the composition-emit behavior binds the frozen RL-F2 RUNTIME event concern by reference (§7 / AMK-05) and the composition advances forward-only through the AOS-01…06 lifecycle (UAL-12); the workflow/state clauses (UAL-10/12) are otherwise scoped to AMC-05/07",
+      "requirement": "Workflow/process and state bind to RL-F2/SF-2 by reference (UAL-10/12).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive",
+        "technology-independence"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (UAL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "APPLICATION-001 §12",
+  "target_id": "UCOS-COMPOSITION-ucos.application.composition.foundation-ef71e0ec2e86b09e"
+}

@@ -1,0 +1,73 @@
+{
+  "compliance_format": "ucos-data-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "quality-typed",
+        "quality-identified"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UDL-03), identified and objecthood-bound (UDL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UDL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "data-value-fidelity"
+      ],
+      "id": "C3",
+      "requirement": "Value is ENG-003 value (UDL-06).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "quality-measures-subject",
+        "quality-measurement-recorded",
+        "quality-classified"
+      ],
+      "id": "C4",
+      "requirement": "Entity/attribute/schema structure is explicit (UDL-07/08/10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-relationships-closed",
+        "founding-acyclic",
+        "quality-binds-policy-by-reference"
+      ],
+      "id": "C5",
+      "requirement": "Relationships are ENG-005 references; founding structure acyclic (UDL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "quality-independence",
+        "quality-non-remediating",
+        "quality-evaluative"
+      ],
+      "id": "C6",
+      "materially_exercised": true,
+      "note": "quality is a decidable, evaluative, non-remediating measurement record: it measures fidelity and binds evaluation by reference to RUNTIME, conferring no authority and naming no profiling engine, data-quality/cleansing tool, or benchmark technology (UDL-14 Quality as an Evaluative Facet; DQA-07 / DQA-K5)",
+      "requirement": "Selects no technology; describes storage abstractly (UDL-11/15).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive"
+      ],
+      "id": "C7",
+      "requirement": "Confers no authority and embeds no secret (UDL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "DATA-001 §12",
+  "target_id": "UCOS-QUALITY-ucos.data.quality.foundation-35cdbb0b9b907879"
+}

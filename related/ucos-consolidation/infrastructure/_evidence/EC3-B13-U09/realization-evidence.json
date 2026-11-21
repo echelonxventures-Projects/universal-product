@@ -1,0 +1,4745 @@
+{
+  "artifact": "EC3-B13-U09-REALIZATION-EVIDENCE",
+  "authority": "ENGINEERING-EXECUTION-ONLY",
+  "certification_ids": {
+    "change_record": "UCOS-CERT-Governance-828cc664e266a2be",
+    "conformance": "UCOS-CERT-Governance-89dabc43b6078fbb",
+    "gap_report": "UCOS-CERT-Governance-967f9db847e0fcd7",
+    "lifecycle": "UCOS-CERT-Governance-ea8f06399eb97754",
+    "policy": "UCOS-CERT-Governance-467debb426fa72f4"
+  },
+  "certification_ledger": {
+    "count": 5,
+    "entries": [
+      {
+        "blueprint_id": "Governance",
+        "certification_id": "UCOS-CERT-Governance-13738875dc0c8d81",
+        "entry_hash": "c0f21c3605e7bc4096f5f88c127ce2f2ced1734eaef12b01df287d8142e80138",
+        "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "record_sha256": "13738875dc0c8d81659f7efb51738c4bf102bce670b7f69475cfb25f4c833060",
+        "sequence": 0,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Governance",
+        "certification_id": "UCOS-CERT-Governance-397a15cc05c2c5f2",
+        "entry_hash": "2aa7c9064bcadd6349e471c68715ce4d1876dcfffff1387f5a8ef6b6c16c1c9d",
+        "prev_hash": "c0f21c3605e7bc4096f5f88c127ce2f2ced1734eaef12b01df287d8142e80138",
+        "record_sha256": "397a15cc05c2c5f214ce3389915e7036add15c452b6f8b3efa5e774d6babc992",
+        "sequence": 1,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Governance",
+        "certification_id": "UCOS-CERT-Governance-890740ce394c32fc",
+        "entry_hash": "e0815c69bc2ba1b47eef123542713484ad94b78d15de8ffe40cae1bfc89a0994",
+        "prev_hash": "2aa7c9064bcadd6349e471c68715ce4d1876dcfffff1387f5a8ef6b6c16c1c9d",
+        "record_sha256": "890740ce394c32fcd06bd3296d604dd4d8a42fd7c396a6eff6b098b3cd8d608d",
+        "sequence": 2,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Governance",
+        "certification_id": "UCOS-CERT-Governance-dd33715ee0dfd851",
+        "entry_hash": "b1fbcd3f19fe2d8ccdf22c5c41088741e8becb45772117d6b75346f4ac72a55a",
+        "prev_hash": "e0815c69bc2ba1b47eef123542713484ad94b78d15de8ffe40cae1bfc89a0994",
+        "record_sha256": "dd33715ee0dfd851ad151ce23da670973f50b47531781a718373147f0e96a68a",
+        "sequence": 3,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Governance",
+        "certification_id": "UCOS-CERT-Governance-d3de2b2af6c9ce2f",
+        "entry_hash": "7df6764db9ee02d7ef238e9cbe6dbc6d4bc489cf3e9b7bca5176391803ee216b",
+        "prev_hash": "b1fbcd3f19fe2d8ccdf22c5c41088741e8becb45772117d6b75346f4ac72a55a",
+        "record_sha256": "d3de2b2af6c9ce2f71e69996951e5a9dee17edead1d65f0174562e9477c8219a",
+        "sequence": 4,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2",
+        "version": "1.0.0"
+      }
+    ],
+    "head_hash": "7df6764db9ee02d7ef238e9cbe6dbc6d4bc489cf3e9b7bca5176391803ee216b",
+    "ledger_format": "ucos-certification-ledger/1.0.0"
+  },
+  "construct_ids": {
+    "change_record": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2",
+    "conformance": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+    "gap_report": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d",
+    "lifecycle": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b",
+    "policy": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52"
+  },
+  "constructs": [
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Governance",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Governance-89dabc43b6078fbb",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "33e852eb738992560cedb944d0d4fc8a5ac075ae2941eeda576dd375fe68bd8a",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Governance",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Governance-89dabc43b6078fbb",
+            "certified": true,
+            "content_sha256": "89dabc43b6078fbb984f6acd9ad9fe0484aa9e06ceffcc2289feb9aee97b84c0",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "33e852eb738992560cedb944d0d4fc8a5ac075ae2941eeda576dd375fe68bd8a",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "33e852eb738992560cedb944d0d4fc8a5ac075ae2941eeda576dd375fe68bd8a",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Governance",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Governance-89dabc43b6078fbb",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "33e852eb738992560cedb944d0d4fc8a5ac075ae2941eeda576dd375fe68bd8a",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "89dabc43b6078fbb984f6acd9ad9fe0484aa9e06ceffcc2289feb9aee97b84c0",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+          "validation_evidence_ref": "33e852eb738992560cedb944d0d4fc8a5ac075ae2941eeda576dd375fe68bd8a",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Governance-89dabc43b6078fbb",
+      "construct": {
+        "construct_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+        "depends_on": [],
+        "evaluates": [
+          "ENG-005:ENG-002:infrastructure.hosting.substrate"
+        ],
+        "evaluative_verdict": "indeterminate",
+        "facet": "conformance",
+        "meta_class": "GovernanceFacet",
+        "non_enforcing": true,
+        "references": [
+          "ENG-005:UIMM-CONF:infrastructure.meta.conformance"
+        ],
+        "relationships": [
+          "evaluates",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "ENG-000",
+          "RL-F2",
+          "UIMM-CONF",
+          "UITX",
+          "UCI-001",
+          "REG-AUTO-001"
+        ],
+        "type_tag": "ucos.infrastructure.governance.conformance.foundation",
+        "value_digest": "5f111c5c5b3b46c866122d632ddb7a6c253197e7838557f84f19caf46ce26ee8"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-governance-typed",
+              "infra-governance-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "governance-evaluates-objectbound"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "governance-evaluative-nonenforcing",
+              "authority-boundary"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive",
+              "no-secret-material"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "GovernanceFacet",
+          "INFRASTRUCTURE-014",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "facet": "conformance",
+        "forward": [
+          "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+          "EC3-B13-U09-CONFORMANCE-VALIDATION-EVIDENCE",
+          "EC3-B13-U09-CONFORMANCE-CCE-CERTIFICATION",
+          "EC3-B13-U09-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "78cbfc8",
+        "meta_class": "GovernanceFacet",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "ENG-000",
+          "RL-F2",
+          "UIMM-CONF",
+          "UITX",
+          "UCI-001",
+          "REG-AUTO-001"
+        ],
+        "substrate_reuse": {
+          "ENG-000": "custodian/Registrar referenced by reference (Gap Report routing)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.governance type_tag (typed construct)",
+          "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+          "REG-AUTO-001": "append-only registration law reused by reference (Change Record)",
+          "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+          "UCI-001": "additive/supersession change instrument reused by reference (Change Record)",
+          "UIMM-CONF": "INFRASTRUCTURE-005 conformance basis reused by reference (Conformance)",
+          "UITX": "infrastructure lifecycle basis reused by reference (Lifecycle)"
+        },
+        "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U09"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "GovernanceFacet",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "GovernanceFacet",
+          "checks_run": [
+            "authority-boundary",
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "governance-evaluates-objectbound",
+            "governance-evaluative-nonenforcing",
+            "infra-governance-construct-kind",
+            "infra-governance-identified-objectbound",
+            "infra-governance-typed",
+            "infra-governance-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "no-secret-material",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "ENG-000",
+                  "RL-F2",
+                  "UIMM-CONF",
+                  "UITX",
+                  "UCI-001",
+                  "REG-AUTO-001"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluates-objectbound",
+              "details": {
+                "facet": "conformance"
+              },
+              "message": "governance-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluative-nonenforcing",
+              "details": {
+                "facet": "conformance",
+                "verdict": "record-only-nonenforcing"
+              },
+              "message": "governance-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-construct-kind",
+              "details": {},
+              "message": "infra-governance-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8"
+              },
+              "message": "infra-governance-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.governance.conformance.foundation"
+              },
+              "message": "infra-governance-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-value-fidelity",
+              "details": {
+                "value_digest": "5f111c5c5b3b46c866122d632ddb7a6c253197e7838557f84f19caf46ce26ee8"
+              },
+              "message": "infra-governance-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "GovernanceFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "GovernanceFacet",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "ENG-000",
+                  "RL-F2",
+                  "UIMM-CONF",
+                  "UITX",
+                  "UCI-001",
+                  "REG-AUTO-001"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluates-objectbound",
+              "details": {
+                "facet": "conformance"
+              },
+              "message": "governance-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluative-nonenforcing",
+              "details": {
+                "facet": "conformance",
+                "verdict": "record-only-nonenforcing"
+              },
+              "message": "governance-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-construct-kind",
+              "details": {},
+              "message": "infra-governance-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8"
+              },
+              "message": "infra-governance-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.governance.conformance.foundation"
+              },
+              "message": "infra-governance-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-value-fidelity",
+              "details": {
+                "value_digest": "5f111c5c5b3b46c866122d632ddb7a6c253197e7838557f84f19caf46ce26ee8"
+              },
+              "message": "infra-governance-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "GovernanceFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Governance",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Governance-ea8f06399eb97754",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "a6b58551d102f33002540cc7e1b063b307ef254ca88627233dc69dd219e865f5",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Governance",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Governance-ea8f06399eb97754",
+            "certified": true,
+            "content_sha256": "ea8f06399eb97754fe9a04de49256419fdd69e43d276e0f602ad85564b388619",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "a6b58551d102f33002540cc7e1b063b307ef254ca88627233dc69dd219e865f5",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "a6b58551d102f33002540cc7e1b063b307ef254ca88627233dc69dd219e865f5",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Governance",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Governance-ea8f06399eb97754",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "a6b58551d102f33002540cc7e1b063b307ef254ca88627233dc69dd219e865f5",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "ea8f06399eb97754fe9a04de49256419fdd69e43d276e0f602ad85564b388619",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b",
+          "validation_evidence_ref": "a6b58551d102f33002540cc7e1b063b307ef254ca88627233dc69dd219e865f5",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Governance-ea8f06399eb97754",
+      "construct": {
+        "construct_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b",
+        "depends_on": [],
+        "evaluates": [
+          "ENG-005:ENG-002:infrastructure.hosting.substrate"
+        ],
+        "evaluative_verdict": "indeterminate",
+        "facet": "lifecycle",
+        "meta_class": "GovernanceFacet",
+        "non_enforcing": true,
+        "references": [
+          "ENG-005:UITX:infrastructure.transition.lifecycle"
+        ],
+        "relationships": [
+          "evaluates",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "ENG-000",
+          "RL-F2",
+          "UIMM-CONF",
+          "UITX",
+          "UCI-001",
+          "REG-AUTO-001"
+        ],
+        "type_tag": "ucos.infrastructure.governance.lifecycle.foundation",
+        "value_digest": "f7e6b5cf2e821e4b00915c668367e28eafa5f715c31e0421f455d16e7b34a9cb"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-governance-typed",
+              "infra-governance-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "governance-evaluates-objectbound"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "governance-evaluative-nonenforcing",
+              "authority-boundary"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive",
+              "no-secret-material"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "GovernanceFacet",
+          "INFRASTRUCTURE-014",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "facet": "lifecycle",
+        "forward": [
+          "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b",
+          "EC3-B13-U09-LIFECYCLE-VALIDATION-EVIDENCE",
+          "EC3-B13-U09-LIFECYCLE-CCE-CERTIFICATION",
+          "EC3-B13-U09-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "78cbfc8",
+        "meta_class": "GovernanceFacet",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "ENG-000",
+          "RL-F2",
+          "UIMM-CONF",
+          "UITX",
+          "UCI-001",
+          "REG-AUTO-001"
+        ],
+        "substrate_reuse": {
+          "ENG-000": "custodian/Registrar referenced by reference (Gap Report routing)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.governance type_tag (typed construct)",
+          "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+          "REG-AUTO-001": "append-only registration law reused by reference (Change Record)",
+          "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+          "UCI-001": "additive/supersession change instrument reused by reference (Change Record)",
+          "UIMM-CONF": "INFRASTRUCTURE-005 conformance basis reused by reference (Conformance)",
+          "UITX": "infrastructure lifecycle basis reused by reference (Lifecycle)"
+        },
+        "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U09"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "GovernanceFacet",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "GovernanceFacet",
+          "checks_run": [
+            "authority-boundary",
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "governance-evaluates-objectbound",
+            "governance-evaluative-nonenforcing",
+            "infra-governance-construct-kind",
+            "infra-governance-identified-objectbound",
+            "infra-governance-typed",
+            "infra-governance-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "no-secret-material",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "ENG-000",
+                  "RL-F2",
+                  "UIMM-CONF",
+                  "UITX",
+                  "UCI-001",
+                  "REG-AUTO-001"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluates-objectbound",
+              "details": {
+                "facet": "lifecycle"
+              },
+              "message": "governance-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluative-nonenforcing",
+              "details": {
+                "facet": "lifecycle",
+                "verdict": "record-only-nonenforcing"
+              },
+              "message": "governance-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-construct-kind",
+              "details": {},
+              "message": "infra-governance-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b"
+              },
+              "message": "infra-governance-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.governance.lifecycle.foundation"
+              },
+              "message": "infra-governance-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-value-fidelity",
+              "details": {
+                "value_digest": "f7e6b5cf2e821e4b00915c668367e28eafa5f715c31e0421f455d16e7b34a9cb"
+              },
+              "message": "infra-governance-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "GovernanceFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "GovernanceFacet",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "ENG-000",
+                  "RL-F2",
+                  "UIMM-CONF",
+                  "UITX",
+                  "UCI-001",
+                  "REG-AUTO-001"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluates-objectbound",
+              "details": {
+                "facet": "lifecycle"
+              },
+              "message": "governance-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluative-nonenforcing",
+              "details": {
+                "facet": "lifecycle",
+                "verdict": "record-only-nonenforcing"
+              },
+              "message": "governance-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-construct-kind",
+              "details": {},
+              "message": "infra-governance-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b"
+              },
+              "message": "infra-governance-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.governance.lifecycle.foundation"
+              },
+              "message": "infra-governance-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-value-fidelity",
+              "details": {
+                "value_digest": "f7e6b5cf2e821e4b00915c668367e28eafa5f715c31e0421f455d16e7b34a9cb"
+              },
+              "message": "infra-governance-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "GovernanceFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.lifecycle.foundation-f7e6b5cf2e821e4b",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Governance",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Governance-467debb426fa72f4",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "3576c5ae8b153fde8c4381838653d9d54d1480ba416d79d2cdd71e8095077bc7",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Governance",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Governance-467debb426fa72f4",
+            "certified": true,
+            "content_sha256": "467debb426fa72f42654f4f75a1f0f1d586f2798fe054dc5efa49fdf48c7b614",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "3576c5ae8b153fde8c4381838653d9d54d1480ba416d79d2cdd71e8095077bc7",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "3576c5ae8b153fde8c4381838653d9d54d1480ba416d79d2cdd71e8095077bc7",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Governance",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Governance-467debb426fa72f4",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "3576c5ae8b153fde8c4381838653d9d54d1480ba416d79d2cdd71e8095077bc7",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "467debb426fa72f42654f4f75a1f0f1d586f2798fe054dc5efa49fdf48c7b614",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52",
+          "validation_evidence_ref": "3576c5ae8b153fde8c4381838653d9d54d1480ba416d79d2cdd71e8095077bc7",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Governance-467debb426fa72f4",
+      "construct": {
+        "construct_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52",
+        "depends_on": [],
+        "evaluates": [
+          "ENG-005:ENG-002:infrastructure.hosting.substrate"
+        ],
+        "evaluative_verdict": "indeterminate",
+        "facet": "policy",
+        "meta_class": "GovernanceFacet",
+        "non_enforcing": true,
+        "references": [
+          "ENG-005:RL-F2:runtime.policy.foundation"
+        ],
+        "relationships": [
+          "evaluates",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "ENG-000",
+          "RL-F2",
+          "UIMM-CONF",
+          "UITX",
+          "UCI-001",
+          "REG-AUTO-001"
+        ],
+        "type_tag": "ucos.infrastructure.governance.policy.foundation",
+        "value_digest": "733d133008ab7a521b0e57abd2f38c8987215006fa54f3601e13648143de335b"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-governance-typed",
+              "infra-governance-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "governance-evaluates-objectbound"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "governance-evaluative-nonenforcing",
+              "authority-boundary"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive",
+              "no-secret-material"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "GovernanceFacet",
+          "INFRASTRUCTURE-014",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "facet": "policy",
+        "forward": [
+          "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52",
+          "EC3-B13-U09-POLICY-VALIDATION-EVIDENCE",
+          "EC3-B13-U09-POLICY-CCE-CERTIFICATION",
+          "EC3-B13-U09-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "78cbfc8",
+        "meta_class": "GovernanceFacet",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "ENG-000",
+          "RL-F2",
+          "UIMM-CONF",
+          "UITX",
+          "UCI-001",
+          "REG-AUTO-001"
+        ],
+        "substrate_reuse": {
+          "ENG-000": "custodian/Registrar referenced by reference (Gap Report routing)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.governance type_tag (typed construct)",
+          "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+          "REG-AUTO-001": "append-only registration law reused by reference (Change Record)",
+          "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+          "UCI-001": "additive/supersession change instrument reused by reference (Change Record)",
+          "UIMM-CONF": "INFRASTRUCTURE-005 conformance basis reused by reference (Conformance)",
+          "UITX": "infrastructure lifecycle basis reused by reference (Lifecycle)"
+        },
+        "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U09"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "GovernanceFacet",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "GovernanceFacet",
+          "checks_run": [
+            "authority-boundary",
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "governance-evaluates-objectbound",
+            "governance-evaluative-nonenforcing",
+            "infra-governance-construct-kind",
+            "infra-governance-identified-objectbound",
+            "infra-governance-typed",
+            "infra-governance-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "no-secret-material",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "ENG-000",
+                  "RL-F2",
+                  "UIMM-CONF",
+                  "UITX",
+                  "UCI-001",
+                  "REG-AUTO-001"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluates-objectbound",
+              "details": {
+                "facet": "policy"
+              },
+              "message": "governance-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluative-nonenforcing",
+              "details": {
+                "facet": "policy",
+                "verdict": "record-only-nonenforcing"
+              },
+              "message": "governance-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-construct-kind",
+              "details": {},
+              "message": "infra-governance-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52"
+              },
+              "message": "infra-governance-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.governance.policy.foundation"
+              },
+              "message": "infra-governance-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-value-fidelity",
+              "details": {
+                "value_digest": "733d133008ab7a521b0e57abd2f38c8987215006fa54f3601e13648143de335b"
+              },
+              "message": "infra-governance-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "GovernanceFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "GovernanceFacet",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "ENG-000",
+                  "RL-F2",
+                  "UIMM-CONF",
+                  "UITX",
+                  "UCI-001",
+                  "REG-AUTO-001"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluates-objectbound",
+              "details": {
+                "facet": "policy"
+              },
+              "message": "governance-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluative-nonenforcing",
+              "details": {
+                "facet": "policy",
+                "verdict": "record-only-nonenforcing"
+              },
+              "message": "governance-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-construct-kind",
+              "details": {},
+              "message": "infra-governance-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52"
+              },
+              "message": "infra-governance-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.governance.policy.foundation"
+              },
+              "message": "infra-governance-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-value-fidelity",
+              "details": {
+                "value_digest": "733d133008ab7a521b0e57abd2f38c8987215006fa54f3601e13648143de335b"
+              },
+              "message": "infra-governance-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "GovernanceFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.policy.foundation-733d133008ab7a52",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Governance",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Governance-967f9db847e0fcd7",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "cda6bd3c0ee1adb9073a5577688b88f13a230ef02590b02343b364ec7d88f307",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Governance",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Governance-967f9db847e0fcd7",
+            "certified": true,
+            "content_sha256": "967f9db847e0fcd7411720a25b39c32cda7c244c246d6320283bcb25b281148a",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "cda6bd3c0ee1adb9073a5577688b88f13a230ef02590b02343b364ec7d88f307",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "cda6bd3c0ee1adb9073a5577688b88f13a230ef02590b02343b364ec7d88f307",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Governance",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Governance-967f9db847e0fcd7",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "cda6bd3c0ee1adb9073a5577688b88f13a230ef02590b02343b364ec7d88f307",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "967f9db847e0fcd7411720a25b39c32cda7c244c246d6320283bcb25b281148a",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d",
+          "validation_evidence_ref": "cda6bd3c0ee1adb9073a5577688b88f13a230ef02590b02343b364ec7d88f307",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Governance-967f9db847e0fcd7",
+      "construct": {
+        "construct_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d",
+        "depends_on": [],
+        "evaluates": [
+          "ENG-005:ENG-002:infrastructure.hosting.substrate"
+        ],
+        "evaluative_verdict": "indeterminate",
+        "facet": "gap_report",
+        "meta_class": "GovernanceFacet",
+        "non_enforcing": true,
+        "references": [
+          "ENG-005:ENG-000:foundation.custodian.registrar"
+        ],
+        "relationships": [
+          "evaluates",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "ENG-000",
+          "RL-F2",
+          "UIMM-CONF",
+          "UITX",
+          "UCI-001",
+          "REG-AUTO-001"
+        ],
+        "type_tag": "ucos.infrastructure.governance.gap_report.foundation",
+        "value_digest": "7584068e51f8be6d1962420131afe0144dcc69454cdc37bbc61f9f50bfe4e2ac"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-governance-typed",
+              "infra-governance-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "governance-evaluates-objectbound"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "governance-evaluative-nonenforcing",
+              "authority-boundary"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive",
+              "no-secret-material"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "GovernanceFacet",
+          "INFRASTRUCTURE-014",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "facet": "gap_report",
+        "forward": [
+          "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d",
+          "EC3-B13-U09-GAP_REPORT-VALIDATION-EVIDENCE",
+          "EC3-B13-U09-GAP_REPORT-CCE-CERTIFICATION",
+          "EC3-B13-U09-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "78cbfc8",
+        "meta_class": "GovernanceFacet",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "ENG-000",
+          "RL-F2",
+          "UIMM-CONF",
+          "UITX",
+          "UCI-001",
+          "REG-AUTO-001"
+        ],
+        "substrate_reuse": {
+          "ENG-000": "custodian/Registrar referenced by reference (Gap Report routing)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.governance type_tag (typed construct)",
+          "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+          "REG-AUTO-001": "append-only registration law reused by reference (Change Record)",
+          "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+          "UCI-001": "additive/supersession change instrument reused by reference (Change Record)",
+          "UIMM-CONF": "INFRASTRUCTURE-005 conformance basis reused by reference (Conformance)",
+          "UITX": "infrastructure lifecycle basis reused by reference (Lifecycle)"
+        },
+        "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U09"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "GovernanceFacet",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "GovernanceFacet",
+          "checks_run": [
+            "authority-boundary",
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "governance-evaluates-objectbound",
+            "governance-evaluative-nonenforcing",
+            "infra-governance-construct-kind",
+            "infra-governance-identified-objectbound",
+            "infra-governance-typed",
+            "infra-governance-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "no-secret-material",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "ENG-000",
+                  "RL-F2",
+                  "UIMM-CONF",
+                  "UITX",
+                  "UCI-001",
+                  "REG-AUTO-001"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluates-objectbound",
+              "details": {
+                "facet": "gap_report"
+              },
+              "message": "governance-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluative-nonenforcing",
+              "details": {
+                "facet": "gap_report",
+                "verdict": "record-only-nonenforcing"
+              },
+              "message": "governance-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-construct-kind",
+              "details": {},
+              "message": "infra-governance-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d"
+              },
+              "message": "infra-governance-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.governance.gap_report.foundation"
+              },
+              "message": "infra-governance-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-value-fidelity",
+              "details": {
+                "value_digest": "7584068e51f8be6d1962420131afe0144dcc69454cdc37bbc61f9f50bfe4e2ac"
+              },
+              "message": "infra-governance-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "GovernanceFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "GovernanceFacet",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "ENG-000",
+                  "RL-F2",
+                  "UIMM-CONF",
+                  "UITX",
+                  "UCI-001",
+                  "REG-AUTO-001"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluates-objectbound",
+              "details": {
+                "facet": "gap_report"
+              },
+              "message": "governance-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluative-nonenforcing",
+              "details": {
+                "facet": "gap_report",
+                "verdict": "record-only-nonenforcing"
+              },
+              "message": "governance-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-construct-kind",
+              "details": {},
+              "message": "infra-governance-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d"
+              },
+              "message": "infra-governance-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.governance.gap_report.foundation"
+              },
+              "message": "infra-governance-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-value-fidelity",
+              "details": {
+                "value_digest": "7584068e51f8be6d1962420131afe0144dcc69454cdc37bbc61f9f50bfe4e2ac"
+              },
+              "message": "infra-governance-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "GovernanceFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.gap_report.foundation-7584068e51f8be6d",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Governance",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Governance-828cc664e266a2be",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "cc364b96b2e97dcb10019d1e48cf6b250b4c4810f88cee30ae3dad3a7c5aa614",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Governance",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Governance-828cc664e266a2be",
+            "certified": true,
+            "content_sha256": "828cc664e266a2be73c02ee94e46fb947e263135109a642998230efbdbc10daa",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "cc364b96b2e97dcb10019d1e48cf6b250b4c4810f88cee30ae3dad3a7c5aa614",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "cc364b96b2e97dcb10019d1e48cf6b250b4c4810f88cee30ae3dad3a7c5aa614",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Governance",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Governance-828cc664e266a2be",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "cc364b96b2e97dcb10019d1e48cf6b250b4c4810f88cee30ae3dad3a7c5aa614",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "828cc664e266a2be73c02ee94e46fb947e263135109a642998230efbdbc10daa",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2",
+          "validation_evidence_ref": "cc364b96b2e97dcb10019d1e48cf6b250b4c4810f88cee30ae3dad3a7c5aa614",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Governance-828cc664e266a2be",
+      "construct": {
+        "construct_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2",
+        "depends_on": [],
+        "evaluates": [
+          "ENG-005:ENG-002:infrastructure.hosting.substrate"
+        ],
+        "evaluative_verdict": "indeterminate",
+        "facet": "change_record",
+        "meta_class": "GovernanceFacet",
+        "non_enforcing": true,
+        "references": [
+          "ENG-005:UCI-001:change.additive.supersession",
+          "ENG-005:REG-AUTO-001:registration.append.only"
+        ],
+        "relationships": [
+          "evaluates",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "ENG-000",
+          "RL-F2",
+          "UIMM-CONF",
+          "UITX",
+          "UCI-001",
+          "REG-AUTO-001"
+        ],
+        "type_tag": "ucos.infrastructure.governance.change_record.foundation",
+        "value_digest": "b3d7351e950dcac258811a4165831e1a26eac01703625b56983f80446c99b6f4"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-governance-typed",
+              "infra-governance-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "governance-evaluates-objectbound"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "governance-evaluative-nonenforcing",
+              "authority-boundary"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive",
+              "no-secret-material"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "GovernanceFacet",
+          "INFRASTRUCTURE-014",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "facet": "change_record",
+        "forward": [
+          "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2",
+          "EC3-B13-U09-CHANGE_RECORD-VALIDATION-EVIDENCE",
+          "EC3-B13-U09-CHANGE_RECORD-CCE-CERTIFICATION",
+          "EC3-B13-U09-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "78cbfc8",
+        "meta_class": "GovernanceFacet",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "ENG-000",
+          "RL-F2",
+          "UIMM-CONF",
+          "UITX",
+          "UCI-001",
+          "REG-AUTO-001"
+        ],
+        "substrate_reuse": {
+          "ENG-000": "custodian/Registrar referenced by reference (Gap Report routing)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.governance type_tag (typed construct)",
+          "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+          "REG-AUTO-001": "append-only registration law reused by reference (Change Record)",
+          "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+          "UCI-001": "additive/supersession change instrument reused by reference (Change Record)",
+          "UIMM-CONF": "INFRASTRUCTURE-005 conformance basis reused by reference (Conformance)",
+          "UITX": "infrastructure lifecycle basis reused by reference (Lifecycle)"
+        },
+        "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U09"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "GovernanceFacet",
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "GovernanceFacet",
+          "checks_run": [
+            "authority-boundary",
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "governance-evaluates-objectbound",
+            "governance-evaluative-nonenforcing",
+            "infra-governance-construct-kind",
+            "infra-governance-identified-objectbound",
+            "infra-governance-typed",
+            "infra-governance-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "no-secret-material",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "ENG-000",
+                  "RL-F2",
+                  "UIMM-CONF",
+                  "UITX",
+                  "UCI-001",
+                  "REG-AUTO-001"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluates-objectbound",
+              "details": {
+                "facet": "change_record"
+              },
+              "message": "governance-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluative-nonenforcing",
+              "details": {
+                "facet": "change_record",
+                "verdict": "record-only-nonenforcing"
+              },
+              "message": "governance-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-construct-kind",
+              "details": {},
+              "message": "infra-governance-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2"
+              },
+              "message": "infra-governance-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.governance.change_record.foundation"
+              },
+              "message": "infra-governance-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-value-fidelity",
+              "details": {
+                "value_digest": "b3d7351e950dcac258811a4165831e1a26eac01703625b56983f80446c99b6f4"
+              },
+              "message": "infra-governance-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "GovernanceFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "GovernanceFacet",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "ENG-000",
+                  "RL-F2",
+                  "UIMM-CONF",
+                  "UITX",
+                  "UCI-001",
+                  "REG-AUTO-001"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluates-objectbound",
+              "details": {
+                "facet": "change_record"
+              },
+              "message": "governance-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "governance-evaluative-nonenforcing",
+              "details": {
+                "facet": "change_record",
+                "verdict": "record-only-nonenforcing"
+              },
+              "message": "governance-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-construct-kind",
+              "details": {},
+              "message": "infra-governance-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2"
+              },
+              "message": "infra-governance-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.governance.change_record.foundation"
+              },
+              "message": "infra-governance-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-governance-value-fidelity",
+              "details": {
+                "value_digest": "b3d7351e950dcac258811a4165831e1a26eac01703625b56983f80446c99b6f4"
+              },
+              "message": "infra-governance-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "GovernanceFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.change_record.foundation-b3d7351e950dcac2",
+          "verdict": "pass"
+        }
+      }
+    }
+  ],
+  "criteria": {
+    "acceptance": {
+      "AC-1": true,
+      "AC-2": true,
+      "AC-3": true,
+      "AC-4": true,
+      "AC-5": true,
+      "AC-6": true,
+      "AC-7": true
+    },
+    "certification_gates": {
+      "CC-1": true,
+      "CC-10": true,
+      "CC-2": true,
+      "CC-3": true,
+      "CC-4": true,
+      "CC-5": true,
+      "CC-6": true,
+      "CC-7": true,
+      "CC-8": true,
+      "CC-9": true
+    },
+    "infrastructure_compliance": {
+      "C1": true,
+      "C2": true,
+      "C3": true,
+      "C4": true,
+      "C5": true,
+      "C6": true,
+      "C7": true
+    },
+    "validation": {
+      "VC-1": true,
+      "VC-2": true,
+      "VC-3": true,
+      "VC-4": true,
+      "VC-5": true
+    }
+  },
+  "determination": "COMPLETE",
+  "facets": [
+    "conformance",
+    "lifecycle",
+    "policy",
+    "gap_report",
+    "change_record"
+  ],
+  "meta_class": "GovernanceFacet",
+  "meta_validity_WF": {
+    "WF-1": true,
+    "WF-10": true,
+    "WF-11": true,
+    "WF-12": true,
+    "WF-2": true,
+    "WF-3": true
+  },
+  "uil_conformance": {
+    "UIL-01": true,
+    "UIL-02": true,
+    "UIL-03": true,
+    "UIL-04": true,
+    "UIL-05": true,
+    "UIL-14": true,
+    "UIL-15": true
+  },
+  "unit": "EC3-B13-U09",
+  "version": "1.0.0"
+}

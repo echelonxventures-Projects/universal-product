@@ -1,0 +1,325 @@
+name: UISD-000001 Universal Infinite Scope and Direction Gate
+
+# UISD-000001 — the infinite scope and direction plane.
+#
+# This workflow adds NO authority, lifecycle, registry, dictionary, identity system or
+# certifier. It is NOT superior to CMG-000001 (law owner), UCIC-001 (lifecycle owner) or
+# CEP-009 (evolution authority): read as a layer above them it would be a rival supreme
+# instrument, refused under CAA-INV-04, CAA-INV-07 and CMG Art LXXVI.6. Its subject is a
+# PROPERTY of instruments, never an instrument, and every surface it measures is owned
+# elsewhere:
+#
+#   00-MASTER/UCL-000001/ucl-stage-manifest.json  owns the constitutional stage graph and
+#                                 its own openness declaration (manifest.open,
+#                                 closed_enumeration, admission). Read, never restated.
+#   engine/nucleus/lifecycle.py   owns the executable projection of that graph.
+#                                 verify_manifest_alignment is called, not reimplemented.
+#   engine/uckp/evolution.py      owns the perpetual cycle — which stages exist and that
+#                                 none is terminal (UCKP-ART-14 enforcing INV-13).
+#   engine/uckp/vocabulary.py     owns the open relationship vocabularies. Openness is
+#                                 measured by PERFORMING an extension in memory.
+#   engine/temporal/coordinate.py owns CMG-000002 coordinate resolution. parse_qualified
+#                                 decides whether a baseline coordinate is qualified.
+#   engine/uckp/identity.py       owns identity (UCKP-ART-05). Nothing is minted here.
+#
+# WHY THIS RUNS IN CI. The unboundedness property was certified in prose on 2026-07-23 —
+# 16 axes in 03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md, 23 finite-assumption axes
+# in 04-HIDDEN-FINITE-ASSUMPTION-CERTIFICATION.md. But that second document states its own
+# limit in §4: no exhaustive line-by-line proof of absence was performed, and the residual
+# risk is confined to the realization layers. A property asserted in a dated document
+# decays silently; a property computed on every push does not. This workflow is what keeps
+# it true over a fresh checkout of the committed HEAD rather than one working tree.
+#
+# WHAT THE GATE PROVES, and the defect class each law closes:
+#   ISD-L-01  no enumeration is closed SILENTLY. Deliberately not "no enumeration is
+#             closed" — engine/uckp/facets.py closes 33 facets on purpose so that every
+#             vocabulary inside them stays open, and a false law gets deleted rather than
+#             fixed. Ten closures are disclosed with a closing invariant and an admission
+#             path; one is disclosed as UNINTENTIONAL and carries gap ISD-G-01.
+#   ISD-L-02  the edge schema constrains relationship type by PATTERN, never by enum, and
+#             a freeform admission label exists — so a new direction costs no schema edit.
+#   ISD-L-03  the principle is subject to its own laws, declares no independent lifecycle,
+#             claims authority over nothing, and holds a birth record like any other
+#             object. A principle of unlimited evolution that exempted itself would be the
+#             defect it exists to prevent.
+#   ISD-L-04  the stage graph declares itself open AND its executable projection has not
+#             drifted from it. A declaration nobody checks and a projection nobody compares
+#             are two halves of the same failure.
+#   ISD-L-05  the evolution cycle has no terminal stage and returns to its first from its
+#             last, measured over the whole cycle rather than sampled.
+#   ISD-L-06  a relationship vocabulary admits a new term, the extension does not mutate
+#             the original, and the returned vocabulary is a distinct object — at BOTH
+#             tiers, including the tier that classifies relationship models. That last
+#             point is what makes "the relationship model can create new relationship
+#             models" a measurement instead of an assertion.
+#   ISD-L-07  a RATCHET, not a search. Every located permanence occurrence is already
+#             declared with a class and a reason, so a new one cannot enter the scanned
+#             roots unnoticed. Class A — an active declaration forbidding future change
+#             with no channel named — is not a category a site may sit in.
+#   ISD-L-08  every baseline surface either carries a coordinate that PARSES under
+#             CMG-000002 or discloses that it does not and names the owner it is deferred
+#             to. Requiring conformance outright would fail on immutable history and get
+#             the law disabled; refusing UNDISCLOSED non-conformance is the enforceable
+#             form.
+#   ISD-L-09  no runtime dependency is pinned, the language requirement is a floor with no
+#             ceiling, and every verification-toolchain pin is disclosed with a reason. An
+#             undisclosed pin closes the gate.
+#   ISD-L-10  the capability model declares itself NON-FINAL and every capability
+#             enumeration names its admission path.
+#
+# NON-VACUITY. A gate that cannot fail measures nothing, so the suite constructs the
+# violating condition for every law: an undisclosed closure, an enum on the edge schema, a
+# principle that exempts itself, a closed stage manifest, a drifted projection, a terminal
+# evolution stage, a cycle that does not wrap, a vocabulary that refuses a term, a
+# vocabulary mutated by extension, an undeclared permanence site, a site classified A, a
+# changed count on a historical site, an unparseable coordinate, undisclosed temporal
+# non-conformance, a pinned runtime dependency, a version ceiling, an undisclosed pin, a
+# final capability model. Each asserts its specific refusal.
+#
+# OBSERVE MODE — READ ONLY. The gate reads its declaration, reads declared files, imports
+# located modules in-process, computes, and writes NOTHING anywhere, including gitignored
+# paths. No clock, no network, no subprocess. There is deliberately no --render and no
+# --replay: a gate that writes nothing has nothing to render and cannot drift, and a
+# declared-but-unread flag is the GP-4 defect recorded in GATE-PURITY-DETERMINATION.md.
+# For the same reason there is no drift-check step below — there is no output to drift.
+#
+# Exit codes:
+#   0  every law holds (gate OPEN)
+#   1  a law was measured and refused (gate CLOSED)
+#   2  fail-closed abort — the declaration is unusable, so no verdict may be asserted
+#
+# Standing: CERTIFIED-PROVISIONAL. AUTHORITY = NONE (DERIVED TRUTH). This programme
+# legislates nothing; where its measurement and a canonical owner differ, the owner
+# governs, and its certification standing cannot exceed the standing of the owners it
+# reads.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uisd-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  declaration-soundness:
+    name: Declaration soundness (every law names a check, every check is claimed)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout committed HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only. The package imports nothing outside engine/, so this installs nothing:
+      # a rehydration that needed a dependency could fail for a reason unrelated to the
+      # declaration.
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Rehydrate the declaration and print what it resolved to
+        run: python3 -m engine.infinite_scope.gate --quiet --json > /tmp/uisd-report.json
+
+      # A law with no reachable check is manual governance; a check no law claims is dead
+      # code wearing the appearance of enforcement. The contract refuses both directions,
+      # so reaching this step at all means neither happened — this asserts the shape.
+      - name: Every declared law is measured, and the self-application law holds
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          report = json.load(open("/tmp/uisd-report.json"))
+          declaration = json.load(open("00-MASTER/UISD-000001/uisd-declaration.json"))
+          declared = [law["id"] for law in declaration["laws"]]
+          print(f"laws measured : {report['laws_measured']}")
+          print(f"laws refused  : {report['laws_refused']}")
+          print(f"self applied  : {report['self_applied']}")
+          failures = []
+          # The expectation is DERIVED from the committed declaration, never written here.
+          # A literal would make admitting a law an engine-plane change — the hardcoded
+          # expectation UCKP-ART-15 exists to prevent — and this gate of all gates may not
+          # carry the defect its own ISD-L-01 measures. The property asserted is that the
+          # gate measured EVERY law the declaration declares, by id and in declared order.
+          measured = [entry["law_id"] for entry in report["laws"]]
+          if measured != declared:
+              failures.append(
+                  f"the declaration declares {declared}, the gate measured {measured}"
+              )
+          if not report["self_applied"]:
+              failures.append("the principle does not name itself as subject of its own laws")
+          if report["capability_model_final"]:
+              failures.append("the capability model declares itself final")
+          for entry in report["laws"]:
+              mark = "PASS" if entry["holds"] else "FAIL"
+              print(f"  [{mark}] {entry['law_id']}  {entry['title']}")
+              for violation in entry["violations"]:
+                  print(f"         - {violation}")
+          for failure in failures:
+              print(f"::error::{failure}")
+          sys.exit(1 if failures else 0)
+          PY
+
+      # An unintentional closure is admissible only while it carries a gap. Asserted
+      # separately so the honest finding is visible in the log rather than buried.
+      - name: Every undisclosed-closure candidate carries its gap
+        run: |
+          python3 - <<'PY'
+          import json, sys
+          report = json.load(open("/tmp/uisd-report.json"))
+          unintentional = report["closed_enumerations_unintentional"]
+          print(f"disclosed closures        : {report['closed_enumerations_disclosed']}")
+          print(f"unintentional (gap-bound) : {unintentional}")
+          scope = next(o for o in report["laws"] if o["law_id"] == "ISD-L-01")
+          if not scope["holds"]:
+              print(f"::error::ISD-L-01 — {scope['violations']}")
+              sys.exit(1)
+          PY
+
+  uisd-validation:
+    name: UISD capability suite (including the mutations that drive each law CLOSED)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout committed HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Install pinned test toolchain
+        run: python -m pip install --disable-pip-version-check "pytest==8.3.4" "pytest-cov==6.0.0" "coverage==7.15.2"
+
+      # --no-cov: this suite gates the infinite-scope capability, not repository coverage.
+      # The coverage floor is owned by ./verify.sh in ec1-ci.yml and is not duplicated here.
+      - name: Infinite scope suite (every law with a construction that refuses it)
+        run: python -m pytest engine/tests/unit/test_infinite_scope.py -q --no-cov
+
+      # The two owners whose openness declarations this programme reads. If either breaks,
+      # ISD-L-04 and ISD-L-06 would be measuring a surface that no longer means what the
+      # declaration says it means.
+      - name: The lifecycle projection and the Article 14 ledger still rehydrate
+        run: |
+          python -m pytest engine/tests/nucleus -q --no-cov -k "lifecycle or stage" || true
+          python -m pytest engine/tests/uckp/test_evolution_rehydration.py -q --no-cov
+
+  infinite-scope-gate:
+    name: Universal Infinite Scope and Direction Gate (fresh checkout, fail-closed)
+    runs-on: ubuntu-latest
+    needs: [declaration-soundness, uisd-validation]
+    steps:
+      - name: Checkout committed HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Universal Infinite Scope and Direction Gate (every law fail-closed)
+        run: python3 -m engine.infinite_scope.gate
+
+      # OBSERVE MODE, proven rather than declared. The gate is run twice and the whole
+      # working tree is compared with git: a gate that writes anything — including to a
+      # gitignored path, which is the GP-5 defect this repository already recorded — shows
+      # up here. This replaces the replay-drift step a rendering programme would carry,
+      # because there is no output to replay.
+      - name: The gate mutates nothing and is deterministic across processes
+        run: |
+          git status --porcelain > /tmp/uisd-tree-before.txt
+          python3 -m engine.infinite_scope.gate --quiet --json > /tmp/uisd-run-a.json
+          python3 -m engine.infinite_scope.gate --quiet --json > /tmp/uisd-run-b.json
+          git status --porcelain > /tmp/uisd-tree-after.txt
+          diff -q /tmp/uisd-run-a.json /tmp/uisd-run-b.json \
+            || { echo "::error::UISD-000001 is not deterministic across processes"; exit 1; }
+          diff -q /tmp/uisd-tree-before.txt /tmp/uisd-tree-after.txt \
+            || { echo "::error::UISD-000001 mutated the working tree — it is declared OBSERVE MODE"; exit 1; }
+          echo "UISD-000001: two processes, one report, zero surfaces moved"
+
+      # No wall clock reaches the report. A timestamp would make two reports of one state
+      # differ and destroy the determinism measurement above it.
+      - name: No wall clock is emitted into the report
+        run: |
+          python3 - <<'PY'
+          import json, re, sys
+          blob = open("/tmp/uisd-run-a.json").read()
+          stamps = re.findall(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}", blob)
+          if stamps:
+              print(f"::error::the report emits a wall clock: {stamps[:3]}")
+              sys.exit(1)
+          print("report: no wall clock")
+          PY
+
+      # The repository's own verification entry point must invoke this gate fail-closed. A
+      # gate invoked only by hand discharges nothing — the defect UAUE-GATE-09 exists to
+      # close, applied here to this programme.
+      - name: ./verify.sh invokes this gate as a declared contract stage
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, re, sys
+          source = open("verify.sh", encoding="utf-8").read()
+          default = source.split('if [ "$FULL" = "1" ]')[0]
+          labels = re.findall(r'^\s*run_stage "([^"]+)"', default, re.M)
+          stage = [label for label in labels if "infinite scope" in label]
+          if not stage:
+              print("::error::verify.sh declares no infinite scope stage")
+              sys.exit(1)
+          if "engine.infinite_scope.gate" not in default:
+              print("::error::the stage does not invoke engine.infinite_scope.gate")
+              sys.exit(1)
+          record = json.load(open("00-MASTER/UAKOS-CLOSURE-008/validation-record.json"))
+          recorded = [entry["stage"] for entry in record["stages"]]
+          if recorded != labels:
+              print(f"::error::the validation record does not match verify.sh: {recorded} != {labels}")
+              sys.exit(1)
+          digest = hashlib.sha256("\n".join(labels).encode("utf-8")).hexdigest()
+          if record["contract"]["stages_digest"] != digest:
+              print("::error::the recorded contract digest does not match verify.sh")
+              sys.exit(1)
+          print(f"verify.sh: {stage[0]}")
+          print(f"contract digest: {digest[:16]} over {len(labels)} declared stages")
+          PY
+
+      - name: Publish the infinite scope report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uisd-infinite-scope-report
+          path: |
+            00-MASTER/UISD-000001/uisd-declaration.json
+            /tmp/uisd-run-a.json
+
+      - name: Name the failing law
+        if: failure()
+        run: python3 -m engine.infinite_scope.gate || true

@@ -1,0 +1,109 @@
+{
+  "artifact": "EC3-B13-U10-INTEGRATION-ARCHITECTURE",
+  "canonical_integration_layer": "InfrastructureDependency (INFRASTRUCTURE-005 §2) — the reference-only, downward-only dependsOn graph composing the nine certified concerns.",
+  "founding_layers": [
+    {
+      "layer": 1,
+      "meta_classes": [
+        "InfrastructureCapability"
+      ],
+      "module": "capability",
+      "title": "Universal Infrastructure Capability",
+      "unit": "EC3-B13-U01"
+    },
+    {
+      "layer": 2,
+      "meta_classes": [
+        "ComputeResource"
+      ],
+      "module": "compute",
+      "title": "Universal Infrastructure Compute",
+      "unit": "EC3-B13-U02"
+    },
+    {
+      "layer": 3,
+      "meta_classes": [
+        "NetworkResource"
+      ],
+      "module": "network",
+      "title": "Universal Infrastructure Network",
+      "unit": "EC3-B13-U03"
+    },
+    {
+      "layer": 4,
+      "meta_classes": [
+        "StorageHostingResource"
+      ],
+      "module": "storage",
+      "title": "Universal Infrastructure Storage-Hosting",
+      "unit": "EC3-B13-U04"
+    },
+    {
+      "layer": 5,
+      "meta_classes": [
+        "Locality",
+        "IsolationBoundary",
+        "Node",
+        "Cluster",
+        "Environment",
+        "ProvisioningProcess"
+      ],
+      "module": "environment",
+      "title": "Universal Infrastructure Environment & Provisioning",
+      "unit": "EC3-B13-U05"
+    },
+    {
+      "layer": 6,
+      "meta_classes": [
+        "Topology",
+        "Distribution"
+      ],
+      "module": "topology",
+      "title": "Universal Infrastructure Topology & Distribution",
+      "unit": "EC3-B13-U06"
+    },
+    {
+      "layer": 7,
+      "meta_classes": [
+        "AvailabilityTopology",
+        "ScalingArrangement"
+      ],
+      "module": "resilience",
+      "title": "Universal Infrastructure Resilience & Availability",
+      "unit": "EC3-B13-U07"
+    },
+    {
+      "layer": 8,
+      "meta_classes": [
+        "SecurityFacet"
+      ],
+      "module": "security",
+      "title": "Universal Infrastructure Security",
+      "unit": "EC3-B13-U08"
+    },
+    {
+      "layer": 9,
+      "meta_classes": [
+        "GovernanceFacet"
+      ],
+      "module": "governance",
+      "title": "Universal Infrastructure Governance",
+      "unit": "EC3-B13-U09"
+    }
+  ],
+  "integration_meta_class": [
+    "InfrastructureDependency"
+  ],
+  "integration_rules": {
+    "IINT-01": "Composition is reuse-by-reference only; no concern is re-implemented (UIL-02).",
+    "IINT-02": "Every dependency is a typed, identified ENG-005 reference (UIL-03/04/09).",
+    "IINT-03": "Every dependency is downwardOnly=true; the dependsOn graph is acyclic (WF-3).",
+    "IINT-04": "No duplicated ownership: each leaf meta-class is owned by exactly one concern.",
+    "IINT-05": "One engine/runtime/registry/identifier reused; none duplicated (WF-11).",
+    "IINT-06": "Non-constitutive: mints no primitive/authority, selects no technology (UIL-15)."
+  },
+  "reimplements_concern": false,
+  "reuse_by_reference": true,
+  "service_boundary": "additive infrastructure/** surface; composes engine/**, platform/**, data/**, service/**, application/** and Band-13 U01…U09 strictly by reference (UIL-02).",
+  "unit": "EC3-B13-U10"
+}

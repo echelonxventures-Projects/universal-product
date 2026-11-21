@@ -1,0 +1,73 @@
+{
+  "compliance_format": "ucos-application-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "application-typed",
+        "application-identified-objectbound"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UAL-03), identified and objecthood-bound (UAL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UAL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "application-value-fidelity",
+        "application-delivers-capability"
+      ],
+      "id": "C3",
+      "note": "feature service-consumption (SF-2 operations) + feature/interaction I/O (DF-2) scoped to the Feature unit AMC-04; application capability-delivery reference explicit",
+      "requirement": "Delivers capability via SF-2 operations under contract; I/O is DF-2 by ref (UAL-06/13).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "application-typed",
+        "application-classified",
+        "application-delivers-capability"
+      ],
+      "id": "C4",
+      "note": "module cohesion/feature explicitness/interaction typedness scoped to AMC-03/04/06; application structure explicit",
+      "requirement": "Modules bounded, features explicit, interactions typed (UAL-07/08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "composition-by-reference",
+        "founding-acyclic",
+        "meta-relationships-closed"
+      ],
+      "id": "C5",
+      "requirement": "Composition uses ENG-005 references; founding structure acyclic (UAL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "behavior-by-reference"
+      ],
+      "id": "C6",
+      "requirement": "Workflow/process and state bind to RL-F2/SF-2 by reference (UAL-10/12).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive",
+        "technology-independence"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (UAL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "APPLICATION-001 §12",
+  "target_id": "UCOS-APPLICATION-ucos.application.foundation-b93c1ea878f442ea"
+}

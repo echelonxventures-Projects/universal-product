@@ -1,0 +1,950 @@
+{
+  "programme": "MIP-W1-P001",
+  "title": "MIP Ω∞ · Wave-1 · PROGRAM-001 — Foundation & Constitutional Baseline",
+  "authority": "NONE — DERIVED TRUTH",
+  "implementation_performed": false,
+  "determination": "CONDITIONALLY READY FOR WAVE-2",
+  "certification_ceiling": "CERTIFIED-PROVISIONAL (UCCEP-F-004 — constitutional Tier T1 VACANT)",
+  "anchor": {
+    "branch": "integration/recovery-001",
+    "head": "c6c20fb5b4981f78ce76e6ba2fb48ec561cb52e5",
+    "tracked_files": 4895,
+    "working_tree_at_anchor": "CLEAN (0 entries)"
+  },
+  "repository": {
+    "tracked_files": 4895,
+    "by_extension": {
+      "md": 2682,
+      "py": 1598,
+      "json": 567,
+      "docx": 24,
+      "yml": 9,
+      "sh": 8,
+      "txt": 4,
+      "gitignore": 1,
+      "(none)": 1,
+      "toml": 1
+    },
+    "planes": {
+      "governance_knowledge": 2642,
+      "implementation_code": 2159,
+      "root_instruments": 78,
+      "automation_ci": 16
+    },
+    "instrument_census": {
+      "certification": 433,
+      "architecture": 206,
+      "registry_register": 205,
+      "constitution": 134,
+      "determination": 134,
+      "completion_reports": 83,
+      "evidence_artefacts": 490
+    }
+  },
+  "registry": {
+    "artifacts": 1204,
+    "unique_universal_id": 1204,
+    "uuid_shaped_ids": 0,
+    "native_id_populated": 379,
+    "native_id_collision_groups": {
+      "EC2-CAP-SEC-001": 7,
+      "EC2": 2,
+      "EC2-EPIC-006": 3,
+      "UCOS-COMP-000001": 2,
+      "UCOS-COMP-000000": 4,
+      "CEP-STAGE-02": 2,
+      "CEP-STAGE-03": 2
+    },
+    "description_populated": 0,
+    "dependencies_populated": 190,
+    "versions": {
+      "1.0.0": 1204
+    },
+    "status_histogram": {
+      "ACTIVE": 1103,
+      "COMPLETE": 43,
+      "FROZEN": 27,
+      "UNDER_REVIEW": 15,
+      "FINAL": 9,
+      "CERTIFIED": 7
+    },
+    "categories_in_use": 94,
+    "volumes_declared": 25,
+    "volumes_populated": 23,
+    "paths_not_on_disk": 0,
+    "content_hash_duplicate_groups": 2,
+    "stale_content_hashes_at_head": 10,
+    "stale_content_hash_detail": [
+      {
+        "path": "intelligence/UCOS-IMP-BASELINE-001.rib.json",
+        "head_recorded": "3b540156726e34e2a6794b4efe7f0e1e08616cea26d3f6fdbd5a1af451477ea0",
+        "actual": "946e084f87818e213fcdba2e14b90f5c057ca47e327c90d9543acb0b0b7f128d"
+      },
+      {
+        "path": "intelligence/UCOS-RIE-AEOS-READINESS.json",
+        "head_recorded": "909da0a1d5817a3112833ea5edf79fe23cd42c1108dde4c0fe521f2aae5be289",
+        "actual": "162e8ac4809b19f445b91851c00bfe94db9c83aaeec5131aeee00d992386da1c"
+      },
+      {
+        "path": "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+        "head_recorded": "5fe102e883e00d56f5388f9f9746e5b3dbab0b3642bf6efd8f65efd47b17cf83",
+        "actual": "17e99193717435fd6b984ba1d17c272216daf667fb77eb04c742bf4991bd530d"
+      },
+      {
+        "path": "intelligence/UCOS-RIE-DEPENDENCY-GRAPH.json",
+        "head_recorded": "bad77ec9e0d0f248e3999a72b013caf862fd7ff77d68d946380108d9cf824860",
+        "actual": "464fabcd3b03d2f83e85341e5a637a3463ec21577d53f75ac95f4872ff12ad77"
+      },
+      {
+        "path": "intelligence/UCOS-RIE-DIGITAL-TWIN.json",
+        "head_recorded": "fe906caae8a6a86d3fcc7350ee82fdf646edc71bbf394ced34c4b1b60e2ed755",
+        "actual": "43b035e3eed1e1278b0d748b751a5ca8f5c44c95033a2d1ea2e64106b276b686"
+      },
+      {
+        "path": "intelligence/UCOS-RIE-EXECUTION-FRONTIER.json",
+        "head_recorded": "61dba1590da3c0368ce6ff873f2209454df685a50ef736479f0b3c92b9e56710",
+        "actual": "cc48790458f64ab1a660a9784d744b8349438a7263537cf06819737edff03fa6"
+      },
+      {
+        "path": "intelligence/UCOS-RIE-HEALTH.json",
+        "head_recorded": "e17df8844999dc27e16904fb4cb13d44908cb98f7c7f9521c0b90c13924b5e05",
+        "actual": "d45ee3f5d74baf9779ca0f315af1d2bfb50d313cfb1b9a255e21716b08947be2"
+      },
+      {
+        "path": "intelligence/UCOS-RIE-MODEL.json",
+        "head_recorded": "5afb11fb4867496bf46a45b05481b75da2f298b39963a9cc4d329ceec5cb9d04",
+        "actual": "90e60fc81f100b613086278cbc849d93939d0981ba2afcbc3156e6196ad96aa1"
+      },
+      {
+        "path": "intelligence/UCOS-RIE-PROGRESS.json",
+        "head_recorded": "b83933610ad901e89a2ddf2fef7c5b95f79c7803ee279e2e120bda65bf3e7461",
+        "actual": "cd056503cdc2289d82653dca147be0f767dc183810de00f7e23b24f3471e5170"
+      },
+      {
+        "path": "intelligence/UCOS-RIE-SNAPSHOT.json",
+        "head_recorded": "e59857d8dcf54b5a963dd51d6f6c743477577181f39863e013c879669b1616ad",
+        "actual": "eac221100e0631532b6ef53093c54c07a458e8f22228c4fa00023ff226f609c3"
+      }
+    ]
+  },
+  "graph": {
+    "edges": 12851,
+    "edge_types": {
+      "Depends-On": 4774,
+      "Required-By": 4697,
+      "Parent": 1211,
+      "Child": 1211,
+      "Consumes": 316,
+      "Consumed-By": 316,
+      "Authorized-By": 99,
+      "Authorizes": 99,
+      "Implements": 48,
+      "Implemented-By": 48,
+      "References": 6,
+      "Referenced-By": 6,
+      "Traces-To": 5,
+      "Traced-From": 5,
+      "Evolves-From": 5,
+      "Evolves-From-Inverse": 5
+    },
+    "nodes": 1229,
+    "is_valid": true,
+    "dependency_cycle": [],
+    "dangling_edge_endpoints": [],
+    "depends_on_acyclic": true,
+    "program_edges": [
+      {
+        "count": 1,
+        "from": "ARCH",
+        "to": "CAT"
+      },
+      {
+        "count": 1,
+        "from": "ARCH",
+        "to": "CONSOLIDATION"
+      },
+      {
+        "count": 1,
+        "from": "CAT",
+        "to": "ARCH"
+      },
+      {
+        "count": 1,
+        "from": "CEP",
+        "to": "IMP"
+      },
+      {
+        "count": 1,
+        "from": "DATA",
+        "to": "PLATFORM"
+      },
+      {
+        "count": 1,
+        "from": "EES",
+        "to": "CONSOLIDATION"
+      },
+      {
+        "count": 1,
+        "from": "ENG",
+        "to": "ARCH"
+      },
+      {
+        "count": 1,
+        "from": "GEN",
+        "to": "REF"
+      },
+      {
+        "count": 1,
+        "from": "IMP",
+        "to": "CEP"
+      },
+      {
+        "count": 1,
+        "from": "IMP",
+        "to": "CONSOLIDATION"
+      },
+      {
+        "count": 1,
+        "from": "PLATFORM",
+        "to": "RUN"
+      },
+      {
+        "count": 1,
+        "from": "REF",
+        "to": "ARCH"
+      },
+      {
+        "count": 1,
+        "from": "RUN",
+        "to": "ARCH"
+      },
+      {
+        "count": 1,
+        "from": "SERVICE",
+        "to": "DATA"
+      },
+      {
+        "count": 1,
+        "from": "UMB",
+        "to": "ADV"
+      },
+      {
+        "count": 1,
+        "from": "USIS",
+        "to": "SERVICE"
+      }
+    ],
+    "layers_bottom_up": [
+      "LAW Ω∞-000",
+      "MIP v2 (28 universes · 25 directives) + ARCH-001..004",
+      "UCGF + GOV-001..006",
+      "Domain constitutions (02-MASTER) + bands 03-13",
+      "CIOA spec → CCE spec",
+      "EC-1 engine/",
+      "EC-2 platform/ (composes EC-1)",
+      "UKB/UKBX + control-tower/twin/artifacts",
+      "MCS (00-MASTER)",
+      "[FUTURE] AEOS execution spine",
+      "[FUTURE] adapters + universal CLI"
+    ],
+    "depends_on_inverse_asymmetry": 77
+  },
+  "traceability": {
+    "dimensions": 13,
+    "populated_pct_per_dimension": {
+      "requirement": 6.64,
+      "architecture": 20.85,
+      "design": 0.0,
+      "implementation": 1.41,
+      "source_code": 0.0,
+      "unit_test": 0.0,
+      "integration_test": 0.0,
+      "functional_test": 0.0,
+      "security_test": 0.0,
+      "certification": 0.0,
+      "deployment": 0.0,
+      "production": 0.0,
+      "operations": 0.0
+    },
+    "mean_pct": 2.22,
+    "dimensions_at_zero": [
+      "design",
+      "source_code",
+      "unit_test",
+      "integration_test",
+      "functional_test",
+      "security_test",
+      "certification",
+      "deployment",
+      "production",
+      "operations"
+    ],
+    "chain_links_total": 10,
+    "chain_links_intact": 2,
+    "trace_edges_traces_to": 5,
+    "trace_edges_both_directions": 10,
+    "unbound_evidence_artefacts": 969
+  },
+  "code": {
+    "total_loc": 246066,
+    "total_tests": 8307,
+    "roots": {
+      "application": {
+        "loc": 23741,
+        "root": "application",
+        "source_files": 67,
+        "test_files": 45,
+        "test_functions": 1082
+      },
+      "data": {
+        "loc": 23577,
+        "root": "data",
+        "source_files": 73,
+        "test_files": 49,
+        "test_functions": 887
+      },
+      "engine": {
+        "loc": 52668,
+        "root": "engine",
+        "source_files": 236,
+        "test_files": 174,
+        "test_functions": 1567
+      },
+      "infrastructure": {
+        "loc": 22599,
+        "root": "infrastructure",
+        "source_files": 67,
+        "test_files": 45,
+        "test_functions": 821
+      },
+      "intelligence": {
+        "loc": 15617,
+        "root": "intelligence",
+        "source_files": 65,
+        "test_files": 6,
+        "test_functions": 115
+      },
+      "platform": {
+        "loc": 87400,
+        "root": "platform",
+        "source_files": 336,
+        "test_files": 266,
+        "test_functions": 2797
+      },
+      "service": {
+        "loc": 20464,
+        "root": "service",
+        "source_files": 79,
+        "test_files": 53,
+        "test_functions": 1038
+      }
+    },
+    "coverage_line_pct": 94.11,
+    "coverage_branch_pct": 90.06,
+    "coverage_source_packages": 34,
+    "gate_scope": {
+      "testpaths": [
+        "engine/tests",
+        "platform/tests"
+      ],
+      "loc_in_scope": 140068,
+      "loc_pct": 56.9,
+      "tests_in_scope": 4364,
+      "tests_pct": 52.5,
+      "roots_outside": [
+        "data",
+        "service",
+        "application",
+        "infrastructure",
+        "intelligence",
+        "realization"
+      ],
+      "subpackages_outside_coverage": [
+        "platform/observability",
+        "platform/portal",
+        "platform/providers",
+        "platform/universal_provider",
+        "platform/repository_intelligence",
+        "platform/commercial_intelligence",
+        "platform/workspace",
+        "intelligence/kernel",
+        "intelligence/publication",
+        "intelligence/realization",
+        "intelligence/research",
+        "intelligence/rie"
+      ],
+      "loc_outside_scope": 105998,
+      "tests_outside_scope": 3943
+    }
+  },
+  "capability": {
+    "total": 66,
+    "implementation_status": {
+      "IMPLEMENTED": 47,
+      "CERTIFIED": 17,
+      "PLANNED": 2
+    },
+    "reuse_disposition": {
+      "REUSE/EXTEND": 19,
+      "REUSE_AS_IS/COMPOSE": 17,
+      "REUSE/COMPOSE": 28,
+      "REALIZE_BY_COMPOSITION": 2
+    },
+    "replacement_prohibited": 45,
+    "evidence_present": 66,
+    "by_category": {
+      "platform": 28,
+      "engine": 17,
+      "intelligence": 7,
+      "automation": 3,
+      "application": 2,
+      "data": 2,
+      "infrastructure": 2,
+      "service": 2,
+      "orchestration_spec": 2,
+      "operational_memory": 1
+    },
+    "spine_gaps": [
+      {
+        "id": "G-01",
+        "missing": "Executable CCE (completeness runtime)",
+        "severity": "HIGH"
+      },
+      {
+        "id": "G-02",
+        "missing": "Executable CIOA (state/critical-path/next/forecast runtime)",
+        "severity": "HIGH"
+      },
+      {
+        "id": "G-03",
+        "missing": "Execution scheduler",
+        "severity": "HIGH"
+      },
+      {
+        "id": "G-04",
+        "missing": "Lease manager (concurrency)",
+        "severity": "MEDIUM"
+      },
+      {
+        "id": "G-05",
+        "missing": "Execution transaction manager",
+        "severity": "MEDIUM"
+      },
+      {
+        "id": "G-06",
+        "missing": "Recovery + resume managers",
+        "severity": "MEDIUM"
+      },
+      {
+        "id": "G-07",
+        "missing": "Git orchestrator",
+        "severity": "MEDIUM"
+      },
+      {
+        "id": "G-08",
+        "missing": "Unified event-ledger reader",
+        "severity": "MEDIUM"
+      },
+      {
+        "id": "G-09",
+        "missing": "AI adapter layer (multi-executor)",
+        "severity": "HIGH"
+      },
+      {
+        "id": "G-10",
+        "missing": "Human adapter",
+        "severity": "LOW"
+      },
+      {
+        "id": "G-11",
+        "missing": "Mission control runtime",
+        "severity": "MEDIUM"
+      },
+      {
+        "id": "G-12",
+        "missing": "Universal AEOS CLI",
+        "severity": "MEDIUM"
+      }
+    ],
+    "aeos_verdict": "FOUNDATION-READY — AEOS may begin as a separately authorized program; NOT begun here."
+  },
+  "gates": {
+    "uccep": {
+      "tier": "full",
+      "certification": "NOT-CERTIFIED",
+      "gates_pass": 13,
+      "gates_total": 14,
+      "programmes_pass": 14,
+      "programmes_total": 16,
+      "blocking_failures": [
+        "CK-REG-DRIFT"
+      ],
+      "advisory_failures": [
+        "CK-CLOSURE-P3",
+        "CK-HEALTH"
+      ],
+      "certification_ceiling": [
+        "`UCCEP-F-001` — phase3_engine.py returns a constant NOT-CLOSED verdict independent of measured state",
+        "`UCCEP-F-002` — Repository health is RED: 1198 of 1198 registered artifacts have incomplete traceability",
+        "`UCCEP-F-003` — engine.graph.cli validate reports a dependency cycle but returns is_valid=true and exit 0 (fail-open)",
+        "`UCCEP-F-004` — CMG-000001 is PROVISIONAL, constitutional Tier T1 is VACANT, and no located authority is competent to ratify"
+      ],
+      "seal": "12a33bff8c2d177885df51ad8cb4182a75ceefe77d3d66977926a67c4cba70df",
+      "gate_verdicts": {
+        "G-01": {
+          "name": "Context Assimilation Gate",
+          "verdict": "PASS"
+        },
+        "G-02": {
+          "name": "Knowledge Assimilation Gate",
+          "verdict": "PASS"
+        },
+        "G-03": {
+          "name": "Reuse Gate",
+          "verdict": "PASS"
+        },
+        "G-04": {
+          "name": "Constitution Gate",
+          "verdict": "PASS"
+        },
+        "G-05": {
+          "name": "Architecture Admission Gate",
+          "verdict": "PASS"
+        },
+        "G-06": {
+          "name": "Repository Truth Gate",
+          "verdict": "PASS"
+        },
+        "G-07": {
+          "name": "Registry Gate",
+          "verdict": "FAIL"
+        },
+        "G-08": {
+          "name": "Dependency Gate",
+          "verdict": "PASS"
+        },
+        "G-09": {
+          "name": "Governance Gate",
+          "verdict": "PASS"
+        },
+        "G-10": {
+          "name": "Validation Gate",
+          "verdict": "PASS"
+        },
+        "G-11": {
+          "name": "Certification Gate",
+          "verdict": "PASS-WITH-ADVISORY"
+        },
+        "G-12": {
+          "name": "Evidence Gate",
+          "verdict": "PASS"
+        },
+        "G-13": {
+          "name": "Implementation Authorization Gate",
+          "verdict": "PASS"
+        },
+        "G-14": {
+          "name": "Implementation Evidence Gate",
+          "verdict": "PASS"
+        }
+      }
+    },
+    "rib": {
+      "determination": "BLUEPRINT CERTIFIED — REPOSITORY MAY PROCEED",
+      "gate": "OPEN",
+      "gates_pass": 12,
+      "gates_total": 12,
+      "units": 236,
+      "seal": "3ba75cb6d996586c5cd2cef0b0757a91d91f56a59d7ef33868db9f4fba31e8c7",
+      "anchored_head": "bde5ffa2284a7ec18945ae2fcd837d182adcc66c",
+      "anchored_tracked": 4894,
+      "stale_vs_anchor": true,
+      "gap_counts": {
+        "GAP-OWNER": 0,
+        "GAP-VERIFICATION": 207,
+        "GAP-COVERAGE": 26,
+        "GAP-CERTIFICATION": 170,
+        "GAP-EVIDENCE": 228,
+        "GAP-DEPENDENCY": 1,
+        "GAP-RUNTIME": 0,
+        "GAP-CAPABILITY": 0,
+        "GAP-REGISTRY": 0,
+        "GAP-DEAD-ENGINE": 0
+      },
+      "duplicate_counts": {
+        "DUP-RESPONSIBILITY": 4,
+        "DUP-CAPABILITY": 0,
+        "DUP-INTERFACE": 0,
+        "DUP-RUNTIME": 0,
+        "DUP-ENGINE": 1,
+        "DUP-REGISTRY": 0,
+        "DUP-CONSTITUTION": 0,
+        "DUP-KNOWLEDGE": 0,
+        "DUP-FREEZE": 2
+      },
+      "queue_max_parallel": 26,
+      "critical_path": [
+        "platform.observability",
+        "platform.workspace",
+        "intelligence",
+        "intelligence.rie",
+        "intelligence.kernel",
+        "platform.universal_provider",
+        "platform.portal",
+        "intelligence.research",
+        "application",
+        "data"
+      ]
+    },
+    "determinism": {
+      "double_build": "PASS",
+      "rie_regeneration": "PASS",
+      "uccep_self_seal": "PASS"
+    }
+  },
+  "knowledge_closure": {
+    "repository_only": {
+      "corpus_files": 0,
+      "concepts": 437,
+      "gaps": 0,
+      "determination": "CLOSED",
+      "gate_exit": 0,
+      "note": "standing session gate — CLOSURE_SKIP_CORPUS=1 hardcoded in .kiro/hooks/uakos-closure-002.json"
+    },
+    "corpus_inclusive": {
+      "corpus_files": 1944,
+      "concepts": 528,
+      "gaps": 91,
+      "determination": "NOT-CLOSED",
+      "gate_exit": 1,
+      "gap_breakdown": {
+        "conversation_only": 91,
+        "duplicate_canonical_homes": 0,
+        "in_repo_unhomed": 0,
+        "not_homed_concepts": 91,
+        "orphan_concepts": 0,
+        "ukda_content_hash_duplicates": 0,
+        "upload_only": 0
+      }
+    },
+    "unhomed_concepts": {
+      "count": 91,
+      "family": "UCOS-COMP",
+      "id_range": "UCOS-COMP-001001 .. UCOS-COMP-009009",
+      "disposition": "UNCLASSIFIED",
+      "sources": [
+        "UCOS Ω∞ - Universal Civilization Operating System_Part-001(Phase-000-019).docx",
+        "UCOS Ω∞ - Universal Platform.docx",
+        "+8 derived extraction outputs"
+      ]
+    },
+    "families": {
+      "APPLICATION": 21,
+      "ARCH": 22,
+      "BAND-UNIT": 53,
+      "CEP": 11,
+      "DATA": 20,
+      "EC3-GATE": 5,
+      "EPIC": 11,
+      "FOUNDATION": 6,
+      "GOV": 11,
+      "INFRASTRUCTURE": 19,
+      "LAW": 21,
+      "MCP": 8,
+      "MCS": 1,
+      "MEP": 12,
+      "METACLASS": 91,
+      "PHASE": 12,
+      "PLATFORM": 19,
+      "RUNTIME": 16,
+      "SERVICE": 19,
+      "UCKO": 25,
+      "UCOS-COMP": 96,
+      "UCOS-EXEC": 12,
+      "UCOS-GOV": 7,
+      "UCOS-RAT": 2,
+      "UCOS-RECON": 4,
+      "UKDA-DEC": 4
+    },
+    "dispositions": {
+      "DEFERRED": 69,
+      "IMPLEMENTED": 319,
+      "REJECTED": 6,
+      "SPECIFIED": 43,
+      "UNCLASSIFIED": 91
+    },
+    "external_corpus": {
+      "path": "<repo>/../UCOS",
+      "files_total": 6332,
+      "files_eligible": 1944,
+      "tracked": false,
+      "hash_pinned": false
+    }
+  },
+  "progress": {
+    "reconciled_dimension_index_pct": 26.7,
+    "unit_validation_pct": 94.11,
+    "per_dimension": {
+      "architecture": {
+        "as_of": "2026-07-27T16:26:49+00:00",
+        "literal_score": 1.0,
+        "reconciled_score": 1.0,
+        "source": "MANUAL",
+        "stale": false,
+        "status": "APPROVED"
+      },
+      "build": {
+        "as_of": "2026-07-15T08:05:00Z",
+        "literal_score": 0.0,
+        "reconciled_score": 0.0,
+        "source": "GITHUB_ACTIONS",
+        "stale": true,
+        "status": "BLOCKED"
+      },
+      "certification": {
+        "as_of": "2026-07-27T16:26:49+00:00",
+        "literal_score": 1.0,
+        "reconciled_score": 1.0,
+        "source": "MANUAL",
+        "stale": false,
+        "status": "CERTIFIED"
+      },
+      "deployment": {
+        "as_of": "2026-07-15T08:33:00Z",
+        "literal_score": 0.5,
+        "reconciled_score": 0.5,
+        "source": "KUBERNETES",
+        "stale": true,
+        "status": "IN_PROGRESS"
+      },
+      "execution": {
+        "as_of": "2026-07-27T16:26:49+00:00",
+        "literal_score": 0.0,
+        "reconciled_score": 0.0,
+        "source": "MANUAL",
+        "stale": false,
+        "status": "NOT_STARTED"
+      },
+      "functional_testing": {
+        "as_of": "2026-07-27T16:26:49+00:00",
+        "literal_score": 0.0,
+        "reconciled_score": 0.0,
+        "source": "MANUAL",
+        "stale": false,
+        "status": "NOT_STARTED"
+      },
+      "implementation": {
+        "as_of": "2026-07-16T09:56:37+05:30",
+        "literal_score": 1.0,
+        "reconciled_score": 1.0,
+        "source": "GIT",
+        "stale": true,
+        "status": "IMPLEMENTED"
+      },
+      "integration_testing": {
+        "as_of": "2026-07-27T16:26:49+00:00",
+        "literal_score": 0.0,
+        "reconciled_score": 0.0,
+        "source": "MANUAL",
+        "stale": false,
+        "status": "NOT_STARTED"
+      },
+      "operational": {
+        "as_of": "2026-07-15T08:22:00Z",
+        "literal_score": 0.0,
+        "reconciled_score": 0.0,
+        "source": "PROMETHEUS",
+        "stale": true,
+        "status": "BLOCKED"
+      },
+      "performance_testing": {
+        "as_of": "2026-07-27T16:26:49+00:00",
+        "literal_score": 0.0,
+        "reconciled_score": 0.0,
+        "source": "MANUAL",
+        "stale": false,
+        "status": "NOT_STARTED"
+      },
+      "portfolio": {
+        "as_of": "2026-07-27T16:26:49+00:00",
+        "literal_score": 0.5,
+        "reconciled_score": 0.5,
+        "source": "MANUAL",
+        "stale": false,
+        "status": "IN_PROGRESS"
+      },
+      "production": {
+        "as_of": "2026-07-15T08:22:00Z",
+        "literal_score": 0.0,
+        "reconciled_score": 0.0,
+        "source": "PROMETHEUS",
+        "stale": true,
+        "status": "BLOCKED"
+      },
+      "release": {
+        "as_of": "2026-07-27T16:26:49+00:00",
+        "literal_score": 0.0,
+        "reconciled_score": 0.0,
+        "source": "MANUAL",
+        "stale": false,
+        "status": "NOT_STARTED"
+      },
+      "security": {
+        "as_of": "2026-07-15T08:12:00Z",
+        "literal_score": 0.0,
+        "reconciled_score": 0.0,
+        "source": "TRIVY",
+        "stale": true,
+        "status": "BLOCKED"
+      },
+      "unit_testing": {
+        "as_of": "2026-07-15T08:05:00Z",
+        "literal_score": 0.0,
+        "reconciled_score": 0.0,
+        "source": "GITHUB_ACTIONS",
+        "stale": true,
+        "status": "BLOCKED"
+      }
+    },
+    "stale_dimensions": [
+      "build",
+      "deployment",
+      "implementation",
+      "operational",
+      "production",
+      "security",
+      "unit_testing"
+    ],
+    "blocked_dimensions": [
+      "build",
+      "operational",
+      "production",
+      "security",
+      "unit_testing"
+    ],
+    "zero_dimensions": [
+      "build",
+      "execution",
+      "functional_testing",
+      "integration_testing",
+      "operational",
+      "performance_testing",
+      "production",
+      "release",
+      "security",
+      "unit_testing"
+    ]
+  },
+  "blockers": [
+    {
+      "id": "B-1",
+      "severity": "BLOCKING",
+      "remediable_internally": true,
+      "effort": "hours",
+      "title": "Registry content-hash drift at the anchor commit",
+      "gate": "CK-REG-DRIFT exit 3 → G-07 FAIL → UCCEP NOT-CERTIFIED",
+      "owner": "00-BOOK/tools/register.sh (REG-AUTO-001 §16.3) · repository operator",
+      "proof": "detached git worktree at c6c20fb, 0 dirty entries, register.sh --guard reported REGISTRATION DRIFT DETECTED",
+      "root_cause": "commit b47f5b9 regenerated 10 intelligence/ artifacts; artifacts.json last registered at 898ef8d; 0/10 HEAD hashes match committed bytes, 10/10 re-registered hashes do",
+      "exit_criterion": "register.sh --guard exits 0 from a clean tree; all 1204 content_hash values match committed bytes"
+    },
+    {
+      "id": "B-2",
+      "severity": "BLOCKING",
+      "remediable_internally": true,
+      "effort": "days",
+      "title": "Knowledge assimilation NOT closed against the source corpus",
+      "gate": "closure_engine.py --gate exits 1 with corpus in scope",
+      "owner": "UAKOS-CLOSURE-002 (FROZEN) → successor UAKOS-CLOSURE-003/006 · .kiro/hooks/uakos-closure-002.json",
+      "proof": "437 concepts / 0 gaps repository-only vs 528 concepts / 91 gaps corpus-inclusive",
+      "exit_criterion": "91 UCOS-COMP concepts homed; CLOSURE_SKIP_CORPUS=1 removed from the standing hook"
+    },
+    {
+      "id": "B-3",
+      "severity": "BLOCKING",
+      "remediable_internally": true,
+      "effort": "weeks",
+      "title": "Traceability spine effectively absent",
+      "gate": "CK-HEALTH advisory FAIL — does not block",
+      "owner": "00-CEP/CEP-008 · platform/measurement (UCOS-UMA-001) · engine/graph",
+      "proof": "mean 2.2% over 1204 artifacts x 13 dimensions; 10 dimensions at 0.0%; 5 trace edges of 12851; corroborated by platform.measurement (1198/1198) and REG-AUTO-001 (272/1199)",
+      "exit_criterion": "platform.measurement.cli health --strict exits 0; CK-HEALTH promoted to blocking"
+    },
+    {
+      "id": "B-4",
+      "severity": "BLOCKING",
+      "remediable_internally": true,
+      "effort": "days + resulting failures",
+      "title": "Canonical verification covers 56.9% of LOC and 52.5% of tests",
+      "gate": "CK-VERIFY PASS — over the declared scope only",
+      "owner": "pyproject.toml · Makefile (lint target)",
+      "proof": "testpaths=[engine/tests,platform/tests]; coverage source=34 packages; 6 roots and 12 subpackages excluded",
+      "exit_criterion": "testpaths, coverage source, packages.find and lint extended to all 8 code roots; gate green at new scope"
+    },
+    {
+      "id": "B-5",
+      "severity": "BLOCKING",
+      "remediable_internally": false,
+      "effort": "external decision",
+      "title": "Standing constitutional vacancy — Tier T1 VACANT, no competent ratifying authority",
+      "gate": "cmg-gate READY-PROVISIONAL · 1 vacancy · 9 gaps · 7 open questions (6 open)",
+      "owner": "00-CMG/CMG-000014 · 00-CEP/CEP-006",
+      "proof": "UCCEP-F-004; 00-CMG/README self-reports CMG-000001 PROVISIONAL and no authority competent to ratify",
+      "exit_criterion": "authority external to the artefact set ratifies via the CEP-006 route"
+    }
+  ],
+  "gap_totals": {
+    "blocking": 5,
+    "major": 11,
+    "minor": 16,
+    "classes_verified_absent": 16
+  },
+  "risk_totals": {
+    "critical": 3,
+    "high": 4,
+    "medium": 8,
+    "low": 6,
+    "root_causes": [
+      "gate scope narrower than gate claim",
+      "derived state not re-anchored after source change",
+      "control plane specified but unbuilt"
+    ]
+  },
+  "wave_readiness": {
+    "wave_2_engineering_kernel": "CONDITIONALLY READY",
+    "wave_3_execution_spine": "NOT READY",
+    "wave_4_runtime_deployment": "NOT READY",
+    "wave_5_production_autonomy": "NOT READY"
+  },
+  "freeze_recommendation": {
+    "architecture": "FREEZE — scope-limited, after precondition 1",
+    "baseline": "WITHHOLD pending B-1",
+    "not_frozen": [
+      "layer 5 CIOA/CCE (PLANNED)",
+      "layers 10-11 AEOS spine/adapters/CLI (absent)",
+      "14-SECURITY (-005..-018 absent)",
+      "15-USIS (no code root)",
+      "runtime/deployment/production dimensions (unmeasured)",
+      "identity strategy (decision pending)"
+    ]
+  },
+  "success_criteria": {
+    "repository_completely_assimilated": "MET",
+    "architecture_completely_assimilated": "MET",
+    "knowledge_completely_assimilated": "NOT MET",
+    "every_object_inventoried": "MET",
+    "every_capability_inventoried": "MET",
+    "every_dependency_mapped": "MET WITH DEFECTS",
+    "every_registry_inventoried": "MET",
+    "every_trace_verified": "NOT MET",
+    "every_gap_identified": "MET",
+    "every_reuse_opportunity_identified": "MET",
+    "architecture_certified_implementation_ready": "CONDITIONAL"
+  },
+  "wave2_entry_gate": [
+    "bash 00-BOOK/tools/register.sh --guard exits 0 from a clean tree (B-1)",
+    "make uccep-full returns CERTIFIED-PROVISIONAL with blocking=none, at an anchor where rib.json head == HEAD (B-1 + G-RIB-1)",
+    "pyproject.toml and the lint target cover all 8 code roots and the gate is green (B-4)",
+    "closure_engine.py --gate exits 0 with CLOSURE_SKIP_CORPUS unset (B-2)"
+  ]
+}

@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "DMC-10",
+      "certification_id": "UCOS-CERT-DMC-10-afa02b108e3ca0c5",
+      "entry_hash": "7011900b8a4408b849e63a310174214a5389e7f1ba87762296bc90c509fe465c",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "afa02b108e3ca0c56a614c0ae3429cf39e2a87baa3c49ab5ad991dc7b89dca38",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-SECURITY-ucos.data.security.foundation-ee2637ff1e457263",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "7011900b8a4408b849e63a310174214a5389e7f1ba87762296bc90c509fe465c",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

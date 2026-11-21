@@ -1,0 +1,383 @@
+{
+  "authority": "NONE — DERIVED TRUTH. Measurement only; this file certifies nothing and creates no authority.",
+  "phase": 7,
+  "measured": {
+    "statements": {
+      "covered": 72624,
+      "valid": 77830,
+      "rate_pct": 93.3111,
+      "missing": 5206
+    },
+    "branches": {
+      "covered": 15470,
+      "valid": 17832,
+      "rate_pct": 86.7541,
+      "missing": 2362
+    },
+    "uncovered_points_total": 7568,
+    "files_with_uncovered": 183
+  },
+  "declared_gate": "--cov-fail-under=90 (pyproject addopts) — PASSING",
+  "target": "100.0000% statements and branches — NOT ACHIEVED",
+  "exclusions_applied": "NONE. No file excluded, no line suppressed, no ignore list, no threshold reduction, no scope reduction.",
+  "concentration": [
+    {
+      "package": "platform/repository_intelligence",
+      "uncovered": 1639,
+      "statements": 1181,
+      "branches": 458,
+      "share_pct": 21.66
+    },
+    {
+      "package": "platform/commercial_intelligence",
+      "uncovered": 1634,
+      "statements": 1122,
+      "branches": 512,
+      "share_pct": 21.59
+    },
+    {
+      "package": "00-MASTER/UAKOS-CLOSURE-008",
+      "uncovered": 841,
+      "statements": 635,
+      "branches": 206,
+      "share_pct": 11.11
+    },
+    {
+      "package": "00-MASTER/UAKOS-CLOSURE-009",
+      "uncovered": 409,
+      "statements": 319,
+      "branches": 90,
+      "share_pct": 5.4
+    },
+    {
+      "package": "platform/universal_provider",
+      "uncovered": 369,
+      "statements": 298,
+      "branches": 71,
+      "share_pct": 4.88
+    },
+    {
+      "package": "00-MASTER/UCOS-UCAF-001",
+      "uncovered": 301,
+      "statements": 170,
+      "branches": 131,
+      "share_pct": 3.98
+    },
+    {
+      "package": "engine/knowledge",
+      "uncovered": 283,
+      "statements": 174,
+      "branches": 109,
+      "share_pct": 3.74
+    },
+    {
+      "package": "00-MASTER/UAKOS-PHASE-001B",
+      "uncovered": 261,
+      "statements": 171,
+      "branches": 90,
+      "share_pct": 3.45
+    },
+    {
+      "package": "00-MASTER/UKAP-001",
+      "uncovered": 213,
+      "statements": 161,
+      "branches": 52,
+      "share_pct": 2.81
+    },
+    {
+      "package": "00-MASTER/UAIE-000001",
+      "uncovered": 212,
+      "statements": 122,
+      "branches": 90,
+      "share_pct": 2.8
+    },
+    {
+      "package": "00-MASTER/UCOS-URAT-001",
+      "uncovered": 171,
+      "statements": 105,
+      "branches": 66,
+      "share_pct": 2.26
+    },
+    {
+      "package": "00-MASTER/UCOS-UFEP-001",
+      "uncovered": 167,
+      "statements": 105,
+      "branches": 62,
+      "share_pct": 2.21
+    }
+  ],
+  "classification_method": "Package-level triage from the measured coverage report. Per-point classification into legitimate/dead/missing-test/missing-engine/missing-governance/missing-traceability was NOT performed — it requires reading 158 files and is a test-authoring programme, not a measurement.",
+  "closure_plan_by_constitutional_priority": [
+    {
+      "rank": 1,
+      "scope": "platform/repository_intelligence",
+      "uncovered": 1639,
+      "basis": "owns capability discovery consumed by the knowledge store and UCL-V-41's population; highest constitutional coupling"
+    },
+    {
+      "rank": 2,
+      "scope": "platform/universal_provider",
+      "uncovered": 369,
+      "basis": "provider framework underpins PRV-* discovery across UCL/ACEE"
+    },
+    {
+      "rank": 3,
+      "scope": "engine/knowledge",
+      "uncovered": 283,
+      "basis": "Knowledge Once Principle realization (UCKO-PRIN-0001)"
+    },
+    {
+      "rank": 4,
+      "scope": "platform/commercial_intelligence",
+      "uncovered": 1634,
+      "basis": "largest single block but no constitutional authority consumes it"
+    },
+    {
+      "rank": 5,
+      "scope": "all remaining packages",
+      "uncovered": 3643
+    }
+  ],
+  "top_files": [
+    {
+      "file": "00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py",
+      "uncovered_statements": 623,
+      "uncovered_branches": 194,
+      "total": 817
+    },
+    {
+      "file": "platform/repository_intelligence/discovery.py",
+      "uncovered_statements": 275,
+      "uncovered_branches": 172,
+      "total": 447
+    },
+    {
+      "file": "platform/commercial_intelligence/validation.py",
+      "uncovered_statements": 333,
+      "uncovered_branches": 86,
+      "total": 419
+    },
+    {
+      "file": "00-MASTER/UAKOS-CLOSURE-009/requirement_engine.py",
+      "uncovered_statements": 319,
+      "uncovered_branches": 90,
+      "total": 409
+    },
+    {
+      "file": "00-MASTER/UCOS-UCAF-001/ucaf_engine.py",
+      "uncovered_statements": 170,
+      "uncovered_branches": 131,
+      "total": 301
+    },
+    {
+      "file": "platform/repository_intelligence/cli.py",
+      "uncovered_statements": 195,
+      "uncovered_branches": 72,
+      "total": 267
+    },
+    {
+      "file": "00-MASTER/UAKOS-PHASE-001B/provenance_engine.py",
+      "uncovered_statements": 171,
+      "uncovered_branches": 90,
+      "total": 261
+    },
+    {
+      "file": "platform/repository_intelligence/graph.py",
+      "uncovered_statements": 168,
+      "uncovered_branches": 87,
+      "total": 255
+    },
+    {
+      "file": "00-MASTER/UKAP-001/corpus_engine.py",
+      "uncovered_statements": 161,
+      "uncovered_branches": 52,
+      "total": 213
+    },
+    {
+      "file": "00-MASTER/UAIE-000001/uaie_engine.py",
+      "uncovered_statements": 122,
+      "uncovered_branches": 90,
+      "total": 212
+    },
+    {
+      "file": "00-MASTER/UCOS-URAT-001/urat_engine.py",
+      "uncovered_statements": 105,
+      "uncovered_branches": 66,
+      "total": 171
+    },
+    {
+      "file": "00-MASTER/UCOS-UFEP-001/ufep_engine.py",
+      "uncovered_statements": 105,
+      "uncovered_branches": 62,
+      "total": 167
+    },
+    {
+      "file": "00-MASTER/UAEP-000001/uaep_engine.py",
+      "uncovered_statements": 102,
+      "uncovered_branches": 60,
+      "total": 162
+    },
+    {
+      "file": "platform/repository_intelligence/recommendation.py",
+      "uncovered_statements": 104,
+      "uncovered_branches": 54,
+      "total": 158
+    },
+    {
+      "file": "platform/commercial_intelligence/pricing.py",
+      "uncovered_statements": 93,
+      "uncovered_branches": 60,
+      "total": 153
+    },
+    {
+      "file": "platform/repository_intelligence/substrate.py",
+      "uncovered_statements": 124,
+      "uncovered_branches": 26,
+      "total": 150
+    },
+    {
+      "file": "00-MASTER/UCOS-UTCE-001/utce_engine.py",
+      "uncovered_statements": 96,
+      "uncovered_branches": 53,
+      "total": 149
+    },
+    {
+      "file": "platform/commercial_intelligence/licensing.py",
+      "uncovered_statements": 79,
+      "uncovered_branches": 54,
+      "total": 133
+    },
+    {
+      "file": "platform/commercial_intelligence/approval.py",
+      "uncovered_statements": 80,
+      "uncovered_branches": 50,
+      "total": 130
+    },
+    {
+      "file": "platform/universal_provider/framework.py",
+      "uncovered_statements": 104,
+      "uncovered_branches": 20,
+      "total": 124
+    },
+    {
+      "file": "platform/commercial_intelligence/policy.py",
+      "uncovered_statements": 69,
+      "uncovered_branches": 40,
+      "total": 109
+    },
+    {
+      "file": "platform/universal_provider/cli.py",
+      "uncovered_statements": 96,
+      "uncovered_branches": 12,
+      "total": 108
+    },
+    {
+      "file": "platform/commercial_intelligence/customer.py",
+      "uncovered_statements": 61,
+      "uncovered_branches": 36,
+      "total": 97
+    },
+    {
+      "file": "platform/repository_intelligence/config.py",
+      "uncovered_statements": 63,
+      "uncovered_branches": 23,
+      "total": 86
+    },
+    {
+      "file": "platform/commercial_intelligence/documentation.py",
+      "uncovered_statements": 54,
+      "uncovered_branches": 30,
+      "total": 84
+    },
+    {
+      "file": "platform/commercial_intelligence/marketplace.py",
+      "uncovered_statements": 50,
+      "uncovered_branches": 28,
+      "total": 78
+    },
+    {
+      "file": "platform/commercial_intelligence/packages.py",
+      "uncovered_statements": 48,
+      "uncovered_branches": 30,
+      "total": 78
+    },
+    {
+      "file": "platform/commercial_intelligence/cli.py",
+      "uncovered_statements": 60,
+      "uncovered_branches": 16,
+      "total": 76
+    },
+    {
+      "file": "platform/repository_intelligence/validation.py",
+      "uncovered_statements": 70,
+      "uncovered_branches": 6,
+      "total": 76
+    },
+    {
+      "file": "platform/commercial_intelligence/investment.py",
+      "uncovered_statements": 46,
+      "uncovered_branches": 26,
+      "total": 72
+    },
+    {
+      "file": "platform/commercial_intelligence/config.py",
+      "uncovered_statements": 47,
+      "uncovered_branches": 22,
+      "total": 69
+    },
+    {
+      "file": "platform/universal_provider/evidence.py",
+      "uncovered_statements": 49,
+      "uncovered_branches": 16,
+      "total": 65
+    },
+    {
+      "file": "00-MASTER/UCOS-UAR-001/uar_engine.py",
+      "uncovered_statements": 44,
+      "uncovered_branches": 17,
+      "total": 61
+    },
+    {
+      "file": "platform/repository_intelligence/runtime.py",
+      "uncovered_statements": 53,
+      "uncovered_branches": 8,
+      "total": 61
+    },
+    {
+      "file": "platform/repository_intelligence/contracts.py",
+      "uncovered_statements": 54,
+      "uncovered_branches": 4,
+      "total": 58
+    },
+    {
+      "file": "platform/commercial_intelligence/evidence.py",
+      "uncovered_statements": 36,
+      "uncovered_branches": 18,
+      "total": 54
+    },
+    {
+      "file": "platform/universal_ownership/cli.py",
+      "uncovered_statements": 34,
+      "uncovered_branches": 18,
+      "total": 52
+    },
+    {
+      "file": "engine/ceu/existence.py",
+      "uncovered_statements": 29,
+      "uncovered_branches": 19,
+      "total": 48
+    },
+    {
+      "file": "engine/knowledge/ukip/discovery.py",
+      "uncovered_statements": 30,
+      "uncovered_branches": 12,
+      "total": 42
+    },
+    {
+      "file": "platform/commercial_intelligence/portfolio.py",
+      "uncovered_statements": 30,
+      "uncovered_branches": 12,
+      "total": 42
+    }
+  ]
+}

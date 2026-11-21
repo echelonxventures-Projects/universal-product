@@ -1,0 +1,160 @@
+{
+  "authority": "AUTHORED REPOSITORY TRUTH, HELD SUBORDINATE UNDER UCKP-LAW-0001. This record states the deterministic result of the canonical repository gate. It is an INPUT to 06-VALIDATION-REPORT.md and is never produced by the engine that renders it.",
+  "constitutional_superior": {
+    "articles": [
+      "UCKP-ART-12",
+      "UCKP-ART-16"
+    ],
+    "authority": "UCKP-LAW-0001",
+    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+    "effect": "This record owns the deterministic result of one named validation, kept so the act can be reviewed after the fact. It may never own the standard it validated against: a record of a measurement is not the law the measurement was taken under.",
+    "home": "engine/uckp/law.py",
+    "relation": "PROJECTION",
+    "role": "EVIDENCE"
+  },
+  "contract": {
+    "artifact_references": [
+      "verify.sh",
+      "scripts/ucos-env.sh"
+    ],
+    "command": "./verify.sh --full",
+    "contract_id": "UCOS-VERIFY-001",
+    "invocation": "--full (the certification contract; the bare invocation is --change, a developer mode that certifies nothing)",
+    "stages_digest": "e1c44382b4111296fe3e9cf997c93bd4a6a21a23c71468e8d0562eb737aa1434",
+    "stages_digest_definition": "sha256 over the newline-joined stage names this contract declares, read from verify.sh. A gate added to the contract and not to this record fails the record's own test."
+  },
+  "evidence_reference": {
+    "archive_path": "00-MASTER/UAKOS-CLOSURE-008/evidence/",
+    "canonical_identity_role": "NON_CANONICAL",
+    "classification": "EXECUTION_TRANSCRIPT",
+    "evidence_id": "UAKOS-CLOSURE-008/EV-VERIFY-001",
+    "member": "verify.log",
+    "retention": "PRESERVED. The archive is deliberately untracked by .gitignore rule 00-MASTER/**/evidence/ and is published by the CI workflow as a run artifact. It is evidence of the event, not a component of repository identity, and nothing reads it to render a canonical artifact."
+  },
+  "result": "PASS",
+  "schema": "ucos-canonical-validation-record",
+  "stages": [
+    {
+      "result": "PASS",
+      "stage": "ruff lint + format-check (engine + platform)"
+    },
+    {
+      "result": "PASS",
+      "stage": "prerequisite generation (knowledge · determinism · closure 1-3)"
+    },
+    {
+      "result": "PASS",
+      "stage": "pytest + coverage gate (--cov-fail-under=90)"
+    },
+    {
+      "result": "PASS",
+      "stage": "omega gate (discovery · authority · reachability · ratchets · disposition)"
+    },
+    {
+      "result": "PASS",
+      "stage": "governance enforce --pre"
+    },
+    {
+      "result": "PASS",
+      "stage": "registry validate (schema + integrity)"
+    },
+    {
+      "result": "PASS",
+      "stage": "meta-constitutional conformance (CMG-INV-01..12)"
+    },
+    {
+      "result": "PASS",
+      "stage": "universal object governance (UGA-INV-01..10)"
+    },
+    {
+      "result": "PASS",
+      "stage": "universal context closure (every declared context invariant)"
+    },
+    {
+      "result": "PASS",
+      "stage": "context closure certification (UCOS-UCTX-001, Phase 10 claims at fixed point)"
+    },
+    {
+      "result": "PASS",
+      "stage": "context proposal gate (four declared gates, every discovered proposal)"
+    },
+    {
+      "result": "PASS",
+      "stage": "independent context provenance (MB7)"
+    },
+    {
+      "result": "PASS",
+      "stage": "independent producer verification (UFI, every declared adopter)"
+    },
+    {
+      "result": "PASS",
+      "stage": "autonomous universal evolution (UAUE gate, every declared obligation)"
+    },
+    {
+      "result": "PASS",
+      "stage": "evolution surface replay (history + 18 registers)"
+    },
+    {
+      "result": "PASS",
+      "stage": "universal object birth contract (UOBC-000001, identity before existence)"
+    },
+    {
+      "result": "PASS",
+      "stage": "universal infinite scope and direction (UISD-000001, unbounded and self-applied)"
+    },
+    {
+      "result": "PASS",
+      "stage": "constitutional primitive alignment (UCPA-000001, root ontology measured and reduced)"
+    },
+    {
+      "result": "PASS",
+      "stage": "coordinate framework alignment (UCCFA-000001, five coordinates measured against the register)"
+    },
+    {
+      "result": "PASS",
+      "stage": "universal verification intelligence (UVI-000001, selection derived and assurance preserved)"
+    },
+    {
+      "result": "PASS",
+      "stage": "universal construct foundation (UCON-000001, every construct disposed and nothing silently ignored)"
+    },
+    {
+      "result": "PASS",
+      "stage": "universal enforcement closure (UEC-000001, every protection governed, invoked twice and covered)"
+    },
+    {
+      "result": "PASS",
+      "stage": "universal recursive knowledge foundation (URKE-000001, every unknown governed and no mechanism closed against a future domain)"
+    },
+    {
+      "result": "PASS",
+      "stage": "mutation governance boundary decidability (EX-018, every classification rule implemented, reachable and claiming subjects)"
+    },
+    {
+      "result": "PASS",
+      "stage": "mandate disposition closure (CAEM-001, every mandate disposed and no disposition invented)"
+    },
+    {
+      "result": "PASS",
+      "stage": "cross-process initialization independence (BC-2, no verdict moves with initialization order)"
+    },
+    {
+      "result": "PASS",
+      "stage": "coverage report"
+    }
+  ],
+  "validation_id": "UAKOS-CLOSURE-008.VR-001",
+  "version": "1.0.0",
+  "why_this_exists": [
+    "06-VALIDATION-REPORT.md previously embedded the tail of evidence/verify.log verbatim, and",
+    "04-REPOSITORY-CHANGE-REGISTER.md recorded the byte count and content hash that resulted. Two",
+    "canonical artifacts therefore carried the stdout of one historical execution on one machine.",
+    ".gitignore excludes 00-MASTER/**/evidence/, so the transcript was never in the tree: rendering a",
+    "fresh checkout produced the fail-closed NOT-CAPTURED branch instead, and the committed registers",
+    "were not the rendered fixed point the CI drift gate asserts them to be.",
+    "",
+    "A validation RESULT is repository truth. An execution TRANSCRIPT is a historical observation of",
+    "one run. This record is the first; the transcript stays in the evidence archive, referenced by",
+    "identity and never by content, so running the command again moves no canonical byte."
+  ]
+}

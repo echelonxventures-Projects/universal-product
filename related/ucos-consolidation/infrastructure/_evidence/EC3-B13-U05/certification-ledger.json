@@ -1,0 +1,73 @@
+{
+  "count": 6,
+  "entries": [
+    {
+      "blueprint_id": "Locality",
+      "certification_id": "UCOS-CERT-Locality-b8c70535f1d0c590",
+      "entry_hash": "d150be68c59a09f070c074c92e788eecf2a5ae4b4d31a1fe0f25a5eadc9c1354",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "b8c70535f1d0c590366f1d5558c0184bb318f46355ab9544ee57e147dba3c0f7",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-LOCALITY-ucos.infrastructure.locality.foundation-e5313c491bc3fe9c",
+      "version": "1.0.0"
+    },
+    {
+      "blueprint_id": "IsolationBoundary",
+      "certification_id": "UCOS-CERT-IsolationBoundary-ff29d63e53a3fc7b",
+      "entry_hash": "7fac6c31bc2ecef8a52cfa015c987ee865d0e37e61daa7f79a086f5f968ae1b7",
+      "prev_hash": "d150be68c59a09f070c074c92e788eecf2a5ae4b4d31a1fe0f25a5eadc9c1354",
+      "record_sha256": "ff29d63e53a3fc7b8bb1b707dc9c5a482ed3a2e5878981ca5f085af0ec8fd077",
+      "sequence": 1,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-BOUNDARY-ucos.infrastructure.boundary.foundation-fadcbdeca1451826",
+      "version": "1.0.0"
+    },
+    {
+      "blueprint_id": "Node",
+      "certification_id": "UCOS-CERT-Node-7f2293730b9ddf7a",
+      "entry_hash": "18010a052bb7214db234c26ccbe2d10cd1cfb14353be33f9fd607a98d9eba664",
+      "prev_hash": "7fac6c31bc2ecef8a52cfa015c987ee865d0e37e61daa7f79a086f5f968ae1b7",
+      "record_sha256": "7f2293730b9ddf7acbb93c487b3945fc6f64a2c87083ce78813d951bb2e63ed6",
+      "sequence": 2,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-NODE-ucos.infrastructure.node.foundation-dace5c87e44b6d83",
+      "version": "1.0.0"
+    },
+    {
+      "blueprint_id": "Cluster",
+      "certification_id": "UCOS-CERT-Cluster-7d3a3dc9f95a87f1",
+      "entry_hash": "26e3735109288cf3f3f7dec8522fbd2f7429cd00fe0185cdcb7c80fd6dd9c26c",
+      "prev_hash": "18010a052bb7214db234c26ccbe2d10cd1cfb14353be33f9fd607a98d9eba664",
+      "record_sha256": "7d3a3dc9f95a87f1fb12a60eb04de69bd89e40ee04fda80fdf5898561149fdfc",
+      "sequence": 3,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-CLUSTER-ucos.infrastructure.cluster.foundation-85fea9deef595309",
+      "version": "1.0.0"
+    },
+    {
+      "blueprint_id": "Environment",
+      "certification_id": "UCOS-CERT-Environment-b8935f66198b5593",
+      "entry_hash": "4d70fff972f55f2ff2782e385366ceebbb7639c59af07e6e84cd49eb6d6bbeef",
+      "prev_hash": "26e3735109288cf3f3f7dec8522fbd2f7429cd00fe0185cdcb7c80fd6dd9c26c",
+      "record_sha256": "b8935f66198b5593f9bfae18f3ac0f1f1c8bf14b7ffac5f3b4164fd760583847",
+      "sequence": 4,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-ENVIRONMENT-ucos.infrastructure.environment.foundation-407ddc4ae587c6d6",
+      "version": "1.0.0"
+    },
+    {
+      "blueprint_id": "ProvisioningProcess",
+      "certification_id": "UCOS-CERT-ProvisioningProcess-929a6a4a862f3e58",
+      "entry_hash": "f7a4241db99c9d2d60fffe441dff84e3ed52d44990b446c7c76f4366b118d4ae",
+      "prev_hash": "4d70fff972f55f2ff2782e385366ceebbb7639c59af07e6e84cd49eb6d6bbeef",
+      "record_sha256": "929a6a4a862f3e580928a1069f4d85ef1699791c37150c65dcd0e33c7f0f4b32",
+      "sequence": 5,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-PROVISIONING-ucos.infrastructure.provisioning.foundation-516270cb03abc318",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "f7a4241db99c9d2d60fffe441dff84e3ed52d44990b446c7c76f4366b118d4ae",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

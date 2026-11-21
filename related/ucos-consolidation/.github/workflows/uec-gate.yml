@@ -1,0 +1,264 @@
+name: UEC-000001 Universal Enforcement Closure Gate
+
+# UEC-000001 — closure over the ENFORCEMENT surface, measured in CI.
+#
+# WHY THIS EXISTS, stated as the measurement that produced it. In an isolated worktree at HEAD,
+# seven workflow files were deleted — including ec1-ci.yml, the sole CI invoker of
+# `./verify.sh --full` — together with six fail-closed Makefile gate targets. The UVI gate exited
+# 0. The UAUE gate exited 0. A control test run and the post-deletion run were byte-identical:
+# `5 failed, 191 passed, 1 skipped, 3 errors` both times. Thirteen enforcement artifacts were
+# removed and the repository produced no signal of any kind.
+#
+# Separately, a one-line `return True` inserted into `compare()` in uis_engine.py and
+# acee_engine.py flipped both gates from exit 1 (CLOSED) to exit 0 (OPEN). All nine of UIS's own
+# `--check-*` self-guards still passed. Zero test files reference either programme.
+#
+# ROOT CAUSE, and why it is not "someone forgot". The repository possesses exactly one closure
+# mechanism over its objects: REG-AUTO-001 registration. Its boundary, in 00-BOOK/tools/config.py,
+# admits .md/.txt/.docx/.json and excludes .github/, 00-MASTER/ and 00-BOOK/tools/. Measured over
+# the 1597 entries of 00-BOOK/DATA/artifacts.json: 0 are .py, 0 are .yml, 0 are under .github/,
+# 0 are under 00-MASTER/. The entire enforcement surface is definitionally invisible to the only
+# closure mechanism the repository has. Deletion is undetectable because the deleted thing was
+# never in a register, and could not have been.
+#
+# WHAT THIS WORKFLOW ADDS NO AUTHORITY OVER. It owns no gate other than UEC's own. It does not
+# register corpus artifacts (REG-AUTO-001), reconcile verify.sh stages (UVI-L-03), own the
+# mutation boundary (H-06/CR-09), or decide compliance. It answers one question: can a protection
+# disappear, be added outside governance, become untested, become single-pointed or become
+# vacuous without a fail-closed signal.
+#
+# THE SELF-COVERAGE JOB IS THE POINT. A closure mechanism outside its own closure is discovery
+# D-09 — "trust anchor -> REG-AUTO-001, itself unregistered" — and 00-BOOK/tools/ is excluded from
+# registration on the stated ground that "the registry must not list itself". UEC lists itself,
+# and UEC-L-09 refuses if it does not. Job `uec-self-coverage` proves that leg in CI, and job
+# `uec-mutation` proves the laws can refuse at all, because twelve laws that hold and cannot be
+# made to fail would measure nothing.
+#
+# EXIT CODES. 0 OPEN, 1 CLOSED (a blocking law refused), 2 FAULT (no verdict reachable — the
+# declaration is absent or incoherent, or there is no git work tree so the tracked-path boundary
+# is unknown). Exit 1 and exit 2 are deliberately different answers.
+#
+# Standing: CERTIFIED-PROVISIONAL. AUTHORITY = NONE (DERIVED TRUTH).
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uec-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  uec-gate:
+    name: UEC gate (fail-closed)
+    runs-on: ubuntu-latest
+    steps:
+      # fetch-depth 0 is required: the tracked-path boundary is `git ls-files`, and a shallow
+      # checkout with no index would fault rather than silently measure a smaller world.
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Twelve laws, measured and refused if they do not hold
+        run: python3 -m engine.enforcement_closure.gate --gate --quiet
+
+      - name: Determinism and tree purity (two runs, byte-compared)
+        run: |
+          before="$(git status --porcelain)"
+          python3 -m engine.enforcement_closure.gate --json --quiet > /tmp/uec-1.json
+          python3 -m engine.enforcement_closure.gate --json --quiet > /tmp/uec-2.json
+          after="$(git status --porcelain)"
+          diff -u /tmp/uec-1.json /tmp/uec-2.json \
+            || { echo "::error::two measurements of one repository state differ"; exit 1; }
+          [ "$before" = "$after" ] \
+            || { echo "::error::the gate dirtied the tree; it is declared READ_ONLY"; exit 1; }
+
+      - name: The report carries no clock reading and no machine path
+        run: |
+          python3 - <<'PY'
+          import json, re, sys
+
+          body = open("/tmp/uec-1.json", encoding="utf-8").read()
+          failures = 0
+          if re.search(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}", body):
+              print("::error::the report embeds a clock reading, so it cannot replay")
+              failures += 1
+          if "/home/runner" in body or "/Users/" in body:
+              print("::error::the report embeds an absolute machine path")
+              failures += 1
+          report = json.loads(body)
+          if report["status"] != "OPEN":
+              print(f"::error::the gate reported {report['status']}")
+              failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+      # The ratchet is two-sided. measured == ceiling exactly, in both directions, or the
+      # declaration is carrying slack a future violation could occupy silently.
+      - name: The ratchet has no slack in either direction
+        run: |
+          python3 - <<'PY'
+          import json, sys
+
+          report = json.load(open("/tmp/uec-1.json", encoding="utf-8"))
+          declared, measured = report["ratchet_declared"], report["ratchet_measured"]
+          failures = 0
+          for key, value in measured.items():
+              ceiling = declared.get(key)
+              if ceiling is None:
+                  print(f"::error::{key} has no declared ceiling")
+                  failures += 1
+              elif value != ceiling:
+                  direction = "GREW" if value > ceiling else "was repaired without tightening"
+                  print(f"::error::{key} {direction}: measured {value}, ceiling {ceiling}")
+                  failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+  uec-self-coverage:
+    name: Self-coverage (the registry is inside its own registry)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Every artifact of UEC's own surface must be located by UEC's own discovery rules, be in
+      # UEC's own governed inventory, be invoked from two independent planes, and be covered by
+      # a test. Derived from the declaration rather than restated, so a rename cannot make this
+      # step vacuous.
+      - name: UEC-L-09 alone, and it must hold
+        run: python3 -m engine.enforcement_closure.gate --gate --quiet --law UEC-L-09
+
+      - name: Every self-coverage artifact is present on disk or in the invocation planes
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+
+          from engine.enforcement_closure.declaration import load
+
+          declaration = load()
+          makefile = pathlib.Path("Makefile").read_text(encoding="utf-8")
+          verify = pathlib.Path("verify.sh").read_text(encoding="utf-8")
+          failures = 0
+          for entry in declaration.self_coverage["artifacts"]:
+              identity, kind = entry["identity"], entry["kind"]
+              if kind == "MAKE_GATE_TARGET":
+                  ok = f"\n{identity}:" in makefile
+              elif kind == "VERIFY_STAGE":
+                  ok = identity in verify
+              else:
+                  ok = pathlib.Path(identity).is_file()
+              if not ok:
+                  print(f"::error::UEC's own {kind} is absent: {identity}")
+                  failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+      # If the stage is removed from verify.sh, this fails rather than CI quietly becoming the
+      # only place the gate runs — the exact condition measured for six other gates, each of
+      # which has one Makefile stanza and nothing else.
+      - name: ./verify.sh declares the stage and invokes this gate
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+
+          from engine.enforcement_closure.declaration import load
+
+          declaration = load()
+          label = next(
+              entry["identity"]
+              for entry in declaration.self_coverage["artifacts"]
+              if entry["kind"] == "VERIFY_STAGE"
+          )
+          source = pathlib.Path("verify.sh").read_text(encoding="utf-8")
+          failures = 0
+          if label not in re.findall(r'^\s*run_stage "([^"]+)"', source, re.M):
+              print(f"::error::./verify.sh does not declare the stage {label!r}")
+              failures += 1
+          if "engine.enforcement_closure.gate" not in source:
+              print("::error::the stage does not invoke engine.enforcement_closure.gate")
+              failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+  uec-mutation:
+    name: Mutation resistance (every law must be able to refuse)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the pinned test toolchain
+        run: |
+          python -m pip install --disable-pip-version-check \
+            "pytest==8.3.4" "pytest-cov==6.0.0" "coverage==7.15.2"
+
+      # The suite forges a violating state for every law and asserts the refusal. A green law
+      # table is only meaningful beside a green mutation suite, which is why this job and
+      # uec-self-coverage both gate the summary below.
+      - name: The closure suite, including every forged violation
+        run: python -m pytest engine/tests/unit/test_enforcement_closure.py -q --no-cov
+
+      # The deletion experiment, run as a test rather than described in a document. Removing a
+      # governed workflow must close the gate. This is the leg that was measured absent.
+      - name: Deleting a governed workflow closes the gate
+        run: |
+          set -e
+          victim="$(python3 - <<'PY'
+          from engine.enforcement_closure.declaration import load
+          print(next(
+              row["identity"] for row in load().governed
+              if row["kind"] == "WORKFLOW" and not row["identity"].endswith("uec-gate.yml")
+          ))
+          PY
+          )"
+          echo "removing governed enforcement artifact: $victim"
+          rm "$victim"
+          if python3 -m engine.enforcement_closure.gate --gate --quiet; then
+            echo "::error::a governed enforcement artifact was deleted and the gate stayed OPEN"
+            exit 1
+          fi
+          echo "gate closed on deletion, as required by UEC-L-02"
+          git checkout -- "$victim"
+
+      # The other direction. An enforcement artifact appearing outside governance must also
+      # close the gate, or the inventory could be bypassed by addition instead of deletion.
+      - name: Adding an ungoverned workflow closes the gate
+        run: |
+          set -e
+          printf 'name: ungoverned\non: workflow_dispatch\njobs:\n  x:\n    runs-on: ubuntu-latest\n    steps:\n      - run: "true"\n' \
+            > .github/workflows/zz-ungoverned-probe.yml
+          git add .github/workflows/zz-ungoverned-probe.yml
+          if python3 -m engine.enforcement_closure.gate --gate --quiet; then
+            echo "::error::an ungoverned enforcement artifact was added and the gate stayed OPEN"
+            exit 1
+          fi
+          echo "gate closed on ungoverned addition, as required by UEC-L-03"
+          git rm -f --quiet .github/workflows/zz-ungoverned-probe.yml
+
+  uec-summary:
+    name: Enforcement closure proven
+    runs-on: ubuntu-latest
+    needs: [uec-gate, uec-self-coverage, uec-mutation]
+    steps:
+      - name: All three legs held
+        run: 'echo "enforcement closure: governed, self-covered, and mutation-resistant"'

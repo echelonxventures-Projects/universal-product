@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "StorageHostingResource",
+  "target_id": "UCOS-INFRA-STORAGE-ucos.infrastructure.storage.foundation-ec6d242bf5014b7c",
+  "verdict": "pass"
+}

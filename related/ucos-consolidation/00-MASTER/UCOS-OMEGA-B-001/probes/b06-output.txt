@@ -1,0 +1,99 @@
+
+==============================================================================
+B-06  HOSTILE TEMPORAL MODEL REGISTRATION — seven attempts
+==============================================================================
+  [ACCEPTED          ] (a) a clock with NO ordering at all
+      registered and passed assert_consistent. Totality is skipped (total=False) and antisymmetry
+      holds because INCOMPARABLE is self-inverse. RESIDUAL: the ORDERING FIELD is still mandatory —
+      ClockProvider.ordering() and TemporalCoordinate.ordering have no default, so 'no ordering'
+      must be spelled as an ordering that refuses.
+
+    NAIVE cyclic ordering  : REFUSED by ANTISYMMETRY — PROBE_CYCLIC_NAIVE compares (3,) vs (9,) as AFTER but (9,) vs (3,) as AFTER, where BEFORE was required by the declared i
+    REPAIRED cyclic ordering: assert_consistent PASSED
+      compare(0,5)=BEFORE  compare(5,10)=BEFORE  compare(0,10)=AFTER   -> transitivity VIOLATED
+      assert_consistent accepted it anyway: TRANSITIVITY IS NEVER CHECKED.
+      tick 3 vs tick 15 (same face position, next revolution): equal=False  identity differs=True
+      tick 3 rev-0 vs tick 3 rev-1, modelled WITHOUT a revolution component:
+        equal=True  identity identical=True
+  [PARTIAL, LOSSY    ] (b) cyclic / recurring time
+      A NAIVE cyclic ordering is REFUSED by the antisymmetry check at the antipodal pair — a real and
+      valuable refusal Ω∞-A did not record. A REPAIRED (antisymmetric) cyclic ordering is ACCEPTED even
+      though it violates TRANSITIVITY, which nothing checks. And two distinct occurrences at one
+      recurring position are the SAME coordinate: equal, and identical under fingerprint. The revolution
+      count must be carried as a position component — a modelling obligation nothing states or enforces.
+
+    compare((1,),(2,)) = AFTER   (the shipped lexicographic strategy answers BEFORE)
+  [ACCEPTED          ] (c) reversed arrow of time
+      no code asserts an arrow direction. The '<' means BEFORE convention lives only inside the four
+      shipped strategies, which a new registration does not touch. Correct openness, and it means the
+      architecture holds NO privileged chronology.
+
+    BRANCHING ships as a first-class ordering; branch 0 vs branch 1: INCOMPARABLE
+    same branch, later step: BEFORE
+  [ACCEPTED (SHIPPED)] (d) branching / forked history
+      BranchingStrategy + BRANCHING ordering + SIMULATION_FRAME + SIMULATION_STEP/BLOCK_HEIGHT scales
+      all ship. Divergent branches answer INCOMPARABLE, never CONCURRENT — the correct distinction.
+
+    interval coordinate encodes: 9e3c647a561efcaf18901b58
+    DURING: PROBE_DURING   CONTAINS: PROBE_CONTAINS   OVERLAP: CONCURRENT
+  [ACCEPTED          ] (e) interval-valued (non-point) coordinates
+      Position = tuple[object, ...] with no arity cap, and Allen relations register as mutually inverse
+      Relation values. RESIDUAL: an interval relation declared ordered=True with no inverse is refused
+      (ordering.py Relation.__post_init__), so Allen relations must be declared in inverse pairs — a
+      correct constraint, but one nothing documents.
+
+    Relation fields: ['name', 'description', 'decided', 'ordered', 'coincident', 'inverse']
+    OrderingStrategy.compare returns: str  (a relation NAME, no payload)
+    Comparison fields: ['relation', 'rule', 'reason', 'left', 'right', 'decided', 'ordered']
+    bucketed relation PROBE_BEFORE_P90: ACCEPTED (degree encoded in the NAME)
+    stochastic strategy: assert_consistent PASSED
+      WHY: assert_consistent probes each pair EXACTLY ONCE — compare(l,r) then
+      compare(r,l). An alternating (or randomly seeded) strategy therefore satisfies
+      antisymmetry BY CHANCE. The check is a single sample, not a property test.
+  [PARTIAL / LOSSY   ] (f) probabilistic / weighted ordering with a confidence degree
+      Relation has exactly three booleans plus an inverse and NO properties mapping; compare() returns a
+      bare str; Comparison has fixed fields. A numeric degree has NOWHERE to be stored except inside the
+      relation NAME or the free-text reason. Bucketing works and does not scale. Ω∞-A A-22/G-04
+      confirmed: the QuantumOrdering pass was a FIT, not generality.
+      AND, unexpectedly: a genuinely STOCHASTIC strategy PASSED assert_consistent, because the
+      antisymmetry check samples each pair exactly once. The one consistency guarantee the ordering
+      architecture offers is not sampling-robust.
+
+    AND a loss Ω∞-A did not record: Comparison carries `decided` and `ordered` but
+    NOT `coincident`, so a consumer of a comparison RECORD must string-match the
+    relation name to tell coincidence from concurrency — the name-based reasoning
+    assert_consistent exists to avoid.
+
+    symbolic coordinate      : ('PROBE_FRAME', 'PROBE_SYMBOLIC', 'TOTAL', ('EPOCH-ALPHA',), 'probe-symbolic')
+    identity under default   : 6829d28d29e24b40eb1e4ba2
+    vs numeric, cross-shape  : INCOMPARABLE
+    EMPTY position: REFUSED — a coordinate with an empty position locates nothing; a clock that cannot produce at least 
+    BARE STRING position: ACCEPTED and SPLIT into ('E', 'P', 'O', 'C', 'H') <- silent corruption
+  [ACCEPTED          ] (g) opaque symbolic position with no numeric magnitude
+      Position = tuple[object, ...]; _shape_of gives symbols their own shape class so totality is not
+      demanded against integers; cross-shape comparison answers INCOMPARABLE. RESIDUAL: a bare str is
+      silently exploded into per-character components by tuple(self.position) — a coordinate the caller
+      did not intend, accepted without a refusal.
+
+==============================================================================
+B-06  RESIDUAL PRIVILEGED ASSUMPTIONS — beyond the four Ω∞-A closed
+==============================================================================
+  R-1  Five ordering NAMES are reserved in every registry ever constructed.
+       orderings present without any caller declaring them: TOTAL PARTIAL CAUSAL DISTRIBUTED BRANCHING
+       redeclaring TOTAL with different semantics: REFUSED — ordering 'TOTAL' is already declared with a different meaning; choose a different name
+
+  R-2  A frame cannot be declared incomparable with itself.
+       comparable(EARTH, EARTH) -> Ω²-F-00  (fabricated, not declared)
+
+  R-3  coordinate.compare's refusals cite INCOMPARABLE from a module constant,
+       bypassing the relation registry. A registry seeded without INCOMPARABLE would
+       emit Comparison records citing a relation it cannot itself resolve.
+       RelationRegistry(seed=(BEFORE, AFTER)) constructed; 'INCOMPARABLE' resolvable: False
+
+  R-4  No transitivity, reflexivity or irreflexivity check exists anywhere.
+       assert_consistent verifies: relation-name membership, within-shape totality,
+       antisymmetry. Three of the properties an ordering can have; not the rest.
+
+  R-5  assert_provider MUTATES the clock it verifies (readings=2 default calls read()),
+       so verifying a LogicalClock/LamportClock/VectorClock advances it.
+       LogicalClock position before assert_provider (0,) -> after (3,)

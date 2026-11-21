@@ -1,0 +1,78 @@
+{
+  "artifact_id": "UCOS-CEU-001",
+  "title": "Constitutional Existence Universe — the substrate through which anything that exists is represented",
+  "authority": "AUTHORED REPOSITORY TRUTH, HELD SUBORDINATE UNDER UCKP-LAW-0001. This declaration recognises an implementation that already exists at engine/ceu/. It creates no authority, transfers no ownership, and adds no capability.",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "PROJECTION",
+    "relation": "PROJECTION",
+    "articles": [
+      "UCKP-ART-02",
+      "UCKP-ART-07",
+      "UCKP-ART-18"
+    ],
+    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+    "effect": "UCKP-ART-02 requires every governed category of entity to exist exactly once as a canonical object; this substrate is the mechanism by which a category becomes registrable at all. UCKP-ART-18 is why there is one substrate and not one per category: before anything is created its canonical object is located and reused. UCKP-ART-07 is named because relationship INSTANCES are registered here, and every one of them projects the relationship model declared there — this substrate does not own what a relationship IS."
+  },
+  "constitutional_basis": "UCKP-LAW-0001 (engine/uckp/law.py), UCOS-CAA-001, UCKP-ART-02, UCKP-ART-07, UCKP-ART-18",
+  "schema": "ucos-ceu-declaration",
+  "version": "1.0.0",
+  "implementation": {
+    "home": "engine/ceu/",
+    "substrate": "engine/ceu/existence.py",
+    "seed_catalogue": "engine/ceu/catalog.py",
+    "sufficiency_measure": "engine/ceu/sufficiency.py",
+    "record_type": "ExistenceUnit",
+    "$note": "One registry, one record type. A form is a unit; a classification is a unit; a relationship is a unit; a topology is a unit. All four are registered, identified, lineaged, context-bindable, supersedable and evolvable through the same mechanism — not because each was given those properties, but because there is only one mechanism to give them."
+  },
+  "bounded_question": "What forms of existence are declared, which units hold each form, and which relationship instances and topology instances hold among them?",
+  "$why_the_question_is_bounded": [
+    "UCOS-CAA-001 existence_resolution declares existence-tracking MULTIPLE_INDEPENDENT_AUTHORITIES: each authority answers a different bounded question, and holding undisputed authority over one does not compete with another holding undisputed authority over a different one.",
+    "This substrate answers a question none of the three prior authorities asks. UCKP-COMPLETENESS-REGISTRY asks whether an object answers all 33 facets. UGA-EXISTENCE-REGISTRY asks whether a version-controlled artifact exists and who owns it. REPOSITORY-INTELLIGENCE asks what can be reused, what is missing and what conflicts.",
+    "The second_authority_test declared there is met: the populations do not overlap (154 declared units at bootstrap against UGA's 5,789 tracked artifacts and the completeness registry's 193 objects), and there are no cross-imports in any direction."
+  ],
+  "owns": [
+    "existence representation — the registration of a unit of any declared form",
+    "entity forms — and the declaration of a form nobody has named yet",
+    "existence units — their identity binding, content seal, supersession and resurrection",
+    "existence-level relationship INSTANCES, registered as units",
+    "existence-level topology INSTANCES, registered as units"
+  ],
+  "does_not_own": [
+    "the relationship semantic model — what a relationship IS, what an edge is, what makes an edge resolvable. That is UCKP-ART-07 at engine/uckp/graph.py, and CAA-INV-05 permits exactly one owner of it.",
+    "the graph resolution model and the relationship ontology rules — UCKP-ART-07.",
+    "the object model — UCKO under UCKP-ART-02. CAA-INV-07: every bound instrument that declares object classes names UCKO as the model it projects. This one does.",
+    "identity allocation — UCOS-EPIC-001 / REG-AUTO-001. declare_form registers an identifier kind with that authority; it mints nothing of its own.",
+    "context resolution — UCXI-000001. bind_context accepts a frame this substrate did not resolve.",
+    "lifecycle stage authority — UCKP ART-14 / UAUE-000001.",
+    "governance and permission — it represents what exists; it never decides what may happen."
+  ],
+  "$instance_versus_model": [
+    "A relationship INSTANCE is a thing that exists, so it is an entity, and it is represented here like every other entity.",
+    "A relationship DEFINITION is a semantic contract, and it stays with the canonical relationship model authority.",
+    "Separating the two is what prevents duplicate authority, circular dependency and ontology collision, and it is what leaves both free to evolve: a new relationship instance needs no model change, and a model refinement needs no re-registration."
+  ],
+  "canonical_dependencies": {
+    "identity": "UCOS-EPIC-001 / REG-AUTO-001 — engine/registry/universal/identity.py",
+    "context": "UCXI-000001 — engine/context/",
+    "relationship_model": "UCKP-ART-07 — engine/uckp/graph.py",
+    "object_model": "UCKO under UCKP-ART-02",
+    "evolution": "UCKP ART-14 / UAUE-000001",
+    "canonical_form": "UCKP-ART-13 — engine/uckp/canonical.py"
+  },
+  "openness": {
+    "closed_set": false,
+    "upper_limit": null,
+    "extension_mechanism": "ExistenceRegistry.declare_form — a form is admitted as data, by the ordinary registration path, with no code change",
+    "$measured": "Six forms the substrate had never seen (celestial_body, measurement_unit, currency, language, intelligence_form, and a form named only as a concept nobody has yet named) were admitted with no change to any module, and eleven units were registered under them, including entities for Earth, Mars, Moon, a star, a galaxy, an SI unit, a currency, a language, an intelligence form not yet encountered, and a concept with no name.",
+    "$no_category_is_privileged": "No function in the substrate branches on a particular form, classification, topology or relationship type. The root form's name is a constructor argument, so even 'form' is not a reserved word."
+  },
+  "invariants": [
+    "Every unit resolves to exactly one form, and a form is itself a unit.",
+    "Every unit's identity is minted by UCOS-EPIC-001, never by this substrate.",
+    "A relationship instance registered here binds to a relationship class of the UCKP-ART-07 model; this substrate declares no relationship semantics of its own.",
+    "A registry binds to exactly one context frame; rebasing produces a new registry rather than mutating the binding.",
+    "No count in the substrate is compared against a bound."
+  ]
+}

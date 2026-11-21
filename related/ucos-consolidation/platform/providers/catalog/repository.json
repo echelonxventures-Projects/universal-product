@@ -1,0 +1,55 @@
+{
+  "identity": {
+    "provider_id": "ucos.repository",
+    "kind": "repository",
+    "version": "1.0.0",
+    "name": "UCOS Repository Provider",
+    "authority": "TERMINAL-04"
+  },
+  "interface": "ucos.provider.universal",
+  "interface_version": "1.0.0",
+  "entry_point": "platform.providers.repository.provider:build",
+  "source_of_record": "UCOS repository working tree",
+  "description": "Provides UCOS repository artifacts as attested, content-hashed resources. Reference implementation of the Universal Provider Architecture.",
+  "capabilities": [
+    {
+      "name": "repository.artifacts",
+      "operation": "query",
+      "resource_kind": "repository.artifact",
+      "description": "Enumerate repository artifacts matching a path/name selector.",
+      "selector_keys": ["path_prefix", "suffix", "name_contains"],
+      "required_selector_keys": [],
+      "deterministic": true,
+      "effects": ["fs:read"]
+    },
+    {
+      "name": "repository.artifact",
+      "operation": "fetch",
+      "resource_kind": "repository.artifact",
+      "description": "Resolve one repository artifact by its repository-relative path.",
+      "selector_keys": [],
+      "required_selector_keys": [],
+      "deterministic": true,
+      "effects": ["fs:read"]
+    },
+    {
+      "name": "repository.attestation",
+      "operation": "verify",
+      "resource_kind": "repository.artifact",
+      "description": "Attest a repository artifact's content hash and provenance chain.",
+      "selector_keys": [],
+      "required_selector_keys": [],
+      "deterministic": true,
+      "effects": ["fs:read"]
+    }
+  ],
+  "dependencies": [],
+  "config_schema": {
+    "root": "absolute path to the repository working tree",
+    "patterns": "list of glob patterns applied relative to root"
+  },
+  "metadata": {
+    "reference_implementation": true,
+    "repository_first": true
+  }
+}

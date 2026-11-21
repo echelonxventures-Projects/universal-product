@@ -1,0 +1,18 @@
+{
+  "title": "UCOS Ω∞ Environment Entity",
+  "description": "A deployment environment/tier (UKB-006/007) with embedded clusters and regions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["universal_id", "name", "tier"],
+  "properties": {
+    "universal_id": { "type": "string", "pattern": "^UCOS-ENV-[0-9]{6}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "tier": { "type": "string", "enum": ["DEV", "TEST", "QA", "STAGING", "PREPROD", "PROD"] },
+    "cluster": { "type": ["string", "null"], "default": null },
+    "regions": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "provider": { "type": ["string", "null"], "default": null },
+    "url": { "type": ["string", "null"], "default": null },
+    "k8s_version": { "type": ["string", "null"], "default": null },
+    "derived_status": { "type": "string", "default": "NOT_STARTED" }
+  }
+}

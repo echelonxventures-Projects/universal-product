@@ -1,0 +1,522 @@
+{
+  "manifest_note": "Declared providers. Each is registered, discoverable and inventoried; none declares an entry_point yet, so each certifies CERTIFIED-PROVISIONAL and is refused activation until an implementation is pointed at it. Adding that implementation is a two-line manifest edit plus a module - no framework change (PC-14).",
+  "providers": [
+    {
+      "identity": {
+        "provider_id": "ucos.documentation",
+        "kind": "documentation",
+        "version": "1.0.0",
+        "name": "UCOS Documentation Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "UCOS documentation corpus",
+      "description": "Provides documentation units as attested resources.",
+      "capabilities": [
+        {
+          "name": "documentation.documents",
+          "operation": "query",
+          "resource_kind": "documentation.document",
+          "description": "Enumerate documentation units matching a selector.",
+          "selector_keys": ["collection", "title_contains", "language"],
+          "deterministic": true,
+          "effects": ["fs:read"]
+        },
+        {
+          "name": "documentation.document",
+          "operation": "fetch",
+          "resource_kind": "documentation.document",
+          "description": "Resolve one documentation unit by identity.",
+          "deterministic": true,
+          "effects": ["fs:read"]
+        },
+        {
+          "name": "documentation.attestation",
+          "operation": "verify",
+          "resource_kind": "documentation.document",
+          "description": "Attest a documentation unit's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["fs:read"]
+        }
+      ],
+      "metadata": { "realization": "pending" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.architecture",
+        "kind": "architecture",
+        "version": "1.0.0",
+        "name": "UCOS Architecture Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "UCOS architecture decision corpus",
+      "description": "Provides architecture decisions and models as attested resources.",
+      "capabilities": [
+        {
+          "name": "architecture.decisions",
+          "operation": "query",
+          "resource_kind": "architecture.decision",
+          "description": "Enumerate architecture decisions matching a selector.",
+          "selector_keys": ["status", "scope", "supersedes"],
+          "deterministic": true,
+          "effects": ["fs:read"]
+        },
+        {
+          "name": "architecture.decision",
+          "operation": "fetch",
+          "resource_kind": "architecture.decision",
+          "description": "Resolve one architecture decision by identity.",
+          "deterministic": true,
+          "effects": ["fs:read"]
+        },
+        {
+          "name": "architecture.attestation",
+          "operation": "verify",
+          "resource_kind": "architecture.decision",
+          "description": "Attest an architecture decision's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["fs:read"]
+        }
+      ],
+      "metadata": { "realization": "pending" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.research",
+        "kind": "research",
+        "version": "1.0.0",
+        "name": "UCOS Research Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "external research indices",
+      "description": "Provides research outputs as attested resources.",
+      "capabilities": [
+        {
+          "name": "research.works",
+          "operation": "query",
+          "resource_kind": "research.work",
+          "description": "Enumerate research works matching a selector.",
+          "selector_keys": ["topic", "author", "year", "identifier"],
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "research.work",
+          "operation": "fetch",
+          "resource_kind": "research.work",
+          "description": "Resolve one research work by identifier.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "research.attestation",
+          "operation": "verify",
+          "resource_kind": "research.work",
+          "description": "Attest a research work's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        }
+      ],
+      "metadata": { "realization": "pending" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.journal",
+        "kind": "journal",
+        "version": "1.0.0",
+        "name": "UCOS Journal Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "scholarly journal registers",
+      "description": "Provides peer-reviewed journal articles as attested resources.",
+      "capabilities": [
+        {
+          "name": "journal.articles",
+          "operation": "query",
+          "resource_kind": "journal.article",
+          "description": "Enumerate journal articles matching a selector.",
+          "selector_keys": ["journal", "doi", "year", "topic"],
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "journal.article",
+          "operation": "fetch",
+          "resource_kind": "journal.article",
+          "description": "Resolve one journal article by identifier.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "journal.attestation",
+          "operation": "verify",
+          "resource_kind": "journal.article",
+          "description": "Attest a journal article's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        }
+      ],
+      "metadata": { "realization": "pending" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.patent",
+        "kind": "patent",
+        "version": "1.0.0",
+        "name": "UCOS Patent Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "patent office registers",
+      "description": "Provides patent filings and grants as attested resources.",
+      "capabilities": [
+        {
+          "name": "patent.filings",
+          "operation": "query",
+          "resource_kind": "patent.filing",
+          "description": "Enumerate patent filings matching a selector.",
+          "selector_keys": ["jurisdiction", "assignee", "classification", "publication_number"],
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "patent.filing",
+          "operation": "fetch",
+          "resource_kind": "patent.filing",
+          "description": "Resolve one patent filing by publication number.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "patent.attestation",
+          "operation": "verify",
+          "resource_kind": "patent.filing",
+          "description": "Attest a patent filing's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        }
+      ],
+      "metadata": { "realization": "pending" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.standards",
+        "kind": "standards",
+        "version": "1.0.0",
+        "name": "UCOS Standards Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "standards body registers",
+      "description": "Provides published standards and specifications as attested resources.",
+      "capabilities": [
+        {
+          "name": "standards.specifications",
+          "operation": "query",
+          "resource_kind": "standards.specification",
+          "description": "Enumerate standards matching a selector.",
+          "selector_keys": ["body", "designation", "status", "edition"],
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "standards.specification",
+          "operation": "fetch",
+          "resource_kind": "standards.specification",
+          "description": "Resolve one standard by designation.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "standards.attestation",
+          "operation": "verify",
+          "resource_kind": "standards.specification",
+          "description": "Attest a standard's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        }
+      ],
+      "metadata": { "realization": "pending" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.government",
+        "kind": "government",
+        "version": "1.0.0",
+        "name": "UCOS Government Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "government open-data registers",
+      "description": "Provides government registers and datasets as attested resources.",
+      "capabilities": [
+        {
+          "name": "government.records",
+          "operation": "query",
+          "resource_kind": "government.record",
+          "description": "Enumerate government records matching a selector.",
+          "selector_keys": ["jurisdiction", "register", "identifier", "period"],
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "government.record",
+          "operation": "fetch",
+          "resource_kind": "government.record",
+          "description": "Resolve one government record by identifier.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "government.attestation",
+          "operation": "verify",
+          "resource_kind": "government.record",
+          "description": "Attest a government record's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        }
+      ],
+      "metadata": { "realization": "pending" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.security",
+        "kind": "security",
+        "version": "1.0.0",
+        "name": "UCOS Security Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "security advisory registers",
+      "description": "Provides vulnerability advisories and controls as attested resources.",
+      "capabilities": [
+        {
+          "name": "security.advisories",
+          "operation": "query",
+          "resource_kind": "security.advisory",
+          "description": "Enumerate security advisories matching a selector.",
+          "selector_keys": ["severity", "ecosystem", "identifier", "affected"],
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "security.advisory",
+          "operation": "fetch",
+          "resource_kind": "security.advisory",
+          "description": "Resolve one advisory by identifier.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "security.attestation",
+          "operation": "verify",
+          "resource_kind": "security.advisory",
+          "description": "Attest an advisory's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        }
+      ],
+      "metadata": { "realization": "pending" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.ai",
+        "kind": "ai",
+        "version": "1.0.0",
+        "name": "UCOS AI Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "model registries and inference endpoints",
+      "description": "Provides models as attested catalog resources and inferences as declared non-deterministic resources.",
+      "capabilities": [
+        {
+          "name": "ai.models",
+          "operation": "query",
+          "resource_kind": "ai.model",
+          "description": "Enumerate available models matching a selector.",
+          "selector_keys": ["family", "modality", "version", "provider"],
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "ai.inferences",
+          "operation": "query",
+          "resource_kind": "ai.inference",
+          "description": "Obtain model inferences. Declared non-deterministic: results are excluded from reproducibility gates rather than silently corrupting them (PC-05).",
+          "selector_keys": ["model", "prompt", "seed", "temperature"],
+          "required_selector_keys": ["model", "prompt"],
+          "deterministic": false,
+          "effects": ["net:send"]
+        },
+        {
+          "name": "ai.model",
+          "operation": "fetch",
+          "resource_kind": "ai.model",
+          "description": "Resolve one model descriptor by identity.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "ai.attestation",
+          "operation": "verify",
+          "resource_kind": "ai.model",
+          "description": "Attest a model descriptor's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        }
+      ],
+      "metadata": { "realization": "pending" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.runtime",
+        "kind": "runtime",
+        "version": "1.0.0",
+        "name": "UCOS Runtime Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "UCOS runtime control plane",
+      "description": "Provides runtime workloads and their observed state as attested resources.",
+      "capabilities": [
+        {
+          "name": "runtime.workloads",
+          "operation": "query",
+          "resource_kind": "runtime.workload",
+          "description": "Enumerate runtime workloads matching a selector.",
+          "selector_keys": ["environment", "service", "state"],
+          "deterministic": true,
+          "effects": ["api:read"]
+        },
+        {
+          "name": "runtime.workload",
+          "operation": "fetch",
+          "resource_kind": "runtime.workload",
+          "description": "Resolve one runtime workload by identity.",
+          "deterministic": true,
+          "effects": ["api:read"]
+        },
+        {
+          "name": "runtime.attestation",
+          "operation": "verify",
+          "resource_kind": "runtime.workload",
+          "description": "Attest a workload record's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["api:read"]
+        }
+      ],
+      "metadata": { "realization": "pending" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.marketplace",
+        "kind": "marketplace",
+        "version": "1.0.0",
+        "name": "UCOS Marketplace Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "marketplace catalogs",
+      "description": "Provides marketplace offerings and their terms as attested resources.",
+      "capabilities": [
+        {
+          "name": "marketplace.offerings",
+          "operation": "query",
+          "resource_kind": "marketplace.offering",
+          "description": "Enumerate marketplace offerings matching a selector.",
+          "selector_keys": ["category", "vendor", "identifier", "region"],
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "marketplace.offering",
+          "operation": "fetch",
+          "resource_kind": "marketplace.offering",
+          "description": "Resolve one offering by identifier.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        },
+        {
+          "name": "marketplace.attestation",
+          "operation": "verify",
+          "resource_kind": "marketplace.offering",
+          "description": "Attest an offering's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["net:read"]
+        }
+      ],
+      "metadata": { "realization": "pending" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.customer",
+        "kind": "customer",
+        "version": "1.0.0",
+        "name": "UCOS Customer Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "customer system of record",
+      "description": "Provides customer entities and entitlements as attested resources.",
+      "capabilities": [
+        {
+          "name": "customer.accounts",
+          "operation": "query",
+          "resource_kind": "customer.account",
+          "description": "Enumerate customer accounts matching a selector.",
+          "selector_keys": ["segment", "region", "identifier", "status"],
+          "deterministic": true,
+          "effects": ["api:read"]
+        },
+        {
+          "name": "customer.account",
+          "operation": "fetch",
+          "resource_kind": "customer.account",
+          "description": "Resolve one customer account by identifier.",
+          "deterministic": true,
+          "effects": ["api:read"]
+        },
+        {
+          "name": "customer.attestation",
+          "operation": "verify",
+          "resource_kind": "customer.account",
+          "description": "Attest a customer record's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["api:read"]
+        }
+      ],
+      "metadata": { "realization": "pending", "classification": "restricted" }
+    },
+    {
+      "identity": {
+        "provider_id": "ucos.financial",
+        "kind": "financial",
+        "version": "1.0.0",
+        "name": "UCOS Financial Provider",
+        "authority": "TERMINAL-04"
+      },
+      "source_of_record": "financial ledger of record",
+      "description": "Provides financial obligations and value movements as attested resources.",
+      "capabilities": [
+        {
+          "name": "financial.entries",
+          "operation": "query",
+          "resource_kind": "financial.entry",
+          "description": "Enumerate ledger entries matching a selector.",
+          "selector_keys": ["ledger", "period", "currency", "identifier"],
+          "deterministic": true,
+          "effects": ["api:read"]
+        },
+        {
+          "name": "financial.entry",
+          "operation": "fetch",
+          "resource_kind": "financial.entry",
+          "description": "Resolve one ledger entry by identifier.",
+          "deterministic": true,
+          "effects": ["api:read"]
+        },
+        {
+          "name": "financial.attestation",
+          "operation": "verify",
+          "resource_kind": "financial.entry",
+          "description": "Attest a ledger entry's content hash and provenance.",
+          "deterministic": true,
+          "effects": ["api:read"]
+        }
+      ],
+      "metadata": { "realization": "pending", "classification": "restricted" }
+    }
+  ]
+}

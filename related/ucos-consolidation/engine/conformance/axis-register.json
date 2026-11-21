@@ -1,0 +1,62 @@
+{
+  "declaration_id": "UAC-AXES-001",
+  "name": "Universal Agnosticism Conformance — the axis register",
+  "version": "1.0",
+  "authority": "NONE — DERIVED TRUTH. This file DECLARES NO AXIS AS PROVEN. It names the axes, the contract each is expressed through, and the implementations offered against it. Every disposition below is MEASURED by engine/conformance, never read from here — a field claiming an axis is proven would be the assertion this whole instrument exists to replace.",
+
+  "$why_this_exists": "adr/0021 (UAP-001) states the Universal Agnostic Architecture Principle and then declares, in its own Consequences section: 'a principle with no enforcement mechanism can be ignored without consequence... no gate, invariant, or certification currently checks conformance to this statement, and none is created by this document.' This is that mechanism. adr/0039 later scored fourteen axes by hand — 2 proven, 4 abstracted, 4 bypassed, 4 hardcoded — which established the bar but left the scoring unrepeatable.",
+
+  "$the_bar": "From adr/0039, and the reason this register measures rather than declares: an abstraction with ONE implementation is an assumption; an abstraction its own callers bypass is decoration. Both halves are mechanical, and both are measured per axis.",
+
+  "$discrimination_comment": [
+    "THE FIRST REQUIREMENT OF A CONFORMANCE SUITE IS THAT IT CAN FAIL. Measured before this",
+    "register was written: engine/uckp/execution.py declares ten execution technologies and",
+    "verify_execution_interchangeable passes over all ten. It cannot do otherwise. Nine of the",
+    "ten inherit one transcribe() from _EnvelopeExecution which returns the same canonical JSON",
+    "with a different comment line, and ExecutionAdapter.execute() discards the payload and calls",
+    "the Python resolver regardless. Ten names, one implementation, and a green test.",
+    "",
+    "So an axis is measured on TWO properties, not one:",
+    "",
+    "  distinct_implementations — how many declared implementations define the contract's own",
+    "  abstract methods themselves rather than inheriting one sibling's. Measured by inspection:",
+    "  persistence scores 10/10, execution scores 1/10.",
+    "",
+    "  discriminating_contract — whether the contract demands an answer only a real implementation",
+    "  could produce. PersistenceAdapter demands write() then read() and compares universe digests,",
+    "  so a mechanism that stores nothing fails. ExecutionAdapter demands only transcribe(), a",
+    "  serialisation, so a mechanism that computes nothing passes. An axis whose contract cannot",
+    "  fail is ENVELOPE_ONLY however many implementations it lists."
+  ],
+
+  "$disposition_comment": [
+    "PROVEN          — two or more distinct implementations pass identical conformance cases",
+    "                  through a discriminating contract.",
+    "SINGLE          — one distinct implementation. An assumption, stated as one.",
+    "ENVELOPE_ONLY   — implementations exist in name but share one body, or the contract cannot",
+    "                  fail. The claim is decoration and this names it.",
+    "DECLARED_ABSENT — no implementation and none intended, with a written reason (adr/0030).",
+    "                  Lawful, and the only disposition a reader may take as final."
+  ],
+
+  "axes": [
+    {
+      "axis": "persistence",
+      "question": "Where is the universe kept, and does the mechanism preserve it exactly?",
+      "contract": "engine.uckp.persistence.PersistenceAdapter",
+      "abstract_methods": ["locator", "write", "read"],
+      "discriminator": "engine.uckp.persistence.PersistenceAdapter.verify_contract",
+      "$discriminator_why": "Round-trips the universe and compares digests, then compares every object. A mechanism that records nothing cannot return it, so this contract fails a placeholder — which is what makes a pass here mean something.",
+      "article": "UCKP-ART-09"
+    },
+    {
+      "axis": "execution",
+      "question": "Which technology carries out an operation, and does it produce the same answer?",
+      "contract": "engine.uckp.execution.ExecutionAdapter",
+      "abstract_methods": ["transcribe", "computes"],
+      "discriminator": "engine.uckp.execution.verify_execution_interchangeable",
+      "$discriminator_why": "IT EXISTS NOW, AND IT DID NOT WHEN THIS REGISTER WAS WRITTEN. The original entry recorded the absence as the finding: transcribe() asked for a serialisation, execute() discarded it and called resolve_operation in Python, and the interchangeability check compared Python's answer to Python's answer once per adapter name. No case written against that contract could fail. The contract now requires an adapter to CLAIM computation, and a claimant returning a digest other than the one the operation resolves to is named in failures — demonstrated by a test that constructs exactly such an adapter. `computes` joins the measured methods for the same reason: distinctness must count adapters that claim to produce the answer, not adapters that define a way to render the request.",
+      "article": "UCKP-ART-10"
+    }
+  ]
+}

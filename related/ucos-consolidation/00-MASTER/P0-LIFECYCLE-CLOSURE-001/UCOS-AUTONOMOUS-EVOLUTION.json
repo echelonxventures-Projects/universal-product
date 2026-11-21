@@ -1,0 +1,82 @@
+{
+  "authority": "NONE — DERIVED TRUTH",
+  "capabilities": [
+    {
+      "basis": "executably discharged, deterministic and tested",
+      "capability": "Observe",
+      "failed_probes": [],
+      "level": "AUTONOMOUS",
+      "stage": "Observe",
+      "stage_id": "UCL-S-0120"
+    },
+    {
+      "basis": "executably discharged, deterministic and tested",
+      "capability": "Learn",
+      "failed_probes": [],
+      "level": "AUTONOMOUS",
+      "stage": "Learn",
+      "stage_id": "UCL-S-0180"
+    },
+    {
+      "basis": "executably discharged, deterministic and tested",
+      "capability": "Reason",
+      "failed_probes": [],
+      "level": "AUTONOMOUS",
+      "stage": "Reason",
+      "stage_id": "UCL-S-0190"
+    },
+    {
+      "basis": "executably discharged, deterministic and tested",
+      "capability": "Reflect",
+      "failed_probes": [],
+      "level": "AUTONOMOUS",
+      "stage": "Reflect",
+      "stage_id": "UCL-S-0200"
+    },
+    {
+      "basis": "executably discharged, deterministic and tested",
+      "capability": "Challenge",
+      "failed_probes": [],
+      "level": "AUTONOMOUS",
+      "stage": "Challenge",
+      "stage_id": "UCL-S-0210"
+    },
+    {
+      "basis": "executably discharged, deterministic and tested",
+      "capability": "Correct",
+      "failed_probes": [],
+      "level": "AUTONOMOUS",
+      "stage": "Correct",
+      "stage_id": "UCL-S-0220"
+    },
+    {
+      "basis": "executably discharged, deterministic and tested",
+      "capability": "Improve",
+      "failed_probes": [],
+      "level": "AUTONOMOUS",
+      "stage": "Improve",
+      "stage_id": "UCL-S-0230"
+    },
+    {
+      "basis": "executably discharged, deterministic and tested",
+      "capability": "Elevate",
+      "failed_probes": [],
+      "level": "AUTONOMOUS",
+      "stage": "Elevate",
+      "stage_id": "UCL-S-0410"
+    }
+  ],
+  "digest": "5399bbe1bf3fb3baf0495c8f2e8d81bdebd0b4f4c9decc37b920210252935149",
+  "measurements": {
+    "assisted": 0,
+    "autonomous": 8,
+    "capabilities": 8,
+    "fully_autonomous": true,
+    "manual": 0,
+    "none": 0
+  },
+  "phase": 6,
+  "programme": "P0-LIFECYCLE-CLOSURE-001",
+  "question": "can the repository do this without human orchestration?",
+  "title": "Autonomous Evolution Determination"
+}

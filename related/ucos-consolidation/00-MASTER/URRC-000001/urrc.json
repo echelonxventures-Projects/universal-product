@@ -1,0 +1,3780 @@
+{
+  "deliverables": [
+    {
+      "bound": true,
+      "canonical_owner": "00-MASTER/UCCEP-000007/01-REPOSITORY-INVENTORY.md",
+      "derivations": [
+        "DV-01",
+        "DV-02",
+        "DV-03",
+        "DV-04"
+      ],
+      "generator_class": "regenerated determination",
+      "id": "D-01",
+      "index": 1,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-01",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Repository reality determination",
+      "note": "The owner states the inventory; the delta is the registration census reconciled against the portfolio rollup and the certified scope at HEAD.",
+      "owner_resolved": "00-MASTER/UCCEP-000007/01-REPOSITORY-INVENTORY.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "What the repository actually contains, as measured rather than asserted."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-47"
+      ],
+      "generator_class": "regenerated determination",
+      "id": "D-02",
+      "index": 2,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-01",
+      "mode": "DERIVE",
+      "name": "Substrate census",
+      "note": "No owner exists for the substrate set of this programme; it is computed. A substrate outside version control is reported as such and never treated as Repository Truth.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "Every machine-readable substrate this programme reads, with its tracking state, parse result and content hash."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-48"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-03",
+      "index": 3,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-02",
+      "mode": "DERIVE",
+      "name": "Reuse disposition",
+      "note": "Computed from the declaration itself: this is the mechanized zero-duplication invariant.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "The repository-wide reuse disposition over all thirty-two bindings."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-05"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-04",
+      "index": 4,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-03",
+      "mode": "DERIVE",
+      "name": "Duplication — content identity",
+      "note": "Structural duplication only. Semantic duplication is not claimed.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "Distinct registered artifacts sharing one content hash."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-06"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-05",
+      "index": 5,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-03",
+      "mode": "DERIVE",
+      "name": "Duplication — name identity",
+      "note": "A shared name is recorded, not adjudicated: naming authority belongs to the registration owner.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "Distinct registered artifacts sharing one name."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-02",
+        "DV-03",
+        "DV-04"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-06",
+      "index": 6,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-03",
+      "mode": "DERIVE",
+      "name": "Duplication — registration delta",
+      "note": "A non-zero delta is a projection-staleness finding for the registration owner, never repaired here.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "The registration census against every other projection that restates it."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-07",
+        "DV-08"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-07",
+      "index": 7,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-03",
+      "mode": "DERIVE",
+      "name": "Duplication — multi-home concepts",
+      "note": "Canonical-home uniqueness is measured, not asserted.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "One identifier or one path claimed by more than one registered record."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-49"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-08",
+      "index": 8,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-03",
+      "mode": "DERIVE",
+      "name": "Duplication — deliverable overlap",
+      "note": "The programme's own non-proliferation check: it may not create two homes for one fact.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "One canonical owner claimed by more than one of the thirty-two deliverables."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-MASTER/UCCEP-000008/10-REMAINING-GOVERNANCE-GAPS.md",
+      "derivations": [
+        "DV-30",
+        "DV-34",
+        "DV-24"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-09",
+      "index": 9,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-04",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Conflict — declared conflicts",
+      "note": "The owner records the governance gaps; the delta counts the blocking findings and the certification ceiling at HEAD.",
+      "owner_resolved": "00-MASTER/UCCEP-000008/10-REMAINING-GOVERNANCE-GAPS.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "Conflicts, findings and open questions already declared by their own owners."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-09",
+        "DV-10"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-10",
+      "index": 10,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-04",
+      "mode": "DERIVE",
+      "name": "Conflict — status vocabulary",
+      "note": "Two status vocabularies coexist by construction — the registration vocabulary and the constitutional state machine. The overlap is measured; neither is corrected.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "Registered status values that are absent from the meta-constitutional state set."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-16"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-11",
+      "index": 11,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-04",
+      "mode": "DERIVE",
+      "name": "Conflict — live dependency on superseded truth",
+      "note": "Computed by joining the edge set to the registered status of both endpoints.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "An edge whose target is superseded and whose source is not."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-32",
+        "DV-33",
+        "DV-23",
+        "DV-26"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-12",
+      "index": 12,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-04",
+      "mode": "DERIVE",
+      "name": "Conflict — determination conflict set",
+      "note": "No winner is elected. Adjudication belongs to the authority that owns the conflicting determinations.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "Located determinations whose verdicts do not agree, with each verdict's scope."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-48"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-13",
+      "index": 13,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-05",
+      "mode": "DERIVE",
+      "name": "Gap — deliverable gaps",
+      "note": "No chartered deliverable is wholly unobtainable; what the non-derivable register records is narrower — a bounded refusal inside a deliverable, each naming the deliverable whose claim it caps.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "Deliverables for which no honest derivation is possible."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md",
+      "derivations": [
+        "DV-27",
+        "DV-28",
+        "DV-46"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-14",
+      "index": 14,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-05",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Gap — executability gaps",
+      "note": "The owner registers the gates; the delta is the measured automation presence of each located engine.",
+      "owner_resolved": "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "Constitutional gates that are enforceable but not enforced."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-BOOK/CONTROL-TOWER/PROGRAM-CONTROL-TOWER.md",
+      "derivations": [
+        "DV-17",
+        "DV-19"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-15",
+      "index": 15,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-05",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Gap — dimension gaps",
+      "note": "The owner presents the control tower; the delta is per-dimension occupancy computed from its own projection.",
+      "owner_resolved": "00-BOOK/CONTROL-TOWER/PROGRAM-CONTROL-TOWER.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "Execution dimensions that are not complete."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-MASTER/UCCEP-000000/07-UNIVERSAL-TRACEABILITY-GRAPH.md",
+      "derivations": [
+        "DV-11"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-16",
+      "index": 16,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-05",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Gap — traceability gaps",
+      "note": "The owner determines the traceability graph; the delta is the measured fill ratio across the thirteen traceability dimensions.",
+      "owner_resolved": "00-MASTER/UCCEP-000000/07-UNIVERSAL-TRACEABILITY-GRAPH.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "Registered artifacts whose traceability is incomplete, and by how much."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-MASTER/UCCEP-000007/13-KNOWN-GAPS.md",
+      "derivations": [
+        "DV-31",
+        "DV-38",
+        "DV-50"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-17",
+      "index": 17,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-05",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Gap — open-work gaps",
+      "note": "Deciding a matter is not discharging the work it names: registered work packages are counted, never closed.",
+      "owner_resolved": "00-MASTER/UCCEP-000007/13-KNOWN-GAPS.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "Work that is registered but not discharged."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-17",
+        "DV-11",
+        "DV-20"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-18",
+      "index": 18,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-06",
+      "mode": "DERIVE",
+      "name": "Completeness per dimension",
+      "note": "A lower bound only. Absence of a measurement is never read as completeness.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "Per-dimension completeness, declared as a lower bound."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-CMG/CMG-REGISTRY.json",
+      "derivations": [
+        "DV-26",
+        "DV-25",
+        "DV-34"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-19",
+      "index": 19,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-07",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Readiness determination",
+      "note": "The owner declares readiness and its ceiling; the delta is tier occupancy, vacancy count and ceiling size at HEAD.",
+      "owner_resolved": "00-CMG/CMG-REGISTRY.json",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "Readiness and the declared certification ceiling."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-25",
+        "DV-24",
+        "DV-30",
+        "DV-50",
+        "DV-44",
+        "DV-42"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-20",
+      "index": 20,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-07",
+      "mode": "DERIVE",
+      "name": "Blocked-by set",
+      "note": "Computed from the blockers, vacancies, open questions and undischarged gates their owners declare.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "What each blocked determination is blocked by, and who owns the unblocking act."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-45",
+        "DV-46"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-21",
+      "index": 21,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-08",
+      "mode": "DERIVE",
+      "name": "Automation presence",
+      "note": "Presence only. Automatability is not claimed, and an absent binding is not a defect of the engine.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "Automation presence per located engine and per gate."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "02-MASTER/UCOS-*-UNIVERSAL-CAPABILITY-CATALOG.md",
+      "derivations": [],
+      "generator_class": "pointer row",
+      "id": "D-22",
+      "index": 22,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-09",
+      "mode": "REUSE-BY-REFERENCE",
+      "name": "Catalogue owner binding",
+      "note": "Pointer row only; the catalogue is not restated, extended or counted here.",
+      "owner_resolved": "02-MASTER/UCOS-Ω∞-UNIVERSAL-CAPABILITY-CATALOG.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "The canonical capability catalogue."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-BOOK/REGISTRIES/UNIVERSAL-ARTIFACT-REGISTRY.md",
+      "derivations": [
+        "DV-01",
+        "DV-54",
+        "DV-59",
+        "DV-51",
+        "DV-52"
+      ],
+      "generator_class": "regenerated binding",
+      "id": "D-23",
+      "index": 23,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-09",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Registry owner binding",
+      "note": "The owner is the registry; the delta is the registered census, the meta-constitutional artifact count, and which declared registers are located.",
+      "owner_resolved": "00-BOOK/REGISTRIES/UNIVERSAL-ARTIFACT-REGISTRY.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "The universal artifact registry."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "01-WORKING/ONTOLOGY-REGISTER.md",
+      "derivations": [],
+      "generator_class": "pointer row",
+      "id": "D-24",
+      "index": 24,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-09",
+      "mode": "REUSE-BY-REFERENCE",
+      "name": "Ontology owner binding",
+      "note": "Pointer row only. Per-universe ontologies are owned by their own bands and are not aggregated here.",
+      "owner_resolved": "01-WORKING/ONTOLOGY-REGISTER.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "The ontology register."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "15-UNIVERSAL-SCIENCE-INTELLIGENCE/03-TAXONOMY/USIS-TAX-000-SUBSTRATE-TAXONOMY-HOME-AND-ROOT-TAXA-ANCHOR.md",
+      "derivations": [],
+      "generator_class": "pointer row",
+      "id": "D-25",
+      "index": 25,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-09",
+      "mode": "REUSE-BY-REFERENCE",
+      "name": "Taxonomy owner binding",
+      "note": "Pointer row only.",
+      "owner_resolved": "15-UNIVERSAL-SCIENCE-INTELLIGENCE/03-TAXONOMY/USIS-TAX-000-SUBSTRATE-TAXONOMY-HOME-AND-ROOT-TAXA-ANCHOR.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "The substrate taxonomy home and root taxa anchor."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-MASTER/IMR-0000/19-PUBLIC-INTERFACE-CATALOGUE.md",
+      "derivations": [
+        "DV-53",
+        "DV-41"
+      ],
+      "generator_class": "regenerated binding",
+      "id": "D-26",
+      "index": 26,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-09",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "API and interface owner binding",
+      "note": "The owner catalogues the public interface; the delta is its own accounting and the subsystem census.",
+      "owner_resolved": "00-MASTER/IMR-0000/19-PUBLIC-INTERFACE-CATALOGUE.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "The public interface catalogue."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-45",
+        "DV-46",
+        "DV-43",
+        "DV-60"
+      ],
+      "generator_class": "regenerated catalogue",
+      "id": "D-27",
+      "index": 27,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-10",
+      "mode": "DERIVE",
+      "name": "Engine catalogue",
+      "note": "Discovered by declared glob over tracked files only. An untracked engine is not Repository Truth.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "Executable governance engines present in version control, joined to their gate, entry point and workflow bindings."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-BOOK/REGISTRIES/KNOWLEDGE-GRAPH-REGISTRY.md",
+      "derivations": [
+        "DV-12",
+        "DV-13",
+        "DV-14"
+      ],
+      "generator_class": "regenerated binding",
+      "id": "D-28",
+      "index": 28,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-11",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Graph owner binding and edge reconciliation",
+      "note": "The owner is the graph registry; the delta reconciles the edge census against the portfolio rollup and the certified scope.",
+      "owner_resolved": "00-BOOK/REGISTRIES/KNOWLEDGE-GRAPH-REGISTRY.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "The knowledge-graph registry and the edge-count reconciliation across projections."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "",
+      "derivations": [
+        "DV-15",
+        "DV-39",
+        "DV-40"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-29",
+      "index": 29,
+      "is_reuse": false,
+      "is_unknown": false,
+      "matrix": "M-11",
+      "mode": "DERIVE",
+      "name": "Capability edge census",
+      "note": "Counted from the graph projection and the inherited resilience contract. No capability is created, renamed or retired.",
+      "owner_resolved": "",
+      "owner_tracked": false,
+      "reasons": [],
+      "subject": "The edge-type census, including the capability-bearing relationship types."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-MASTER/UCDA-000001/02-DECISION-LIFECYCLE-DETERMINATION.md",
+      "derivations": [
+        "DV-35",
+        "DV-36",
+        "DV-37",
+        "DV-38"
+      ],
+      "generator_class": "regenerated matrix",
+      "id": "D-30",
+      "index": 30,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-12",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Decision intelligence",
+      "note": "The owner determines the lifecycle; the delta is measured occupancy across stages and the closed disposition set.",
+      "owner_resolved": "00-MASTER/UCDA-000001/02-DECISION-LIFECYCLE-DETERMINATION.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "Decision lifecycle occupancy, disposition occupancy, and deliverable-to-decision coverage."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-MASTER/UCCEP-000000/12-CERTIFICATION-INTELLIGENCE.md",
+      "derivations": [
+        "DV-20",
+        "DV-04",
+        "DV-32",
+        "DV-33",
+        "DV-34"
+      ],
+      "generator_class": "regenerated binding",
+      "id": "D-31",
+      "index": 31,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-13",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Validation, certification and compliance binding",
+      "note": "The owner determines certification intelligence; the delta reconciles certified scope against the registration census and reports the ceiling.",
+      "owner_resolved": "00-MASTER/UCCEP-000000/12-CERTIFICATION-INTELLIGENCE.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "The validation, certification and constitutional-compliance owners, plus the certification-scope reconciliation."
+    },
+    {
+      "bound": true,
+      "canonical_owner": "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+      "derivations": [
+        "DV-29",
+        "DV-45",
+        "DV-55",
+        "DV-18"
+      ],
+      "generator_class": "regenerated binding",
+      "id": "D-32",
+      "index": 32,
+      "is_reuse": true,
+      "is_unknown": false,
+      "matrix": "M-14",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "name": "Evolution and master roadmap binding",
+      "note": "The owner holds the roadmap in prose; the delta is the executable-owner census and the counted absence of any machine-readable execution sequence.",
+      "owner_resolved": "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+      "owner_tracked": true,
+      "reasons": [],
+      "subject": "The evolution owner and the master execution roadmap, plus the executable-owner delta."
+    }
+  ],
+  "derivations": [
+    {
+      "count": 1689,
+      "evidence": [
+        "S-01"
+      ],
+      "headline": "1689 records",
+      "id": "DV-01",
+      "primitive": "record_count",
+      "purpose": "Registered artifact records present in the registration projection.",
+      "rows": [
+        [
+          "records",
+          "1689"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [
+        "S-01"
+      ],
+      "headline": "declared 1689 · present 1689 · delta 0",
+      "id": "DV-02",
+      "primitive": "declared_vs_actual",
+      "purpose": "Declared registration count against the records actually present.",
+      "rows": [
+        [
+          "declared",
+          "1689"
+        ],
+        [
+          "present",
+          "1689"
+        ],
+        [
+          "delta",
+          "0"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [
+        "S-01",
+        "S-03"
+      ],
+      "headline": "1689 vs 1689 · delta 0",
+      "id": "DV-03",
+      "primitive": "cross_count_delta",
+      "purpose": "Registration census against the portfolio rollup.",
+      "rows": [
+        [
+          "`S-01` count",
+          "1689"
+        ],
+        [
+          "`S-03` portfolio.total_artifacts",
+          "1689"
+        ],
+        [
+          "delta",
+          "0"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [
+        "S-01",
+        "S-04"
+      ],
+      "headline": "1689 vs 1689 · delta 0",
+      "id": "DV-04",
+      "primitive": "cross_count_delta",
+      "purpose": "Registration census against the certified scope.",
+      "rows": [
+        [
+          "`S-01` count",
+          "1689"
+        ],
+        [
+          "`S-04` scope.artifacts",
+          "1689"
+        ],
+        [
+          "delta",
+          "0"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 2,
+      "evidence": [
+        "S-01"
+      ],
+      "headline": "2 value(s) shared by more than one record (over 1687 distinct value(s))",
+      "id": "DV-05",
+      "primitive": "duplicate_field_values",
+      "purpose": "Content identity: distinct artifacts sharing one content hash.",
+      "rows": [
+        [
+          "`ad9d7e0d775b02d91b02f0798f94f37b236bfeeb716acfd9bc13c0c0686…`",
+          "2"
+        ],
+        [
+          "`b4e45034361308400bebd3826660597e032b3b94b43763d0a22922e3ac7…`",
+          "2"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 23,
+      "evidence": [
+        "S-01"
+      ],
+      "headline": "23 value(s) shared by more than one record (over 1218 distinct value(s))",
+      "id": "DV-06",
+      "primitive": "duplicate_field_values",
+      "purpose": "Name identity: distinct artifacts sharing one name.",
+      "rows": [
+        [
+          "`Acceptance Decision`",
+          "47"
+        ],
+        [
+          "`Cce Certification`",
+          "47"
+        ],
+        [
+          "`Certification Evidence`",
+          "47"
+        ],
+        [
+          "`Certification Ledger`",
+          "47"
+        ],
+        [
+          "`Determinism`",
+          "47"
+        ],
+        [
+          "`Realization Evidence`",
+          "47"
+        ],
+        [
+          "`Traceability`",
+          "47"
+        ],
+        [
+          "`Validation Evidence`",
+          "47"
+        ],
+        [
+          "`Validation Report`",
+          "47"
+        ],
+        [
+          "`Service Compliance`",
+          "13"
+        ],
+        [
+          "`Data Compliance`",
+          "12"
+        ],
+        [
+          "`Application Compliance`",
+          "11"
+        ],
+        [
+          "`Infrastructure Compliance`",
+          "11"
+        ],
+        [
+          "`09 — FINAL CERTIFICATION`",
+          "4"
+        ],
+        [
+          "`Completion Determination`",
+          "3"
+        ],
+        [
+          "`Readiness Determination`",
+          "3"
+        ],
+        [
+          "`03 — DEPENDENCY GRAPH`",
+          "2"
+        ],
+        [
+          "`Capability Inventory`",
+          "2"
+        ],
+        [
+          "`H-06 IMPLEMENTATION AUTHORIZATION DECISION RECORD`",
+          "2"
+        ],
+        [
+          "`H-06 R-4 GRANDFATHERING POLICY DECISION RECORD`",
+          "2"
+        ],
+        [
+          "… 3 further value(s)",
+          ""
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [
+        "S-01"
+      ],
+      "headline": "0 value(s) shared by more than one record (over 1689 distinct value(s))",
+      "id": "DV-07",
+      "primitive": "duplicate_field_values",
+      "purpose": "Identity collision: one universal identifier claimed by more than one record.",
+      "rows": [],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [
+        "S-01"
+      ],
+      "headline": "0 value(s) shared by more than one record (over 1689 distinct value(s))",
+      "id": "DV-08",
+      "primitive": "duplicate_field_values",
+      "purpose": "Multi-home concepts: one path registered more than once.",
+      "rows": [],
+      "unknown": false
+    },
+    {
+      "count": 6,
+      "evidence": [
+        "S-01"
+      ],
+      "headline": "6 distinct value(s)",
+      "id": "DV-09",
+      "primitive": "field_histogram",
+      "purpose": "Registered status vocabulary in use.",
+      "rows": [
+        [
+          "`ACTIVE`",
+          "1568"
+        ],
+        [
+          "`COMPLETE`",
+          "63"
+        ],
+        [
+          "`FROZEN`",
+          "27"
+        ],
+        [
+          "`UNDER_REVIEW`",
+          "15"
+        ],
+        [
+          "`FINAL`",
+          "9"
+        ],
+        [
+          "`CERTIFIED`",
+          "7"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 4,
+      "evidence": [
+        "S-01",
+        "S-06"
+      ],
+      "headline": "4 value(s) absent from the reference set of 14",
+      "id": "DV-10",
+      "primitive": "field_value_not_in_reference",
+      "purpose": "Status-vocabulary conflict: registered status values absent from the meta-constitutional state set.",
+      "rows": [
+        [
+          "`ACTIVE`",
+          "1568"
+        ],
+        [
+          "`COMPLETE`",
+          "63"
+        ],
+        [
+          "`UNDER_REVIEW`",
+          "15"
+        ],
+        [
+          "`FINAL`",
+          "9"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 20157,
+      "evidence": [
+        "S-01"
+      ],
+      "headline": "1800/21957 dimension slots populated (8.19%) · 1688/1689 record(s) carry at least one trace (99.94%) · 0 record(s) fully traced · 1 with none",
+      "id": "DV-11",
+      "primitive": "subdict_fill_ratio",
+      "purpose": "Traceability completeness across the thirteen traceability dimensions of every registered artifact.",
+      "rows": [
+        [
+          "records measured",
+          "1689"
+        ],
+        [
+          "dimension slots",
+          "21957"
+        ],
+        [
+          "slots populated",
+          "1800"
+        ],
+        [
+          "populated share (%)",
+          "8.19"
+        ],
+        [
+          "records fully traced",
+          "0"
+        ],
+        [
+          "records with no trace",
+          "1"
+        ],
+        [
+          "records with at least one trace",
+          "1688"
+        ],
+        [
+          "traced-record share (%)",
+          "99.94"
+        ],
+        [
+          "dimension `architecture`",
+          "1688/1689"
+        ],
+        [
+          "dimension `certification`",
+          "0/1689"
+        ],
+        [
+          "dimension `deployment`",
+          "0/1689"
+        ],
+        [
+          "dimension `design`",
+          "0/1689"
+        ],
+        [
+          "dimension `functional_test`",
+          "0/1689"
+        ],
+        [
+          "dimension `implementation`",
+          "17/1689"
+        ],
+        [
+          "dimension `integration_test`",
+          "0/1689"
+        ],
+        [
+          "dimension `operations`",
+          "0/1689"
+        ],
+        [
+          "dimension `production`",
+          "0/1689"
+        ],
+        [
+          "dimension `requirement`",
+          "95/1689"
+        ],
+        [
+          "dimension `security_test`",
+          "0/1689"
+        ],
+        [
+          "dimension `source_code`",
+          "0/1689"
+        ],
+        [
+          "dimension `unit_test`",
+          "0/1689"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 13811,
+      "evidence": [
+        "S-02"
+      ],
+      "headline": "13811 records",
+      "id": "DV-12",
+      "primitive": "record_count",
+      "purpose": "Graph edges present in the graph projection.",
+      "rows": [
+        [
+          "records",
+          "13811"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [
+        "S-02",
+        "S-03"
+      ],
+      "headline": "13811 vs 13811 · delta 0",
+      "id": "DV-13",
+      "primitive": "cross_count_delta",
+      "purpose": "Edge census against the portfolio rollup.",
+      "rows": [
+        [
+          "`S-02` count",
+          "13811"
+        ],
+        [
+          "`S-03` portfolio.total_edges",
+          "13811"
+        ],
+        [
+          "delta",
+          "0"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [
+        "S-02",
+        "S-04"
+      ],
+      "headline": "13811 vs 13811 · delta 0",
+      "id": "DV-14",
+      "primitive": "cross_count_delta",
+      "purpose": "Edge census against the certified scope.",
+      "rows": [
+        [
+          "`S-02` count",
+          "13811"
+        ],
+        [
+          "`S-04` scope.edges",
+          "13811"
+        ],
+        [
+          "delta",
+          "0"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 16,
+      "evidence": [
+        "S-02"
+      ],
+      "headline": "16 distinct value(s)",
+      "id": "DV-15",
+      "primitive": "field_histogram",
+      "purpose": "Edge-type census, including the capability-bearing edge types.",
+      "rows": [
+        [
+          "`Depends-On`",
+          "4776"
+        ],
+        [
+          "`Required-By`",
+          "4699"
+        ],
+        [
+          "`Child`",
+          "1688"
+        ],
+        [
+          "`Parent`",
+          "1688"
+        ],
+        [
+          "`Consumed-By`",
+          "316"
+        ],
+        [
+          "`Consumes`",
+          "316"
+        ],
+        [
+          "`Authorized-By`",
+          "100"
+        ],
+        [
+          "`Authorizes`",
+          "100"
+        ],
+        [
+          "`Implemented-By`",
+          "48"
+        ],
+        [
+          "`Implements`",
+          "48"
+        ],
+        [
+          "`Referenced-By`",
+          "6"
+        ],
+        [
+          "`References`",
+          "6"
+        ],
+        [
+          "`Evolves-From`",
+          "5"
+        ],
+        [
+          "`Evolves-From-Inverse`",
+          "5"
+        ],
+        [
+          "`Traced-From`",
+          "5"
+        ],
+        [
+          "`Traces-To`",
+          "5"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [
+        "S-01",
+        "S-02"
+      ],
+      "headline": "0 live dependency/dependencies on a superseded target (over 13811 edge(s); 0 endpoint(s) not registered)",
+      "id": "DV-16",
+      "primitive": "edge_status_join",
+      "purpose": "Live dependency on superseded truth: an edge whose target is superseded and whose source is not.",
+      "rows": [
+        [
+          "edges examined",
+          "13811"
+        ],
+        [
+          "endpoints not registered",
+          "0"
+        ],
+        [
+          "live dependencies on superseded targets",
+          "0"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 15,
+      "evidence": [
+        "S-03"
+      ],
+      "headline": "15 key(s)",
+      "id": "DV-17",
+      "primitive": "key_occupancy",
+      "purpose": "Per-dimension execution status across the twelve execution dimensions.",
+      "rows": [
+        [
+          "`architecture`",
+          "APPROVED"
+        ],
+        [
+          "`build`",
+          "BLOCKED"
+        ],
+        [
+          "`certification`",
+          "CERTIFIED"
+        ],
+        [
+          "`deployment`",
+          "IN_PROGRESS"
+        ],
+        [
+          "`execution`",
+          "NOT_STARTED"
+        ],
+        [
+          "`functional_testing`",
+          "NOT_STARTED"
+        ],
+        [
+          "`implementation`",
+          "IMPLEMENTED"
+        ],
+        [
+          "`integration_testing`",
+          "NOT_STARTED"
+        ],
+        [
+          "`operational`",
+          "BLOCKED"
+        ],
+        [
+          "`performance_testing`",
+          "NOT_STARTED"
+        ],
+        [
+          "`portfolio`",
+          "IN_PROGRESS"
+        ],
+        [
+          "`production`",
+          "BLOCKED"
+        ],
+        [
+          "`release`",
+          "NOT_STARTED"
+        ],
+        [
+          "`security`",
+          "BLOCKED"
+        ],
+        [
+          "`unit_testing`",
+          "BLOCKED"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 180,
+      "evidence": [
+        "S-03"
+      ],
+      "headline": "180 records",
+      "id": "DV-18",
+      "primitive": "record_count",
+      "purpose": "Programmes carrying a portfolio rollup.",
+      "rows": [
+        [
+          "records",
+          "180"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 4,
+      "evidence": [
+        "S-03"
+      ],
+      "headline": "4 distinct value(s)",
+      "id": "DV-19",
+      "primitive": "field_histogram",
+      "purpose": "Programme rollup status distribution.",
+      "rows": [
+        [
+          "`ACTIVE`",
+          "174"
+        ],
+        [
+          "`COMPLETE`",
+          "3"
+        ],
+        [
+          "`UNDER_REVIEW`",
+          "2"
+        ],
+        [
+          "`FROZEN`",
+          "1"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [
+        "S-04"
+      ],
+      "headline": "10 vs 10 · delta 0",
+      "id": "DV-20",
+      "primitive": "cross_count_delta",
+      "purpose": "Certification domains passed against domains declared.",
+      "rows": [
+        [
+          "`S-04` domains_passed",
+          "10"
+        ],
+        [
+          "`S-04` domains_total",
+          "10"
+        ],
+        [
+          "delta",
+          "0"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 62,
+      "evidence": [
+        "S-06"
+      ],
+      "headline": "62 records",
+      "id": "DV-21",
+      "primitive": "record_count",
+      "purpose": "Declared meta-constitutional concerns.",
+      "rows": [
+        [
+          "records",
+          "62"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 3,
+      "evidence": [
+        "S-06"
+      ],
+      "headline": "3 distinct value(s)",
+      "id": "DV-22",
+      "primitive": "field_histogram",
+      "purpose": "Concern disposition distribution — the located-owner census.",
+      "rows": [
+        [
+          "`REUSE`",
+          "50"
+        ],
+        [
+          "`RETAIN`",
+          "11"
+        ],
+        [
+          "`RETAINED`",
+          "1"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 2,
+      "evidence": [
+        "S-06"
+      ],
+      "headline": "2 distinct value(s)",
+      "id": "DV-23",
+      "primitive": "field_histogram",
+      "purpose": "Meta-constitutional gap disposition distribution.",
+      "rows": [
+        [
+          "`CLOSED`",
+          "8"
+        ],
+        [
+          "`CLOSED-FOR-CMG-NAMESPACE`",
+          "1"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 7,
+      "evidence": [
+        "S-06"
+      ],
+      "headline": "7 records",
+      "id": "DV-24",
+      "primitive": "record_count",
+      "purpose": "Open constitutional questions.",
+      "rows": [
+        [
+          "records",
+          "7"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [
+        "S-06"
+      ],
+      "headline": "0 records",
+      "id": "DV-25",
+      "primitive": "record_count",
+      "purpose": "Declared constitutional vacancies.",
+      "rows": [
+        [
+          "records",
+          "0"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 1,
+      "evidence": [
+        "S-06"
+      ],
+      "headline": "1 distinct value(s)",
+      "id": "DV-26",
+      "primitive": "field_histogram",
+      "purpose": "Constitutional tier occupancy.",
+      "rows": [
+        [
+          "`LOCATED`",
+          "8"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 48,
+      "evidence": [
+        "S-07"
+      ],
+      "headline": "48 records",
+      "id": "DV-27",
+      "primitive": "record_count",
+      "purpose": "Located executable checks bound by the aggregate gate.",
+      "rows": [
+        [
+          "records",
+          "48"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 26,
+      "evidence": [
+        "S-07"
+      ],
+      "headline": "26 records",
+      "id": "DV-28",
+      "primitive": "record_count",
+      "purpose": "Constitutional gates declared by the aggregate gate.",
+      "rows": [
+        [
+          "records",
+          "26"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 21,
+      "evidence": [
+        "S-07"
+      ],
+      "headline": "21 records",
+      "id": "DV-29",
+      "primitive": "record_count",
+      "purpose": "Programmes on the aggregate roster.",
+      "rows": [
+        [
+          "records",
+          "21"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 1,
+      "evidence": [
+        "S-07"
+      ],
+      "headline": "1 matching record(s)",
+      "id": "DV-30",
+      "primitive": "filtered_record_count",
+      "purpose": "Blocking findings on the assimilation register.",
+      "rows": [
+        [
+          "`UCCEP-F-004`",
+          "Constitutional finality is reserved to an out-of-corpus authority, so e…"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 6,
+      "evidence": [
+        "S-07"
+      ],
+      "headline": "6 records",
+      "id": "DV-31",
+      "primitive": "record_count",
+      "purpose": "Open work packages registered by the aggregate gate.",
+      "rows": [
+        [
+          "records",
+          "6"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 2,
+      "evidence": [
+        "S-08"
+      ],
+      "headline": "2 distinct value(s)",
+      "id": "DV-32",
+      "primitive": "field_histogram",
+      "purpose": "Computed gate verdicts.",
+      "rows": [
+        [
+          "`PASS`",
+          "25"
+        ],
+        [
+          "`PASS-WITH-ADVISORY`",
+          "1"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 2,
+      "evidence": [
+        "S-08"
+      ],
+      "headline": "2 distinct value(s)",
+      "id": "DV-33",
+      "primitive": "field_histogram",
+      "purpose": "Computed programme verdicts.",
+      "rows": [
+        [
+          "`PASS`",
+          "17"
+        ],
+        [
+          "`PASS-WITH-ADVISORY`",
+          "4"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 1,
+      "evidence": [
+        "S-08"
+      ],
+      "headline": "1 records",
+      "id": "DV-34",
+      "primitive": "record_count",
+      "purpose": "Findings composing the certification ceiling.",
+      "rows": [
+        [
+          "records",
+          "1"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 151,
+      "evidence": [
+        "S-10"
+      ],
+      "headline": "9 key(s) · 151 member(s)",
+      "id": "DV-35",
+      "primitive": "dict_list_lengths",
+      "purpose": "Decision lifecycle occupancy by stage.",
+      "rows": [
+        [
+          "`CERTIFICATION`",
+          "0"
+        ],
+        [
+          "`CLOSURE`",
+          "25"
+        ],
+        [
+          "`CONSTITUTIONAL-AGREEMENT`",
+          "0"
+        ],
+        [
+          "`DECISION-REGISTRATION`",
+          "16"
+        ],
+        [
+          "`DISCUSSION`",
+          "0"
+        ],
+        [
+          "`IMPLEMENTATION`",
+          "0"
+        ],
+        [
+          "`REPOSITORY-MAPPING`",
+          "50"
+        ],
+        [
+          "`REPOSITORY-TRUTH-UPDATE`",
+          "60"
+        ],
+        [
+          "`VALIDATION`",
+          "0"
+        ],
+        [
+          "**total**",
+          "**151**"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 151,
+      "evidence": [
+        "S-10"
+      ],
+      "headline": "5 key(s) · 151 member(s)",
+      "id": "DV-36",
+      "primitive": "dict_list_lengths",
+      "purpose": "Decision disposition occupancy across the closed disposition set.",
+      "rows": [
+        [
+          "`IMPLEMENTED`",
+          "54"
+        ],
+        [
+          "`REGISTERED-AS-IMPLEMENTATION-WORK-PACKAGE`",
+          "34"
+        ],
+        [
+          "`REJECTED-WITH-CONSTITUTIONAL-JUSTIFICATION`",
+          "11"
+        ],
+        [
+          "`REPRESENTED-BY-EXISTING-CANONICAL-CAPABILITY`",
+          "48"
+        ],
+        [
+          "`SUPERSEDED`",
+          "4"
+        ],
+        [
+          "**total**",
+          "**151**"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 151,
+      "evidence": [
+        "S-09"
+      ],
+      "headline": "151 records",
+      "id": "DV-37",
+      "primitive": "record_count",
+      "purpose": "Registered constitutional decisions.",
+      "rows": [
+        [
+          "records",
+          "151"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 32,
+      "evidence": [
+        "S-09"
+      ],
+      "headline": "32 records",
+      "id": "DV-38",
+      "primitive": "record_count",
+      "purpose": "Work packages registered by decision disposition.",
+      "rows": [
+        [
+          "records",
+          "32"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 10,
+      "evidence": [
+        "S-11"
+      ],
+      "headline": "10 records",
+      "id": "DV-39",
+      "primitive": "record_count",
+      "purpose": "Inherited execution-resilience capabilities.",
+      "rows": [
+        [
+          "records",
+          "10"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 8,
+      "evidence": [
+        "S-11"
+      ],
+      "headline": "8 records",
+      "id": "DV-40",
+      "primitive": "record_count",
+      "purpose": "Inherited mandatory validation dimensions.",
+      "rows": [
+        [
+          "records",
+          "8"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 17,
+      "evidence": [
+        "S-12"
+      ],
+      "headline": "17 records",
+      "id": "DV-41",
+      "primitive": "record_count",
+      "purpose": "Declared platform subsystems.",
+      "rows": [
+        [
+          "records",
+          "17"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 1,
+      "evidence": [
+        "S-12"
+      ],
+      "headline": "1 distinct value(s)",
+      "id": "DV-42",
+      "primitive": "field_histogram",
+      "purpose": "Platform gate status distribution.",
+      "rows": [
+        [
+          "`OPEN`",
+          "9"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 24,
+      "evidence": [
+        "S-13"
+      ],
+      "headline": "24 records",
+      "id": "DV-43",
+      "primitive": "record_count",
+      "purpose": "Declared architecture engines.",
+      "rows": [
+        [
+          "records",
+          "24"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 1,
+      "evidence": [
+        "S-13"
+      ],
+      "headline": "1 distinct value(s)",
+      "id": "DV-44",
+      "primitive": "field_histogram",
+      "purpose": "Undischarged architecture gate status distribution.",
+      "rows": [
+        [
+          "`OPEN`",
+          "7"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 43,
+      "evidence": [],
+      "headline": "43 tracked path(s)",
+      "id": "DV-45",
+      "primitive": "tracked_glob_census",
+      "purpose": "Executable governance engines and gate scripts present in version control.",
+      "rows": [
+        [
+          "`00-BOOK/tools/register.sh`",
+          "TRACKED"
+        ],
+        [
+          "`00-BOOK/tools/ukb.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-CMG/tools/cmg-gate.sh`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/ACEE-000001/acee_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/BASELINE-001/baseline_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/MCOS-000001/mcos_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/P0-FINAL-CLOSURE-002/final_closure_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/P0-LIFECYCLE-CLOSURE-001/lifecycle_closure_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAEP-000001/uaep_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAIE-000001/uaie_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-002/closure_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-002/phase2_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-002/phase3_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-008/decision_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-008/superiority_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-009/requirement_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAKOS-PHASE-001A-R1/cert_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAKOS-PHASE-001B/provenance_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UAKOS-PHASE-003R/phase3r_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCCEP-000000/uccep_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCDA-000001/ucda_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCEF-000001/ucef_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCL-000001/ucl_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCOS-AEE-001/aee_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCOS-MXR-001/roadmap_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCOS-RFP-001/rfp_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCOS-RIB-001/rib_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCOS-UAR-001/uar_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCOS-UCAF-001/ucaf_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCOS-UFEP-001/ufep_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCOS-UGA-001/uga_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCOS-URAT-001/urat_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCOS-USIS-WAVE0/freeze_c4_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UCOS-UTCE-001/utce_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UEI-000001/uei_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UER-000001/uer_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UIS-001/uis_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UKAP-001/corpus_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UMK-000001/umk_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/UPF-000001/upf_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`00-MASTER/URRC-000001/urrc_engine.py`",
+          "TRACKED"
+        ],
+        [
+          "`verify.sh`",
+          "TRACKED"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 6,
+      "evidence": [],
+      "headline": "37/43 located engine(s) bound to at least one entry point, workflow or hook (over 46 tracked binding file(s))",
+      "id": "DV-46",
+      "primitive": "text_presence",
+      "purpose": "Automation presence: each located engine joined to its developer entry point, continuous-integration workflow and session-start hook.",
+      "rows": [
+        [
+          "`00-BOOK/tools/register.sh`",
+          "4",
+          "`.github/workflows/ucef-gate.yml`, `.github/workflows/ucos-registration-gate.yml`, `.kiro/hooks/auto-register-artifact.json`, `Makefile`"
+        ],
+        [
+          "`00-BOOK/tools/ukb.py`",
+          "3",
+          "`.github/workflows/ucos-registration-gate.yml`, `.kiro/hooks/auto-register-artifact.json`, `Makefile`"
+        ],
+        [
+          "`00-CMG/tools/cmg-gate.sh`",
+          "1",
+          "`Makefile`"
+        ],
+        [
+          "`00-MASTER/ACEE-000001/acee_engine.py`",
+          "2",
+          "`.github/workflows/acee-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/BASELINE-001/baseline_engine.py`",
+          "2",
+          "`.github/workflows/baseline-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/MCOS-000001/mcos_engine.py`",
+          "2",
+          "`.github/workflows/mcos-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/P0-FINAL-CLOSURE-002/final_closure_engine.py`",
+          "1",
+          "`Makefile`"
+        ],
+        [
+          "`00-MASTER/P0-LIFECYCLE-CLOSURE-001/lifecycle_closure_engine.py`",
+          "1",
+          "`Makefile`"
+        ],
+        [
+          "`00-MASTER/UAEP-000001/uaep_engine.py`",
+          "2",
+          "`.github/workflows/uaep-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UAIE-000001/uaie_engine.py`",
+          "2",
+          "`.github/workflows/uaie-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-002/closure_engine.py`",
+          "3",
+          "`.github/workflows/roadmap-gate.yml`, `.kiro/hooks/uakos-closure-002.json`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-002/phase2_engine.py`",
+          "1",
+          "`Makefile`"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-002/phase3_engine.py`",
+          "1",
+          "`Makefile`"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py`",
+          "2",
+          "`.github/workflows/assimilation-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-008/decision_engine.py`",
+          "0",
+          "**none**"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-008/superiority_engine.py`",
+          "0",
+          "**none**"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-009/requirement_engine.py`",
+          "2",
+          "`.github/workflows/closure009-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UAKOS-PHASE-001A-R1/cert_engine.py`",
+          "0",
+          "**none**"
+        ],
+        [
+          "`00-MASTER/UAKOS-PHASE-001B/provenance_engine.py`",
+          "0",
+          "**none**"
+        ],
+        [
+          "`00-MASTER/UAKOS-PHASE-003R/phase3r_engine.py`",
+          "0",
+          "**none**"
+        ],
+        [
+          "`00-MASTER/UCCEP-000000/uccep_engine.py`",
+          "3",
+          "`.github/workflows/uccep-gate.yml`, `.kiro/hooks/uccep-000000.json`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UCDA-000001/ucda_engine.py`",
+          "2",
+          "`.kiro/hooks/ucda-000001.json`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UCEF-000001/ucef_engine.py`",
+          "2",
+          "`.github/workflows/ucef-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UCL-000001/ucl_engine.py`",
+          "2",
+          "`.github/workflows/ucl-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UCOS-AEE-001/aee_engine.py`",
+          "2",
+          "`.github/workflows/aee-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UCOS-MXR-001/roadmap_engine.py`",
+          "2",
+          "`.github/workflows/roadmap-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UCOS-RFP-001/rfp_engine.py`",
+          "2",
+          "`.github/workflows/rfp-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UCOS-RIB-001/rib_engine.py`",
+          "2",
+          "`.github/workflows/rib-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UCOS-UAR-001/uar_engine.py`",
+          "2",
+          "`.github/workflows/uar-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UCOS-UCAF-001/ucaf_engine.py`",
+          "1",
+          "`Makefile`"
+        ],
+        [
+          "`00-MASTER/UCOS-UFEP-001/ufep_engine.py`",
+          "1",
+          "`Makefile`"
+        ],
+        [
+          "`00-MASTER/UCOS-UGA-001/uga_engine.py`",
+          "1",
+          "`Makefile`"
+        ],
+        [
+          "`00-MASTER/UCOS-URAT-001/urat_engine.py`",
+          "2",
+          "`.github/workflows/ufi-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UCOS-USIS-WAVE0/freeze_c4_engine.py`",
+          "0",
+          "**none**"
+        ],
+        [
+          "`00-MASTER/UCOS-UTCE-001/utce_engine.py`",
+          "1",
+          "`Makefile`"
+        ],
+        [
+          "`00-MASTER/UEI-000001/uei_engine.py`",
+          "3",
+          "`.github/workflows/uei-gate.yml`, `.kiro/hooks/uei-000001.json`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UER-000001/uer_engine.py`",
+          "3",
+          "`.github/workflows/uer-gate.yml`, `.kiro/hooks/uer-000001.json`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UIS-001/uis_engine.py`",
+          "2",
+          "`.github/workflows/uis-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UKAP-001/corpus_engine.py`",
+          "2",
+          "`.github/workflows/corpus-currency-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UMK-000001/umk_engine.py`",
+          "2",
+          "`.github/workflows/umk-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/UPF-000001/upf_engine.py`",
+          "2",
+          "`.github/workflows/uprf-gate.yml`, `Makefile`"
+        ],
+        [
+          "`00-MASTER/URRC-000001/urrc_engine.py`",
+          "3",
+          "`.github/workflows/urrc-gate.yml`, `.kiro/hooks/urrc-000001.json`, `Makefile`"
+        ],
+        [
+          "`verify.sh`",
+          "31",
+          "`.github/workflows/acee-gate.yml`, `.github/workflows/aee-gate.yml`, `.github/workflows/assimilation-gate.yml`, `.github/workflows/baseline-gate.yml`, `.github/workflows/closure009-gate.yml`, `.github/workflows/corpus-currency-gate.yml`, `.github/workflows/determinism.yml`, `.github/workflows/ec1-ci.yml`, `.github/workflows/mutation-gate.yml`, `.github/workflows/research-publication-gate.yml`, `.github/workflows/rib-gate.yml`, `.github/workflows/roadmap-gate.yml`, `.github/workflows/sub-gate.yml`, `.github/workflows/uaep-gate.yml`, `.github/workflows/uaie-gate.yml`, `.github/workflows/uar-gate.yml`, `.github/workflows/uaue-gate.yml`, `.github/workflows/uccep-gate.yml`, `.github/workflows/ucef-gate.yml`, `.github/workflows/uci-gate.yml`, `.github/workflows/ucl-gate.yml`, `.github/workflows/ucon-gate.yml`, `.github/workflows/uctx-gate.yml`, `.github/workflows/uec-gate.yml`, `.github/workflows/ufc-gate.yml`, `.github/workflows/ufi-gate.yml`, `.github/workflows/uis-gate.yml`, `.github/workflows/uisd-gate.yml`, `.github/workflows/urke-gate.yml`, `.kiro/hooks/uakos-closure-002.json`, `Makefile`"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [
+        "S-01",
+        "S-02",
+        "S-03",
+        "S-04",
+        "S-05",
+        "S-06",
+        "S-07",
+        "S-08",
+        "S-09",
+        "S-10",
+        "S-11",
+        "S-12",
+        "S-13",
+        "S-14"
+      ],
+      "headline": "14 declared substrate(s) · 0 required substrate(s) unusable",
+      "id": "DV-47",
+      "primitive": "substrate_census",
+      "purpose": "Per-substrate presence, version-control tracking, parse result, record count and content hash.",
+      "rows": [
+        [
+          "`S-01`",
+          "`00-BOOK/DATA/artifacts.json`",
+          "YES",
+          "YES",
+          "YES",
+          "2/2",
+          "3378",
+          "`aa096e10c9cc`"
+        ],
+        [
+          "`S-02`",
+          "`00-BOOK/DATA/relationships.json`",
+          "YES",
+          "YES",
+          "YES",
+          "2/2",
+          "27622",
+          "`0786e2944fff`"
+        ],
+        [
+          "`S-03`",
+          "`00-BOOK/DATA/control-tower.json`",
+          "YES",
+          "YES",
+          "YES",
+          "3/3",
+          "201",
+          "`3afbb9b01091`"
+        ],
+        [
+          "`S-04`",
+          "`00-BOOK/DATA/certification.json`",
+          "YES",
+          "YES",
+          "YES",
+          "5/5",
+          "45",
+          "`493c11ef1c1a`"
+        ],
+        [
+          "`S-05`",
+          "`00-BOOK/DATA/id-ledger.json`",
+          "YES",
+          "YES",
+          "YES",
+          "2/2",
+          "1957",
+          "`7f6b11760cc3`"
+        ],
+        [
+          "`S-06`",
+          "`00-CMG/CMG-REGISTRY.json`",
+          "YES",
+          "YES",
+          "YES",
+          "9/9",
+          "167",
+          "`a17e0a0ab88a`"
+        ],
+        [
+          "`S-07`",
+          "`00-MASTER/UCCEP-000000/uccep-bindings.json`",
+          "YES",
+          "YES",
+          "YES",
+          "5/5",
+          "112",
+          "`4d4417804ca0`"
+        ],
+        [
+          "`S-08`",
+          "`00-MASTER/UCCEP-000000/uccep.json`",
+          "YES",
+          "YES",
+          "YES",
+          "6/6",
+          "137",
+          "`2a9f45b2ddfb`"
+        ],
+        [
+          "`S-09`",
+          "`00-MASTER/UCDA-000001/ucda-decisions.json`",
+          "YES",
+          "YES",
+          "YES",
+          "4/4",
+          "197",
+          "`b389218f2268`"
+        ],
+        [
+          "`S-10`",
+          "`00-MASTER/UCDA-000001/ucda.json`",
+          "YES",
+          "YES",
+          "YES",
+          "6/6",
+          "748",
+          "`2b8530624ef4`"
+        ],
+        [
+          "`S-11`",
+          "`00-MASTER/UER-000001/uer.json`",
+          "YES",
+          "YES",
+          "YES",
+          "6/6",
+          "113",
+          "`0ae82cb58fdb`"
+        ],
+        [
+          "`S-12`",
+          "`00-MASTER/IMR-0000/imr-0000-platform-bindings.json`",
+          "YES",
+          "YES",
+          "YES",
+          "7/7",
+          "65",
+          "`2df229587d73`"
+        ],
+        [
+          "`S-13`",
+          "`00-MASTER/IMR-003A/cios-bindings.json`",
+          "YES",
+          "YES",
+          "YES",
+          "7/7",
+          "140",
+          "`624b8de84505`"
+        ],
+        [
+          "`S-14`",
+          "`00-MASTER/STATE/mcs-state.json`",
+          "YES",
+          "YES",
+          "YES",
+          "5/5",
+          "17",
+          "`c55abefa0a04`"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [],
+      "headline": "3 mode(s) in use · 0 deliverable(s) bound to verified absence",
+      "id": "DV-48",
+      "primitive": "binding_mode_distribution",
+      "purpose": "Distribution of the thirty-two deliverables across the four binding modes.",
+      "rows": [
+        [
+          "`DERIVE`",
+          "16"
+        ],
+        [
+          "`REUSE-WITH-DERIVED-DELTA`",
+          "13"
+        ],
+        [
+          "`REUSE-BY-REFERENCE`",
+          "3"
+        ],
+        [
+          "**bound to verified absence**",
+          "**0**"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [],
+      "headline": "0 canonical owner(s) claimed by more than one deliverable (over 16 distinct owner(s))",
+      "id": "DV-49",
+      "primitive": "binding_owner_collision",
+      "purpose": "Deliverable overlap: one canonical owner claimed by more than one deliverable.",
+      "rows": [],
+      "unknown": false
+    },
+    {
+      "count": 1,
+      "evidence": [
+        "S-14"
+      ],
+      "headline": "1 records",
+      "id": "DV-50",
+      "primitive": "record_count",
+      "purpose": "Recorded execution blockers in operational state.",
+      "rows": [
+        [
+          "records",
+          "1"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 11,
+      "evidence": [
+        "S-12"
+      ],
+      "headline": "11 records",
+      "id": "DV-51",
+      "primitive": "record_count",
+      "purpose": "Declared register specifications.",
+      "rows": [
+        [
+          "records",
+          "11"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 2,
+      "evidence": [
+        "S-12"
+      ],
+      "headline": "2 distinct value(s)",
+      "id": "DV-52",
+      "primitive": "field_histogram",
+      "purpose": "Register specification location status — which declared registers are located.",
+      "rows": [
+        [
+          "`True`",
+          "8"
+        ],
+        [
+          "`False`",
+          "3"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 5,
+      "evidence": [
+        "S-12"
+      ],
+      "headline": "5 key(s)",
+      "id": "DV-53",
+      "primitive": "key_occupancy",
+      "purpose": "Public interface catalogue accounting.",
+      "rows": [
+        [
+          "`internal_ports_promoted`",
+          "0"
+        ],
+        [
+          "`located_interfaces`",
+          "[{'id': 'IFL-01', 'capability': 'programme registration/discovery', 'bi…"
+        ],
+        [
+          "`platform_ports`",
+          "[{'id': 'IF-01', 'port': 'CIOS-P-01', 'subsystem': 'SS-04', 'direction'…"
+        ],
+        [
+          "`ports_created`",
+          "0"
+        ],
+        [
+          "`total_binding_entries`",
+          "20"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 45,
+      "evidence": [
+        "S-06"
+      ],
+      "headline": "45 records",
+      "id": "DV-54",
+      "primitive": "record_count",
+      "purpose": "Meta-constitutional artifacts under registry control.",
+      "rows": [
+        [
+          "records",
+          "45"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 1,
+      "evidence": [],
+      "headline": "1 tracked path(s)",
+      "id": "DV-55",
+      "primitive": "tracked_glob_census",
+      "purpose": "Counted probe: a machine-readable master execution sequence in version control.",
+      "rows": [
+        [
+          "`00-MASTER/UCOS-MXR-001/roadmap.json`",
+          "TRACKED"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 0,
+      "evidence": [],
+      "headline": "0 tracked path(s)",
+      "id": "DV-56",
+      "primitive": "tracked_glob_census",
+      "purpose": "Counted probe: the four declared registers whose absence is the located register gap.",
+      "rows": [],
+      "unknown": false
+    },
+    {
+      "count": 1,
+      "evidence": [],
+      "headline": "non-derivable: upstream configuration is local runtime state",
+      "id": "DV-57",
+      "primitive": "declared_local_runtime",
+      "purpose": "Declared fact: whether the branch carrying the constitutional baseline has a configured off-machine upstream is per-clone local runtime state, not committed history.",
+      "rows": [
+        [
+          "declared claim",
+          "upstream configuration is per-clone git config, absent from the object database"
+        ],
+        [
+          "derivable from committed history",
+          "**no** — per-clone local runtime state"
+        ],
+        [
+          "observation",
+          "`URRC-000001/EV-UPSTREAM-001` (LOCAL_RUNTIME, NON_CANONICAL)"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 4,
+      "evidence": [],
+      "headline": "4 declared path(s) excluded from version control",
+      "id": "DV-58",
+      "primitive": "ignored_path_census",
+      "purpose": "Counted probe: declared evidence zones excluded from version control, so prior seals cannot be reproduced from committed history alone.",
+      "rows": [
+        [
+          "`00-MASTER/UER-000001/evidence`",
+          "**NO**"
+        ],
+        [
+          "`00-MASTER/UCCEP-000000/evidence`",
+          "**NO**"
+        ],
+        [
+          "`00-MASTER/UCCEP-000007/evidence`",
+          "**NO**"
+        ],
+        [
+          "`00-MASTER/UAKOS-CLOSURE-002/closure.json`",
+          "**NO**"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 17,
+      "evidence": [
+        "S-06"
+      ],
+      "headline": "17 records",
+      "id": "DV-59",
+      "primitive": "record_count",
+      "purpose": "Declared namespaces under meta-constitutional control.",
+      "rows": [
+        [
+          "records",
+          "17"
+        ]
+      ],
+      "unknown": false
+    },
+    {
+      "count": 35,
+      "evidence": [
+        "S-13"
+      ],
+      "headline": "35 records",
+      "id": "DV-60",
+      "primitive": "record_count",
+      "purpose": "Located bindings the engine architecture consumes by pointer.",
+      "rows": [
+        [
+          "records",
+          "35"
+        ]
+      ],
+      "unknown": false
+    }
+  ],
+  "determination": "REALITY-BOUND",
+  "gate": "OPEN",
+  "gate_exit": 0,
+  "gates": [
+    {
+      "blocking": true,
+      "criterion": "Every required substrate exists, is tracked in version control, parses, and every declared pointer resolves inside it.",
+      "failures": [],
+      "id": "G-01",
+      "matrices": [
+        "M-01"
+      ],
+      "name": "Substrate integrity",
+      "verdict": "PASS"
+    },
+    {
+      "blocking": true,
+      "criterion": "No deliverable whose canonical owner resolves is bound in a create mode, and every mode requiring an owner has one that resolves.",
+      "failures": [],
+      "id": "G-02",
+      "matrices": [
+        "M-02"
+      ],
+      "name": "Reuse before create",
+      "verdict": "PASS"
+    },
+    {
+      "blocking": true,
+      "criterion": "No canonical owner is claimed by more than one deliverable.",
+      "failures": [],
+      "id": "G-03",
+      "matrices": [
+        "M-03"
+      ],
+      "name": "Non-proliferation",
+      "verdict": "PASS"
+    },
+    {
+      "blocking": true,
+      "criterion": "Every conflict this programme measures is rendered with its scope and its owner, and none is adjudicated here.",
+      "failures": [],
+      "id": "G-04",
+      "matrices": [
+        "M-04"
+      ],
+      "name": "Conflict disclosure",
+      "verdict": "PASS"
+    },
+    {
+      "blocking": true,
+      "criterion": "Every deliverable bound in an unknown mode resolves to a non-derivable entry carrying a counted probe and a required evidence class.",
+      "failures": [],
+      "id": "G-05",
+      "matrices": [
+        "M-05"
+      ],
+      "name": "Gap disclosure",
+      "verdict": "PASS"
+    },
+    {
+      "blocking": true,
+      "criterion": "Every derived record carries resolved substrate evidence or an explicit declared-unknown marker.",
+      "failures": [],
+      "id": "G-06",
+      "matrices": [
+        "M-01",
+        "M-06"
+      ],
+      "name": "No fabrication",
+      "verdict": "PASS"
+    },
+    {
+      "blocking": true,
+      "criterion": "Neither the declaration nor any rendered byte reintroduces the ratified law token outside the declared citation whitelist.",
+      "failures": [],
+      "id": "G-07",
+      "matrices": [
+        "M-09"
+      ],
+      "name": "Law namespace",
+      "verdict": "PASS"
+    },
+    {
+      "blocking": true,
+      "criterion": "Every write lands inside the programme's own operational memory, and every forbidden write prefix exists and is untouched.",
+      "failures": [],
+      "id": "G-08",
+      "matrices": [
+        "M-10"
+      ],
+      "name": "Write confinement",
+      "verdict": "PASS"
+    },
+    {
+      "blocking": false,
+      "criterion": "No completeness or readiness claim exceeds what was measured; absence of measurement is never read as completeness.",
+      "failures": [],
+      "id": "G-09",
+      "matrices": [
+        "M-06",
+        "M-07"
+      ],
+      "name": "Completeness lower bound",
+      "verdict": "PASS"
+    },
+    {
+      "blocking": false,
+      "criterion": "The inherited execution-resilience contract resolves and its determination is recorded, not restated.",
+      "failures": [],
+      "id": "G-10",
+      "matrices": [
+        "M-08",
+        "M-14"
+      ],
+      "name": "Inheritance",
+      "verdict": "PASS"
+    }
+  ],
+  "guard_findings": [],
+  "guards": {
+    "declaration": [],
+    "fabrication": [],
+    "reuse": [],
+    "substrate": []
+  },
+  "matrices": [
+    {
+      "computable": true,
+      "deliverables": [
+        "D-01",
+        "D-02"
+      ],
+      "derivations": [
+        "DV-01",
+        "DV-02",
+        "DV-03",
+        "DV-04",
+        "DV-47"
+      ],
+      "id": "M-01",
+      "name": "Repository reality",
+      "subject": "What the repository contains, and the substrate that proves it.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-03"
+      ],
+      "derivations": [
+        "DV-48"
+      ],
+      "id": "M-02",
+      "name": "Reuse",
+      "subject": "Repository-wide reuse disposition over all thirty-two bindings.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-04",
+        "D-05",
+        "D-06",
+        "D-07",
+        "D-08"
+      ],
+      "derivations": [
+        "DV-05",
+        "DV-06",
+        "DV-02",
+        "DV-03",
+        "DV-04",
+        "DV-07",
+        "DV-08",
+        "DV-49"
+      ],
+      "id": "M-03",
+      "name": "Duplication",
+      "subject": "Structural duplication only: content identity, name identity, registration delta, multi-home concepts, deliverable overlap.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-09",
+        "D-10",
+        "D-11",
+        "D-12"
+      ],
+      "derivations": [
+        "DV-30",
+        "DV-34",
+        "DV-24",
+        "DV-09",
+        "DV-10",
+        "DV-16",
+        "DV-32",
+        "DV-33",
+        "DV-23",
+        "DV-26"
+      ],
+      "id": "M-04",
+      "name": "Conflict",
+      "subject": "Declared conflicts, status-vocabulary conflict, live dependency on superseded truth, determination conflict set.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-13",
+        "D-14",
+        "D-15",
+        "D-16",
+        "D-17"
+      ],
+      "derivations": [
+        "DV-48",
+        "DV-27",
+        "DV-28",
+        "DV-46",
+        "DV-17",
+        "DV-19",
+        "DV-11",
+        "DV-31",
+        "DV-38",
+        "DV-50"
+      ],
+      "id": "M-05",
+      "name": "Gap",
+      "subject": "Deliverable, executability, dimension, traceability and open-work gaps.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-18"
+      ],
+      "derivations": [
+        "DV-17",
+        "DV-11",
+        "DV-20"
+      ],
+      "id": "M-06",
+      "name": "Completeness",
+      "subject": "Per-dimension completeness, declared as a lower bound.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-19",
+        "D-20"
+      ],
+      "derivations": [
+        "DV-26",
+        "DV-25",
+        "DV-34",
+        "DV-24",
+        "DV-30",
+        "DV-50",
+        "DV-44",
+        "DV-42"
+      ],
+      "id": "M-07",
+      "name": "Readiness",
+      "subject": "Readiness bound to its owners, plus the blocked-by set.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-21"
+      ],
+      "derivations": [
+        "DV-45",
+        "DV-46"
+      ],
+      "id": "M-08",
+      "name": "Automation",
+      "subject": "Automation presence per gate and per deliverable.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-22",
+        "D-23",
+        "D-24",
+        "D-25",
+        "D-26"
+      ],
+      "derivations": [
+        "DV-01",
+        "DV-54",
+        "DV-59",
+        "DV-51",
+        "DV-52",
+        "DV-53",
+        "DV-41"
+      ],
+      "id": "M-09",
+      "name": "Catalogue and registry",
+      "subject": "Catalogue, registry, ontology, taxonomy, API and interface owners.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-27"
+      ],
+      "derivations": [
+        "DV-45",
+        "DV-46",
+        "DV-43",
+        "DV-60"
+      ],
+      "id": "M-10",
+      "name": "Engine catalogue",
+      "subject": "Engines discovered by declared glob, joined to gate, entry point and workflow bindings.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-28",
+        "D-29"
+      ],
+      "derivations": [
+        "DV-12",
+        "DV-13",
+        "DV-14",
+        "DV-15",
+        "DV-39",
+        "DV-40"
+      ],
+      "id": "M-11",
+      "name": "Graph and capability",
+      "subject": "Graph owners, edge-count reconciliation, capability edge census.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-30"
+      ],
+      "derivations": [
+        "DV-35",
+        "DV-36",
+        "DV-37",
+        "DV-38"
+      ],
+      "id": "M-12",
+      "name": "Decision intelligence",
+      "subject": "Decision lifecycle and disposition occupancy, and deliverable-to-decision coverage.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-31"
+      ],
+      "derivations": [
+        "DV-20",
+        "DV-04",
+        "DV-32",
+        "DV-33",
+        "DV-34"
+      ],
+      "id": "M-13",
+      "name": "Validation, certification and compliance",
+      "subject": "Validation, certification and compliance owners plus certification-scope reconciliation.",
+      "unbound": [],
+      "verdict": "BOUND"
+    },
+    {
+      "computable": true,
+      "deliverables": [
+        "D-32"
+      ],
+      "derivations": [
+        "DV-29",
+        "DV-45",
+        "DV-55",
+        "DV-18"
+      ],
+      "id": "M-14",
+      "name": "Evolution and roadmap",
+      "subject": "Evolution and master-roadmap owners; executable-owner delta.",
+      "unbound": [],
+      "verdict": "BOUND"
+    }
+  ],
+  "metrics": {
+    "advisory_failed": [],
+    "blocking_failed": [],
+    "declared_unknown_bindings": 0,
+    "deliverable_total": 32,
+    "deliverables_bound": 32,
+    "deliverables_unbound": [],
+    "derivation_total": 60,
+    "derivations_measured": 60,
+    "evidence_references": 71,
+    "gate_total": 10,
+    "gates_passed": 10,
+    "matrices_bound": 14,
+    "matrix_total": 14,
+    "mode_distribution": {
+      "DERIVE": 16,
+      "REUSE-BY-REFERENCE": 3,
+      "REUSE-WITH-DERIVED-DELTA": 13
+    },
+    "non_derivable_total": 5,
+    "reuse_bindings": 16,
+    "substrate_total": 14,
+    "substrate_usable": 14,
+    "work_package_total": 3
+  },
+  "modes": [
+    {
+      "definition": "A canonical owner exists and is current. The programme emits a pointer row only. No content is restated.",
+      "id": "MODE-01",
+      "is_reuse": true,
+      "is_unknown": false,
+      "mode": "REUSE-BY-REFERENCE",
+      "requires_derivation": false,
+      "requires_owner": true
+    },
+    {
+      "definition": "A canonical owner exists. The programme emits the pointer plus a delta the owner does not contain — staleness against HEAD, a coverage ratio, or a scope gap.",
+      "id": "MODE-02",
+      "is_reuse": true,
+      "is_unknown": false,
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "requires_derivation": true,
+      "requires_owner": true
+    },
+    {
+      "definition": "No canonical owner exists. The programme computes the fact from declared substrate.",
+      "id": "MODE-03",
+      "is_reuse": false,
+      "is_unknown": false,
+      "mode": "DERIVE",
+      "requires_derivation": true,
+      "requires_owner": false
+    },
+    {
+      "definition": "No substrate exists. The programme emits verified absence with a counted probe and the evidence class that would be required. Never a body, never a row.",
+      "id": "MODE-04",
+      "is_reuse": false,
+      "is_unknown": true,
+      "mode": "DECLARED-UNKNOWN",
+      "requires_derivation": false,
+      "requires_owner": false
+    }
+  ],
+  "non_derivable": [
+    {
+      "bounds": [
+        "D-18",
+        "D-19"
+      ],
+      "fact": "Whether the repository is constitutionally complete.",
+      "id": "N-01",
+      "owner": "00-CMG/CMG-REGISTRY.json",
+      "probe": "DV-25",
+      "reason": "Completeness is a ratification verdict. The constitutional tier competent to ratify is declared VACANT by its own registry, so no located authority can issue it and this programme may not substitute for one.",
+      "required_evidence_class": "A ratification determination issued by a constituted authority occupying the vacant tier."
+    },
+    {
+      "bounds": [
+        "D-32"
+      ],
+      "fact": "The master execution sequence in machine-readable form.",
+      "id": "N-02",
+      "owner": "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+      "probe": "DV-55",
+      "reason": "The roadmap is held in prose by its owner. No machine-readable execution sequence exists in version control, and deriving one would create a second sequencing authority.",
+      "required_evidence_class": "A machine-readable execution sequence emitted by the located roadmap owner."
+    },
+    {
+      "bounds": [
+        "D-17",
+        "D-23"
+      ],
+      "fact": "Register-backed rollback capability.",
+      "id": "N-03",
+      "owner": "00-MASTER/IMR-0000/07-CANONICAL-REGISTRY-FRAMEWORK.md",
+      "probe": "DV-56",
+      "reason": "Four of the declared registers do not exist in version control. Rollback capability that rests on them cannot be measured, and the registers may not be authored by this programme.",
+      "required_evidence_class": "The four declared registers, authored and committed by their located owner."
+    },
+    {
+      "bounds": [
+        "D-01",
+        "D-20"
+      ],
+      "fact": "Off-machine existence of the constitutional baseline anchor.",
+      "id": "N-04",
+      "owner": "00-MASTER/UCCEP-000008/10-REMAINING-GOVERNANCE-GAPS.md",
+      "probe": "DV-57",
+      "reason": "The branch carrying the baseline has no configured upstream, so durability of every claim resting on the anchor cannot be verified from the repository. Configuring or pushing one is an operator act, not a determination.",
+      "required_evidence_class": "A configured upstream and a pushed anchor, verifiable independently of this machine."
+    },
+    {
+      "bounds": [
+        "D-02",
+        "D-21"
+      ],
+      "fact": "Reproduction of prior authorization seals from committed history alone.",
+      "id": "N-05",
+      "owner": "00-BOOK/tools/config.py",
+      "probe": "DV-58",
+      "reason": "Programme evidence zones are excluded from version control by the ignore authority. Their contents are therefore not Repository Truth, and a seal over them cannot be recomputed from history.",
+      "required_evidence_class": "Either evidence committed to version control, or a deterministic regeneration path proven from committed inputs alone."
+    }
+  ],
+  "programme": {
+    "aggregate_gate_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+    "authority": "NONE — DERIVED TRUTH",
+    "charter_designation": "Omega-Infinity-001",
+    "deliverable_range_first": 1,
+    "deliverable_range_last": 32,
+    "determination_fail": "NOT-BOUND",
+    "determination_pass": "REALITY-BOUND",
+    "disclosure": "CERTIFIED-PROVISIONAL; constitutional Tier T1 is VACANT (VAC-01 / CMG-OQ-02 / UCCEP-F-004); every determination is PROVISIONAL under CMG-000001 CMG-L-12. Nothing here is ratified, final or frozen.",
+    "evolution_owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+    "forbidden_write_prefixes": [
+      "00-BOOK/",
+      "00-CEP/",
+      "00-CMG/",
+      "00-SOURCE/",
+      "01-WORKING/",
+      "02-MASTER/",
+      "10-DATA/",
+      "11-SERVICE/",
+      "12-APPLICATION/",
+      "13-INFRASTRUCTURE/",
+      "15-UNIVERSAL-SCIENCE-INTELLIGENCE/",
+      "engine/",
+      "platform/",
+      "data/",
+      "service/",
+      "application/",
+      "infrastructure/",
+      "00-MASTER/UCCEP-000000/",
+      "00-MASTER/UCCEP-000007/",
+      "00-MASTER/UCCEP-000008/",
+      "00-MASTER/UCDA-000001/",
+      "00-MASTER/UER-000001/",
+      "00-MASTER/IMR-0000/",
+      "00-MASTER/IMR-003A/",
+      "00-MASTER/STATE/"
+    ],
+    "gate_clause": "Omega-Infinity-001 EXIT CRITERIA",
+    "gate_name": "Repository Reality Gate",
+    "governed_by": [
+      "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "00-CEP/CEP-004",
+      "00-CEP/CEP-005",
+      "00-CEP/CEP-007",
+      "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+    ],
+    "governing_instrument": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+    "id": "URRC-000001",
+    "identifier_family_owner": "00-MASTER/UAKOS-CLOSURE-007/03-IDENTIFIER-FAMILY-CATALOG.md",
+    "identity_allocation_owner": "00-MASTER/UCCEP-000008/05-GDR-E-REGISTER-EVIDENCE-AND-LINEAGE-REALIZATION.md",
+    "law_citation_whitelist": [],
+    "law_namespace_pattern": "\\u03a9\\u221e-\\d+",
+    "mission": "Establish Repository Truth for the thirty-two deliverables the charter names. Create no catalogue, no registry, no roadmap and no authority. Where a canonical owner already exists, bind it by reference and never restate it; where none exists, derive the fact from machine-readable repository truth; where honest derivation is impossible, declare and count the absence.",
+    "name": "Repository Reality & Constitutional Completion",
+    "operational_home": "00-MASTER/URRC-000001/",
+    "operational_memory_owner": "00-MASTER/UCOS-RECON-C1-OPERATIONAL-MEMORY-EXCLUSION.md",
+    "registration_owner": "00-BOOK/tools/config.py",
+    "resilience_owner": "00-MASTER/UER-000001/13-CONTINUATION-PACKAGE.md",
+    "resumed_by_directive": "Omega-Infinity-002 — Master Execution Resumption",
+    "roster_binding": "PROGRAM-000017",
+    "roster_binding_status": "AUTHORIZATION REQUIRED — WP-URRC-001; not self-executed",
+    "version": "1.0"
+  },
+  "references": [
+    {
+      "id": "R-01",
+      "path": "00-MASTER/UCCEP-000007/00-DISCOVERY-INDEX.md",
+      "purpose": "The repository discovery baseline this programme consumes."
+    },
+    {
+      "id": "R-02",
+      "path": "00-MASTER/UCCEP-000008/00-GOVERNANCE-DECISION-INDEX.md",
+      "purpose": "The governance decisions that bound this programme's disclosures."
+    },
+    {
+      "id": "R-03",
+      "path": "00-MASTER/UCDA-000001/03-DISPOSITION-REGISTER.md",
+      "purpose": "The closed disposition set every decision carries."
+    },
+    {
+      "id": "R-04",
+      "path": "00-MASTER/UER-000001/13-CONTINUATION-PACKAGE.md",
+      "purpose": "The inherited execution-resilience contract and continuation package."
+    },
+    {
+      "id": "R-05",
+      "path": "00-MASTER/UCCEP-000000/11-VALIDATION-INTELLIGENCE.md",
+      "purpose": "The located validation-intelligence owner."
+    },
+    {
+      "id": "R-06",
+      "path": "00-MASTER/UCCEP-000000/13-EVOLUTION-INTELLIGENCE.md",
+      "purpose": "The located evolution-intelligence owner."
+    },
+    {
+      "id": "R-07",
+      "path": "00-BOOK/REGISTRIES/CERTIFICATION-REGISTRY.md",
+      "purpose": "The located certification registry."
+    },
+    {
+      "id": "R-08",
+      "path": "00-MASTER/MCP-002-MASTER-STATE.md",
+      "purpose": "The operational-memory state owner."
+    },
+    {
+      "id": "R-09",
+      "path": "00-MASTER/UAKOS-CLOSURE-007/03-IDENTIFIER-FAMILY-CATALOG.md",
+      "purpose": "The identifier-family catalogue that makes the law token machine-recognisable."
+    },
+    {
+      "id": "R-10",
+      "path": "00-MASTER/IMR-001/00-IMPLEMENTATION-MISSION-REGISTRATION-RECORD.md",
+      "purpose": "The registered implementation mission whose execution gates remain undischarged."
+    },
+    {
+      "id": "R-11",
+      "path": "00-BOOK/tools/register.sh",
+      "purpose": "The registration integrity guard."
+    },
+    {
+      "id": "R-12",
+      "path": "verify.sh",
+      "purpose": "The located repository verification entry point."
+    }
+  ],
+  "repository": {
+    "anchor": "the containing commit — owned by version control, never restated here",
+    "basis": "UCOS-RFP-001 RFP-2 (no commit self-reference) and RFP-3 (no working-tree self-observation)"
+  },
+  "seal_sha256": "8432609e10e719c6c2fef582f8f352a29e027e3ffe816e9eeed636f7c51eef40",
+  "substrate": [
+    {
+      "content_sha256": "aa096e10c9cc0b9ff0a04da62746892dea54153893b3f9633783072584fb4abe",
+      "exists": true,
+      "id": "S-01",
+      "kind": "registration projection",
+      "parses": true,
+      "path": "00-BOOK/DATA/artifacts.json",
+      "pointers": [
+        "count",
+        "artifacts"
+      ],
+      "pointers_resolved": [
+        "count",
+        "artifacts"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "The registered artifact census: identity, status, content hash, traceability.",
+      "records": 3378,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "0786e2944fff5eb13c03542340b055c22fe6b57dbf736ab353bf0ac4bea7233c",
+      "exists": true,
+      "id": "S-02",
+      "kind": "graph projection",
+      "parses": true,
+      "path": "00-BOOK/DATA/relationships.json",
+      "pointers": [
+        "count",
+        "relationships"
+      ],
+      "pointers_resolved": [
+        "count",
+        "relationships"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "The knowledge-graph edge set.",
+      "records": 27622,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "3afbb9b010911fad12eaca81793e7039935140f58930fefb00784a04d48fdaec",
+      "exists": true,
+      "id": "S-03",
+      "kind": "portfolio projection",
+      "parses": true,
+      "path": "00-BOOK/DATA/control-tower.json",
+      "pointers": [
+        "portfolio",
+        "programs",
+        "dimensions"
+      ],
+      "pointers_resolved": [
+        "portfolio",
+        "programs",
+        "dimensions"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "Portfolio rollup, per-programme status and the twelve execution dimensions.",
+      "records": 201,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "493c11ef1c1a084a7afad786296384857d8333160458e019fcfe3a3d132261a1",
+      "exists": true,
+      "id": "S-04",
+      "kind": "certification projection",
+      "parses": true,
+      "path": "00-BOOK/DATA/certification.json",
+      "pointers": [
+        "verdict",
+        "domains_total",
+        "domains_passed",
+        "domains",
+        "scope"
+      ],
+      "pointers_resolved": [
+        "verdict",
+        "domains_total",
+        "domains_passed",
+        "domains",
+        "scope"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "Digital-twin certification verdict, domains and certified scope.",
+      "records": 45,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "7f6b11760cc367228b90d1fad73704c9bbde963e449e4383ccabf40bfdddb638",
+      "exists": true,
+      "id": "S-05",
+      "kind": "identity ledger",
+      "parses": true,
+      "path": "00-BOOK/DATA/id-ledger.json",
+      "pointers": [
+        "by_path",
+        "category_seq"
+      ],
+      "pointers_resolved": [
+        "by_path",
+        "category_seq"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "Forward-only identity allocation ledger.",
+      "records": 1957,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "a17e0a0ab88a50afae3404a25c52f69c7e787f26f2c084b6f901f7e8f8b843b4",
+      "exists": true,
+      "id": "S-06",
+      "kind": "meta-constitutional registry",
+      "parses": true,
+      "path": "00-CMG/CMG-REGISTRY.json",
+      "pointers": [
+        "states",
+        "concerns",
+        "gaps",
+        "open_questions",
+        "vacancies",
+        "tiers",
+        "artifacts",
+        "readiness",
+        "namespaces"
+      ],
+      "pointers_resolved": [
+        "states",
+        "concerns",
+        "gaps",
+        "open_questions",
+        "vacancies",
+        "tiers",
+        "artifacts",
+        "readiness",
+        "namespaces"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "The machine-readable projection of the meta-governance constitution.",
+      "records": 167,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "4d4417804ca007fe039d948d0e858f280d83347a59be3e26d04d6c02c5dc5193",
+      "exists": true,
+      "id": "S-07",
+      "kind": "aggregate gate declaration",
+      "parses": true,
+      "path": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "pointers": [
+        "checks",
+        "gates",
+        "programs",
+        "findings",
+        "work_packages"
+      ],
+      "pointers_resolved": [
+        "checks",
+        "gates",
+        "programs",
+        "findings",
+        "work_packages"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "The aggregate constitutional gate: located checks, gates, programme roster, findings.",
+      "records": 112,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "2a9f45b2ddfb81da125955868e9e77f289d19dff17591c8dc99aa387f707d3e3",
+      "exists": true,
+      "id": "S-08",
+      "kind": "aggregate gate determination",
+      "parses": true,
+      "path": "00-MASTER/UCCEP-000000/uccep.json",
+      "pointers": [
+        "certification",
+        "certification_ceiling",
+        "gates",
+        "programs",
+        "tier",
+        "seal_sha256"
+      ],
+      "pointers_resolved": [
+        "certification",
+        "certification_ceiling",
+        "gates",
+        "programs",
+        "tier",
+        "seal_sha256"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "The computed aggregate verdicts and the certification ceiling.",
+      "records": 137,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "b389218f226847eea68a764cb3c5b139e86fde6e472bb026c08d4f9b80a19943",
+      "exists": true,
+      "id": "S-09",
+      "kind": "decision register declaration",
+      "parses": true,
+      "path": "00-MASTER/UCDA-000001/ucda-decisions.json",
+      "pointers": [
+        "lifecycle",
+        "dispositions",
+        "decisions",
+        "work_packages"
+      ],
+      "pointers_resolved": [
+        "lifecycle",
+        "dispositions",
+        "decisions",
+        "work_packages"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "The constitutional decision register: lifecycle, closed disposition set, decisions.",
+      "records": 197,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "2b8530624ef4cb3fb4e263b6af6eded3d4f65ec72259dfd4404fe5b6a8a49385",
+      "exists": true,
+      "id": "S-10",
+      "kind": "decision determination",
+      "parses": true,
+      "path": "00-MASTER/UCDA-000001/ucda.json",
+      "pointers": [
+        "by_stage",
+        "by_disposition",
+        "decision_total",
+        "determination",
+        "gate",
+        "evidence_references"
+      ],
+      "pointers_resolved": [
+        "by_stage",
+        "by_disposition",
+        "decision_total",
+        "determination",
+        "gate",
+        "evidence_references"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "Computed decision lifecycle and disposition occupancy.",
+      "records": 748,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "0ae82cb58fdb33ced179e55f6c74fc8bf4aee9c41da0dcf4d4fdc7c494eec70b",
+      "exists": true,
+      "id": "S-11",
+      "kind": "resilience determination",
+      "parses": true,
+      "path": "00-MASTER/UER-000001/uer.json",
+      "pointers": [
+        "capabilities",
+        "validations",
+        "exit_criteria",
+        "determination",
+        "gate",
+        "seal_sha256"
+      ],
+      "pointers_resolved": [
+        "capabilities",
+        "validations",
+        "exit_criteria",
+        "determination",
+        "gate",
+        "seal_sha256"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "The inherited execution-resilience contract and its verdicts.",
+      "records": 113,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "2df229587d733f7658896dcf2630048cf9ba644c1fdbe6e4ea1e63b651024ff8",
+      "exists": true,
+      "id": "S-12",
+      "kind": "platform binding declaration",
+      "parses": true,
+      "path": "00-MASTER/IMR-0000/imr-0000-platform-bindings.json",
+      "pointers": [
+        "subsystems",
+        "platform_gates",
+        "gaps",
+        "findings",
+        "registry_specifications",
+        "public_interface_catalogue",
+        "platform_layers"
+      ],
+      "pointers_resolved": [
+        "subsystems",
+        "platform_gates",
+        "gaps",
+        "findings",
+        "registry_specifications",
+        "public_interface_catalogue",
+        "platform_layers"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "The platform model: subsystems, public interface catalogue, register specifications.",
+      "records": 65,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "624b8de8450520d44ede13eda09238a7fcefc2b3e28423c3da27ce2a774703c2",
+      "exists": true,
+      "id": "S-13",
+      "kind": "engine architecture declaration",
+      "parses": true,
+      "path": "00-MASTER/IMR-003A/cios-bindings.json",
+      "pointers": [
+        "engines",
+        "laws",
+        "invariants",
+        "stages",
+        "cios_gates",
+        "gaps",
+        "located_bindings"
+      ],
+      "pointers_resolved": [
+        "engines",
+        "laws",
+        "invariants",
+        "stages",
+        "cios_gates",
+        "gaps",
+        "located_bindings"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "The engine architecture: engines, laws, admission stages, undischarged gates.",
+      "records": 140,
+      "required": true,
+      "tracked": true
+    },
+    {
+      "content_sha256": "c55abefa0a044a6055abb08cf2a5c635541301e2947a27205bf4cb42aa733238",
+      "exists": true,
+      "id": "S-14",
+      "kind": "operational state mirror",
+      "parses": true,
+      "path": "00-MASTER/STATE/mcs-state.json",
+      "pointers": [
+        "repository",
+        "current",
+        "blockers",
+        "risks",
+        "next_authorized_capability"
+      ],
+      "pointers_resolved": [
+        "repository",
+        "current",
+        "blockers",
+        "risks",
+        "next_authorized_capability"
+      ],
+      "pointers_unresolved": [],
+      "purpose": "The machine mirror of master operational state.",
+      "records": 17,
+      "required": true,
+      "tracked": true
+    }
+  ],
+  "work_packages": [
+    {
+      "acceptance": "The roster carries the declared programme entry, its output, and its delegated checks; the aggregate gate renders a verdict for it.",
+      "authorization_required": true,
+      "discharges": "The roster binding declared in programme.roster_binding.",
+      "id": "WP-URRC-001",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "route": "An authorized additive change to the aggregate gate declaration plus a corresponding rendered determination by its own engine.",
+      "title": "Bind this programme to the aggregate constitutional gate roster as the declared programme entry."
+    },
+    {
+      "acceptance": "The aggregate gate executes the Repository Reality Gate and reports its verdict without this programme asserting one.",
+      "authorization_required": true,
+      "discharges": "Aggregate enforcement of the Repository Reality Gate beyond the developer entry point, continuous integration and the session-start hook.",
+      "id": "WP-URRC-002",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "route": "An authorized additive change adding the gate's argv and exit semantics to the located check set.",
+      "title": "Bind the Repository Reality Gate into the aggregate constitutional gate as a check and gate entry."
+    },
+    {
+      "acceptance": "Master state names the programme, its determination and its checkpoint.",
+      "authorization_required": true,
+      "discharges": "Operational-memory visibility of the programme's determination and continuation package.",
+      "id": "WP-URRC-003",
+      "owner": "00-MASTER/MCP-002-MASTER-STATE.md",
+      "route": "The operational-memory reconciliation act performed by the master context owner at session close.",
+      "title": "Record this programme in the master operational-memory state as a completed work package."
+    }
+  ]
+}

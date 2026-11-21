@@ -1,0 +1,51 @@
+{
+  "backward": [
+    "GovernanceFacet",
+    "INFRASTRUCTURE-014",
+    "INFRASTRUCTURE-005",
+    "INFRASTRUCTURE-001",
+    "ARCH-INFRASTRUCTURE-001",
+    "13-INFRASTRUCTURE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "facet": "conformance",
+  "forward": [
+    "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+    "EC3-B13-U09-CONFORMANCE-VALIDATION-EVIDENCE",
+    "EC3-B13-U09-CONFORMANCE-CCE-CERTIFICATION",
+    "EC3-B13-U09-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "78cbfc8",
+  "meta_class": "GovernanceFacet",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "ENG-000",
+    "RL-F2",
+    "UIMM-CONF",
+    "UITX",
+    "UCI-001",
+    "REG-AUTO-001"
+  ],
+  "substrate_reuse": {
+    "ENG-000": "custodian/Registrar referenced by reference (Gap Report routing)",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+    "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+    "ENG-004": "infrastructure.governance type_tag (typed construct)",
+    "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+    "REG-AUTO-001": "append-only registration law reused by reference (Change Record)",
+    "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+    "UCI-001": "additive/supersession change instrument reused by reference (Change Record)",
+    "UIMM-CONF": "INFRASTRUCTURE-005 conformance basis reused by reference (Conformance)",
+    "UITX": "infrastructure lifecycle basis reused by reference (Lifecycle)"
+  },
+  "target_id": "UCOS-INFRA-GOVERNANCE-ucos.infrastructure.governance.conformance.foundation-5f111c5c5b3b46c8",
+  "trace_format": "ucos-infrastructure-traceability/1.0.0",
+  "unit": "EC3-B13-U09"
+}

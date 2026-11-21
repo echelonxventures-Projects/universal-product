@@ -1,0 +1,12 @@
+# UCOS Ω∞ — authority files require review. Declared as a Wave 0 deliverable in
+# 00-MASTER/REPOSITORY-CLOSURE-WAVES.md; landed here.
+/engine/uckp/law.py                                    @operator
+/00-BOOK/DATA/allocation-permits.json                  @operator
+/00-BOOK/DATA/context-authority.json                   @operator
+/00-BOOK/DATA/constitutional-authority-alignment.json  @operator
+/00-BOOK/DATA/mutation-governance-boundary.json        @operator
+/00-BOOK/DATA/exclusion-register.json                  @operator
+/00-BOOK/DATA/generated-artifact-registry.json         @operator
+/00-BOOK/DATA/workspace-coordination.json              @operator
+/00-MASTER/**/*-declaration.json                       @operator
+/.gitattributes                                        @operator

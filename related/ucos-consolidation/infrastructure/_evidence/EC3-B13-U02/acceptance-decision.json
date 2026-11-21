@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "ComputeResource",
+  "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+  "verdict": "pass"
+}

@@ -1,0 +1,263 @@
+{
+  "contract_id": "UCOS-UNC-001",
+  "name": "Universal Ω Nucleus Contract",
+  "version": "1.0.0",
+  "profile_field": "nucleus",
+  "$comment": "THE Ω Nucleus completeness contract. A Nucleus is the complete constitutional universe of exactly one canonical concept; this document declares WHICH facets that completeness consists of and, for each, the ONE evidence that discharges it. The contract is generic by construction: it names no domain, no capability, no package and no project. It is satisfiable by unlimited future nuclei because every facet resolves against the nucleus's own declaration, against a constitutional gate the nucleus already passes, or against the nucleus's declared profile — never against a list of known nuclei. Adding a facet is an entry here and requires NO change to nucleus.py; registering a nucleus is an entry in the capability register and requires no change to either.",
+  "$posture_comment": "This contract EXTENDS the existing capability register rather than establishing a second one. UFC-14 forbids two implementations of one constitutional model, and 'what is the atomic unit of canonical ownership' is one model. The register is therefore the Ω Nucleus registry, and this document is the completeness profile attached to every entry in it — exactly the 'profile over the existing registry substrate, not a new store' the Nucleus constitutional model requires.",
+  "$resolution_comment": "Three resolution kinds, and deliberately no fourth. DECLARATION resolves a named field of the nucleus declaration and requires it to be non-empty. GATE resolves a constitutional gate and requires that gate to have PASSED for this nucleus, so a facet already proven by the Constitution is never proven a second, weaker way. PROFILE resolves a dotted path in the nucleus's declared profile block, whose leaf SHALL state a status of 'present' with evidence or 'not-applicable' with a rationale. A leaf that states neither is MISSING: an unstated facet is never read as absent-by-intent, because 'nobody wrote it down' and 'it does not apply' are different facts and only one of them is a determination.",
+  "facets": [
+    {
+      "facet_id": "NF-01",
+      "name": "identity",
+      "resolution": "declaration",
+      "evidence": "identity",
+      "rationale": "The nucleus names the symbol that carries its own identity, so identity is self-declared rather than assigned by a governor."
+    },
+    {
+      "facet_id": "NF-02",
+      "name": "universal-identifier",
+      "resolution": "declaration",
+      "evidence": "capability_id",
+      "rationale": "The one identifier under which the nucleus is registered, referenced and composed. Distinct from NF-01: NF-01 is where the identity lives, NF-02 is the identity itself."
+    },
+    {
+      "facet_id": "NF-03",
+      "name": "canonical-ownership",
+      "resolution": "profile",
+      "evidence": "ownership",
+      "rationale": "Exactly one canonical owner per concept. The nucleus declares who owns it and on what evidence, so ownership is never inferred from location."
+    },
+    {
+      "facet_id": "NF-04",
+      "name": "repository-truth-binding",
+      "resolution": "profile",
+      "evidence": "truth_binding",
+      "rationale": "Which class of Repository Truth the nucleus's own artifacts occupy. A nucleus that cannot say whether its outputs are Truth cannot be replayed against Truth."
+    },
+    {
+      "facet_id": "NF-05",
+      "name": "constitutional-registration",
+      "resolution": "gate",
+      "evidence": "FG-09-EVOLUTION-ADDITIVE",
+      "rationale": "Registration is proven by the identity being self-declared and absent from every governing module — that is what makes a nucleus registrable without editing the governor."
+    },
+    {
+      "facet_id": "NF-06",
+      "name": "discovery",
+      "resolution": "declaration",
+      "evidence": "service_descriptor",
+      "rationale": "A nucleus is discoverable because it publishes a descriptor, not because a catalogue happens to mention it."
+    },
+    {
+      "facet_id": "NF-07",
+      "name": "dependency-declaration",
+      "resolution": "gate",
+      "evidence": "FG-12-COMPOSABLE",
+      "rationale": "Every declared dependency resolves to a registered nucleus and is really imported. A nucleus with no dependency discharges this too: zero declared dependencies is a determination, not an omission."
+    },
+    {
+      "facet_id": "NF-08",
+      "name": "capability-declaration",
+      "resolution": "declaration",
+      "evidence": "contracts",
+      "rationale": "What the nucleus offers is its published contract surface. A capability claimed anywhere else is unbindable."
+    },
+    {
+      "facet_id": "NF-09",
+      "name": "context-declaration",
+      "resolution": "profile",
+      "evidence": "context",
+      "rationale": "The contexts in which the nucleus holds — and, more importantly, the contexts it does not assume. This is where a finite assumption would have to be written down, which is what makes its absence checkable."
+    },
+    {
+      "facet_id": "NF-10",
+      "name": "configuration",
+      "resolution": "gate",
+      "evidence": "FG-04-POLICY-DECLARED",
+      "rationale": "Behaviour is configured by a declared document that resolves and parses, or the nucleus is declared policy-free. Configuration by code is not configuration."
+    },
+    {
+      "facet_id": "NF-11",
+      "name": "composition",
+      "resolution": "profile",
+      "evidence": "composition",
+      "rationale": "How the nucleus enters a larger composition, and what role it plays there. Distinct from NF-07: NF-07 proves the graph is closed, NF-11 declares the composition posture."
+    },
+    {
+      "facet_id": "NF-12",
+      "name": "runtime-integration",
+      "resolution": "gate",
+      "evidence": "FG-02-SERVICE-REGISTERED",
+      "rationale": "The nucleus registers into the certified service registry, that registry validates, and the service resolves to a live instance."
+    },
+    {
+      "facet_id": "NF-13",
+      "name": "api-generation",
+      "resolution": "profile",
+      "evidence": "generation.api",
+      "rationale": "Which programmatic surface is derived from the declaration rather than hand-written. A hand-written API is a maintenance obligation the Foundation exists to remove."
+    },
+    {
+      "facet_id": "NF-14",
+      "name": "cli-generation",
+      "resolution": "gate",
+      "evidence": "FG-06-RUNTIME-INVOCABLE",
+      "rationale": "The nucleus is operable in one command through a declared entry point that the build really publishes."
+    },
+    {
+      "facet_id": "NF-15",
+      "name": "documentation-generation",
+      "resolution": "profile",
+      "evidence": "generation.documentation",
+      "rationale": "Documentation derived from the declaration cannot drift from it. Documentation authored beside the declaration always can."
+    },
+    {
+      "facet_id": "NF-16",
+      "name": "test-generation",
+      "resolution": "profile",
+      "evidence": "generation.tests",
+      "rationale": "Which tests are derived from the contract. Declaring this is what stops a generated artifact from arriving with no executable obligation attached."
+    },
+    {
+      "facet_id": "NF-17",
+      "name": "validation",
+      "resolution": "gate",
+      "evidence": "FG-05-REGISTRY-DETERMINISTIC",
+      "rationale": "Every population the nucleus holds is ordered by declared precedence, refuses a conflicting redefinition, and reports an unknown member rather than substituting a default."
+    },
+    {
+      "facet_id": "NF-18",
+      "name": "verification",
+      "resolution": "gate",
+      "evidence": "FG-07-LIFECYCLE-BOOTSTRAPPED",
+      "rationale": "The nucleus comes into existence through a declared bootstrap and performs no import-time side effect, which is the property that makes independent verification possible at all."
+    },
+    {
+      "facet_id": "NF-19",
+      "name": "certification",
+      "resolution": "gate",
+      "evidence": "FG-11-CERTIFIABLE",
+      "rationale": "Two independent builds are byte-identical and content-addressed, and a nucleus whose outputs become Truth carries a replay target. Certification pins a fingerprint, never a claim."
+    },
+    {
+      "facet_id": "NF-20",
+      "name": "monitoring",
+      "resolution": "profile",
+      "evidence": "observability.monitoring",
+      "rationale": "What is watched while the nucleus runs, and by whom. A nucleus nobody watches is a nucleus nobody can operate."
+    },
+    {
+      "facet_id": "NF-21",
+      "name": "measurement",
+      "resolution": "profile",
+      "evidence": "measurement",
+      "rationale": "Which registered policy measures this nucleus. One subject population yields one measurement, so the measuring authority must be named rather than assumed."
+    },
+    {
+      "facet_id": "NF-22",
+      "name": "observability",
+      "resolution": "profile",
+      "evidence": "observability.signals",
+      "rationale": "The signals the nucleus emits about itself. Distinct from NF-20: NF-22 is what the nucleus makes visible, NF-20 is what a watcher does with it."
+    },
+    {
+      "facet_id": "NF-23",
+      "name": "traceability",
+      "resolution": "profile",
+      "evidence": "traceability",
+      "rationale": "The path from the nucleus back to the authority that admitted it. An untraceable nucleus cannot be governed after the fact."
+    },
+    {
+      "facet_id": "NF-24",
+      "name": "evidence",
+      "resolution": "profile",
+      "evidence": "evidence",
+      "rationale": "What the nucleus produces that a later determination can rely on, and where it is recoverable from."
+    },
+    {
+      "facet_id": "NF-25",
+      "name": "versioning",
+      "resolution": "gate",
+      "evidence": "FG-08-COMPATIBILITY-DECLARED",
+      "rationale": "One declared semantic version governs the whole published surface, and the version the nucleus declares is the version its contract carries."
+    },
+    {
+      "facet_id": "NF-26",
+      "name": "evolution",
+      "resolution": "profile",
+      "evidence": "evolution",
+      "rationale": "How the nucleus changes without breaking its consumers. Declaring the evolution posture is what makes 'additive' auditable instead of aspirational."
+    },
+    {
+      "facet_id": "NF-27",
+      "name": "governance",
+      "resolution": "gate",
+      "evidence": "FG-10-FAIL-CLOSED",
+      "rationale": "Absent, ambiguous or malformed input is refused through typed errors carrying distinct stable codes. A nucleus that guesses is a nucleus that cannot be governed."
+    },
+    {
+      "facet_id": "NF-28",
+      "name": "security",
+      "resolution": "profile",
+      "evidence": "security",
+      "rationale": "The trust boundary the nucleus sits on and the authority it requires. A nucleus that never states its boundary is assumed to have none, which is the assumption that ends badly."
+    },
+    {
+      "facet_id": "NF-29",
+      "name": "compliance",
+      "resolution": "profile",
+      "evidence": "compliance",
+      "rationale": "The obligations the nucleus is held to beyond this Constitution, or the declared determination that there are none."
+    },
+    {
+      "facet_id": "NF-30",
+      "name": "commercialization",
+      "resolution": "profile",
+      "evidence": "commercial.commercialization",
+      "rationale": "Whether the nucleus is offered as a product in its own right. Declared once, at the nucleus, so no downstream catalogue has to guess."
+    },
+    {
+      "facet_id": "NF-31",
+      "name": "billing",
+      "resolution": "profile",
+      "evidence": "commercial.billing",
+      "rationale": "The metering posture. A nucleus that is not metered SHALL say so, because an unstated meter is the one that gets invented later by whoever needs a number."
+    },
+    {
+      "facet_id": "NF-32",
+      "name": "licensing",
+      "resolution": "profile",
+      "evidence": "commercial.licensing",
+      "rationale": "The terms under which the nucleus may be used and redistributed."
+    },
+    {
+      "facet_id": "NF-33",
+      "name": "marketplace",
+      "resolution": "profile",
+      "evidence": "commercial.marketplace",
+      "rationale": "Whether the nucleus is independently listable, and under what identity. Listability is a property of the nucleus, never of a catalogue that discovers it."
+    },
+    {
+      "facet_id": "NF-34",
+      "name": "extensibility",
+      "resolution": "gate",
+      "evidence": "FG-03-PROVIDER-PLUGGABLE",
+      "rationale": "New authority enters through a declared extension point, so admitting an authority never requires editing the nucleus that consumes it."
+    },
+    {
+      "facet_id": "NF-35",
+      "name": "specialization",
+      "resolution": "gate",
+      "evidence": "FG-13-SPECIALIZED-BY-DECLARATION",
+      "rationale": "No module of the nucleus carries a project locator, so a project-specific fix has nowhere to be written and specialisation stays a declaration."
+    },
+    {
+      "facet_id": "NF-36",
+      "name": "contract-surface",
+      "resolution": "gate",
+      "evidence": "FG-01-CONTRACT-PUBLISHED",
+      "rationale": "A consumer binds to a named, semantically versioned contract and never to a module. Distinct from NF-08: NF-08 declares where the surface is, NF-36 proves it is published."
+    }
+  ]
+}

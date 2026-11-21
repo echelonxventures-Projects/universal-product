@@ -1,0 +1,249 @@
+name: EX-018 Mutation Governance Boundary Gate
+
+# EX-018 — the mutation governance boundary, measured in CI.
+#
+# WHY THIS FILE EXISTS, STATED PLAINLY. The rules that decide WHO MAY MUTATE each artifact
+# in this repository were deciding nothing. EX-015 made the mutation classes declarative and
+# EX-016 made them decidable, and then no plane ever called them: a repository-wide search
+# for importers of `mutation_classification` returned exactly one file outside the module
+# itself — its own test. No Makefile target, no workflow, no ./verify.sh stage. Neither the
+# classifier nor the register it reads appeared among UEC-000001's governed enforcement
+# artifacts, so both could have been deleted outright with every gate still green.
+#
+# WHAT THAT COST, MEASURED TWICE. R-09 was first declared with NO PREDICATE at all. Because
+# `classify()` validates coverage before evaluating any rule, one unimplemented rule returned
+# ERROR for EVERY subject in the corpus — a .py file, an ADR and a nonexistent path alike —
+# and 28 committed tests failed against committed source. It was then implemented and STILL
+# could not fire: R-09's six criteria are R-08's five plus `analysis-artifact`, so R-09
+# strictly implies R-08, and R-08 was evaluated first. GOVERNED_ANALYSIS claimed 0 of 6751
+# tracked paths. Coverage validation reported no problem through both states, because a
+# two-sided declared/implemented check cannot see a rule that is both and still unreachable.
+#
+# THIS WORKFLOW ADDS NO AUTHORITY AND NO REGISTRY. It owns no mutation class, writes no
+# register and decides no artifact's owner. H-06/CR-09 owns the boundary; this measures
+# whether the boundary is still decidable.
+#
+# THE THREE LAWS, AND WHY NONE MAY BE COLLAPSED INTO ANOTHER.
+#   MGB-L-01  COVERAGE     — a declared rule with no predicate cannot be evaluated, and a
+#                            predicate no rule declares is dead code wearing enforcement.
+#   MGB-L-02  REACHABILITY — a rule shadowed by an earlier one can never fire in ANY
+#                            repository state, and precedence must be a total order. This is
+#                            the side L-01 is structurally blind to.
+#   MGB-L-03  POPULATION   — a reachable rule that claims nothing over the live corpus, and
+#                            that the register does not name with a reason, is vacuous in
+#                            fact even though it is sound in principle.
+# Any two of these hold while the third fails; that is why there are three.
+#
+# UNRESOLVED IS REPORTED, NOT REFUSED. 3612 of 6755 tracked paths reach the fail-closed
+# terminal, almost all because they declare no Authority. That is a governance question with
+# an owner, not a defect this gate may decide — refusing on it would have CI legislate a
+# policy nobody has adopted. It prints on every run so it cannot be quietly forgotten.
+#
+# THE NON-VACUITY CLAIM. Three laws that hold and cannot be made to fail would measure
+# nothing. `platform/tests/test_mutation_classification.py` reconstructs the exact historical
+# defect — R-08 placed back before R-09 — and asserts the refusal, along with a duplicate
+# precedence, an unusable precedence, a rule claiming no subject, and a stale excuse. Job
+# `mutation-validation` runs that suite, and it gates the third job for the same reason the
+# other programmes do: a green law table is only meaningful beside a green non-vacuity suite.
+#
+# OBSERVE MODE. The gate reads the register and `git ls-files`. It writes nothing, takes no
+# clock and no environment, and determinism plus tree purity are proven below by running it
+# twice and diffing both the report and `git status --porcelain` — rather than trusting the
+# docstring that claims it.
+#
+# EXIT CODES. 0 OPEN, 1 CLOSED (a law was measured and refused), 2 FAULT (the register is
+# absent or unreadable, so no verdict could be reached). Exit 1 and exit 2 are deliberately
+# different answers: collapsing them would let an unreadable register pass as whichever
+# answer happened to be convenient.
+#
+# Standing: CERTIFIED-PROVISIONAL. AUTHORITY = NONE (DERIVED TRUTH).
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mutation-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  register-soundness:
+    name: Register soundness (data, not code)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The register is DATA. These checks read it as data and never import the classifier,
+      # so a register that has drifted from the module is caught here rather than being
+      # masked by the module agreeing with itself.
+      - name: Every rule declares an id, a class, a predicate and a unique precedence
+        run: |
+          python3 - <<'PY'
+          import json, sys
+
+          register = "00-BOOK/DATA/mutation-governance-boundary.json"
+          doc = json.load(open(register, encoding="utf-8"))
+          rules = doc["classification_rules"]["rules"]
+          failures = 0
+          seen = {}
+          for rule in rules:
+              for field in ("id", "class", "predicate", "precedence"):
+                  if not str(rule.get(field, "")).strip():
+                      print(f"::error::rule {rule.get('id')!r} declares no {field}")
+                      failures += 1
+              precedence = rule.get("precedence")
+              if not isinstance(precedence, int):
+                  print(f"::error::rule {rule.get('id')!r} precedence is not an integer")
+                  failures += 1
+              elif precedence in seen:
+                  print(
+                      f"::error::rules {seen[precedence]!r} and {rule.get('id')!r} share "
+                      f"precedence {precedence}; their order is undefined"
+                  )
+                  failures += 1
+              else:
+                  seen[precedence] = rule.get("id")
+          if not doc["classification_rules"].get("terminal"):
+              print("::error::the register declares no fail-closed terminal")
+              failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+      # THE SHADOWING CHECK, RE-DERIVED FROM THE REGISTER ALONE. The gate proves this from
+      # the criteria functions; this proves it from the DECLARED membership_criteria, so the
+      # two cannot agree with each other by sharing one source. A class whose criteria are a
+      # strict superset of an earlier class's can never be assigned.
+      - name: No class is shadowed by an earlier one
+        run: |
+          python3 - <<'PY'
+          import json, sys
+
+          doc = json.load(open("00-BOOK/DATA/mutation-governance-boundary.json", encoding="utf-8"))
+          order = {r["class"]: r["precedence"] for r in doc["classification_rules"]["rules"]}
+          criteria = {
+              c["class"]: {m.split(" — ")[0].strip() for m in c.get("membership_criteria", [])}
+              for c in doc["mutation_classes"]
+              if c.get("membership_criteria")
+          }
+          failures = 0
+          for later, later_set in criteria.items():
+              for earlier, earlier_set in criteria.items():
+                  if later == earlier or later not in order or earlier not in order:
+                      continue
+                  if order[earlier] < order[later] and earlier_set < later_set:
+                      print(
+                          f"::error::{later} (precedence {order[later]}) can never be assigned: "
+                          f"its criteria are {earlier}'s (precedence {order[earlier]}) plus "
+                          f"{sorted(later_set - earlier_set)}"
+                      )
+                      failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+  mutation-validation:
+    name: Non-vacuity suite (every law must be able to refuse)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The coverage floor belongs to ./verify.sh in ec1-ci.yml and is deliberately not
+      # duplicated here; this job measures the suite, not the denominator.
+      - name: Install the pinned test toolchain
+        run: |
+          python -m pip install --disable-pip-version-check \
+            "pytest==8.3.4" "pytest-cov==6.0.0" "coverage==7.15.2"
+
+      - name: The classifier's own suite, including every forged violation
+        run: python -m pytest platform/tests/test_mutation_classification.py -q --no-cov
+
+  mutation-gate:
+    name: Mutation gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: [register-soundness, mutation-validation]
+    steps:
+      # The gate quantifies over `git ls-files`, so it needs the real index rather than a
+      # shallow export. A truncated checkout would shrink the corpus and could turn a
+      # populated rule into an apparently vacuous one.
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Three laws, measured and refused if they do not hold
+        run: python3 -m platform.repository_intelligence.mutation_gate --gate --quiet
+
+      - name: Determinism and tree purity (two runs, byte-compared)
+        run: |
+          before="$(git status --porcelain)"
+          python3 -m platform.repository_intelligence.mutation_gate --json --quiet > /tmp/mgb-1.json
+          after_first="$(git status --porcelain)"
+          python3 -m platform.repository_intelligence.mutation_gate --json --quiet > /tmp/mgb-2.json
+          after_second="$(git status --porcelain)"
+          diff -u /tmp/mgb-1.json /tmp/mgb-2.json \
+            || { echo "::error::two measurements of one repository state differ"; exit 1; }
+          [ "$before" = "$after_first" ] && [ "$before" = "$after_second" ] \
+            || { echo "::error::the gate dirtied the working tree; it is declared OBSERVE MODE"; exit 1; }
+
+      # A class that claims nothing is the defect this programme exists to refuse, and
+      # GOVERNED_ANALYSIS is the one it actually happened to. MGB-L-03 already refuses it;
+      # this asserts it on the JSON surface too, so a future change that made the law
+      # advisory would still be caught here.
+      - name: No declared class is vacuous, and the terminal is reported
+        run: |
+          python3 - <<'PY'
+          import json, sys
+
+          report = json.load(open("/tmp/mgb-1.json", encoding="utf-8"))
+          failures = 0
+          if report["verdict"] != "OPEN":
+              print("::error::the gate did not reach OPEN")
+              failures += 1
+          if not report["census"].get("GOVERNED_ANALYSIS"):
+              print("::error::GOVERNED_ANALYSIS claimed no subject; Class 8 is vacuous again")
+              failures += 1
+          if report["subjects"] <= 0:
+              print("::error::the corpus is empty, so no law measured anything")
+              failures += 1
+          print(f"UNRESOLVED (reported, not refused): {report['unresolved']} of {report['subjects']}")
+          sys.exit(1 if failures else 0)
+          PY
+
+      - name: The report carries no clock reading and no machine path
+        run: |
+          python3 - <<'PY'
+          import json, re, sys
+
+          body = open("/tmp/mgb-1.json", encoding="utf-8").read()
+          failures = 0
+          if re.search(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}", body):
+              print("::error::the report embeds a clock reading, so it cannot replay")
+              failures += 1
+          if "/home/runner" in body or "/Users/" in body:
+              print("::error::the report embeds an absolute machine path")
+              failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+      # The binding that makes deletion visible. If the ./verify.sh stage is removed, the
+      # local certification path stops running this gate — and this step turns red rather
+      # than the repository quietly reverting to the state where nothing enforced.
+      - name: ./verify.sh still invokes this gate
+        run: |
+          grep -q "platform.repository_intelligence.mutation_gate" verify.sh \
+            || { echo "::error::verify.sh no longer invokes the mutation gate"; exit 1; }
+          grep -q "^mutation-gate:" Makefile \
+            || { echo "::error::the mutation-gate Makefile target is gone"; exit 1; }

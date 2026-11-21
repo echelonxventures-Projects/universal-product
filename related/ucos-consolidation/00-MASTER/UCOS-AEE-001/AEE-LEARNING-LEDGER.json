@@ -1,0 +1,497 @@
+{
+  "actuator": {
+    "ACT-ARCHITECTURAL-BLUEPRINT": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-CIVILIZATION-PLATFORM": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-CONSTITUTIONAL-ASSIMILATION": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-CORPUS-CURRENCY": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-DECISION-ASSIMILATION": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-EVOLUTION-FRAMEWORK": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-EVOLUTION-INTELLIGENCE": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-EXECUTION-RESILIENCE": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-KNOWLEDGE-CLOSURE": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-KNOWLEDGE-GAP-PLAN": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-META-KERNEL": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-PLATFORM-BINDING": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-PROVIDER-FRAMEWORK": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-READINESS-PROJECTION": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-REGISTRY-BINDING": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-REPOSITORY-REALITY": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    },
+    "ACT-ROADMAP-PROJECTION": {
+      "residue_total_observation": "UCOS-OBS-000001",
+      "verdict": "PASS",
+      "zones_exercised": []
+    }
+  },
+  "convergence": {
+    "determination": "CONVERGED-PROVISIONAL",
+    "iteration_total": 2,
+    "stable_iterations": 2,
+    "vector_digests": [
+      "bab3039c86f8b1a0cb6686316db57a4708403795beac403b74034d8d4c1e716b",
+      "bab3039c86f8b1a0cb6686316db57a4708403795beac403b74034d8d4c1e716b"
+    ]
+  },
+  "decision": {
+    "OBS-AGGREGATE-CEILING": {
+      "class": "Constitutional amendment",
+      "decision": "ESCALATE",
+      "rule": "CR-ESCALATED-CEILING"
+    }
+  },
+  "dimensions": [
+    "LD-ACTUATOR",
+    "LD-CONVERGENCE",
+    "LD-DECISION",
+    "LD-MANDATE",
+    "LD-OBSERVATION"
+  ],
+  "ledger": "AEE-LEARNING-LEDGER.json",
+  "mandate": {
+    "UEI-CON-01": [
+      "OBS-AGGREGATE-CEILING"
+    ],
+    "UEI-CON-02": [
+      "ACT-AGGREGATE-CERTIFIER",
+      "OBS-FIXED-POINT-FINDINGS"
+    ],
+    "UEI-CON-03": [
+      "ACT-EVOLUTION-INTELLIGENCE",
+      "OBS-EVOLUTION-GATE"
+    ],
+    "UEI-CON-04": [
+      "ACT-CORPUS-CURRENCY",
+      "OBS-CORPUS-CURRENCY"
+    ],
+    "UEI-CON-05": [
+      "ACT-AGGREGATE-CERTIFIER",
+      "OBS-FIXED-POINT-DECLARATION-SEAL"
+    ],
+    "UEI-CON-06": [
+      "ACT-KNOWLEDGE-CLOSURE"
+    ],
+    "UEI-CON-07": [
+      "OBS-BLUEPRINT-GATE"
+    ],
+    "UEI-CON-08": [
+      "ACT-PLATFORM-BINDING",
+      "OBS-PLATFORM-BLOCKING"
+    ],
+    "UEI-EVO-01": [
+      "ACT-KNOWLEDGE-CLOSURE"
+    ],
+    "UEI-EVO-02": [
+      "ACT-EVOLUTION-INTELLIGENCE",
+      "OBS-EVOLUTION-CAPABILITIES-COVERED"
+    ],
+    "UEI-EVO-03": [
+      "ACT-KNOWLEDGE-GAP-PLAN",
+      "OBS-KNOWLEDGE-DISPOSITION"
+    ],
+    "UEI-EVO-04": [
+      "ACT-REPOSITORY-REALITY",
+      "OBS-REALITY-DELIVERABLES-BOUND"
+    ],
+    "UEI-EVO-05": [
+      "ACT-ROADMAP-PROJECTION",
+      "OBS-ROADMAP-VERDICT"
+    ],
+    "UEI-EVO-06": [
+      "ACT-ARCHITECTURAL-BLUEPRINT",
+      "OBS-BLUEPRINT-GATE"
+    ],
+    "UEI-EVO-07": [
+      "ACT-REPOSITORY-REALITY",
+      "OBS-REALITY-DELIVERABLES-BOUND"
+    ],
+    "UEI-EVO-08": [
+      "ACT-DECISION-ASSIMILATION",
+      "OBS-DECISION-UNDISPOSITIONED"
+    ],
+    "UEI-EVO-09": [
+      "ACT-READINESS-PROJECTION",
+      "OBS-READINESS-UNRESOLVED"
+    ],
+    "UEI-EVO-10": [
+      "ACT-EXECUTION-RESILIENCE",
+      "OBS-RESILIENCE-GATE"
+    ],
+    "UEI-EVO-11": [
+      "ACT-EVOLUTION-FRAMEWORK",
+      "OBS-FRAMEWORK-VERDICT"
+    ],
+    "UEI-EVO-12": [
+      "ACT-KNOWLEDGE-CLOSURE",
+      "OBS-KNOWLEDGE-GAPS"
+    ],
+    "UEI-EVO-13": [
+      "ACT-CIVILIZATION-PLATFORM",
+      "ACT-EVOLUTION-FRAMEWORK",
+      "OBS-FRAMEWORK-GUARDS"
+    ],
+    "UEI-EVO-14": [
+      "OBS-AGGREGATE-GATE-EXIT"
+    ],
+    "UEI-EVO-15": [
+      "ACT-EVOLUTION-INTELLIGENCE",
+      "OBS-EVOLUTION-CAPABILITIES-GOVERNED"
+    ],
+    "architectural-validation": [
+      "ACT-ARCHITECTURAL-BLUEPRINT",
+      "OBS-BLUEPRINT-GATE"
+    ],
+    "canonical-identity-assignment": [
+      "ACT-PROVIDER-FRAMEWORK",
+      "OBS-PLATFORM-HOMES-RESOLVED"
+    ],
+    "canonical-knowledge-discovery": [
+      "ACT-KNOWLEDGE-CLOSURE",
+      "OBS-KNOWLEDGE-DETERMINATION"
+    ],
+    "canonical-registration": [
+      "ACT-REGISTRY-BINDING",
+      "OBS-REGISTRY-GATE"
+    ],
+    "certification": [
+      "ACT-AGGREGATE-CERTIFIER",
+      "OBS-AGGREGATE-GATES-PASS"
+    ],
+    "conflict-detection": [
+      "ACT-DECISION-ASSIMILATION",
+      "OBS-DECISION-GATE"
+    ],
+    "constitutional-validation": [
+      "ACT-AGGREGATE-CERTIFIER",
+      "OBS-AGGREGATE-BLOCKING"
+    ],
+    "context-assimilation": [
+      "ACT-KNOWLEDGE-CLOSURE",
+      "OBS-DECISION-CONVERSATION-ONLY"
+    ],
+    "dependency-discovery": [
+      "ACT-REPOSITORY-REALITY",
+      "OBS-REALITY-UNKNOWN-BINDINGS"
+    ],
+    "discover-dependencies": [
+      "ACT-REPOSITORY-REALITY",
+      "OBS-REALITY-UNKNOWN-BINDINGS"
+    ],
+    "duplicate-detection": [
+      "ACT-REPOSITORY-REALITY",
+      "OBS-REALITY-GUARDS"
+    ],
+    "execute-certification": [
+      "ACT-AGGREGATE-CERTIFIER"
+    ],
+    "execute-implementation": [
+      "ACT-EXECUTION-RESILIENCE",
+      "OBS-READINESS-UNRESOLVED"
+    ],
+    "execute-integration": [
+      "ACT-EXECUTION-RESILIENCE",
+      "OBS-RESILIENCE-GATE"
+    ],
+    "execute-repository-validation": [
+      "ACT-AGGREGATE-CERTIFIER",
+      "OBS-AGGREGATE-PROGRAMMES-PASS"
+    ],
+    "execute-validation": [
+      "ACT-AGGREGATE-CERTIFIER"
+    ],
+    "execute-verification": [
+      "ACT-AGGREGATE-CERTIFIER",
+      "OBS-AGGREGATE-UNPROVEN"
+    ],
+    "execute-verify-sh": [
+      "ACT-AGGREGATE-CERTIFIER"
+    ],
+    "gap-analysis": [
+      "ACT-KNOWLEDGE-GAP-PLAN",
+      "OBS-KNOWLEDGE-GAPS"
+    ],
+    "impact-analysis": [
+      "ACT-REPOSITORY-REALITY",
+      "OBS-REALITY-GATE"
+    ],
+    "implementation-readiness-assessment": [
+      "ACT-READINESS-PROJECTION",
+      "OBS-READINESS-STATUS"
+    ],
+    "repository-registration": [
+      "ACT-REGISTRY-BINDING",
+      "OBS-REGISTRY-GATE"
+    ],
+    "repository-truth-discovery": [
+      "ACT-CORPUS-CURRENCY",
+      "OBS-CORPUS-CURRENCY"
+    ],
+    "reserve-execution": [
+      "ACT-READINESS-PROJECTION",
+      "OBS-READINESS-BLOCKING-GAPS"
+    ],
+    "reuse-analysis": [
+      "ACT-REPOSITORY-REALITY",
+      "OBS-REALITY-DELIVERABLES-BOUND"
+    ],
+    "update-capability-graph": [
+      "ACT-PLATFORM-BINDING",
+      "OBS-PLATFORM-GATE"
+    ],
+    "update-dependency-graph": [
+      "ACT-REPOSITORY-REALITY",
+      "OBS-REALITY-UNKNOWN-BINDINGS"
+    ],
+    "update-evidence": [
+      "ACT-AGGREGATE-CERTIFIER",
+      "OBS-DECISION-UNEVIDENCED"
+    ],
+    "update-ontology": [
+      "ACT-META-KERNEL",
+      "OBS-FRAMEWORK-CRITERIA"
+    ],
+    "update-registries": [
+      "ACT-AGGREGATE-CERTIFIER",
+      "OBS-REGISTRY-GATE"
+    ],
+    "update-repository-truth": [
+      "ACT-CONSTITUTIONAL-ASSIMILATION",
+      "OBS-READINESS-WRITE-SCOPE"
+    ],
+    "update-taxonomy": [
+      "ACT-META-KERNEL",
+      "OBS-FRAMEWORK-CRITERIA"
+    ],
+    "update-traceability": [
+      "ACT-AGGREGATE-CERTIFIER",
+      "OBS-ASSIMILATION-DETERMINATION"
+    ],
+    "verification": [
+      "ACT-AGGREGATE-CERTIFIER"
+    ]
+  },
+  "observation": {
+    "OBS-AGGREGATE-BLOCKING": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-AGGREGATE-CEILING": {
+      "observed": [
+        "`UCCEP-F-004` — Constitutional finality is reserved to an ou…"
+      ],
+      "verdict": "VIOLATED"
+    },
+    "OBS-AGGREGATE-GATE-EXIT": {
+      "observed": 0,
+      "verdict": "SATISFIED"
+    },
+    "OBS-AGGREGATE-GATES-PASS": {
+      "observed": 25,
+      "verdict": "SATISFIED"
+    },
+    "OBS-AGGREGATE-PROGRAMMES-PASS": {
+      "observed": 20,
+      "verdict": "SATISFIED"
+    },
+    "OBS-AGGREGATE-UNPROVEN": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-ASSIMILATION-DETERMINATION": {
+      "observed": "REPOSITORY CONSTITUTIONALLY COMPLETE",
+      "verdict": "SATISFIED"
+    },
+    "OBS-BLUEPRINT-GATE": {
+      "observed": "OPEN",
+      "verdict": "SATISFIED"
+    },
+    "OBS-CORPUS-CURRENCY": {
+      "observed": "CORPUS CURRENT",
+      "verdict": "SATISFIED"
+    },
+    "OBS-DECISION-CONVERSATION-ONLY": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-DECISION-GATE": {
+      "observed": "OPEN",
+      "verdict": "SATISFIED"
+    },
+    "OBS-DECISION-UNDISPOSITIONED": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-DECISION-UNEVIDENCED": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-EVOLUTION-CAPABILITIES-COVERED": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-EVOLUTION-CAPABILITIES-GOVERNED": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-EVOLUTION-GATE": {
+      "observed": "OPEN",
+      "verdict": "SATISFIED"
+    },
+    "OBS-FIXED-POINT-DECLARATION-SEAL": {
+      "observed": "6c0c46f2503129510d323d944dfbc5415318baaeb6a6fa0d17db1900c132f89b",
+      "verdict": "SATISFIED"
+    },
+    "OBS-FIXED-POINT-FINDINGS": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-FRAMEWORK-CRITERIA": {
+      "observed": {
+        "measured": 16,
+        "sibling": 16
+      },
+      "verdict": "SATISFIED"
+    },
+    "OBS-FRAMEWORK-GUARDS": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-FRAMEWORK-VERDICT": {
+      "observed": "GATE-OPEN",
+      "verdict": "SATISFIED"
+    },
+    "OBS-KNOWLEDGE-DETERMINATION": {
+      "observed": "CLOSED",
+      "verdict": "SATISFIED"
+    },
+    "OBS-KNOWLEDGE-DISPOSITION": {
+      "observed": "CLOSED",
+      "verdict": "SATISFIED"
+    },
+    "OBS-KNOWLEDGE-GAPS": {
+      "observed": 0,
+      "verdict": "SATISFIED"
+    },
+    "OBS-PLATFORM-BLOCKING": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-PLATFORM-GATE": {
+      "observed": "OPEN",
+      "verdict": "SATISFIED"
+    },
+    "OBS-PLATFORM-HOMES-RESOLVED": {
+      "observed": {
+        "measured": 25,
+        "sibling": 25
+      },
+      "verdict": "SATISFIED"
+    },
+    "OBS-READINESS-BLOCKING-GAPS": {
+      "observed": 0,
+      "verdict": "SATISFIED"
+    },
+    "OBS-READINESS-STATUS": {
+      "observed": "CLOSED",
+      "verdict": "SATISFIED"
+    },
+    "OBS-READINESS-UNRESOLVED": {
+      "observed": 0,
+      "verdict": "SATISFIED"
+    },
+    "OBS-READINESS-WRITE-SCOPE": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-REALITY-DELIVERABLES-BOUND": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-REALITY-GATE": {
+      "observed": "OPEN",
+      "verdict": "SATISFIED"
+    },
+    "OBS-REALITY-GUARDS": {
+      "observed": [],
+      "verdict": "SATISFIED"
+    },
+    "OBS-REALITY-UNKNOWN-BINDINGS": {
+      "observed": 0,
+      "verdict": "SATISFIED"
+    },
+    "OBS-REGISTRY-GATE": {
+      "observed": "OPEN",
+      "verdict": "SATISFIED"
+    },
+    "OBS-RESILIENCE-GATE": {
+      "observed": "OPEN",
+      "verdict": "SATISFIED"
+    },
+    "OBS-ROADMAP-VERDICT": {
+      "observed": "CONDITIONAL GO",
+      "verdict": "SATISFIED"
+    }
+  }
+}

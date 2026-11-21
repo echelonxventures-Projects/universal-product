@@ -1,0 +1,1585 @@
+{
+  "generated_at": "2026-09-24T11:49:18+00:00",
+  "generator_version": "1.0.0",
+  "portfolio": {
+    "total_artifacts": 1691,
+    "total_pages": 13197,
+    "total_volumes": 25,
+    "total_edges": 13815,
+    "portfolio_status": "IN_PROGRESS — analysis/architecture/generation complete; runtime testing/deployment pending EC-1",
+    "status_histogram": {
+      "ACTIVE": 1569,
+      "FINAL": 9,
+      "FROZEN": 27,
+      "CERTIFIED": 7,
+      "COMPLETE": 63,
+      "UNDER_REVIEW": 15,
+      "IMPLEMENTED": 1
+    }
+  },
+  "programs": [
+    {
+      "program": "ADR",
+      "artifact_count": 43,
+      "status_histogram": {
+        "ACTIVE": 43
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "ADV",
+      "artifact_count": 20,
+      "status_histogram": {
+        "ACTIVE": 20
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "APP",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "APPLICATION",
+      "artifact_count": 143,
+      "status_histogram": {
+        "ACTIVE": 143
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "ARBITR",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "ARCH",
+      "artifact_count": 28,
+      "status_histogram": {
+        "ACTIVE": 28
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "ASSESS",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "ASSIMI",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "B01BIR",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "B01IMP",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "B02LIF",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "B02OWN",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "B02UID",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "BATCHG",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "BLOCKE",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 1,
+        "COMPLETE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "BOOK",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "CANONI",
+      "artifact_count": 5,
+      "status_histogram": {
+        "ACTIVE": 4,
+        "COMPLETE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "CAPABI",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 1,
+        "COMPLETE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "CAT",
+      "artifact_count": 7,
+      "status_histogram": {
+        "ACTIVE": 7
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "CEP",
+      "artifact_count": 35,
+      "status_histogram": {
+        "COMPLETE": 35
+      },
+      "rollup_status": "COMPLETE"
+    },
+    {
+      "program": "CEPMOD",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "CERTIF",
+      "artifact_count": 5,
+      "status_histogram": {
+        "ACTIVE": 5
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "CHANGE",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "CMG",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 1,
+        "UNDER_REVIEW": 1
+      },
+      "rollup_status": "UNDER_REVIEW"
+    },
+    {
+      "program": "CMG000",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "COMMIT",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "COMPLE",
+      "artifact_count": 2,
+      "status_histogram": {
+        "COMPLETE": 2
+      },
+      "rollup_status": "COMPLETE"
+    },
+    {
+      "program": "CONSOLIDATION",
+      "artifact_count": 81,
+      "status_histogram": {
+        "FINAL": 7,
+        "ACTIVE": 55,
+        "FROZEN": 3,
+        "COMPLETE": 2,
+        "UNDER_REVIEW": 14
+      },
+      "rollup_status": "UNDER_REVIEW"
+    },
+    {
+      "program": "COVERA",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "CRITIC",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "DATA",
+      "artifact_count": 153,
+      "status_histogram": {
+        "ACTIVE": 153
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "DEPEND",
+      "artifact_count": 3,
+      "status_histogram": {
+        "ACTIVE": 3
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "DET",
+      "artifact_count": 15,
+      "status_histogram": {
+        "ACTIVE": 15
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "DISCOV",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "DRRAT1",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "DUPLIC",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "EES",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "ENFORC",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "ENG",
+      "artifact_count": 27,
+      "status_histogram": {
+        "ACTIVE": 26,
+        "COMPLETE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "ENVIRO",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "EXEC",
+      "artifact_count": 50,
+      "status_histogram": {
+        "ACTIVE": 50
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "F1LINE",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "FINALA",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "FINALC",
+      "artifact_count": 3,
+      "status_histogram": {
+        "ACTIVE": 3
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "FINALD",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "FINALF",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "FINALI",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 1,
+        "COMPLETE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "FINALR",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "FINALS",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "FINALU",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "FOUNDA",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "GAPCLA",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "GATEPU",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "GEN",
+      "artifact_count": 7,
+      "status_histogram": {
+        "ACTIVE": 7
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "GENERA",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "GOV",
+      "artifact_count": 6,
+      "status_histogram": {
+        "ACTIVE": 6
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "GOVERN",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06ATO",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06BAS",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06CON",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06DEC",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06DOC",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06FIN",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06GAT",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06GOV",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06IAD",
+      "artifact_count": 3,
+      "status_histogram": {
+        "ACTIVE": 3
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06IAR",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06IMP",
+      "artifact_count": 13,
+      "status_histogram": {
+        "ACTIVE": 13
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06MUT",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06OPT",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06OWN",
+      "artifact_count": 8,
+      "status_histogram": {
+        "ACTIVE": 8
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06PHA",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06POS",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06PRE",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06R1G",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06R2E",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06R3G",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06R4C",
+      "artifact_count": 3,
+      "status_histogram": {
+        "ACTIVE": 3
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06R4G",
+      "artifact_count": 8,
+      "status_histogram": {
+        "ACTIVE": 8
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06RAT",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06SUC",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06TAS",
+      "artifact_count": 10,
+      "status_histogram": {
+        "ACTIVE": 10
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06UAI",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06UAU",
+      "artifact_count": 4,
+      "status_histogram": {
+        "ACTIVE": 4
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "H06UNI",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "HIDDEN",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "IDENTI",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 1,
+        "COMPLETE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "IMP",
+      "artifact_count": 42,
+      "status_histogram": {
+        "ACTIVE": 40,
+        "COMPLETE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "INCREM",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "INFINI",
+      "artifact_count": 3,
+      "status_histogram": {
+        "ACTIVE": 1,
+        "COMPLETE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "INFRASTRUCTURE",
+      "artifact_count": 152,
+      "status_histogram": {
+        "ACTIVE": 151,
+        "CERTIFIED": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "KNOWLE",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "MASTER",
+      "artifact_count": 32,
+      "status_histogram": {
+        "ACTIVE": 28,
+        "COMPLETE": 3,
+        "IMPLEMENTED": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "MCRFST",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "MISSIN",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "MUTATI",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "NEWKNO",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "OMEGAN",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "P1A01R",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "P1A02R",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "P4F007",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PARALL",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PERCEN",
+      "artifact_count": 2,
+      "status_histogram": {
+        "COMPLETE": 1,
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASE0",
+      "artifact_count": 10,
+      "status_histogram": {
+        "ACTIVE": 10
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASE1",
+      "artifact_count": 12,
+      "status_histogram": {
+        "ACTIVE": 12
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASE2",
+      "artifact_count": 5,
+      "status_histogram": {
+        "ACTIVE": 5
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASE3",
+      "artifact_count": 3,
+      "status_histogram": {
+        "ACTIVE": 3
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASE4",
+      "artifact_count": 4,
+      "status_histogram": {
+        "ACTIVE": 4
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASE5",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASE6",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASE7",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASE8",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASE9",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASEA",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASEC",
+      "artifact_count": 4,
+      "status_histogram": {
+        "ACTIVE": 4
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASEG",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASEI",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASEK",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASEO",
+      "artifact_count": 21,
+      "status_histogram": {
+        "ACTIVE": 21
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASEP",
+      "artifact_count": 4,
+      "status_histogram": {
+        "ACTIVE": 4
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASER",
+      "artifact_count": 8,
+      "status_histogram": {
+        "ACTIVE": 8
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASEU",
+      "artifact_count": 17,
+      "status_histogram": {
+        "ACTIVE": 17
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PHASEV",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PLATFORM",
+      "artifact_count": 67,
+      "status_histogram": {
+        "ACTIVE": 57,
+        "CERTIFIED": 6,
+        "COMPLETE": 4
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "POSTAS",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "POSTST",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "PRODUC",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "QUALIT",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "READIN",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "READYS",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "REALIZ",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "REF",
+      "artifact_count": 21,
+      "status_histogram": {
+        "ACTIVE": 10,
+        "FROZEN": 11
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "REGAUT",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "RELATI",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "REMEDI",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "REPOOP",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "REPOSI",
+      "artifact_count": 6,
+      "status_histogram": {
+        "ACTIVE": 6
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "REQ28C",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "REQ43S",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "REQUIR",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "ROOTCA",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "RUN",
+      "artifact_count": 18,
+      "status_histogram": {
+        "ACTIVE": 18
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "SCOPEB",
+      "artifact_count": 8,
+      "status_histogram": {
+        "ACTIVE": 8
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "SECURITY",
+      "artifact_count": 5,
+      "status_histogram": {
+        "ACTIVE": 5
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "SELFCO",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "SEMANT",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "SERVICE",
+      "artifact_count": 168,
+      "status_histogram": {
+        "ACTIVE": 168
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "SHELLO",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "SOURCE",
+      "artifact_count": 15,
+      "status_histogram": {
+        "FINAL": 2,
+        "FROZEN": 13
+      },
+      "rollup_status": "FROZEN"
+    },
+    {
+      "program": "STABIL",
+      "artifact_count": 1,
+      "status_histogram": {
+        "COMPLETE": 1
+      },
+      "rollup_status": "COMPLETE"
+    },
+    {
+      "program": "STRUCT",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "TRACEA",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UAUEEP",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UAUEIM",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCKPCM",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCLGAP",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCOSAC",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCOSAR",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCOSCE",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCOSEX",
+      "artifact_count": 2,
+      "status_histogram": {
+        "COMPLETE": 1,
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCOSFI",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCOSMI",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCOSOM",
+      "artifact_count": 81,
+      "status_histogram": {
+        "ACTIVE": 81
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCOSPO",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCOSUC",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCOSUN",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UCOSUV",
+      "artifact_count": 3,
+      "status_histogram": {
+        "ACTIVE": 3
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UFINOC",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UKAPUR",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UKB",
+      "artifact_count": 20,
+      "status_histogram": {
+        "ACTIVE": 20
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UMB",
+      "artifact_count": 31,
+      "status_histogram": {
+        "ACTIVE": 31
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UNAF00",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UNCOND",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UNIVER",
+      "artifact_count": 19,
+      "status_histogram": {
+        "ACTIVE": 15,
+        "COMPLETE": 4
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UNREAL",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "UOBCBS",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "USIS",
+      "artifact_count": 63,
+      "status_histogram": {
+        "ACTIVE": 63
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "VALIDA",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "VERIFI",
+      "artifact_count": 4,
+      "status_histogram": {
+        "ACTIVE": 4
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "W4UFIF",
+      "artifact_count": 1,
+      "status_histogram": {
+        "ACTIVE": 1
+      },
+      "rollup_status": "ACTIVE"
+    },
+    {
+      "program": "WAVE01",
+      "artifact_count": 2,
+      "status_histogram": {
+        "ACTIVE": 2
+      },
+      "rollup_status": "ACTIVE"
+    }
+  ],
+  "dimensions": {
+    "architecture": {
+      "status": "APPROVED",
+      "signal_source": "MANUAL",
+      "as_of": "2026-09-24T11:49:18+00:00",
+      "note": "Manual baseline; automated signals (GitHub Actions/Jira/SonarQube/OWASP/Trivy/Prometheus/Grafana/OTel/K8s/Cloud) roll up here when connected."
+    },
+    "implementation": {
+      "status": "IMPLEMENTED",
+      "signal_source": "GIT",
+      "as_of": "2026-07-16T09:56:37+05:30",
+      "note": "Automated: computed from the append-only signal ledger (UKB-012)."
+    },
+    "build": {
+      "status": "BLOCKED",
+      "signal_source": "GITHUB_ACTIONS",
+      "as_of": "2026-07-15T08:05:00Z",
+      "note": "Automated: computed from the append-only signal ledger (UKB-012)."
+    },
+    "unit_testing": {
+      "status": "BLOCKED",
+      "signal_source": "GITHUB_ACTIONS",
+      "as_of": "2026-07-15T08:05:00Z",
+      "note": "Automated: computed from the append-only signal ledger (UKB-012)."
+    },
+    "integration_testing": {
+      "status": "NOT_STARTED",
+      "signal_source": "MANUAL",
+      "as_of": "2026-09-24T11:49:18+00:00",
+      "note": "Manual baseline; automated signals (GitHub Actions/Jira/SonarQube/OWASP/Trivy/Prometheus/Grafana/OTel/K8s/Cloud) roll up here when connected."
+    },
+    "functional_testing": {
+      "status": "NOT_STARTED",
+      "signal_source": "MANUAL",
+      "as_of": "2026-09-24T11:49:18+00:00",
+      "note": "Manual baseline; automated signals (GitHub Actions/Jira/SonarQube/OWASP/Trivy/Prometheus/Grafana/OTel/K8s/Cloud) roll up here when connected."
+    },
+    "performance_testing": {
+      "status": "NOT_STARTED",
+      "signal_source": "MANUAL",
+      "as_of": "2026-09-24T11:49:18+00:00",
+      "note": "Manual baseline; automated signals (GitHub Actions/Jira/SonarQube/OWASP/Trivy/Prometheus/Grafana/OTel/K8s/Cloud) roll up here when connected."
+    },
+    "security": {
+      "status": "BLOCKED",
+      "signal_source": "TRIVY",
+      "as_of": "2026-07-15T08:12:00Z",
+      "note": "Automated: computed from the append-only signal ledger (UKB-012)."
+    },
+    "certification": {
+      "status": "CERTIFIED",
+      "signal_source": "MANUAL",
+      "as_of": "2026-09-24T11:49:18+00:00",
+      "note": "Manual baseline; automated signals (GitHub Actions/Jira/SonarQube/OWASP/Trivy/Prometheus/Grafana/OTel/K8s/Cloud) roll up here when connected."
+    },
+    "deployment": {
+      "status": "IN_PROGRESS",
+      "signal_source": "KUBERNETES",
+      "as_of": "2026-07-15T08:33:00Z",
+      "note": "Automated: computed from the append-only signal ledger (UKB-012)."
+    },
+    "production": {
+      "status": "BLOCKED",
+      "signal_source": "PROMETHEUS",
+      "as_of": "2026-07-15T08:22:00Z",
+      "note": "Automated: computed from the append-only signal ledger (UKB-012)."
+    },
+    "operational": {
+      "status": "BLOCKED",
+      "signal_source": "PROMETHEUS",
+      "as_of": "2026-07-15T08:22:00Z",
+      "note": "Automated: computed from the append-only signal ledger (UKB-012)."
+    },
+    "release": {
+      "status": "NOT_STARTED",
+      "signal_source": "MANUAL",
+      "as_of": "2026-09-24T11:49:18+00:00",
+      "note": "Manual baseline; automated signals (GitHub Actions/Jira/SonarQube/OWASP/Trivy/Prometheus/Grafana/OTel/K8s/Cloud) roll up here when connected."
+    },
+    "execution": {
+      "status": "NOT_STARTED",
+      "signal_source": "MANUAL",
+      "as_of": "2026-09-24T11:49:18+00:00",
+      "note": "Manual baseline; automated signals (GitHub Actions/Jira/SonarQube/OWASP/Trivy/Prometheus/Grafana/OTel/K8s/Cloud) roll up here when connected."
+    },
+    "portfolio": {
+      "status": "IN_PROGRESS",
+      "signal_source": "MANUAL",
+      "as_of": "2026-09-24T11:49:18+00:00",
+      "note": "Manual baseline; automated signals (GitHub Actions/Jira/SonarQube/OWASP/Trivy/Prometheus/Grafana/OTel/K8s/Cloud) roll up here when connected."
+    }
+  }
+}

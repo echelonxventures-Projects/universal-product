@@ -1,0 +1,36 @@
+{
+  "title": "UCOS Ω∞ Knowledge Graph Relationship",
+  "description": "A first-class, navigable edge in the Universal Knowledge Graph. Every relationship is directional and reachable from both endpoints.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["edge_id", "from", "to", "type"],
+  "properties": {
+    "edge_id": {
+      "type": "string",
+      "description": "Globally unique, immutable, append-only edge identifier.",
+      "pattern": "^UEDGE-[0-9]{9,}$"
+    },
+    "from": {
+      "type": "string",
+      "description": "Source Universal Artifact ID.",
+      "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$"
+    },
+    "to": {
+      "type": "string",
+      "description": "Target Universal Artifact ID.",
+      "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$"
+    },
+    "type": {
+      "type": "string",
+      "description": "Relationship type. OPEN, append-only vocabulary (UMB-006 §3; UMB-IMP-002; AUTH-INF-001 CR-INF-007): any well-formed TitleCase-hyphenated type is valid, so unlimited future relationship types are supported without schema redesign. A new relationship type is a new value, never a rewrite.",
+      "pattern": "^[A-Z][A-Za-z0-9]*(-[A-Z][A-Za-z0-9]*)*$",
+      "$comment": "Canonical types materialized today (each with a bidirectional inverse): Parent/Child, Depends-On/Required-By, Authorizes/Authorized-By, Implements/Implemented-By, Consumes/Consumed-By, Uses, References/Referenced-By, Produces/Produced-By, Certifies/Certified-By, Registers/Registered-By, Publishes/Published-By, Secures/Secured-By, Tests/Tested-By, Deploys/Deployed-By, Supersedes/Superseded-By, Evolves-To/Evolved-From, Traces-To/Traced-From. Additional types may be self-declared by artifacts via a `RELATES <Type>` metadata row with no schema edit."
+    },
+    "inverse_of": {
+      "type": ["string", "null"],
+      "description": "Edge ID of the inverse edge, if materialized (Parent/Child, Supersedes/Superseded-By).",
+      "default": null
+    },
+    "note": { "type": "string" }
+  }
+}

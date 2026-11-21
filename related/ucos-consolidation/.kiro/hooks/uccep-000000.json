@@ -1,0 +1,17 @@
+{
+  "$comment": "FROZEN BY BATCH B-01b (SessionStart Mutation Freeze). AUTHORITY = Repository Recovery Authority; this file confers no constitutional authority and legislates nothing. The active hook list is deliberately EMPTY so that session initialization performs NO automatic regeneration. MANUAL EXECUTION IS FULLY PRESERVED and is untouched by this batch: the Makefile targets remain exactly as they were (regenerate, -gate, and -self for every affected programme). Nothing is deleted; no engine, declaration or capability is modified. FAIL-CLOSED PROPERTY: if the hook loader ignores unknown keys, no hook fires because `hooks` is empty; if a loader were strict about unknown keys, this file fails to load and no hook fires either. Both outcomes satisfy the freeze. SCOPE: this batch does NOT touch CI (.github/workflows/**, which is batch B-01c), does NOT roll back any file, and does NOT repair registrations, namespaces or ownership. .kiro/hooks/uakos-closure-002.json is deliberately LEFT ARMED because its entire output is gitignored (.gitignore:52-56) and therefore produces no drift - it is the model this freeze aims to generalise. RESTORE: see $rollback_B01b.",
+  "$rationale_B01b": "This hook regenerated 20 TRACKED files under 00-MASTER/UCCEP-000000/ on every session start, and it did so with a hard-coded `--tier boot`. HEAD's uccep.json was generated at `tier: standard`. The tier difference is what turned CK-CLOSURE-P3 from {executed:true, exit_code:1, verdict:FAIL, reason:'literal NOT-CLOSED (constant)'} into {executed:false, exit_code:null, verdict:'NOT-EXECUTED'} and ERASED it from advisory_failures, and what moved the seal from dc3a07530a3ff490... to f10928ff68603bf1.... Committing that regeneration would have deleted a recorded FAIL from Repository Truth, which CEP-007 forbids (supersession-only evolution, not regression). Freezing the automatic path removes the downgrade at its source. NOTE: no tier edit was required, because the MANUAL path is already correct - `make uccep` runs `--tier standard`; only this hook used boot.",
+  "$rollback_B01b": "git checkout -- .kiro/hooks/uccep-000000.json",
+  "version": "v1",
+  "hooks": [],
+  "$frozen_hook_B01b": {
+    "name": "UCCEP-000000 Continuous Constitutional Determination",
+    "trigger": "SessionStart",
+    "description": "Runs the UCCEP-000000 aggregate constitutional gate at the fast read-only boot tier at session start, so the current continuous constitutional determination (certification verdict, gate/programme pass counts, blocking failures, seal) is surfaced from Repository Truth rather than reconstructed from conversation. Deterministic, stdlib-only, non-blocking. AUTHORITY = NONE (DERIVED TRUTH).",
+    "action": {
+      "type": "command",
+      "command": "python3 00-MASTER/UCCEP-000000/uccep_engine.py --tier boot 2>/dev/null | grep '^UCCEP-000000:' || true",
+      "timeout": 180
+    }
+  }
+}

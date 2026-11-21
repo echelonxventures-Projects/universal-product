@@ -1,0 +1,46 @@
+{
+  "template_note": "Copy this file into catalog/, replace every <angle-bracket> value, and point entry_point at a module exposing build(descriptor, config). That is the whole onboarding procedure: no framework module changes, no interface is added, no kind is registered anywhere in code (PC-14). This file lives outside catalog/ so it is never discovered.",
+  "identity": {
+    "provider_id": "<namespace>.<provider>",
+    "kind": "<open-kind-slug>",
+    "version": "1.0.0",
+    "name": "<Human readable provider name>",
+    "authority": "<owning authority>"
+  },
+  "interface": "ucos.provider.universal",
+  "interface_version": "1.0.0",
+  "entry_point": "<package.module>:build",
+  "source_of_record": "<the authoritative substrate this provider draws from>",
+  "description": "<what this provider provides>",
+  "capabilities": [
+    {
+      "name": "<provider>.<plural-noun>",
+      "operation": "query",
+      "resource_kind": "<provider>.<noun>",
+      "description": "<enumerate resources matching a selector>",
+      "selector_keys": ["<key1>", "<key2>"],
+      "required_selector_keys": [],
+      "deterministic": true,
+      "effects": ["<domain>:read"]
+    },
+    {
+      "name": "<provider>.<noun>",
+      "operation": "fetch",
+      "resource_kind": "<provider>.<noun>",
+      "description": "<resolve exactly one resource by identity>",
+      "deterministic": true,
+      "effects": ["<domain>:read"]
+    },
+    {
+      "name": "<provider>.attestation",
+      "operation": "verify",
+      "resource_kind": "<provider>.<noun>",
+      "description": "<attest a resource's content hash and provenance chain>",
+      "deterministic": true,
+      "effects": ["<domain>:read"]
+    }
+  ],
+  "dependencies": [],
+  "config_schema": {},
+  "metadata": {}
+}

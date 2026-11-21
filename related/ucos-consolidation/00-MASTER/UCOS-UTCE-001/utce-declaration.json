@@ -1,0 +1,225 @@
+{
+  "$comment": [
+    "UCOS-UTCE-001 — UNIVERSAL TRACEABILITY CLOSURE ENGINE (declaration). This file is DATA and",
+    "is the ONLY place this programme's constitutional obligations, rooting relations, lineage",
+    "relations, derivation rules, obligation classes, validation dimensions and exit criteria are",
+    "stated. utce_engine.py contains no lane name, no relationship type, no artifact identifier",
+    "and no label: the thirteen-stage lane vocabulary and the relationship vocabulary are both",
+    "READ at run time from the located sources that own them.",
+    "",
+    "WHAT THIS PROGRAMME MEASURES, AND WHY THE DISTINCTION MATTERS. Two different obligations",
+    "have been conflated in this repository under one word.",
+    "",
+    "  (1) THE CONSTITUTIONAL OBLIGATION. CEP-001 XVIII.1 requires every artifact to trace UPWARD",
+    "      to its authorizing ratified definition and DOWNWARD to its reproducible evidence;",
+    "      XVIII.2 and CEP-008 XI.2 require that traceability be rooted and closed with ZERO",
+    "      orphans and that every link resolve to an existing endpoint. That is the obligation",
+    "      CEP-006 V.1 and CEP-007 V.1 both name as the ratification and freeze precondition, in",
+    "      those exact words: 'rooted-and-closed traceability (CEP-001 Article XVIII)'. It says",
+    "      nothing about a thirteen-lane spine. This programme measures it, and it is BLOCKING.",
+    "",
+    "  (2) THE ENGINEERING SPINE. The registry schema carries a thirteen-stage traceability field,",
+    "      and the located measurement service reports one incomplete-traceability gap for any",
+    "      artifact whose thirteen lanes are not ALL populated. That is a richer engineering model",
+    "      than the constitution requires, and it is where the repository's largest measured",
+    "      number lives. This programme measures it too, reports it UNCHANGED, and does NOT",
+    "      redefine it. It is recorded here as non-blocking with a named owner.",
+    "",
+    "NO PREDICATE IS WEAKENED AND NO LINK IS FABRICATED. This programme writes nothing into the",
+    "certified corpus, populates no lane, and invents no relationship. Where it reports that a",
+    "lane entry is DERIVABLE it names the located edge identifier that would support it, so every",
+    "derivable count is auditable against 00-BOOK/DATA/relationships.json. A derivable entry is",
+    "not a written entry, and this programme is careful never to report it as one.",
+    "",
+    "THE REACHABILITY DEFECT IS THE ROOT CAUSE, AND IT IS MEASURED HERE. Five of the thirteen",
+    "lanes are named by NO label in the located relationship vocabulary, so no artifact in this",
+    "repository can populate them by any means the located generator provides. A predicate",
+    "requiring all thirteen therefore has no reachable satisfying state — the same defect class",
+    "the certification programme already recorded once as FAIL-CLOSED-WITHOUT-PASS-PATH. This",
+    "programme measures which lanes have a collection mechanism and which do not, and refers the",
+    "absent mechanisms to the located owner of the vocabulary. That is the constitutional",
+    "mechanism for COLLECTING the missing evidence, which CEP-008 Article XIV requires, rather",
+    "than synthetic evidence, which CEP-008 IX.2 and X.4 forbid."
+  ],
+
+  "programme": {
+    "id": "UCOS-UTCE-001",
+    "name": "Universal Traceability Closure Engine",
+    "version": "1.0",
+    "authority": "NONE — DERIVED TRUTH. This programme is READ-ONLY over the certified corpus. It populates no lane, writes no relationship, changes no predicate and owns no measurement service. It measures the constitutional traceability obligation, reports the engineering spine unchanged, and records what would be needed to discharge each open obligation.",
+    "operational_home": "00-MASTER/UCOS-UTCE-001/",
+    "disclosure": "**DISCLOSURE.** CERTIFIED-PROVISIONAL. The constitutional traceability obligation of CEP-001 Article XVIII is measured here and is BLOCKING. The thirteen-lane engineering spine is a richer model owned by platform/measurement and 00-BOOK/tools; its completeness is reported here unchanged and is NOT closed by this programme.",
+    "governing_instruments": [
+      "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md",
+      "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+      "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    ],
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "00-BOOK/",
+      "00-CEP/",
+      "00-CMG/",
+      "01-WORKING/",
+      "02-MASTER/",
+      "engine/",
+      "platform/"
+    ]
+  },
+
+  "$corpus_comment": [
+    "The certified corpus is READ, never written. Every path below is opened read-only and the",
+    "write-scope guard proves this programme's only write target is its own operational home."
+  ],
+  "corpus": {
+    "artifacts": { "owner": "00-BOOK/DATA/artifacts.json", "collection_pointer": "artifacts", "id_field": "universal_id" },
+    "relationships": { "owner": "00-BOOK/DATA/relationships.json", "collection_pointer": "relationships", "id_field": "edge_id", "from_field": "from", "to_field": "to", "type_field": "type", "note_field": "note" },
+    "evidence_fields": ["content_hash", "path"],
+    "traceability_field": "traceability",
+    "class_field": "category"
+  },
+
+  "$vocabulary_comment": [
+    "Both vocabularies are READ from the located modules that own them, by static analysis of",
+    "their source rather than by import: importing would execute the module and make this engine",
+    "depend on the very code it is measuring. A lane added to the schema, or a label added to the",
+    "vocabulary, is therefore discovered here automatically."
+  ],
+  "lane_vocabulary": {
+    "owner": "engine/registry/models.py",
+    "symbol": "TRACE_STAGES",
+    "basis": "The thirteen ordered stages of the traceability chain, as declared beside 00-BOOK/SCHEMAS/artifact.schema.json $defs/traceability."
+  },
+  "relationship_vocabulary": {
+    "owner": "00-BOOK/tools/config.py",
+    "symbol": "RELATIONSHIP_TYPES",
+    "type_field": "type",
+    "labels_field": "labels",
+    "subject_lane_field": "subject_lane",
+    "object_lane_field": "object_lane",
+    "basis": "The located label-to-lane vocabulary. A lane no label names cannot be populated by any means the located generator provides."
+  },
+
+  "$obligation_comment": [
+    "The constitutional obligations, each bound to the clause that imposes it. A clause whose",
+    "text is absent from its instrument is a binding failure, not a silent pass."
+  ],
+  "obligations": [
+    { "id": "UTCE-OB-01", "obligation": "every artifact traces upward to its authorizing ratified definition and downward to its reproducible evidence", "owner": "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md", "anchor": "Every artifact SHALL trace upward to its authorizing ratified definition and downward to its reproducible evidence" },
+    { "id": "UTCE-OB-02", "obligation": "traceability is rooted and closed with zero orphans and is verified at every gate", "owner": "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md", "anchor": "Traceability SHALL be rooted and closed with zero orphans and SHALL be verified at every gate" },
+    { "id": "UTCE-OB-03", "obligation": "every link resolves to an existing endpoint", "owner": "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md", "anchor": "every link SHALL resolve to an existing endpoint" },
+    { "id": "UTCE-OB-04", "obligation": "evidence lineage is a deterministic acyclic chain; a lineage forming a cycle is prohibited", "owner": "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md", "anchor": "Evidence lineage SHALL be a deterministic, acyclic chain" },
+    { "id": "UTCE-OB-05", "obligation": "evidence collection gathers the record of a matter deterministically into a declared evidence area and is interpretation-free", "owner": "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md", "anchor": "Collection SHALL be interpretation-free" },
+    { "id": "UTCE-OB-06", "obligation": "the ratification and freeze precondition is rooted-and-closed traceability under CEP-001 Article XVIII", "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md", "anchor": "rooted-and-closed traceability (CEP-001 Article XVIII)" }
+  ],
+
+  "$rooting_comment": [
+    "Rooting relations. An artifact is ROOTED when at least one located edge of one of these",
+    "types points from it to an authorizing or superior artifact. These are not invented: each",
+    "names a type of the located relationship vocabulary, and --check-declaration fails closed if",
+    "a named type is absent from it."
+  ],
+  "rooting_relations": [
+    { "type": "Parent", "direction": "from", "meaning": "upward to the artifact's structural superior" },
+    { "type": "Authorized-By", "direction": "from", "meaning": "upward to the authority that governs it" },
+    { "type": "Implements", "direction": "from", "meaning": "upward to the definition it realises" },
+    { "type": "Traces-To", "direction": "from", "meaning": "upward by an explicit spine hop" },
+    { "type": "Depends-On", "direction": "from", "meaning": "upward to a required antecedent" }
+  ],
+  "lineage_relations": [
+    { "type": "Evolves-From", "direction": "from" },
+    { "type": "Supersedes", "direction": "from" },
+    { "type": "Derived-From", "direction": "from" },
+    { "type": "Created-From", "direction": "from" },
+    { "type": "Forked-From", "direction": "from" },
+    { "type": "Merged-Into", "direction": "from" }
+  ],
+
+  "$derivation_comment": [
+    "Derivation rules. Each rule says: an edge of this located type, read in this direction,",
+    "supports an entry in this lane. Nothing is written — the engine counts how many (artifact,",
+    "lane) pairs the located edges would support and how many of those the spine already carries,",
+    "and cites the located edge identifiers so every count is auditable. A rule naming a type",
+    "absent from the located vocabulary is a binding failure."
+  ],
+  "derivation_rules": [
+    { "id": "UTCE-DR-01", "type": "Parent", "read": "from", "lane": "architecture", "basis": "The located vocabulary declares this type's subject lane to be the architecture lane; the structural edges already exist in the certified corpus but the generator writes no lane entry for them." },
+    { "id": "UTCE-DR-02", "type": "Depends-On", "read": "from", "lane": "architecture", "basis": "Declared subject lane in the located vocabulary." },
+    { "id": "UTCE-DR-03", "type": "Authorized-By", "read": "from", "lane": "requirement", "basis": "Declared subject lane in the located vocabulary." },
+    { "id": "UTCE-DR-04", "type": "Implements", "read": "from", "lane": "architecture", "basis": "Declared subject lane in the located vocabulary." },
+    { "id": "UTCE-DR-05", "type": "Implemented-By", "read": "from", "lane": "implementation", "basis": "Declared object lane of the located Implements type. The object of a forward Implements edge is its target, and the target is the FROM endpoint of the materialized inverse, so the object lane is measured there. Reading the inverse edge's TO endpoint selected the DECLARER instead of the object \u2014 measured 4/36 populated against 17/17 for the object \u2014 which counted as headroom a lane entry no located edge supports. Corrected to the endpoint this basis names; the located vocabulary at 00-BOOK/tools/config.py governs the attribution (CMG-000001 XXXIV.5)." },
+    { "id": "UTCE-DR-06", "type": "Consumes", "read": "from", "lane": "architecture", "basis": "Declared subject lane in the located vocabulary." },
+    { "id": "UTCE-DR-07", "type": "Traces-To", "read": "from", "lane": "requirement", "basis": "Declared subject lane in the located vocabulary." }
+  ],
+
+  "$obligation_class_comment": [
+    "How an open lane obligation is classified. DISCHARGEABLE means the located vocabulary",
+    "provides a label that would populate the lane, so the obligation can be met by adding a row",
+    "to an artifact's own front matter and re-running the located generator — no code change.",
+    "MECHANISM-ABSENT means no located label names the lane at all, so the obligation cannot be",
+    "met by any means the repository currently provides; it is referred to the vocabulary owner."
+  ],
+  "obligation_classes": [
+    { "id": "UTCE-OC-01", "class": "DISCHARGEABLE", "definition": "a located label produces this lane; the obligation is met by declaring the row and regenerating" },
+    { "id": "UTCE-OC-02", "class": "MECHANISM-ABSENT", "definition": "no located label produces this lane; the obligation is undischargeable until the vocabulary owner adds one" }
+  ],
+
+  "validations": [
+    { "id": "UTCE-VAL-01", "dimension": "OBLIGATIONS-BOUND", "obligation": "every constitutional obligation binds to a located clause whose text is present", "blocking": true },
+    { "id": "UTCE-VAL-02", "dimension": "VOCABULARY-LOCATED", "obligation": "the lane vocabulary and the relationship vocabulary are both read from their located owners and are non-empty", "blocking": true },
+    { "id": "UTCE-VAL-03", "dimension": "LINKS-CLOSED", "obligation": "every located relationship endpoint resolves to a registered artifact — zero dangling endpoints", "blocking": true },
+    { "id": "UTCE-VAL-04", "dimension": "ROOTED", "obligation": "every registered artifact carries at least one upward rooting edge, or is a declared root of the lattice", "blocking": true },
+    { "id": "UTCE-VAL-05", "dimension": "ZERO-ORPHANS", "obligation": "no registered artifact is disconnected from the relationship graph", "blocking": true },
+    { "id": "UTCE-VAL-06", "dimension": "DOWNWARD-EVIDENCE", "obligation": "every registered artifact carries every declared reproducible-evidence field", "blocking": true },
+    { "id": "UTCE-VAL-07", "dimension": "LINEAGE-ACYCLIC", "obligation": "the located lineage graph is acyclic", "blocking": true },
+    { "id": "UTCE-VAL-08", "dimension": "ROOTING-TYPES-LOCATED", "obligation": "every declared rooting and lineage relation names a type present in the located relationship vocabulary", "blocking": true },
+    { "id": "UTCE-VAL-09", "dimension": "DERIVATION-RULES-BOUND", "obligation": "every derivation rule names a located relationship type and a located lane, and cites the edges that support it", "blocking": true },
+    { "id": "UTCE-VAL-10", "dimension": "LANES-ACCOUNTED", "obligation": "every lane of the located lane vocabulary is accounted for in the collection-mechanism register", "blocking": true },
+    { "id": "UTCE-VAL-11", "dimension": "OBLIGATIONS-CLASSIFIED", "obligation": "every open lane obligation carries a declared obligation class", "blocking": true },
+    { "id": "UTCE-VAL-12", "dimension": "NO-FABRICATION", "obligation": "every reported derivable entry cites a located edge identifier, and this programme writes nothing outside its own operational home", "blocking": true },
+    { "id": "UTCE-VAL-13", "dimension": "COLLECTION-MECHANISM-COMPLETE", "obligation": "every lane of the located lane vocabulary has at least one located label that can populate it", "blocking": false },
+    { "id": "UTCE-VAL-14", "dimension": "ENGINEERING-SPINE-COMPLETE", "obligation": "every registered artifact populates all thirteen lanes of the engineering spine", "blocking": false }
+  ],
+
+  "exit_criteria": [
+    { "id": "UTCE-EX-01", "criterion": "the constitutional traceability obligation named by CEP-006 V.1 and CEP-007 V.1 is measured, and its satisfaction is decidable" },
+    { "id": "UTCE-EX-02", "criterion": "the engineering spine is reported unchanged, with its owner named, and is never presented as closed while it is not" },
+    { "id": "UTCE-EX-03", "criterion": "every open lane obligation carries a class that says whether the repository can discharge it at all" },
+    { "id": "UTCE-EX-04", "criterion": "every lane entry reported derivable cites the located edge that supports it, so no count rests on interpretation" },
+    { "id": "UTCE-EX-05", "criterion": "no lane is populated, no predicate is weakened, and the certified corpus is not written" }
+  ],
+
+  "findings": [
+    {
+      "id": "UTCE-F-001",
+      "title": "The constitutional traceability obligation and the thirteen-lane engineering spine were conflated under one word",
+      "class": "MEASURED-GOVERNANCE-GAP",
+      "owner": "00-MASTER/UCOS-UTCE-001/utce-declaration.json",
+      "evidence": ["00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md", "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md", "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md", "platform/measurement/gaps.py"],
+      "disposition": "IMPLEMENTED",
+      "blocking": false,
+      "note": "CEP-006 V.1 and CEP-007 V.1 both name the precondition as rooted-and-closed traceability under CEP-001 Article XVIII, which requires upward rooting, downward evidence, closure and zero orphans. The located measurement service instead reports one gap per artifact whose thirteen schema lanes are not all populated. Both are legitimate; they are not the same obligation, and only the first is a constitutional precondition. Closed by measuring them separately and reporting each against its own owner."
+    },
+    {
+      "id": "UTCE-F-002",
+      "title": "Five of the thirteen spine lanes are named by no located label, so the completeness predicate has no reachable satisfying state",
+      "class": "FAIL-CLOSED-WITHOUT-PASS-PATH",
+      "owner": "00-BOOK/tools/config.py \u00b7 platform/measurement/gaps.py",
+      "evidence": ["00-BOOK/tools/config.py", "engine/registry/models.py", "platform/measurement/gaps.py"],
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "note": "The located relationship vocabulary maps labels to lanes. Measured from that vocabulary, several lanes of the thirteen-stage schema are named by no label at all, so no artifact can populate them through the located generator by any means. A predicate requiring all thirteen therefore cannot be satisfied by any legal repository state. This is recorded, quantified and referred to the vocabulary owner; it is not remediated here, because adding a label to the located vocabulary is a change to that owner's code and to the corpus it generates."
+    },
+    {
+      "id": "UTCE-F-003",
+      "title": "Located structural edges already support lane entries the generator does not write",
+      "class": "MEASURED-DERIVATION-HEADROOM",
+      "owner": "00-BOOK/tools/ukb.py",
+      "evidence": ["00-BOOK/DATA/relationships.json", "00-BOOK/tools/ukb.py", "00-BOOK/tools/config.py"],
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "note": "The certified corpus already carries typed structural edges whose subject lanes the located vocabulary declares, but the generator writes lane entries only for edges derived from front-matter metadata rows, never for the structural edges it emits itself. The derivation register quantifies exactly how many lane entries the existing edges would support, citing each edge identifier. This programme writes none of them: the corpus is generated by its located owner and is read-only here. The headroom is recorded so the closure is a decision for that owner rather than an unknown."
+    }
+  ]
+}

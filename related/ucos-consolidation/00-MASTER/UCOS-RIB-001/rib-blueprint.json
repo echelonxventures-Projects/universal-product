@@ -1,0 +1,1939 @@
+{
+  "programme": {
+    "id": "UCOS-RIB-001",
+    "name": "Repository Integration Blueprint",
+    "version": "1.0.0",
+    "charter_designation": "EPIC-001 / WP-001 (programme Ω∞-001)",
+    "mission": "UCOS-IMP-MSN-000001",
+    "prompt": "UCOS-PRM-IMP-000001",
+    "authority": "NONE (DERIVED TRUTH)",
+    "governing_instrument": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+    "operational_home": "00-MASTER/UCOS-RIB-001",
+    "operational_memory_owner": "00-MASTER/MCP-002-MASTER-STATE.md",
+    "registration_owner": "00-BOOK/tools/ukb.py",
+    "aggregate_gate_owner": "00-MASTER/UCCEP-000000/uccep_engine.py",
+    "resilience_owner": "00-MASTER/UER-000001/uer-resilience.json",
+    "evolution_owner": "00-MASTER/UEI-000001/uei-evolution.json",
+    "reality_owner": "00-MASTER/URRC-000001/urrc-bindings.json",
+    "capability_owner": "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+    "gate_name": "Repository Integration Gate",
+    "gate_clause": "EPIC-001 STEP-013 final repository certification",
+    "determination_pass": "BLUEPRINT CERTIFIED — REPOSITORY MAY PROCEED",
+    "determination_fail": "BLUEPRINT NOT CERTIFIED — REPOSITORY MUST STOP",
+    "disclosure": "This blueprint is DERIVED TRUTH computed from Repository Truth at the recorded HEAD. It legislates nothing, ratifies nothing, freezes nothing and owns no capability. It creates no capability catalogue, no dependency graph, no registry, no queue and no certification authority: where a canonical owner already holds a matrix it is bound by pointer and never restated; where none exists the matrix is derived from declared machine-readable substrate; where honest derivation is impossible the absence is declared and counted. Every capability disposition is computed by an ordered, total, data-declared rule set — never asserted.",
+    "forbidden_write_prefixes": [
+      "00-BOOK",
+      "00-SOURCE",
+      "99-FREEZE",
+      "engine",
+      "platform",
+      "service",
+      "data",
+      "infrastructure",
+      "application",
+      "intelligence"
+    ]
+  },
+  "tracking": [
+    {
+      "id": "TRK-MISSION",
+      "family": "MISSION",
+      "value": "UCOS-IMP-MSN-000001",
+      "allocation": "DIRECTIVE",
+      "purpose": "the implementation mission this blueprint discharges"
+    },
+    {
+      "id": "TRK-PROMPT",
+      "family": "PROMPT",
+      "value": "UCOS-PRM-IMP-000001",
+      "allocation": "DIRECTIVE",
+      "purpose": "the directive text that chartered the mission"
+    },
+    {
+      "id": "TRK-PROGRAM",
+      "family": "PROGRAM",
+      "value": "Ω∞-001",
+      "allocation": "DIRECTIVE",
+      "purpose": "the programme the epic belongs to"
+    },
+    {
+      "id": "TRK-EPIC",
+      "family": "EPIC",
+      "value": "EPIC-001",
+      "allocation": "DIRECTIVE",
+      "purpose": "the epic implemented by this programme"
+    },
+    {
+      "id": "TRK-WORKPACKAGE",
+      "family": "WORK-PACKAGE",
+      "value": "WP-001",
+      "allocation": "DIRECTIVE",
+      "purpose": "the work package executed"
+    },
+    {
+      "id": "TRK-TASK",
+      "family": "TASK",
+      "value": "UCOS-RIB-001-TASK-000001",
+      "allocation": "DERIVED",
+      "purpose": "the single task of WP-001 — produce and certify the blueprint"
+    },
+    {
+      "id": "TRK-EXECUTION",
+      "family": "EXECUTION",
+      "value": "content seal of the computed model",
+      "allocation": "CONTENT-ADDRESSED",
+      "purpose": "execution identity is the content seal of the computed model — the same repository state is the same execution"
+    },
+    {
+      "id": "TRK-SESSION",
+      "family": "SESSION",
+      "value": "repository head at computation",
+      "allocation": "CONTENT-ADDRESSED",
+      "purpose": "session identity is the repository HEAD the blueprint was computed against"
+    },
+    {
+      "id": "TRK-DECISION",
+      "family": "DECISION",
+      "value": "the ordered rule that produced the decision",
+      "allocation": "DERIVED",
+      "purpose": "every capability decision is identified by the ordered rule that produced it — no decision exists without a rule"
+    },
+    {
+      "id": "TRK-DETERMINATION",
+      "family": "DETERMINATION",
+      "value": "the gate table verdict set",
+      "allocation": "DERIVED",
+      "purpose": "determination identity is the gate table verdict set"
+    },
+    {
+      "id": "TRK-VERIFICATION",
+      "family": "VERIFICATION",
+      "value": "the declared verification obligation identifier",
+      "allocation": "DERIVED",
+      "purpose": "each verification obligation is identified by its declared identifier"
+    },
+    {
+      "id": "TRK-VALIDATION",
+      "family": "VALIDATION",
+      "value": "the declared validation obligation identifier",
+      "allocation": "DERIVED",
+      "purpose": "each validation obligation is identified by its declared identifier"
+    },
+    {
+      "id": "TRK-CERTIFICATION",
+      "family": "CERTIFICATION",
+      "value": "the gate table verdict set plus the content seal",
+      "allocation": "DERIVED",
+      "purpose": "certification identity is the gate table plus the seal"
+    },
+    {
+      "id": "TRK-EVIDENCE",
+      "family": "EVIDENCE",
+      "value": "content hash of the emitted evidence index",
+      "allocation": "CONTENT-ADDRESSED",
+      "purpose": "evidence identity is the content hash of the emitted evidence index"
+    }
+  ],
+  "substrate": [
+    {
+      "id": "SUB-REGISTER",
+      "path": "00-BOOK/DATA/artifacts.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "artifacts",
+        "count"
+      ],
+      "purpose": "the registration register — every version-controlled corpus artifact with owner, program, category, status, dependencies and traceability"
+    },
+    {
+      "id": "SUB-EDGES",
+      "path": "00-BOOK/DATA/relationships.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "relationships",
+        "count"
+      ],
+      "purpose": "the canonical typed graph over registered artifacts"
+    },
+    {
+      "id": "SUB-RIE-CAPS",
+      "path": "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "capabilities",
+        "count"
+      ],
+      "purpose": "the existing canonical capability catalogue — the owner this blueprint binds instead of duplicating"
+    },
+    {
+      "id": "SUB-RIE-BASELINE",
+      "path": "intelligence/UCOS-IMP-BASELINE-001.rib.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "capability_inventory",
+        "execution_frontier",
+        "known_spine_gaps",
+        "repository_health"
+      ],
+      "purpose": "the generated repository implementation baseline — frontier, gaps and health"
+    },
+    {
+      "id": "SUB-RIE-DEPS",
+      "path": "intelligence/UCOS-RIE-DEPENDENCY-GRAPH.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "program_edges",
+        "layered_architecture_bottom_up",
+        "depends_on_acyclic"
+      ],
+      "purpose": "the existing canonical programme-level dependency graph"
+    },
+    {
+      "id": "SUB-RIE-FRONTIER",
+      "path": "intelligence/UCOS-RIE-EXECUTION-FRONTIER.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "ready",
+        "blocked",
+        "critical_path",
+        "next_executable_capability"
+      ],
+      "purpose": "the existing canonical execution frontier — the queue authority this blueprint binds"
+    },
+    {
+      "id": "SUB-CERT",
+      "path": "00-BOOK/DATA/certification.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "verdict",
+        "domains",
+        "domains_total",
+        "domains_passed"
+      ],
+      "purpose": "the digital-twin certification verdict over the corpus"
+    },
+    {
+      "id": "SUB-CONTROL",
+      "path": "00-BOOK/DATA/control-tower.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "portfolio",
+        "programs",
+        "dimensions"
+      ],
+      "purpose": "the portfolio and per-programme rollup"
+    },
+    {
+      "id": "SUB-CLOSURE",
+      "path": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "concepts",
+        "gaps",
+        "concept_total",
+        "gap_total"
+      ],
+      "purpose": "the constitutional concept closure — knowledge-once evidence. GENERATED operational memory, not version-controlled: its value depends on how its owner was last invoked, and the reading bound here is the repository-only pass (CLOSURE_SKIP_CORPUS=1) that the session anchor records, because an external corpus is not Repository Truth",
+      "generated": true
+    },
+    {
+      "id": "SUB-PHASE3",
+      "path": "00-MASTER/UAKOS-CLOSURE-002/phase3.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "plans",
+        "waves",
+        "priorities",
+        "classes"
+      ],
+      "purpose": "the existing canonical implementation planning layer — waves and priority. GENERATED operational memory, not version-controlled; regenerated by its owner from the same repository-only closure baseline",
+      "generated": true
+    },
+    {
+      "id": "SUB-URRC",
+      "path": "00-MASTER/URRC-000001/urrc.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "matrices",
+        "deliverables",
+        "gates",
+        "non_derivable"
+      ],
+      "purpose": "the repository-reality matrices already owned — reuse, duplication, conflict, gap, completeness, readiness, automation"
+    },
+    {
+      "id": "SUB-UEI",
+      "path": "00-MASTER/UEI-000001/uei.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "capabilities",
+        "metrics.capability_total"
+      ],
+      "purpose": "the evolution-intelligence capability bindings and their governing instruments"
+    },
+    {
+      "id": "SUB-UER",
+      "path": "00-MASTER/UER-000001/uer.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "capabilities",
+        "metrics.capability_total"
+      ],
+      "purpose": "the execution-resilience capability bindings"
+    },
+    {
+      "id": "SUB-UCDA",
+      "path": "00-MASTER/UCDA-000001/ucda.json",
+      "kind": "json",
+      "required": true,
+      "pointers": [
+        "decisions"
+      ],
+      "purpose": "the decision-assimilation register — the located home of every constitutional decision"
+    },
+    {
+      "id": "SUB-PROJECT",
+      "path": "pyproject.toml",
+      "kind": "toml",
+      "required": true,
+      "pointers": [
+        "project.scripts",
+        "tool.pytest.ini_options.addopts",
+        "tool.coverage.run.omit"
+      ],
+      "purpose": "the declared interface surface (console entry points) and the declared verification scope. POINTERS CORRECTED: this declared tool.coverage.run.source and tool.pytest.ini_options.testpaths, and pyproject.toml records that BOTH were deliberately removed — `source` because it was a second enumeration of 78 paths reconciled by nobody, and testpaths because the roots are carried in addopts. A pointer at a key its own target documents as deliberately absent measures nothing and reported two integrity findings for years of it being right."
+    }
+  ],
+  "discovery": [
+    {
+      "id": "DSC-CODE-ROOT",
+      "kind": "tracked_glob_unit",
+      "class": "IMPLEMENTATION",
+      "selector": ":(glob)*/__init__.py",
+      "key_depth": 1,
+      "purpose": "every version-controlled Python code root — the top of each implemented capability tree"
+    },
+    {
+      "id": "DSC-CODE-PACKAGE",
+      "kind": "tracked_glob_unit",
+      "class": "IMPLEMENTATION",
+      "selector": ":(glob)*/*/__init__.py",
+      "key_depth": 2,
+      "purpose": "every version-controlled Python package at code-root depth — the implemented capability surface"
+    },
+    {
+      "id": "DSC-PROGRAMME",
+      "kind": "tracked_glob_unit",
+      "class": "OPERATIONAL-PROGRAMME",
+      "selector": ":(glob)00-MASTER/*/*_engine.py",
+      "key_depth": 2,
+      "purpose": "every operational-memory programme that owns an executable engine"
+    },
+    {
+      "id": "DSC-CATALOGUE",
+      "kind": "tracked_glob_unit",
+      "class": "CATALOGUE",
+      "selector": ":(glob)03-CATALOGS/*",
+      "key_depth": 2,
+      "purpose": "every canonical catalogue — service, workflow, application, data, api, runtime, event"
+    },
+    {
+      "id": "DSC-CONSTITUTION",
+      "kind": "tracked_glob_unit",
+      "class": "CONSTITUTION",
+      "selector": ":(glob)00-CEP/*",
+      "key_depth": 2,
+      "purpose": "every ratified constitutional evolution-programme instrument"
+    },
+    {
+      "id": "DSC-METACONST",
+      "kind": "tracked_glob_unit",
+      "class": "CONSTITUTION",
+      "selector": ":(glob)00-CMG/*",
+      "key_depth": 2,
+      "purpose": "every meta-constitutional governance instrument"
+    },
+    {
+      "id": "DSC-UNIVERSE",
+      "kind": "substrate_unit",
+      "class": "CORPUS-PROGRAM",
+      "substrate": "SUB-CONTROL",
+      "pointer": "programs",
+      "key_field": "program",
+      "fields": {
+        "corpus_artifacts": "artifact_count",
+        "corpus_status": "rollup_status",
+        "declared": "program"
+      },
+      "purpose": "every registered corpus programme rollup — the documented universe of programmes"
+    },
+    {
+      "id": "DSC-RIE-CAPABILITY",
+      "kind": "substrate_unit",
+      "class": "CAPABILITY",
+      "substrate": "SUB-RIE-CAPS",
+      "pointer": "capabilities",
+      "key_field": "canonical_name",
+      "location_field": "canonical_location",
+      "fields": {
+        "rie_id": "unique_id",
+        "rie_authority": "authority",
+        "rie_status": "implementation_status",
+        "rie_reuse": "reuse",
+        "rie_evidence": "evidence_present",
+        "rie_locked": "replacement_prohibited",
+        "rie_category": "category",
+        "declared": "canonical_name"
+      },
+      "purpose": "every capability already catalogued by the canonical capability owner — bound by pointer, never restated"
+    }
+  ],
+  "enrichment": [
+    {
+      "id": "ENR-UEI",
+      "substrate": "SUB-UEI",
+      "pointer": "capabilities",
+      "match_field": "home",
+      "match_mode": "path_prefix",
+      "fields": {
+        "uei_id": "id",
+        "uei_instrument": "governing_instrument"
+      },
+      "purpose": "bind each unit to its evolution-intelligence governing instrument where one is declared"
+    },
+    {
+      "id": "ENR-UER",
+      "substrate": "SUB-UER",
+      "pointer": "capabilities",
+      "match_field": "home",
+      "match_mode": "path_prefix",
+      "fields": {
+        "uer_id": "id"
+      },
+      "purpose": "bind each unit to its execution-resilience capability record where one is declared"
+    }
+  ],
+  "measures": [
+    {
+      "id": "MSR-SOURCE",
+      "kind": "owned_source_count",
+      "selector": ":(glob)**/*.py",
+      "exclude": [
+        ":(exclude,glob)**/__init__.py",
+        ":(exclude,glob)__init__.py"
+      ],
+      "field": "source_files",
+      "purpose": "the implemented source surface the unit actually owns — every version-controlled module attributed to the deepest unit that contains it, excluding package initializers, so no root swallows the packages beneath it and no package loses its own subtree"
+    },
+    {
+      "id": "MSR-ALLFILES",
+      "kind": "tracked_glob_count",
+      "field": "tracked_files",
+      "purpose": "every version-controlled file homed inside the unit",
+      "selector_templates": [
+        ":(glob){location}",
+        ":(glob){location}/**"
+      ]
+    },
+    {
+      "id": "MSR-UNITTEST",
+      "kind": "tracked_glob_count",
+      "selector_template": ":(glob){root}/tests/**{leaf}**",
+      "field": "unit_tests",
+      "purpose": "verification assets located for the unit itself"
+    },
+    {
+      "id": "MSR-EVIDENCE",
+      "kind": "tracked_glob_count",
+      "selector_template": ":(glob){root}/_evidence/**",
+      "field": "evidence_assets",
+      "purpose": "the realization-evidence surface located for the unit's root"
+    },
+    {
+      "id": "MSR-COVERAGE",
+      "kind": "substrate_list_member",
+      "substrate": "SUB-PROJECT",
+      "pointer": "tool.coverage.run.source",
+      "field": "in_coverage_scope",
+      "purpose": "whether the unit lies inside the declared coverage scope"
+    },
+    {
+      "id": "MSR-INTERFACE",
+      "kind": "substrate_map_prefix",
+      "substrate": "SUB-PROJECT",
+      "pointer": "project.scripts",
+      "field": "interfaces",
+      "purpose": "the declared console interfaces the unit publishes"
+    },
+    {
+      "id": "MSR-REGISTERED",
+      "kind": "substrate_record_prefix",
+      "substrate": "SUB-REGISTER",
+      "pointer": "artifacts",
+      "record_field": "path",
+      "field": "registered_artifacts",
+      "purpose": "the registered corpus artifacts homed inside the unit"
+    },
+    {
+      "id": "MSR-ENTRYPOINT",
+      "kind": "text_reference_count",
+      "field": "entrypoint_references",
+      "purpose": "how many declared entry points name a path inside the unit — the reachability a non-imported tool has",
+      "match_leaf": true
+    },
+    {
+      "id": "MSR-TESTPATH",
+      "kind": "substrate_list_member",
+      "substrate": "SUB-PROJECT",
+      "pointer": "tool.pytest.ini_options.testpaths",
+      "field": "in_test_scope",
+      "purpose": "whether the unit lies inside the declared test-collection scope"
+    }
+  ],
+  "planes": [
+    {
+      "id": "PLN-CODE",
+      "kind": "python_import_graph",
+      "unit_class": "IMPLEMENTATION",
+      "exclude_typing_guard": true,
+      "purpose": "the executable dependency plane — real, non-type-checking import edges between discovered packages"
+    },
+    {
+      "id": "PLN-MODULE",
+      "kind": "python_module_graph",
+      "unit_class": "IMPLEMENTATION",
+      "exclude_typing_guard": true,
+      "purpose": "the module-granularity import plane, where a true Python import cycle would break execution"
+    },
+    {
+      "id": "PLN-CORPUS",
+      "kind": "typed_edge_graph",
+      "substrate": "SUB-EDGES",
+      "pointer": "relationships",
+      "from_field": "from",
+      "to_field": "to",
+      "type_field": "type",
+      "dependency_types": [
+        "Depends-On"
+      ],
+      "consumer_types": [
+        "Consumed-By",
+        "Required-By"
+      ],
+      "provider_types": [
+        "Consumes"
+      ],
+      "implementation_types": [
+        "Implements",
+        "Implemented-By"
+      ],
+      "authority_types": [
+        "Authorizes",
+        "Authorized-By"
+      ],
+      "purpose": "the documented dependency plane over registered corpus artifacts"
+    }
+  ],
+  "cycle_classes": [
+    {
+      "id": "CYC-INIT-REEXPORT",
+      "benign": true,
+      "rule": "package_init_reexport",
+      "definition": "a cycle whose every participant lies inside one discovered unit and whose back edge targets that unit's package initializer — the re-export pattern Python resolves through a partial module object",
+      "evidence": "the participants import successfully under the canonical test suite"
+    },
+    {
+      "id": "CYC-ARCHITECTURAL",
+      "benign": false,
+      "rule": "cross_unit",
+      "definition": "a cycle whose participants span more than one discovered unit — a layering violation, regardless of whether the interpreter tolerates it",
+      "evidence": "the mediating module is named with each reported cycle"
+    }
+  ],
+  "dispositions": [
+    {
+      "id": "DSP-REUSE",
+      "disposition": "REUSE",
+      "definition": "the capability exists, is implemented and governed, and is consumed unchanged",
+      "requires_existing": true,
+      "is_reuse": true,
+      "is_change": false,
+      "is_removal": false,
+      "consumes_queue": false
+    },
+    {
+      "id": "DSP-EXTEND",
+      "disposition": "EXTEND",
+      "definition": "the capability exists and is consumed, but the blueprint requires surface it does not yet provide",
+      "requires_existing": true,
+      "is_reuse": true,
+      "is_change": true,
+      "is_removal": false,
+      "consumes_queue": true
+    },
+    {
+      "id": "DSP-CONFIGURE",
+      "disposition": "CONFIGURE",
+      "definition": "the capability exists and is complete; what is required is a declaration change, not code",
+      "requires_existing": true,
+      "is_reuse": true,
+      "is_change": true,
+      "is_removal": false,
+      "consumes_queue": true
+    },
+    {
+      "id": "DSP-IMPLEMENT",
+      "disposition": "IMPLEMENT",
+      "definition": "the capability is declared or specified but no executable realization is located",
+      "requires_existing": false,
+      "is_reuse": false,
+      "is_change": true,
+      "is_removal": false,
+      "consumes_queue": true
+    },
+    {
+      "id": "DSP-MERGE",
+      "disposition": "MERGE",
+      "definition": "two or more located units carry the same responsibility and must become one",
+      "requires_existing": true,
+      "is_reuse": false,
+      "is_change": true,
+      "is_removal": true,
+      "consumes_queue": true
+    },
+    {
+      "id": "DSP-SUPERSEDE",
+      "disposition": "SUPERSEDE",
+      "definition": "a newer located unit already discharges the responsibility; the older is bound to it",
+      "requires_existing": true,
+      "is_reuse": false,
+      "is_change": true,
+      "is_removal": false,
+      "consumes_queue": true
+    },
+    {
+      "id": "DSP-DEPRECATE",
+      "disposition": "DEPRECATE",
+      "definition": "the unit is located but no consumer, interface or registration depends on it, and its responsibility is held elsewhere",
+      "requires_existing": true,
+      "is_reuse": false,
+      "is_change": true,
+      "is_removal": false,
+      "consumes_queue": true
+    },
+    {
+      "id": "DSP-REMOVE",
+      "disposition": "REMOVE",
+      "definition": "the unit is located, carries no responsibility, no consumer and no evidence, and removal destroys nothing",
+      "requires_existing": true,
+      "is_reuse": false,
+      "is_change": true,
+      "is_removal": true,
+      "consumes_queue": true
+    }
+  ],
+  "disposition_rules": [
+    {
+      "id": "RUL-01",
+      "disposition": "MERGE",
+      "when": [
+        {
+          "field": "duplicate_responsibility",
+          "op": "truthy"
+        }
+      ],
+      "because": "more than one located unit claims the same canonical responsibility, so exactly one must remain"
+    },
+    {
+      "id": "RUL-02",
+      "disposition": "SUPERSEDE",
+      "when": [
+        {
+          "field": "superseded_by",
+          "op": "truthy"
+        }
+      ],
+      "because": "a located successor already discharges the responsibility"
+    },
+    {
+      "id": "RUL-03",
+      "disposition": "IMPLEMENT",
+      "when": [
+        {
+          "field": "tracked_files",
+          "op": "equals",
+          "value": 0
+        },
+        {
+          "field": "declared",
+          "op": "truthy"
+        },
+        {
+          "field": "corpus_artifacts",
+          "op": "falsy"
+        }
+      ],
+      "because": "the capability is declared but no version-controlled surface of any kind is located for it"
+    },
+    {
+      "id": "RUL-04",
+      "disposition": "IMPLEMENT",
+      "when": [
+        {
+          "field": "rie_status",
+          "op": "in",
+          "value": [
+            "PLANNED"
+          ]
+        }
+      ],
+      "because": "the canonical capability owner records the capability as planned, not realized"
+    },
+    {
+      "id": "RUL-05",
+      "disposition": "REMOVE",
+      "when": [
+        {
+          "field": "source_files",
+          "op": "greater_than",
+          "value": 0
+        },
+        {
+          "field": "consumers",
+          "op": "equals",
+          "value": 0
+        },
+        {
+          "field": "interfaces",
+          "op": "equals",
+          "value": 0
+        },
+        {
+          "field": "registered_artifacts",
+          "op": "equals",
+          "value": 0
+        },
+        {
+          "field": "evidence_assets",
+          "op": "equals",
+          "value": 0
+        },
+        {
+          "field": "dependencies",
+          "op": "equals",
+          "value": 0
+        },
+        {
+          "field": "rie_locked",
+          "op": "falsy"
+        },
+        {
+          "field": "entrypoint_references",
+          "op": "equals",
+          "value": 0
+        },
+        {
+          "field": "tracked_files",
+          "op": "equals",
+          "value": 0
+        }
+      ],
+      "because": "the unit is inert in every measured plane, no entry point names it, and it homes no version-controlled deliverable, so removal destroys nothing"
+    },
+    {
+      "id": "RUL-06A",
+      "disposition": "CONFIGURE",
+      "when": [
+        {
+          "field": "is_test_unit",
+          "op": "truthy"
+        },
+        {
+          "field": "in_test_scope",
+          "op": "falsy"
+        }
+      ],
+      "because": "the unit is a verification suite the canonical runner does not collect — what is required is an entry in the declared test scope, not code"
+    },
+    {
+      "id": "RUL-06",
+      "disposition": "DEPRECATE",
+      "when": [
+        {
+          "field": "source_files",
+          "op": "greater_than",
+          "value": 0
+        },
+        {
+          "field": "consumers",
+          "op": "equals",
+          "value": 0
+        },
+        {
+          "field": "interfaces",
+          "op": "equals",
+          "value": 0
+        },
+        {
+          "field": "registered_artifacts",
+          "op": "equals",
+          "value": 0
+        },
+        {
+          "field": "entrypoint_references",
+          "op": "equals",
+          "value": 0
+        },
+        {
+          "field": "in_test_scope",
+          "op": "falsy"
+        },
+        {
+          "field": "rie_locked",
+          "op": "falsy"
+        }
+      ],
+      "because": "the unit holds code that no plane consumes, no interface publishes, no registration homes, no entry point names and no runner collects, and its replacement is not prohibited"
+    },
+    {
+      "id": "RUL-07",
+      "disposition": "CONFIGURE",
+      "when": [
+        {
+          "field": "unit_class",
+          "op": "in",
+          "value": [
+            "OPERATIONAL-PROGRAMME"
+          ]
+        }
+      ],
+      "because": "an operational programme is extended by editing its declaration, never its engine — that is the ratified engine pattern"
+    },
+    {
+      "id": "RUL-08",
+      "disposition": "EXTEND",
+      "when": [
+        {
+          "field": "rie_reuse",
+          "op": "contains",
+          "value": "EXTEND"
+        }
+      ],
+      "because": "the canonical capability owner already records this capability as reuse-with-extension"
+    },
+    {
+      "id": "RUL-09",
+      "disposition": "EXTEND",
+      "when": [
+        {
+          "field": "unit_class",
+          "op": "equals",
+          "value": "IMPLEMENTATION"
+        },
+        {
+          "field": "in_coverage_scope",
+          "op": "falsy"
+        },
+        {
+          "field": "source_files",
+          "op": "greater_than",
+          "value": 0
+        },
+        {
+          "field": "is_test_unit",
+          "op": "falsy"
+        }
+      ],
+      "because": "the unit is implemented and consumed but lies outside the declared verification scope, so the surface it must still provide is its own verification binding"
+    },
+    {
+      "id": "RUL-10",
+      "disposition": "REUSE",
+      "when": [],
+      "because": "the unit is located, depended upon, inside the declared verification scope and carries no unresolved obligation — it is consumed unchanged"
+    }
+  ],
+  "matrices": [
+    {
+      "id": "MTX-CAPABILITY",
+      "index": 1,
+      "name": "Capability Matrix",
+      "subject": "every discovered capability unit with its identity, class, location and lifecycle",
+      "mode": "DERIVED",
+      "canonical_owner": "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+      "columns": [
+        "unique_id",
+        "canonical_name",
+        "unit_class",
+        "location",
+        "lifecycle",
+        "implementation_status"
+      ]
+    },
+    {
+      "id": "MTX-OWNER",
+      "index": 2,
+      "name": "Owner Matrix",
+      "subject": "the single canonical owner of every capability unit",
+      "mode": "DERIVED",
+      "canonical_owner": "02-CANONICAL-OWNERSHIP-MATRIX.md",
+      "columns": [
+        "unique_id",
+        "canonical_name",
+        "owner",
+        "program",
+        "phase"
+      ]
+    },
+    {
+      "id": "MTX-DEPENDENCY",
+      "index": 3,
+      "name": "Dependency Matrix",
+      "subject": "the measured dependency, consumer and provider degree of every unit",
+      "mode": "DERIVED",
+      "canonical_owner": "intelligence/UCOS-RIE-DEPENDENCY-GRAPH.json",
+      "columns": [
+        "unique_id",
+        "canonical_name",
+        "dependencies",
+        "consumers",
+        "providers"
+      ]
+    },
+    {
+      "id": "MTX-IMPLEMENTATION",
+      "index": 4,
+      "name": "Implementation Matrix",
+      "subject": "the located executable surface of every unit",
+      "mode": "DERIVED",
+      "canonical_owner": "intelligence/UCOS-IMP-BASELINE-001.rib.json",
+      "columns": [
+        "unique_id",
+        "canonical_name",
+        "source_files",
+        "implementation_status",
+        "interfaces"
+      ]
+    },
+    {
+      "id": "MTX-VERIFICATION",
+      "index": 5,
+      "name": "Verification Matrix",
+      "subject": "the located verification assets and declared verification scope of every unit",
+      "mode": "DERIVED",
+      "canonical_owner": "00-MASTER/UCOS-CVR-001",
+      "columns": [
+        "unique_id",
+        "canonical_name",
+        "unit_tests",
+        "in_coverage_scope"
+      ]
+    },
+    {
+      "id": "MTX-VALIDATION",
+      "index": 6,
+      "name": "Validation Matrix",
+      "subject": "the validation obligations of the blueprint and their verdicts",
+      "mode": "DERIVED",
+      "canonical_owner": "platform/universal_validation",
+      "columns": [
+        "id",
+        "name",
+        "verdict"
+      ]
+    },
+    {
+      "id": "MTX-CERTIFICATION",
+      "index": 7,
+      "name": "Certification Matrix",
+      "subject": "the certification authority recorded for every unit",
+      "mode": "DERIVED",
+      "canonical_owner": "00-BOOK/DATA/certification.json",
+      "columns": [
+        "unique_id",
+        "canonical_name",
+        "rie_authority",
+        "evidence_assets"
+      ]
+    },
+    {
+      "id": "MTX-REGISTRY",
+      "index": 8,
+      "name": "Registry Matrix",
+      "subject": "the registered corpus artifacts homed inside every unit",
+      "mode": "BOUND",
+      "canonical_owner": "00-BOOK/tools/ukb.py",
+      "columns": [
+        "unique_id",
+        "canonical_name",
+        "registered_artifacts"
+      ]
+    },
+    {
+      "id": "MTX-EVIDENCE",
+      "index": 9,
+      "name": "Evidence Matrix",
+      "subject": "the located evidence surface of every unit",
+      "mode": "DERIVED",
+      "canonical_owner": "00-BOOK/DATA/artifacts.json",
+      "columns": [
+        "unique_id",
+        "canonical_name",
+        "evidence_assets",
+        "rie_evidence"
+      ]
+    },
+    {
+      "id": "MTX-REUSE",
+      "index": 10,
+      "name": "Reuse Matrix",
+      "subject": "every unit consumed unchanged or with extension",
+      "mode": "BOUND",
+      "canonical_owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "columns": [
+        "unique_id",
+        "canonical_name",
+        "disposition",
+        "rie_reuse"
+      ]
+    },
+    {
+      "id": "MTX-GAP",
+      "index": 11,
+      "name": "Gap Matrix",
+      "subject": "every measured absence — missing owner, verification, certification, evidence, dependency or runtime",
+      "mode": "BOUND",
+      "canonical_owner": "00-MASTER/URRC-000001/06-GAP-MATRIX.md",
+      "columns": [
+        "id",
+        "class",
+        "subject",
+        "count"
+      ]
+    },
+    {
+      "id": "MTX-RISK",
+      "index": 12,
+      "name": "Risk Matrix",
+      "subject": "the compliance violations classified by severity",
+      "mode": "DERIVED",
+      "canonical_owner": "06-IMPLEMENTATION-RISK-ASSESSMENT.md",
+      "columns": [
+        "id",
+        "severity",
+        "finding",
+        "remediation"
+      ]
+    },
+    {
+      "id": "MTX-BENEFIT",
+      "index": 13,
+      "name": "Benefit Matrix",
+      "subject": "what each disposition class delivers, measured by the units it covers",
+      "mode": "DERIVED",
+      "canonical_owner": null,
+      "columns": [
+        "disposition",
+        "units",
+        "benefit"
+      ]
+    },
+    {
+      "id": "MTX-IMPACT",
+      "index": 14,
+      "name": "Impact Matrix",
+      "subject": "the blast radius of each change disposition, measured as dependent units",
+      "mode": "BOUND",
+      "canonical_owner": "00-MASTER/UAKOS-CLOSURE-002/41-REPOSITORY-IMPACT-ASSESSMENT.md",
+      "columns": [
+        "unique_id",
+        "canonical_name",
+        "disposition",
+        "dependents"
+      ]
+    },
+    {
+      "id": "MTX-PRIORITY",
+      "index": 15,
+      "name": "Priority Matrix",
+      "subject": "the computed priority of every queued unit",
+      "mode": "BOUND",
+      "canonical_owner": "00-MASTER/UAKOS-CLOSURE-002/42-PRIORITY-REGISTER.md",
+      "columns": [
+        "unique_id",
+        "canonical_name",
+        "disposition",
+        "priority",
+        "dependents"
+      ]
+    },
+    {
+      "id": "MTX-EXECUTION",
+      "index": 16,
+      "name": "Execution Matrix",
+      "subject": "the dependency-safe wave each queued unit occupies",
+      "mode": "BOUND",
+      "canonical_owner": "intelligence/UCOS-RIE-EXECUTION-FRONTIER.json",
+      "columns": [
+        "wave",
+        "units",
+        "parallel",
+        "blocked_by"
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "id": "GAP-OWNER",
+      "class": "MISSING OWNER",
+      "subject": "units for which no canonical owner resolves",
+      "field": "owner",
+      "op": "falsy"
+    },
+    {
+      "id": "GAP-VERIFICATION",
+      "class": "MISSING VALIDATION",
+      "subject": "units with no located verification asset",
+      "field": "unit_tests",
+      "op": "equals",
+      "value": 0
+    },
+    {
+      "id": "GAP-COVERAGE",
+      "class": "MISSING VERIFICATION",
+      "subject": "implementation units outside the declared coverage scope",
+      "field": "in_coverage_scope",
+      "op": "falsy",
+      "restrict_class": "IMPLEMENTATION"
+    },
+    {
+      "id": "GAP-CERTIFICATION",
+      "class": "MISSING CERTIFICATION",
+      "subject": "units carrying no recorded certification authority",
+      "field": "rie_authority",
+      "op": "falsy"
+    },
+    {
+      "id": "GAP-EVIDENCE",
+      "class": "MISSING EVIDENCE",
+      "subject": "units with no located evidence surface",
+      "field": "evidence_assets",
+      "op": "equals",
+      "value": 0
+    },
+    {
+      "id": "GAP-DEPENDENCY",
+      "class": "MISSING DEPENDENCY",
+      "subject": "implementation units with no measured dependency in either direction",
+      "field": "degree",
+      "op": "equals",
+      "value": 0,
+      "restrict_class": "IMPLEMENTATION"
+    },
+    {
+      "id": "GAP-RUNTIME",
+      "class": "MISSING RUNTIME",
+      "subject": "units that publish no interface and are reachable by no consumer",
+      "field": "reachable",
+      "op": "falsy"
+    },
+    {
+      "id": "GAP-CAPABILITY",
+      "class": "MISSING CAPABILITY",
+      "subject": "capability records held by the canonical owner for which no located unit resolves",
+      "field": "unresolved_catalogue_record",
+      "op": "truthy"
+    },
+    {
+      "id": "GAP-REGISTRY",
+      "class": "MISSING REGISTRY",
+      "subject": "units that home no registered corpus artifact and publish no interface",
+      "field": "unregistered_and_closed",
+      "op": "truthy"
+    },
+    {
+      "id": "GAP-DEAD-ENGINE",
+      "class": "DEAD ENGINE",
+      "subject": "operational programmes whose engine no declared entry point names",
+      "field": "entrypoint_references",
+      "op": "equals",
+      "value": 0,
+      "restrict_class": "OPERATIONAL-PROGRAMME"
+    }
+  ],
+  "duplicates": [
+    {
+      "id": "DUP-RESPONSIBILITY",
+      "class": "NAME COLLISION ACROSS LAYERS",
+      "subject": "two or more implemented units whose canonical leaf name is identical across roots — a signal, not a proof: a shared name across layers is legitimate, so this class is advisory and drives no disposition",
+      "rule": "leaf_collision",
+      "blocking": false
+    },
+    {
+      "id": "DUP-CAPABILITY",
+      "class": "DUPLICATE CAPABILITY",
+      "subject": "two or more catalogue records resolving to one located unit",
+      "rule": "catalogue_collision",
+      "blocking": true
+    },
+    {
+      "id": "DUP-INTERFACE",
+      "class": "DUPLICATE INTERFACE",
+      "subject": "two or more declared console entry points resolving to one unit",
+      "rule": "interface_collision",
+      "blocking": true
+    },
+    {
+      "id": "DUP-RUNTIME",
+      "class": "DUPLICATE RUNTIME",
+      "subject": "two or more discovered units claiming one canonical location",
+      "rule": "location_collision",
+      "blocking": true
+    },
+    {
+      "id": "DUP-ENGINE",
+      "class": "MULTI-ENGINE PROGRAMME",
+      "subject": "a programme home holding more than one engine — advisory: a staged pipeline legitimately owns one engine per phase",
+      "rule": "engine_collision",
+      "blocking": false
+    },
+    {
+      "id": "DUP-REGISTRY",
+      "class": "DUPLICATE REGISTRY",
+      "subject": "two or more registered artifacts carrying one content hash outside the declared freeze boundary",
+      "rule": "record_field_collision",
+      "substrate": "SUB-REGISTER",
+      "pointer": "artifacts",
+      "field": "content_hash",
+      "label_field": "path",
+      "blocking": true,
+      "exclude_prefix": "99-FREEZE"
+    },
+    {
+      "id": "DUP-CONSTITUTION",
+      "class": "DUPLICATE CONSTITUTION",
+      "subject": "two or more constitutional instruments carrying one content hash",
+      "rule": "record_field_collision",
+      "substrate": "SUB-REGISTER",
+      "pointer": "artifacts",
+      "field": "content_hash",
+      "label_field": "path",
+      "scope_field": "path",
+      "scope_prefix": "00-CEP",
+      "blocking": true
+    },
+    {
+      "id": "DUP-KNOWLEDGE",
+      "class": "DUPLICATE KNOWLEDGE",
+      "subject": "concepts recorded in more than one canonical home",
+      "rule": "substrate_counter",
+      "substrate": "SUB-CLOSURE",
+      "pointer": "gaps.duplicate_canonical_homes",
+      "blocking": true
+    },
+    {
+      "id": "DUP-FREEZE",
+      "class": "FREEZE-BOUNDARY COPY",
+      "blocking": false,
+      "subject": "registered artifacts sharing one content hash where one side lies inside the freeze boundary — by design: freezing means retaining a byte-identical copy",
+      "rule": "record_field_collision",
+      "substrate": "SUB-REGISTER",
+      "pointer": "artifacts",
+      "field": "content_hash",
+      "label_field": "path"
+    }
+  ],
+  "verifications": [
+    {
+      "id": "VER-01",
+      "name": "Completeness",
+      "criterion": "every discovered unit carries exactly one disposition",
+      "metric": "units_without_disposition",
+      "expect": 0
+    },
+    {
+      "id": "VER-02",
+      "name": "Consistency",
+      "criterion": "every assigned disposition belongs to the closed declared set",
+      "metric": "dispositions_outside_set",
+      "expect": 0
+    },
+    {
+      "id": "VER-03",
+      "name": "Repository coverage",
+      "criterion": "every declared discovery source resolved at least one unit",
+      "metric": "discovery_sources_empty",
+      "expect": 0
+    },
+    {
+      "id": "VER-04",
+      "name": "Dependency closure",
+      "criterion": "every dependency edge resolves to a discovered unit",
+      "metric": "unresolved_dependency_edges",
+      "expect": 0
+    },
+    {
+      "id": "VER-05",
+      "name": "Ownership",
+      "criterion": "no unit is claimed by more than one owner",
+      "metric": "owner_collisions",
+      "expect": 0
+    },
+    {
+      "id": "VER-06",
+      "name": "Knowledge once",
+      "criterion": "the concept closure reports no duplicate canonical home",
+      "metric": "closure_duplicate_homes",
+      "expect": 0
+    },
+    {
+      "id": "VER-07",
+      "name": "No duplicate truth",
+      "criterion": "no derived matrix restates a matrix already bound to a canonical owner",
+      "metric": "matrix_duplication",
+      "expect": 0
+    },
+    {
+      "id": "VER-08",
+      "name": "No circular dependency",
+      "criterion": "no cycle of a non-benign declared class is present in any plane",
+      "metric": "architectural_cycles",
+      "expect": 0
+    },
+    {
+      "id": "VER-09",
+      "name": "No orphan capability",
+      "criterion": "no unit is unreachable in every declared reachability dimension",
+      "metric": "orphan_units",
+      "expect": 0
+    },
+    {
+      "id": "VER-10",
+      "name": "No dead registry",
+      "criterion": "every registered artifact resolves to a tracked path",
+      "metric": "dead_registry_entries",
+      "expect": 0
+    },
+    {
+      "id": "VER-11",
+      "name": "No dead engine",
+      "criterion": "every discovered programme engine is named by at least one declared entry point",
+      "metric": "gap_count:GAP-DEAD-ENGINE",
+      "expect": 0
+    },
+    {
+      "id": "VER-12",
+      "name": "No dead runtime",
+      "criterion": "every declared console interface resolves to a located module",
+      "metric": "dead_interfaces",
+      "expect": 0
+    }
+  ],
+  "validations": [
+    {
+      "id": "VAL-01",
+      "name": "Architecture",
+      "criterion": "every implementation unit lies under a discovered code root and inside a declared layer",
+      "metric": "units_outside_architecture",
+      "expect": 0
+    },
+    {
+      "id": "VAL-02",
+      "name": "Repository",
+      "criterion": "the working tree is clean at the computed HEAD, excluding this programme's own regenerated artifacts",
+      "metric": "dirty_entries_outside_generated",
+      "expect": 0
+    },
+    {
+      "id": "VAL-03",
+      "name": "Programs",
+      "criterion": "every discovered unit names a programme",
+      "metric": "units_without_program",
+      "expect": 0
+    },
+    {
+      "id": "VAL-04",
+      "name": "Roadmaps",
+      "criterion": "the planning layer reports no unresolved plan",
+      "metric": "planning_unresolved",
+      "expect": 0
+    },
+    {
+      "id": "VAL-05",
+      "name": "Universes",
+      "criterion": "every registered programme rollup resolves to a discovered unit or a corpus programme",
+      "metric": "universes_unresolved",
+      "expect": 0
+    },
+    {
+      "id": "VAL-06",
+      "name": "Phases",
+      "criterion": "every unit carries a phase, or the absence is covered by a registered, probed refusal that names its owner",
+      "metric": "absent_unbounded:phase",
+      "expect": 0
+    },
+    {
+      "id": "VAL-07",
+      "name": "Registries",
+      "criterion": "registration is closed — the register count equals the located registered artifact count",
+      "metric": "registration_drift",
+      "expect": 0
+    },
+    {
+      "id": "VAL-08",
+      "name": "Implementations",
+      "criterion": "every unit the capability owner records resolves to a located, version-controlled surface",
+      "metric": "realized_without_source",
+      "expect": 0
+    },
+    {
+      "id": "VAL-09",
+      "name": "Meta models",
+      "criterion": "every declared matrix is either bound to a resolving owner or derived from resolving substrate",
+      "metric": "matrices_unbound",
+      "expect": 0
+    },
+    {
+      "id": "VAL-10",
+      "name": "Knowledge objects",
+      "criterion": "the concept closure reports zero constitutional gaps",
+      "metric": "closure_gaps",
+      "expect": 0
+    },
+    {
+      "id": "VAL-11",
+      "name": "Exclusion Declaration",
+      "criterion": "every ignored path resolves to a declared class in 00-BOOK/DATA/exclusion-register.json",
+      "metric": "ignored_unclassified",
+      "expect": 0
+    },
+    {
+      "id": "VAL-12",
+      "name": "Exclusion Shadowing",
+      "criterion": "no tracked path is matched by an ignore rule (it would vanish from governance the moment it left the index)",
+      "metric": "shadowed_tracked_paths_count",
+      "expect": 0
+    }
+  ],
+  "gates": [
+    {
+      "id": "GATE-01",
+      "name": "Repository Discovery",
+      "blocking": true,
+      "criterion": "every declared discovery source resolved at least one unit",
+      "metrics": [
+        "discovery_sources_empty"
+      ]
+    },
+    {
+      "id": "GATE-02",
+      "name": "Repository Integrity",
+      "blocking": true,
+      "criterion": "no merge conflict, no detached HEAD, no partially applied patch, no broken symlink, no unparsable required substrate",
+      "metrics": [
+        "integrity_findings"
+      ]
+    },
+    {
+      "id": "GATE-03",
+      "name": "Repository Verification",
+      "blocking": true,
+      "criterion": "every verification obligation met",
+      "metrics": [
+        "verifications_failed"
+      ]
+    },
+    {
+      "id": "GATE-04",
+      "name": "Repository Validation",
+      "blocking": true,
+      "criterion": "every validation obligation met",
+      "metrics": [
+        "validations_failed"
+      ],
+      "working_tree_transitive": true,
+      "basis": "Declared rather than special-cased in the engine. GATE-04 gates on `validations_failed`, which aggregates the validations remaining once the working-tree ones are set aside, so its working-tree dependence is TRANSITIVE and invisible to a metrics intersection. The engine named it as a literal in three places, which UCOS-RIB-001 check-no-enumeration refuses: extending the blueprint must never require a code change."
+    },
+    {
+      "id": "GATE-05",
+      "name": "Repository Certification",
+      "blocking": true,
+      "criterion": "the corpus certification verdict is recorded and every certification domain passed",
+      "metrics": [
+        "certification_domains_failed",
+        "certification_verdict_absent"
+      ]
+    },
+    {
+      "id": "GATE-06",
+      "name": "Dependency Closure",
+      "blocking": true,
+      "criterion": "every dependency edge resolves to a discovered unit",
+      "metrics": [
+        "unresolved_dependency_edges"
+      ]
+    },
+    {
+      "id": "GATE-07",
+      "name": "Capability Coverage",
+      "blocking": true,
+      "criterion": "every capability record held by the canonical owner resolves to a discovered unit, and every discovered implementation unit is covered by a capability record",
+      "metrics": [
+        "unresolved_catalogue_records",
+        "uncatalogued_units"
+      ]
+    },
+    {
+      "id": "GATE-08",
+      "name": "Knowledge Once",
+      "blocking": true,
+      "criterion": "zero duplicate canonical homes and zero constitutional gaps in the concept closure",
+      "metrics": [
+        "closure_duplicate_homes",
+        "closure_gaps"
+      ]
+    },
+    {
+      "id": "GATE-09",
+      "name": "Zero Duplicate Capability",
+      "blocking": true,
+      "criterion": "no declared duplicate class reports a finding",
+      "metrics": [
+        "duplicate_findings"
+      ]
+    },
+    {
+      "id": "GATE-10",
+      "name": "Zero Circular Dependency",
+      "blocking": true,
+      "criterion": "no cycle of a non-benign declared class in any plane",
+      "metrics": [
+        "architectural_cycles"
+      ]
+    },
+    {
+      "id": "GATE-11",
+      "name": "Zero Orphan Capability",
+      "blocking": true,
+      "criterion": "no discovered unit is unreachable in every measured plane",
+      "metrics": [
+        "orphan_units"
+      ]
+    },
+    {
+      "id": "GATE-12",
+      "name": "Repository Clean",
+      "blocking": true,
+      "criterion": "the working tree carries no uncommitted entry outside this programme's own deterministically regenerated artifacts, every ignored path resolves to a declared class in the exclusion register, and no tracked path is shadowed by an ignore rule",
+      "metrics": [
+        "dirty_entries_outside_generated",
+        "ignored_unclassified",
+        "shadowed_tracked_paths_count"
+      ],
+      "basis": "UCOS-CL-001 — measured over the ignored-inclusive filesystem. Measuring only `git status --porcelain` made .gitignore an input to this gate: two lines added at be46a300 removed 41 physically-present files from the observation surface and flipped this gate while every file remained on disk."
+    }
+  ],
+  "outputs": [
+    {
+      "id": "OUT-00",
+      "file": "00-RIB-DASHBOARD.md",
+      "title": "Repository Integration Blueprint — Dashboard",
+      "purpose": "The single page that states, from Repository Truth alone, whether the repository may proceed."
+    },
+    {
+      "id": "OUT-01",
+      "file": "01-REPOSITORY-INVENTORY.md",
+      "title": "01 — Repository Inventory",
+      "purpose": "Everything discovered, by declared source, with nothing manually enumerated."
+    },
+    {
+      "id": "OUT-02",
+      "file": "02-REPOSITORY-CAPABILITY-GRAPH.md",
+      "title": "02 — Repository Capability Graph",
+      "purpose": "Every capability unit with its identity, owner, location, programme, phase, degree, lifecycle, verification, certification, evidence and implementation status."
+    },
+    {
+      "id": "OUT-03",
+      "file": "03-CANONICAL-OWNER-MATRIX.md",
+      "title": "03 — Canonical Owner Matrix",
+      "purpose": "Exactly one owner per capability, and the proof that no capability is owned twice."
+    },
+    {
+      "id": "OUT-04",
+      "file": "04-REPOSITORY-INTEGRATION-BLUEPRINT.md",
+      "title": "04 — Repository Integration Blueprint",
+      "purpose": "The sixteen matrices — each bound to the canonical owner that already holds it, or derived here because none exists."
+    },
+    {
+      "id": "OUT-05",
+      "file": "05-DEPENDENCY-GRAPH.md",
+      "title": "05 — Dependency Graph",
+      "purpose": "Every measured plane, its edges, its cycles by declared class, and its closure."
+    },
+    {
+      "id": "OUT-06",
+      "file": "06-GAP-ANALYSIS.md",
+      "title": "06 — Gap Analysis",
+      "purpose": "Every declared class of absence, counted, with the units it names."
+    },
+    {
+      "id": "OUT-07",
+      "file": "07-DUPLICATE-ANALYSIS.md",
+      "title": "07 — Duplicate Analysis",
+      "purpose": "Every declared class of duplication, counted, with the units it names."
+    },
+    {
+      "id": "OUT-08",
+      "file": "08-REUSE-ANALYSIS.md",
+      "title": "08 — Reuse Analysis",
+      "purpose": "What is consumed unchanged, and what that reuse displaces."
+    },
+    {
+      "id": "OUT-09",
+      "file": "09-EXTENSION-ANALYSIS.md",
+      "title": "09 — Extension Analysis",
+      "purpose": "What is extended, configured or superseded rather than rebuilt, and the surface each change adds."
+    },
+    {
+      "id": "OUT-10",
+      "file": "10-IMPLEMENTATION-QUEUE.md",
+      "title": "10 — Implementation Queue",
+      "purpose": "The dependency-safe order, the critical path, and the parallel bands — computed, never sequenced by hand."
+    },
+    {
+      "id": "OUT-11",
+      "file": "11-VERIFICATION-REPORT.md",
+      "title": "11 — Verification Report",
+      "purpose": "Each verification obligation, its measured value, and its verdict."
+    },
+    {
+      "id": "OUT-12",
+      "file": "12-VALIDATION-REPORT.md",
+      "title": "12 — Validation Report",
+      "purpose": "Each validation obligation, its measured value, and its verdict."
+    },
+    {
+      "id": "OUT-13",
+      "file": "13-CERTIFICATION-REPORT.md",
+      "title": "13 — Certification Report",
+      "purpose": "The twelve quality gates, the compliance findings by severity, and the certification determination."
+    },
+    {
+      "id": "OUT-14",
+      "file": "14-REPOSITORY-READINESS-REPORT.md",
+      "title": "14 — Repository Readiness Report",
+      "purpose": "Whether the repository may proceed, what blocks it, who owns each unblocking act, and the continuation package."
+    }
+  ],
+  "severities": [
+    {
+      "id": "SEV-CRITICAL",
+      "severity": "CRITICAL",
+      "rank": 1,
+      "definition": "the repository cannot proceed: a blocking gate over repository integrity, cleanliness, discovery or dependency closure is failing"
+    },
+    {
+      "id": "SEV-HIGH",
+      "severity": "HIGH",
+      "rank": 2,
+      "definition": "a blocking gate over verification, validation, certification, duplication, circularity or orphanhood is failing"
+    },
+    {
+      "id": "SEV-MEDIUM",
+      "severity": "MEDIUM",
+      "rank": 3,
+      "definition": "a declared gap class reports findings but no gate is blocked by it alone"
+    },
+    {
+      "id": "SEV-LOW",
+      "severity": "LOW",
+      "rank": 4,
+      "definition": "an advisory observation carrying no gate consequence"
+    }
+  ],
+  "compliance": [
+    {
+      "id": "CMP-CLEAN",
+      "requirement": "the repository must remain clean, deterministic, buildable and reproducible",
+      "gate": "GATE-12",
+      "severity_on_fail": "CRITICAL",
+      "remediation": "commit or discard every uncommitted entry into its canonical location; this programme's own regenerated outputs are excluded because they are the deterministic product of the gated command itself, and their determinism is proven separately"
+    },
+    {
+      "id": "CMP-DISCOVERY",
+      "requirement": "nothing may be manually enumerated — everything must be discovered",
+      "gate": "GATE-01",
+      "severity_on_fail": "CRITICAL",
+      "remediation": "add or correct the discovery source in the declaration; never enumerate a unit in the engine"
+    },
+    {
+      "id": "CMP-INTEGRITY",
+      "requirement": "no merge conflict, detached HEAD, partially applied patch, broken symlink or corrupted registry",
+      "gate": "GATE-02",
+      "severity_on_fail": "CRITICAL",
+      "remediation": "resolve the named integrity finding before any determination is asserted"
+    },
+    {
+      "id": "CMP-CLOSURE",
+      "requirement": "zero unresolved dependency",
+      "gate": "GATE-06",
+      "severity_on_fail": "CRITICAL",
+      "remediation": "either home the missing unit or declare the edge's target in a discovery source"
+    },
+    {
+      "id": "CMP-COVERAGE",
+      "requirement": "every capability must be covered exactly once",
+      "gate": "GATE-07",
+      "severity_on_fail": "HIGH",
+      "remediation": "extend the canonical capability catalogue — the catalogue is the owner, so the entry is added there, not here"
+    },
+    {
+      "id": "CMP-ONCE",
+      "requirement": "knowledge is recorded once, in exactly one canonical home",
+      "gate": "GATE-08",
+      "severity_on_fail": "HIGH",
+      "remediation": "resolve the duplicate home through the concept-closure owner"
+    },
+    {
+      "id": "CMP-NODUP",
+      "requirement": "zero duplicate capability ownership",
+      "gate": "GATE-09",
+      "severity_on_fail": "HIGH",
+      "remediation": "merge the colliding units under one canonical owner, or record the collision as an authorized distinction in the declaration"
+    },
+    {
+      "id": "CMP-ACYCLIC",
+      "requirement": "zero circular dependency",
+      "gate": "GATE-10",
+      "severity_on_fail": "HIGH",
+      "remediation": "break the named cycle by extracting the mediating module into the lower layer both participants already depend on"
+    },
+    {
+      "id": "CMP-NOORPHAN",
+      "requirement": "zero orphan implementation",
+      "gate": "GATE-11",
+      "severity_on_fail": "HIGH",
+      "remediation": "bind the orphan to a consumer, publish an interface for it, or disposition it for removal"
+    },
+    {
+      "id": "CMP-VERIFY",
+      "requirement": "verification must pass",
+      "gate": "GATE-03",
+      "severity_on_fail": "HIGH",
+      "remediation": "discharge the named verification obligation"
+    },
+    {
+      "id": "CMP-VALIDATE",
+      "requirement": "validation must pass",
+      "gate": "GATE-04",
+      "severity_on_fail": "HIGH",
+      "remediation": "discharge the named validation obligation"
+    },
+    {
+      "id": "CMP-CERTIFY",
+      "requirement": "certification must pass",
+      "gate": "GATE-05",
+      "severity_on_fail": "HIGH",
+      "remediation": "regenerate the corpus certification through its owner and resolve the failing domain"
+    }
+  ],
+  "references": [
+    {
+      "id": "REF-CONTRACT",
+      "path": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "purpose": "the governing capability-implementation contract this blueprint discharges"
+    },
+    {
+      "id": "REF-OWNERSHIP",
+      "path": "02-CANONICAL-OWNERSHIP-MATRIX.md",
+      "purpose": "the located canonical ownership matrix over the corpus"
+    },
+    {
+      "id": "REF-INTEGRATION",
+      "path": "05-CANONICAL-INTEGRATION-PLAN.md",
+      "purpose": "the located canonical integration plan the blueprint supersedes nothing of"
+    },
+    {
+      "id": "REF-URRC",
+      "path": "00-MASTER/URRC-000001/00-URRC-DASHBOARD.md",
+      "purpose": "the repository-reality determination whose matrices are bound rather than restated"
+    },
+    {
+      "id": "REF-QUEUE",
+      "path": "00-MASTER/UAKOS-CLOSURE-002/40-EXECUTION-WAVE-REGISTER.md",
+      "purpose": "the located execution wave register bound by the execution matrix"
+    },
+    {
+      "id": "REF-PRIORITY",
+      "path": "00-MASTER/UAKOS-CLOSURE-002/42-PRIORITY-REGISTER.md",
+      "purpose": "the located priority register bound by the priority matrix"
+    },
+    {
+      "id": "REF-EXCLUSION",
+      "path": "00-MASTER/UCOS-RECON-C1-OPERATIONAL-MEMORY-EXCLUSION.md",
+      "purpose": "the instrument that places this programme's home outside registration scope"
+    },
+    {
+      "id": "REF-VERIFY",
+      "path": "verify.sh",
+      "purpose": "the canonical verification entry point this blueprint does not replace"
+    },
+    {
+      "id": "REF-CVR",
+      "path": "00-MASTER/UCOS-CVR-001/08-FINAL-READINESS-VERDICT.md",
+      "purpose": "the verification-architecture readiness verdict bound by the verification matrix"
+    }
+  ],
+  "non_derivable": [
+    {
+      "id": "ND-01",
+      "fact": "the business benefit of a capability in monetary or user terms",
+      "reason": "no substrate in the repository records benefit as a measured quantity; every located benefit statement is prose",
+      "required_evidence_class": "a machine-readable benefit register with a declared unit of measure, authored by the authority that owns commercial value",
+      "bounds": [
+        "MTX-BENEFIT"
+      ],
+      "owner": "00-MASTER/UCMI-000001",
+      "probe": "PRB-BENEFIT"
+    },
+    {
+      "id": "ND-02",
+      "fact": "the phase of a capability unit as a ratified programme phase",
+      "reason": "phase is recorded as lifecycle status in the register and as authority in the capability catalogue; no substrate maps a unit to a ratified programme phase identifier",
+      "required_evidence_class": "a phase register binding each capability to exactly one ratified phase, authored by the programme authority",
+      "bounds": [
+        "MTX-OWNER"
+      ],
+      "owner": "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+      "probe": "PRB-PHASE",
+      "bounds_field": "phase"
+    },
+    {
+      "id": "ND-03",
+      "fact": "the supersession of one capability unit by another",
+      "reason": "the typed graph records evolution only between registered corpus artifact identities, never between capability units, so no edge can be resolved to a unit pair",
+      "required_evidence_class": "a supersession register binding a superseded capability unit to its successor, authored by the authority that owns capability lifecycle",
+      "bounds": [
+        "MTX-CAPABILITY"
+      ],
+      "bounds_field": "superseded_by",
+      "owner": "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+      "probe": "PRB-SUPERSEDE"
+    }
+  ],
+  "probes": [
+    {
+      "id": "PRB-BENEFIT",
+      "kind": "substrate_field_absence",
+      "substrate": "SUB-REGISTER",
+      "pointer": "artifacts",
+      "field": "benefit",
+      "purpose": "count the registered artifacts that record a measured benefit"
+    },
+    {
+      "id": "PRB-PHASE",
+      "kind": "substrate_field_absence",
+      "substrate": "SUB-REGISTER",
+      "pointer": "artifacts",
+      "field": "phase",
+      "purpose": "count the registered artifacts that record a ratified phase"
+    },
+    {
+      "id": "PRB-SUPERSEDE",
+      "kind": "substrate_field_value_count",
+      "substrate": "SUB-EDGES",
+      "pointer": "relationships",
+      "field": "type",
+      "value": "Evolves-From",
+      "purpose": "count the evolution edges that exist, and at which granularity they exist"
+    }
+  ],
+  "work_packages": [
+    {
+      "id": "WP-001",
+      "title": "Repository Integration Blueprint",
+      "owner": "UCOS-RIB-001",
+      "route": "make rib",
+      "authorization_required": false,
+      "discharges": "EPIC-001",
+      "acceptance": "the fourteen mandatory outputs are regenerated deterministically and every gate verdict is computed from Repository Truth"
+    }
+  ],
+  "entrypoints": [
+    {
+      "id": "EPT-MAKE",
+      "selector": ":(glob)Makefile",
+      "purpose": "the canonical developer entry points"
+    },
+    {
+      "id": "EPT-CI",
+      "selector": ":(glob).github/workflows/*.yml",
+      "purpose": "the continuous-integration gates"
+    },
+    {
+      "id": "EPT-SHELL",
+      "selector": ":(glob)*.sh",
+      "purpose": "the self-bootstrapping shell entry points"
+    },
+    {
+      "id": "EPT-SCRIPTS",
+      "selector": ":(glob)scripts/*",
+      "purpose": "the installed local automation"
+    },
+    {
+      "id": "EPT-TOOLS",
+      "selector": ":(glob)00-BOOK/tools/*.sh",
+      "purpose": "the registration entry point the canonical verification invokes"
+    }
+  ],
+  "reachability": [
+    {
+      "id": "RCH-CONSUMER",
+      "field": "consumers",
+      "purpose": "another unit depends on it in a measured plane"
+    },
+    {
+      "id": "RCH-INTERFACE",
+      "field": "interfaces",
+      "purpose": "it publishes a declared console interface"
+    },
+    {
+      "id": "RCH-REGISTRY",
+      "field": "registered_artifacts",
+      "purpose": "registered corpus artifacts are homed inside it"
+    },
+    {
+      "id": "RCH-CORPUS",
+      "field": "corpus_artifacts",
+      "purpose": "the portfolio rollup counts artifacts against it"
+    },
+    {
+      "id": "RCH-CATALOGUE",
+      "field": "rie_id",
+      "purpose": "the canonical capability catalogue holds a record for it"
+    },
+    {
+      "id": "RCH-ENTRYPOINT",
+      "field": "entrypoint_references",
+      "purpose": "a declared entry point names it"
+    },
+    {
+      "id": "RCH-TESTSCOPE",
+      "field": "in_test_scope",
+      "purpose": "the canonical test runner collects it"
+    }
+  ]
+}

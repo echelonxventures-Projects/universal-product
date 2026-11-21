@@ -1,0 +1,50 @@
+{
+  "backward": [
+    "BAND-11-FREEZE",
+    "EC3-B11-U12",
+    "SERVICE-015-SERVICE-FOUNDATION-FREEZE-DETERMINATION",
+    "MCP-003-MEP-02",
+    "ARCH-SERVICE-001",
+    "11-SERVICE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+    "EC3-B11-U13-VALIDATION-EVIDENCE",
+    "EC3-B11-U13-CCE-CERTIFICATION",
+    "EC3-B11-U13-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "0595a91",
+  "meta_class": "BAND-11-FREEZE",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005",
+    "CCE"
+  ],
+  "substrate_reuse": {
+    "CCE": "service.service_certification.cce_gates — CERTIFIED ten-gate suite, reused verbatim",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic baseline seal)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the freeze record)",
+    "ENG-004": "freeze-record typing discipline (ENG-004)",
+    "ENG-005": "each unit referenced by certification id (never owned)",
+    "unit_EC3-B11-U01": "SMC-01 Service (UCOS-CERT-SMC-01-6d805a1308da2f66) — certified realization frozen by reference, not owned",
+    "unit_EC3-B11-U02": "SMC-02 Capability (UCOS-CERT-SMC-02-466c00507b04a1f9) — certified realization frozen by reference, not owned",
+    "unit_EC3-B11-U03": "SMC-03 Contract (UCOS-CERT-SMC-03-d3ba585579bf93ef) — certified realization frozen by reference, not owned",
+    "unit_EC3-B11-U04": "SMC-04 Interface (UCOS-CERT-SMC-04-bcf64d8028ef3d1d) — certified realization frozen by reference, not owned",
+    "unit_EC3-B11-U05": "SMC-05 Operation (UCOS-CERT-SMC-05-5a06bcad4a3086c8) — certified realization frozen by reference, not owned",
+    "unit_EC3-B11-U06": "SMC-06 Composition (UCOS-CERT-SMC-06-370163eb1197edb3) — certified realization frozen by reference, not owned",
+    "unit_EC3-B11-U07": "SMC-07 Orchestration (UCOS-CERT-SMC-07-99f5148f4f1ba96c) — certified realization frozen by reference, not owned",
+    "unit_EC3-B11-U08": "SMC-08 Execution (UCOS-CERT-SMC-08-96c817b15dca3403) — certified realization frozen by reference, not owned",
+    "unit_EC3-B11-U09": "SMC-09 Policy (UCOS-CERT-SMC-09-61ee948b80beb04f) — certified realization frozen by reference, not owned",
+    "unit_EC3-B11-U10": "SMC-10 Security (UCOS-CERT-SMC-10-fb17b391ed14db5d) — certified realization frozen by reference, not owned",
+    "unit_EC3-B11-U11": "USM Universal Service Meta-Model (UCOS-CERT-USM-312abed8081da1d5) — certified realization frozen by reference, not owned",
+    "unit_EC3-B11-U12": "BAND-11 Band-11 Realization Certification & Completion (UCOS-CERT-BAND-11-b11d3bf97651d7f4) — certified realization frozen by reference, not owned"
+  },
+  "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+  "trace_format": "ucos-service-traceability/1.0.0",
+  "unit": "EC3-B11-U13"
+}

@@ -1,0 +1,16 @@
+# UCOS-UCOSOM-000059 — UCOS Ω∞ — UNIVERSAL ASSUMPTION REGISTER
+
+Breadcrumbs: [UCOS-BOOK-000000](UCOS-BOOK-000000.md) › [UCOS-UCOSOM-000059](UCOS-UCOSOM-000059.md)
+
+- Volume: VOL-000  ·  Status: ACTIVE  ·  Twin: [—]
+- Native: —  ·  Program: UCOSOM
+- Parent: [UCOS-BOOK-000000](UCOS-BOOK-000000.md)
+- Source: [UCOS-OMEGA-INFINITY-UNIVERSAL-ASSUMPTION-REGISTER.md](../../UCOS-OMEGA-INFINITY-UNIVERSAL-ASSUMPTION-REGISTER.md)
+
+## Children (forward)
+- (none)
+
+## Backlinks (reverse)
+- [UCOS-BOOK-000000](UCOS-BOOK-000000.md) —Child→
+
+Return: [Portal Index](index.md) · [Master Index](../UCOS-BOOK-000000-UNIVERSAL-MASTER-KNOWLEDGE-BOOK.md)

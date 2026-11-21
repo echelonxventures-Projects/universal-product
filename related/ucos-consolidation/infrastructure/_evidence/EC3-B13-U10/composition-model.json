@@ -1,0 +1,219 @@
+{
+  "artifact": "EC3-B13-U10-INFRASTRUCTURE-COMPOSITION-MODEL",
+  "concerns": [
+    {
+      "depended_on_by": [
+        "ENG-005:EC3-B13-U02:infrastructure.compute",
+        "ENG-005:EC3-B13-U03:infrastructure.network",
+        "ENG-005:EC3-B13-U04:infrastructure.storage",
+        "ENG-005:EC3-B13-U08:infrastructure.security",
+        "ENG-005:EC3-B13-U09:infrastructure.governance"
+      ],
+      "depends_on": [],
+      "layer": 1,
+      "meta_classes": [
+        "InfrastructureCapability"
+      ],
+      "module": "capability",
+      "title": "Universal Infrastructure Capability",
+      "unit": "EC3-B13-U01"
+    },
+    {
+      "depended_on_by": [
+        "ENG-005:EC3-B13-U05:infrastructure.environment",
+        "ENG-005:EC3-B13-U08:infrastructure.security",
+        "ENG-005:EC3-B13-U09:infrastructure.governance"
+      ],
+      "depends_on": [
+        "ENG-005:EC3-B13-U01:infrastructure.capability"
+      ],
+      "layer": 2,
+      "meta_classes": [
+        "ComputeResource"
+      ],
+      "module": "compute",
+      "title": "Universal Infrastructure Compute",
+      "unit": "EC3-B13-U02"
+    },
+    {
+      "depended_on_by": [
+        "ENG-005:EC3-B13-U05:infrastructure.environment",
+        "ENG-005:EC3-B13-U08:infrastructure.security",
+        "ENG-005:EC3-B13-U09:infrastructure.governance"
+      ],
+      "depends_on": [
+        "ENG-005:EC3-B13-U01:infrastructure.capability"
+      ],
+      "layer": 3,
+      "meta_classes": [
+        "NetworkResource"
+      ],
+      "module": "network",
+      "title": "Universal Infrastructure Network",
+      "unit": "EC3-B13-U03"
+    },
+    {
+      "depended_on_by": [
+        "ENG-005:EC3-B13-U05:infrastructure.environment",
+        "ENG-005:EC3-B13-U08:infrastructure.security",
+        "ENG-005:EC3-B13-U09:infrastructure.governance"
+      ],
+      "depends_on": [
+        "ENG-005:EC3-B13-U01:infrastructure.capability"
+      ],
+      "layer": 4,
+      "meta_classes": [
+        "StorageHostingResource"
+      ],
+      "module": "storage",
+      "title": "Universal Infrastructure Storage-Hosting",
+      "unit": "EC3-B13-U04"
+    },
+    {
+      "depended_on_by": [
+        "ENG-005:EC3-B13-U06:infrastructure.topology",
+        "ENG-005:EC3-B13-U07:infrastructure.resilience",
+        "ENG-005:EC3-B13-U08:infrastructure.security",
+        "ENG-005:EC3-B13-U09:infrastructure.governance"
+      ],
+      "depends_on": [
+        "ENG-005:EC3-B13-U02:infrastructure.compute",
+        "ENG-005:EC3-B13-U03:infrastructure.network",
+        "ENG-005:EC3-B13-U04:infrastructure.storage"
+      ],
+      "layer": 5,
+      "meta_classes": [
+        "Locality",
+        "IsolationBoundary",
+        "Node",
+        "Cluster",
+        "Environment",
+        "ProvisioningProcess"
+      ],
+      "module": "environment",
+      "title": "Universal Infrastructure Environment & Provisioning",
+      "unit": "EC3-B13-U05"
+    },
+    {
+      "depended_on_by": [
+        "ENG-005:EC3-B13-U07:infrastructure.resilience",
+        "ENG-005:EC3-B13-U08:infrastructure.security",
+        "ENG-005:EC3-B13-U09:infrastructure.governance"
+      ],
+      "depends_on": [
+        "ENG-005:EC3-B13-U05:infrastructure.environment"
+      ],
+      "layer": 6,
+      "meta_classes": [
+        "Topology",
+        "Distribution"
+      ],
+      "module": "topology",
+      "title": "Universal Infrastructure Topology & Distribution",
+      "unit": "EC3-B13-U06"
+    },
+    {
+      "depended_on_by": [
+        "ENG-005:EC3-B13-U08:infrastructure.security",
+        "ENG-005:EC3-B13-U09:infrastructure.governance"
+      ],
+      "depends_on": [
+        "ENG-005:EC3-B13-U05:infrastructure.environment",
+        "ENG-005:EC3-B13-U06:infrastructure.topology"
+      ],
+      "layer": 7,
+      "meta_classes": [
+        "AvailabilityTopology",
+        "ScalingArrangement"
+      ],
+      "module": "resilience",
+      "title": "Universal Infrastructure Resilience & Availability",
+      "unit": "EC3-B13-U07"
+    },
+    {
+      "depended_on_by": [
+        "ENG-005:EC3-B13-U09:infrastructure.governance"
+      ],
+      "depends_on": [
+        "ENG-005:EC3-B13-U01:infrastructure.capability",
+        "ENG-005:EC3-B13-U02:infrastructure.compute",
+        "ENG-005:EC3-B13-U03:infrastructure.network",
+        "ENG-005:EC3-B13-U04:infrastructure.storage",
+        "ENG-005:EC3-B13-U05:infrastructure.environment",
+        "ENG-005:EC3-B13-U06:infrastructure.topology",
+        "ENG-005:EC3-B13-U07:infrastructure.resilience"
+      ],
+      "layer": 8,
+      "meta_classes": [
+        "SecurityFacet"
+      ],
+      "module": "security",
+      "title": "Universal Infrastructure Security",
+      "unit": "EC3-B13-U08"
+    },
+    {
+      "depended_on_by": [],
+      "depends_on": [
+        "ENG-005:EC3-B13-U01:infrastructure.capability",
+        "ENG-005:EC3-B13-U02:infrastructure.compute",
+        "ENG-005:EC3-B13-U03:infrastructure.network",
+        "ENG-005:EC3-B13-U04:infrastructure.storage",
+        "ENG-005:EC3-B13-U05:infrastructure.environment",
+        "ENG-005:EC3-B13-U06:infrastructure.topology",
+        "ENG-005:EC3-B13-U07:infrastructure.resilience",
+        "ENG-005:EC3-B13-U08:infrastructure.security"
+      ],
+      "layer": 9,
+      "meta_classes": [
+        "GovernanceFacet"
+      ],
+      "module": "governance",
+      "title": "Universal Infrastructure Governance",
+      "unit": "EC3-B13-U09"
+    }
+  ],
+  "leaf_meta_class_closure": {
+    "complete": true,
+    "count": "17/17",
+    "frozen_closure": [
+      "AvailabilityTopology",
+      "Cluster",
+      "ComputeResource",
+      "Distribution",
+      "Environment",
+      "GovernanceFacet",
+      "InfrastructureCapability",
+      "InfrastructureDependency",
+      "IsolationBoundary",
+      "Locality",
+      "NetworkResource",
+      "Node",
+      "ProvisioningProcess",
+      "ScalingArrangement",
+      "SecurityFacet",
+      "StorageHostingResource",
+      "Topology"
+    ],
+    "owned": [
+      "AvailabilityTopology",
+      "Cluster",
+      "ComputeResource",
+      "Distribution",
+      "Environment",
+      "GovernanceFacet",
+      "InfrastructureCapability",
+      "InfrastructureDependency",
+      "IsolationBoundary",
+      "Locality",
+      "NetworkResource",
+      "Node",
+      "ProvisioningProcess",
+      "ScalingArrangement",
+      "SecurityFacet",
+      "StorageHostingResource",
+      "Topology"
+    ]
+  },
+  "ownership_disjoint": true,
+  "unit": "EC3-B13-U10"
+}

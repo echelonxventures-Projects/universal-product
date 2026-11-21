@@ -1,0 +1,76 @@
+name: UKAP-001 D-1 Corpus Currency Gate
+
+# UKAP-001 / WP-001 / D-1 — CORPUS CURRENCY RESTORATION.
+#
+# This workflow adds NO new validator and NO new registry. It runs the executable form of the
+# D-1 determination: every downstream assimilation artifact must be derived from the NEWEST
+# available ChatGPT export. The gate discovers exports, orders them by content (archive form)
+# and git commit order (in-repository conversation exports) — never by filename and never by
+# filesystem mtime, which does not survive a clone — resolves the newest as the canonical
+# assimilation input, and measures what the repository's committed baselines actually consumed.
+#
+# It runs with `--render`, i.e. from the in-repo `corpus.json` alone: the external corpus tree
+# is deliberately NOT required, which is the proof that the currency record is self-contained.
+# The replay is nevertheless never vacuous — the in-repository export class and BOTH
+# consumption measurements are re-measured live from the repository at HEAD, so adding an
+# export without regenerating its baseline, or rolling a baseline back onto an older corpus,
+# fails here with no corpus present.
+#
+# Exit semantics:
+#   0  CORPUS CURRENT (every blocking gate passed)
+#   1  a blocking gate failed — a newer export exists but is ignored, an assimilated
+#      conversation is absent from the canonical export, an in-repository conversation export
+#      was never reconstructed, or assimilated export content has drifted (fail-closed)
+#
+# The corpus-currency validation suite (engine/tests/unit/test_corpus_currency.py) runs under
+# the canonical pytest gate (`./verify.sh`, `make test`, ec1-ci) because `engine/tests` is a
+# declared testpath — it is deliberately NOT duplicated here, keeping this workflow stdlib-only.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: corpus-currency-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  corpus-currency-gate:
+    name: Corpus currency gate (fail-closed) + register drift gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the gate installs nothing.
+      - name: Corpus currency gate (newest export selected, stale corpus rejected)
+        run: python3 00-MASTER/UKAP-001/corpus_engine.py --render --gate
+
+      - name: Register drift gate (committed registers must be the rendered fixed point)
+        run: |
+          python3 00-MASTER/UKAP-001/corpus_engine.py --render
+          git diff --exit-code -- 00-MASTER/UKAP-001 \
+            || { echo "::error::rendered registers differ from the committed registers"; exit 1; }
+
+      - name: Publish the corpus currency registers + evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ukap-001-corpus-currency
+          path: |
+            00-MASTER/UKAP-001/*.md
+            00-MASTER/UKAP-001/corpus.json
+            00-MASTER/UKAP-001/EVIDENCE-MANIFEST.json
+          if-no-files-found: warn

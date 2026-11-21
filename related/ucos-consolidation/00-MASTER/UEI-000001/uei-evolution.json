@@ -1,0 +1,914 @@
+{
+  "programme": {
+    "id": "UEI-000001",
+    "name": "Universal Evolution Intelligence",
+    "programme_directive": "Ω∞-001B",
+    "version": "1.0",
+    "authority": "NONE — DERIVED TRUTH",
+    "mission": "Constitutionalize evolution intelligence so the repository, its knowledge and its architecture improve themselves under governance — by binding the observation, learning, optimization, recommendation, impact-analysis, simulation, discovery, planning, execution, continuous-improvement, continuous-optimization, prediction and evolution capability that already exists in this repository, reusing it verbatim, duplicating nothing, and placing every one of them under a located governing instrument.",
+    "governing_instrument": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+    "governed_by": [
+      "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md",
+      "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+      "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "00-CEP/CEP-010-CONSTITUTIONAL-AUDIT-COMPLIANCE-ASSURANCE-CONSTITUTION.md",
+      "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "00-CMG/CMG-000010-CONSTITUTIONAL-FUTURE-EVOLUTION-STRATEGY.md"
+    ],
+    "operational_home": "00-MASTER/UEI-000001/",
+    "operational_memory_owner": "00-MASTER/MCS-000-MASTER-CONTEXT-SYSTEM-ARCHITECTURE.md",
+    "recovery_owner": "00-MASTER/MCP-007-MASTER-RECOVERY.md",
+    "execution_owner": "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+    "resilience_owner": "00-MASTER/UER-000001/uer-resilience.json",
+    "aggregate_gate_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+    "registration_owner": "00-BOOK/tools/register.sh",
+    "gate_name": "Evolution Intelligence Gate",
+    "gate_clause": "Ω∞-001B EXIT CRITERIA",
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "00-BOOK/",
+      "engine/",
+      "platform/",
+      "intelligence/",
+      "data/",
+      "service/",
+      "application/",
+      "infrastructure/",
+      "00-CEP/",
+      "00-CMG/",
+      "adr/"
+    ]
+  },
+
+  "outputs": [
+    {
+      "id": "UEI-OUT-00",
+      "file": "00-UEI-DASHBOARD.md",
+      "title": "Universal Evolution Intelligence — Dashboard",
+      "purpose": "The single-glance state of the programme: capability coverage, evolution-lifecycle binding, continuous-loop binding, governance coverage, validation, and the Evolution Intelligence Gate verdict.",
+      "renderer": "dashboard",
+      "capability": null
+    },
+    {
+      "id": "UEI-OUT-01",
+      "file": "01-UNIVERSAL-EVOLUTION-INTELLIGENCE-CONSTITUTION.md",
+      "title": "Universal Evolution Intelligence Constitution",
+      "purpose": "The whole contract in one instrument: the fifteen constitutional evolution capabilities, the evolution lifecycle they own, the continuous loops they drive, the governance obligation over each, and the inheritance rule for every future autonomous programme.",
+      "renderer": "constitution",
+      "capability": null
+    },
+    {
+      "id": "UEI-OUT-02",
+      "file": "02-UNIVERSAL-OBSERVATION-SPECIFICATION.md",
+      "title": "Universal Observation Specification",
+      "purpose": "What the platform must observe, from which located instrumentation, so that evolution is driven by measured reality and never by assertion.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-01"
+    },
+    {
+      "id": "UEI-OUT-03",
+      "file": "03-UNIVERSAL-LEARNING-SPECIFICATION.md",
+      "title": "Universal Learning Specification",
+      "purpose": "How observation becomes retained, searchable institutional knowledge, so no architectural question is answered twice and every decision is recoverable.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-02"
+    },
+    {
+      "id": "UEI-OUT-04",
+      "file": "04-UNIVERSAL-OPTIMIZATION-SPECIFICATION.md",
+      "title": "Universal Optimization Specification",
+      "purpose": "The semantics-preserving, traceability-preserving optimization contract: what may be improved, what may never be lost, and how the improvement is proven.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-03"
+    },
+    {
+      "id": "UEI-OUT-05",
+      "file": "05-UNIVERSAL-RECOMMENDATION-SPECIFICATION.md",
+      "title": "Universal Recommendation Specification",
+      "purpose": "How the platform derives what to do next — ranked, evidence-cited, never invented — from the located intelligence engines.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-04"
+    },
+    {
+      "id": "UEI-OUT-06",
+      "file": "06-UNIVERSAL-IMPACT-ANALYSIS-SPECIFICATION.md",
+      "title": "Universal Impact Analysis Specification",
+      "purpose": "The pre-change consequence contract: blast radius, propagation distance, layers and capabilities reached, certified surface disturbed, bounded risk score.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-05"
+    },
+    {
+      "id": "UEI-OUT-07",
+      "file": "07-UNIVERSAL-SIMULATION-SPECIFICATION.md",
+      "title": "Universal Simulation Specification",
+      "purpose": "How a proposed evolution is executed against a model before it is executed against the repository: digital twin, hermetic reproduction, deterministic replay.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-06"
+    },
+    {
+      "id": "UEI-OUT-08",
+      "file": "08-UNIVERSAL-IMPROVEMENT-DISCOVERY-SPECIFICATION.md",
+      "title": "Universal Improvement Discovery Specification",
+      "purpose": "How improvement opportunities are discovered rather than guessed: duplicate, conflict, orphan, missing-knowledge, coverage, consistency and drift dimensions.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-07"
+    },
+    {
+      "id": "UEI-OUT-09",
+      "file": "09-UNIVERSAL-EVOLUTION-PLANNING-SPECIFICATION.md",
+      "title": "Universal Evolution Planning Specification",
+      "purpose": "How a discovered improvement becomes an ordered, dependency-respecting, critical-path-aware plan bound to the located roadmap owners.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-08"
+    },
+    {
+      "id": "UEI-OUT-10",
+      "file": "10-UNIVERSAL-EVOLUTION-EXECUTION-SPECIFICATION.md",
+      "title": "Universal Evolution Execution Specification",
+      "purpose": "How a plan is executed under governance: authorized, coordinated, scheduled, checkpointed, reversible, and evidenced.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-09"
+    },
+    {
+      "id": "UEI-OUT-11",
+      "file": "11-CONTINUOUS-IMPROVEMENT-SPECIFICATION.md",
+      "title": "Continuous Improvement Specification",
+      "purpose": "The always-on improvement loop: the located gates, entry points and automation that make improvement a standing obligation rather than an event.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-10"
+    },
+    {
+      "id": "UEI-OUT-12",
+      "file": "12-CONTINUOUS-OPTIMIZATION-SPECIFICATION.md",
+      "title": "Continuous Optimization Specification",
+      "purpose": "The always-on optimization loop: coverage, measurement and determinism held at or above their proven level, with regression fail-closed.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-11"
+    },
+    {
+      "id": "UEI-OUT-13",
+      "file": "13-UNIVERSAL-FUTURE-PREDICTION-SPECIFICATION.md",
+      "title": "Universal Future Prediction Specification",
+      "purpose": "What the platform may predict, from which derived state, and the honesty constraint: a prediction is a computed projection of located evidence or it is not emitted.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-12"
+    },
+    {
+      "id": "UEI-OUT-14",
+      "file": "14-REPOSITORY-EVOLUTION-SPECIFICATION.md",
+      "title": "Repository Evolution Specification",
+      "purpose": "How the repository itself evolves: census, drift against the prior snapshot, the change ledger and its evolution timeline, and staged repository operations.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-13"
+    },
+    {
+      "id": "UEI-OUT-15",
+      "file": "15-KNOWLEDGE-EVOLUTION-SPECIFICATION.md",
+      "title": "Knowledge Evolution Specification",
+      "purpose": "How knowledge evolves without loss: canonical homes, normalization, closure, and certification of the knowledge corpus across every increment.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-14"
+    },
+    {
+      "id": "UEI-OUT-16",
+      "file": "16-ARCHITECTURE-EVOLUTION-SPECIFICATION.md",
+      "title": "Architecture Evolution Specification",
+      "purpose": "How architecture evolves under freeze: layer discipline, the decision record, the freeze boundary, and the amendment route that governs any change to a frozen surface.",
+      "renderer": "capability",
+      "capability": "UEI-CAP-15"
+    },
+    {
+      "id": "UEI-OUT-17",
+      "file": "17-EVOLUTION-LIFECYCLE-DETERMINATION.md",
+      "title": "Evolution Lifecycle Determination",
+      "purpose": "The required end-to-end evolution lifecycle and the standing continuous loops, each step bound to the capability that owns it and to a covered repository home.",
+      "renderer": "lifecycle",
+      "capability": null
+    },
+    {
+      "id": "UEI-OUT-18",
+      "file": "18-GOVERNANCE-BINDING-DETERMINATION.md",
+      "title": "Governance Binding Determination",
+      "purpose": "The proof of the mission clause \"everything governed\": every capability carries a governance obligation bound to a located governing instrument, with no capability ungoverned.",
+      "renderer": "governance",
+      "capability": null
+    },
+    {
+      "id": "UEI-OUT-19",
+      "file": "19-VALIDATION-REPORT.md",
+      "title": "Validation Report",
+      "purpose": "The mandatory validation dimensions of evolution intelligence and their computed result.",
+      "renderer": "validation",
+      "capability": null
+    },
+    {
+      "id": "UEI-OUT-20",
+      "file": "20-CERTIFICATION-REPORT.md",
+      "title": "Certification Report",
+      "purpose": "The certification determination over the whole evolution-intelligence capability set, computed from Repository Truth and never asserted.",
+      "renderer": "certification",
+      "capability": null
+    },
+    {
+      "id": "UEI-OUT-21",
+      "file": "21-EVOLUTION-READINESS-REPORT.md",
+      "title": "Evolution Readiness Report",
+      "purpose": "The exit criteria of the directive and whether the platform is ready to evolve itself under this contract.",
+      "renderer": "readiness",
+      "capability": null
+    },
+    {
+      "id": "UEI-OUT-22",
+      "file": "22-CONTINUATION-PACKAGE.md",
+      "title": "Continuation Package",
+      "purpose": "The deterministic hand-off: completed work, remaining work, dependency state, open issues, architectural decisions, roadmap and the recommended next programme.",
+      "renderer": "continuation",
+      "capability": null
+    }
+  ],
+
+  "capabilities": [
+    {
+      "id": "UEI-CAP-01",
+      "name": "Universal Observation",
+      "mandate": "OBSERVE",
+      "objective": "Continuously observe the platform, the corpus and the execution substrate so that every subsequent inference is grounded in measured reality rather than assertion.",
+      "required_properties": [
+        "metric observation with declared units and deterministic ordering",
+        "distributed trace observation across execution boundaries",
+        "structured log observation with no secret disclosure",
+        "threshold alerting with a located owner for every alert",
+        "immutable audit observation of every governed action",
+        "external-signal ingestion appended, never overwritten",
+        "health observation of every registered subsystem",
+        "observation is read-only over its subject and mutates nothing it observes"
+      ],
+      "reuse": "The observability platform already realises metrics, traces, logs, alerting, audit and health (EC2-EPIC-013); the engine foundation already realises execution telemetry; the advancement connectors already ingest external signals into an append-only signal store. This programme binds them; it introduces no new observation mechanism.",
+      "homes": [
+        "platform/observability/metrics.py",
+        "platform/observability/traces.py",
+        "platform/observability/logs.py",
+        "platform/observability/alerting.py",
+        "platform/observability/audit.py",
+        "platform/observability/health.py",
+        "engine/foundation/obs/telemetry.py",
+        "engine/runtime/execution/monitoring.py",
+        "00-BOOK/tools/connectors/",
+        "00-BOOK/DATA/signals.json"
+      ],
+      "evidence": [
+        "platform/observability/EC2-EPIC-013-COMPLETION-REPORT.md",
+        "platform/tests/test_observability_metrics.py",
+        "platform/tests/test_observability_traces.py",
+        "platform/tests/test_observability_audit.py",
+        "engine/tests/unit/test_telemetry.py",
+        "engine/tests/unit/test_execution_observability.py",
+        "00-BOOK/ADVANCEMENT/UKB-ADV-001-REAL-TIME-CONNECTOR-ARCHITECTURE.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-02",
+      "name": "Universal Learning",
+      "mandate": "LEARN",
+      "objective": "Convert observation into retained, searchable institutional knowledge so that nothing already learned is learned again and every prior decision is recoverable.",
+      "required_properties": [
+        "every observation that changes understanding is retained as a knowledge object",
+        "retained knowledge is searchable deterministically without wall-clock dependence",
+        "the Knowledge Once Principle: no architectural question is answered twice",
+        "every constitutional decision is registered with a disposition",
+        "learned knowledge carries its evidence reference and its canonical home",
+        "learning is additive — a later increment never silently overwrites an earlier one",
+        "knowledge with no located home is a finding, not a silence"
+      ],
+      "reuse": "The knowledge engine already realises the institutional-memory store, the constitutional knowledge objects, the intelligence query surface and knowledge certification (UKDA); the decision-assimilation programme already registers every constitutional decision with a disposition; the knowledge-closure programme already homes every concept. This programme binds them; it introduces no new learning mechanism.",
+      "homes": [
+        "engine/knowledge/store.py",
+        "engine/knowledge/intelligence.py",
+        "engine/knowledge/cko.py",
+        "engine/knowledge/model.py",
+        "engine/knowledge/graph.py",
+        "00-MASTER/UCDA-000001/ucda-decisions.json",
+        "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py"
+      ],
+      "evidence": [
+        "engine/tests/knowledge/test_intelligence.py",
+        "engine/tests/knowledge/test_store.py",
+        "engine/tests/knowledge/test_cko.py",
+        "00-MASTER/UCDA-000001/01-CONSTITUTIONAL-DECISION-REGISTER.md",
+        "00-MASTER/UAKOS-CLOSURE-002/UAKOS-CLOSURE-002-CHARTER.md",
+        "00-BOOK/ADVANCEMENT/UKB-ADV-013-AI-KNOWLEDGE-LAYER-ARCHITECTURE.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-03",
+      "name": "Universal Optimization",
+      "mandate": "OPTIMIZE",
+      "objective": "Improve the platform's artifacts and measures without changing their meaning, without inventing behaviour, and without losing traceability.",
+      "required_properties": [
+        "every transform is semantics-preserving",
+        "every transform is traceability-preserving — the provenance chain survives",
+        "no derivable behaviour is removed and no behaviour is invented",
+        "optimization output is byte-stable, so optimizing twice is a no-op",
+        "the provenance chain is re-asserted after every transform",
+        "the measure being optimized is located and computed, never estimated",
+        "an optimization that cannot be proven is not applied"
+      ],
+      "reuse": "The compiler already realises the semantics- and traceability-preserving optimization stage with post-transform provenance re-assertion (EPIC-003, IMP-007 §9); the measurement and coverage platforms already realise the located, computed measures an optimization must move; the pre-implementation optimization determination already governs the optimization posture. This programme binds them; it introduces no new optimizer.",
+      "homes": [
+        "engine/compiler/optimization.py",
+        "platform/measurement/metrics.py",
+        "platform/measurement/coverage.py",
+        "platform/coverage/engine.py",
+        "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-UCI-OPT-001-UCI-001-PRE-IMPLEMENTATION-OPTIMIZATION-DETERMINATION.md"
+      ],
+      "evidence": [
+        "engine/tests/unit/test_compiler_optimization.py",
+        "platform/tests/test_measurement_metrics.py",
+        "platform/tests/test_coverage_engine.py",
+        "platform/coverage/ZG-P-02-COMPLETION-REPORT.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-04",
+      "name": "Universal Recommendation",
+      "mandate": "RECOMMEND",
+      "objective": "Derive what the platform should do next as a ranked, evidence-cited recommendation computed from located intelligence, never as an opinion.",
+      "required_properties": [
+        "every recommendation cites the evidence it is derived from",
+        "recommendations are deterministically ordered, so the same state yields the same ranking",
+        "the execution frontier — what is ready now — is computed, not curated",
+        "a recommendation names its owner capability and its located home",
+        "grounded retrieval never answers beyond its cited corpus",
+        "a recommendation that cannot cite located evidence is withheld",
+        "recommendation holds no authority: it proposes and never ratifies"
+      ],
+      "reuse": "The architecture-intelligence roll-up already fuses every analysis engine into one deterministic state-of-the-architecture report; the repository intelligence engine already computes the execution frontier and readiness from evidence; the advancement engine already realises grounded, cited retrieval; the meta-governance recommendations instrument already owns the constitutional recommendation surface. This programme binds them; it introduces no new recommender.",
+      "homes": [
+        "engine/graph/architecture/insights.py",
+        "intelligence/rie/analysis.py",
+        "intelligence/UCOS-RIE-EXECUTION-FRONTIER.json",
+        "00-BOOK/tools/ukbx.py",
+        "00-CMG/CMG-000013-CONSTITUTIONAL-RECOMMENDATIONS.md"
+      ],
+      "evidence": [
+        "engine/graph/architecture/evidence.py",
+        "intelligence/tests/test_rie.py",
+        "intelligence/UCOS-RIE-PROGRESS.json",
+        "10-FINAL-IMPLEMENTATION-RECOMMENDATION.md",
+        "11-FINAL-RECOMMENDATION.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-05",
+      "name": "Universal Impact Analysis",
+      "mandate": "ANALYSE IMPACT",
+      "objective": "Determine the full consequence of a proposed change before it is made, so no evolution is executed with an unknown blast radius.",
+      "required_properties": [
+        "the union blast radius across a whole change set, de-duplicated",
+        "impacted artifacts ranked by propagation distance, nearest first",
+        "the architectural layers and capabilities the change reaches",
+        "the certified, frozen or final surface the change disturbs",
+        "a bounded, deterministic risk score with a severity band",
+        "analysis is read-only over the graph and mutates no artifact",
+        "an unanalysable change set is a fail-closed refusal, not a zero-risk verdict"
+      ],
+      "reuse": "The architecture-intelligence layer already realises the impact engine, the blast-radius engine and the normalised Affects closure over the certified knowledge graph (EPIC-010, EPIC-002); the knowledge intelligence facade already realises transitive impact analysis; the meta-governance impact instrument already owns the constitutional repository impact analysis. This programme binds them; it introduces no new impact analyser.",
+      "homes": [
+        "engine/graph/architecture/impact.py",
+        "engine/graph/architecture/blast_radius.py",
+        "engine/graph/architecture/reachability.py",
+        "engine/graph/projections.py",
+        "engine/knowledge/intelligence.py",
+        "00-CMG/CMG-000002-CONSTITUTIONAL-REPOSITORY-IMPACT-ANALYSIS.md"
+      ],
+      "evidence": [
+        "engine/tests/graph/test_projections.py",
+        "engine/tests/knowledge/test_intelligence.py",
+        "engine/graph/UCOS-EPIC-002-KNOWLEDGE-GRAPH-COMPLETION-REPORT.md",
+        "03-ASSIMILATION-IMPACT.md",
+        "00-CMG/CMG-000004-CONSTITUTIONAL-DEPENDENCY-ANALYSIS.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-06",
+      "name": "Universal Simulation",
+      "mandate": "SIMULATE",
+      "objective": "Execute a proposed evolution against a model of the platform before executing it against the platform, so the outcome is known before it is committed.",
+      "required_properties": [
+        "a digital twin roll-up of the platform derived from located signals",
+        "hermetic reproduction: the same inputs produce byte-identical outputs",
+        "deterministic replay of a recorded execution with replay validation",
+        "state snapshots that can be restored without side effects",
+        "simulation writes nothing into the subject it simulates",
+        "a simulation result carries the state it was computed against",
+        "simulation is certified, not assumed — the twin has a certification route"
+      ],
+      "reuse": "The determinism engine already realises hermetic reproduction; the execution runtime already realises deterministic replay, replay validation and restorable snapshots (EPIC-004, EPIC-005); the advancement engine already maintains the digital twin roll-up and its certification route; the repository intelligence engine already emits the derived twin. This programme binds them; it introduces no new simulator.",
+      "homes": [
+        "engine/determinism/reproduce.py",
+        "engine/determinism/hermetic.py",
+        "engine/runtime/execution/replay.py",
+        "engine/runtime/execution/replay_validation.py",
+        "engine/runtime/execution/snapshot.py",
+        "00-BOOK/DATA/twin.json",
+        "intelligence/UCOS-RIE-DIGITAL-TWIN.json"
+      ],
+      "evidence": [
+        "engine/determinism/EPIC-004-COMPLETION-REPORT.md",
+        "engine/tests/unit/test_reproduce.py",
+        "engine/tests/unit/test_hermetic.py",
+        "engine/tests/unit/test_execution_replay_validation.py",
+        "engine/tests/integration/test_determinism.py",
+        ".github/workflows/determinism.yml",
+        "00-BOOK/ADVANCEMENT/UKB-ADV-014-DIGITAL-TWIN-CERTIFICATION-ARCHITECTURE.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-07",
+      "name": "Universal Improvement Discovery",
+      "mandate": "DISCOVER",
+      "objective": "Discover the improvements the platform needs rather than guessing them, across every declared discovery dimension.",
+      "required_properties": [
+        "duplicate detection across the corpus",
+        "conflict detection between competing statements of the same truth",
+        "orphan detection for artifacts with no reachable owner",
+        "missing-knowledge detection with the evidence class that would close it",
+        "coverage and consistency gap detection against a located baseline",
+        "drift detection against the previously persisted state, reporting baseline when there is no prior",
+        "a discovered gap is registered with a classification, never silently dropped"
+      ],
+      "reuse": "The discovery engine already realises the declared discovery dimensions; the knowledge intelligence facade already realises the duplicate, conflict, orphan, missing-knowledge, coverage and consistency primitives; the measurement platform already realises gap enumeration; the repository intelligence engine already realises drift against the persisted snapshot; the meta-governance gap instrument already owns constitutional gap analysis. This programme binds them; it introduces no new discovery mechanism.",
+      "homes": [
+        "engine/discovery/engine.py",
+        "engine/discovery/dimensions.py",
+        "engine/knowledge/intelligence.py",
+        "platform/measurement/gaps.py",
+        "intelligence/rie/drift.py",
+        "00-CMG/CMG-000003-CONSTITUTIONAL-GAP-ANALYSIS.md"
+      ],
+      "evidence": [
+        "engine/tests/discovery/test_dimensions.py",
+        "engine/tests/discovery/test_engine.py",
+        "engine/tests/discovery/test_real_corpus.py",
+        "platform/tests/test_measurement_gaps.py",
+        "02-GAP-CLASSIFICATION.md",
+        "04-REPOSITORY-GAP-ANALYSIS.md",
+        "00-MASTER/UAKOS-CLOSURE-002/PHASE-INTERFACE-CONTRACT.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-08",
+      "name": "Universal Evolution Planning",
+      "mandate": "PLAN",
+      "objective": "Turn a discovered improvement into an ordered, dependency-respecting, critical-path-aware plan whose every step has a located owner.",
+      "required_properties": [
+        "a plan respects the dependency graph and never schedules a dependent before its dependency",
+        "the critical path is computed over an acyclic condensation, so it is always well-defined",
+        "parallelisable work is identified as such rather than serialised by default",
+        "every plan step names its owner and its exit condition",
+        "the plan is deterministically ordered, so the same state yields the same plan",
+        "a plan step with no located owner is a finding, not an assignment",
+        "the plan binds to the located roadmap owner and restates no roadmap"
+      ],
+      "reuse": "The runtime planner already realises deterministic execution planning; the architecture-intelligence layer already computes the critical path over the acyclic condensation and the dependency topology; the located implementation-wave, order and parallel-group instruments already own the sequencing; the future-evolution strategy already owns the long-horizon plan. This programme binds them; it introduces no new planner.",
+      "homes": [
+        "engine/runtime/planner.py",
+        "engine/graph/architecture/critical_path.py",
+        "engine/graph/architecture/dependency_intelligence.py",
+        "04-IMPLEMENTATION-WAVES.md",
+        "00-BOOK/ADVANCEMENT/UKB-ADV-016-IMPLEMENTATION-ROADMAP.md",
+        "00-CMG/CMG-000010-CONSTITUTIONAL-FUTURE-EVOLUTION-STRATEGY.md"
+      ],
+      "evidence": [
+        "engine/tests/unit/test_runtime_planner.py",
+        "05-IMPLEMENTATION-ORDER.md",
+        "06-PARALLEL-EXECUTION-GROUPS.md",
+        "07-CRITICAL-PATH-ANALYSIS.md",
+        "03-IMPLEMENTATION-DEPENDENCY-GRAPH.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-09",
+      "name": "Universal Evolution Execution",
+      "mandate": "EXECUTE",
+      "objective": "Execute a planned evolution under governance: authorized, coordinated, checkpointed, reversible and evidenced at every step.",
+      "required_properties": [
+        "no evolution step executes without a located authorization",
+        "execution is coordinated and scheduled, never ad hoc",
+        "every step is checkpointed so an interruption is resumable",
+        "every step is reversible, or its irreversibility is declared before it runs",
+        "every step emits evidence that survives the session",
+        "execution inherits the resilience contract rather than restating it",
+        "a step that cannot be evidenced is treated as not executed"
+      ],
+      "reuse": "The execution runtime already realises authorization, coordination, scheduling, lifecycle, checkpointing, rollback and auditing (EPIC-005); the repository-operations platform already realises staged, resumable repository execution; the runtime-operations platform already realises the reversibility contract and the operation ledger; the master execution instrument and the execution-resilience contract already own execution posture and recovery. This programme binds them; it introduces no new executor.",
+      "homes": [
+        "engine/runtime/execution/coordinator.py",
+        "engine/runtime/execution/lifecycle.py",
+        "engine/runtime/execution/scheduler.py",
+        "engine/runtime/execution/authorization.py",
+        "engine/runtime/execution/rollback.py",
+        "platform/repository_operations/engine.py",
+        "platform/runtime_operations/reversibility.py",
+        "platform/runtime_operations/ledger.py",
+        "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+        "00-MASTER/UER-000001/uer-resilience.json"
+      ],
+      "evidence": [
+        "engine/runtime/EPIC-005-COMPLETION-REPORT.md",
+        "engine/tests/unit/test_execution_coordinator.py",
+        "engine/tests/unit/test_execution_lifecycle.py",
+        "engine/tests/unit/test_execution_authorization.py",
+        "platform/tests/test_repository_operations_stages.py",
+        "platform/runtime_operations/EC2-EPIC-012-DETERMINATION.md",
+        "02-EXECUTION-LIFECYCLE.md",
+        "09-EXECUTION-GOVERNANCE.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-10",
+      "name": "Continuous Improvement",
+      "mandate": "IMPROVE CONTINUOUSLY",
+      "objective": "Make improvement a standing, automated obligation rather than a discrete event, enforced at every entry point into the repository.",
+      "required_properties": [
+        "the improvement loop runs at session start, at the developer entry point, and in continuous integration",
+        "the loop is fail-closed: an unimproved regression blocks rather than warns",
+        "the loop adds no new gate apparatus — it binds the located gates",
+        "every loop iteration leaves located evidence of what it checked",
+        "the loop is non-blocking when it is informational and blocking when it is a gate",
+        "the amendment route governs any change to the loop itself",
+        "the loop is inheritable: a new programme joins it by declaration, not by code"
+      ],
+      "reuse": "The governance pipeline already realises the fail-closed governance run; the canonical verification entry point and the developer targets already realise the local loop; continuous integration and the aggregate constitutional gate already realise the automated loop; the amendment-evolution constitution already governs changes to the loop; the continuous-realization automation binding already owns the standing-obligation posture. This programme binds them; it introduces no new loop apparatus.",
+      "homes": [
+        "engine/governance/pipeline.py",
+        "verify.sh",
+        "Makefile",
+        ".github/workflows/ec1-ci.yml",
+        ".github/workflows/uccep-gate.yml",
+        "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+        "00-CEP/STAGE-03-S3-10-CONTINUOUS-REALIZATION-GOVERNANCE-AUTOMATION-BINDING.md"
+      ],
+      "evidence": [
+        "engine/tests/governance/test_pipeline.py",
+        "engine/tests/governance/test_report.py",
+        "00-MASTER/UCCEP-000000/uccep-bindings.json",
+        "VERIFICATION-RUNBOOK.md",
+        "08-QUALITY-GATES.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-11",
+      "name": "Continuous Optimization",
+      "mandate": "OPTIMIZE CONTINUOUSLY",
+      "objective": "Hold every proven measure at or above its established level, so an optimization once achieved can never silently regress.",
+      "required_properties": [
+        "coverage is measured, not estimated, and enforced against a located threshold",
+        "determinism is re-proven on every change, not assumed from a prior proof",
+        "a regression against a proven level is fail-closed",
+        "the measure, its threshold and its owner are all located",
+        "measurement is read-only over its subject",
+        "the optimization record is machine-readable and diffable",
+        "an unmeasurable dimension is declared as such rather than reported as passing"
+      ],
+      "reuse": "The coverage and measurement platforms already realise the computed, threshold-enforced measures and their determinism suites; the validation-intelligence platform already realises the analyser surface; the determinism workflow already re-proves byte-identity on every change; the located coverage report is already emitted by the canonical verification run. This programme binds them; it introduces no new optimizer or measure.",
+      "homes": [
+        "platform/coverage/engine.py",
+        "platform/coverage/health.py",
+        "platform/coverage/certification.py",
+        "platform/measurement/coverage.py",
+        "platform/measurement/health.py",
+        "platform/validation_intelligence/analyzers.py",
+        ".github/workflows/determinism.yml"
+      ],
+      "evidence": [
+        "platform/tests/test_coverage_determinism.py",
+        "platform/tests/test_measurement_determinism.py",
+        "platform/tests/test_coverage_health.py",
+        "platform/tests/test_coverage_governance.py",
+        "platform/tests/test_measurement_health.py",
+        "pyproject.toml"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-12",
+      "name": "Universal Future Prediction",
+      "mandate": "PREDICT",
+      "objective": "Project the platform's future state — readiness, reach, consequence — as a computed function of located evidence, and refuse to project where evidence is absent.",
+      "required_properties": [
+        "every projection is a pure function of located, cited evidence",
+        "a projection states the evidence state it was computed against",
+        "reachability and propagation bound what a change can possibly affect",
+        "readiness projection is derived from real counts, never from a curated percentage",
+        "where evidence is absent the absence is declared, and no value is invented",
+        "projections are deterministic: identical evidence yields an identical projection",
+        "a projection holds no authority and ratifies nothing"
+      ],
+      "reuse": "The impact engine already predicts architecture-wide consequence before a change is made; the reachability engine already bounds what a change can affect; the repository intelligence analysis layer already derives health, progress, frontier and readiness as pure functions of evidence and counts; the digital twin already carries the projected dimension state. This programme binds them; it introduces no new predictor.",
+      "homes": [
+        "engine/graph/architecture/impact.py",
+        "engine/graph/architecture/reachability.py",
+        "engine/graph/architecture/algorithms.py",
+        "intelligence/rie/analysis.py",
+        "intelligence/UCOS-RIE-AEOS-READINESS.json",
+        "00-BOOK/DATA/twin.json"
+      ],
+      "evidence": [
+        "intelligence/UCOS-RIE-PROGRESS.json",
+        "intelligence/UCOS-RIE-HEALTH.json",
+        "intelligence/tests/test_rie.py",
+        "engine/graph/architecture/evidence.py",
+        "00-BOOK/ADVANCEMENT/UKB-ADV-007-PRODUCTION-INTELLIGENCE-ARCHITECTURE.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-13",
+      "name": "Repository Evolution",
+      "mandate": "EVOLVE THE REPOSITORY",
+      "objective": "Evolve the repository itself with a full, queryable record of what changed, why, and against which prior state.",
+      "required_properties": [
+        "a code and corpus census derived from the version-control eligibility boundary",
+        "drift computed against the previously persisted snapshot, with baseline declared when there is no prior",
+        "an append-only change ledger carrying the evolution timeline and lineage",
+        "repository change executed through staged, resumable operations",
+        "the repository-truth determination is the single source for repository state",
+        "regeneration is deterministic: the same repository state regenerates identical artifacts",
+        "no repository change bypasses the located change-intelligence standard"
+      ],
+      "reuse": "The repository intelligence engine already realises the census and drift-against-prior-snapshot; the advancement data layer already maintains the append-only change ledger with its evolution timeline and lineage; the repository-operations platform already realises staged, resumable, checkpointed repository execution; the change-intelligence and regeneration standard already governs repository change. This programme binds them; it introduces no new repository-evolution mechanism.",
+      "homes": [
+        "intelligence/rie/census.py",
+        "intelligence/rie/drift.py",
+        "intelligence/rie/engine.py",
+        "platform/repository_operations/stages.py",
+        "00-BOOK/DATA/change-ledger.json",
+        "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-UCI-001-UNIVERSAL-CHANGE-INTELLIGENCE-AND-REGENERATION-STANDARD.md"
+      ],
+      "evidence": [
+        "intelligence/tests/test_rie.py",
+        "intelligence/UCOS-RIE-SNAPSHOT.json",
+        "platform/tests/test_repository_operations_determinism.py",
+        "00-MASTER/UAKOS-CLOSURE-002/CONSOLIDATION-PLAN.md",
+        "01-REPOSITORY-DISCOVERY-REPORT.md",
+        "00-BOOK/ADVANCEMENT/UKB-ADV-002-REPOSITORY-INTELLIGENCE-ARCHITECTURE.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-14",
+      "name": "Knowledge Evolution",
+      "mandate": "EVOLVE KNOWLEDGE",
+      "objective": "Evolve the knowledge corpus without loss: every concept keeps exactly one canonical home, and every increment is closed and certified.",
+      "required_properties": [
+        "every concept has exactly one canonical home and no duplicate home",
+        "concept normalization is recorded, so a rename is traceable rather than a break",
+        "closure is computed: an unhomed or orphan concept is a counted gap, not a silence",
+        "the knowledge corpus is certified, not merely stored",
+        "the master knowledge book remains the single narrative home",
+        "knowledge evolution is additive — supersession is recorded, never silent deletion",
+        "traceability from concept to its governing instrument is preserved across increments"
+      ],
+      "reuse": "The knowledge engine already realises the store, validation and certification of the corpus; the knowledge-closure programme already realises the canonical concept register, canonical home register, normalization register and closure evidence; the foundation knowledge tooling already owns the master knowledge book and its data layer. This programme binds them; it introduces no new knowledge-evolution mechanism.",
+      "homes": [
+        "engine/knowledge/store.py",
+        "engine/knowledge/certification.py",
+        "engine/knowledge/validation.py",
+        "00-BOOK/tools/ukb.py",
+        "00-BOOK/UCOS-BOOK-000000-UNIVERSAL-MASTER-KNOWLEDGE-BOOK.md",
+        "00-MASTER/UAKOS-CLOSURE-002/phase2_engine.py",
+        "00-MASTER/UAKOS-CLOSURE-002/phase3_engine.py"
+      ],
+      "evidence": [
+        "engine/tests/knowledge/test_certification.py",
+        "engine/tests/knowledge/test_validation.py",
+        "00-MASTER/UAKOS-CLOSURE-002/README.md",
+        "00-MASTER/UAKOS-CLOSURE-002/PHASE-002-README.md",
+        "01-INCREMENTAL-KNOWLEDGE-INVENTORY.md",
+        "02-KNOWLEDGE-COMPLETENESS.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UEI-CAP-15",
+      "name": "Architecture Evolution",
+      "mandate": "EVOLVE ARCHITECTURE",
+      "objective": "Evolve the architecture under freeze: layer discipline preserved, every decision recorded, and every change to a frozen surface routed through amendment.",
+      "required_properties": [
+        "layer dependency discipline is computed and violations are findings",
+        "every architectural decision is recorded in the located decision record",
+        "the freeze boundary is enforced: a frozen surface is not edited in place",
+        "a change to a frozen surface is routed through the amendment instrument",
+        "architectural stability is certified from evidence, not asserted",
+        "circular dependency is detected exhaustively, not by first example",
+        "the architecture roll-up is deterministic and byte-reproducible"
+      ],
+      "reuse": "The architecture-intelligence layer already realises the layer dependency graph, exhaustive circular-dependency detection and the deterministic architecture roll-up; the governance engine already realises freeze enforcement; the decision record and the freeze boundary already exist as located homes; the amendment-evolution constitution already owns the route by which a frozen surface changes. This programme binds them; it introduces no new architecture-evolution mechanism.",
+      "homes": [
+        "engine/graph/architecture/layers.py",
+        "engine/graph/architecture/insights.py",
+        "engine/graph/architecture/dependency_intelligence.py",
+        "engine/governance/freeze.py",
+        "adr/",
+        "99-FREEZE/",
+        "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+      ],
+      "evidence": [
+        "engine/tests/governance/test_freeze.py",
+        "engine/tests/unit/test_frozen_paths.py",
+        "02-ARCHITECTURAL-STABILITY-CERTIFICATION.md",
+        "07-ARCHITECTURE-FREEZE-EVIDENCE.md",
+        "10-FINAL-ARCHITECTURE-FREEZE-CERTIFICATE.md",
+        "03-ARCHITECTURAL-DECISION-ASSIMILATION-MATRIX.md"
+      ],
+      "gap": ""
+    }
+  ],
+
+  "pipeline_evolution": [
+    { "id": "UEI-EVO-01", "step": "Observe", "owner_capability": "UEI-CAP-01" },
+    { "id": "UEI-EVO-02", "step": "Learn", "owner_capability": "UEI-CAP-02" },
+    { "id": "UEI-EVO-03", "step": "Discover Improvement", "owner_capability": "UEI-CAP-07" },
+    { "id": "UEI-EVO-04", "step": "Analyse Impact", "owner_capability": "UEI-CAP-05" },
+    { "id": "UEI-EVO-05", "step": "Predict Outcome", "owner_capability": "UEI-CAP-12" },
+    { "id": "UEI-EVO-06", "step": "Simulate", "owner_capability": "UEI-CAP-06" },
+    { "id": "UEI-EVO-07", "step": "Optimize", "owner_capability": "UEI-CAP-03" },
+    { "id": "UEI-EVO-08", "step": "Recommend", "owner_capability": "UEI-CAP-04" },
+    { "id": "UEI-EVO-09", "step": "Plan Evolution", "owner_capability": "UEI-CAP-08" },
+    { "id": "UEI-EVO-10", "step": "Execute Evolution", "owner_capability": "UEI-CAP-09" },
+    { "id": "UEI-EVO-11", "step": "Evolve Repository", "owner_capability": "UEI-CAP-13" },
+    { "id": "UEI-EVO-12", "step": "Evolve Knowledge", "owner_capability": "UEI-CAP-14" },
+    { "id": "UEI-EVO-13", "step": "Evolve Architecture", "owner_capability": "UEI-CAP-15" },
+    { "id": "UEI-EVO-14", "step": "Observe Outcome", "owner_capability": "UEI-CAP-01" },
+    { "id": "UEI-EVO-15", "step": "Retain Learning", "owner_capability": "UEI-CAP-02" }
+  ],
+
+  "pipeline_continuous": [
+    { "id": "UEI-CON-01", "step": "Standing improvement obligation at every entry point", "owner_capability": "UEI-CAP-10" },
+    { "id": "UEI-CON-02", "step": "Proven measures held at or above their established level", "owner_capability": "UEI-CAP-11" },
+    { "id": "UEI-CON-03", "step": "Continuous observation feeding the loop", "owner_capability": "UEI-CAP-01" },
+    { "id": "UEI-CON-04", "step": "Continuous drift detection against the persisted prior", "owner_capability": "UEI-CAP-13" },
+    { "id": "UEI-CON-05", "step": "Continuous re-proof of determinism", "owner_capability": "UEI-CAP-06" },
+    { "id": "UEI-CON-06", "step": "Continuous knowledge closure over every increment", "owner_capability": "UEI-CAP-14" },
+    { "id": "UEI-CON-07", "step": "Continuous architectural stability under freeze", "owner_capability": "UEI-CAP-15" },
+    { "id": "UEI-CON-08", "step": "Continuous readiness projection from evidence", "owner_capability": "UEI-CAP-12" }
+  ],
+
+  "validations": [
+    { "id": "UEI-VAL-01", "dimension": "observation fidelity", "verified_by": "UEI-CAP-01", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-02", "dimension": "learning retention", "verified_by": "UEI-CAP-02", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-03", "dimension": "optimization safety", "verified_by": "UEI-CAP-03", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-04", "dimension": "recommendation groundedness", "verified_by": "UEI-CAP-04", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-05", "dimension": "impact completeness", "verified_by": "UEI-CAP-05", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-06", "dimension": "simulation fidelity", "verified_by": "UEI-CAP-06", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-07", "dimension": "discovery exhaustiveness", "verified_by": "UEI-CAP-07", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-08", "dimension": "plan soundness", "verified_by": "UEI-CAP-08", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-09", "dimension": "execution governedness", "verified_by": "UEI-CAP-09", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-10", "dimension": "improvement continuity", "verified_by": "UEI-CAP-10", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-11", "dimension": "optimization continuity", "verified_by": "UEI-CAP-11", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-12", "dimension": "prediction honesty", "verified_by": "UEI-CAP-12", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-13", "dimension": "repository evolution traceability", "verified_by": "UEI-CAP-13", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-14", "dimension": "knowledge evolution losslessness", "verified_by": "UEI-CAP-14", "clause": "Ω∞-001B MANDATORY VALIDATION" },
+    { "id": "UEI-VAL-15", "dimension": "architecture evolution containment", "verified_by": "UEI-CAP-15", "clause": "Ω∞-001B MANDATORY VALIDATION" }
+  ],
+
+  "exit_criteria": [
+    { "id": "UEI-EXIT-01", "criterion": "observation is bound to located instrumentation", "satisfied_by": "UEI-VAL-01" },
+    { "id": "UEI-EXIT-02", "criterion": "learning is retained in a located institutional store", "satisfied_by": "UEI-VAL-02" },
+    { "id": "UEI-EXIT-03", "criterion": "optimization is semantics- and traceability-preserving", "satisfied_by": "UEI-VAL-03" },
+    { "id": "UEI-EXIT-04", "criterion": "recommendation cites located evidence", "satisfied_by": "UEI-VAL-04" },
+    { "id": "UEI-EXIT-05", "criterion": "impact is analysed before change", "satisfied_by": "UEI-VAL-05" },
+    { "id": "UEI-EXIT-06", "criterion": "evolution is simulable before execution", "satisfied_by": "UEI-VAL-06" },
+    { "id": "UEI-EXIT-07", "criterion": "improvement is discovered across every declared dimension", "satisfied_by": "UEI-VAL-07" },
+    { "id": "UEI-EXIT-08", "criterion": "evolution planning is dependency- and critical-path-aware", "satisfied_by": "UEI-VAL-08" },
+    { "id": "UEI-EXIT-09", "criterion": "evolution execution is authorized, checkpointed and reversible", "satisfied_by": "UEI-VAL-09" },
+    { "id": "UEI-EXIT-10", "criterion": "improvement is a standing automated obligation", "satisfied_by": "UEI-VAL-10" },
+    { "id": "UEI-EXIT-11", "criterion": "proven measures cannot silently regress", "satisfied_by": "UEI-VAL-11" },
+    { "id": "UEI-EXIT-12", "criterion": "prediction is a computed function of located evidence", "satisfied_by": "UEI-VAL-12" },
+    { "id": "UEI-EXIT-13", "criterion": "repository evolution is fully traceable", "satisfied_by": "UEI-VAL-13" },
+    { "id": "UEI-EXIT-14", "criterion": "knowledge evolution loses nothing", "satisfied_by": "UEI-VAL-14" },
+    { "id": "UEI-EXIT-15", "criterion": "architecture evolution is contained by freeze and amendment", "satisfied_by": "UEI-VAL-15" }
+  ],
+
+  "governance": [
+    {
+      "id": "UEI-GOV-01",
+      "obligation": "Observation is an audited, evidence-producing act: what is observed, and the disclosure limits on it, are governed rather than left to the observer.",
+      "instrument": "00-CEP/CEP-010-CONSTITUTIONAL-AUDIT-COMPLIANCE-ASSURANCE-CONSTITUTION.md",
+      "enforced_by": "UEI-CAP-01"
+    },
+    {
+      "id": "UEI-GOV-02",
+      "obligation": "Learning is traceable: every retained item of knowledge carries the evidence that produced it and the canonical home that owns it.",
+      "instrument": "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+      "enforced_by": "UEI-CAP-02"
+    },
+    {
+      "id": "UEI-GOV-03",
+      "obligation": "Optimization may not alter meaning: an optimization that changes semantics is an amendment and follows the amendment route, not the optimization route.",
+      "instrument": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "enforced_by": "UEI-CAP-03"
+    },
+    {
+      "id": "UEI-GOV-04",
+      "obligation": "Recommendation holds no authority: it proposes and never ratifies, and the located recommendation instrument owns the constitutional recommendation surface.",
+      "instrument": "00-CMG/CMG-000013-CONSTITUTIONAL-RECOMMENDATIONS.md",
+      "enforced_by": "UEI-CAP-04"
+    },
+    {
+      "id": "UEI-GOV-05",
+      "obligation": "Impact analysis precedes change: no evolution touching a certified or frozen surface proceeds without its blast radius computed and recorded.",
+      "instrument": "00-CMG/CMG-000002-CONSTITUTIONAL-REPOSITORY-IMPACT-ANALYSIS.md",
+      "enforced_by": "UEI-CAP-05"
+    },
+    {
+      "id": "UEI-GOV-06",
+      "obligation": "Simulation must be reproducible to be admissible: a simulation result that cannot be regenerated byte-identically is not evidence.",
+      "instrument": "00-CEP/STAGE-02-S2-10-DETERMINISM-REPRODUCIBILITY-BINDING-ARCHITECTURE.md",
+      "enforced_by": "UEI-CAP-06"
+    },
+    {
+      "id": "UEI-GOV-07",
+      "obligation": "A discovered gap must be registered and classified: discovery may not be discarded, and an unregistered gap is a governance failure.",
+      "instrument": "00-CMG/CMG-000003-CONSTITUTIONAL-GAP-ANALYSIS.md",
+      "enforced_by": "UEI-CAP-07"
+    },
+    {
+      "id": "UEI-GOV-08",
+      "obligation": "Planning is bound by the located sequencing authority: a plan may order work but may not invent authority to do it.",
+      "instrument": "00-CMG/CMG-000010-CONSTITUTIONAL-FUTURE-EVOLUTION-STRATEGY.md",
+      "enforced_by": "UEI-CAP-08"
+    },
+    {
+      "id": "UEI-GOV-09",
+      "obligation": "Execution is constitutionally governed: every executed step is authorized, evidenced and recoverable under the execution constitution.",
+      "instrument": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "enforced_by": "UEI-CAP-09"
+    },
+    {
+      "id": "UEI-GOV-10",
+      "obligation": "The continuous improvement loop is itself governed: changing the loop requires the governance route, so the loop cannot be weakened silently.",
+      "instrument": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "enforced_by": "UEI-CAP-10"
+    },
+    {
+      "id": "UEI-GOV-11",
+      "obligation": "Every proven measure is a validation obligation: continuous optimization is enforced through the validation constitution, not through convention.",
+      "instrument": "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "enforced_by": "UEI-CAP-11"
+    },
+    {
+      "id": "UEI-GOV-12",
+      "obligation": "Prediction may not manufacture certainty: a projection is derived truth, carries no authority, and declares the absence it cannot compute.",
+      "instrument": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "enforced_by": "UEI-CAP-12"
+    },
+    {
+      "id": "UEI-GOV-13",
+      "obligation": "Repository change follows the change-intelligence and regeneration standard: no repository evolution bypasses the located change route.",
+      "instrument": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-UCI-001-UNIVERSAL-CHANGE-INTELLIGENCE-AND-REGENERATION-STANDARD.md",
+      "enforced_by": "UEI-CAP-13"
+    },
+    {
+      "id": "UEI-GOV-14",
+      "obligation": "Knowledge evolution is certified: an increment that does not close and certify the corpus does not count as evolved.",
+      "instrument": "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "enforced_by": "UEI-CAP-14"
+    },
+    {
+      "id": "UEI-GOV-15",
+      "obligation": "Architecture evolution is contained by freeze: a frozen surface changes only through the freeze and amendment instruments, never in place.",
+      "instrument": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "enforced_by": "UEI-CAP-15"
+    }
+  ],
+
+  "continuation": {
+    "repository_state_source": "00-MASTER/MCP-002-MASTER-STATE.md",
+    "current_checkpoint": "00-MASTER/CHECKPOINTS/",
+    "completed_work": "Ω∞-001B Universal Evolution Intelligence: the fifteen evolution-intelligence capabilities discovered, bound to the repository homes that already realise them, placed under a located governing instrument each, validated, and certified; the twenty-three deliverables — the last of which is this continuation package — generated by uei_engine.py; the Evolution Intelligence Gate wired into the developer entry points, continuous integration and the session-start hook. Binding into the aggregate constitutional gate is NOT done and remains the deferred, non-blocking follow-up recorded under remaining work.",
+    "remaining_work": "None blocking internal to Ω∞-001B. The capability is inheritable and active through three independent mechanisms: the session-start hook (.kiro/hooks/uei-000001.json), continuous integration (.github/workflows/uei-gate.yml), and the developer entry points (make uei / make uei-gate / make uei-self). One authorized, non-blocking follow-up remains available: an additive binding of the Evolution Intelligence Gate into the aggregate constitutional gate (00-MASTER/UCCEP-000000/uccep-bindings.json) as a new check plus gate entry — deferred here because it would also require the aggregate engine to render a corresponding determination, which is outside this programme's non-destructive, reuse-first boundary. Any future proven evolution capability is added as a capability entry plus its output, validation, exit criterion, lifecycle step and governance obligation in uei-evolution.json, requiring no engine change.",
+    "dependency_state": "This programme consumes only already-certified capability and adds no runtime dependency: the observability platform (EC2-EPIC-013), the knowledge engine and its closure programme, the compiler optimization stage (EPIC-003), the architecture-intelligence layer over the certified knowledge graph (EPIC-010 over EPIC-002), the determinism engine (EPIC-004), the execution runtime (EPIC-005), the repository-operations and runtime-operations platforms (EPIC-PLAT-003, EC2-EPIC-012), the coverage and measurement platforms, the repository intelligence engine, and the execution-resilience contract (Ω∞-001A) whose recovery guarantees evolution execution inherits rather than restates. The engine itself is stdlib-only and imports nothing from the repository.",
+    "open_issues": "The aggregate-gate roster binding is unregistered by design (authorization required, as for the sibling programmes). The architecture-intelligence modules under engine/graph/architecture/ are evidenced by the certified knowledge-graph completion report, the Affects-closure projection tests and their own evidence module rather than by dedicated per-module test files; a future increment may add per-module tests, which would be an addition to the evidence list in the declaration and requires no engine change.",
+    "architectural_decisions": "Four decisions govern the shape of this programme. First, reuse before create: not one observation, learning, optimization, recommendation, impact, simulation, discovery, planning, execution, measurement or evolution mechanism is authored here; every capability is a binding to a located home, and a guard proves no home lies inside this programme's own directory. Second, the contract is DATA: the engine names no capability, mandate or validation dimension, so extending the contract is an edit to the declaration, and a guard proves it. Third, rendering is driven by a renderer registry bound per output in the declaration rather than by positional index, so a sixteenth capability is added by declaring it and needs no renderer change. Fourth, everything governed: a capability with no governance obligation whose instrument resolves against Repository Truth closes the gate, which is how the mission's governance clause becomes verifiable rather than rhetorical.",
+    "implementation_roadmap": "Near term: bind the Evolution Intelligence Gate into the aggregate constitutional gate once authorized, and record the programme in the master state instrument. Medium term: promote the currently informational continuous-optimization thresholds into declared, located threshold owners so a regression names the exact measure it regressed. Long term: close the loop the lifecycle describes by feeding the emitted machine-readable model back in as an observed signal, so the programme's own evolution is itself observed, learned from and projected under the same contract.",
+    "recommended_next_programme": "The aggregate-gate binding follow-up (a data-only addition to the aggregate roster covering both Ω∞-001A and Ω∞-001B), followed by a programme that consumes this contract end to end: take one discovered improvement from the discovery capability through impact, prediction, simulation, plan and governed execution, and certify the round trip — thereby proving the lifecycle in practice rather than in specification."
+  }
+}

@@ -1,0 +1,108 @@
+{
+ "$schema_note": "UCI-000001 Universal Certification Integrity. This file is the governed EXPECTATION. engine/certification_integrity computes the OBSERVATION and compares. Nothing in the package writes this file: an observation that can rewrite its own expectation is not a measurement, and `make uci-inventory` prints the discovered surface for a human to paste here precisely so that the adoption is a reviewable diff rather than a regeneration.",
+ "artifact_id": "UCI-000001",
+ "name": "Universal Certification Integrity",
+ "version": "1.0.0",
+ "authority": "NONE — DERIVED TRUTH. This programme legislates nothing, owns no threshold and grants no exemption. It measures whether the coverage denominator equals the executable surface, whether every executable surface is governed, and whether a certification run is attributable to a commit.",
+ "principle": "A percentage is a ratio, and a ratio is only as honest as its denominator. The repository governed its numerator for years and reported 97.9% of a denominator covering 49.4% of the executable surface. Neither number was wrong; the pair was never compared.",
+ "$what_produced_this": {
+  "measurement": "At b51f6f84, over 1,524 tracked non-test Python files carrying 183,310 statements: 905 files are inside the coverage denominator and 619 are not. Executable-surface coverage, computed for the first time, was 44.9% against a reported 97.9%.",
+  "unmeasured_surface": {
+   "00-BOOK/tools, scripts, root utilities": "493 files, 57,086 statements",
+   "00-MASTER/*/*_engine.py": "39 files, 20,359 statements — every one an enforcement artifact UEC-000001 governs by name",
+   "intelligence/": "65 files, 5,565 statements — in pytest testpaths, in no --cov flag",
+   "engine/recursive_knowledge": "16 files, 2,849 statements — an implicit namespace package, admitted to the denominator at 2ad1efcf",
+   "00-MASTER/ other executables": "10 files, 2,237 statements"
+  },
+  "false_green_recovered": "A coverage.xml produced while two processes wrote the same path contained a COMPLETE, valid document at lines 1-90,556 followed by a second process's content, and ended with a second </coverage>. A consumer reading the first document would have obtained a valid-but-wrong coverage report; a consumer checking the tail would have been reassured by a proper closing tag. Preserved at .uci-evidence/coverage.xml.truncated-by-concurrent-run. This is why every measurement in this programme runs inside a frozen extraction and why the coverage reader refuses a document it cannot parse rather than salvaging one."
+ },
+ "$relationship_to_uec": "UEC-000001 and UCI-000001 measure overlapping populations with deliberately different strictness, and BOTH figures are reported rather than reconciled. UEC-L-06 counts distinct invoking TEXTS, so an engine named by thirty-three workflow files scores 33. UCI-L-05 counts invocation PLANE TYPES, so the same engine scores 1 for `ci`. UEC measures 15 single-plane artifacts and 18 untested engines; UCI measures 14 and 25 over a population of 48 engines including engine/*/gate.py modules. Neither supersedes the other and neither ratchet is derived from the other: silently overwriting a governed ceiling with a stricter measurement would be an ungoverned adoption event, which Rule 1 forbids.",
+ "laws": [
+  {
+   "id": "UCI-L-01",
+   "name": "coverage_scope_equals_executable_scope",
+   "measure": "executable_outside_denominator",
+   "question": "is every executable artifact inside the measured denominator?",
+   "mandate_rule": "Rule 2",
+   "blocking": true
+  },
+  {
+   "id": "UCI-L-02",
+   "name": "every_file_has_a_governing_authority",
+   "measure": "ungoverned_executables",
+   "question": "does some authority claim every tracked Python artifact?",
+   "mandate_rule": "Rule 3",
+   "blocking": true
+  },
+  {
+   "id": "UCI-L-03",
+   "name": "governance_engines_are_measured",
+   "measure": "unmeasured_governance_engines",
+   "question": "is every enforcement engine's executed fraction known?",
+   "mandate_rule": "Rule 2 and Rule 5",
+   "blocking": true
+  },
+  {
+   "id": "UCI-L-04",
+   "name": "every_engine_has_a_test",
+   "measure": "engines_without_tests",
+   "question": "does a test module reference every governance engine?",
+   "mandate_rule": "Rule 5",
+   "blocking": true
+  },
+  {
+   "id": "UCI-L-05",
+   "name": "every_engine_has_two_invocation_planes",
+   "measure": "single_plane_engines",
+   "question": "is every engine reachable from at least two plane TYPES?",
+   "mandate_rule": "Rule 6",
+   "blocking": true
+  },
+  {
+   "id": "UCI-L-06",
+   "name": "measured_files_have_execution_paths",
+   "measure": "files_with_no_execution_path",
+   "question": "does every substantial measured file expose a callable a test could enter?",
+   "mandate_rule": "Rule 12",
+   "blocking": true
+  },
+  {
+   "id": "UCI-L-07",
+   "name": "every_ceiling_binds_a_measurement",
+   "measure": "orphan_ceilings",
+   "question": "does every declared ceiling bind a measurement that exists?",
+   "mandate_rule": "Rule 1",
+   "blocking": true
+  }
+ ],
+ "$ratchet_semantics": "Ω-4 DIRECTIONS, NOT CEILINGS. Every value below was a NUMBER until UCOS-OMEGA-001: 65, 27, 39, 25, 14 and 10, of which two had been 607 and 570 a week earlier. Those were measurements taken on the afternoon somebody took them, and the rationale strings below still read as a changelog — which is the tell, because a threshold that needs a changelog is a diary rather than a threshold. Worse, the comparison was TWO-SIDED: a measurement BELOW the ceiling also failed, so repaying debt closed the gate until somebody committed the new number. That fired on the commit that introduced Ω, where the denominator improved from 65 to 64 and the gate refused the improvement. What each key declares now is its KIND. The value every run is held to is this repository's own best-ever measurement, sealed into 00-MASTER/UCI-000001/uci-ratchet.json by `make uci-seal` FROM A MEASUREMENT and never typed. Improving requires no edit anywhere. Regressing requires a written justification naming the key, which permits one run and never moves the bound. Scaling requires nothing, because a direction does not care how large the repository became. MONOTONIC may fall or hold, never rise. CONVERGENT is MONOTONIC and additionally reports STALLED when it has stopped falling, which is what stops an exemption class from becoming a convention.",
+ "ratchet": {
+  "executable_outside_denominator": "CONVERGENT",
+  "ungoverned_executables": "CONVERGENT",
+  "unmeasured_governance_engines": "CONVERGENT",
+  "engines_without_tests": "CONVERGENT",
+  "single_plane_engines": "CONVERGENT",
+  "files_with_no_execution_path": "MONOTONIC",
+  "$executable_outside_denominator": "CONVERGENT — Rule 2 requires 0, so this must trend to zero rather than sit under a budget. History, kept because it is evidence about the mechanism rather than a bound: 607 -> 65 at 389ccd91 by admitting the five top-level layers (service, data, application, infrastructure, intelligence) to the denominator, which also wired up 3,995 passing tests that no testpaths entry collected; then 65 -> 64 under Ω-1, because deriving the denominator from `git ls-files` admitted scripts/ — a root that had been in NO list since it existed. The remainder are files under 00-MASTER and 00-BOOK/tools whose roots are not Python identifiers, so no coverage source can name them; Ω-5 classifies exactly that population as EXEMPTED under rule Ω-C-06 and ratchets it separately. Reducing it further needs those engines importable under test rather than only executable as scripts — a real change, not a setting.",
+  "$ungoverned_executables": "CONVERGENT — Rule 3 requires 0. History: 570 -> 27 at 389ccd91; the five admitted layers accounted for 543 of the 570, having been claimed by no coverage scope, no UEC inventory, no frozen-path set and no declared exclusion. Then 27 -> 26 under Ω-1. NOTE THE RELATIONSHIP TO Ω-2, which is not a duplicate measurement: this law asks whether UCI's own four surfaces claim a file, while Ω-2 derives an authority for every artifact by a chain whose last rule is unconditional and measures 100% coverage. Both are true at once — Ω-2 says every file HAS an owner; this law says UCI's surfaces do not all name one, and the gap between them is the work.",
+  "$unmeasured_governance_engines": "CONVERGENT — Rule 2 and Rule 5 require 0. All 00-MASTER/*/*_engine.py. Each is an enforcement artifact UEC-000001 governs by name and several are verify.sh certification stages, yet the fraction of each that any test executes is unknown. A gate whose executed fraction is unknown can rot into a no-op and keep reporting OPEN, which is the sharpest false green in the repository.",
+  "$engines_without_tests": "CONVERGENT — Rule 5 requires 0 and additionally requires direct, behaviour, failure-path, mutation and integration tests for each, which this counter does not yet distinguish. Measured by AST evidence with docstrings excluded: a module that DESCRIBES an engine has not exercised it. Differs from UEC's count because the population and the needle rules differ; see $relationship_to_uec.",
+  "$single_plane_engines": "CONVERGENT — Rule 6 requires 0 and prefers 3. Engines reachable from fewer than two invocation PLANE TYPES. Because plane types are coarser than invoking texts, an engine can satisfy UEC-L-06 and fail this: reachable from thirty-three workflows and nothing else is thirty-three texts and one plane, and a repository whose only invoker is CI cannot be verified locally.",
+  "$files_with_no_execution_path": "MONOTONIC rather than CONVERGENT, and the distinction is the point. Zero is NOT the target: package facades and declarative constant modules legitimately expose no callable, and this law exists to DISCLOSE that so a reader does not mistake import coverage for exercised behaviour. A disclosure ratchet must not grow silently, but demanding it converge to zero would demand a fix that does not exist — which is the one way a direction-based ratchet could still force a lie. History: 6 -> 10 at 389ccd91, and the reason was measured rather than asserted — the population grew because the DENOMINATOR grew, and all four new entries were pre-existing declarative modules in newly admitted layers. Newly VISIBLE surface, not new debt."
+ },
+ "$verification_rules": {
+  "Rule 7 immutable": "Certification runs inside a `git archive <sha>` extraction, sealed into a git repository with author, committer and both dates pinned so the sealing commit's SHA is a pure function of the archived bytes. Verified deterministic across independent extractions. The seal is REQUIRED, not a convenience: the suite cannot be collected from a bare extraction, because engine/execution_environment/discovery.py:79 refuses to resolve a repository root with no git and every gate deriving its population from `git ls-files` faults the same way. The outer repository's HEAD, porcelain digest and tracked-file digest are sampled before and after every run and any difference discards the measurement.",
+  "Rule 8 and 11 reproducibility": "N independent runs over one frozen tree, compared as covered-line SETS per file, never as percentages: two runs that executed different lines routinely report the same ratio, so a percentage comparison passes on exactly the divergence being tested for.",
+  "Rule 9 order independence": "engine/certification_integrity/pytest_shuffle.py, opt-in twice over (-p AND UCI_SHUFFLE_SEED) so the default order is untouched and UVI-L-08's deterministic sharding contract stays measurable. Verified non-vacuous: a seed genuinely reorders, reproduces across invocations, and is echoed into the run header so a failing permutation is replayable.",
+  "Rule 10 shard equivalence": "The shard partition is round-robin over sorted test modules, deliberately NOT the cost-weighted longest-processing-time assignment engine/verification_intelligence/execution.py uses, because an audit that ran the audited code would be a tautology. Statements, covered lines, file count, branches valid and branches covered are each asserted separately rather than taken as implied by line-set equality."
+ },
+ "gate": {
+  "command": "python3 -m engine.certification_integrity.gate --gate --quiet",
+  "exit_semantics": {
+   "0": "OPEN — every blocking law measured and holds",
+   "1": "CLOSED — a blocking law measured and REFUSED",
+   "2": "FAULT — no verdict reachable; the declaration or the surface could not be measured"
+  },
+  "writes": "nothing"
+ }
+}

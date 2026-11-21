@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "USM",
+  "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+  "verdict": "pass"
+}

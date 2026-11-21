@@ -1,0 +1,20 @@
+{
+  "definitions": {
+    "FP-1": "Existence — all twelve realization units U01…U12 exist and are CERTIFIED.",
+    "FP-2": "Dependency closure — the frozen unit founding graph is acyclic and downward-only.",
+    "FP-3": "Coverage — the concern units cover exactly the ten meta-classes SMC-01…10.",
+    "FP-4": "Consistency — the U12 band completion is CERTIFIED; the spine closes SMR-01…13.",
+    "FP-5": "Reuse integrity — every unit reused by reference; no redefinition, no new primitive.",
+    "FP-6": "Determinism — the freeze baseline recomputes byte-identically."
+  },
+  "freeze_preconditions": {
+    "FP-1": true,
+    "FP-2": true,
+    "FP-3": true,
+    "FP-4": true,
+    "FP-5": true,
+    "FP-6": true
+  },
+  "ready": true,
+  "unit": "EC3-B11-U13"
+}

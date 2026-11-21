@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "StorageHostingResource",
+      "certification_id": "UCOS-CERT-StorageHostingResource-c2576c860caacdd7",
+      "entry_hash": "155f783add94d7b769017ab01805e70a072e56106295425b1488222334ea360f",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "c2576c860caacdd78d97bb29b5131e1751cc10f7584875221473fb0f85e48abb",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-STORAGE-ucos.infrastructure.storage.foundation-ec6d242bf5014b7c",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "155f783add94d7b769017ab01805e70a072e56106295425b1488222334ea360f",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

@@ -1,0 +1,56 @@
+{
+  "artifact_id": "UCOS-WORKSPACE-COORDINATION-001",
+  "title": "Workspace Coordination Register — merge classes, work claims, mint windows and the measurement window",
+  "authority": "AUTHORED REPOSITORY TRUTH, HELD SUBORDINATE UNDER UCKP-LAW-0001. This register legislates how concurrent actors coordinate over one governed corpus; it confers no authority over what they may change, which remains each mutation class's owner's question.",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "PERSISTENCE",
+    "relation": "PROJECTION",
+    "articles": ["UCKP-ART-04", "UCKP-ART-05", "UCKP-ART-13", "UCKP-ART-16"]
+  },
+  "constitutional_basis": "UCKP-LAW-0001 (engine/uckp/law.py), UCOS-CAA-001, REG-AUTO-001 §7, DEC-ADR-0020",
+  "schema": "ucos-workspace-coordination",
+  "version": "1.0.0",
+  "why_this_exists": [
+    "Two actors editing one governed corpus collide in three places, and only one of them is a merge conflict.",
+    "First: whole-file shared registers. relationships.json is 2.9 MB, id-ledger.json 2.3 MB, artifacts.json 2.1 MB. Every actor that registers anything rewrites all of them, so every parallel branch collides — and a textual merge of a DERIVED register is meaningless even where git accepts it.",
+    "Second: identity minting. A permit is single_use and bound to a head, so one actor's merge invalidates another's outstanding permit. P-UCOS-CORPUS-001 was lost exactly this way and P-UCOS-CORPUS-003 nearly was.",
+    "Third: measurement. DEC-ADR-0020 records verification tooling that silently reverted a mint it did not make. A measurement taken while the subject moves is not a measurement.",
+    "None of the three is fixed by care. Each is fixed by a mechanism, and this register declares which."
+  ],
+  "$merge_classes_comment": "The class decides the driver; .gitattributes is the projection of this table and must agree with it. A named driver is inert without merge.<name>.driver in each clone's git config, so INSTALLED_DRIVERS is a measured condition, not an assumption.",
+  "merge_classes": {
+    "DERIVED": "Re-derived from the tree by a declared producer. Resolve to one side, then regenerate; correctness comes from the regeneration, and register.sh --guard refuses a commit whose generated output is stale.",
+    "IRREVERSIBLE": "Permanent append-only allocation. Union by key and REFUSE on a divergent value, because that is an identity collision and ART-05 forbids resolving it automatically. Never regenerate: re-deriving reissues identity.",
+    "APPEND_ONLY": "Line-oriented coordination state. Union, because two actors appending different lines have not disagreed.",
+    "AUTHORED": "Declared truth. A conflict is a real disagreement between two actors and is resolved by a person, never by a driver."
+  },
+  "$claim_comment": "A claim is one appended line, so claiming never conflicts. An actor holds one authority home at a time; a second claim on a held authority is refused by the gate, not by convention.",
+  "claims": {
+    "home": "00-BOOK/DATA/claims.jsonl",
+    "class": "APPEND_ONLY",
+    "record": ["epoch", "actor", "authority_home", "claimed_at", "released_at"]
+  },
+  "$mint_comment": "Actors never mint. They append a request; the operator mints in a window and every identity in that window lands in one commit, so there is only ever one outstanding permit and nobody's is invalidated by anybody else's merge. Minting stays serial because identity is irreversible — the window makes that predictable rather than surprising.",
+  "mint_requests": {
+    "home": "00-BOOK/DATA/mint-requests.jsonl",
+    "class": "APPEND_ONLY",
+    "record": ["epoch", "actor", "paths", "reason", "requested_at", "permit_id", "spent_at"],
+    "rule": "An actor may not run `ukb.py build --mint`. The refusal is structural: --mint without --permit already fails NO_ALLOCATION."
+  },
+  "$epoch_comment": "An epoch names a state of the workspace. Every mutation records the epoch it occurred in, and a measurement records the epoch it began in. If those differ when it ends, the measurement is void.",
+  "measurement_window": {
+    "rule": "Certification REFUSES if the repository state changes while it measures.",
+    "basis": "DEC-ADR-0020 — verification tooling that mutates or observes across a moving subject certifies nothing.",
+    "measured_by": "INV-SIL-03"
+  },
+  "invariants": [
+    "Every path in .gitattributes resolves to exactly one declared merge class.",
+    "Every declared driver is configured in the local clone (`merge.<name>.driver`); an unconfigured driver is a silent default text merge, which is the defect this register exists to end.",
+    "No two open claims name the same authority home.",
+    "No identity is minted outside a mint window, and no window leaves an unspent permit across a commit.",
+    "A certification whose start epoch differs from its end epoch is void."
+  ],
+  "entries": []
+}

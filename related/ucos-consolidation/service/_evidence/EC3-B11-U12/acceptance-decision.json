@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "BAND-11",
+  "target_id": "UCOS-BAND11-ucos.service.band11.completion-13ba9a8b6b721448",
+  "verdict": "pass"
+}

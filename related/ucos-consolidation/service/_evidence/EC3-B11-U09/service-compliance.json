@@ -1,0 +1,75 @@
+{
+  "compliance_format": "ucos-service-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "policy-typed",
+        "policy-identified-objectbound"
+      ],
+      "id": "C1",
+      "requirement": "Typed (USL-03), identified and objecthood-bound (USL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (USL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "service-value-fidelity",
+        "policy-data-by-reference"
+      ],
+      "id": "C3",
+      "note": "policy predicate data (DF-2) referenced (SMR-13/SPL-C4); ENG-003 value explicit — USL-11",
+      "requirement": "Carries ENG-003 value; operation I/O is DF-2 data by reference (USL-08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "policy-boundary-bound",
+        "policy-governed-scope"
+      ],
+      "id": "C4",
+      "note": "policy bound-by its declaring contract boundary (SMR-02/SPL-06) and declares its governed scope by reference (SMR-08); interface/operation I/O N/A to Policy — USL-06",
+      "requirement": "Contract/interface/operation structure is explicit (USL-06/07/08).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "founding-acyclic",
+        "meta-relationships-closed"
+      ],
+      "id": "C5",
+      "note": "composition/orchestration N/A to Policy; the policy's reference-only founding graph is acyclic (SMK-03) with relationships closed to SMR-01…13",
+      "requirement": "Composition/orchestration uses ENG-005 references; founding acyclic (USL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "policy-runtime-reuse"
+      ],
+      "id": "C6",
+      "note": "policy MATERIALLY EXERCISED: evaluation behaves-as the RUNTIME policy concern (RUNTIME-010) by reference (SMR-11/§7/SPL-05; USL-10); RUNTIME redefined 0",
+      "requirement": "Execution binds to RL-F2 by reference (USL-10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "policy-declarative-nonenforcing",
+        "non-constitutive",
+        "technology-independence"
+      ],
+      "id": "C7",
+      "note": "policy MATERIALLY EXERCISED: declarative and non-enforcing — confers/delegates/enacts no authority, grants no access, blocks nothing (USL-13/SPL-04/SPL-07) — THE governing law; selects no policy-engine/IAM technology and embeds no secret (USL-15)",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (USL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "SERVICE-001 §12",
+  "target_id": "UCOS-POLICY-ucos.service.policy.foundation-2ca37fac49277007"
+}

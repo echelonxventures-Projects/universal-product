@@ -1,0 +1,84 @@
+{
+  "artifact_id": "UCOS-UGA-001",
+  "authority": "NONE — DERIVED TRUTH. Measurement of repository state.",
+  "producer": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+  "determinism": "No wall clock. Timestamps are ledger first_seen values.",
+  "epoch": "Observation Universe — Observation Truth, held apart from Identity Truth",
+  "authority_binding": "UCOS-OBSERVATION-UNIVERSE-001",
+  "identity_authority": "00-BOOK/DATA/id-ledger.json :: by_observation (shared category_seq, category OBS)",
+  "value_independence": "The identity is keyed on observer::subject::kind. No observed value is an input, so a canonical artifact may carry the id permanently while the reading changes on every run.",
+  "values_are_not_here": "This registry records WHICH observations exist and WHO takes them. The readings live on the evidence surface each row names.",
+  "count": 7,
+  "observations": [
+    {
+      "observation_id": "UCOS-OBS-000001",
+      "observer": "UCOS-AEE-001",
+      "subject": "actuator-execution-residue",
+      "kind": "EXECUTION_RESIDUE",
+      "canonical_admissibility": "FORBIDDEN",
+      "evidence_class": "EXECUTION",
+      "evidence_surface": "00-MASTER/UCOS-AEE-001/evidence/",
+      "value_recorded_here": false
+    },
+    {
+      "observation_id": "UCOS-OBS-000002",
+      "observer": "UCOS-AEE-001",
+      "subject": "unattributed-residue",
+      "kind": "EXECUTION_RESIDUE",
+      "canonical_admissibility": "FORBIDDEN",
+      "evidence_class": "EXECUTION",
+      "evidence_surface": "00-MASTER/UCOS-AEE-001/evidence/",
+      "value_recorded_here": false
+    },
+    {
+      "observation_id": "UCOS-OBS-000003",
+      "observer": "UCOS-RIB-001",
+      "subject": "dirty-entries-outside-generated",
+      "kind": "WORKING_TREE_STATE",
+      "canonical_admissibility": "FORBIDDEN",
+      "evidence_class": "EXECUTION",
+      "evidence_surface": "00-MASTER/UCOS-RIB-001/evidence/",
+      "value_recorded_here": false
+    },
+    {
+      "observation_id": "UCOS-OBS-000004",
+      "observer": "UCOS-RIB-001",
+      "subject": "working-tree-cleanliness-verdict",
+      "kind": "WORKING_TREE_STATE",
+      "canonical_admissibility": "FORBIDDEN",
+      "evidence_class": "EXECUTION",
+      "evidence_surface": "00-MASTER/UCOS-RIB-001/evidence/",
+      "value_recorded_here": false
+    },
+    {
+      "observation_id": "UCOS-OBS-000005",
+      "observer": "UCCEP-000005",
+      "subject": "worktree-entries",
+      "kind": "WORKING_TREE_STATE",
+      "canonical_admissibility": "FORBIDDEN",
+      "evidence_class": "EXECUTION",
+      "evidence_surface": "00-MASTER/UCCEP-000005/evidence/",
+      "value_recorded_here": false
+    },
+    {
+      "observation_id": "UCOS-OBS-000006",
+      "observer": "intelligence/realization",
+      "subject": "materialization-action",
+      "kind": "MATERIALIZATION_ACTION",
+      "canonical_admissibility": "FORBIDDEN",
+      "evidence_class": "EXECUTION",
+      "evidence_surface": "intelligence/realization",
+      "value_recorded_here": false
+    },
+    {
+      "observation_id": "UCOS-OBS-000007",
+      "observer": "P0-FINAL-CLOSURE-002",
+      "subject": "concurrent-writer-detection",
+      "kind": "WORKING_TREE_STATE",
+      "canonical_admissibility": "FORBIDDEN",
+      "evidence_class": "EXECUTION",
+      "evidence_surface": "00-MASTER/P0-FINAL-CLOSURE-002/evidence/",
+      "value_recorded_here": false
+    }
+  ]
+}

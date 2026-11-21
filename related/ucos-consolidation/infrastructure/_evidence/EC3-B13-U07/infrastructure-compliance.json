@@ -1,0 +1,58 @@
+{
+  "compliant": true,
+  "conditions": [
+    {
+      "id": "C1",
+      "status": "pass",
+      "validation_checks": [
+        "infra-resilience-typed",
+        "infra-resilience-identified-objectbound"
+      ]
+    },
+    {
+      "id": "C2",
+      "status": "pass",
+      "validation_checks": [
+        "foundation-reuse-integrity"
+      ]
+    },
+    {
+      "id": "C3",
+      "status": "pass",
+      "validation_checks": [
+        "foundation-reuse-integrity"
+      ]
+    },
+    {
+      "id": "C4",
+      "status": "pass",
+      "validation_checks": [
+        "non-constitutive"
+      ]
+    },
+    {
+      "id": "C5",
+      "status": "pass",
+      "validation_checks": [
+        "meta-relationships-closed"
+      ]
+    },
+    {
+      "id": "C6",
+      "status": "pass",
+      "validation_checks": [
+        "no-artificial-ceiling",
+        "posture-valid"
+      ]
+    },
+    {
+      "id": "C7",
+      "status": "pass",
+      "validation_checks": [
+        "technology-independence",
+        "non-constitutive"
+      ]
+    }
+  ],
+  "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+}

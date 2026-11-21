@@ -1,0 +1,76 @@
+{
+  "compliance_format": "ucos-application-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "governance-typed",
+        "governance-identified-objectbound"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UAL-03), identified and objecthood-bound (UAL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UAL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "governance-governs-boundary"
+      ],
+      "id": "C3",
+      "note": "capability delivery via SF-2 operations + DF-2 data (UAL-06/13) is scoped to the Feature/Capability units (AMC-02/04); a governance record records conformance/lifecycle/policy judgments against constructs that deliver — it consumes no operation and presents no data itself, so C3 is satisfied structurally via the governed constructs (AMR-09 / GOV-07)",
+      "requirement": "Delivers capability via SF-2 operations under contract; I/O is DF-2 by ref (UAL-06/13).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "governance-governs-boundary",
+        "governance-classified"
+      ],
+      "id": "C4",
+      "note": "the module/feature/interaction clauses (UAL-07/08/11) are scoped to the Module (AMC-03), Feature (AMC-04), and Interaction (AMC-06) units; the governance analog is materially exercised — the record governs declared application boundaries with a typed concern (AMR-09 / GOV-07)",
+      "requirement": "Modules bounded, features explicit, interactions typed (UAL-07/08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "governance-no-new-connection",
+        "founding-acyclic",
+        "meta-relationships-closed"
+      ],
+      "id": "C5",
+      "note": "the composition clause (UAL-09) is scoped to the Composition unit (AMC-08); the governance analog is materially exercised — the record binds every governed/security/state/behavior link by ENG-005 reference and participates in no founding edge (founding graph vacuously acyclic)",
+      "requirement": "Composition uses ENG-005 references; founding structure acyclic (UAL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "governance-behavior-by-reference",
+        "lifecycle-valid"
+      ],
+      "id": "C6",
+      "note": "materially exercised — the governance-evaluate behavior binds the frozen RL-F2 RUNTIME policy concern by reference (§7 / AMK-05) and the record advances forward-only through the AOS-01…06 lifecycle (UAL-10/12)",
+      "requirement": "Workflow/process and state bind to RL-F2/SF-2 by reference (UAL-10/12).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive",
+        "technology-independence",
+        "governance-evaluative-nonenforcing"
+      ],
+      "id": "C7",
+      "note": "materially exercised — THE governing condition of AMC-10: the record is declarative, record-only, and non-enforcing (UAL-14), approves/enforces/ratifies nothing (GOV-04 / GOV-C2), selects no workflow-approval/policy-enforcement technology (GOV-K5), confers no authority and embeds no secret (UAL-15 / GOV-09 / RR-07)",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (UAL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "APPLICATION-001 §12",
+  "target_id": "UCOS-GOVERNANCE-ucos.application.governance.foundation-57afc70c1a9b8b0c"
+}

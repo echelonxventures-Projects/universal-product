@@ -1,0 +1,17 @@
+{
+  "$comment": "FROZEN BY BATCH B-01b (SessionStart Mutation Freeze). AUTHORITY = Repository Recovery Authority; this file confers no constitutional authority and legislates nothing. The active hook list is deliberately EMPTY so that session initialization performs NO automatic regeneration. MANUAL EXECUTION IS FULLY PRESERVED and is untouched by this batch: the Makefile targets remain exactly as they were (regenerate, -gate, and -self for every affected programme). Nothing is deleted; no engine, declaration or capability is modified. FAIL-CLOSED PROPERTY: if the hook loader ignores unknown keys, no hook fires because `hooks` is empty; if a loader were strict about unknown keys, this file fails to load and no hook fires either. Both outcomes satisfy the freeze. SCOPE: this batch does NOT touch CI (.github/workflows/**, which is batch B-01c), does NOT roll back any file, and does NOT repair registrations, namespaces or ownership. .kiro/hooks/uakos-closure-002.json is deliberately LEFT ARMED because its entire output is gitignored (.gitignore:52-56) and therefore produces no drift - it is the model this freeze aims to generalise. RESTORE: see $rollback_B01b.",
+  "$rationale_B01b": "This hook regenerated 15 TRACKED files under 00-MASTER/UER-000001/ on every session start (+30/-30 value churn), embedding the working-tree entry count and thereby rewriting tracked content on every session against a changing tree.",
+  "$rollback_B01b": "git checkout -- .kiro/hooks/uer-000001.json",
+  "version": "v1",
+  "hooks": [],
+  "$frozen_hook_B01b": {
+    "name": "UER-000001 Execution Resilience Gate",
+    "trigger": "SessionStart",
+    "description": "Runs the UER-000001 Execution Resilience Gate at session start, so the execution-resilience posture of the platform (capability coverage, validations satisfied, exit criteria met, evidence references, gate outcome, seal) is surfaced from Repository Truth. This is the executable expression of UCOS Ω∞ Programme Ω∞-001A: every future autonomous programme inherits deterministic checkpointing, recovery, resumability and execution safety by binding the infrastructure that already exists. Deterministic, stdlib-only, non-blocking at session start; fail-closed as a gate. AUTHORITY = NONE (DERIVED TRUTH).",
+    "action": {
+      "type": "command",
+      "command": "python3 00-MASTER/UER-000001/uer_engine.py 2>/dev/null | grep '^UER-000001:' || true",
+      "timeout": 120
+    }
+  }
+}

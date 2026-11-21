@@ -1,0 +1,882 @@
+{
+  "$comment": [
+    "URRC-000001 REPOSITORY REALITY BINDING DECLARATION — DATA ONLY. AUTHORITY = NONE (DERIVED TRUTH).",
+    "This file is the ONLY authored input of the programme. Every determination under",
+    "00-MASTER/URRC-000001/ is regenerated from it by urrc_engine.py and must never be hand-edited.",
+    "",
+    "Every deliverable carries exactly one binding mode drawn from modes[]. Where a canonical owner",
+    "resolves on disk the mode MUST be a reuse mode: a create mode over a resolving owner is a",
+    "finding, not a preference (--check-reuse-before-create). Where no substrate exists the fact is",
+    "bound to a non_derivable entry with a counted probe and the evidence class that would be",
+    "required — never a fabricated body and never a fabricated row (--check-no-fabrication).",
+    "",
+    "The engine holds no deliverable name, no identifier, no binding-mode name and no substrate path",
+    "as a literal (--check-no-enumeration). Adding a deliverable, matrix, gate, substrate, derivation",
+    "or mode is an edit to THIS FILE and requires no code change.",
+    "",
+    "The charter designation of this programme uses a token that is also a ratified constitutional law",
+    "identifier. It is therefore never reproduced in this declaration or in any rendered byte; the",
+    "ASCII designation is used instead and the guard --check-law-namespace proves it",
+    "(00-MASTER/URRC-000001/README.md explains why)."
+  ],
+
+  "programme": {
+    "id": "URRC-000001",
+    "name": "Repository Reality & Constitutional Completion",
+    "version": "1.0",
+    "charter_designation": "Omega-Infinity-001",
+    "resumed_by_directive": "Omega-Infinity-002 — Master Execution Resumption",
+    "authority": "NONE — DERIVED TRUTH",
+    "governing_instrument": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+    "evolution_owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+    "operational_home": "00-MASTER/URRC-000001/",
+    "operational_memory_owner": "00-MASTER/UCOS-RECON-C1-OPERATIONAL-MEMORY-EXCLUSION.md",
+    "registration_owner": "00-BOOK/tools/config.py",
+    "aggregate_gate_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+    "resilience_owner": "00-MASTER/UER-000001/13-CONTINUATION-PACKAGE.md",
+    "identity_allocation_owner": "00-MASTER/UCCEP-000008/05-GDR-E-REGISTER-EVIDENCE-AND-LINEAGE-REALIZATION.md",
+    "identifier_family_owner": "00-MASTER/UAKOS-CLOSURE-007/03-IDENTIFIER-FAMILY-CATALOG.md",
+    "roster_binding": "PROGRAM-000017",
+    "roster_binding_status": "AUTHORIZATION REQUIRED — WP-URRC-001; not self-executed",
+    "gate_name": "Repository Reality Gate",
+    "gate_clause": "Omega-Infinity-001 EXIT CRITERIA",
+    "determination_pass": "REALITY-BOUND",
+    "determination_fail": "NOT-BOUND",
+    "deliverable_range_first": 1,
+    "deliverable_range_last": 32,
+    "disclosure": "CERTIFIED-PROVISIONAL; constitutional Tier T1 is VACANT (VAC-01 / CMG-OQ-02 / UCCEP-F-004); every determination is PROVISIONAL under CMG-000001 CMG-L-12. Nothing here is ratified, final or frozen.",
+    "mission": "Establish Repository Truth for the thirty-two deliverables the charter names. Create no catalogue, no registry, no roadmap and no authority. Where a canonical owner already exists, bind it by reference and never restate it; where none exists, derive the fact from machine-readable repository truth; where honest derivation is impossible, declare and count the absence.",
+    "governed_by": [
+      "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "00-CEP/CEP-004",
+      "00-CEP/CEP-005",
+      "00-CEP/CEP-007",
+      "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+    ],
+    "law_namespace_pattern": "\\u03a9\\u221e-\\d+",
+    "law_citation_whitelist": [],
+    "forbidden_write_prefixes": [
+      "00-BOOK/",
+      "00-CEP/",
+      "00-CMG/",
+      "00-SOURCE/",
+      "01-WORKING/",
+      "02-MASTER/",
+      "10-DATA/",
+      "11-SERVICE/",
+      "12-APPLICATION/",
+      "13-INFRASTRUCTURE/",
+      "15-UNIVERSAL-SCIENCE-INTELLIGENCE/",
+      "engine/",
+      "platform/",
+      "data/",
+      "service/",
+      "application/",
+      "infrastructure/",
+      "00-MASTER/UCCEP-000000/",
+      "00-MASTER/UCCEP-000007/",
+      "00-MASTER/UCCEP-000008/",
+      "00-MASTER/UCDA-000001/",
+      "00-MASTER/UER-000001/",
+      "00-MASTER/IMR-0000/",
+      "00-MASTER/IMR-003A/",
+      "00-MASTER/STATE/"
+    ]
+  },
+
+  "$modes_comment": [
+    "The four binding modes. is_reuse marks a mode that consumes an existing canonical owner;",
+    "--check-reuse-before-create requires is_reuse for every deliverable whose owner resolves.",
+    "requires_owner / requires_derivation / is_unknown drive the per-deliverable obligations.",
+    "The engine reads these flags and never names a mode."
+  ],
+  "modes": [
+    {
+      "id": "MODE-01",
+      "mode": "REUSE-BY-REFERENCE",
+      "definition": "A canonical owner exists and is current. The programme emits a pointer row only. No content is restated.",
+      "is_reuse": true,
+      "requires_owner": true,
+      "requires_derivation": false,
+      "is_unknown": false
+    },
+    {
+      "id": "MODE-02",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "definition": "A canonical owner exists. The programme emits the pointer plus a delta the owner does not contain — staleness against HEAD, a coverage ratio, or a scope gap.",
+      "is_reuse": true,
+      "requires_owner": true,
+      "requires_derivation": true,
+      "is_unknown": false
+    },
+    {
+      "id": "MODE-03",
+      "mode": "DERIVE",
+      "definition": "No canonical owner exists. The programme computes the fact from declared substrate.",
+      "is_reuse": false,
+      "requires_owner": false,
+      "requires_derivation": true,
+      "is_unknown": false
+    },
+    {
+      "id": "MODE-04",
+      "mode": "DECLARED-UNKNOWN",
+      "definition": "No substrate exists. The programme emits verified absence with a counted probe and the evidence class that would be required. Never a body, never a row.",
+      "is_reuse": false,
+      "requires_owner": false,
+      "requires_derivation": false,
+      "is_unknown": true
+    }
+  ],
+
+  "$substrate_comment": [
+    "Machine-readable substrate. Every entry marked required must exist, parse, and every declared",
+    "pointer must resolve inside it, or the programme aborts fail-closed (exit 2) — a moved or emptied",
+    "substrate can never be silently replaced by a fabricated value.",
+    "Only paths tracked in version control are declared: a git-ignored path is not Repository Truth",
+    "(the defect independent verification raised against the predecessor programme)."
+  ],
+  "substrate": [
+    {
+      "id": "S-01",
+      "path": "00-BOOK/DATA/artifacts.json",
+      "kind": "registration projection",
+      "required": true,
+      "pointers": ["count", "artifacts"],
+      "purpose": "The registered artifact census: identity, status, content hash, traceability."
+    },
+    {
+      "id": "S-02",
+      "path": "00-BOOK/DATA/relationships.json",
+      "kind": "graph projection",
+      "required": true,
+      "pointers": ["count", "relationships"],
+      "purpose": "The knowledge-graph edge set."
+    },
+    {
+      "id": "S-03",
+      "path": "00-BOOK/DATA/control-tower.json",
+      "kind": "portfolio projection",
+      "required": true,
+      "pointers": ["portfolio", "programs", "dimensions"],
+      "purpose": "Portfolio rollup, per-programme status and the twelve execution dimensions."
+    },
+    {
+      "id": "S-04",
+      "path": "00-BOOK/DATA/certification.json",
+      "kind": "certification projection",
+      "required": true,
+      "pointers": ["verdict", "domains_total", "domains_passed", "domains", "scope"],
+      "purpose": "Digital-twin certification verdict, domains and certified scope."
+    },
+    {
+      "id": "S-05",
+      "path": "00-BOOK/DATA/id-ledger.json",
+      "kind": "identity ledger",
+      "required": true,
+      "pointers": ["by_path", "category_seq"],
+      "purpose": "Forward-only identity allocation ledger."
+    },
+    {
+      "id": "S-06",
+      "path": "00-CMG/CMG-REGISTRY.json",
+      "kind": "meta-constitutional registry",
+      "required": true,
+      "pointers": ["states", "concerns", "gaps", "open_questions", "vacancies", "tiers", "artifacts", "readiness", "namespaces"],
+      "purpose": "The machine-readable projection of the meta-governance constitution."
+    },
+    {
+      "id": "S-07",
+      "path": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "kind": "aggregate gate declaration",
+      "required": true,
+      "pointers": ["checks", "gates", "programs", "findings", "work_packages"],
+      "purpose": "The aggregate constitutional gate: located checks, gates, programme roster, findings."
+    },
+    {
+      "id": "S-08",
+      "path": "00-MASTER/UCCEP-000000/uccep.json",
+      "kind": "aggregate gate determination",
+      "required": true,
+      "pointers": ["certification", "certification_ceiling", "gates", "programs", "tier", "seal_sha256"],
+      "purpose": "The computed aggregate verdicts and the certification ceiling."
+    },
+    {
+      "id": "S-09",
+      "path": "00-MASTER/UCDA-000001/ucda-decisions.json",
+      "kind": "decision register declaration",
+      "required": true,
+      "pointers": ["lifecycle", "dispositions", "decisions", "work_packages"],
+      "purpose": "The constitutional decision register: lifecycle, closed disposition set, decisions."
+    },
+    {
+      "id": "S-10",
+      "path": "00-MASTER/UCDA-000001/ucda.json",
+      "kind": "decision determination",
+      "required": true,
+      "pointers": ["by_stage", "by_disposition", "decision_total", "determination", "gate", "evidence_references"],
+      "purpose": "Computed decision lifecycle and disposition occupancy."
+    },
+    {
+      "id": "S-11",
+      "path": "00-MASTER/UER-000001/uer.json",
+      "kind": "resilience determination",
+      "required": true,
+      "pointers": ["capabilities", "validations", "exit_criteria", "determination", "gate", "seal_sha256"],
+      "purpose": "The inherited execution-resilience contract and its verdicts."
+    },
+    {
+      "id": "S-12",
+      "path": "00-MASTER/IMR-0000/imr-0000-platform-bindings.json",
+      "kind": "platform binding declaration",
+      "required": true,
+      "pointers": ["subsystems", "platform_gates", "gaps", "findings", "registry_specifications", "public_interface_catalogue", "platform_layers"],
+      "purpose": "The platform model: subsystems, public interface catalogue, register specifications."
+    },
+    {
+      "id": "S-13",
+      "path": "00-MASTER/IMR-003A/cios-bindings.json",
+      "kind": "engine architecture declaration",
+      "required": true,
+      "pointers": ["engines", "laws", "invariants", "stages", "cios_gates", "gaps", "located_bindings"],
+      "purpose": "The engine architecture: engines, laws, admission stages, undischarged gates."
+    },
+    {
+      "id": "S-14",
+      "path": "00-MASTER/STATE/mcs-state.json",
+      "kind": "operational state mirror",
+      "required": true,
+      "pointers": ["repository", "current", "blockers", "risks", "next_authorized_capability"],
+      "purpose": "The machine mirror of master operational state."
+    }
+  ],
+
+  "$derivations_comment": [
+    "Each derivation names a generic engine primitive and supplies its arguments as DATA. The engine",
+    "dispatches on primitive from a fixed table of primitives and knows nothing about what any",
+    "derivation means. A new fact is a new entry here, never a code change."
+  ],
+  "derivations": [
+    { "id": "DV-01", "primitive": "record_count", "purpose": "Registered artifact records present in the registration projection.", "args": { "substrate": "S-01", "pointer": "artifacts" } },
+    { "id": "DV-02", "primitive": "declared_vs_actual", "purpose": "Declared registration count against the records actually present.", "args": { "substrate": "S-01", "count_field": "count", "pointer": "artifacts" } },
+    { "id": "DV-03", "primitive": "cross_count_delta", "purpose": "Registration census against the portfolio rollup.", "args": { "left_substrate": "S-01", "left_path": "count", "right_substrate": "S-03", "right_path": "portfolio.total_artifacts" } },
+    { "id": "DV-04", "primitive": "cross_count_delta", "purpose": "Registration census against the certified scope.", "args": { "left_substrate": "S-01", "left_path": "count", "right_substrate": "S-04", "right_path": "scope.artifacts" } },
+    { "id": "DV-05", "primitive": "duplicate_field_values", "purpose": "Content identity: distinct artifacts sharing one content hash.", "args": { "substrate": "S-01", "pointer": "artifacts", "field": "content_hash" } },
+    { "id": "DV-06", "primitive": "duplicate_field_values", "purpose": "Name identity: distinct artifacts sharing one name.", "args": { "substrate": "S-01", "pointer": "artifacts", "field": "name" } },
+    { "id": "DV-07", "primitive": "duplicate_field_values", "purpose": "Identity collision: one universal identifier claimed by more than one record.", "args": { "substrate": "S-01", "pointer": "artifacts", "field": "universal_id" } },
+    { "id": "DV-08", "primitive": "duplicate_field_values", "purpose": "Multi-home concepts: one path registered more than once.", "args": { "substrate": "S-01", "pointer": "artifacts", "field": "path" } },
+    { "id": "DV-09", "primitive": "field_histogram", "purpose": "Registered status vocabulary in use.", "args": { "substrate": "S-01", "pointer": "artifacts", "field": "status" } },
+    { "id": "DV-10", "primitive": "field_value_not_in_reference", "purpose": "Status-vocabulary conflict: registered status values absent from the meta-constitutional state set.", "args": { "substrate": "S-01", "pointer": "artifacts", "field": "status", "ref_substrate": "S-06", "ref_pointer": "states", "ref_field": "state" } },
+    { "id": "DV-11", "primitive": "subdict_fill_ratio", "purpose": "Traceability completeness across the thirteen traceability dimensions of every registered artifact.", "args": { "substrate": "S-01", "pointer": "artifacts", "field": "traceability" } },
+    { "id": "DV-12", "primitive": "record_count", "purpose": "Graph edges present in the graph projection.", "args": { "substrate": "S-02", "pointer": "relationships" } },
+    { "id": "DV-13", "primitive": "cross_count_delta", "purpose": "Edge census against the portfolio rollup.", "args": { "left_substrate": "S-02", "left_path": "count", "right_substrate": "S-03", "right_path": "portfolio.total_edges" } },
+    { "id": "DV-14", "primitive": "cross_count_delta", "purpose": "Edge census against the certified scope.", "args": { "left_substrate": "S-02", "left_path": "count", "right_substrate": "S-04", "right_path": "scope.edges" } },
+    { "id": "DV-15", "primitive": "field_histogram", "purpose": "Edge-type census, including the capability-bearing edge types.", "args": { "substrate": "S-02", "pointer": "relationships", "field": "type" } },
+    { "id": "DV-16", "primitive": "edge_status_join", "purpose": "Live dependency on superseded truth: an edge whose target is superseded and whose source is not.", "args": { "edge_substrate": "S-02", "edge_pointer": "relationships", "from_field": "from", "to_field": "to", "node_substrate": "S-01", "node_pointer": "artifacts", "node_key_field": "universal_id", "node_status_field": "status", "status_values": ["SUPERSEDED", "DEPRECATED", "RETIRED", "OBSOLETE"] } },
+    { "id": "DV-17", "primitive": "key_occupancy", "purpose": "Per-dimension execution status across the twelve execution dimensions.", "args": { "substrate": "S-03", "pointer": "dimensions", "field": "status" } },
+    { "id": "DV-18", "primitive": "record_count", "purpose": "Programmes carrying a portfolio rollup.", "args": { "substrate": "S-03", "pointer": "programs" } },
+    { "id": "DV-19", "primitive": "field_histogram", "purpose": "Programme rollup status distribution.", "args": { "substrate": "S-03", "pointer": "programs", "field": "rollup_status" } },
+    { "id": "DV-20", "primitive": "cross_count_delta", "purpose": "Certification domains passed against domains declared.", "args": { "left_substrate": "S-04", "left_path": "domains_passed", "right_substrate": "S-04", "right_path": "domains_total" } },
+    { "id": "DV-21", "primitive": "record_count", "purpose": "Declared meta-constitutional concerns.", "args": { "substrate": "S-06", "pointer": "concerns" } },
+    { "id": "DV-22", "primitive": "field_histogram", "purpose": "Concern disposition distribution — the located-owner census.", "args": { "substrate": "S-06", "pointer": "concerns", "field": "disposition" } },
+    { "id": "DV-23", "primitive": "field_histogram", "purpose": "Meta-constitutional gap disposition distribution.", "args": { "substrate": "S-06", "pointer": "gaps", "field": "disposition" } },
+    { "id": "DV-24", "primitive": "record_count", "purpose": "Open constitutional questions.", "args": { "substrate": "S-06", "pointer": "open_questions" } },
+    { "id": "DV-25", "primitive": "record_count", "purpose": "Declared constitutional vacancies.", "args": { "substrate": "S-06", "pointer": "vacancies" } },
+    { "id": "DV-26", "primitive": "field_histogram", "purpose": "Constitutional tier occupancy.", "args": { "substrate": "S-06", "pointer": "tiers", "field": "occupancy" } },
+    { "id": "DV-27", "primitive": "record_count", "purpose": "Located executable checks bound by the aggregate gate.", "args": { "substrate": "S-07", "pointer": "checks" } },
+    { "id": "DV-28", "primitive": "record_count", "purpose": "Constitutional gates declared by the aggregate gate.", "args": { "substrate": "S-07", "pointer": "gates" } },
+    { "id": "DV-29", "primitive": "record_count", "purpose": "Programmes on the aggregate roster.", "args": { "substrate": "S-07", "pointer": "programs" } },
+    { "id": "DV-30", "primitive": "filtered_record_count", "purpose": "Blocking findings on the assimilation register.", "args": { "substrate": "S-07", "pointer": "findings", "field": "blocking", "values": [true] } },
+    { "id": "DV-31", "primitive": "record_count", "purpose": "Open work packages registered by the aggregate gate.", "args": { "substrate": "S-07", "pointer": "work_packages" } },
+    { "id": "DV-32", "primitive": "field_histogram", "purpose": "Computed gate verdicts.", "args": { "substrate": "S-08", "pointer": "gates", "field": "verdict" } },
+    { "id": "DV-33", "primitive": "field_histogram", "purpose": "Computed programme verdicts.", "args": { "substrate": "S-08", "pointer": "programs", "field": "verdict" } },
+    { "id": "DV-34", "primitive": "record_count", "purpose": "Findings composing the certification ceiling.", "args": { "substrate": "S-08", "pointer": "certification_ceiling" } },
+    { "id": "DV-35", "primitive": "dict_list_lengths", "purpose": "Decision lifecycle occupancy by stage.", "args": { "substrate": "S-10", "pointer": "by_stage" } },
+    { "id": "DV-36", "primitive": "dict_list_lengths", "purpose": "Decision disposition occupancy across the closed disposition set.", "args": { "substrate": "S-10", "pointer": "by_disposition" } },
+    { "id": "DV-37", "primitive": "record_count", "purpose": "Registered constitutional decisions.", "args": { "substrate": "S-09", "pointer": "decisions" } },
+    { "id": "DV-38", "primitive": "record_count", "purpose": "Work packages registered by decision disposition.", "args": { "substrate": "S-09", "pointer": "work_packages" } },
+    { "id": "DV-39", "primitive": "record_count", "purpose": "Inherited execution-resilience capabilities.", "args": { "substrate": "S-11", "pointer": "capabilities" } },
+    { "id": "DV-40", "primitive": "record_count", "purpose": "Inherited mandatory validation dimensions.", "args": { "substrate": "S-11", "pointer": "validations" } },
+    { "id": "DV-41", "primitive": "record_count", "purpose": "Declared platform subsystems.", "args": { "substrate": "S-12", "pointer": "subsystems" } },
+    { "id": "DV-42", "primitive": "field_histogram", "purpose": "Platform gate status distribution.", "args": { "substrate": "S-12", "pointer": "platform_gates", "field": "status" } },
+    { "id": "DV-43", "primitive": "record_count", "purpose": "Declared architecture engines.", "args": { "substrate": "S-13", "pointer": "engines" } },
+    { "id": "DV-44", "primitive": "field_histogram", "purpose": "Undischarged architecture gate status distribution.", "args": { "substrate": "S-13", "pointer": "cios_gates", "field": "status" } },
+    { "id": "DV-45", "primitive": "tracked_glob_census", "purpose": "Executable governance engines and gate scripts present in version control.", "args": { "globs": ["00-MASTER/*/*_engine.py", "00-BOOK/tools/ukb.py", "00-BOOK/tools/register.sh", "00-CMG/tools/cmg-gate.sh", "verify.sh"] } },
+    { "id": "DV-46", "primitive": "text_presence", "purpose": "Automation presence: each located engine joined to its developer entry point, continuous-integration workflow and session-start hook.", "args": { "items_from": "DV-45", "files": ["Makefile", ".github/workflows", ".kiro/hooks"] } },
+    { "id": "DV-47", "primitive": "substrate_census", "purpose": "Per-substrate presence, version-control tracking, parse result, record count and content hash.", "args": {} },
+    { "id": "DV-48", "primitive": "binding_mode_distribution", "purpose": "Distribution of the thirty-two deliverables across the four binding modes.", "args": {} },
+    { "id": "DV-49", "primitive": "binding_owner_collision", "purpose": "Deliverable overlap: one canonical owner claimed by more than one deliverable.", "args": {} },
+    { "id": "DV-50", "primitive": "record_count", "purpose": "Recorded execution blockers in operational state.", "args": { "substrate": "S-14", "pointer": "blockers" } },
+    { "id": "DV-51", "primitive": "record_count", "purpose": "Declared register specifications.", "args": { "substrate": "S-12", "pointer": "registry_specifications" } },
+    { "id": "DV-52", "primitive": "field_histogram", "purpose": "Register specification location status — which declared registers are located.", "args": { "substrate": "S-12", "pointer": "registry_specifications", "field": "located" } },
+    { "id": "DV-53", "primitive": "key_occupancy", "purpose": "Public interface catalogue accounting.", "args": { "substrate": "S-12", "pointer": "public_interface_catalogue", "field": null } },
+    { "id": "DV-54", "primitive": "record_count", "purpose": "Meta-constitutional artifacts under registry control.", "args": { "substrate": "S-06", "pointer": "artifacts" } },
+    { "id": "DV-55", "primitive": "tracked_glob_census", "purpose": "Counted probe: a machine-readable master execution sequence in version control.", "args": { "globs": ["00-MASTER/roadmap*.json", "00-MASTER/*/roadmap*.json", "00-MASTER/*/execution-sequence*.json", "00-BOOK/DATA/roadmap*.json"] } },
+    { "id": "DV-56", "primitive": "tracked_glob_census", "purpose": "Counted probe: the four declared registers whose absence is the located register gap.", "args": { "globs": ["00-BOOK/DATA/changes.json", "00-BOOK/DATA/knowledge.json", "00-BOOK/DATA/regeneration.json", "00-BOOK/DATA/rollback.json"] } },
+    { "id": "DV-57", "primitive": "declared_local_runtime", "purpose": "Declared fact: whether the branch carrying the constitutional baseline has a configured off-machine upstream is per-clone local runtime state, not committed history.", "args": { "claim": "upstream configuration is per-clone git config, absent from the object database", "finding": "non-derivable: upstream configuration is local runtime state", "evidence_id": "URRC-000001/EV-UPSTREAM-001" } },
+    { "id": "DV-58", "primitive": "ignored_path_census", "purpose": "Counted probe: declared evidence zones excluded from version control, so prior seals cannot be reproduced from committed history alone.", "args": { "paths": ["00-MASTER/UER-000001/evidence", "00-MASTER/UCCEP-000000/evidence", "00-MASTER/UCCEP-000007/evidence", "00-MASTER/UAKOS-CLOSURE-002/closure.json"] } },
+    { "id": "DV-59", "primitive": "record_count", "purpose": "Declared namespaces under meta-constitutional control.", "args": { "substrate": "S-06", "pointer": "namespaces" } },
+    { "id": "DV-60", "primitive": "record_count", "purpose": "Located bindings the engine architecture consumes by pointer.", "args": { "substrate": "S-13", "pointer": "located_bindings" } }
+  ],
+
+  "$deliverables_comment": [
+    "The thirty-two deliverables the charter names, indexed over the contiguous range declared in",
+    "programme.deliverable_range_first .. _last with no gap and no repeat. mode is DATA; canonical_owner",
+    "is a repository path or the empty string; derivations bind the computed delta or derived fact."
+  ],
+  "deliverables": [
+    {
+      "index": 1,
+      "id": "D-01",
+      "name": "Repository reality determination",
+      "subject": "What the repository actually contains, as measured rather than asserted.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-MASTER/UCCEP-000007/01-REPOSITORY-INVENTORY.md",
+      "derivations": ["DV-01", "DV-02", "DV-03", "DV-04"],
+      "matrix": "M-01",
+      "generator_class": "regenerated determination",
+      "note": "The owner states the inventory; the delta is the registration census reconciled against the portfolio rollup and the certified scope at HEAD."
+    },
+    {
+      "index": 2,
+      "id": "D-02",
+      "name": "Substrate census",
+      "subject": "Every machine-readable substrate this programme reads, with its tracking state, parse result and content hash.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-47"],
+      "matrix": "M-01",
+      "generator_class": "regenerated determination",
+      "note": "No owner exists for the substrate set of this programme; it is computed. A substrate outside version control is reported as such and never treated as Repository Truth."
+    },
+    {
+      "index": 3,
+      "id": "D-03",
+      "name": "Reuse disposition",
+      "subject": "The repository-wide reuse disposition over all thirty-two bindings.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-48"],
+      "matrix": "M-02",
+      "generator_class": "regenerated matrix",
+      "note": "Computed from the declaration itself: this is the mechanized zero-duplication invariant."
+    },
+    {
+      "index": 4,
+      "id": "D-04",
+      "name": "Duplication — content identity",
+      "subject": "Distinct registered artifacts sharing one content hash.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-05"],
+      "matrix": "M-03",
+      "generator_class": "regenerated matrix",
+      "note": "Structural duplication only. Semantic duplication is not claimed."
+    },
+    {
+      "index": 5,
+      "id": "D-05",
+      "name": "Duplication — name identity",
+      "subject": "Distinct registered artifacts sharing one name.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-06"],
+      "matrix": "M-03",
+      "generator_class": "regenerated matrix",
+      "note": "A shared name is recorded, not adjudicated: naming authority belongs to the registration owner."
+    },
+    {
+      "index": 6,
+      "id": "D-06",
+      "name": "Duplication — registration delta",
+      "subject": "The registration census against every other projection that restates it.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-02", "DV-03", "DV-04"],
+      "matrix": "M-03",
+      "generator_class": "regenerated matrix",
+      "note": "A non-zero delta is a projection-staleness finding for the registration owner, never repaired here."
+    },
+    {
+      "index": 7,
+      "id": "D-07",
+      "name": "Duplication — multi-home concepts",
+      "subject": "One identifier or one path claimed by more than one registered record.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-07", "DV-08"],
+      "matrix": "M-03",
+      "generator_class": "regenerated matrix",
+      "note": "Canonical-home uniqueness is measured, not asserted."
+    },
+    {
+      "index": 8,
+      "id": "D-08",
+      "name": "Duplication — deliverable overlap",
+      "subject": "One canonical owner claimed by more than one of the thirty-two deliverables.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-49"],
+      "matrix": "M-03",
+      "generator_class": "regenerated matrix",
+      "note": "The programme's own non-proliferation check: it may not create two homes for one fact."
+    },
+    {
+      "index": 9,
+      "id": "D-09",
+      "name": "Conflict — declared conflicts",
+      "subject": "Conflicts, findings and open questions already declared by their own owners.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-MASTER/UCCEP-000008/10-REMAINING-GOVERNANCE-GAPS.md",
+      "derivations": ["DV-30", "DV-34", "DV-24"],
+      "matrix": "M-04",
+      "generator_class": "regenerated matrix",
+      "note": "The owner records the governance gaps; the delta counts the blocking findings and the certification ceiling at HEAD."
+    },
+    {
+      "index": 10,
+      "id": "D-10",
+      "name": "Conflict — status vocabulary",
+      "subject": "Registered status values that are absent from the meta-constitutional state set.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-09", "DV-10"],
+      "matrix": "M-04",
+      "generator_class": "regenerated matrix",
+      "note": "Two status vocabularies coexist by construction — the registration vocabulary and the constitutional state machine. The overlap is measured; neither is corrected."
+    },
+    {
+      "index": 11,
+      "id": "D-11",
+      "name": "Conflict — live dependency on superseded truth",
+      "subject": "An edge whose target is superseded and whose source is not.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-16"],
+      "matrix": "M-04",
+      "generator_class": "regenerated matrix",
+      "note": "Computed by joining the edge set to the registered status of both endpoints."
+    },
+    {
+      "index": 12,
+      "id": "D-12",
+      "name": "Conflict — determination conflict set",
+      "subject": "Located determinations whose verdicts do not agree, with each verdict's scope.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-32", "DV-33", "DV-23", "DV-26"],
+      "matrix": "M-04",
+      "generator_class": "regenerated matrix",
+      "note": "No winner is elected. Adjudication belongs to the authority that owns the conflicting determinations."
+    },
+    {
+      "index": 13,
+      "id": "D-13",
+      "name": "Gap — deliverable gaps",
+      "subject": "Deliverables for which no honest derivation is possible.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-48"],
+      "matrix": "M-05",
+      "generator_class": "regenerated matrix",
+      "note": "No chartered deliverable is wholly unobtainable; what the non-derivable register records is narrower — a bounded refusal inside a deliverable, each naming the deliverable whose claim it caps."
+    },
+    {
+      "index": 14,
+      "id": "D-14",
+      "name": "Gap — executability gaps",
+      "subject": "Constitutional gates that are enforceable but not enforced.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md",
+      "derivations": ["DV-27", "DV-28", "DV-46"],
+      "matrix": "M-05",
+      "generator_class": "regenerated matrix",
+      "note": "The owner registers the gates; the delta is the measured automation presence of each located engine."
+    },
+    {
+      "index": 15,
+      "id": "D-15",
+      "name": "Gap — dimension gaps",
+      "subject": "Execution dimensions that are not complete.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-BOOK/CONTROL-TOWER/PROGRAM-CONTROL-TOWER.md",
+      "derivations": ["DV-17", "DV-19"],
+      "matrix": "M-05",
+      "generator_class": "regenerated matrix",
+      "note": "The owner presents the control tower; the delta is per-dimension occupancy computed from its own projection."
+    },
+    {
+      "index": 16,
+      "id": "D-16",
+      "name": "Gap — traceability gaps",
+      "subject": "Registered artifacts whose traceability is incomplete, and by how much.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-MASTER/UCCEP-000000/07-UNIVERSAL-TRACEABILITY-GRAPH.md",
+      "derivations": ["DV-11"],
+      "matrix": "M-05",
+      "generator_class": "regenerated matrix",
+      "note": "The owner determines the traceability graph; the delta is the measured fill ratio across the thirteen traceability dimensions."
+    },
+    {
+      "index": 17,
+      "id": "D-17",
+      "name": "Gap — open-work gaps",
+      "subject": "Work that is registered but not discharged.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-MASTER/UCCEP-000007/13-KNOWN-GAPS.md",
+      "derivations": ["DV-31", "DV-38", "DV-50"],
+      "matrix": "M-05",
+      "generator_class": "regenerated matrix",
+      "note": "Deciding a matter is not discharging the work it names: registered work packages are counted, never closed."
+    },
+    {
+      "index": 18,
+      "id": "D-18",
+      "name": "Completeness per dimension",
+      "subject": "Per-dimension completeness, declared as a lower bound.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-17", "DV-11", "DV-20"],
+      "matrix": "M-06",
+      "generator_class": "regenerated matrix",
+      "note": "A lower bound only. Absence of a measurement is never read as completeness."
+    },
+    {
+      "index": 19,
+      "id": "D-19",
+      "name": "Readiness determination",
+      "subject": "Readiness and the declared certification ceiling.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-CMG/CMG-REGISTRY.json",
+      "derivations": ["DV-26", "DV-25", "DV-34"],
+      "matrix": "M-07",
+      "generator_class": "regenerated matrix",
+      "note": "The owner declares readiness and its ceiling; the delta is tier occupancy, vacancy count and ceiling size at HEAD."
+    },
+    {
+      "index": 20,
+      "id": "D-20",
+      "name": "Blocked-by set",
+      "subject": "What each blocked determination is blocked by, and who owns the unblocking act.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-25", "DV-24", "DV-30", "DV-50", "DV-44", "DV-42"],
+      "matrix": "M-07",
+      "generator_class": "regenerated matrix",
+      "note": "Computed from the blockers, vacancies, open questions and undischarged gates their owners declare."
+    },
+    {
+      "index": 21,
+      "id": "D-21",
+      "name": "Automation presence",
+      "subject": "Automation presence per located engine and per gate.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-45", "DV-46"],
+      "matrix": "M-08",
+      "generator_class": "regenerated matrix",
+      "note": "Presence only. Automatability is not claimed, and an absent binding is not a defect of the engine."
+    },
+    {
+      "index": 22,
+      "id": "D-22",
+      "name": "Catalogue owner binding",
+      "subject": "The canonical capability catalogue.",
+      "mode": "REUSE-BY-REFERENCE",
+      "canonical_owner": "02-MASTER/UCOS-*-UNIVERSAL-CAPABILITY-CATALOG.md",
+      "derivations": [],
+      "matrix": "M-09",
+      "generator_class": "pointer row",
+      "note": "Pointer row only; the catalogue is not restated, extended or counted here."
+    },
+    {
+      "index": 23,
+      "id": "D-23",
+      "name": "Registry owner binding",
+      "subject": "The universal artifact registry.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-BOOK/REGISTRIES/UNIVERSAL-ARTIFACT-REGISTRY.md",
+      "derivations": ["DV-01", "DV-54", "DV-59", "DV-51", "DV-52"],
+      "matrix": "M-09",
+      "generator_class": "regenerated binding",
+      "note": "The owner is the registry; the delta is the registered census, the meta-constitutional artifact count, and which declared registers are located."
+    },
+    {
+      "index": 24,
+      "id": "D-24",
+      "name": "Ontology owner binding",
+      "subject": "The ontology register.",
+      "mode": "REUSE-BY-REFERENCE",
+      "canonical_owner": "01-WORKING/ONTOLOGY-REGISTER.md",
+      "derivations": [],
+      "matrix": "M-09",
+      "generator_class": "pointer row",
+      "note": "Pointer row only. Per-universe ontologies are owned by their own bands and are not aggregated here."
+    },
+    {
+      "index": 25,
+      "id": "D-25",
+      "name": "Taxonomy owner binding",
+      "subject": "The substrate taxonomy home and root taxa anchor.",
+      "mode": "REUSE-BY-REFERENCE",
+      "canonical_owner": "15-UNIVERSAL-SCIENCE-INTELLIGENCE/03-TAXONOMY/USIS-TAX-000-SUBSTRATE-TAXONOMY-HOME-AND-ROOT-TAXA-ANCHOR.md",
+      "derivations": [],
+      "matrix": "M-09",
+      "generator_class": "pointer row",
+      "note": "Pointer row only."
+    },
+    {
+      "index": 26,
+      "id": "D-26",
+      "name": "API and interface owner binding",
+      "subject": "The public interface catalogue.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-MASTER/IMR-0000/19-PUBLIC-INTERFACE-CATALOGUE.md",
+      "derivations": ["DV-53", "DV-41"],
+      "matrix": "M-09",
+      "generator_class": "regenerated binding",
+      "note": "The owner catalogues the public interface; the delta is its own accounting and the subsystem census."
+    },
+    {
+      "index": 27,
+      "id": "D-27",
+      "name": "Engine catalogue",
+      "subject": "Executable governance engines present in version control, joined to their gate, entry point and workflow bindings.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-45", "DV-46", "DV-43", "DV-60"],
+      "matrix": "M-10",
+      "generator_class": "regenerated catalogue",
+      "note": "Discovered by declared glob over tracked files only. An untracked engine is not Repository Truth."
+    },
+    {
+      "index": 28,
+      "id": "D-28",
+      "name": "Graph owner binding and edge reconciliation",
+      "subject": "The knowledge-graph registry and the edge-count reconciliation across projections.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-BOOK/REGISTRIES/KNOWLEDGE-GRAPH-REGISTRY.md",
+      "derivations": ["DV-12", "DV-13", "DV-14"],
+      "matrix": "M-11",
+      "generator_class": "regenerated binding",
+      "note": "The owner is the graph registry; the delta reconciles the edge census against the portfolio rollup and the certified scope."
+    },
+    {
+      "index": 29,
+      "id": "D-29",
+      "name": "Capability edge census",
+      "subject": "The edge-type census, including the capability-bearing relationship types.",
+      "mode": "DERIVE",
+      "canonical_owner": "",
+      "derivations": ["DV-15", "DV-39", "DV-40"],
+      "matrix": "M-11",
+      "generator_class": "regenerated matrix",
+      "note": "Counted from the graph projection and the inherited resilience contract. No capability is created, renamed or retired."
+    },
+    {
+      "index": 30,
+      "id": "D-30",
+      "name": "Decision intelligence",
+      "subject": "Decision lifecycle occupancy, disposition occupancy, and deliverable-to-decision coverage.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-MASTER/UCDA-000001/02-DECISION-LIFECYCLE-DETERMINATION.md",
+      "derivations": ["DV-35", "DV-36", "DV-37", "DV-38"],
+      "matrix": "M-12",
+      "generator_class": "regenerated matrix",
+      "note": "The owner determines the lifecycle; the delta is measured occupancy across stages and the closed disposition set."
+    },
+    {
+      "index": 31,
+      "id": "D-31",
+      "name": "Validation, certification and compliance binding",
+      "subject": "The validation, certification and constitutional-compliance owners, plus the certification-scope reconciliation.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-MASTER/UCCEP-000000/12-CERTIFICATION-INTELLIGENCE.md",
+      "derivations": ["DV-20", "DV-04", "DV-32", "DV-33", "DV-34"],
+      "matrix": "M-13",
+      "generator_class": "regenerated binding",
+      "note": "The owner determines certification intelligence; the delta reconciles certified scope against the registration census and reports the ceiling."
+    },
+    {
+      "index": 32,
+      "id": "D-32",
+      "name": "Evolution and master roadmap binding",
+      "subject": "The evolution owner and the master execution roadmap, plus the executable-owner delta.",
+      "mode": "REUSE-WITH-DERIVED-DELTA",
+      "canonical_owner": "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+      "derivations": ["DV-29", "DV-45", "DV-55", "DV-18"],
+      "matrix": "M-14",
+      "generator_class": "regenerated binding",
+      "note": "The owner holds the roadmap in prose; the delta is the executable-owner census and the counted absence of any machine-readable execution sequence."
+    }
+  ],
+
+  "$matrices_comment": [
+    "Each matrix aggregates the deliverables and derivations bound to it. Every gate must bind at",
+    "least one matrix that is computable, so a manual gate is structurally impossible."
+  ],
+  "matrices": [
+    { "id": "M-01", "name": "Repository reality", "subject": "What the repository contains, and the substrate that proves it.", "computable": true },
+    { "id": "M-02", "name": "Reuse", "subject": "Repository-wide reuse disposition over all thirty-two bindings.", "computable": true },
+    { "id": "M-03", "name": "Duplication", "subject": "Structural duplication only: content identity, name identity, registration delta, multi-home concepts, deliverable overlap.", "computable": true },
+    { "id": "M-04", "name": "Conflict", "subject": "Declared conflicts, status-vocabulary conflict, live dependency on superseded truth, determination conflict set.", "computable": true },
+    { "id": "M-05", "name": "Gap", "subject": "Deliverable, executability, dimension, traceability and open-work gaps.", "computable": true },
+    { "id": "M-06", "name": "Completeness", "subject": "Per-dimension completeness, declared as a lower bound.", "computable": true },
+    { "id": "M-07", "name": "Readiness", "subject": "Readiness bound to its owners, plus the blocked-by set.", "computable": true },
+    { "id": "M-08", "name": "Automation", "subject": "Automation presence per gate and per deliverable.", "computable": true },
+    { "id": "M-09", "name": "Catalogue and registry", "subject": "Catalogue, registry, ontology, taxonomy, API and interface owners.", "computable": true },
+    { "id": "M-10", "name": "Engine catalogue", "subject": "Engines discovered by declared glob, joined to gate, entry point and workflow bindings.", "computable": true },
+    { "id": "M-11", "name": "Graph and capability", "subject": "Graph owners, edge-count reconciliation, capability edge census.", "computable": true },
+    { "id": "M-12", "name": "Decision intelligence", "subject": "Decision lifecycle and disposition occupancy, and deliverable-to-decision coverage.", "computable": true },
+    { "id": "M-13", "name": "Validation, certification and compliance", "subject": "Validation, certification and compliance owners plus certification-scope reconciliation.", "computable": true },
+    { "id": "M-14", "name": "Evolution and roadmap", "subject": "Evolution and master-roadmap owners; executable-owner delta.", "computable": true }
+  ],
+
+  "$gates_comment": [
+    "The Repository Reality Gate is the conjunction of these gate entries. A blocking gate that fails",
+    "closes the gate and exits 1; an advisory gate records and never blocks. Every gate binds matrices,",
+    "and every criterion is evaluated by the engine from computed model state — never asserted."
+  ],
+  "gates": [
+    { "id": "G-01", "name": "Substrate integrity", "blocking": true, "matrices": ["M-01"], "criterion": "Every required substrate exists, is tracked in version control, parses, and every declared pointer resolves inside it." },
+    { "id": "G-02", "name": "Reuse before create", "blocking": true, "matrices": ["M-02"], "criterion": "No deliverable whose canonical owner resolves is bound in a create mode, and every mode requiring an owner has one that resolves." },
+    { "id": "G-03", "name": "Non-proliferation", "blocking": true, "matrices": ["M-03"], "criterion": "No canonical owner is claimed by more than one deliverable." },
+    { "id": "G-04", "name": "Conflict disclosure", "blocking": true, "matrices": ["M-04"], "criterion": "Every conflict this programme measures is rendered with its scope and its owner, and none is adjudicated here." },
+    { "id": "G-05", "name": "Gap disclosure", "blocking": true, "matrices": ["M-05"], "criterion": "Every deliverable bound in an unknown mode resolves to a non-derivable entry carrying a counted probe and a required evidence class." },
+    { "id": "G-06", "name": "No fabrication", "blocking": true, "matrices": ["M-01", "M-06"], "criterion": "Every derived record carries resolved substrate evidence or an explicit declared-unknown marker." },
+    { "id": "G-07", "name": "Law namespace", "blocking": true, "matrices": ["M-09"], "criterion": "Neither the declaration nor any rendered byte reintroduces the ratified law token outside the declared citation whitelist." },
+    { "id": "G-08", "name": "Write confinement", "blocking": true, "matrices": ["M-10"], "criterion": "Every write lands inside the programme's own operational memory, and every forbidden write prefix exists and is untouched." },
+    { "id": "G-09", "name": "Completeness lower bound", "blocking": false, "matrices": ["M-06", "M-07"], "criterion": "No completeness or readiness claim exceeds what was measured; absence of measurement is never read as completeness." },
+    { "id": "G-10", "name": "Inheritance", "blocking": false, "matrices": ["M-08", "M-14"], "criterion": "The inherited execution-resilience contract resolves and its determination is recorded, not restated." }
+  ],
+
+  "$outputs_comment": [
+    "The determinations this programme regenerates, in the order the engine renders them. The count is",
+    "checked against the renderer, so a declared-but-unrendered deliverable is impossible."
+  ],
+  "outputs": [
+    { "id": "O-00", "file": "00-URRC-DASHBOARD.md", "title": "Repository Reality Dashboard", "purpose": "Start here. Binding distribution, matrix verdicts, gate table and the blocked-by set.", "matrices": [], "derivations": ["DV-48"], "deliverables": [] },
+    { "id": "O-01", "file": "01-DELIVERABLE-BINDING-REGISTER.md", "title": "Deliverable Binding Register", "purpose": "The thirty-two deliverables: mode, canonical owner, resolution, currency and generator class.", "matrices": [], "derivations": [], "deliverables": [] },
+    { "id": "O-02", "file": "02-REPOSITORY-REALITY-DETERMINATION.md", "title": "Repository Reality Determination", "purpose": "Repository reality bound to its owner, plus the substrate census delta.", "matrices": ["M-01"], "derivations": [], "deliverables": [] },
+    { "id": "O-03", "file": "03-REUSE-MATRIX.md", "title": "Reuse Matrix", "purpose": "Repository-wide reuse disposition over all thirty-two bindings.", "matrices": ["M-02"], "derivations": [], "deliverables": [] },
+    { "id": "O-04", "file": "04-DUPLICATION-MATRIX.md", "title": "Duplication Matrix", "purpose": "Structural duplication only: content identity, name identity, registration delta, multi-home concepts, deliverable overlap.", "matrices": ["M-03"], "derivations": [], "deliverables": [] },
+    { "id": "O-05", "file": "05-CONFLICT-MATRIX.md", "title": "Conflict Matrix", "purpose": "Declared conflicts, status-vocabulary conflict, live dependency on superseded truth, and the determination conflict set.", "matrices": ["M-04"], "derivations": [], "deliverables": [] },
+    { "id": "O-06", "file": "06-GAP-MATRIX.md", "title": "Gap Matrix", "purpose": "Deliverable, executability, dimension, traceability and open-work gaps.", "matrices": ["M-05"], "derivations": [], "deliverables": [] },
+    { "id": "O-07", "file": "07-COMPLETENESS-MATRIX.md", "title": "Completeness Matrix", "purpose": "Per-dimension completeness, declared as a lower bound.", "matrices": ["M-06"], "derivations": [], "deliverables": [] },
+    { "id": "O-08", "file": "08-READINESS-MATRIX.md", "title": "Readiness Matrix", "purpose": "Readiness bound to its owners, plus the blocked-by set.", "matrices": ["M-07"], "derivations": [], "deliverables": [] },
+    { "id": "O-09", "file": "09-AUTOMATION-MATRIX.md", "title": "Automation Matrix", "purpose": "Automation presence per gate and per deliverable. Automatability is not claimed.", "matrices": ["M-08"], "derivations": [], "deliverables": [] },
+    { "id": "O-10", "file": "10-CATALOGUE-AND-REGISTRY-BINDING.md", "title": "Catalogue and Registry Binding", "purpose": "Catalogue, registry, ontology, taxonomy, API and interface owners.", "matrices": ["M-09"], "derivations": [], "deliverables": [] },
+    { "id": "O-11", "file": "11-ENGINE-CATALOGUE.md", "title": "Engine Catalogue", "purpose": "Engines discovered by declared glob, joined to their gate, entry point and workflow bindings.", "matrices": ["M-10"], "derivations": [], "deliverables": [] },
+    { "id": "O-12", "file": "12-GRAPH-AND-CAPABILITY-BINDING.md", "title": "Graph and Capability Binding", "purpose": "Graph owners, edge-count reconciliation, capability edge census.", "matrices": ["M-11"], "derivations": [], "deliverables": [] },
+    { "id": "O-13", "file": "13-DECISION-INTELLIGENCE-MATRIX.md", "title": "Decision Intelligence Matrix", "purpose": "Decision lifecycle and disposition occupancy, and deliverable-to-decision coverage.", "matrices": ["M-12"], "derivations": [], "deliverables": [] },
+    { "id": "O-14", "file": "14-VALIDATION-CERTIFICATION-COMPLIANCE-BINDING.md", "title": "Validation, Certification and Compliance Binding", "purpose": "Validation, certification and constitutional-compliance owners plus the certification-scope reconciliation.", "matrices": ["M-13"], "derivations": [], "deliverables": [] },
+    { "id": "O-15", "file": "15-EVOLUTION-AND-ROADMAP-BINDING.md", "title": "Evolution and Roadmap Binding", "purpose": "Evolution and master-roadmap owners; executable-owner delta.", "matrices": ["M-14"], "derivations": [], "deliverables": [] },
+    { "id": "O-16", "file": "16-NON-DERIVABLE-REGISTER.md", "title": "Non-Derivable Register", "purpose": "Every fact this programme refuses to fabricate, with its counted probe and required evidence class.", "matrices": [], "derivations": [], "deliverables": [] },
+    { "id": "O-17", "file": "17-PROGRAMME-COMPLETION-DETERMINATION.md", "title": "Programme Completion Determination", "purpose": "This programme's own completion determination. No repository-wide completion is claimed.", "matrices": [], "derivations": [], "deliverables": [] }
+  ],
+
+  "$non_derivable_comment": [
+    "Verified absence. Each entry names the fact, why it cannot be derived, the evidence class that",
+    "would be required, and the counted probe that measures the absence. Never a body, never a row."
+  ],
+  "non_derivable": [
+    {
+      "id": "N-01",
+      "bounds": ["D-18", "D-19"],
+      "fact": "Whether the repository is constitutionally complete.",
+      "reason": "Completeness is a ratification verdict. The constitutional tier competent to ratify is declared VACANT by its own registry, so no located authority can issue it and this programme may not substitute for one.",
+      "required_evidence_class": "A ratification determination issued by a constituted authority occupying the vacant tier.",
+      "probe": "DV-25",
+      "owner": "00-CMG/CMG-REGISTRY.json"
+    },
+    {
+      "id": "N-02",
+      "bounds": ["D-32"],
+      "fact": "The master execution sequence in machine-readable form.",
+      "reason": "The roadmap is held in prose by its owner. No machine-readable execution sequence exists in version control, and deriving one would create a second sequencing authority.",
+      "required_evidence_class": "A machine-readable execution sequence emitted by the located roadmap owner.",
+      "probe": "DV-55",
+      "owner": "00-MASTER/MCP-003-MASTER-EXECUTION.md"
+    },
+    {
+      "id": "N-03",
+      "bounds": ["D-17", "D-23"],
+      "fact": "Register-backed rollback capability.",
+      "reason": "Four of the declared registers do not exist in version control. Rollback capability that rests on them cannot be measured, and the registers may not be authored by this programme.",
+      "required_evidence_class": "The four declared registers, authored and committed by their located owner.",
+      "probe": "DV-56",
+      "owner": "00-MASTER/IMR-0000/07-CANONICAL-REGISTRY-FRAMEWORK.md"
+    },
+    {
+      "id": "N-04",
+      "bounds": ["D-01", "D-20"],
+      "fact": "Off-machine existence of the constitutional baseline anchor.",
+      "reason": "The branch carrying the baseline has no configured upstream, so durability of every claim resting on the anchor cannot be verified from the repository. Configuring or pushing one is an operator act, not a determination.",
+      "required_evidence_class": "A configured upstream and a pushed anchor, verifiable independently of this machine.",
+      "probe": "DV-57",
+      "owner": "00-MASTER/UCCEP-000008/10-REMAINING-GOVERNANCE-GAPS.md"
+    },
+    {
+      "id": "N-05",
+      "bounds": ["D-02", "D-21"],
+      "fact": "Reproduction of prior authorization seals from committed history alone.",
+      "reason": "Programme evidence zones are excluded from version control by the ignore authority. Their contents are therefore not Repository Truth, and a seal over them cannot be recomputed from history.",
+      "required_evidence_class": "Either evidence committed to version control, or a deterministic regeneration path proven from committed inputs alone.",
+      "probe": "DV-58",
+      "owner": "00-BOOK/tools/config.py"
+    }
+  ],
+
+  "$work_packages_comment": [
+    "Bindings that must land outside this directory. Each is a registration of work, never a self",
+    "executed change: the engine writes only inside the programme home."
+  ],
+  "work_packages": [
+    {
+      "id": "WP-URRC-001",
+      "title": "Bind this programme to the aggregate constitutional gate roster as the declared programme entry.",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "route": "An authorized additive change to the aggregate gate declaration plus a corresponding rendered determination by its own engine.",
+      "authorization_required": true,
+      "discharges": "The roster binding declared in programme.roster_binding.",
+      "acceptance": "The roster carries the declared programme entry, its output, and its delegated checks; the aggregate gate renders a verdict for it."
+    },
+    {
+      "id": "WP-URRC-002",
+      "title": "Bind the Repository Reality Gate into the aggregate constitutional gate as a check and gate entry.",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "route": "An authorized additive change adding the gate's argv and exit semantics to the located check set.",
+      "authorization_required": true,
+      "discharges": "Aggregate enforcement of the Repository Reality Gate beyond the developer entry point, continuous integration and the session-start hook.",
+      "acceptance": "The aggregate gate executes the Repository Reality Gate and reports its verdict without this programme asserting one."
+    },
+    {
+      "id": "WP-URRC-003",
+      "title": "Record this programme in the master operational-memory state as a completed work package.",
+      "owner": "00-MASTER/MCP-002-MASTER-STATE.md",
+      "route": "The operational-memory reconciliation act performed by the master context owner at session close.",
+      "authorization_required": true,
+      "discharges": "Operational-memory visibility of the programme's determination and continuation package.",
+      "acceptance": "Master state names the programme, its determination and its checkpoint."
+    }
+  ],
+
+  "$references_comment": [
+    "Canonical artefacts bound by pointer only. Every one must resolve in the repository, or the",
+    "declaration guard fails: an unresolvable reference is an empty reuse claim."
+  ],
+  "references": [
+    { "id": "R-01", "path": "00-MASTER/UCCEP-000007/00-DISCOVERY-INDEX.md", "purpose": "The repository discovery baseline this programme consumes." },
+    { "id": "R-02", "path": "00-MASTER/UCCEP-000008/00-GOVERNANCE-DECISION-INDEX.md", "purpose": "The governance decisions that bound this programme's disclosures." },
+    { "id": "R-03", "path": "00-MASTER/UCDA-000001/03-DISPOSITION-REGISTER.md", "purpose": "The closed disposition set every decision carries." },
+    { "id": "R-04", "path": "00-MASTER/UER-000001/13-CONTINUATION-PACKAGE.md", "purpose": "The inherited execution-resilience contract and continuation package." },
+    { "id": "R-05", "path": "00-MASTER/UCCEP-000000/11-VALIDATION-INTELLIGENCE.md", "purpose": "The located validation-intelligence owner." },
+    { "id": "R-06", "path": "00-MASTER/UCCEP-000000/13-EVOLUTION-INTELLIGENCE.md", "purpose": "The located evolution-intelligence owner." },
+    { "id": "R-07", "path": "00-BOOK/REGISTRIES/CERTIFICATION-REGISTRY.md", "purpose": "The located certification registry." },
+    { "id": "R-08", "path": "00-MASTER/MCP-002-MASTER-STATE.md", "purpose": "The operational-memory state owner." },
+    { "id": "R-09", "path": "00-MASTER/UAKOS-CLOSURE-007/03-IDENTIFIER-FAMILY-CATALOG.md", "purpose": "The identifier-family catalogue that makes the law token machine-recognisable." },
+    { "id": "R-10", "path": "00-MASTER/IMR-001/00-IMPLEMENTATION-MISSION-REGISTRATION-RECORD.md", "purpose": "The registered implementation mission whose execution gates remain undischarged." },
+    { "id": "R-11", "path": "00-BOOK/tools/register.sh", "purpose": "The registration integrity guard." },
+    { "id": "R-12", "path": "verify.sh", "purpose": "The located repository verification entry point." }
+  ]
+}

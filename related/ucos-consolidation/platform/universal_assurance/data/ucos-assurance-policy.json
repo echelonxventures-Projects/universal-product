@@ -1,0 +1,822 @@
+{
+  "$comment": "UCOS-EPIC-014 — the canonical Universal Assurance Policy. This document is the SINGLE SOURCE of assurance truth: every obligation, gate, metric, required evidence artifact, binding and reproducibility requirement the engine acts on is declared here and bound at run time to the reused platform engines (platform.universal_validation, platform.validation_intelligence, engine.universal_certification). Adding an obligation, tightening a threshold or composing a new gate is a DATA change, never a code change. Authority is ENGINEERING-EXECUTION-ONLY (DE-05 / IP-01): this policy confers no constitutional finality.",
+  "policy": {
+    "id": "UCOS-ASSURANCE-POLICY-001",
+    "name": "Universal Validation & Certification Assurance Policy",
+    "version": "1.0.0",
+    "authority": "ENGINEERING-EXECUTION-ONLY",
+    "fail_closed": true,
+    "description": "Declares the ten owned assurance capabilities as bound obligations over the reused validation and certification platform, with measurable gates and a reproducibility contract."
+  },
+  "obligations": [
+    {
+      "id": "VO-ARCH-LAYERS",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "architecture.layers-declared",
+      "severity": "blocking",
+      "requires_facts": ["validation.architecture"],
+      "rationale": "A system with no declared layers cannot be reasoned about architecturally."
+    },
+    {
+      "id": "VO-ARCH-ACYCLIC",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "architecture.dependencies-acyclic",
+      "severity": "blocking",
+      "requires_facts": ["validation.architecture"],
+      "rationale": "A cyclic architecture graph makes layering and build order undecidable."
+    },
+    {
+      "id": "VO-ARCH-LAYERING",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "architecture.layering-respected",
+      "severity": "blocking",
+      "requires_facts": ["validation.architecture"],
+      "rationale": "Upward dependencies dissolve the layering contract."
+    },
+    {
+      "id": "VO-ARCH-FROZEN",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "architecture.no-frozen-writes",
+      "severity": "blocking",
+      "requires_facts": ["validation.architecture"],
+      "rationale": "The certified corpus is read-only to implementation (DP-03 / C-01)."
+    },
+    {
+      "id": "VO-IMPL-MODULES",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "implementation.modules-present",
+      "severity": "blocking",
+      "requires_facts": ["validation.implementation"],
+      "rationale": "A declared module that is absent is an unrealized claim."
+    },
+    {
+      "id": "VO-IMPL-ENTRYPOINTS",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "implementation.entrypoints-resolved",
+      "severity": "blocking",
+      "requires_facts": ["validation.implementation"],
+      "rationale": "An unresolved entrypoint cannot be executed or certified."
+    },
+    {
+      "id": "VO-IMPL-MARKERS",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "implementation.no-open-markers",
+      "severity": "advisory",
+      "requires_facts": ["validation.implementation"],
+      "rationale": "Open work markers are recorded as evidence but do not block readiness."
+    },
+    {
+      "id": "VO-DEP-PINNED",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "dependency.all-pinned",
+      "severity": "blocking",
+      "requires_facts": ["validation.dependency"],
+      "rationale": "An unpinned dependency makes the build irreproducible (DE-04)."
+    },
+    {
+      "id": "VO-DEP-RESOLVED",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "dependency.resolved",
+      "severity": "blocking",
+      "requires_facts": ["validation.dependency"],
+      "rationale": "A dependency with no known provider cannot be sourced."
+    },
+    {
+      "id": "VO-DEP-ACYCLIC",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "dependency.acyclic",
+      "severity": "blocking",
+      "requires_facts": ["validation.dependency"],
+      "rationale": "A cyclic dependency graph has no valid resolution order."
+    },
+    {
+      "id": "VO-REG-WELLFORMED",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "registry.entries-well-formed",
+      "severity": "blocking",
+      "requires_facts": ["validation.registry"],
+      "rationale": "Registry Truth requires every entry to carry an id, kind and content hash."
+    },
+    {
+      "id": "VO-REG-UNIQUE",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "registry.ids-unique",
+      "severity": "blocking",
+      "requires_facts": ["validation.registry"],
+      "rationale": "Duplicate registry ids make canonical ownership ambiguous."
+    },
+    {
+      "id": "VO-REG-REFERENTIAL",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "registry.referential-integrity",
+      "severity": "blocking",
+      "requires_facts": ["validation.registry"],
+      "rationale": "A dangling reference breaks traceability closure."
+    },
+    {
+      "id": "VO-SCHEMA-VERSIONED",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "schema.versioned",
+      "severity": "blocking",
+      "requires_facts": ["validation.schema"],
+      "rationale": "An unversioned schema cannot be evolved compatibly (AR-03 / PL-05)."
+    },
+    {
+      "id": "VO-SCHEMA-CONFORM",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "schema.records-conform",
+      "severity": "blocking",
+      "requires_facts": ["validation.schema"],
+      "rationale": "A record that violates its schema is not admissible data."
+    },
+    {
+      "id": "VO-RUNTIME-DISCLOSURE",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "runtime.disclosure-present",
+      "severity": "blocking",
+      "requires_facts": ["validation.runtime"],
+      "rationale": "Every artifact must carry the EC-1 provisional-state disclosure (DE-05)."
+    },
+    {
+      "id": "VO-RUNTIME-IDENTITY",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "runtime.identity-deterministic",
+      "severity": "blocking",
+      "requires_facts": ["validation.runtime"],
+      "rationale": "A non-deterministic runtime identity is not reproducible (IMP-007 §5)."
+    },
+    {
+      "id": "VO-RUNTIME-IMAGE",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "runtime.image-digest-pinned",
+      "severity": "blocking",
+      "requires_facts": ["validation.runtime"],
+      "rationale": "An unpinned image reference makes the deployed artifact unverifiable."
+    },
+    {
+      "id": "VO-QUALITY-COVERAGE",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "quality.coverage-threshold",
+      "severity": "blocking",
+      "requires_facts": ["validation.quality"],
+      "rationale": "Coverage below the declared floor leaves behaviour unproven."
+    },
+    {
+      "id": "VO-QUALITY-TESTS",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "quality.tests-passing",
+      "severity": "blocking",
+      "requires_facts": ["validation.quality"],
+      "rationale": "A failing or empty test run proves nothing."
+    },
+    {
+      "id": "VO-QUALITY-LINT",
+      "stage": "validation-execution",
+      "kind": "validation-rule",
+      "ref": "quality.lint-clean",
+      "severity": "advisory",
+      "requires_facts": ["validation.quality"],
+      "rationale": "Lint findings are recorded as evidence but do not block readiness."
+    },
+    {
+      "id": "IO-CROSS-CAPABILITY",
+      "stage": "validation-intelligence",
+      "kind": "intelligence-dimension",
+      "ref": "cross_capability_consistency",
+      "severity": "blocking",
+      "requires_facts": ["intelligence.cross_capability_consistency"],
+      "rationale": "Capabilities must agree: unique ids, provided requirements, single providers."
+    },
+    {
+      "id": "IO-REPOSITORY-COMPLETENESS",
+      "stage": "validation-intelligence",
+      "kind": "intelligence-dimension",
+      "ref": "repository_completeness",
+      "severity": "blocking",
+      "requires_facts": ["intelligence.repository_completeness"],
+      "rationale": "An incomplete repository cannot support a completeness determination."
+    },
+    {
+      "id": "IO-CONTRACT-COMPATIBILITY",
+      "stage": "validation-intelligence",
+      "kind": "intelligence-dimension",
+      "ref": "contract_compatibility",
+      "severity": "blocking",
+      "requires_facts": ["intelligence.contract_compatibility"],
+      "rationale": "A removed or narrowed contract breaks existing consumers."
+    },
+    {
+      "id": "IO-ARCHITECTURE-COMPLIANCE",
+      "stage": "validation-intelligence",
+      "kind": "intelligence-dimension",
+      "ref": "architecture_compliance",
+      "severity": "blocking",
+      "requires_facts": ["intelligence.architecture_compliance"],
+      "rationale": "Declared architecture policy must actually hold over the change set."
+    },
+    {
+      "id": "IO-RUNTIME-COMPATIBILITY",
+      "stage": "validation-intelligence",
+      "kind": "intelligence-dimension",
+      "ref": "runtime_compatibility",
+      "severity": "blocking",
+      "requires_facts": ["intelligence.runtime_compatibility"],
+      "rationale": "A runtime that drops a required interface or bumps ABI major is breaking."
+    },
+    {
+      "id": "IO-VERSION-COMPATIBILITY",
+      "stage": "validation-intelligence",
+      "kind": "intelligence-dimension",
+      "ref": "version_compatibility",
+      "severity": "blocking",
+      "requires_facts": ["intelligence.version_compatibility"],
+      "rationale": "An unsatisfied inter-component version requirement is a latent break."
+    },
+    {
+      "id": "IO-GOVERNANCE-COMPLIANCE",
+      "stage": "validation-intelligence",
+      "kind": "intelligence-dimension",
+      "ref": "governance_compliance",
+      "severity": "blocking",
+      "requires_facts": ["intelligence.governance_compliance"],
+      "rationale": "Authority must stay bounded to engineering execution and be disclosed."
+    },
+    {
+      "id": "CO-VALIDATION-ACCEPTED",
+      "stage": "certification-execution",
+      "kind": "certification-criterion",
+      "ref": "validation-accepted",
+      "severity": "blocking",
+      "requires_facts": [],
+      "rationale": "Certification aggregates the validation verdict; it never re-judges it."
+    },
+    {
+      "id": "CO-VALIDATION-COMPLETE",
+      "stage": "certification-execution",
+      "kind": "certification-criterion",
+      "ref": "validation-complete",
+      "severity": "advisory",
+      "requires_facts": [],
+      "rationale": "Breadth of validation is reported but does not block certification."
+    },
+    {
+      "id": "CO-VALIDATION-EVIDENCE",
+      "stage": "certification-execution",
+      "kind": "certification-criterion",
+      "ref": "validation-evidence-present",
+      "severity": "blocking",
+      "requires_facts": [],
+      "rationale": "A determination with no evidence record is not certifiable (Rule 6)."
+    },
+    {
+      "id": "CO-MEASUREMENTS-PRESENT",
+      "stage": "certification-execution",
+      "kind": "certification-criterion",
+      "ref": "measurements-present",
+      "severity": "blocking",
+      "requires_facts": [],
+      "rationale": "Certification requires measurement, not assertion."
+    },
+    {
+      "id": "CO-MEASUREMENTS-SATISFIED",
+      "stage": "certification-execution",
+      "kind": "certification-criterion",
+      "ref": "measurements-satisfied",
+      "severity": "blocking",
+      "requires_facts": [],
+      "rationale": "Every blocking metric declared by this policy must be satisfied."
+    },
+    {
+      "id": "CO-MEASUREMENT-COMPLETE",
+      "stage": "certification-execution",
+      "kind": "certification-criterion",
+      "ref": "measurement-complete",
+      "severity": "advisory",
+      "requires_facts": [],
+      "rationale": "Measurement breadth is reported but does not block certification."
+    },
+    {
+      "id": "CO-REPOSITORY-TRUTH",
+      "stage": "certification-execution",
+      "kind": "certification-criterion",
+      "ref": "repository-truth-consistent",
+      "severity": "blocking",
+      "requires_facts": ["repository_truth"],
+      "rationale": "Certification is bound to a closed, fully homed repository-truth snapshot."
+    },
+    {
+      "id": "CO-DISCLOSURE",
+      "stage": "certification-execution",
+      "kind": "certification-criterion",
+      "ref": "disclosure-present",
+      "severity": "blocking",
+      "requires_facts": ["validation.runtime"],
+      "rationale": "The certificate must carry the EC-1 provisional-state disclosure (DE-05)."
+    },
+    {
+      "id": "CO-VERSION-PINNED",
+      "stage": "certification-execution",
+      "kind": "certification-criterion",
+      "ref": "version-pinned",
+      "severity": "blocking",
+      "requires_facts": [],
+      "rationale": "An unpinned subject version makes the certificate unattributable."
+    },
+    {
+      "id": "CO-COMPLIANCE",
+      "stage": "certification-execution",
+      "kind": "certification-criterion",
+      "ref": "compliance-conformant",
+      "severity": "blocking",
+      "requires_facts": [],
+      "rationale": "The aggregate compliance report must be conformant."
+    },
+    {
+      "id": "CF-VALIDATION",
+      "stage": "certification-execution",
+      "kind": "certification-frame",
+      "ref": "validation-conformance",
+      "severity": "blocking",
+      "requires_facts": [],
+      "rationale": "Frames the validation verdict as a conformance statement."
+    },
+    {
+      "id": "CF-VALIDATION-EVIDENCE",
+      "stage": "certification-execution",
+      "kind": "certification-frame",
+      "ref": "validation-evidence-conformance",
+      "severity": "blocking",
+      "requires_facts": [],
+      "rationale": "Frames the presence and binding of the validation evidence record."
+    },
+    {
+      "id": "CF-MEASUREMENT",
+      "stage": "certification-execution",
+      "kind": "certification-frame",
+      "ref": "measurement-conformance",
+      "severity": "blocking",
+      "requires_facts": [],
+      "rationale": "Frames the measured metrics as a conformance statement."
+    },
+    {
+      "id": "CF-REPOSITORY-TRUTH",
+      "stage": "certification-execution",
+      "kind": "certification-frame",
+      "ref": "repository-truth-conformance",
+      "severity": "blocking",
+      "requires_facts": ["repository_truth"],
+      "rationale": "Frames repository-truth closure as a conformance statement."
+    },
+    {
+      "id": "CF-DISCLOSURE",
+      "stage": "certification-execution",
+      "kind": "certification-frame",
+      "ref": "disclosure-conformance",
+      "severity": "blocking",
+      "requires_facts": ["validation.runtime"],
+      "rationale": "Frames the EC-1 disclosure as a conformance statement."
+    }
+  ],
+  "gates": [
+    {
+      "id": "AG-01",
+      "name": "Validation Plan Gate",
+      "stages": ["validation-planning", "validation-generation"],
+      "obligations": []
+    },
+    {
+      "id": "AG-02",
+      "name": "Validation Execution Gate",
+      "stages": ["validation-execution"],
+      "obligations": [
+        "VO-ARCH-LAYERS",
+        "VO-ARCH-ACYCLIC",
+        "VO-ARCH-LAYERING",
+        "VO-ARCH-FROZEN",
+        "VO-IMPL-MODULES",
+        "VO-IMPL-ENTRYPOINTS",
+        "VO-DEP-PINNED",
+        "VO-DEP-RESOLVED",
+        "VO-DEP-ACYCLIC",
+        "VO-REG-WELLFORMED",
+        "VO-REG-UNIQUE",
+        "VO-REG-REFERENTIAL",
+        "VO-SCHEMA-VERSIONED",
+        "VO-SCHEMA-CONFORM",
+        "VO-RUNTIME-DISCLOSURE",
+        "VO-RUNTIME-IDENTITY",
+        "VO-RUNTIME-IMAGE",
+        "VO-QUALITY-COVERAGE",
+        "VO-QUALITY-TESTS"
+      ]
+    },
+    {
+      "id": "AG-03",
+      "name": "Evidence Gate",
+      "stages": ["evidence-collection"],
+      "obligations": []
+    },
+    {
+      "id": "AG-04",
+      "name": "Certification Gate",
+      "stages": [
+        "certification-planning",
+        "certification-execution",
+        "certification-evidence"
+      ],
+      "obligations": [
+        "CO-VALIDATION-ACCEPTED",
+        "CO-VALIDATION-EVIDENCE",
+        "CO-MEASUREMENTS-PRESENT",
+        "CO-MEASUREMENTS-SATISFIED",
+        "CO-REPOSITORY-TRUTH",
+        "CO-DISCLOSURE",
+        "CO-VERSION-PINNED",
+        "CO-COMPLIANCE",
+        "CF-VALIDATION",
+        "CF-VALIDATION-EVIDENCE",
+        "CF-MEASUREMENT",
+        "CF-REPOSITORY-TRUTH",
+        "CF-DISCLOSURE"
+      ]
+    },
+    {
+      "id": "AG-05",
+      "name": "Certification Registry Gate",
+      "stages": ["certification-registry"],
+      "obligations": []
+    },
+    {
+      "id": "AG-06",
+      "name": "Validation Intelligence Gate",
+      "stages": ["validation-intelligence"],
+      "obligations": [
+        "IO-CROSS-CAPABILITY",
+        "IO-REPOSITORY-COMPLETENESS",
+        "IO-CONTRACT-COMPATIBILITY",
+        "IO-ARCHITECTURE-COMPLIANCE",
+        "IO-RUNTIME-COMPATIBILITY",
+        "IO-VERSION-COMPATIBILITY",
+        "IO-GOVERNANCE-COMPLIANCE"
+      ]
+    },
+    {
+      "id": "AG-07",
+      "name": "Certification Intelligence Gate",
+      "stages": ["certification-intelligence"],
+      "obligations": []
+    }
+  ],
+  "metrics": [
+    {
+      "id": "M-PLAN-UNSATISFIABLE",
+      "stage": "validation-planning",
+      "observation": "plan.unsatisfiable_obligations",
+      "comparator": "le",
+      "threshold": 0,
+      "severity": "blocking",
+      "unit": "obligations",
+      "rationale": "Every planned obligation must have the facts it needs to be decidable."
+    },
+    {
+      "id": "M-PLAN-COVERAGE",
+      "stage": "validation-planning",
+      "observation": "plan.obligation_coverage",
+      "comparator": "ge",
+      "threshold": 1.0,
+      "severity": "blocking",
+      "unit": "ratio",
+      "rationale": "Every policy obligation for the stage must appear in the plan."
+    },
+    {
+      "id": "M-GEN-UNBOUND",
+      "stage": "validation-generation",
+      "observation": "suite.unbound_obligations",
+      "comparator": "le",
+      "threshold": 0,
+      "severity": "blocking",
+      "unit": "obligations",
+      "rationale": "An obligation with no reusable implementation cannot be executed."
+    },
+    {
+      "id": "M-GEN-BINDING-COVERAGE",
+      "stage": "validation-generation",
+      "observation": "suite.binding_coverage",
+      "comparator": "ge",
+      "threshold": 1.0,
+      "severity": "blocking",
+      "unit": "ratio",
+      "rationale": "The generated suite must cover the whole plan."
+    },
+    {
+      "id": "M-EXEC-COVERAGE",
+      "stage": "validation-execution",
+      "observation": "execution.obligation_coverage",
+      "comparator": "ge",
+      "threshold": 1.0,
+      "severity": "blocking",
+      "unit": "ratio",
+      "rationale": "Every generated check must actually execute and report."
+    },
+    {
+      "id": "M-EXEC-BLOCKING",
+      "stage": "validation-execution",
+      "observation": "execution.blocking_failures",
+      "comparator": "le",
+      "threshold": 0,
+      "severity": "blocking",
+      "unit": "findings",
+      "rationale": "A blocking validation failure closes the validation gate."
+    },
+    {
+      "id": "M-EXEC-ADVISORY",
+      "stage": "validation-execution",
+      "observation": "execution.advisory_failures",
+      "comparator": "le",
+      "threshold": 0,
+      "severity": "advisory",
+      "unit": "findings",
+      "rationale": "Advisory failures are measured and reported, never gating."
+    },
+    {
+      "id": "M-EVIDENCE-MISSING",
+      "stage": "evidence-collection",
+      "observation": "evidence.missing_required_artifacts",
+      "comparator": "le",
+      "threshold": 0,
+      "severity": "blocking",
+      "unit": "artifacts",
+      "rationale": "Every policy-required evidence artifact must be collected (Rule 6)."
+    },
+    {
+      "id": "M-EVIDENCE-INTEGRITY",
+      "stage": "evidence-collection",
+      "observation": "evidence.manifest_intact",
+      "comparator": "ge",
+      "threshold": 1,
+      "severity": "blocking",
+      "unit": "boolean",
+      "rationale": "Every artifact digest must match a recomputation of its payload."
+    },
+    {
+      "id": "M-CERT-PLAN-UNSATISFIABLE",
+      "stage": "certification-planning",
+      "observation": "certification_plan.unsatisfiable_obligations",
+      "comparator": "le",
+      "threshold": 0,
+      "severity": "blocking",
+      "unit": "obligations",
+      "rationale": "Every planned certification criterion must be decidable."
+    },
+    {
+      "id": "M-CERT-BLOCKING",
+      "stage": "certification-execution",
+      "observation": "certification.blocking_failures",
+      "comparator": "le",
+      "threshold": 0,
+      "severity": "blocking",
+      "unit": "findings",
+      "rationale": "A blocking criterion failure yields NOT-CERTIFIED (fail-closed)."
+    },
+    {
+      "id": "M-CERT-GATES",
+      "stage": "certification-execution",
+      "observation": "certification.gate_pass_ratio",
+      "comparator": "ge",
+      "threshold": 1.0,
+      "severity": "blocking",
+      "unit": "ratio",
+      "rationale": "Every policy gate must pass before a certificate may be issued."
+    },
+    {
+      "id": "M-CERT-EVIDENCE-INTEGRITY",
+      "stage": "certification-evidence",
+      "observation": "certification_evidence.certificate_intact",
+      "comparator": "ge",
+      "threshold": 1,
+      "severity": "blocking",
+      "unit": "boolean",
+      "rationale": "The certificate must verify against a recomputation of its content hash."
+    },
+    {
+      "id": "M-CERT-AUDIT",
+      "stage": "certification-evidence",
+      "observation": "certification_evidence.audit_entries",
+      "comparator": "ge",
+      "threshold": 1,
+      "severity": "blocking",
+      "unit": "entries",
+      "rationale": "Every certification run must leave an audit trail."
+    },
+    {
+      "id": "M-REGISTRY-INTACT",
+      "stage": "certification-registry",
+      "observation": "registry.chain_intact",
+      "comparator": "ge",
+      "threshold": 1,
+      "severity": "blocking",
+      "unit": "boolean",
+      "rationale": "The append-only registry hash chain must verify end to end."
+    },
+    {
+      "id": "M-REGISTRY-REGISTERED",
+      "stage": "certification-registry",
+      "observation": "registry.entries",
+      "comparator": "ge",
+      "threshold": 1,
+      "severity": "blocking",
+      "unit": "entries",
+      "rationale": "A certification determination that is not registered is not discoverable."
+    },
+    {
+      "id": "M-VINTEL-BLOCKING",
+      "stage": "validation-intelligence",
+      "observation": "validation_intelligence.blocking_failures",
+      "comparator": "le",
+      "threshold": 0,
+      "severity": "blocking",
+      "unit": "findings",
+      "rationale": "A blocking intelligence finding closes the intelligence gate."
+    },
+    {
+      "id": "M-VINTEL-COVERAGE",
+      "stage": "validation-intelligence",
+      "observation": "validation_intelligence.dimension_coverage",
+      "comparator": "ge",
+      "threshold": 1.0,
+      "severity": "blocking",
+      "unit": "ratio",
+      "rationale": "Every planned intelligence dimension must be analyzed."
+    },
+    {
+      "id": "M-CINTEL-BLOCKING",
+      "stage": "certification-intelligence",
+      "observation": "certification_intelligence.blocking_failures",
+      "comparator": "le",
+      "threshold": 0,
+      "severity": "blocking",
+      "unit": "findings",
+      "rationale": "A blocking certification-intelligence finding closes the gate."
+    },
+    {
+      "id": "M-CINTEL-READINESS",
+      "stage": "certification-intelligence",
+      "observation": "certification_intelligence.readiness",
+      "comparator": "ge",
+      "threshold": 1.0,
+      "severity": "blocking",
+      "unit": "ratio",
+      "rationale": "Certification readiness must be complete, not partial."
+    },
+    {
+      "id": "M-CINTEL-REPRODUCIBLE",
+      "stage": "certification-intelligence",
+      "observation": "certification_intelligence.byte_identical",
+      "comparator": "ge",
+      "threshold": 1,
+      "severity": "blocking",
+      "unit": "boolean",
+      "rationale": "Independent replays of the run must be byte-identical (IMP-007 §5)."
+    }
+  ],
+  "evidence": {
+    "artifacts": [
+      {
+        "id": "EV-VALIDATION-PLAN",
+        "stage": "validation-planning",
+        "name": "validation-plan",
+        "required": true
+      },
+      {
+        "id": "EV-VALIDATION-SUITE",
+        "stage": "validation-generation",
+        "name": "validation-suite",
+        "required": true
+      },
+      {
+        "id": "EV-VALIDATION-REPORT",
+        "stage": "validation-execution",
+        "name": "validation-report",
+        "required": true
+      },
+      {
+        "id": "EV-VALIDATION-EVIDENCE",
+        "stage": "validation-execution",
+        "name": "validation-evidence",
+        "required": true
+      },
+      {
+        "id": "EV-SUBJECT",
+        "stage": "evidence-collection",
+        "name": "assurance-subject",
+        "required": true
+      },
+      {
+        "id": "EV-POLICY",
+        "stage": "evidence-collection",
+        "name": "assurance-policy",
+        "required": true
+      },
+      {
+        "id": "EV-MEASUREMENT",
+        "stage": "evidence-collection",
+        "name": "measurement-report",
+        "required": true
+      },
+      {
+        "id": "EV-CERTIFICATION-PLAN",
+        "stage": "certification-planning",
+        "name": "certification-plan",
+        "required": true
+      },
+      {
+        "id": "EV-CERTIFICATION-DECISION",
+        "stage": "certification-execution",
+        "name": "certification-decision",
+        "required": true
+      },
+      {
+        "id": "EV-CERTIFICATE",
+        "stage": "certification-execution",
+        "name": "certificate",
+        "required": true
+      },
+      {
+        "id": "EV-CERTIFICATION-EVIDENCE",
+        "stage": "certification-evidence",
+        "name": "certification-evidence",
+        "required": true
+      },
+      {
+        "id": "EV-CERTIFICATION-AUDIT",
+        "stage": "certification-evidence",
+        "name": "certification-audit-ledger",
+        "required": true
+      },
+      {
+        "id": "EV-CERTIFICATION-REGISTRY",
+        "stage": "certification-registry",
+        "name": "certification-registry",
+        "required": true
+      },
+      {
+        "id": "EV-VALIDATION-INTELLIGENCE",
+        "stage": "validation-intelligence",
+        "name": "validation-intelligence-report",
+        "required": true
+      },
+      {
+        "id": "EV-VALIDATION-INTELLIGENCE-EVIDENCE",
+        "stage": "validation-intelligence",
+        "name": "validation-intelligence-evidence",
+        "required": true
+      },
+      {
+        "id": "EV-CERTIFICATION-INTELLIGENCE",
+        "stage": "certification-intelligence",
+        "name": "certification-intelligence-report",
+        "required": true
+      },
+      {
+        "id": "EV-REPRODUCIBILITY",
+        "stage": "certification-intelligence",
+        "name": "reproducibility-report",
+        "required": true
+      }
+    ],
+    "forbidden_write_prefixes": ["00-BOOK/", "00-SOURCE/", "99-FREEZE/"]
+  },
+  "bindings": {
+    "disclosure_rule": "runtime.disclosure-present",
+    "disclosure_check_id": "provisional-state-disclosure",
+    "certification_class": "universal-readiness",
+    "measurement_source": "platform.universal_assurance.measurement",
+    "evidence_root": ".runtime/assurance",
+    "registry_id": "UCOS-ASSURANCE-REGISTRY-001",
+    "submitter": "ucos-universal-assurance"
+  },
+  "reproducibility": {
+    "replays": 2,
+    "byte_identical_required": true
+  }
+}

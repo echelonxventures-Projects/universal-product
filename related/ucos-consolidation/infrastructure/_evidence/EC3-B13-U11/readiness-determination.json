@@ -1,0 +1,24 @@
+{
+  "definitions": {
+    "BRC-1": "Completeness — every leaf meta-class realized (all ten concern units CERTIFIED).",
+    "BRC-2": "Dependency closure — realized founding graph downward-only, acyclic, closed.",
+    "BRC-3": "Coverage — each UIMM leaf owned by exactly one unit; complete and non-overlapping.",
+    "BRC-4": "Consistency — no contradiction across units; UIL/WF alignments hold (UIMM closure).",
+    "BRC-5": "Reuse integrity — no redefinition; no new primitive; frozen refs intact.",
+    "BRC-6": "Foundation intact — EC-1/EC-2/DF-2/SF-2/AF freeze preserved (non-constitutive).",
+    "BRC-7": "Discipline conformance — every unit passed UCIC-001 + CCE + determinism.",
+    "BRC-8": "Meta-validity — U10 UIMM CERTIFIED; UIMM-CONF total over the realized set."
+  },
+  "readiness_criteria": {
+    "BRC-1": true,
+    "BRC-2": true,
+    "BRC-3": true,
+    "BRC-4": true,
+    "BRC-5": true,
+    "BRC-6": true,
+    "BRC-7": true,
+    "BRC-8": true
+  },
+  "ready": true,
+  "unit": "EC3-B13-U11"
+}

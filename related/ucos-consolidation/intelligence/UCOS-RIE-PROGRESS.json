@@ -1,0 +1,152 @@
+{
+  "artifact_id": "UCOS-RIE-PROGRESS",
+  "authoritative_portfolio_status": "IN_PROGRESS — analysis/architecture/generation complete; runtime testing/deployment pending EC-1",
+  "authority": "NONE (derived truth)",
+  "classification": "ADDITIVE INTELLIGENCE (machine-readable) — derived, non-authoritative",
+  "content_hash": "07d1668174f7f371ffa862966c45d9f505843e40994c771883eb9cbfbfea93c0",
+  "dimension_index_literal_pct": 26.7,
+  "dimension_index_reconciled_pct": 26.7,
+  "dimensions_counted": 15,
+  "evidence_state": {
+    "evidence_files": {
+      "00-BOOK/DATA/artifacts.json": "aa096e10c9cc0b9ff0a04da62746892dea54153893b3f9633783072584fb4abe",
+      "00-BOOK/DATA/certification.json": "493c11ef1c1a084a7afad786296384857d8333160458e019fcfe3a3d132261a1",
+      "00-BOOK/DATA/control-tower.json": "3afbb9b010911fad12eaca81793e7039935140f58930fefb00784a04d48fdaec",
+      "00-BOOK/DATA/twin.json": "c50247cea005c7c40ce60e45bbcceca231cc9836efa24f263da03c2312da4128",
+      "00-BOOK/DATA/volumes.json": "bca13cfe0aaf66f50d10637463be8ab952bc2acdbecac66894c21018b6a897b5"
+    }
+  },
+  "evidence_timestamp": "2026-09-13T23:56:07+00:00",
+  "generation": {
+    "anchor": "the containing commit — owned by version control, never restated here (UCOS-RFP-001 RFP-2)",
+    "generator": "UCOS-RIE-001 Repository Intelligence Engine",
+    "generator_version": "1.0.0",
+    "input_hash": "e90d065033a34cc1c4ef51c91909bef4a7edc840cdae3ce21a42ad2e453ad402",
+    "input_hash_basis": "sha256 over the canonical evidence fingerprint — every 00-BOOK/DATA evidence file hash, which together pin the tracked state these outputs derive from. Coverage measurement (TEST_EXECUTION_STATE) is excluded per UCOS-P0-FCL-002-FIX-001 — it is not canonical identity input.",
+    "output_hash_field": "content_hash"
+  },
+  "per_dimension": {
+    "architecture": {
+      "as_of": "2026-09-13T23:56:07+00:00",
+      "literal_score": 1.0,
+      "reconciled_score": 1.0,
+      "source": "MANUAL",
+      "stale": false,
+      "status": "APPROVED"
+    },
+    "build": {
+      "as_of": "2026-07-15T08:05:00Z",
+      "literal_score": 0.0,
+      "reconciled_score": 0.0,
+      "source": "GITHUB_ACTIONS",
+      "stale": true,
+      "status": "BLOCKED"
+    },
+    "certification": {
+      "as_of": "2026-09-13T23:56:07+00:00",
+      "literal_score": 1.0,
+      "reconciled_score": 1.0,
+      "source": "MANUAL",
+      "stale": false,
+      "status": "CERTIFIED"
+    },
+    "deployment": {
+      "as_of": "2026-07-15T08:33:00Z",
+      "literal_score": 0.5,
+      "reconciled_score": 0.5,
+      "source": "KUBERNETES",
+      "stale": true,
+      "status": "IN_PROGRESS"
+    },
+    "execution": {
+      "as_of": "2026-09-13T23:56:07+00:00",
+      "literal_score": 0.0,
+      "reconciled_score": 0.0,
+      "source": "MANUAL",
+      "stale": false,
+      "status": "NOT_STARTED"
+    },
+    "functional_testing": {
+      "as_of": "2026-09-13T23:56:07+00:00",
+      "literal_score": 0.0,
+      "reconciled_score": 0.0,
+      "source": "MANUAL",
+      "stale": false,
+      "status": "NOT_STARTED"
+    },
+    "implementation": {
+      "as_of": "2026-07-16T09:56:37+05:30",
+      "literal_score": 1.0,
+      "reconciled_score": 1.0,
+      "source": "GIT",
+      "stale": true,
+      "status": "IMPLEMENTED"
+    },
+    "integration_testing": {
+      "as_of": "2026-09-13T23:56:07+00:00",
+      "literal_score": 0.0,
+      "reconciled_score": 0.0,
+      "source": "MANUAL",
+      "stale": false,
+      "status": "NOT_STARTED"
+    },
+    "operational": {
+      "as_of": "2026-07-15T08:22:00Z",
+      "literal_score": 0.0,
+      "reconciled_score": 0.0,
+      "source": "PROMETHEUS",
+      "stale": true,
+      "status": "BLOCKED"
+    },
+    "performance_testing": {
+      "as_of": "2026-09-13T23:56:07+00:00",
+      "literal_score": 0.0,
+      "reconciled_score": 0.0,
+      "source": "MANUAL",
+      "stale": false,
+      "status": "NOT_STARTED"
+    },
+    "portfolio": {
+      "as_of": "2026-09-13T23:56:07+00:00",
+      "literal_score": 0.5,
+      "reconciled_score": 0.5,
+      "source": "MANUAL",
+      "stale": false,
+      "status": "IN_PROGRESS"
+    },
+    "production": {
+      "as_of": "2026-07-15T08:22:00Z",
+      "literal_score": 0.0,
+      "reconciled_score": 0.0,
+      "source": "PROMETHEUS",
+      "stale": true,
+      "status": "BLOCKED"
+    },
+    "release": {
+      "as_of": "2026-09-13T23:56:07+00:00",
+      "literal_score": 0.0,
+      "reconciled_score": 0.0,
+      "source": "MANUAL",
+      "stale": false,
+      "status": "NOT_STARTED"
+    },
+    "security": {
+      "as_of": "2026-07-15T08:12:00Z",
+      "literal_score": 0.0,
+      "reconciled_score": 0.0,
+      "source": "TRIVY",
+      "stale": true,
+      "status": "BLOCKED"
+    },
+    "unit_testing": {
+      "as_of": "2026-07-15T08:05:00Z",
+      "literal_score": 0.0,
+      "reconciled_score": 0.0,
+      "source": "GITHUB_ACTIONS",
+      "stale": true,
+      "status": "BLOCKED"
+    }
+  },
+  "producer": "UCOS-RIE-001 Repository Intelligence Engine v1.0.0",
+  "title": "Progress Intelligence Report"
+}

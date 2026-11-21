@@ -1,0 +1,76 @@
+{
+  "compliance_format": "ucos-application-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "security-typed",
+        "security-identified-objectbound"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UAL-03), identified and objecthood-bound (UAL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UAL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "security-data-by-reference"
+      ],
+      "id": "C3",
+      "note": "capability delivery via SF-2 operations (UAL-06) is scoped to the Feature/Capability units (AMC-02/04); a security record classifies protection concerns, consuming no operation — the data clause (UAL-13) is materially exercised: the record presents DF-2/DATA-014 data by reference (AMR-14 / SEC-06)",
+      "requirement": "Delivers capability via SF-2 operations under contract; I/O is DF-2 by ref (UAL-06/13).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "security-classifies-boundary",
+        "security-classified"
+      ],
+      "id": "C4",
+      "note": "the module/feature/interaction clauses (UAL-07/08/11) are scoped to the Module (AMC-03), Feature (AMC-04), and Interaction (AMC-06) units; the security analog is materially exercised — the record classifies declared application boundaries (AMR-08 / SEC-07)",
+      "requirement": "Modules bounded, features explicit, interactions typed (UAL-07/08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "security-no-new-connection",
+        "founding-acyclic",
+        "meta-relationships-closed"
+      ],
+      "id": "C5",
+      "note": "the composition clause (UAL-09) is scoped to the Composition unit (AMC-08); the security analog is materially exercised — the record binds every subject/governance/data/behavior link by ENG-005 reference and participates in no founding edge (founding graph vacuously acyclic)",
+      "requirement": "Composition uses ENG-005 references; founding structure acyclic (UAL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "security-behavior-by-reference",
+        "lifecycle-valid"
+      ],
+      "id": "C6",
+      "note": "materially exercised — the security-evaluate behavior binds the frozen RL-F2 RUNTIME policy concern by reference (§7 / AMK-05) and the record advances forward-only through the AOS-01…06 lifecycle (UAL-10/12)",
+      "requirement": "Workflow/process and state bind to RL-F2/SF-2 by reference (UAL-10/12).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive",
+        "technology-independence",
+        "security-evaluative-nonenforcing"
+      ],
+      "id": "C7",
+      "note": "materially exercised — THE governing condition of AMC-09: the record is declarative, evaluative, and non-enforcing (UAL-14), selects no security/cryptographic technology (SEC-05), grants no access and issues no credential (SEC-04 / SEC-C2), confers no authority and embeds no secret (UAL-15 / SEC-09 / RR-07)",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (UAL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "APPLICATION-001 §12",
+  "target_id": "UCOS-SECURITY-ucos.application.security.foundation-22c4f6543bd9f76c"
+}

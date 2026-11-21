@@ -1,0 +1,479 @@
+{
+  "programme": {
+    "id": "UER-000001",
+    "name": "Universal Execution Resilience",
+    "programme_directive": "Ω∞-001A",
+    "version": "1.0",
+    "authority": "NONE — DERIVED TRUTH",
+    "mission": "Constitutionalize execution resilience so every future autonomous UCOS Ω∞ programme automatically inherits deterministic recovery, checkpointing, resumability and execution safety — by binding the execution infrastructure that already exists, reusing it verbatim, and duplicating nothing.",
+    "governing_instrument": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+    "governed_by": [
+      "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md",
+      "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+      "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md"
+    ],
+    "operational_home": "00-MASTER/UER-000001/",
+    "operational_memory_owner": "00-MASTER/MCS-000-MASTER-CONTEXT-SYSTEM-ARCHITECTURE.md",
+    "recovery_owner": "00-MASTER/MCP-007-MASTER-RECOVERY.md",
+    "execution_owner": "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+    "aggregate_gate_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+    "registration_owner": "00-BOOK/tools/register.sh",
+    "gate_name": "Execution Resilience Gate",
+    "gate_clause": "Ω∞-001A EXIT CRITERIA",
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "00-BOOK/",
+      "engine/",
+      "platform/",
+      "data/",
+      "service/",
+      "application/",
+      "infrastructure/",
+      "00-CEP/",
+      "00-CMG/",
+      "adr/"
+    ]
+  },
+  "outputs": [
+    {
+      "id": "UER-OUT-00",
+      "file": "00-UER-DASHBOARD.md",
+      "title": "Universal Execution Resilience — Dashboard",
+      "purpose": "The single-glance state of the programme: capability coverage, pipeline binding, validation, health, and the Execution Resilience Gate verdict.",
+      "capability": null
+    },
+    {
+      "id": "UER-OUT-01",
+      "file": "01-UNIVERSAL-EXECUTION-RESILIENCE-CONSTITUTION.md",
+      "title": "Universal Execution Resilience Constitution",
+      "purpose": "The constitutional contract binding the ten resilience capabilities, the execution and interruption-recovery pipelines, and the mandatory validations to their existing repository homes — inherited by every future autonomous programme.",
+      "capability": null
+    },
+    {
+      "id": "UER-OUT-02",
+      "file": "02-UNIVERSAL-CHECKPOINT-POLICY.md",
+      "title": "Universal Checkpoint Policy",
+      "purpose": "The policy governing when and how execution checkpoints are established and what a checkpoint must contain, bound to the existing checkpoint infrastructure.",
+      "capability": "UER-CAP-01"
+    },
+    {
+      "id": "UER-OUT-03",
+      "file": "03-UNIVERSAL-RECOVERY-POLICY.md",
+      "title": "Universal Recovery Policy",
+      "purpose": "The policy governing interruption detection, recovery-point establishment, partial-write completion, and resumption without restart, bound to the existing recovery engine and master recovery procedures.",
+      "capability": "UER-CAP-03"
+    },
+    {
+      "id": "UER-OUT-04",
+      "file": "04-UNIVERSAL-ATOMIC-WRITE-SPECIFICATION.md",
+      "title": "Universal Atomic Write Specification",
+      "purpose": "The specification of the constitutional atomic-write flow (generate → validate → write → verify → checkpoint → continue), bound to the existing atomic-write and deterministic-persistence infrastructure.",
+      "capability": "UER-CAP-04"
+    },
+    {
+      "id": "UER-OUT-05",
+      "file": "05-UNIVERSAL-EXECUTION-JOURNAL-SPECIFICATION.md",
+      "title": "Universal Execution Journal Specification",
+      "purpose": "The specification of the append-only execution journal that records every decision, write, validation, certification, checkpoint, interruption and recovery, bound to the existing auditing and telemetry infrastructure.",
+      "capability": "UER-CAP-02"
+    },
+    {
+      "id": "UER-OUT-06",
+      "file": "06-UNIVERSAL-WORK-PACKAGE-LEDGER-SPECIFICATION.md",
+      "title": "Universal Work Package Ledger Specification",
+      "purpose": "The specification of the work-package ledger recording identifier, objective, dependencies, execution/validation/certification status, checkpoint reference and completion evidence, bound to the existing master execution program and work-package registers.",
+      "capability": "UER-CAP-06"
+    },
+    {
+      "id": "UER-OUT-07",
+      "file": "07-UNIVERSAL-CONTINUATION-PACKAGE-SPECIFICATION.md",
+      "title": "Universal Continuation Package Specification",
+      "purpose": "The specification of the continuation package (the mandatory input to the next autonomous session), bound to the existing master state and append-only checkpoint anchors.",
+      "capability": "UER-CAP-07"
+    },
+    {
+      "id": "UER-OUT-08",
+      "file": "08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "title": "Universal Replay Protection Specification",
+      "purpose": "The specification of replay/duplication detection and prevention, bound to the existing byte-for-byte replay validation, determinism evidence, and registration drift guard.",
+      "capability": "UER-CAP-08"
+    },
+    {
+      "id": "UER-OUT-09",
+      "file": "09-UNIVERSAL-EXECUTION-HEALTH-SPECIFICATION.md",
+      "title": "Universal Execution Health Specification",
+      "purpose": "The specification of continuous execution-health intelligence (stability, interruption frequency, recovery success, checkpoint quality, repository integrity, execution and completion confidence), bound to the existing health, diagnostics, metrics and monitoring infrastructure.",
+      "capability": "UER-CAP-10"
+    },
+    {
+      "id": "UER-OUT-10",
+      "file": "10-VALIDATION-REPORT.md",
+      "title": "Universal Execution Resilience — Validation Report",
+      "purpose": "The mandatory validation of checkpoint, repository, execution, write, dependency, replay, recovery and continuation integrity, computed from Repository Truth.",
+      "capability": null
+    },
+    {
+      "id": "UER-OUT-11",
+      "file": "11-CERTIFICATION-REPORT.md",
+      "title": "Universal Execution Resilience — Certification Report",
+      "purpose": "The certification verdict: every mandatory capability covered, every pipeline step bound, every validation satisfied — or the precise deficiency that blocks certification.",
+      "capability": null
+    },
+    {
+      "id": "UER-OUT-12",
+      "file": "12-EXECUTION-READINESS-REPORT.md",
+      "title": "Universal Execution Resilience — Execution Readiness Report",
+      "purpose": "The readiness determination against the programme exit criteria, stating what is verified and what, if anything, remains.",
+      "capability": null
+    },
+    {
+      "id": "UER-OUT-13",
+      "file": "13-CONTINUATION-PACKAGE.md",
+      "title": "Universal Execution Resilience — Continuation Package",
+      "purpose": "The mandatory continuation package for the next autonomous session: repository state, completed work, remaining work, current checkpoint, dependency state, open issues, architectural decisions, implementation roadmap and recommended next programme.",
+      "capability": null
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "UER-CAP-01",
+      "name": "Universal Checkpoint Framework",
+      "mandate": "IMPLEMENT 1",
+      "objective": "Automatically establish deterministic, self-contained execution checkpoints from which execution can be resumed.",
+      "required_properties": [
+        "execution state",
+        "completed work packages",
+        "repository state",
+        "validation state",
+        "certification state",
+        "evidence references",
+        "dependency status",
+        "continuation point"
+      ],
+      "reuse": "The runtime execution platform already realises deterministic, byte-identical, resumable checkpoints (EPIC-RTE-002) and repository operations already persist a config-digest-keyed resumable checkpoint; the master recovery instrument already defines the append-only session checkpoint format and store. This programme binds them; it introduces no new checkpoint mechanism.",
+      "homes": [
+        "engine/runtime/execution/checkpoint.py",
+        "platform/repository_operations/checkpoint.py",
+        "engine/runtime/execution/snapshot.py",
+        "engine/runtime/execution/persistence.py",
+        "00-MASTER/CHECKPOINTS/"
+      ],
+      "evidence": [
+        "engine/runtime/execution/checkpoint.py",
+        "platform/repository_operations/checkpoint.py",
+        "00-MASTER/MCP-007-MASTER-RECOVERY.md §03",
+        "00-MASTER/CHECKPOINTS/",
+        "engine/tests/unit/test_execution_persistence.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UER-CAP-02",
+      "name": "Universal Execution Journal",
+      "mandate": "IMPLEMENT 2",
+      "objective": "Record every decision, write, validation, certification, checkpoint, interruption and recovery as append-only repository evidence.",
+      "required_properties": [
+        "every decision",
+        "every write",
+        "every validation",
+        "every certification",
+        "every checkpoint",
+        "every interruption",
+        "every recovery"
+      ],
+      "reuse": "The execution platform already records an ordered audit log; governance telemetry already owns the single append-only audit history with one writer, one monotonic sequence and atomic writes; the master execution and traceability instruments already journal every capability transition. This programme binds them as the execution journal.",
+      "homes": [
+        "engine/runtime/execution/auditing.py",
+        "00-BOOK/tools/governance_telemetry.py",
+        "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+        "00-MASTER/MCP-006-MASTER-TRACEABILITY.md"
+      ],
+      "evidence": [
+        "engine/runtime/execution/auditing.py",
+        "00-BOOK/tools/governance_telemetry.py",
+        "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+        "00-MASTER/MCP-006-MASTER-TRACEABILITY.md"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UER-CAP-03",
+      "name": "Universal Recovery Engine",
+      "mandate": "IMPLEMENT 3",
+      "objective": "Detect interruption, verify the repository, locate the latest checkpoint, verify completed work, detect partial writes, finish only incomplete work, and continue — never restarting from the beginning unless integrity cannot be recovered.",
+      "required_properties": [
+        "detect interruption",
+        "verify repository",
+        "locate latest checkpoint",
+        "verify completed work",
+        "detect partial writes",
+        "finish incomplete work",
+        "continue execution"
+      ],
+      "reuse": "The execution platform already computes the last consistent recovery point and recovers-and-continues from it, reusing checkpoint and continuation verbatim; the master recovery instrument already defines the recovery decision tree, the recovery procedures and crash/repository recovery. This programme binds them; it introduces no new recovery mechanism.",
+      "homes": [
+        "engine/runtime/execution/recovery.py",
+        "00-MASTER/MCP-007-MASTER-RECOVERY.md"
+      ],
+      "evidence": [
+        "engine/runtime/execution/recovery.py",
+        "engine/runtime/execution/continuation.py",
+        "00-MASTER/MCP-007-MASTER-RECOVERY.md §02",
+        "00-MASTER/MCP-007-MASTER-RECOVERY.md §05"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UER-CAP-04",
+      "name": "Universal Atomic Write Framework",
+      "mandate": "IMPLEMENT 4",
+      "objective": "Perform every large write as a constitutional atomic operation — generate, validate, write, verify, checkpoint, continue — never assuming a write succeeded, always verifying.",
+      "required_properties": [
+        "generate",
+        "validate",
+        "write",
+        "verify",
+        "checkpoint",
+        "continue"
+      ],
+      "reuse": "Governance telemetry already performs atomic writes (temp file + os.replace) so a concurrent reader never observes a half-written record; repository operations already write checkpoints deterministically with sorted keys; execution persistence already provides canonical serialisation and verified restoration. This programme binds them as the atomic-write flow.",
+      "homes": [
+        "00-BOOK/tools/governance_telemetry.py",
+        "platform/repository_operations/checkpoint.py",
+        "engine/runtime/execution/persistence.py"
+      ],
+      "evidence": [
+        "00-BOOK/tools/governance_telemetry.py",
+        "platform/repository_operations/checkpoint.py",
+        "engine/runtime/execution/persistence.py",
+        "engine/tests/unit/test_execution_persistence.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UER-CAP-05",
+      "name": "Universal Resume Framework",
+      "mandate": "IMPLEMENT 5",
+      "objective": "Automatically resume from the last verified checkpoint, never regenerating completed artefacts, never overwriting verified work, never duplicating execution.",
+      "required_properties": [
+        "resume from last verified checkpoint",
+        "never regenerate completed artefacts",
+        "never overwrite verified work",
+        "never duplicate execution"
+      ],
+      "reuse": "The execution platform already resumes a run from any checkpoint and verifies the resumed run reproduces the original per-universe state; repository operations already skip PASSED stages on a resumed run; the master recovery instrument already defines the session continuation contract. This programme binds them; it introduces no new resume mechanism.",
+      "homes": [
+        "engine/runtime/execution/continuation.py",
+        "platform/repository_operations/engine.py",
+        "00-MASTER/MCP-007-MASTER-RECOVERY.md"
+      ],
+      "evidence": [
+        "engine/runtime/execution/continuation.py",
+        "00-MASTER/MCP-007-MASTER-RECOVERY.md §01",
+        "engine/tests/unit/test_runtime_bridge.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UER-CAP-06",
+      "name": "Universal Work Package Ledger",
+      "mandate": "IMPLEMENT 6",
+      "objective": "Record for every work package its identifier, objective, dependencies, execution status, validation status, certification status, checkpoint reference and completion evidence.",
+      "required_properties": [
+        "identifier",
+        "objective",
+        "dependencies",
+        "execution status",
+        "validation status",
+        "certification status",
+        "checkpoint reference",
+        "completion evidence"
+      ],
+      "reuse": "The master execution instrument already carries the executable work-package program (MEP rows) with dependencies, acceptance/exit criteria, state and per-transition completion evidence; the decision-assimilation programme already registers implementation work packages with owner, route and acceptance; the machine state mirror already records the frontier. This programme binds them as the work-package ledger.",
+      "homes": [
+        "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+        "00-MASTER/UCDA-000001/05-WORK-PACKAGE-REGISTER.md",
+        "00-MASTER/STATE/mcs-state.json"
+      ],
+      "evidence": [
+        "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+        "00-MASTER/UCDA-000001/05-WORK-PACKAGE-REGISTER.md",
+        "00-MASTER/STATE/mcs-state.json"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UER-CAP-07",
+      "name": "Universal Continuation Package",
+      "mandate": "IMPLEMENT 7",
+      "objective": "Automatically generate the continuation package (repository state, completed work, remaining work, current checkpoint, dependency state, open issues, architectural decisions, implementation roadmap, recommended next programme) as the mandatory input to the next autonomous session.",
+      "required_properties": [
+        "repository state",
+        "completed work",
+        "remaining work",
+        "current checkpoint",
+        "dependency state",
+        "open issues",
+        "architectural decisions",
+        "implementation roadmap",
+        "recommended next programme"
+      ],
+      "reuse": "The master state instrument already records where we are and the Next Authorized Capability; the append-only checkpoints are already self-contained resume anchors that, with git log, fully reconstruct operational context; the master recovery instrument already guarantees the checkpoint is a redundant continuation anchor. This programme binds them as the continuation package and emits its own (deliverable 13).",
+      "homes": [
+        "00-MASTER/MCP-002-MASTER-STATE.md",
+        "00-MASTER/CHECKPOINTS/",
+        "00-MASTER/MCP-007-MASTER-RECOVERY.md"
+      ],
+      "evidence": [
+        "00-MASTER/MCP-002-MASTER-STATE.md",
+        "00-MASTER/CHECKPOINTS/",
+        "00-MASTER/MCP-007-MASTER-RECOVERY.md §03"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UER-CAP-08",
+      "name": "Universal Replay Protection",
+      "mandate": "IMPLEMENT 8",
+      "objective": "Detect and prevent duplicated execution, generation, artefacts, implementation and writes.",
+      "required_properties": [
+        "duplicated execution",
+        "duplicated generation",
+        "duplicated artefacts",
+        "duplicated implementation",
+        "duplicated writes"
+      ],
+      "reuse": "The execution platform already replays a run and validates it reproduces the original byte-for-byte; the determinism workflow already double-builds and diffs; the registration authority already runs a drift/duplication guard; the master execution instrument already records that recovered work reuses intact certified evidence and regenerates no artefact. This programme binds them as replay protection.",
+      "homes": [
+        "engine/runtime/execution/replay.py",
+        "engine/runtime/execution/replay_validation.py",
+        ".github/workflows/determinism.yml",
+        "00-BOOK/tools/register.sh"
+      ],
+      "evidence": [
+        "engine/runtime/execution/replay.py",
+        "engine/runtime/execution/replay_validation.py",
+        ".github/workflows/determinism.yml",
+        "engine/tests/unit/test_execution_replay.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UER-CAP-09",
+      "name": "Universal Repository Safety",
+      "mandate": "IMPLEMENT 9",
+      "objective": "Before every write, verify the repository, dependency integrity, the target artefact, constitutional authority, duplication and the checkpoint.",
+      "required_properties": [
+        "verify repository",
+        "verify dependency integrity",
+        "verify target artefact",
+        "verify constitutional authority",
+        "verify duplication",
+        "verify checkpoint"
+      ],
+      "reuse": "The master recovery instrument already mandates the boot repository-verification sequence; the aggregate gate declaration already binds repository health, graph invariants, the registration drift guard and the verification entry point; the verification entry point and Makefile already run the fail-closed gate before any change lands. This programme binds them as repository safety and adds its own forbidden-write scope guard.",
+      "homes": [
+        "00-MASTER/MCP-007-MASTER-RECOVERY.md",
+        "00-MASTER/UCCEP-000000/uccep-bindings.json",
+        "verify.sh",
+        "Makefile"
+      ],
+      "evidence": [
+        "00-MASTER/MCP-007-MASTER-RECOVERY.md §01",
+        "00-MASTER/UCCEP-000000/uccep-bindings.json",
+        "verify.sh",
+        "00-BOOK/tools/register.sh"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UER-CAP-10",
+      "name": "Universal Execution Health Intelligence",
+      "mandate": "IMPLEMENT 10",
+      "objective": "Continuously evaluate execution stability, interruption frequency, recovery success, checkpoint quality, repository integrity, execution confidence and completion confidence.",
+      "required_properties": [
+        "execution stability",
+        "interruption frequency",
+        "recovery success",
+        "checkpoint quality",
+        "repository integrity",
+        "execution confidence",
+        "completion confidence"
+      ],
+      "reuse": "The execution platform already provides a deterministic three-valued health assessment, diagnostics with findings, metrics and monitoring; the master dashboard already records programme completion metrics. This programme binds them as execution-health intelligence.",
+      "homes": [
+        "engine/runtime/execution/health.py",
+        "engine/runtime/execution/diagnostics.py",
+        "engine/runtime/execution/metrics.py",
+        "engine/runtime/execution/monitoring.py",
+        "00-MASTER/MCP-005-MASTER-DASHBOARD.md"
+      ],
+      "evidence": [
+        "engine/runtime/execution/health.py",
+        "engine/runtime/execution/diagnostics.py",
+        "engine/runtime/execution/metrics.py",
+        "engine/runtime/execution/monitoring.py",
+        "00-MASTER/MCP-005-MASTER-DASHBOARD.md"
+      ],
+      "gap": ""
+    }
+  ],
+  "pipeline_execution": [
+    { "id": "UER-EXEC-01", "step": "Context Assimilation", "owner_capability": "UER-CAP-07" },
+    { "id": "UER-EXEC-02", "step": "Repository Verification", "owner_capability": "UER-CAP-09" },
+    { "id": "UER-EXEC-03", "step": "Checkpoint", "owner_capability": "UER-CAP-01" },
+    { "id": "UER-EXEC-04", "step": "Execute Work Package", "owner_capability": "UER-CAP-06" },
+    { "id": "UER-EXEC-05", "step": "Validate", "owner_capability": "UER-CAP-10" },
+    { "id": "UER-EXEC-06", "step": "Atomic Write", "owner_capability": "UER-CAP-04" },
+    { "id": "UER-EXEC-07", "step": "Verify Write", "owner_capability": "UER-CAP-04" },
+    { "id": "UER-EXEC-08", "step": "Repository Verification", "owner_capability": "UER-CAP-09" },
+    { "id": "UER-EXEC-09", "step": "Evidence Registration", "owner_capability": "UER-CAP-02" },
+    { "id": "UER-EXEC-10", "step": "Checkpoint", "owner_capability": "UER-CAP-01" },
+    { "id": "UER-EXEC-11", "step": "Continue", "owner_capability": "UER-CAP-05" }
+  ],
+  "pipeline_recovery": [
+    { "id": "UER-REC-01", "step": "Detect interruption", "owner_capability": "UER-CAP-03" },
+    { "id": "UER-REC-02", "step": "Verify repository", "owner_capability": "UER-CAP-09" },
+    { "id": "UER-REC-03", "step": "Locate latest checkpoint", "owner_capability": "UER-CAP-01" },
+    { "id": "UER-REC-04", "step": "Verify completed artefacts", "owner_capability": "UER-CAP-05" },
+    { "id": "UER-REC-05", "step": "Detect incomplete writes", "owner_capability": "UER-CAP-04" },
+    { "id": "UER-REC-06", "step": "Complete only incomplete work", "owner_capability": "UER-CAP-03" },
+    { "id": "UER-REC-07", "step": "Verify repository", "owner_capability": "UER-CAP-09" },
+    { "id": "UER-REC-08", "step": "Continue autonomously", "owner_capability": "UER-CAP-05" }
+  ],
+  "validations": [
+    { "id": "UER-VAL-01", "dimension": "checkpoint integrity", "verified_by": "UER-CAP-01", "clause": "Ω∞-001A MANDATORY VALIDATION" },
+    { "id": "UER-VAL-02", "dimension": "repository integrity", "verified_by": "UER-CAP-09", "clause": "Ω∞-001A MANDATORY VALIDATION" },
+    { "id": "UER-VAL-03", "dimension": "execution integrity", "verified_by": "UER-CAP-06", "clause": "Ω∞-001A MANDATORY VALIDATION" },
+    { "id": "UER-VAL-04", "dimension": "write integrity", "verified_by": "UER-CAP-04", "clause": "Ω∞-001A MANDATORY VALIDATION" },
+    { "id": "UER-VAL-05", "dimension": "dependency integrity", "verified_by": "UER-CAP-06", "clause": "Ω∞-001A MANDATORY VALIDATION" },
+    { "id": "UER-VAL-06", "dimension": "replay protection", "verified_by": "UER-CAP-08", "clause": "Ω∞-001A MANDATORY VALIDATION" },
+    { "id": "UER-VAL-07", "dimension": "recovery capability", "verified_by": "UER-CAP-03", "clause": "Ω∞-001A MANDATORY VALIDATION" },
+    { "id": "UER-VAL-08", "dimension": "continuation capability", "verified_by": "UER-CAP-07", "clause": "Ω∞-001A MANDATORY VALIDATION" }
+  ],
+  "exit_criteria": [
+    { "id": "UER-EXIT-01", "criterion": "execution checkpointing verified", "satisfied_by": "UER-VAL-01" },
+    { "id": "UER-EXIT-02", "criterion": "interruption recovery verified", "satisfied_by": "UER-VAL-07" },
+    { "id": "UER-EXIT-03", "criterion": "resume capability verified", "satisfied_by": "UER-VAL-08" },
+    { "id": "UER-EXIT-04", "criterion": "replay protection verified", "satisfied_by": "UER-VAL-06" },
+    { "id": "UER-EXIT-05", "criterion": "repository integrity verified", "satisfied_by": "UER-VAL-02" },
+    { "id": "UER-EXIT-06", "criterion": "validation passes", "satisfied_by": "UER-VAL-03" },
+    { "id": "UER-EXIT-07", "criterion": "certification passes", "satisfied_by": "UER-VAL-04" },
+    { "id": "UER-EXIT-08", "criterion": "continuation package generated", "satisfied_by": "UER-VAL-08" }
+  ],
+  "continuation": {
+    "repository_state_source": "00-MASTER/MCP-002-MASTER-STATE.md",
+    "completed_work": "Ω∞-001A Universal Execution Resilience: the ten resilience capabilities discovered, bound to their existing repository homes, validated, and certified; the fourteen constitutional deliverables — the last of which is this continuation package — generated by uer_engine.py; the Execution Resilience Gate wired into the developer entry points, continuous integration and the session-start hook. Binding into the aggregate constitutional gate is NOT done and remains the deferred, non-blocking follow-up recorded under remaining work.",
+    "remaining_work": "None blocking internal to Ω∞-001A. The capability is inheritable and active through three independent mechanisms: the session-start hook (.kiro/hooks/uer-000001.json), continuous integration (.github/workflows/uer-gate.yml), and the developer entry points (make uer / make uer-gate / make uer-self). One authorized, non-blocking follow-up remains available: an additive binding of the Execution Resilience Gate into the aggregate constitutional gate (00-MASTER/UCCEP-000000/uccep-bindings.json) as a new check + gate entry — deferred here because it would also require the UCCEP engine to render a corresponding determination, which is outside this programme's non-destructive, reuse-first boundary. Any future proven gap is added as a capability entry in uer-resilience.json, requiring no engine change.",
+    "current_checkpoint": "00-MASTER/CHECKPOINTS/",
+    "dependency_state": "All ten capabilities reuse already-certified EC-1/EC-2/EC-3 infrastructure and existing master operational memory; no new dependency was introduced.",
+    "open_issues": "None blocking. The programme is AUTHORITY = NONE (DERIVED TRUTH); it declares no constitutional ratification and freezes no architecture, per the Ω∞-001A safe autonomous boundaries.",
+    "architectural_decisions": "Reuse-first, zero-duplication: no new checkpoint, journal, recovery, atomic-write, resume, ledger, continuation, replay, safety or health engine was created; every capability is bound to its existing home. The programme is delivered in the canonical UCDA/UCCEP executable-governance archetype (data-driven engine, no timestamps, byte-identical determinism, writes confined to its own operational memory).",
+    "implementation_roadmap": "Execution resilience is constitutionalized. Successor programmes inherit it automatically; the next authorized capability remains as recorded in 00-MASTER/MCP-002-MASTER-STATE.md (EC-3 Band-13 realization frontier).",
+    "recommended_next_programme": "Resume the master execution frontier recorded in 00-MASTER/MCP-003-MASTER-EXECUTION.md (EC-3 Band 13 / MEP-04) under the newly inherited Universal Execution Resilience contract."
+  }
+}

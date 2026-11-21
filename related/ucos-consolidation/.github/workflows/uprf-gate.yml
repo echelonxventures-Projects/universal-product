@@ -1,0 +1,105 @@
+name: UPF-000001 Universal Provider Framework Gate
+
+# UPF-000001 — Universal Provider Framework (PROGRAM-003, WAVE-2).
+#
+# Runs the executable expression of the provider framework: the constitutional proof that
+# lives in engine/provider/compliance.py, bound and rendered by
+# 00-MASTER/UPF-000001/upf_engine.py from the DATA declaration upf-provider.json. Provider
+# categories are registered kernel meta-types, so a previously unknown provider category is
+# admitted by registration only — adding one needs neither a framework change nor a change
+# to this workflow. The immutable PROGRAM-002 kernel is never modified.
+#
+# Exit semantics of the gate:
+#   0  constitutionally compliant (every gate passed; kernel + framework unchanged)
+#   1  a gate failed
+#   2  fail-closed abort — the declaration or a required substrate is unusable
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uprf-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: UPF-000001 self-guards (three, each fail-closed)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Declaration integrity (responsibilities, categories resolve)
+        run: python3 00-MASTER/UPF-000001/upf_engine.py --check-declaration
+
+      - name: Forbidden-write guard (every output lands inside 00-MASTER/UPF-000001/)
+        run: python3 00-MASTER/UPF-000001/upf_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical deliverables across runs)
+        run: python3 00-MASTER/UPF-000001/upf_engine.py --check-determinism
+
+  framework-tests:
+    name: Universal Provider Framework unit + proof suite
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install the pinned test toolchain
+        run: python3 -m pip install --disable-pip-version-check pytest==8.3.4 pytest-cov==6.0.0 coverage==7.15.2
+
+      - name: Framework tests (architectural proof + invariants; 100% coverage)
+        run: python3 -m pytest engine/tests/provider -o addopts="" --cov=engine.provider --cov-branch --cov-report=term-missing --cov-report=xml --cov-fail-under=100
+
+      - name: Unconditional certification (all 20 matrix dimensions must be 100%)
+        run: python3 00-MASTER/UPF-000001/upf_engine.py --certify
+
+  constitutional-gate:
+    name: Universal Provider Framework constitutional gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: framework-tests
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Universal Provider Framework gate (fail-closed)
+        run: python3 00-MASTER/UPF-000001/upf_engine.py --gate
+
+      - name: Publish the provider-framework deliverables + evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: upf-provider-framework
+          path: |
+            00-MASTER/UPF-000001/*.md
+            00-MASTER/UPF-000001/upf-provider.json
+            00-MASTER/UPF-000001/evidence/
+          if-no-files-found: warn

@@ -1,0 +1,70 @@
+{
+  "compliance_format": "ucos-infrastructure-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "band13-typed",
+        "band13-identified"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UIL-03), identified and objecthood-bound (UIL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UIL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "infra-capability-value-fidelity"
+      ],
+      "id": "C3",
+      "requirement": "Hosts/delivers PL-F2/SF-2/AF-3 by reference; hosted data DF-2 by ref (UIL-06/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "band13-inventory-complete",
+        "band13-all-units-certified"
+      ],
+      "id": "C4",
+      "requirement": "Environments bounded/isolated, resources explicit, distribution typed (UIL-07/08/12).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-relationships-closed",
+        "founding-acyclic"
+      ],
+      "id": "C5",
+      "materially_exercised": true,
+      "note": "the Band-13 spine closes over the CERTIFIED Universal Infrastructure Integration Model (U10 — the downward-only, acyclic dependsOn graph over the nine concerns) and the ten-unit founding graph is acyclic and downward-only — each relationship being an ENG-005 reference (UIL-09 at band level)",
+      "requirement": "Topology uses ENG-005 references; founding structure is acyclic (UIL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "band13-non-projection"
+      ],
+      "id": "C6",
+      "requirement": "Provisioning/scaling bind RL-F2/DF-2 by ref; no artificial ceiling (UIL-10/11/13).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "band13-independence",
+        "non-constitutive"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (UIL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "INFRASTRUCTURE-001 §12",
+  "target_id": "UCOS-BAND13-ucos.infrastructure.band13.completion-58610bf5cfb2df8c"
+}

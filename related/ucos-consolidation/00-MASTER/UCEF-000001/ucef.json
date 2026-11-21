@@ -1,0 +1,661 @@
+{
+  "assessment_digest": "e44c2801380c4e4d37d11ae269eed5ee4a3c7837e45764e043fc476d6063511e",
+  "counts": {
+    "construct_classes": 33,
+    "criteria": 16,
+    "criteria_discharged": 16,
+    "exit_criteria": 8,
+    "exit_criteria_satisfied": 8,
+    "expansion_axes": 17,
+    "governance": 16,
+    "laws": 12,
+    "stages": 15,
+    "stages_bound": 15,
+    "validations": 18,
+    "validations_satisfied": 18
+  },
+  "criteria": [
+    {
+      "clause": "CEP-009 ADDENDUM B B.2.1",
+      "criterion": "Require no redesign of the constitutional foundation",
+      "discharged": true,
+      "id": "UCEF-AC-01",
+      "mechanism": "02-ARCHITECTURAL-STABILITY-CERTIFICATION.md"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art LXXVI.2(f)",
+      "criterion": "Integrate through governed registration",
+      "discharged": true,
+      "id": "UCEF-AC-02",
+      "mechanism": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-REG-AUTO-001-AUTOMATIC-ARTIFACT-REGISTRATION-STANDARD.md"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XIV",
+      "criterion": "Participate in ontology",
+      "discharged": true,
+      "id": "UCEF-AC-03",
+      "mechanism": "01-WORKING/ONTOLOGY-REGISTER.md"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XIII",
+      "criterion": "Participate in taxonomy",
+      "discharged": true,
+      "id": "UCEF-AC-04",
+      "mechanism": "00-CMG/CMG-REGISTRY.json"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XV",
+      "criterion": "Participate in registries",
+      "discharged": true,
+      "id": "UCEF-AC-05",
+      "mechanism": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "clause": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md Art VII",
+      "criterion": "Participate in dependency graphs",
+      "discharged": true,
+      "id": "UCEF-AC-06",
+      "mechanism": "00-BOOK/DATA/relationships.json"
+    },
+    {
+      "clause": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md Art 20",
+      "criterion": "Participate in governance",
+      "discharged": true,
+      "id": "UCEF-AC-07",
+      "mechanism": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md"
+    },
+    {
+      "clause": "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "criterion": "Participate in validation",
+      "discharged": true,
+      "id": "UCEF-AC-08",
+      "mechanism": "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md"
+    },
+    {
+      "clause": "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "criterion": "Participate in certification",
+      "discharged": true,
+      "id": "UCEF-AC-09",
+      "mechanism": "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md"
+    },
+    {
+      "clause": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md Art XVIII",
+      "criterion": "Participate in traceability",
+      "discharged": true,
+      "id": "UCEF-AC-10",
+      "mechanism": "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md"
+    },
+    {
+      "clause": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-REG-AUTO-001-AUTOMATIC-ARTIFACT-REGISTRATION-STANDARD.md",
+      "criterion": "Become discoverable",
+      "discharged": true,
+      "id": "UCEF-AC-11",
+      "mechanism": "00-BOOK/REGISTRIES/UNIVERSAL-ARTIFACT-REGISTRY.md"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XL",
+      "criterion": "Become reusable",
+      "discharged": true,
+      "id": "UCEF-AC-12",
+      "mechanism": "02-CANONICAL-OWNERSHIP-MATRIX.md"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XIII.1",
+      "criterion": "Become composable",
+      "discharged": true,
+      "id": "UCEF-AC-13",
+      "mechanism": "02-MASTER/EC-3-B13-P02-UNIVERSAL-UNIVERSE-ARCHITECTURE-FRAMEWORK.md"
+    },
+    {
+      "clause": "04-HIDDEN-FINITE-ASSUMPTION-CERTIFICATION.md §3",
+      "criterion": "Become implementation independent",
+      "discharged": true,
+      "id": "UCEF-AC-14",
+      "mechanism": "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md"
+    },
+    {
+      "clause": "04-HIDDEN-FINITE-ASSUMPTION-CERTIFICATION.md §2",
+      "criterion": "Become technology independent",
+      "discharged": true,
+      "id": "UCEF-AC-15",
+      "mechanism": "04-HIDDEN-FINITE-ASSUMPTION-CERTIFICATION.md"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art LXXVI",
+      "criterion": "Become future extensible",
+      "discharged": true,
+      "id": "UCEF-AC-16",
+      "mechanism": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md"
+    }
+  ],
+  "declaration_digest": "e663455db30cb1c97abd8a44c57e7051065e2458f8245f0cefbab3381c59b9bf",
+  "determination": "CERTIFIED-PROVISIONAL",
+  "exit_criteria": [
+    {
+      "criterion": "The repository possesses a permanent constitutional capability whereby any future construct can be introduced through governed evolution without modification or redesign of the constitutional foundation.",
+      "id": "UCEF-EXIT-01",
+      "satisfied": true,
+      "satisfied_by": [
+        "UCEF-VAL-01",
+        "UCEF-VAL-11",
+        "UCEF-VAL-12",
+        "UCEF-VAL-13",
+        "UCEF-VAL-17"
+      ],
+      "unmet": []
+    },
+    {
+      "criterion": "Growth occurs through constitutional evolution and never through architectural redesign.",
+      "id": "UCEF-EXIT-02",
+      "satisfied": true,
+      "satisfied_by": [
+        "UCEF-VAL-01",
+        "UCEF-VAL-05",
+        "UCEF-VAL-06"
+      ],
+      "unmet": []
+    },
+    {
+      "criterion": "Repository Truth remains the single constitutional authority; no competing authority is created.",
+      "id": "UCEF-EXIT-03",
+      "satisfied": true,
+      "satisfied_by": [
+        "UCEF-VAL-02",
+        "UCEF-VAL-03",
+        "UCEF-VAL-04"
+      ],
+      "unmet": []
+    },
+    {
+      "criterion": "The principle is institutionalized in the instrument that owns evolution.",
+      "id": "UCEF-EXIT-04",
+      "satisfied": true,
+      "satisfied_by": [
+        "UCEF-VAL-15",
+        "UCEF-VAL-17",
+        "UCEF-VAL-18"
+      ],
+      "unmet": []
+    },
+    {
+      "criterion": "The principle is traceable end to end with zero orphans.",
+      "id": "UCEF-EXIT-05",
+      "satisfied": true,
+      "satisfied_by": [
+        "UCEF-VAL-10",
+        "UCEF-VAL-14",
+        "UCEF-VAL-15"
+      ],
+      "unmet": []
+    },
+    {
+      "criterion": "The principle is validated by executed measurement rather than assertion.",
+      "id": "UCEF-EXIT-06",
+      "satisfied": true,
+      "satisfied_by": [
+        "UCEF-VAL-07",
+        "UCEF-VAL-08",
+        "UCEF-VAL-09",
+        "UCEF-VAL-13",
+        "UCEF-VAL-14"
+      ],
+      "unmet": []
+    },
+    {
+      "criterion": "The principle is certified, and certification is withheld where any dimension is unsatisfied.",
+      "id": "UCEF-EXIT-07",
+      "satisfied": true,
+      "satisfied_by": [
+        "UCEF-VAL-01",
+        "UCEF-VAL-02",
+        "UCEF-VAL-03",
+        "UCEF-VAL-04",
+        "UCEF-VAL-05",
+        "UCEF-VAL-06",
+        "UCEF-VAL-07",
+        "UCEF-VAL-08",
+        "UCEF-VAL-09",
+        "UCEF-VAL-10",
+        "UCEF-VAL-11",
+        "UCEF-VAL-12",
+        "UCEF-VAL-13",
+        "UCEF-VAL-14",
+        "UCEF-VAL-15",
+        "UCEF-VAL-16",
+        "UCEF-VAL-17",
+        "UCEF-VAL-18"
+      ],
+      "unmet": []
+    },
+    {
+      "criterion": "The principle is integrated throughout the repository: governance, registration, ontology, taxonomy, registry, dependency, validation, certification and traceability each participate.",
+      "id": "UCEF-EXIT-08",
+      "satisfied": true,
+      "satisfied_by": [
+        "UCEF-VAL-02",
+        "UCEF-VAL-07",
+        "UCEF-VAL-08",
+        "UCEF-VAL-09",
+        "UCEF-VAL-10",
+        "UCEF-VAL-16"
+      ],
+      "unmet": []
+    }
+  ],
+  "guard_findings": [],
+  "guards": {
+    "declaration": [],
+    "no_enumeration": [],
+    "open_world": [],
+    "reuse_before_create": [],
+    "write_scope": []
+  },
+  "passed": true,
+  "programme": {
+    "admission_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+    "aggregate_gate_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+    "authority": "NONE — DERIVED TRUTH",
+    "constitution_registry_owner": "00-CMG/CMG-REGISTRY.json",
+    "evolution_governance_owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+    "execution_owner": "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "00-BOOK/",
+      "00-CEP/",
+      "00-CMG/",
+      "engine/",
+      "platform/",
+      "intelligence/",
+      "data/",
+      "service/",
+      "application/",
+      "infrastructure/",
+      "adr/",
+      "02-MASTER/",
+      "01-WORKING/"
+    ],
+    "gate_clause": "CEP-009 ADDENDUM B — B.4, B.6, B.7",
+    "gate_name": "Constitutional Evolution Gate",
+    "governed_by": [
+      "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md",
+      "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md",
+      "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+      "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "00-CEP/CEP-010-CONSTITUTIONAL-AUDIT-COMPLIANCE-ASSURANCE-CONSTITUTION.md",
+      "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "00-CMG/CMG-000010-CONSTITUTIONAL-FUTURE-EVOLUTION-STRATEGY.md",
+      "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-REG-AUTO-001-AUTOMATIC-ARTIFACT-REGISTRATION-STANDARD.md",
+      "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md"
+    ],
+    "governing_instrument": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+    "id": "UCEF-000001",
+    "meta_governance_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+    "mission": "Institutionalize the principle that the constitutional foundation is stable and that all future growth occurs through governed constitutional evolution rather than architectural redesign — by binding the discovery, assimilation, repository-truth, reuse, dependency, registration, ontology, taxonomy, registry, governance, planning, implementation, validation, certification and evolution authority that already exists in this repository, reusing it verbatim, duplicating nothing, creating no parallel constitutional model, and measuring — never asserting — that the no-redesign property still holds.",
+    "name": "Universal Constitutional Evolution Framework",
+    "normative_home": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+    "operational_home": "00-MASTER/UCEF-000001/",
+    "operational_memory_owner": "00-MASTER/MCS-000-MASTER-CONTEXT-SYSTEM-ARCHITECTURE.md",
+    "ownership_matrix_owner": "02-CANONICAL-OWNERSHIP-MATRIX.md",
+    "programme_directive": "CEP-009-AMD-001",
+    "recovery_owner": "00-MASTER/MCP-007-MASTER-RECOVERY.md",
+    "registration_owner": "00-BOOK/tools/register.sh",
+    "standing_disclosure": "CERTIFIED-PROVISIONAL — Tier T1 is VACANT (VAC-01 / CMG-OQ-02) and no ratification authority exists within the located corpus (CMG-OQ-01). No determination of this programme is ratified or final.",
+    "traceability_owner": "00-MASTER/MCP-006-MASTER-TRACEABILITY.md",
+    "verification_owner": "verify.sh",
+    "version": "1.0"
+  },
+  "stages": [
+    {
+      "bound": true,
+      "corroborating_owner": "00-MASTER/UCOS-RIB-001/rib-blueprint.json",
+      "depends_on": [],
+      "id": "UCEF-STG-01",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art LXXVI.2(a)",
+      "purpose": "Establish that the concept is not already owned, naming every existing owner examined and why each is insufficient.",
+      "stage": "Discovery"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "00-MASTER/CAEM-001",
+      "depends_on": [
+        "UCEF-STG-01"
+      ],
+      "id": "UCEF-STG-02",
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md Art 28",
+      "purpose": "Assimilate the presented context into the corpus as a governed decision with exactly one lawful disposition.",
+      "stage": "Context Assimilation"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "00-BOOK/DATA/artifacts.json",
+      "depends_on": [
+        "UCEF-STG-02"
+      ],
+      "id": "UCEF-STG-03",
+      "owner": "00-CMG/CMG-REGISTRY.json",
+      "purpose": "Resolve the constitutional and artifact state of the repository as the sole implementation authority.",
+      "stage": "Repository Truth Discovery"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "02-CANONICAL-OWNERSHIP-MATRIX.md",
+      "depends_on": [
+        "UCEF-STG-03"
+      ],
+      "id": "UCEF-STG-04",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XL",
+      "purpose": "Prefer extension over creation and creation over modification; bind to the existing owner wherever one exists.",
+      "stage": "Reuse Analysis"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "03-DEPENDENCY-GRAPH.md",
+      "depends_on": [
+        "UCEF-STG-04"
+      ],
+      "id": "UCEF-STG-05",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md Art VII",
+      "purpose": "Determine the artifacts, lineages, dependencies and compatibility affected, and verify the graph remains acyclic.",
+      "stage": "Dependency Analysis"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-REG-AUTO-001-AUTOMATIC-ARTIFACT-REGISTRATION-STANDARD.md",
+      "depends_on": [
+        "UCEF-STG-05"
+      ],
+      "id": "UCEF-STG-06",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art LXXVI.2(d)-(f)",
+      "purpose": "Allocate the concept to exactly one owner, declare its relationships, and admit it to the registry with identity, kind, standing, reach and state.",
+      "stage": "Constitutional Registration"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "01-WORKING/ONTOLOGY-REGISTER.md",
+      "depends_on": [
+        "UCEF-STG-06"
+      ],
+      "id": "UCEF-STG-07",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XIV",
+      "purpose": "Admit any required ontology entity as an append operation without altering an existing cardinality.",
+      "stage": "Ontology Integration"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "00-CMG/CMG-REGISTRY.json",
+      "depends_on": [
+        "UCEF-STG-07"
+      ],
+      "id": "UCEF-STG-08",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XIII",
+      "purpose": "Admit any required Kind as an append operation to the open Kind set without amending an existing Kind.",
+      "stage": "Taxonomy Integration"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-REG-AUTO-001-AUTOMATIC-ARTIFACT-REGISTRATION-STANDARD.md §16.3",
+      "depends_on": [
+        "UCEF-STG-08"
+      ],
+      "id": "UCEF-STG-09",
+      "owner": "00-BOOK/tools/register.sh",
+      "purpose": "Regenerate every derived projection in one atomic transaction so the registry is recomputable and free of drift.",
+      "stage": "Registry Synchronization"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "00-CMG/tools/cmg_validate.py",
+      "depends_on": [
+        "UCEF-STG-09"
+      ],
+      "id": "UCEF-STG-10",
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md Art 20",
+      "purpose": "Verify the change under governance change control and re-run the meta validator so all twelve invariants hold.",
+      "stage": "Governance Validation"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "depends_on": [
+        "UCEF-STG-10"
+      ],
+      "id": "UCEF-STG-11",
+      "owner": "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+      "purpose": "Catalogue the capability so it becomes executable, and order it against its dependencies.",
+      "stage": "Implementation Planning"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "00-MASTER/MCS-000-MASTER-CONTEXT-SYSTEM-ARCHITECTURE.md",
+      "depends_on": [
+        "UCEF-STG-11"
+      ],
+      "id": "UCEF-STG-12",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "purpose": "Realize the capability under the universal implementation contract, additively and within declared write scope.",
+      "stage": "Implementation"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "verify.sh",
+      "depends_on": [
+        "UCEF-STG-12"
+      ],
+      "id": "UCEF-STG-13",
+      "owner": "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "purpose": "Run every mandatory validation gate; a failure blocks progression rather than being waived.",
+      "stage": "Validation"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "00-BOOK/REGISTRIES/CERTIFICATION-REGISTRY.md",
+      "depends_on": [
+        "UCEF-STG-13"
+      ],
+      "id": "UCEF-STG-14",
+      "owner": "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "purpose": "Issue the certification determination on evidence, at PROVISIONAL standing where the competent authority is vacant.",
+      "stage": "Certification"
+    },
+    {
+      "bound": true,
+      "corroborating_owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+      "depends_on": [
+        "UCEF-STG-14"
+      ],
+      "id": "UCEF-STG-15",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md Art XVI",
+      "purpose": "Record the evolution, its classification, its lineage and its state, so the corpus has grown by governed evolution.",
+      "stage": "Repository Evolution"
+    }
+  ],
+  "validations": [
+    {
+      "clause": "CEP-009 ADDENDUM B B.2.1",
+      "dimension": "Zero architectural redesign required",
+      "evidence": "124/124 bindings pre-exist outside this programme — the framework authored no foundational authority, so no foundational redesign was required",
+      "id": "UCEF-VAL-01",
+      "probe": "redesign_free",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "02-ARCHITECTURAL-STABILITY-CERTIFICATION.md"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art L",
+      "dimension": "Zero constitutional conflicts",
+      "evidence": "45 recognized artifacts with unique identity and path; 62 concerns each allocated to exactly one owner — no parallel authority",
+      "id": "UCEF-VAL-02",
+      "probe": "conflict_free",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CMG/tools/cmg_validate.py"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XL",
+      "dimension": "Zero duplication",
+      "evidence": "every declared identity is unique and every bound authority is reused rather than re-authored — no competing model, registry or lifecycle is created",
+      "id": "UCEF-VAL-03",
+      "probe": "duplication_free",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "02-CANONICAL-OWNERSHIP-MATRIX.md"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XII.5",
+      "dimension": "Zero orphan constitutional assets",
+      "evidence": "157/157 references resolve against Repository Truth — zero orphans",
+      "id": "UCEF-VAL-04",
+      "probe": "orphan_free",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CMG/CMG-REGISTRY.json"
+    },
+    {
+      "clause": "CEP-009 ADDENDUM B B.4.4",
+      "dimension": "Zero circular dependencies",
+      "evidence": "15 stages form an acyclic graph — no stage depends upon itself",
+      "id": "UCEF-VAL-05",
+      "probe": "acyclic",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md Art XV.2"
+    },
+    {
+      "clause": "CEP-009 ADDENDUM B B.4.4",
+      "dimension": "Complete dependency closure",
+      "evidence": "15/15 stages reachable from a single entry stage; every dependency is itself a declared stage — closure is complete",
+      "id": "UCEF-VAL-06",
+      "probe": "dependency_closed",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "03-DEPENDENCY-GRAPH.md"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XIV",
+      "dimension": "Complete ontology synchronization",
+      "evidence": "the ontology owner is located at 00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "id": "UCEF-VAL-07",
+      "probe": "ontology_synchronized",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "01-WORKING/ONTOLOGY-REGISTER.md"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XIII",
+      "dimension": "Complete taxonomy synchronization",
+      "evidence": "24 kinds recognized and the kind set is absent from the 4 closed enumerations — the taxonomy remains open to append",
+      "id": "UCEF-VAL-08",
+      "probe": "taxonomy_synchronized",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CMG/CMG-REGISTRY.json"
+    },
+    {
+      "clause": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-REG-AUTO-001-AUTOMATIC-ARTIFACT-REGISTRATION-STANDARD.md §16.3",
+      "dimension": "Complete registry synchronization",
+      "evidence": "1689 registered artifacts, declared count agrees, identities unique — the registry projection is internally synchronized",
+      "id": "UCEF-VAL-09",
+      "probe": "registry_synchronized",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "clause": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md Art XVIII.2",
+      "dimension": "Complete constitutional traceability",
+      "evidence": "139/139 traceability links closed — zero orphan links",
+      "id": "UCEF-VAL-10",
+      "probe": "traceability_closed",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md"
+    },
+    {
+      "clause": "CEP-009 ADDENDUM B B.3.3",
+      "dimension": "Construct register is open",
+      "evidence": "the register is declared open and non-exhaustive over 33 named classes; an unnamed class is admitted by the same procedure, and absence is no ground of rejection",
+      "id": "UCEF-VAL-11",
+      "probe": "register_open",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XIII.2"
+    },
+    {
+      "clause": "CEP-009 ADDENDUM B B.5.2",
+      "dimension": "No expansion axis declares a finite bound",
+      "evidence": "17/17 expansion axes declare no finite bound",
+      "id": "UCEF-VAL-12",
+      "probe": "axes_unbounded",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md"
+    },
+    {
+      "clause": "CEP-009 ADDENDUM B B.4.3",
+      "dimension": "Every lifecycle stage is bound to a located owner",
+      "evidence": "15 lifecycle stage entries, 30/30 bindings located and external",
+      "id": "UCEF-VAL-13",
+      "probe": "stages_bound",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+    },
+    {
+      "clause": "CEP-009 ADDENDUM B B.6.2",
+      "dimension": "Every acceptance criterion is discharged by a located mechanism",
+      "evidence": "16 acceptance property entries, 16/16 bindings located and external",
+      "id": "UCEF-VAL-14",
+      "probe": "criteria_discharged",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+    },
+    {
+      "clause": "CEP-009 ADDENDUM B B.12.1",
+      "dimension": "Every law is anchored to a located basis",
+      "evidence": "12 constitutional law entries, 12/12 bindings located and external",
+      "id": "UCEF-VAL-15",
+      "probe": "laws_anchored",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+    },
+    {
+      "clause": "CEP-009 ADDENDUM B B.9.5",
+      "dimension": "Every governance obligation names a located instrument and a declared stage",
+      "evidence": "16 governance obligation entries, 16/16 bindings located and external; every one of 15 stages is governed",
+      "id": "UCEF-VAL-16",
+      "probe": "governance_bound",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md"
+    },
+    {
+      "clause": "CEP-009 ADDENDUM B B.8.6",
+      "dimension": "The normative home records the framework",
+      "evidence": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md records CEP-009-AMD-001 — the framework is legislated by the located owner of constitutional evolution, not by this programme",
+      "id": "UCEF-VAL-17",
+      "probe": "normative_home_present",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+    },
+    {
+      "clause": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md Art XLIII.2(f)",
+      "dimension": "The Constitution Registry records the amended version of the normative home",
+      "evidence": "the registry and 00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md both record version 1.1 — the registry was updated in the same change as the amendment",
+      "id": "UCEF-VAL-18",
+      "probe": "registry_version_synchronized",
+      "satisfied": true,
+      "verdict": "PASS",
+      "verified_by": "00-CMG/CMG-REGISTRY.json"
+    }
+  ],
+  "verdict": "GATE-OPEN"
+}

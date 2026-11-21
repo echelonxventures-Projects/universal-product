@@ -1,0 +1,38 @@
+{
+  "mcs_version": "1.0",
+  "authority": "NONE",
+  "captured_head": "EC3-B13-U11",
+  "captured_utc": "2026-07-22T00:00:00Z",
+  "repository": {
+    "origin": "ABSOLUTE-FOUNDATION",
+    "branch": "governance-reconciliation",
+    "head": "EC3-B13-U11 realize+sync",
+    "working_tree": "CLEAN",
+    "sync": { "ahead": 5, "behind": 0 }
+  },
+  "current": {
+    "program": "EC-3 Bands 10-13 Realization Program",
+    "phase": "Realization (post-EC-2-closure)",
+    "band": "Band 13 - Infrastructure (ARCH-INFRASTRUCTURE-001)",
+    "work_package": "EC-3 Band 13 (Infrastructure) Realization Mission (MEP-04 OPEN; AP-5 ADMITTED)",
+    "capability": "EC3-B13-U11 Band-13 Realization Certification & Completion (certification-of-certifications over U01-U10)",
+    "capability_state": "CERTIFIED & COMPLETE",
+    "milestone": "MEP-04 OPEN - U01..U11 CERTIFIED & COMPLETE; Band-13 realization CERTIFIED COMPLETE; remaining U12 freeze"
+  },
+  "blockers": [
+    {
+      "id": "B-RAT-11",
+      "description": "Constitutional finality (MEP-09 / DR-RAT-11): no ratification authority in frozen corpus; out-of-corpus act required",
+      "scope": "constitutional finality only",
+      "blocking": false
+    }
+  ],
+  "risks": [
+    { "id": "R-CI-STALE", "description": "CI build/unit/security signals dated 2026-07-15 predate current HEAD and EC-2 2,677-pass evidence", "mitigation": "MEP-08 CI signal refresh; reconcile signal date vs HEAD" },
+    { "id": "R-BAND13", "description": "Band-13 realization risks per ARCH-INFRASTRUCTURE-001", "mitigation": "CCE-gated, additive-only, No-Orphan trace; reuse frozen EC-1/data/service/application by reference" }
+  ],
+  "next_authorized_capability": {
+    "mep_ref": "MEP-04",
+    "text": "DEFERRED - awaiting explicit authorization to begin EC3-B13-U12 (Band-13 Freeze - Baseline Establishment & Transition Authorization; charter EC-3-B13-P01 Stage 8). EC3-B13-U11 CERTIFIED & COMPLETE (cert UCOS-CERT-BAND-13-a900722db595b34c); all eleven Band-13 units CERTIFIED; Band-13 realization CERTIFIED COMPLETE. STOP - do NOT begin EC3-B13-U12 without explicit authorization."
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "ir_version": "1.0.0",
+  "blueprint_id": "BP-DATA-0001",
+  "family": "BP-DATA",
+  "name": "Customer",
+  "version": "1.0.0",
+  "description": "Customer master-data entity (canonical BP-DATA reproducibility fixture).",
+  "certification": {
+    "status": "CERTIFIED",
+    "evidence": "UCOS-DAT-000018"
+  },
+  "provenance": {
+    "canonical_source": "UCOS-DAT-000007",
+    "reference_architecture": "UCOS-REF-000003",
+    "runtime_catalog": "UCOS-CAT-000003",
+    "architecture_constitution": "UCOS-DAT-000002",
+    "ontology_root": "UCOS-DAT-000004",
+    "generation_framework": "UCOS-GEN-000003"
+  },
+  "dependencies": [],
+  "entity": {
+    "name": "Customer",
+    "table": "customer",
+    "attributes": [
+      {"name": "id", "data_type": "uuid", "nullable": false, "primary_key": true},
+      {"name": "email", "data_type": "string", "nullable": false, "unique": true, "max_length": 320},
+      {"name": "display_name", "data_type": "string", "nullable": false, "max_length": 200},
+      {"name": "created_at", "data_type": "timestamp", "nullable": false}
+    ],
+    "indexes": [
+      {"name": "ix_customer_email", "columns": ["email"], "unique": true}
+    ],
+    "relationships": []
+  }
+}

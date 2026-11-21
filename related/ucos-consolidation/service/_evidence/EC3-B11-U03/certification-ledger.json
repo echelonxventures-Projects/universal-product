@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "SMC-03",
+      "certification_id": "UCOS-CERT-SMC-03-d3ba585579bf93ef",
+      "entry_hash": "792accd86d48db25e92d24c2a25ec989e08170ac3be231f470a33dc51e9cb45a",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "d3ba585579bf93ef7f42f2bb71d5e341a8c1ee4171ceeab1a33e344b59457620",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-CONTRACT-ucos.service.contract.foundation-a171c40a5923bee0",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "792accd86d48db25e92d24c2a25ec989e08170ac3be231f470a33dc51e9cb45a",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

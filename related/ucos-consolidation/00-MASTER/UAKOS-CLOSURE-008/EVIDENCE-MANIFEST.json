@@ -1,0 +1,43 @@
+{
+  "evidence_root": "00-MASTER/UAKOS-CLOSURE-008/evidence-vendored",
+  "files": {
+    "final_determination": {
+      "bytes": 19610,
+      "path": "00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/output/knowledge/FINAL_DETERMINATION.md",
+      "relative": "output/knowledge/FINAL_DETERMINATION.md",
+      "sha256": "a908f92b0e891717c227253f80f952584b8737a0c6515f94601caddc85c9ecb5"
+    },
+    "gap_report": {
+      "bytes": 56571,
+      "path": "00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/output/knowledge/reports/GAP_REPORT.md",
+      "relative": "output/knowledge/reports/GAP_REPORT.md",
+      "sha256": "29bb931a801fbfe8fab75dc4a23a308b08ef28047fa227167bfae2dadd4ba362"
+    },
+    "gaps": {
+      "bytes": 148944,
+      "path": "00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/output/knowledge/gaps.json",
+      "relative": "output/knowledge/gaps.json",
+      "sha256": "775aa280589ca1be1a81e5a1cd7abe7fbad7d71621293a4ba581d2e6415b70dd"
+    },
+    "knowledge_base": {
+      "bytes": 38524922,
+      "path": "00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/output/knowledge/knowledge_base.json",
+      "relative": "output/knowledge/knowledge_base.json",
+      "sha256": "f73d8d59980a3af0c08bbcc0532f752bd8450a1ccef087ac736a29455d39fd96"
+    },
+    "summary": {
+      "bytes": 3730,
+      "path": "00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/output/knowledge/knowledge_base_summary.json",
+      "relative": "output/knowledge/knowledge_base_summary.json",
+      "sha256": "6a11c33fe4cb57da0f7f612f8557652ff0c2e2bfc6de7061a9eef183a1300a97"
+    },
+    "tri_source_verification": {
+      "bytes": 35229,
+      "path": "00-MASTER/UAKOS-CLOSURE-008/evidence-vendored/evidence/TRI-SOURCE-VERIFICATION-DETERMINATION.md",
+      "relative": "evidence/TRI-SOURCE-VERIFICATION-DETERMINATION.md",
+      "sha256": "0b2ea001b8e912e7c7693f44b41d901796b7c62029254ded7d440df4569d9de5"
+    }
+  },
+  "head_commit": "42f519e9",
+  "program": "UAKOS-CLOSURE-008"
+}

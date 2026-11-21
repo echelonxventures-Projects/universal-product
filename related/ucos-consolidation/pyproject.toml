@@ -1,0 +1,375 @@
+# UCOS Ω∞ — EC-1 Execution Engine (EPIC-001 Foundation)
+# TASK-000001: workspace + pinned dependencies (DE-04 pinned/vetted; TP-05 least-sufficient).
+# Runtime code uses the Python standard library only (TP-04 vendor-neutral core).
+# This project is additive engineering code; it never modifies the certified corpus
+# (00-BOOK, 00-SOURCE, 99-FREEZE are read-only — DP-03).
+
+[build-system]
+requires = ["setuptools>=69.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ucos-ec1-engine"
+version = "0.1.0"
+description = "UCOS Ω∞ EC-1 Execution Engine — Foundation layer (IMP-001)."
+requires-python = ">=3.12"
+license = { text = "Proprietary" }
+# Runtime dependencies: none. Foundation is stdlib-only by constitutional intent
+# (TP-04 Vendor Neutrality of Core, TP-05 Least Sufficient Technology).
+dependencies = []
+
+[project.optional-dependencies]
+# Canonical verification toolchain — fully pinned (DE-04 pinned/vetted). These are
+# the exact versions the canonical verification entry point (verify.sh / make verify)
+# installs into the repository-standard virtualenv (.ec1-venv). `coverage` is pinned
+# explicitly rather than left to transitive resolution so that the coverage gate is
+# byte-for-byte reproducible across machines and CI. See ENVIRONMENT-SETUP.md.
+dev = [
+  "pytest==8.3.4",
+  "pytest-cov==6.0.0",
+  "coverage==7.15.2",
+  "ruff==0.8.4",
+  # IMPLEMENT-001B RB-03 (UCCEP-F-006 · WP-UCCEP-004 · OA-3 · conflict CF-03).
+  # verify.sh Stage 5 (`ukb.py validate`) validates the emitted DATA against
+  # 00-BOOK/SCHEMAS/*.schema.json, but ukb.py:1733-1735 swallows ImportError and
+  # still exits 0 — so on a clean bootstrap the stage reported PASS having
+  # validated NO schema, which is the exact silent-failure mode that let 539
+  # schema violations pass undetected. RELEASE-001 §4 nonetheless requires
+  # "Schema + referential integrity PASS" as a release exit criterion.
+  # Declaring the pin here is sufficient and complete: ucos_expected_deps()
+  # (scripts/ucos-env.sh:104-120) DERIVES the required set by parsing this exact
+  # list, so ucos_ensure_venv now installs and verifies jsonschema with no second
+  # edit and no hardcoded list anywhere.
+  "jsonschema==4.26.0",
+]
+
+[project.scripts]
+# TASK-000003: frozen-path guard is invocable as a CLI (used by CI + pre-commit).
+ec1-frozen-guard = "engine.foundation.guards.frozen_paths:main"
+# TASK-000033: determinism reproducibility gate (used by CI).
+ec1-determinism = "engine.determinism.reproduce:main"
+# EPIC-UKDA: Universal Knowledge & Decision Architecture CLI (Part 13).
+ucos-knowledge = "engine.knowledge.cli:main"
+# EPIC-UKDA-002: Universal Constitutional Knowledge Integration CLI.
+ucos-knowledge-integration = "engine.knowledge.integration.cli:main"
+# EPIC-UKDA-003 (Terminal T3): Universal Knowledge Intelligence Platform — admit
+# canonical knowledge from unlimited providers, homed exactly once (Knowledge Once).
+ucos-knowledge-intelligence = "engine.knowledge.ukip.cli:main"
+# UCOS-EPIC-002 (Terminal T2): Universal Knowledge Graph over Registry Truth.
+ucos-knowledge-graph = "engine.graph.cli:main"
+# UCOS-EPIC-003: Universal Discovery Engine CLI (registry-driven discovery).
+ucos-discovery = "engine.discovery.cli:main"
+# EPIC-PLAT-003: Repository Operations Automation — the one-command operational
+# verification entry point (Terminal T5), orchestrating the canonical engines/scripts.
+ucos-repo-ops = "platform.repository_operations.cli:main"
+# UCOS-EPIC-004: Universal Measurement Engine (UCOS-UMA-001) — measures Registry Truth.
+ucos-measure = "platform.measurement.cli:main"
+# UCOS-EPIC-005: Universal Validation Engine (Terminal T5) — the one-command universal
+# validation entry point across architecture/implementation/dependency/registry/schema/
+# runtime/quality domains (fail-closed, evidence-producing, deterministic).
+ucos-validate = "platform.universal_validation.cli:main"
+# UCOS-EPIC-013: Continuous Validation Intelligence (Terminal T5) — expands validation
+# beyond static rule execution across cross-capability consistency, repository
+# completeness, contract/runtime/version compatibility, and architecture/governance
+# compliance, producing Validation Intelligence Reports, a Compatibility Engine verdict,
+# Compliance Reports, and content-addressed evidence.
+ucos-validate-intel = "platform.validation_intelligence.cli:main"
+# UCOS-EPIC-001: Universal Registry Platform — validate registrations against the
+# single registration authority and emit deterministic evidence (Terminal T1).
+ucos-registry = "engine.registry.universal.cli:main"
+# UCXI-000001: Universal Context Intelligence — the constitution, taxonomy, ontology,
+# registry, resolution, composition, graph, runtime, validation and certification of all
+# context (fifteen universal context kinds, open to future context types).
+ucos-context = "engine.context.cli:main"
+# UCOS-NUC-001: the Nucleus Ownership Authority — capabilities belong to Nuclei; layers and
+# compositions own nothing. Its parser already declares `prog="ucos-nucleus"`, so publishing
+# the entry point makes `law`/`gate`/`compose`/`lifecycle`/`certify`/`context`/`replay`
+# reachable as the one command the capability names for itself, rather than only as
+# `python -m`. AUTHORITY = the ownership law it enforces; writes nothing.
+ucos-nucleus = "engine.nucleus.cli:main"
+# P0-AUTONOMOUS-CONSTITUTIONAL-EXECUTION-001 (UCOS-CEL-0001): the Autonomous Constitutional
+# Execution System — dependencies are discovered, execution order is derived, legality is
+# proven before execution, mutation passes the gateway, replay reaches a deterministic fixed
+# point, and nothing certifies itself. Publishing the entry point makes the fail-closed gates
+# (`acceptance`, `legality`, `authority`, `plan`, `replay`, `cycle`) reachable from CI as the
+# one command the capability names for itself. AUTHORITY = the execution law it enforces;
+# writes nothing. Named for the law rather than "ucos-constitution", which the Foundation's
+# own constitution CLI already owns — one name, one owner.
+ucos-cel = "engine.constitution.cli:main"
+# PROGRAM-002 (UMK-000001): Universal Meta-Kernel — the smallest open-world meta-model.
+# Prove constitutional compliance, run the mandatory architectural proof, and emit
+# validation/certification evidence. Open by registration; no kernel redesign for unknown
+# future concept-categories.
+ucos-kernel = "engine.kernel.cli:main"
+# PROGRAM-003 (UPF-000001): Universal Provider Framework — the kernel realization layer.
+# Register/discover/resolve/select/negotiate/compose/govern providers as open kernel
+# meta-objects. Open by registration; no framework redesign for unknown provider categories.
+ucos-uprf = "engine.provider.cli:main"
+# PROGRAM-004 (MCOS-000001): Universal Meta-Civilization Platform — the layer that generates
+# constitutional operating systems. Register dimensions, derive composition from declarations
+# rather than a pipeline, and generate a constitutional OS through the stratum chain. Open by
+# registration; no layer redesign for an unknown dimension, capability, stratum or OS.
+ucos-mcos = "engine.civilization.cli:main"
+# UAPF-000001: Universal Autonomous Pipeline Framework — the constitutional execution
+# foundation for every autonomous activity. Discovers the declared pipeline catalogue,
+# derives every plan from the declarations, and reports or gates. Declaring this entry point
+# is what keeps the framework and its catalogue reachable (RCH-ENTRYPOINT) rather than
+# measured as a dead engine. AUTHORITY = NONE (DERIVED TRUTH); writes nothing.
+ucos-uapf = "platform.universal_pipeline.cli:main"
+# Ω-A05 — Universal Foundation capabilities. Each is a reusable Foundation service with its own
+# one-command surface, so "what is Truth", "who owns this", "assimilate this source" and "measure
+# this" are invocable capabilities (RCH-ENTRYPOINT) rather than logic buried in one engine.
+# AUTHORITY = NONE (DERIVED TRUTH); every one of them reads Truth and writes none.
+ucos-truth = "platform.universal_truth.cli:main"
+ucos-ownership = "platform.universal_ownership.cli:main"
+ucos-assimilate = "platform.universal_assimilation.cli:main"
+ucos-foundation = "platform.universal_foundation.cli:main"
+# Ω-A07 — the Foundation's own law and the measurement framework it is configured by. Both are
+# Foundation capabilities under UCOS-UFC-001 and UFC-06 requires each to be invocable in one
+# command, so the entry point is what makes the article true rather than aspirational.
+ucos-constitution = "platform.universal_foundation.constitution_cli:main"
+ucos-measurement = "platform.universal_measurement.cli:main"
+# Ω-PROD-01 — the first production generator. It turns one Ω Nucleus declaration into the
+# complete constitutional artifact set that nucleus requires, and writes nothing: a plan is a
+# determination, and materialising it is a constituent act under the authority that owns the
+# Truth it would enter. AUTHORITY = NONE (DERIVED TRUTH).
+ucos-generate = "platform.universal_generator.cli:main"
+# W3-4 — four capabilities shipped a cli module that no console script published, so the
+# surface existed and was unreachable except as `python -m`. Each name below is the one its
+# own parser already declares as `prog=`, so publishing registers what the code asserts
+# rather than deciding anything: a capability's one-command surface is the capability's to
+# name (RCH-ENTRYPOINT), not the packaging file's.
+ucos-uckp = "engine.uckp.cli:main"
+ucos-commercial = "platform.commercial_intelligence.cli:main"
+ucos-repo-intel = "platform.repository_intelligence.cli:main"
+ucos-provider = "platform.universal_provider.cli:main"
+# UCOS-CTRL-000001: Universal Control Plane — the engineering operating system across all
+# UCOS capabilities. Its parser already declares `prog="ucos-ctrl"`, so publishing the entry
+# point registers the one-command surface the capability names for itself (RCH-ENTRYPOINT)
+# rather than leaving `state`/`registries`/`plan`/`roadmap`/`backlog`/`schedule`/`dashboard`
+# reachable only as `python -m`. AUTHORITY = NONE (DERIVED TRUTH); writes nothing.
+ucos-ctrl = "platform.universal_control_plane.cli:main"
+# UCON-000001: the Universal Construct Foundation — the one place a presented construct becomes
+# governed representation with exactly one traceable disposition, and the home for the unknown,
+# the contradictory and the undecidable. Its parser already declares `prog="ucos-construct"`, so
+# publishing the entry point registers the surface the capability names for itself
+# (RCH-ENTRYPOINT) rather than leaving `laws`/`audit`/`registry`/`dispose`/`discover`/`permits`
+# reachable only as `python -m`. AUTHORITY = NONE (DERIVED TRUTH); writes nothing — evidence is
+# written only by the separate, explicit `python -m engine.construct.gate --evidence`.
+ucos-construct = "engine.construct.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["engine*", "platform*"]
+exclude = ["engine.tests*", "platform.tests*"]
+
+[tool.setuptools.package-data]
+# TASK-000032: ship the canonical BP-DATA reproducibility fixture with the wheel.
+"engine.determinism" = ["blueprints/*.json"]
+# UAPF-000001: ship the declared pipeline catalogue. It is DATA, not code — the Evolution and
+# Build pipelines are declarations the framework derives, so an installed wheel without the
+# catalogue would be a framework with nothing to run.
+"platform.universal_pipeline" = ["catalog/*.json"]
+# UCXI-000001 Part 15: ship the declared reference frames. They are DATA, not code — the
+# whole point of the location architecture is that no axis value appears in a module, so an
+# installed wheel without the catalogue is a resolver with nothing to resolve from, and
+# every axis would fail closed as unresolved.
+"engine.context" = ["catalog/*.json"]
+# Ω-A05: ship the declared Foundation specialisations. They are DATA, not code — the Repository
+# Truth policy, the governed ownership declarations and the project specialisation are the ONLY
+# places a project's own names appear, so an installed wheel without them is a Foundation with
+# nothing to specialise.
+"platform.universal_truth" = ["catalog/*.json"]
+"platform.universal_ownership" = ["catalog/*.json"]
+"platform.universal_foundation" = ["catalog/*.json"]
+# Ω-A07: the measurement policy composition is declared data too — which measurements bind, and
+# how strongly, is configuration and not code (UFC-04).
+"platform.universal_measurement" = ["catalog/*.json"]
+
+# --- TASK-000009: test + coverage configuration ---------------------------------
+[tool.pytest.ini_options]
+minversion = "8.0"
+# UCOS-CL-008 — intelligence/tests joins the canonical collection.
+#
+# The determination this settles: intelligence/ IS part of the certified corpus. It is not
+# a side lane. UCOS-RIE-001 emits ELEVEN TRACKED artifacts under intelligence/ that the
+# RIB → AEE → P0-FCL-002 chain consumes as evidence, and Phase-9 certifies their bytes. A
+# producer of certified artifacts whose tests never run in the certifying command is a
+# capability the certification does not actually cover.
+#
+# Measured consequence of its absence: the coverage-isolation regression added at be46a300
+# lived in intelligence/tests/test_rie.py and was therefore collected by NOTHING —
+# not ./verify.sh, not CI, not the certification pipeline. The invariant it claimed to
+# guard was unguarded, and the residual leak through analysis.py (UCOS-CL-005) shipped
+# under it. Adding the path is what makes that regression real rather than decorative.
+#
+# The coverage DENOMINATOR is deliberately a separate question, answered separately below:
+# these tests entering collection does not by itself put intelligence/* into --cov.
+#
+# --- UCI-000001: four more test roots that were collected by NOTHING -------------------
+#
+# The same defect as intelligence/tests, four more times and at twenty times the scale.
+# Measured: service/tests, data/tests, application/tests and infrastructure/tests hold 188
+# test modules and 3,995 tests. They were named in no testpaths, no Makefile target, no
+# verify.sh stage and no workflow. Every one of them passes, in 14.7 seconds combined.
+#
+# That combination is the worst possible one. A reader who opens data/tests and finds 954
+# passing tests concludes the layer is tested; no gate anywhere executed a line of it. Tests
+# that exist and never run are worse than absent tests, because absence is visible.
+#
+# The four source layers they cover enter --cov below in the same edit. Admitting the tests
+# without admitting the code would put 3,995 passing tests against a denominator that still
+# excluded what they exercise, which would raise the reported percentage while measuring
+# nothing new -- the precise move Rule 1 of the closure mandate names as a defect.
+# --- UCOS-OMEGA-001 (Ω-1) — THE COLLECTION SET AND THE DENOMINATOR ARE DERIVED -----------
+#
+# `testpaths` USED TO BE DECLARED HERE, and 78 `--cov=` flags with it. Both are gone, and the
+# reason is the measurement that produced Ω-1 rather than a preference for shorter files.
+#
+# WHAT THE THREE LISTS COST. This file carried the same fact three times: `testpaths` named the
+# test roots, `addopts` named 78 packages, and `[tool.coverage.run] source` named 78 paths.
+# Three enumerations, reconciled by nobody, and each one silently wrong at a different moment:
+#
+#   engine.enforcement_closure, engine.constitution, engine.uicm   in NEITHER --cov list
+#     4,580 statements, 5.2% of the tree, outside a denominator reporting 97%
+#   service, data, application, infrastructure, intelligence       no testpaths entry
+#     188 test modules and 3,995 PASSING tests that no runner collected, for months
+#   engine/recursive_knowledge                                     no __init__.py, so invisible
+#     2,849 statements behind a live gate, a verify.sh stage, a workflow and 135 tests
+#   scripts/                                                       never in any list at all
+#     found by discovery on its first run, having been outside every enumeration since it existed
+#
+# Four omissions, one root cause: a list of what exists agrees with itself forever. It has no
+# term for what it leaves out, so it cannot report its own incompleteness — and every one of the
+# omissions above was found by READING the lists, never by a control firing.
+#
+# WHAT REPLACES THEM. `engine/universal_discovery/pytest_scope.py` derives both sets from
+# `git ls-files '*.py'` before pytest-cov starts its collector: the test roots from which
+# directories hold suites, and the denominator from which packages hold source. There is now ONE
+# derivation, so drift between the copies is not a thing that is checked for — it is a thing that
+# cannot occur.
+#
+# THE PROPERTY THIS BUYS, which is the whole point: adding `quantum/` — or `mars/`, or
+# `interstellar/` — is governed on the commit that creates it, with ZERO edits to this file, zero
+# registration and zero code changes. `platform/tests/test_coverage_scope.py` proves that by
+# creating such a tree and measuring that discovery already accounts for it.
+#
+# WHAT IS STILL DECLARED HERE, AND WHY THAT IS CORRECT. Judgements, never populations. The
+# coverage floor is a policy. `[tool.ucos.coverage_scope] excluded_packages` is an owner's
+# argued decision that something stay outside measurement, and Ω-5 REQUIRES it to be written
+# down: a silent exclusion is the defect, an arguable one is the remedy.
+addopts = [
+  "-ra",
+  "--strict-markers",
+  # Ω-1. Loaded with `-p` so it registers before the entry-point plugins, and implemented as a
+  # HOOKWRAPPER so it runs ahead of pytest-cov's own `tryfirst` hook. Both details are
+  # load-bearing; the module docstring states what breaks if either changes.
+  "-p",
+  "engine.universal_discovery.pytest_scope",
+  # NO `--cov-report=term-missing` HERE, AND THE REASON IS THAT A PER-SHARD TABLE IS A LIE.
+  # pytest-cov stores reports in a dict keyed by type (`StoreReport`), so a report named in
+  # `addopts` reaches EVERY sharded invocation and cannot be removed from the command line —
+  # naming a type again replaces it, and there is no spelling that deletes one. UVI exploits
+  # that to redirect `xml` to a shard-private path; `term-missing` had no such escape, so all
+  # thirteen shards rendered a full table.
+  #
+  # Each of those tables measures the WHOLE denominator against ONE THIRTEENTH of the suite,
+  # so each reports 19%-57% and names tens of thousands of statements as missed that another
+  # shard covers. Fifteen thousand eight hundred and ninety of a 17,827-line verification log
+  # were those rows: 89% of the output, every line of it inviting the reader to fix a miss
+  # that does not exist. That is not verbosity, it is a measurement presented at a scope where
+  # it is false, and it was read that way.
+  #
+  # The combined table -- the only one that means anything -- is rendered by the declared
+  # `coverage report` stage (verify.sh), which invokes the coverage CLI directly and does not
+  # consult `addopts` at all. Nothing is lost here and one true table survives. A developer who
+  # wants the table interactively runs `python -m coverage report` after the suite, which is
+  # the same command that stage runs.
+  # WITHOUT THIS, EVERY SUBPROCESS WRITES COVERAGE DATA THAT CAN NEVER BE COMBINED, AND THE
+  # PROOF IS ONE ENVIRONMENT VARIABLE. pytest-cov exports the config path to child processes in
+  # `CovController.set_env` (pytest_cov/engine.py:111) so its `.pth` can restart coverage there,
+  # but ONLY if the path exists: otherwise it exports the sentinel `COV_CORE_CONFIG=':'`, meaning
+  # "no config file". The default is `.coveragerc`, this repository has none, and `branch = true`
+  # lives in `[tool.coverage.run]` BELOW — so every child started coverage with branch mode OFF
+  # and wrote `has_arcs=0` data beside a parent writing `has_arcs=1`.
+  #
+  # `coverage combine` refuses that pair outright: `DataError: Can't combine statement coverage
+  # data with branch data`. It surfaces as an INTERNALERROR during pytest-cov's teardown, AFTER
+  # every test in the shard has PASSED, so the shard reports "1404 passed" and then dies — and
+  # the coverage gate reports a number computed from whichever shards happened to survive. It was
+  # measured at 71% against a true 98%: not a low number, a meaningless one.
+  #
+  # Naming the config here makes the path exist, so the child resolves it, reads `branch = true`
+  # and writes branch data that combines. Verified by probe: `has_arcs` goes 0 -> 1. The path is
+  # relative and that is safe — `set_env` calls `Path.resolve()` before exporting, so a child that
+  # chdirs still receives an absolute path.
+  #
+  # THIS IS THE GENERAL FIX AND IT DID NOT REPLACE THE SPECIFIC ONE. `immutable.clean_environment`
+  # strips this bootstrap from UCI's own measuring subprocesses, which is a different obligation:
+  # a subprocess whose PURPOSE is to measure something must not also contribute to the outer
+  # session's data file, whatever format it would write. Both are correct and both stay.
+  "--cov-config=pyproject.toml",
+  "--cov-report=xml",
+  "--cov-fail-under=90",
+]
+
+[tool.coverage.run]
+branch = true
+# `source` IS DELIBERATELY ABSENT. It was the second of the three enumerations described above —
+# 78 paths that had to agree with 78 flags and were reconciled by nobody. pytest-cov passes the
+# derived denominator to coverage explicitly, so a `source` here would be a stale second opinion
+# that only ever spoke when the two disagreed. Deleting it does not widen the denominator; it
+# removes a copy of it. `python -m engine.universal_discovery --scope` prints what is measured.
+#
+# `omit` is PATTERNS, not paths, and that distinction is the Ω-1 property applied here: a suite
+# under a tree nobody has created yet is already omitted, because the pattern does not name a
+# tree. A test module is not source under measurement — counting it would let a suite raise its
+# own coverage by growing, which is the one way to make the number go up while measuring less.
+omit = [
+  "*/tests/*",
+  "*/conftest.py",
+]
+
+# --- UCOS-COV-SCOPE-001 — the coverage denominator, declared rather than assumed ---------
+#
+# WHY THIS TABLE EXISTS, STATED AS THE MEASUREMENT THAT PRODUCED IT. The scope was declared
+# TWICE and reconciled by nobody: `addopts` carries 69 `--cov=` flags and `[tool.coverage.run]
+# source` carries 69 paths, two independent lists that happened to agree. A package could be
+# dropped from one and kept in the other, or omitted from both, and no gate anywhere would
+# notice. Three packages WERE omitted from both — engine.enforcement_closure (711 statements),
+# engine.constitution (1,976) and engine.uicm (1,893) — 4,580 statements, 5.2% of the source
+# tree, silently outside a denominator that was reporting 97%.
+#
+# A percentage whose denominator is not itself governed is not a measurement, it is a number.
+# So: every package under engine/ and platform/ is either MEASURED or named here with a reason,
+# and platform/tests/test_coverage_scope.py refuses any third possibility in both directions —
+# a package in neither, and a stale entry naming a package that is measured or gone.
+[tool.ucos.coverage_scope]
+excluded_packages = [
+  { package = "engine.uicm", reason = "1,893 statements across ten modules with ZERO test files, and no module under engine/, platform/ or 00-MASTER/ imports it. Admitting it to the denominator would bake in ~1,893 permanently uncovered statements and convert a dead-code finding into a coverage figure, which is measurement laundering. Excluding it silently was how it stayed invisible. It is named here so the omission is arguable: the open question is whether this package is retired and should be deleted, or live and should be tested, and that is an owner decision rather than a coverage setting. Reviewed: 2026-08-28." },
+  { package = "engine.substrate", reason = "194 statements that no environment can execute until the substrate exists: the package imports uakp>=0.0.1, which sub-declaration records as publishing no release yet, so engine.substrate answers FAULT (exit 2) by design and engine/tests/unit/test_substrate_consumption.py importorskips on exactly that fact. The code is not untested because nobody looked; it is untestable while its subject is absent, and a percentage charged to an unpublished upstream is a number about the environment, not the repository. Named here so the omission is arguable, the same shape as engine.uicm: when uakp is installable, this entry is deleted and the suite runs for real. Reviewed: 2026-09-12." },
+]
+
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 90
+exclude_lines = [
+  "pragma: no cover",
+  "raise NotImplementedError",
+  "if __name__ == .__main__.:",
+]
+
+# --- Lint / secure-coding (CD-01 conventions, CD-04 secure coding) ---------------
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+# E/F pycodestyle+pyflakes, I import-sort, B bugbear, UP pyupgrade, S bandit (security).
+select = ["E", "F", "I", "B", "UP", "S"]
+
+[tool.ruff.lint.per-file-ignores]
+# Tests may use assert (S101) and secret-like literals in fixtures (S105/S106).
+"engine/tests/*" = ["S101", "S105", "S106"]
+"platform/tests/*" = ["S101", "S105", "S106"]

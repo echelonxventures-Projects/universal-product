@@ -1,0 +1,216 @@
+{
+  "accepted": true,
+  "blocking_failures": [],
+  "blueprint_id": "InfrastructureCapability",
+  "checks_run": [
+    "behavior-by-reference",
+    "foundation-reuse-integrity",
+    "founding-acyclic",
+    "hosting-by-reference",
+    "infra-capability-classified",
+    "infra-capability-enables-frozen-construct",
+    "infra-capability-identified-objectbound",
+    "infra-capability-reuses-platform",
+    "infra-capability-typed",
+    "infra-capability-value-fidelity",
+    "lifecycle-valid",
+    "meta-class-single",
+    "meta-constraints",
+    "meta-relationships-closed",
+    "non-constitutive",
+    "provisional-state-disclosure",
+    "scaling-unbounded",
+    "technology-independence",
+    "traceability-rooted"
+  ],
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 19,
+    "total": 19
+  },
+  "evidence_format": "ucos-validation-evidence/1.0.0",
+  "findings": [
+    {
+      "check_id": "behavior-by-reference",
+      "details": {
+        "behavior_ref": "ENG-005:RL-F2:runtime.capability"
+      },
+      "message": "behavior-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "PL-F2",
+          "SF-2"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "hosting-by-reference",
+      "details": {
+        "capability_ref": "ENG-005:PL-F2:PLATFORM-006.capability",
+        "enables_ref": "ENG-005:RL-F2:runtime.execution"
+      },
+      "message": "hosting-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "infra-capability-classified",
+      "details": {
+        "kind": "Hosting-Capability"
+      },
+      "message": "infra-capability-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "infra-capability-enables-frozen-construct",
+      "details": {
+        "enables_ref": "ENG-005:RL-F2:runtime.execution"
+      },
+      "message": "infra-capability-enables-frozen-construct satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "infra-capability-identified-objectbound",
+      "details": {
+        "capability_id": "UCOS-INFRA-CAPABILITY-ucos.infrastructure.capability.foundation-0ecdd206025821e0"
+      },
+      "message": "infra-capability-identified-objectbound satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "infra-capability-reuses-platform",
+      "details": {
+        "capability_ref": "ENG-005:PL-F2:PLATFORM-006.capability"
+      },
+      "message": "infra-capability-reuses-platform satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "infra-capability-typed",
+      "details": {
+        "type_tag": "ucos.infrastructure.capability.foundation"
+      },
+      "message": "infra-capability-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "infra-capability-value-fidelity",
+      "details": {
+        "value_digest": "0ecdd206025821e0e17046426f5b1c6d148411850955a5f0118daaddbdbf3795"
+      },
+      "message": "infra-capability-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "lifecycle-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "InfrastructureCapability"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "WF-1",
+          "WF-2"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "dependsOn"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "scaling-unbounded",
+      "details": {},
+      "message": "scaling-unbounded satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "technology-independence",
+      "details": {},
+      "message": "technology-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 6
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-INFRA-CAPABILITY-ucos.infrastructure.capability.foundation-0ecdd206025821e0",
+  "verdict": "pass"
+}

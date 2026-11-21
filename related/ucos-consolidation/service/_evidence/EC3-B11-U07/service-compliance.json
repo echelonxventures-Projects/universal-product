@@ -1,0 +1,75 @@
+{
+  "compliance_format": "ucos-service-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "orchestration-typed",
+        "orchestration-identified-objectbound"
+      ],
+      "id": "C1",
+      "requirement": "Typed (USL-03), identified and objecthood-bound (USL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (USL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "service-value-fidelity",
+        "orchestration-data-by-reference"
+      ],
+      "id": "C3",
+      "note": "inter-step data (DF-2) referenced (SMR-13/SOO-07); ENG-003 value explicit — USL-11",
+      "requirement": "Carries ENG-003 value; operation I/O is DF-2 data by reference (USL-08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "orchestration-contract-bound"
+      ],
+      "id": "C4",
+      "note": "composition contract explicit (contract-bound SOO-05/SOO-K2); USL-06",
+      "requirement": "Contract/interface/operation structure is explicit (USL-06/07/08).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "orchestration-coordinates-steps",
+        "orchestration-topology-valid",
+        "orchestration-coordination-acyclic",
+        "founding-acyclic",
+        "meta-relationships-closed"
+      ],
+      "id": "C5",
+      "note": "orchestration MATERIALLY EXERCISED: coordinates steps by ENG-005 reference (SMR-06/SOO-04), founding coordination graph acyclic with a deterministic execution plan (USL-09/SOO-06) — the governing law",
+      "requirement": "Composition/orchestration uses ENG-005 references; founding acyclic (USL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "orchestration-runtime-reuse"
+      ],
+      "id": "C6",
+      "note": "orchestration MATERIALLY EXERCISED: behaves-as the kind's RUNTIME workflow/orchestration/event concern by reference (SMR-11/§7/SOO-03; USL-10) — the governing law; RUNTIME redefined 0",
+      "requirement": "Execution binds to RL-F2 by reference (USL-10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive",
+        "technology-independence"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (USL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "SERVICE-001 §12",
+  "target_id": "UCOS-ORCHESTRATION-ucos.service.orchestration.foundation-19e52f93764681e8"
+}

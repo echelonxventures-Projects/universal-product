@@ -1,0 +1,62 @@
+{
+  "count": 5,
+  "entries": [
+    {
+      "blueprint_id": "Security",
+      "certification_id": "UCOS-CERT-Security-8d059d510e055dd7",
+      "entry_hash": "5befd4d3d6b7c9f85ce6e81034f1b259657e295967c694841abe16c33912a06f",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "8d059d510e055dd7e7f38fcb00840d34c358c3c6ddb518461d2693f294a806e8",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771",
+      "version": "1.0.0"
+    },
+    {
+      "blueprint_id": "Security",
+      "certification_id": "UCOS-CERT-Security-a92fc954a1ffeb9a",
+      "entry_hash": "79268185565933d6abb694d51efa672ef2c06616cf965a9abb77c0e0f77bf141",
+      "prev_hash": "5befd4d3d6b7c9f85ce6e81034f1b259657e295967c694841abe16c33912a06f",
+      "record_sha256": "a92fc954a1ffeb9ae77a13f73dcd14f1ab8d9fa1f176eb2e6f823deb68aa003a",
+      "sequence": 1,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+      "version": "1.0.0"
+    },
+    {
+      "blueprint_id": "Security",
+      "certification_id": "UCOS-CERT-Security-e40ebe0662b32731",
+      "entry_hash": "c7b988acc6c07b01280175806e28cee85e6260e267e6e020f6b8bafd532df72d",
+      "prev_hash": "79268185565933d6abb694d51efa672ef2c06616cf965a9abb77c0e0f77bf141",
+      "record_sha256": "e40ebe0662b32731e0428c789899d9647d5bc392f8e8b972dc10b1aa708c2296",
+      "sequence": 2,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+      "version": "1.0.0"
+    },
+    {
+      "blueprint_id": "Security",
+      "certification_id": "UCOS-CERT-Security-10a33c491a29876c",
+      "entry_hash": "8e5630ccf5b2403817f2975d83ca22957e679d8dba9a6c94e4c25afc8d6b6f22",
+      "prev_hash": "c7b988acc6c07b01280175806e28cee85e6260e267e6e020f6b8bafd532df72d",
+      "record_sha256": "10a33c491a29876c82a89df4062f8b18f8c8f14be80aeda0a15d76520e9e4f24",
+      "sequence": 3,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+      "version": "1.0.0"
+    },
+    {
+      "blueprint_id": "Security",
+      "certification_id": "UCOS-CERT-Security-38efa8f2336051aa",
+      "entry_hash": "5953f0d91f7d29b772e535a82274533b7902f47658b0bbe0aa68e12e72d0229b",
+      "prev_hash": "8e5630ccf5b2403817f2975d83ca22957e679d8dba9a6c94e4c25afc8d6b6f22",
+      "record_sha256": "38efa8f2336051aa384fd9c5555a35b62d9352219fb9952f7fe25a661800eaeb",
+      "sequence": 4,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "5953f0d91f7d29b772e535a82274533b7902f47658b0bbe0aa68e12e72d0229b",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

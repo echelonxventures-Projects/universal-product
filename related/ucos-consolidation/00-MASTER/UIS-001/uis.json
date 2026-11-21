@@ -1,0 +1,2670 @@
+{
+  "ambiguous_namespaces": {
+    "ARCHIT": [
+      "ARCHITECTURA",
+      "ARCHITECTURE"
+    ],
+    "BLOCKE": [
+      "BLOCKE",
+      "BLOCKERVERIF"
+    ],
+    "CANONI": [
+      "CANONI",
+      "CANONICALINT",
+      "CANONICALOWN"
+    ],
+    "CERTIF": [
+      "CERTIF",
+      "CERTIFICATIO"
+    ],
+    "DEPEND": [
+      "DEPEND",
+      "DEPENDENCYCL",
+      "DEPENDENCYGR"
+    ],
+    "EVOUSI": [
+      "EVOUSIS014",
+      "EVOUSIS015",
+      "EVOUSIS016"
+    ],
+    "EXECUT": [
+      "EXECUTIONCON",
+      "EXECUTIONGOV",
+      "EXECUTIONLIF",
+      "EXECUTIONQUE",
+      "EXECUTIVESUM"
+    ],
+    "FINALC": [
+      "FINALC",
+      "FINALCERTIFI"
+    ],
+    "FINALI": [
+      "FINALI",
+      "FINALIMPLEME"
+    ],
+    "IAC001": [
+      "IAC001A",
+      "IAC001B",
+      "IAC001C",
+      "IAC001D",
+      "IAC001E"
+    ],
+    "KNOWLE": [
+      "KNOWLE",
+      "KNOWLEDGECOM"
+    ],
+    "READIN": [
+      "READINESSASS",
+      "READINESSDET"
+    ],
+    "REPOSI": [
+      "REPOSI",
+      "REPOSITORYDI",
+      "REPOSITORYGA",
+      "REPOSITORYRE"
+    ],
+    "ROOTCA": [
+      "ROOTCA",
+      "ROOTCAUSEANA"
+    ],
+    "UCOSOM": [
+      "UCOSOM",
+      "UCOSOMEGAINF"
+    ],
+    "VERIFI": [
+      "VERIFI",
+      "VERIFICATION"
+    ],
+    "WAVE01": [
+      "WAVE01EXECUT",
+      "WAVE01READIN"
+    ]
+  },
+  "blocking_failures": [],
+  "bookkeeping": [
+    {
+      "bound": true,
+      "facet": "identity",
+      "facet_known": true,
+      "field": "universal_id",
+      "field_scope": "ENTRY",
+      "id": "BK-01",
+      "obligation": "Universal Constitutional Identifier",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "bound": true,
+      "facet": "relationships",
+      "facet_known": true,
+      "field": "parent",
+      "field_scope": "ENTRY",
+      "id": "BK-02",
+      "obligation": "Parent Identifier",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "bound": true,
+      "facet": "ownership",
+      "facet_known": true,
+      "field": "program",
+      "field_scope": "ENTRY",
+      "id": "BK-03",
+      "obligation": "Root Identifier",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "bound": true,
+      "facet": "temporal-history",
+      "facet_known": true,
+      "field": "history",
+      "field_scope": "DOCUMENT",
+      "id": "BK-04",
+      "obligation": "Lineage",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/id-ledger.json"
+    },
+    {
+      "bound": true,
+      "facet": "ownership",
+      "facet_known": true,
+      "field": "owner",
+      "field_scope": "ENTRY",
+      "id": "BK-05",
+      "obligation": "Owner",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "bound": true,
+      "facet": "authority",
+      "facet_known": true,
+      "field": "authority",
+      "field_scope": "MEMBER",
+      "id": "BK-06",
+      "obligation": "Authority",
+      "owner_located": true,
+      "plane": "code",
+      "source": "engine/uckp/facets.py"
+    },
+    {
+      "bound": true,
+      "facet": "taxonomy",
+      "facet_known": true,
+      "field": "category",
+      "field_scope": "ENTRY",
+      "id": "BK-07",
+      "obligation": "Capability",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "bound": true,
+      "facet": "taxonomy",
+      "facet_known": true,
+      "field": "volume",
+      "field_scope": "ENTRY",
+      "id": "BK-08",
+      "obligation": "Classification",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "bound": true,
+      "facet": "lifecycle",
+      "facet_known": true,
+      "field": "status",
+      "field_scope": "ENTRY",
+      "id": "BK-09",
+      "obligation": "Lifecycle",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "bound": true,
+      "facet": "relationships",
+      "facet_known": true,
+      "field": "traceability",
+      "field_scope": "ENTRY",
+      "id": "BK-10",
+      "obligation": "Relationships",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "bound": true,
+      "facet": "dependencies",
+      "facet_known": true,
+      "field": "dependencies",
+      "field_scope": "ENTRY",
+      "id": "BK-11",
+      "obligation": "Dependencies",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "bound": true,
+      "facet": "evolution-history",
+      "facet_known": true,
+      "field": "version",
+      "field_scope": "ENTRY",
+      "id": "BK-12",
+      "obligation": "Evolution",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "bound": true,
+      "facet": "governance-context",
+      "facet_known": true,
+      "field": "authority",
+      "field_scope": "MEMBER",
+      "id": "BK-13",
+      "obligation": "Elevation",
+      "owner_located": true,
+      "plane": "code",
+      "source": "engine/uckp/facets.py"
+    },
+    {
+      "bound": true,
+      "facet": "validation",
+      "facet_known": true,
+      "field": "validation",
+      "field_scope": "MEMBER",
+      "id": "BK-14",
+      "obligation": "Validation",
+      "owner_located": true,
+      "plane": "code",
+      "source": "engine/uckp/facets.py"
+    },
+    {
+      "bound": true,
+      "facet": "verification",
+      "facet_known": true,
+      "field": "verification",
+      "field_scope": "MEMBER",
+      "id": "BK-15",
+      "obligation": "Verification",
+      "owner_located": true,
+      "plane": "code",
+      "source": "engine/uckp/facets.py"
+    },
+    {
+      "bound": true,
+      "facet": "certification",
+      "facet_known": true,
+      "field": "certification",
+      "field_scope": "MEMBER",
+      "id": "BK-16",
+      "obligation": "Certification",
+      "owner_located": true,
+      "plane": "code",
+      "source": "engine/uckp/facets.py"
+    },
+    {
+      "bound": true,
+      "facet": "temporal-history",
+      "facet_known": true,
+      "field": "first_seen",
+      "field_scope": "ENTRY",
+      "id": "BK-17",
+      "obligation": "Temporal Context",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/id-ledger.json"
+    },
+    {
+      "bound": true,
+      "facet": "context",
+      "facet_known": true,
+      "field": "context",
+      "field_scope": "MEMBER",
+      "id": "BK-18",
+      "obligation": "Context Metadata",
+      "owner_located": true,
+      "plane": "code",
+      "source": "engine/uckp/facets.py"
+    },
+    {
+      "bound": true,
+      "facet": "provenance",
+      "facet_known": true,
+      "field": "content_hash",
+      "field_scope": "ENTRY",
+      "id": "BK-19",
+      "obligation": "Repository Truth provenance",
+      "owner_located": true,
+      "plane": "artifact",
+      "source": "00-BOOK/DATA/artifacts.json"
+    }
+  ],
+  "bounds_slack": [],
+  "capabilities": [
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/tools/ukb.py",
+        "engine/registry/universal/identity.py",
+        "engine/uckp/identity.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Universal Identifier",
+      "evidence": "AIF-L02/L03; UMB-003 §2; four located minting mechanisms across four planes",
+      "group": "IDENTITY",
+      "id": "UIS-CAP-01",
+      "owner": "02-MASTER/UCOS-Ω∞-ABSOLUTE-IDENTITY-FEDERATION-AND-CONTINUITY-CONSTITUTION.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/id-ledger.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Canonical Identifier",
+      "evidence": "UMB-003 §3 Canonical ID = the universal_id itself",
+      "group": "IDENTITY",
+      "id": "UIS-CAP-02",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/identity.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Object Identifier",
+      "evidence": "UCKO is the only object holding authority in Layer Zero",
+      "group": "IDENTITY",
+      "id": "UIS-CAP-03",
+      "owner": "engine/uckp/ucko.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/artifacts.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Artifact Identifier",
+      "evidence": "the declared universal_id pattern",
+      "group": "IDENTITY",
+      "id": "UIS-CAP-04",
+      "owner": "00-BOOK/SCHEMAS/artifact.schema.json",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/knowledge/ukip/contracts.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Knowledge Identifier",
+      "evidence": "content-derived knowledge_id, never provider-asserted",
+      "group": "IDENTITY",
+      "id": "UIS-CAP-05",
+      "owner": "engine/knowledge/ukip/registry.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/context/taxonomy.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Runtime Identifier",
+      "evidence": "AIF-L03 plane P5; CXL-05 deterministic identity",
+      "group": "IDENTITY",
+      "id": "UIS-CAP-06",
+      "owner": "engine/context/registry.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/facets.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Dictionary",
+      "evidence": "ENG-001 D11; Layer Zero holds its vocabularies as data with an append-only registry",
+      "group": "DICTIONARY",
+      "id": "UIS-CAP-07",
+      "owner": "engine/uckp/vocabulary.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/law.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Vocabulary",
+      "evidence": "extended_with never mutates; redefining a term raises",
+      "group": "DICTIONARY",
+      "id": "UIS-CAP-08",
+      "owner": "engine/uckp/vocabulary.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/context/taxonomy.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Lexicon",
+      "evidence": "taxonomy and ontology declared explicitly non-overlapping",
+      "group": "DICTIONARY",
+      "id": "UIS-CAP-09",
+      "owner": "engine/context/ontology.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/id-ledger.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Symbol Table",
+      "evidence": "bidirectional kind/code map; ledger by_path",
+      "group": "DICTIONARY",
+      "id": "UIS-CAP-10",
+      "owner": "engine/registry/universal/identity.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "EXTEND",
+      "artifacts": [
+        "00-BOOK/tools/config.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Namespace Registry",
+      "evidence": "UMB-004 §5 obliges a classification rule per namespace; live namespaces exist with no declared rule — measured as UIS-F-003 and referred to the owner",
+      "group": "DICTIONARY",
+      "id": "UIS-CAP-11",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "PARTIAL"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/ucko.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Semantic Registry",
+      "evidence": "semantic_digest hashes meaning alone, so renaming a duplicate does not hide it",
+      "group": "DICTIONARY",
+      "id": "UIS-CAP-12",
+      "owner": "engine/uckp/registry.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/identity.py",
+        "engine/registry/universal/identity.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Grammar",
+      "evidence": "one declared grammar per plane, bound in identity_mechanisms",
+      "group": "DICTIONARY",
+      "id": "UIS-CAP-13",
+      "owner": "00-BOOK/SCHEMAS/artifact.schema.json",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/law.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Code Dictionary",
+      "evidence": "VOLUMES and ARTIFACT_FAMILIES; GOVERNED_CATEGORIES",
+      "group": "DICTIONARY",
+      "id": "UIS-CAP-14",
+      "owner": "00-BOOK/tools/config.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/registry/universal/core.py",
+        "00-BOOK/REGISTRIES/UNIVERSAL-ARTIFACT-REGISTRY.md"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Registry",
+      "evidence": "ENG-001 D10; the located registry family. A sixth registry is refused under CMG-INV-02",
+      "group": "REGISTRATION",
+      "id": "UIS-CAP-15",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/artifacts.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Registration",
+      "evidence": "AIF-L14 atomic admission; Artifact Creation = Artifact Registration",
+      "group": "REGISTRATION",
+      "id": "UIS-CAP-16",
+      "owner": "00-BOOK/tools/register.sh",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/REGISTRIES/VOLUME-REGISTRY.md"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Catalog",
+      "evidence": "the located catalogues, declared once as data",
+      "group": "REGISTRATION",
+      "id": "UIS-CAP-17",
+      "owner": "engine/context/catalog.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/artifacts.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Directory",
+      "evidence": "the page registry and navigation portal",
+      "group": "REGISTRATION",
+      "id": "UIS-CAP-18",
+      "owner": "00-BOOK/REGISTRIES/UNIVERSAL-PAGE-REGISTRY.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/artifacts.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Inventory",
+      "evidence": "the registered corpus inventory",
+      "group": "REGISTRATION",
+      "id": "UIS-CAP-19",
+      "owner": "00-BOOK/REGISTRIES/UNIVERSAL-ARTIFACT-REGISTRY.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/registry/universal/audit.py",
+        "engine/certification/ledger.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Ledger",
+      "evidence": "AIF-L08 DAG ledger; the append-only identity ledger",
+      "group": "REGISTRATION",
+      "id": "UIS-CAP-20",
+      "owner": "00-BOOK/DATA/id-ledger.json",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/change-ledger.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Manifest",
+      "evidence": "the located change manifest",
+      "group": "REGISTRATION",
+      "id": "UIS-CAP-21",
+      "owner": "00-BOOK/REGISTRIES/CHANGE-VERSION-LINEAGE-REGISTRY.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/facets.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Bookkeeping",
+      "evidence": "bound totally twice: the artifact schema and the closed facet set — see bookkeeping_obligations",
+      "group": "REGISTRATION",
+      "id": "UIS-CAP-22",
+      "owner": "00-BOOK/SCHEMAS/artifact.schema.json",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/compiler/resolver.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Resolver",
+      "evidence": "UMB-003 §5 forecloses a new resolver explicitly",
+      "group": "RESOLUTION",
+      "id": "UIS-CAP-23",
+      "owner": "engine/context/resolution.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/id-ledger.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Lookup",
+      "evidence": "the ledger by_path map",
+      "group": "RESOLUTION",
+      "id": "UIS-CAP-24",
+      "owner": "00-BOOK/tools/ukb.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/registry.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Discovery",
+      "evidence": "a capability becomes part of the universe by existing, never by being added to a list",
+      "group": "RESOLUTION",
+      "id": "UIS-CAP-25",
+      "owner": "engine/discovery/engine.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/id-ledger.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Addressability",
+      "evidence": "UMB-003 §5 addressable, resolvable, discoverable; no new address space is created",
+      "group": "RESOLUTION",
+      "id": "UIS-CAP-26",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/artifacts.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Dereferencing",
+      "evidence": "the ID↔artifact↔native-id↔path map; AIF-L06 path-independent key",
+      "group": "RESOLUTION",
+      "id": "UIS-CAP-27",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/artifacts.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Parent",
+      "evidence": "the registered parent field",
+      "group": "LINEAGE",
+      "id": "UIS-CAP-28",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-010-LINEAGE-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/relationships.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Child",
+      "evidence": "structural chain edges",
+      "group": "LINEAGE",
+      "id": "UIS-CAP-29",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-010-LINEAGE-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/tools/ukb.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Ancestor",
+      "evidence": "derived lineage walk yields predecessors and origin",
+      "group": "LINEAGE",
+      "id": "UIS-CAP-30",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-010-LINEAGE-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/tools/ukb.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Descendant",
+      "evidence": "the same walk yields successors",
+      "group": "LINEAGE",
+      "id": "UIS-CAP-31",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-010-LINEAGE-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/change-ledger.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Successor",
+      "evidence": "UMB-003 §3 Supersedes/Superseded-By chain",
+      "group": "LINEAGE",
+      "id": "UIS-CAP-32",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-009-VERSION-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/registry/universal/core.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Supersession",
+      "evidence": "append-only, supersede-not-overwrite; AIF-L17 forward-only compensation",
+      "group": "LINEAGE",
+      "id": "UIS-CAP-33",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/facets.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Provenance",
+      "evidence": "mandatory provenance chain; the provenance facet",
+      "group": "LINEAGE",
+      "id": "UIS-CAP-34",
+      "owner": "engine/knowledge/ukip/provenance.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/DATA/id-ledger.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Allocation",
+      "evidence": "ENG-001 D13; the one identity authority (category sequence)",
+      "group": "LIFECYCLE",
+      "id": "UIS-CAP-35",
+      "owner": "00-BOOK/tools/ukb.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/registry/universal/records.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Activation",
+      "evidence": "the declared lifecycle states",
+      "group": "LIFECYCLE",
+      "id": "UIS-CAP-36",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/certification/ledger.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Certification",
+      "evidence": "AIF-L21 certification duality",
+      "group": "LIFECYCLE",
+      "id": "UIS-CAP-37",
+      "owner": "00-BOOK/REGISTRIES/CERTIFICATION-REGISTRY.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/evolution.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Evolution",
+      "evidence": "ENG-001 D29; the evolution-history facet",
+      "group": "LIFECYCLE",
+      "id": "UIS-CAP-38",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "02-MASTER/UCOS-Ω∞-ABSOLUTE-IDENTITY-FEDERATION-AND-CONTINUITY-CONSTITUTION.md"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Retirement",
+      "evidence": "AIF-L17 retired identities are never reissued",
+      "group": "LIFECYCLE",
+      "id": "UIS-CAP-39",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "00-BOOK/tools/config.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Archive",
+      "evidence": "UMB-003 §3 DRAFT→…→ARCHIVED",
+      "group": "LIFECYCLE",
+      "id": "UIS-CAP-40",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/facets.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Temporal",
+      "evidence": "ContextKind.TEMPORAL; the temporal-history facet",
+      "group": "CONTEXT",
+      "id": "UIS-CAP-41",
+      "owner": "engine/context/taxonomy.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/context/ontology.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Spatial",
+      "evidence": "ContextKind.SPATIAL",
+      "group": "CONTEXT",
+      "id": "UIS-CAP-42",
+      "owner": "engine/context/taxonomy.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/context/ontology.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Reality",
+      "evidence": "ContextKind.REALITY",
+      "group": "CONTEXT",
+      "id": "UIS-CAP-43",
+      "owner": "engine/context/taxonomy.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/facets.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Existence",
+      "evidence": "ContextKind.EXISTENCE; the existence-context facet; UMB-003 §1 identity precedes existence",
+      "group": "CONTEXT",
+      "id": "UIS-CAP-44",
+      "owner": "engine/context/taxonomy.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/facets.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Observer",
+      "evidence": "ContextKind.OBSERVER; the observer-context facet",
+      "group": "CONTEXT",
+      "id": "UIS-CAP-45",
+      "owner": "engine/context/taxonomy.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/governance.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Governance",
+      "evidence": "ContextKind.GOVERNANCE; CXL-10 context describes, never grants",
+      "group": "CONTEXT",
+      "id": "UIS-CAP-46",
+      "owner": "engine/context/taxonomy.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/facets.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Security",
+      "evidence": "ContextKind.SECURITY; the security-context facet",
+      "group": "CONTEXT",
+      "id": "UIS-CAP-47",
+      "owner": "engine/context/taxonomy.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "EXTEND",
+      "artifacts": [
+        "engine/uckp/canonical.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Identity plane crosswalk",
+      "evidence": "UMB-004 §2 declares the Nomenclature Engine maintains the crosswalk, and AIF-L03 declares the planes; the crosswalk was declared as architecture and never measured. Bound here in identity_mechanisms and measured — no fifth scheme is minted and no scheme is merged",
+      "group": "INTEROPERABILITY",
+      "id": "UIS-CAP-48",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "PARTIAL"
+    },
+    {
+      "action": "EXTEND",
+      "artifacts": [
+        "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Single identity authority",
+      "evidence": "A/G-AUTH obliges every named architecture to declare REALIZES AIF; the obligation was legislated and never verified. Measured here against every obligated artifact",
+      "group": "INTEROPERABILITY",
+      "id": "UIS-CAP-49",
+      "owner": "02-MASTER/UCOS-Ω∞-ABSOLUTE-IDENTITY-FEDERATION-AND-CONTINUITY-CONSTITUTION.md",
+      "owner_located": true,
+      "status": "PARTIAL"
+    },
+    {
+      "action": "EXTEND",
+      "artifacts": [
+        "00-BOOK/DATA/id-ledger.json"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Identity law conformance",
+      "evidence": "ENG-001 D5 declares twenty laws as binding invariants whose violation is a failure condition; nothing measured them. Bound and measured here over the located identity data",
+      "group": "INTEROPERABILITY",
+      "id": "UIS-CAP-50",
+      "owner": "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "PARTIAL"
+    },
+    {
+      "action": "EXTEND",
+      "artifacts": [
+        "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+        "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Unlimited lawful identity, family, namespace and object-class expansion",
+      "evidence": "AUTH-INF-001 legislates CR-INF-001..012 and IL-INF-01..06 for every lawful direction of expansion; the requirements were legislated and never measured. Bound and probed here — no parameter is widened and no member is admitted",
+      "group": "UNBOUNDEDNESS",
+      "id": "UIS-CAP-51",
+      "owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "owner_located": true,
+      "status": "PARTIAL"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/uckp/vocabulary.py",
+        "engine/uckp/evolution.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Unlimited lawful semantic evolution",
+      "evidence": "CR-INF-008 open evolution; the located vocabulary extends without mutating and refuses redefinition",
+      "group": "UNBOUNDEDNESS",
+      "id": "UIS-CAP-52",
+      "owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "REUSE",
+      "artifacts": [
+        "engine/context/ontology.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Unlimited lawful contextual dimensions",
+      "evidence": "the fifteen universal context kinds with a declared admission path; absence is an explicit unknown, never a missing kind",
+      "group": "UNBOUNDEDNESS",
+      "id": "UIS-CAP-53",
+      "owner": "engine/context/taxonomy.py",
+      "owner_located": true,
+      "status": "EXISTING"
+    },
+    {
+      "action": "EXTEND",
+      "artifacts": [
+        "00-BOOK/SCHEMAS/artifact.schema.json",
+        "engine/uckp/facets.py"
+      ],
+      "artifacts_unresolved": [],
+      "capability": "Constitutional self-description of identity",
+      "evidence": "UMB-003 §3 declares the identity facet set and §5 declares resolvability; self-description was declared and never measured. Measured here BY RESOLUTION, preserving AIF-L02 opacity — see UIS-F-006",
+      "group": "UNBOUNDEDNESS",
+      "id": "UIS-CAP-54",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "owner_located": true,
+      "status": "PARTIAL"
+    }
+  ],
+  "counters": {
+    "authority_claims": 0,
+    "bookkeeping_facets_unknown": 0,
+    "bookkeeping_fields_unresolved": 0,
+    "bookkeeping_unbound": 0,
+    "bounds_slack": 0,
+    "capabilities_created": 0,
+    "capabilities_unowned": 0,
+    "capability_artifacts_unresolved": 0,
+    "extension_probes_unresolved": 0,
+    "history_not_append_only": 0,
+    "identities_absent": 0,
+    "identities_altered": 0,
+    "identities_attribute_coupled": 0,
+    "identities_failing_declared_grammar": 0,
+    "identities_multiple": 0,
+    "identities_renumbered": 0,
+    "identities_reused": 0,
+    "identities_unresolvable": 6,
+    "identities_untraceable": 0,
+    "identities_unverifiable": 0,
+    "identity_collisions": 0,
+    "identity_minting_attempts": 0,
+    "identity_records_claiming_authority": 0,
+    "identity_records_with_secret_field": 0,
+    "laws_unbound": 0,
+    "laws_violated": 0,
+    "lifecycle_states_undeclared": 0,
+    "mechanisms_unclassified": 0,
+    "mechanisms_unresolved": 0,
+    "namespace_partition_ambiguities": 28,
+    "namespaces_near_capacity": 0,
+    "namespaces_ungoverned": 201,
+    "nonsource_identity_admissions": 25,
+    "planes_unrealized": 0,
+    "realization_obligations_unmet": 0,
+    "record_write_intersections": 0,
+    "references_unresolvable": 0,
+    "registry_identities_absent_from_ledger": 0,
+    "self_description_unbound": 0,
+    "terminal_state_claims": 0,
+    "unboundedness_violations": 0,
+    "writes_outside_home": 0
+  },
+  "counts": {
+    "declared_namespaces": 50,
+    "live_namespaces": 237,
+    "namespace_capacity": 1000000,
+    "namespace_width": 6,
+    "recorded_histories": 1720,
+    "recorded_identities": 1720,
+    "registered_identities": 1689
+  },
+  "determination": "IDENTITY-CONFORMANCE-BOUND",
+  "evidence": {
+    "authority_hits": [],
+    "dangling": [],
+    "secret_hits": [],
+    "undeclared_states": []
+  },
+  "exit_criteria": [
+    {
+      "id": "UIS-EX-01",
+      "statement": "the identity architecture is machine-readable and gate-verifiable, so identity conformance can be resolved by a gate rather than read by a person"
+    },
+    {
+      "id": "UIS-EX-02",
+      "statement": "every identity capability the semantic measurement reached is mapped to a located canonical owner with exactly one recorded disposition, and no capability is dispositioned CREATE"
+    },
+    {
+      "id": "UIS-EX-03",
+      "statement": "the single identity authority is verified rather than asserted: every architecture the law obliges to declare it does so"
+    },
+    {
+      "id": "UIS-EX-04",
+      "statement": "the four located identifier schemes are crosswalked onto the declared identity planes without being merged and without a fifth scheme being minted"
+    },
+    {
+      "id": "UIS-EX-05",
+      "statement": "every identity law the architecture declares is bound to its owner, and every law the located data can decide is measured rather than assumed"
+    },
+    {
+      "id": "UIS-EX-06",
+      "statement": "universal bookkeeping is a measured property: every obligation binds to a located field and a member of the closed facet set"
+    },
+    {
+      "id": "UIS-EX-07",
+      "statement": "every standing identity divergence is bounded, disclosed and referred to its owner, and no bound is slack"
+    },
+    {
+      "id": "UIS-EX-08",
+      "statement": "the located identity records are provably unmodifiable by this measurement, and this measurement mints no identity"
+    }
+  ],
+  "facet_values": [
+    "audit",
+    "authority",
+    "certification",
+    "compliance-context",
+    "constraints",
+    "context",
+    "dependencies",
+    "discovery",
+    "evidence",
+    "evolution-history",
+    "existence-context",
+    "governance-context",
+    "identity",
+    "knowledge-context",
+    "lifecycle",
+    "metadata",
+    "observer-context",
+    "ontology",
+    "ownership",
+    "persistence-bindings",
+    "policies",
+    "projection-bindings",
+    "provenance",
+    "relationships",
+    "replay",
+    "runtime-bindings",
+    "security-context",
+    "semantic-identity",
+    "taxonomy",
+    "temporal-history",
+    "traceability",
+    "validation",
+    "verification"
+  ],
+  "findings": [
+    {
+      "blocking": false,
+      "bound_measure": "nonsource_identity_admissions",
+      "class": "STANDING-LEDGER-DIVERGENCE",
+      "detail": "The identity ledger records permanent universal identities for paths that lie inside a currently excluded location — operational memory and derived intelligence — so a class that RFP-5 says may never consume a permanent corpus identity is holding one. These are legacy admissions: they were minted before the exclusion authority reached its present form, and AIF A/G7 grandfathers the imported corpus with frozen ordinals.",
+      "disposition": "REGISTERED",
+      "id": "UIS-F-001",
+      "referred_to": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "title": "Permanent corpus identities are held by paths the admission authority now excludes",
+      "why_not_repaired": "UIL-13 and AIF-L17 forbid erasing or editing a recorded identity; retired identities are never reissued and the past is never rewritten. Deleting these entries would be the very defect this programme measures. The divergence is therefore bounded so it cannot grow, and referred."
+    },
+    {
+      "blocking": false,
+      "bound_measure": "identities_unresolvable",
+      "class": "STANDING-RESOLUTION-DIVERGENCE",
+      "detail": "A number of recorded identities denote paths that are absent from the working tree, so UIL-08 resolvability cannot be satisfied for them. Because the ledger is the RECORDED plane, the absence of the file does not invalidate the identity — the identity outlives the artifact by design.",
+      "disposition": "REGISTERED",
+      "id": "UIS-F-002",
+      "referred_to": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "title": "Recorded identities whose path no longer resolves",
+      "why_not_repaired": "AIF-L17 forbids deletion of Recorded Truth and UIL-05 forbids reuse, so an identity whose artifact is gone must remain recorded and must never be reallocated. Bounded and referred."
+    },
+    {
+      "blocking": false,
+      "bound_measure": "namespaces_ungoverned",
+      "class": "MEASURED-GOVERNANCE-GAP",
+      "detail": "UMB-004 §5 obliges a new entity class to receive BOTH a category namespace and a classification rule. A majority of the live category namespaces hold minted identities but match no declared rule: they were derived automatically from the artifact's own filename by the allocator's fallback, so the namespace exists without an authority that governs it.",
+      "disposition": "REGISTERED",
+      "id": "UIS-F-003",
+      "referred_to": "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md",
+      "title": "Live category namespaces exist with no declared classification rule",
+      "why_not_repaired": "Declaring a classification rule is an act of the nomenclature owner, and the namespaces are already bound to permanent identities that UIL-06 forbids renumbering. This measurement may not legislate a rule without becoming a second nomenclature authority."
+    },
+    {
+      "blocking": false,
+      "bound_measure": "namespace_partition_ambiguities",
+      "class": "DISCLOSED-PINNED-PARAMETER-DIVERGENCE",
+      "detail": "AIF-L24 pins the identifier width as a parameter that widens append-only. The allocator's derived-category width is now narrower than the width under which some recorded namespaces were minted, so the record contains namespaces longer than the current parameter admits, and pairs of distinct namespaces that differ only inside the truncation window — the ambiguity UMB-004 §6 addresses.",
+      "disposition": "REGISTERED",
+      "id": "UIS-F-004",
+      "referred_to": "02-MASTER/UCOS-Ω∞-ABSOLUTE-IDENTITY-FEDERATION-AND-CONTINUITY-CONSTITUTION.md",
+      "title": "The namespace-derivation width narrowed, leaving ambiguous namespace pairs on the record",
+      "why_not_repaired": "Widening or narrowing a pinned parameter is a witnessed act of the parameter's owner under AIF-L24, and the affected identities may not be renumbered under UIL-06. Disclosed for the parameter owner."
+    },
+    {
+      "blocking": false,
+      "bound_measure": null,
+      "class": "MEASURED-COVERAGE-BOUNDARY",
+      "detail": "Reflexivity (UIL-11) ranges over the internal constructs of the located code-plane engines rather than over registered artifacts. This measurement reports it as DECLARED-NOT-MEASURABLE rather than passing it silently, so the coverage of the measurement is itself visible and a future binding is an append-only edit to this declaration.",
+      "disposition": "GOVERNED",
+      "id": "UIS-F-005",
+      "referred_to": "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md",
+      "title": "One identity law is declared but not decidable from the located artifact-plane data",
+      "why_not_repaired": "Asserting reflexivity would require this measurement to read or mint a code-plane identity it holds no authority over."
+    },
+    {
+      "blocking": false,
+      "bound_measure": null,
+      "class": "DISCLOSED-CONSTITUTIONAL-READING",
+      "detail": "The requirement that every identifier be constitutionally self-describing admits two readings. Read as 'the token can be parsed for its meaning', it contradicts two located laws: AIF-L02 makes durable identity OPAQUE, and ENG-001 UIS-P-06 states that a UID's internal structure carries no semantics consumers may depend upon, meaning being obtained by resolution rather than parsing. Read as 'resolving the identifier answers every constitutional question about the object', it is exactly what UMB-003 §3 declares as the identity facet set and §5 as resolvability. This measurement adopts the second reading and measures it: every declared bookkeeping obligation must bind to a located field of a located source and to a member of the located closed facet set.",
+      "disposition": "GOVERNED",
+      "id": "UIS-F-006",
+      "referred_to": "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md",
+      "title": "Self-description is measured by resolution, because parseable self-description would contradict identifier opacity",
+      "why_not_repaired": "Adopting the parsing reading would require amending AIF-L02 and UIS-P-06, which is an act of their owners and not of a measurement. The reading is disclosed so it can be overturned by the owner rather than silently assumed here."
+    }
+  ],
+  "gate": "OPEN",
+  "grammar": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$",
+  "immutability": {
+    "disjoint": true,
+    "forbidden_trespass": [],
+    "intersection": [],
+    "outside_home": [],
+    "record_set": [
+      "00-BOOK/DATA/artifacts.json",
+      "00-BOOK/DATA/change-ledger.json",
+      "00-BOOK/DATA/id-ledger.json",
+      "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md",
+      "02-MASTER/UCOS-Ω∞-ABSOLUTE-IDENTITY-FEDERATION-AND-CONTINUITY-CONSTITUTION.md",
+      "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md"
+    ],
+    "write_set": [
+      "00-MASTER/UIS-001/00-IDENTITY-CONFORMANCE-DASHBOARD.md",
+      "00-MASTER/UIS-001/01-IDENTITY-CAPABILITY-MAPPING-MATRIX.md",
+      "00-MASTER/UIS-001/02-IDENTITY-LAW-BINDING-REGISTER.md",
+      "00-MASTER/UIS-001/03-IDENTITY-PLANE-AND-GRAMMAR-REGISTER.md",
+      "00-MASTER/UIS-001/04-IDENTITY-LEDGER-MEASUREMENT-REGISTER.md",
+      "00-MASTER/UIS-001/05-UNBOUNDEDNESS-AND-SELF-DESCRIPTION-REGISTER.md",
+      "00-MASTER/UIS-001/06-VALIDATION-REPORT.md",
+      "00-MASTER/UIS-001/07-CERTIFICATION-REPORT.md",
+      "00-MASTER/UIS-001/08-ADMISSION-AND-DISPOSITION-DETERMINATION.md",
+      "00-MASTER/UIS-001/uis.json"
+    ]
+  },
+  "laws": [
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-01",
+      "invariant": "Every object that exists SHALL possess exactly one UID.",
+      "law": "Universal Identification",
+      "measurable": true,
+      "measure": "identities_absent",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-02",
+      "invariant": "No object SHALL possess more than one permanent UID.",
+      "law": "Singular Identity",
+      "measurable": true,
+      "measure": "identities_multiple",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-03",
+      "invariant": "No UID SHALL ever denote more than one object.",
+      "law": "Global Uniqueness",
+      "measurable": true,
+      "measure": "identity_collisions",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-04",
+      "invariant": "A UID SHALL never be altered after allocation.",
+      "law": "Immutability",
+      "measurable": true,
+      "measure": "identities_altered",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-05",
+      "invariant": "A UID SHALL never be reused, reassigned, recycled or reclaimed.",
+      "law": "Non-Reuse",
+      "measurable": true,
+      "measure": "identities_reused",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-06",
+      "invariant": "The UID of an existing object SHALL never be changed by scheme evolution.",
+      "law": "Non-Renumbering",
+      "measurable": true,
+      "measure": "identities_renumbered",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-07",
+      "invariant": "A UID SHALL not change with any mutable attribute.",
+      "law": "Identity/Attribute Separation",
+      "measurable": true,
+      "measure": "identities_attribute_coupled",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": "UIS-F-002",
+      "comparator": "<=",
+      "expect": 6,
+      "id": "UIL-08",
+      "invariant": "Every UID SHALL be resolvable to a current descriptor.",
+      "law": "Resolvability",
+      "measurable": true,
+      "measure": "identities_unresolvable",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 6
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-09",
+      "invariant": "Every permanent reference SHALL be expressed as a UID; no dangling reference.",
+      "law": "Reference Integrity",
+      "measurable": true,
+      "measure": "references_unresolvable",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-10",
+      "invariant": "Every UID SHALL be traceable to its type, origin authority, owner and lineage.",
+      "law": "Traceability",
+      "measurable": true,
+      "measure": "identities_untraceable",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": false,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": null,
+      "expect": null,
+      "id": "UIL-11",
+      "invariant": "Every internal construct of the UIS SHALL itself possess a UID.",
+      "law": "Reflexivity",
+      "measurable": false,
+      "measure": null,
+      "reason": "The internal constructs are code-plane objects held by the located engines, not artifact-plane files; asserting reflexivity over them would require this measurement to mint or read an identity it has no authority over.",
+      "satisfied": true,
+      "state": "DECLARED-NOT-MEASURABLE",
+      "value": null
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-12",
+      "invariant": "Identity status SHALL change only through governed, auditable transitions; retirement SHALL never release the identifier.",
+      "law": "Governed Lifecycle",
+      "measurable": true,
+      "measure": "lifecycle_states_undeclared",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-13",
+      "invariant": "The identity record SHALL be append-only; the past SHALL never be erased.",
+      "law": "Append-Only History",
+      "measurable": true,
+      "measure": "history_not_append_only",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-14",
+      "invariant": "Identity, integrity, ownership and provenance SHALL be independently verifiable from recorded evidence.",
+      "law": "Verifiability",
+      "measurable": true,
+      "measure": "identities_unverifiable",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-15",
+      "invariant": "No secret, credential or key material SHALL ever be embedded in a UID or identity record.",
+      "law": "No Embedded Secrets",
+      "measurable": true,
+      "measure": "identity_records_with_secret_field",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": "UIS-F-004",
+      "comparator": "<=",
+      "expect": 28,
+      "id": "UIL-16",
+      "invariant": "Federated allocation SHALL never produce a collision or an inconsistent partition.",
+      "law": "Federation Coherence",
+      "measurable": true,
+      "measure": "namespace_partition_ambiguities",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 28
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-17",
+      "invariant": "No identity SHALL confer constitutional, sovereign, governance or constituent standing.",
+      "law": "Non-Constitutive Identity",
+      "measurable": true,
+      "measure": "identity_records_claiming_authority",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-18",
+      "invariant": "New types and namespaces SHALL be added by extension; never by redesign or renumbering.",
+      "law": "Extension over Redesign",
+      "measurable": true,
+      "measure": "identities_renumbered",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-19",
+      "invariant": "Scheme evolution SHALL preserve every existing UID and its resolution.",
+      "law": "Compatibility",
+      "measurable": true,
+      "measure": "identities_failing_declared_grammar",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "expect": 0,
+      "id": "UIL-20",
+      "invariant": "No realization SHALL invent, rename or renumber any registered canonical identity, class or determination.",
+      "law": "No Invention over Canon",
+      "measurable": true,
+      "measure": "capabilities_created",
+      "reason": "",
+      "satisfied": true,
+      "state": "SATISFIED",
+      "value": 0
+    }
+  ],
+  "mechanisms": [
+    {
+      "grammar_located": true,
+      "grammar_owner": "00-BOOK/SCHEMAS/artifact.schema.json",
+      "grammar_symbol": "universal_id",
+      "id": "MECH-UKB",
+      "keyed_by": "minted once into the append-only ledger, never reused, never renumbered",
+      "module": "00-BOOK/tools/ukb.py",
+      "module_located": true,
+      "name": "Universal ID Ledger allocator",
+      "note": "The durable plane. Its owner's own AIF conformance amendment declares it realizes AIF-L02 opaque durable identity (P2), so the plane is read from the owner rather than inferred here. UMB-003 §2 constitutionalizes the existing allocator and does not re-create it.",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "owner_located": true,
+      "plane": "P2",
+      "plane_declared": true,
+      "symbol": "allocate",
+      "symbol_located": true
+    },
+    {
+      "grammar_located": true,
+      "grammar_owner": "00-BOOK/tools/config.py",
+      "grammar_symbol": "CLASSIFY_RULES",
+      "id": "MECH-NOMENCLATURE",
+      "keyed_by": "an authority-local admission ordinal rendered at mint, preserved as a native-ID crosswalk alias",
+      "module": "00-BOOK/tools/ukb.py",
+      "module_located": true,
+      "name": "Universal Nomenclature crosswalk",
+      "note": "The admission-ordinal plane. Its owner's own AIF conformance amendment declares it realizes AIF-L04, the witnessed non-recomputable ordinal (P3), and UMB-004 §2 declares that the Nomenclature Engine maintains the crosswalk while renaming a native ID never changes the durable identity.",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md",
+      "owner_located": true,
+      "plane": "P3",
+      "plane_declared": true,
+      "symbol": "classify",
+      "symbol_located": true
+    },
+    {
+      "grammar_located": true,
+      "grammar_owner": "engine/registry/universal/identity.py",
+      "grammar_symbol": "_NAMESPACE_RE",
+      "id": "MECH-EPIC001",
+      "keyed_by": "pure function of the identity tuple (kind, namespace, natural_key)",
+      "module": "engine/registry/universal/identity.py",
+      "module_located": true,
+      "name": "Universal Registry Platform identity",
+      "note": "A logical-plane key: deterministic over a logical tuple, so the same logical artifact resolves identically regardless of version, clock, machine or registration order. It imports canonical hashing from UCKP Layer Zero rather than redefining it.",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+      "owner_located": true,
+      "plane": "P4",
+      "plane_declared": true,
+      "symbol": "ID_PREFIX",
+      "symbol_located": true
+    },
+    {
+      "grammar_located": true,
+      "grammar_owner": "engine/uckp/identity.py",
+      "grammar_symbol": "_NAMESPACE_RE",
+      "id": "MECH-UCKP",
+      "keyed_by": "URN over (namespace, local name) with a name-based UUID",
+      "module": "engine/uckp/identity.py",
+      "module_located": true,
+      "name": "UCKP Layer Zero universal identity",
+      "note": "The knowledge-object logical name. Pure and clock-free, so it satisfies AIF-L18 derivation purity.",
+      "owner": "engine/uckp/ucko.py",
+      "owner_located": true,
+      "plane": "P4",
+      "plane_declared": true,
+      "symbol": "UCKO_URN_PREFIX",
+      "symbol_located": true
+    },
+    {
+      "grammar_located": true,
+      "grammar_owner": "engine/knowledge/ukip/contracts.py",
+      "grammar_symbol": "knowledge_sha256",
+      "id": "MECH-UKIP",
+      "keyed_by": "digest of the knowledge substance",
+      "module": "engine/knowledge/ukip/contracts.py",
+      "module_located": true,
+      "name": "Knowledge Registry content identity",
+      "note": "A content-plane digest used to recognise corroboration instead of manufacturing a duplicate. Under AIF-L05 a content digest VERIFIES and does not identify, which is exactly the role it plays: it decides sameness of substance, not durable identity.",
+      "owner": "engine/knowledge/ukip/registry.py",
+      "owner_located": true,
+      "plane": "P1",
+      "plane_declared": true,
+      "symbol": "knowledge_id",
+      "symbol_located": true
+    },
+    {
+      "grammar_located": true,
+      "grammar_owner": "engine/context/taxonomy.py",
+      "grammar_symbol": "ContextKind",
+      "id": "MECH-UCXI",
+      "keyed_by": "deterministic identity tuple minted by the single registration authority for context",
+      "module": "engine/context/constitution.py",
+      "module_located": true,
+      "name": "Universal Context identity",
+      "note": "The runtime/observation plane: a context describes the situation a running system reasons about. CXL-10 declares that context describes and never grants, which is why it cannot be substituted for durable identity.",
+      "owner": "engine/context/registry.py",
+      "owner_located": true,
+      "plane": "P5",
+      "plane_declared": true,
+      "symbol": "ContextLaw",
+      "symbol_located": true
+    }
+  ],
+  "near_capacity": [],
+  "nonsource_admissions": [
+    "00-MASTER/CHECKPOINTS/CKPT-2026-07-18-5874ede.md",
+    "00-MASTER/MCP-001-MASTER-CONTEXT.md",
+    "00-MASTER/MCP-002-MASTER-STATE.md",
+    "00-MASTER/MCP-003-MASTER-EXECUTION.md",
+    "00-MASTER/MCP-004-MASTER-DECISIONS.md",
+    "00-MASTER/MCP-005-MASTER-DASHBOARD.md",
+    "00-MASTER/MCP-006-MASTER-TRACEABILITY.md",
+    "00-MASTER/MCP-007-MASTER-RECOVERY.md",
+    "00-MASTER/MCS-000-MASTER-CONTEXT-SYSTEM-ARCHITECTURE.md",
+    "00-MASTER/README.md",
+    "00-MASTER/STATE/mcs-state.json",
+    "00-MASTER/STATE/mcs-state.schema.json",
+    "00-MASTER/UCOS-RECON-001-REPOSITORY-STATE-RECONCILIATION.md",
+    "MCP-001-MASTER-CONTEXT-AND-EXECUTION-SYSTEM.md",
+    "intelligence/UCOS-IMP-BASELINE-001.evidence.json",
+    "intelligence/UCOS-IMP-BASELINE-001.rib.json",
+    "intelligence/UCOS-RIE-AEOS-READINESS.json",
+    "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+    "intelligence/UCOS-RIE-DEPENDENCY-GRAPH.json",
+    "intelligence/UCOS-RIE-DIGITAL-TWIN.json",
+    "intelligence/UCOS-RIE-EXECUTION-FRONTIER.json",
+    "intelligence/UCOS-RIE-HEALTH.json",
+    "intelligence/UCOS-RIE-MODEL.json",
+    "intelligence/UCOS-RIE-PROGRESS.json",
+    "intelligence/UCOS-RIE-SNAPSHOT.json"
+  ],
+  "peak_namespace": {
+    "fraction": 0.003151,
+    "namespace": "EXDOC",
+    "used": 3151
+  },
+  "planes": [
+    {
+      "anchor": "AIF-L05 Content Digest over CCF (P1)",
+      "definition": "A multihash over the versioned Canonical Content Form. It verifies, never identifies.",
+      "id": "PLANE-P1",
+      "law": "AIF-L05",
+      "mechanisms": [
+        "MECH-UKIP"
+      ],
+      "name": "content",
+      "owner_located": true,
+      "plane": "P1",
+      "realized": true,
+      "role": "VERIFIES"
+    },
+    {
+      "anchor": "AIF-L02 Opaque Durable Identity (P2)",
+      "definition": "One minted-once, immutable, opaque, authority-namespaced identity per artifact; never content/order/path-derived; never reused.",
+      "id": "PLANE-P2",
+      "law": "AIF-L02",
+      "mechanisms": [
+        "MECH-UKB"
+      ],
+      "name": "durable",
+      "owner_located": true,
+      "plane": "P2",
+      "realized": true,
+      "role": "IDENTIFIES"
+    },
+    {
+      "anchor": "AIF-L04 Witnessed Non-Recomputable Ordinal (P3)",
+      "definition": "An authority-local admission ordinal recorded at mint; rendered, never recomputed from the file set; never globally monotonic.",
+      "id": "PLANE-P3",
+      "law": "AIF-L04",
+      "mechanisms": [
+        "MECH-NOMENCLATURE"
+      ],
+      "name": "admission-ordinal",
+      "owner_located": true,
+      "plane": "P3",
+      "realized": true,
+      "role": "RENDERS"
+    },
+    {
+      "anchor": "AIF-L03 Five Identity Planes",
+      "definition": "The logical, human- and program-facing name of a thing, independent of its durable identity.",
+      "id": "PLANE-P4",
+      "law": "AIF-L03",
+      "mechanisms": [
+        "MECH-EPIC001",
+        "MECH-UCKP"
+      ],
+      "name": "logical",
+      "owner_located": true,
+      "plane": "P4",
+      "realized": true,
+      "role": "NAMES"
+    },
+    {
+      "anchor": "AIF-L03 Five Identity Planes",
+      "definition": "The identity a running instance carries, bound at execution and never substituted for durable identity.",
+      "id": "PLANE-P5",
+      "law": "AIF-L03",
+      "mechanisms": [
+        "MECH-UCXI"
+      ],
+      "name": "runtime",
+      "owner_located": true,
+      "plane": "P5",
+      "realized": true,
+      "role": "BINDS"
+    }
+  ],
+  "probes": [
+    {
+      "id": "PROBE-NAMESPACE",
+      "kind": "data-declared namespace admission",
+      "located": true,
+      "module": "00-BOOK/tools/config.py",
+      "symbol": "CLASSIFY_RULES",
+      "symbol_located": true
+    },
+    {
+      "id": "PROBE-FAMILY",
+      "kind": "data-declared family admission",
+      "located": true,
+      "module": "00-BOOK/tools/config.py",
+      "symbol": "ARTIFACT_FAMILIES",
+      "symbol_located": true
+    },
+    {
+      "id": "PROBE-VOLUME",
+      "kind": "data-declared volume admission",
+      "located": true,
+      "module": "00-BOOK/tools/config.py",
+      "symbol": "VOLUMES",
+      "symbol_located": true
+    },
+    {
+      "id": "PROBE-ALLOCATION",
+      "kind": "append-only sequential allocation",
+      "located": true,
+      "module": "00-BOOK/tools/ukb.py",
+      "symbol": "allocate",
+      "symbol_located": true
+    },
+    {
+      "id": "PROBE-VOCABULARY",
+      "kind": "non-mutating semantic extension",
+      "located": true,
+      "module": "engine/uckp/vocabulary.py",
+      "symbol": "extended_with",
+      "symbol_located": true
+    },
+    {
+      "id": "PROBE-CONTEXT",
+      "kind": "contextual dimension admission",
+      "located": true,
+      "module": "engine/context/taxonomy.py",
+      "symbol": "coerce",
+      "symbol_located": true
+    },
+    {
+      "id": "PROBE-OBJECT-CLASS",
+      "kind": "registrable object class set",
+      "located": true,
+      "module": "engine/registry/universal/identity.py",
+      "symbol": "RegistryKind",
+      "symbol_located": true
+    },
+    {
+      "id": "PROBE-FACET",
+      "kind": "closed total facet set",
+      "located": true,
+      "module": "engine/uckp/facets.py",
+      "symbol": "Facet",
+      "symbol_located": true
+    },
+    {
+      "id": "PROBE-EVOLUTION",
+      "kind": "lawful evolution path",
+      "located": true,
+      "module": "engine/uckp/evolution.py",
+      "symbol": "EvolutionStage",
+      "symbol_located": true
+    }
+  ],
+  "programme": {
+    "$forbidden_write_comment": "Every claimant this measurement reads and every authority it cites. A claimant this measurement could write is a claimant it could silently reconcile, so the engine's --check-write-scope fails closed if its own home ever falls inside one of these, and --check-declaration fails closed if a cited owner is left unprotected.",
+    "architecture_owner": "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md",
+    "authority": "NONE — DERIVED TRUTH. This measurement mints no identity, allocates no identifier, declares no namespace, defines no grammar, opens no registry, legislates no lifecycle, resolves nothing authoritatively and certifies nothing. It reads the identity architecture the repository has already legislated and the identity data the repository has already recorded, and reports what they say.",
+    "disclosure": "**DISCLOSURE.** This measurement holds no identity authority. It is not an identifier engine, not a registry, not a dictionary, not a resolver and not a namespace allocator. AIF governs the law of identity; ENG-001 is the engineering architecture of record; UMB-003/004/005/008/009/010 realize them in the artifact plane. This programme adds no sixth registry and no fifth identifier scheme. Where this measurement and a located instrument differ, the located instrument governs.",
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "01-WORKING/",
+      "02-MASTER/",
+      "07-ENGINEERING/",
+      "00-CEP/",
+      "00-CMG/",
+      "00-BOOK/",
+      "engine/",
+      "intelligence/"
+    ],
+    "governing_instruments": [
+      "02-MASTER/UCOS-Ω∞-ABSOLUTE-IDENTITY-FEDERATION-AND-CONTINUITY-CONSTITUTION.md",
+      "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md",
+      "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md",
+      "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+    ],
+    "id": "UIS-001",
+    "law_owner": "02-MASTER/UCOS-Ω∞-ABSOLUTE-IDENTITY-FEDERATION-AND-CONTINUITY-CONSTITUTION.md",
+    "name": "Universal Identity System Conformance",
+    "operational_home": "00-MASTER/UIS-001/",
+    "version": "1.0"
+  },
+  "realization": [
+    {
+      "artifact": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "declares_realization": true,
+      "declares_single_authority": false,
+      "located": true,
+      "met": true
+    },
+    {
+      "artifact": "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md",
+      "declares_realization": true,
+      "declares_single_authority": false,
+      "located": true,
+      "met": true
+    },
+    {
+      "artifact": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+      "declares_realization": true,
+      "declares_single_authority": false,
+      "located": true,
+      "met": true
+    },
+    {
+      "artifact": "00-BOOK/MASTER-BOOK/UMB-008-CHANGE-ARCHITECTURE.md",
+      "declares_realization": true,
+      "declares_single_authority": false,
+      "located": true,
+      "met": true
+    },
+    {
+      "artifact": "00-BOOK/MASTER-BOOK/UMB-009-VERSION-ARCHITECTURE.md",
+      "declares_realization": true,
+      "declares_single_authority": false,
+      "located": true,
+      "met": true
+    },
+    {
+      "artifact": "00-BOOK/MASTER-BOOK/UMB-010-LINEAGE-ARCHITECTURE.md",
+      "declares_realization": true,
+      "declares_single_authority": false,
+      "located": true,
+      "met": true
+    },
+    {
+      "artifact": "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md",
+      "declares_realization": true,
+      "declares_single_authority": false,
+      "located": true,
+      "met": true
+    }
+  ],
+  "records": [
+    {
+      "anchor": "by_path",
+      "anchor_present": true,
+      "id": "REC-LEDGER",
+      "law": "UIL-13",
+      "located": true,
+      "owner": "00-BOOK/DATA/id-ledger.json"
+    },
+    {
+      "anchor": "artifacts",
+      "anchor_present": true,
+      "id": "REC-REGISTRY",
+      "law": "AIF-L14",
+      "located": true,
+      "owner": "00-BOOK/DATA/artifacts.json"
+    },
+    {
+      "anchor": "events",
+      "anchor_present": true,
+      "id": "REC-CHANGE",
+      "law": "AIF-L17",
+      "located": true,
+      "owner": "00-BOOK/DATA/change-ledger.json"
+    },
+    {
+      "anchor": "AIF-L01",
+      "anchor_present": true,
+      "id": "REC-AIF",
+      "law": "AIF-L17",
+      "located": true,
+      "owner": "02-MASTER/UCOS-Ω∞-ABSOLUTE-IDENTITY-FEDERATION-AND-CONTINUITY-CONSTITUTION.md"
+    },
+    {
+      "anchor": "UIL-01",
+      "anchor_present": true,
+      "id": "REC-ENG001",
+      "law": "UIL-13",
+      "located": true,
+      "owner": "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md"
+    },
+    {
+      "anchor": "IDENTITY PRECEDES EXISTENCE",
+      "anchor_present": true,
+      "id": "REC-UMB003",
+      "law": "UIL-13",
+      "located": true,
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md"
+    },
+    {
+      "anchor": "THE TWO-NAME MODEL",
+      "anchor_present": true,
+      "id": "REC-UMB004",
+      "law": "UIL-13",
+      "located": true,
+      "owner": "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md"
+    }
+  ],
+  "seal_sha256": "2c6b83302714db66d7d315bb77ce4bc1402ede394ae89df21683593bf2e4ad8d",
+  "terminal_hits": [],
+  "unboundedness": [
+    {
+      "blocking": true,
+      "clause": "CR-INF-002 · CR-INF-010",
+      "comparator": "==",
+      "expect": 0,
+      "id": "UNB-01",
+      "measure": "namespaces_near_capacity",
+      "note": "No architectural ceiling exists; the width is formatting and widens append-only. Measured as headroom actually in use across every live namespace.",
+      "probe": null,
+      "requirement": "unlimited lawful identities",
+      "restated_anchor": "UMB-003 §6 UNLIMITED IDENTITY SCALE",
+      "restated_by": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "clause": "CR-INF-007 · CR-INF-009",
+      "comparator": "==",
+      "expect": 0,
+      "id": "UNB-02",
+      "measure": "family_admission_paths_absent",
+      "note": "",
+      "probe": "PROBE-FAMILY",
+      "requirement": "unlimited lawful identity families",
+      "restated_anchor": "UMB-005 open, append-only registers",
+      "restated_by": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "clause": "CR-INF-003",
+      "comparator": "==",
+      "expect": 0,
+      "id": "UNB-03",
+      "measure": "namespace_admission_paths_absent",
+      "note": "",
+      "probe": "PROBE-NAMESPACE",
+      "requirement": "unlimited lawful namespaces",
+      "restated_anchor": "UMB-004 §4 ZERO-HARD-CODING GUARANTEE",
+      "restated_by": "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "clause": "CR-INF-008",
+      "comparator": "==",
+      "expect": 0,
+      "id": "UNB-04",
+      "measure": "semantic_extension_paths_absent",
+      "note": "",
+      "probe": "PROBE-VOCABULARY",
+      "requirement": "unlimited lawful semantic evolution",
+      "restated_anchor": "CEP-009 append-only amendment and evolution",
+      "restated_by": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "clause": "CR-INF-009",
+      "comparator": "==",
+      "expect": 0,
+      "id": "UNB-05",
+      "measure": "context_extension_paths_absent",
+      "note": "",
+      "probe": "PROBE-CONTEXT",
+      "requirement": "unlimited lawful contextual dimensions",
+      "restated_anchor": "absence is an explicit unknown value, never a missing kind",
+      "restated_by": "engine/context/taxonomy.py",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "clause": "CR-INF-003 · CR-INF-009",
+      "comparator": "==",
+      "expect": 0,
+      "id": "UNB-06",
+      "measure": "object_class_extension_paths_absent",
+      "note": "",
+      "probe": "PROBE-OBJECT-CLASS",
+      "requirement": "unlimited lawful constitutional object classes",
+      "restated_anchor": "UIS-P-20 Infinite Extensibility · UIL-18 Extension over Redesign",
+      "restated_by": "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "clause": "CR-INF-001 · CR-INF-008 · CR-INF-009",
+      "comparator": "==",
+      "expect": 0,
+      "id": "UNB-07",
+      "measure": "terminal_state_claims",
+      "note": "No located identity instrument may declare the identity architecture closed to evolution.",
+      "probe": null,
+      "requirement": "unlimited lawful future constitutional expansion",
+      "restated_anchor": "IL-INF-01 Non-terminality",
+      "restated_by": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "clause": "CR-INF-004 · CR-INF-006",
+      "comparator": "==",
+      "expect": 0,
+      "id": "UNB-08",
+      "measure": "self_description_unbound",
+      "note": "Self-description is measured BY RESOLUTION, not by parsing the token — AIF-L02 makes durable identity opaque and ENG-001 UIS-P-06 forbids consumers depending on internal structure. The measured property is that resolving any identity answers every declared bookkeeping obligation. See UIS-F-006.",
+      "probe": null,
+      "requirement": "every identifier is constitutionally self-describing",
+      "restated_anchor": "UMB-003 §3 THE IDENTITY FACET SET · §5 ADDRESSABILITY, RESOLVABILITY, DISCOVERABILITY",
+      "restated_by": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "clause": "CR-INF-009 · CR-INF-010",
+      "comparator": "==",
+      "expect": 0,
+      "id": "UNB-09",
+      "measure": "extension_probes_unresolved",
+      "note": "Every declared lawful direction of expansion has a located extension path, so growth never requires redesign or renumbering.",
+      "probe": null,
+      "requirement": "extension in every lawful direction without architectural re-foundation",
+      "restated_anchor": "UIL-18 · UIL-19 Compatibility",
+      "restated_by": "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md",
+      "satisfied": true,
+      "value": 0
+    }
+  ],
+  "ungoverned_namespaces": [
+    "APPLICATION",
+    "ARBITR",
+    "ARCHITECTURA",
+    "ARCHITECTURE",
+    "ASSESS",
+    "ASSIMILATION",
+    "B01BIR",
+    "B01IMP",
+    "B02LIF",
+    "B02OWN",
+    "B02UID",
+    "BATCHGENERAT",
+    "BLOCKE",
+    "BLOCKERVERIF",
+    "CANONI",
+    "CANONICALINT",
+    "CANONICALOWN",
+    "CAPABI",
+    "CEPMOD",
+    "CERTIF",
+    "CERTIFICATIO",
+    "CHANGE",
+    "CMG000",
+    "COMMIT",
+    "COMPLE",
+    "CONFIG",
+    "COVERA",
+    "CRITICALPATH",
+    "DATA",
+    "DATAOBJ",
+    "DEPEND",
+    "DEPENDENCYCL",
+    "DEPENDENCYGR",
+    "DISCOV",
+    "DRRAT11ASSES",
+    "DUPLICATIONA",
+    "ENFORC",
+    "ENGINE",
+    "ENVIRONMENTS",
+    "EVOUSIS014",
+    "EVOUSIS015",
+    "EVOUSIS016",
+    "EXDOC",
+    "EXECUTIONCON",
+    "EXECUTIONGOV",
+    "EXECUTIONLIF",
+    "EXECUTIONQUE",
+    "EXECUTIVESUM",
+    "F1LINE",
+    "FINALARCHITE",
+    "FINALC",
+    "FINALCERTIFI",
+    "FINALDETERMI",
+    "FINALF",
+    "FINALI",
+    "FINALIMPLEME",
+    "FINALRECOMME",
+    "FINALU",
+    "FOUNDATIONFR",
+    "GAPCLASSIFIC",
+    "GATEPU",
+    "GENERA",
+    "GOVERN",
+    "H06ATO",
+    "H06BAS",
+    "H06CON",
+    "H06DEC",
+    "H06DOC",
+    "H06FIN",
+    "H06GAT",
+    "H06GOV",
+    "H06IAD",
+    "H06IAR",
+    "H06IMP",
+    "H06MUT",
+    "H06OPT",
+    "H06OWN",
+    "H06PHA",
+    "H06POS",
+    "H06PRE",
+    "H06R1G",
+    "H06R2E",
+    "H06R3G",
+    "H06R4C",
+    "H06R4G",
+    "H06RAT",
+    "H06SUC",
+    "H06TAS",
+    "H06UAI",
+    "H06UAU",
+    "H06UNI",
+    "HIDDENFINITE",
+    "IAC001A",
+    "IAC001B",
+    "IAC001C",
+    "IAC001D",
+    "IAC001E",
+    "IDENTI",
+    "IMPLEMENTATI",
+    "INCREMENTALK",
+    "INFINI",
+    "INFRASTRUCTU",
+    "INTELLIGENCE",
+    "KNOWLE",
+    "KNOWLEDGECOM",
+    "MCP001MASTER",
+    "MCRFST",
+    "MISC",
+    "MISSIN",
+    "MUTATI",
+    "NEWKNOWLEDGE",
+    "OBS",
+    "OMEGAN",
+    "P0CLOS",
+    "P0DECL",
+    "P0REGI",
+    "P1A01R",
+    "P1A02R",
+    "P4F007",
+    "PARALLELEXEC",
+    "PERCEN",
+    "PHASE0",
+    "PHASE1",
+    "PHASE2",
+    "PHASE3",
+    "PHASE4",
+    "PHASE5",
+    "PHASE6",
+    "PHASE7",
+    "PHASE8",
+    "PHASE9",
+    "PHASEA",
+    "PHASEC",
+    "PHASEG",
+    "PHASEI",
+    "PHASEK",
+    "PHASEO",
+    "PHASEP",
+    "PHASER",
+    "PHASEU",
+    "PHASEV",
+    "POSTAS",
+    "POSTST",
+    "PRODUC",
+    "QUALITYGATES",
+    "READINESSASS",
+    "READINESSDET",
+    "READYSELECTI",
+    "REALIZATIONG",
+    "REGAUT",
+    "RELATI",
+    "REMEDIATIONG",
+    "REPOOPERATIO",
+    "REPOSI",
+    "REPOSITORYDI",
+    "REPOSITORYGA",
+    "REPOSITORYRE",
+    "REQ28C",
+    "REQ43S",
+    "REQUIR",
+    "ROOTCA",
+    "ROOTCAUSEANA",
+    "SCOPEB",
+    "SELFCO",
+    "SEMANT",
+    "SERVICE",
+    "SHELLO",
+    "STABIL",
+    "STRUCT",
+    "TESTOBJ",
+    "TOOLING",
+    "TRACEABILITY",
+    "UAUEEP",
+    "UAUEIM",
+    "UCKPCM",
+    "UCLGAP",
+    "UCOSACFV0000",
+    "UCOSAR",
+    "UCOSCE",
+    "UCOSEX",
+    "UCOSFI",
+    "UCOSMI",
+    "UCOSOM",
+    "UCOSOMEGAINF",
+    "UCOSPO",
+    "UCOSUC",
+    "UCOSUN",
+    "UCOSUV",
+    "UFINOC",
+    "UKAPUR",
+    "UNAF00",
+    "UNCOND",
+    "UNIVER",
+    "UNREALIZEDCK",
+    "UOBCBS",
+    "VALIDATIONRE",
+    "VERIFI",
+    "VERIFICATION",
+    "W4UFIF",
+    "WAVE01EXECUT",
+    "WAVE01READIN"
+  ],
+  "unresolvable": [
+    "02-MASTER/BUC-001R-BUSINESS-UNIVERSE-ARCHITECTURE-RECONCILIATION-DETERMINATION.md",
+    "02-MASTER/UAM-001-UNIVERSAL-ARCHITECTURAL-META-MODEL-CONSTITUTIONAL-ARCHITECTURE-INHERITANCE-DETERMINATION.md",
+    "UCOS Ω∞ MASTER END-TO-END PROGRAM.docx",
+    "UCOS Ω∞ MASTER EVOLUTION PATH - Plan.docx",
+    "UCOS-Consolidation Plan.docx",
+    "~$OS Ω∞ MASTER END-TO-END PROGRAM.docx"
+  ],
+  "validations": [
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every capability's canonical owner resolves",
+      "expect": 0,
+      "id": "UIS-V-01",
+      "measure": "capabilities_unowned",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "no capability is dispositioned CREATE",
+      "expect": 0,
+      "id": "UIS-V-02",
+      "measure": "capabilities_created",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every capability artifact resolves",
+      "expect": 0,
+      "id": "UIS-V-03",
+      "measure": "capability_artifacts_unresolved",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every obligated architecture declares it realizes the single identity authority",
+      "expect": 0,
+      "id": "UIS-V-04",
+      "measure": "realization_obligations_unmet",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every located identity mechanism is classified into exactly one declared plane",
+      "expect": 0,
+      "id": "UIS-V-05",
+      "measure": "mechanisms_unclassified",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every located identity mechanism's module and grammar symbol resolve",
+      "expect": 0,
+      "id": "UIS-V-06",
+      "measure": "mechanisms_unresolved",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every declared plane carries at least one located mechanism, so no plane is asserted without a realization",
+      "expect": 0,
+      "id": "UIS-V-07",
+      "measure": "planes_unrealized",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every identity law is bound to its located owner",
+      "expect": 0,
+      "id": "UIS-V-08",
+      "measure": "laws_unbound",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every measurable identity law is satisfied within its declared bound",
+      "expect": 0,
+      "id": "UIS-V-09",
+      "measure": "laws_violated",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every bookkeeping obligation binds to a located field of a located source",
+      "expect": 0,
+      "id": "UIS-V-10",
+      "measure": "bookkeeping_unbound",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every bookkeeping obligation binds to a member of the located closed facet set",
+      "expect": 0,
+      "id": "UIS-V-11",
+      "measure": "bookkeeping_facets_unknown",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "the recorded and derived identity planes agree on every identity the derived plane carries",
+      "expect": 0,
+      "id": "UIS-V-12",
+      "measure": "registry_identities_absent_from_ledger",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": "UIS-F-001",
+      "comparator": "<=",
+      "dimension": "no non-canonical-source class holds a permanent corpus identity beyond the declared legacy bound",
+      "expect": 25,
+      "id": "UIS-V-13",
+      "measure": "nonsource_identity_admissions",
+      "satisfied": true,
+      "value": 25
+    },
+    {
+      "blocking": true,
+      "bound_finding": "UIS-F-003",
+      "comparator": "<=",
+      "dimension": "every live category namespace is governed by a declared classification rule beyond the declared legacy bound",
+      "expect": 201,
+      "id": "UIS-V-14",
+      "measure": "namespaces_ungoverned",
+      "satisfied": true,
+      "value": 201
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "this measurement mints no identity and declares no namespace",
+      "expect": 0,
+      "id": "UIS-V-15",
+      "measure": "identity_minting_attempts",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "this measurement writes nothing outside its own operational home",
+      "expect": 0,
+      "id": "UIS-V-16",
+      "measure": "writes_outside_home",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "the write set does not intersect the located record set",
+      "expect": 0,
+      "id": "UIS-V-17",
+      "measure": "record_write_intersections",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every declared bound is tight, so no divergence is over-declared",
+      "expect": 0,
+      "id": "UIS-V-18",
+      "measure": "bounds_slack",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every located lifecycle state the registry carries is a declared state",
+      "expect": 0,
+      "id": "UIS-V-19",
+      "measure": "lifecycle_states_undeclared",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "this measurement claims no authority",
+      "expect": 0,
+      "id": "UIS-V-20",
+      "measure": "authority_claims",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every declared direction of lawful unbounded expansion is satisfied",
+      "expect": 0,
+      "id": "UIS-V-21",
+      "measure": "unboundedness_violations",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "every declared extension probe resolves to a located module and symbol",
+      "expect": 0,
+      "id": "UIS-V-22",
+      "measure": "extension_probes_unresolved",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "no live namespace has crossed the declared fraction of its formatting capacity",
+      "expect": 0,
+      "id": "UIS-V-23",
+      "measure": "namespaces_near_capacity",
+      "satisfied": true,
+      "value": 0
+    },
+    {
+      "blocking": true,
+      "bound_finding": null,
+      "comparator": "==",
+      "dimension": "no located identity instrument declares the identity architecture closed to evolution",
+      "expect": 0,
+      "id": "UIS-V-24",
+      "measure": "terminal_state_claims",
+      "satisfied": true,
+      "value": 0
+    }
+  ]
+}

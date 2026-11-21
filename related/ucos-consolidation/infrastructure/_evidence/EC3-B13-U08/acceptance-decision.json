@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "SecurityFacet",
+  "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+  "verdict": "pass"
+}

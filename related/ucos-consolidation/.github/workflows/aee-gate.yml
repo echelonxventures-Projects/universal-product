@@ -1,0 +1,181 @@
+name: UCOS-AEE-001 Autonomous Evolution Loop Gate
+
+# UCOS-AEE-001 — the CLOSED LOOP gate.
+#
+# This workflow adds NO new validator, gate, registry, schema or measurement. Every phase
+# of the evolution loop already has a located, certified owner in this repository; the
+# programme this workflow runs creates none of them. What no located programme owned is
+# the loop itself: every entry point here is a one-shot process, so nothing re-executed
+# the located owners, re-read their sealed determinations, compared consecutive readings
+# and asserted a fixed point over what they report.
+#
+# The loop's phases are not enumerated here, nor in the engine, nor even in the
+# programme's own declaration. They are READ at run time from the declarations that
+# already own them. Adding an actuator, an observation, a classification rule, a decision
+# value, a precondition or a convergence criterion is an append-only edit to
+# 00-MASTER/UCOS-AEE-001/aee-declaration.json — this workflow never needs to change, and
+# no programme, domain, technology or platform is named anywhere in it.
+#
+# CADENCE. This is the standing cadence authority for the loop (finding AEE-F-003). The
+# repository contains no resident process, no scheduler and no armed session hook — the
+# hooks that once existed were deliberately disarmed after they were measured minting
+# permanent identities for untracked files and rewriting tracked determinations at every
+# session start. A daemon would be unadjudicated surface. So the loop runs here, on every
+# push and every pull request, with no opt-in: a gate a programme must enrol in is a gate
+# the next programme forgets.
+#
+# SCOPE BOUNDARY. Convergence measured here is over the OBSERVATION VECTOR — the tuple of
+# every located owner's reported verdict. Byte-level repository closure is a different and
+# stronger condition, owned by UCOS-RFP-001 and measured by rfp-gate.yml. This programme
+# never invokes the fixed-point engine, because that engine runs the aggregate certifier
+# as one of its own pipeline stages and a driver invoking it would rebuild the CYC-RECURSE
+# topology it exists to forbid. The boundary is recorded as finding AEE-F-002, not left
+# implicit.
+#
+# Exit semantics of the gate:
+#   0  the loop converged — consecutive iterations agreed and every blocking criterion
+#      is satisfied
+#   1  a blocking convergence criterion is unsatisfied
+#   2  fail-closed abort — an admission condition failed (a competing driver was already
+#      executing, so any reading would describe a race rather than a state), or the
+#      declaration is unusable
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: aee-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: AEE self-guards (declaration · zero-enumeration · write-scope · determinism · reuse · mandate coverage)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Declaration integrity (every reference resolves · every rule total · no tolerated finding)
+        run: python3 00-MASTER/UCOS-AEE-001/aee_engine.py --check-declaration
+
+      - name: Zero-enumeration proof (no declared identifier or owner path is hardcoded in the engine)
+        run: python3 00-MASTER/UCOS-AEE-001/aee_engine.py --check-no-enumeration
+
+      - name: Own-memory guard (nothing is written outside this programme's operational home)
+        run: python3 00-MASTER/UCOS-AEE-001/aee_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical rendering across runs)
+        run: python3 00-MASTER/UCOS-AEE-001/aee_engine.py --check-determinism
+
+      # The mechanical statement of Reuse Before Create: every bound owner must resolve
+      # OUTSIDE this programme's home. A programme that satisfied its own bindings would
+      # be a second home for a capability the repository already located elsewhere.
+      - name: Reuse-before-create (no bound owner lies inside this programme's own home)
+        run: python3 00-MASTER/UCOS-AEE-001/aee_engine.py --check-reuse-before-create
+
+      # Proves the loop is bound to phases that actually exist in their owning
+      # declarations, and that none is discharged by nothing.
+      - name: Mandate coverage (every located loop phase is discharged by something)
+        run: python3 00-MASTER/UCOS-AEE-001/aee_engine.py --check-mandate-coverage
+
+  convergence-gate:
+    name: Autonomous evolution loop — convergence gate (standard tier)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # THE LOOP OBSERVES UCOS-RIB-001, AND RIB REPORTS THE TREE IT IS HANDED. RIB's GATE-02
+      # counts a detached HEAD as a repository-integrity finding — right for a working tree,
+      # where detachment is how commits are lost, and meaningless in CI. `actions/checkout`
+      # detaches on `pull_request` (it checks out the ephemeral merge ref) and does not on
+      # `push`, so this job inherited RIB's verdict and, through it, the event name: measured
+      # on 219917fe and again on 4c4ba21a, the push run converged and the pull_request run
+      # reported 36/38 observations and refused at CONV-02, for the same commit. Locally the
+      # same tier converges at 37/38 with nothing unsatisfied. Naming the HEAD restores the
+      # premise every engine in the loop is entitled to assume. No observation is relaxed:
+      # all 38 are still measured and CONV-02 is still fail-closed.
+      - name: Present a named HEAD (the loop's observed engines measure the tree they are handed)
+        run: git checkout -B ci/aee-gate-head
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      # Every actuator is declared with the `$PY` interpreter token, which resolves to the
+      # CANONICAL venv interpreter `.ec1-venv/bin/python` — never to whatever `python`
+      # happens to be on PATH. Without the venv, `$PY` resolves to the empty string, every
+      # actuator reports UNAVAILABLE, and the loop would have nothing to read. Bootstrapping
+      # through the same environment owner that verify.sh uses keeps CI and local execution
+      # the same predicate rather than two similar ones.
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Bootstrap the canonical environment (creates .ec1-venv so $PY resolves)
+        run: ./bootstrap.sh
+
+      - name: Assert $PY resolves (fail-closed — a missing venv must never read as convergence)
+        run: |
+          test -x .ec1-venv/bin/python || {
+            echo "canonical venv interpreter absent; every \$PY-declared actuator would" \
+                 "report UNAVAILABLE and the loop would assert convergence over nothing." >&2
+            exit 1
+          }
+          .ec1-venv/bin/python --version
+
+      # Tier note: the `closure` tier additionally actuates the aggregate constitutional
+      # certifier at its own full tier, which itself runs verification, the determinism
+      # double-build and the registration-drift gate. Those three execute in their own
+      # owning workflows (ec1-ci.yml, determinism.yml, ucos-registration-gate.yml), so
+      # running them again here would duplicate work without adding evidence. The
+      # exclusion is not silent: the engine discloses every tier-excluded actuator and
+      # caps this run's determination at CONVERGED-PROVISIONAL. `make aee-closure` is the
+      # local path to an unqualified determination.
+      - name: Autonomous evolution loop (fail-closed on non-convergence)
+        run: python3 00-MASTER/UCOS-AEE-001/aee_engine.py --tier standard --gate
+
+      - name: Publish the loop determinations, learning ledger and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: aee-determinations
+          path: |
+            00-MASTER/UCOS-AEE-001/*.md
+            00-MASTER/UCOS-AEE-001/aee.json
+            00-MASTER/UCOS-AEE-001/AEE-LEARNING-LEDGER.json
+            00-MASTER/UCOS-AEE-001/evidence/
+          if-no-files-found: warn

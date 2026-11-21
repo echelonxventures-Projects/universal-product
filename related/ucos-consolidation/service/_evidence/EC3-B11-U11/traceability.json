@@ -1,0 +1,54 @@
+{
+  "backward": [
+    "USM",
+    "SERVICE-005",
+    "SERVICE-004",
+    "SERVICE-003",
+    "SERVICE-001",
+    "ARCH-SERVICE-001",
+    "11-SERVICE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+    "EC3-B11-U11-VALIDATION-EVIDENCE",
+    "EC3-B11-U11-CCE-CERTIFICATION",
+    "EC3-B11-U11-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "0595a91",
+  "meta_class": "USM",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "PL-F2",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "DATA represented-data concern — bound by reference (SMR-13 operates-on)",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the meta-model record)",
+    "ENG-004": "meta-class + meta-relationship typing discipline (ENG-004)",
+    "ENG-005": "meta-relationship edges + member certification references (§3 / SMR-01…13)",
+    "PL-F2": "PLATFORM composition concern — bound by reference (SMR-12 composed-as)",
+    "RL-F2": "RUNTIME behaviour concern — bound by reference (SMR-11 behaves-as; SMR-07 executes)",
+    "SMC-01..10": "the ten CERTIFIED concern-meta-class realizations — referenced, not owned",
+    "member_SMC-01": "EC3-B11-U01 (SMC-01 Service; UCOS-CERT-SMC-01-6d805a1308da2f66) — integrated by reference, not owned",
+    "member_SMC-02": "EC3-B11-U02 (SMC-02 Capability; UCOS-CERT-SMC-02-466c00507b04a1f9) — integrated by reference, not owned",
+    "member_SMC-03": "EC3-B11-U03 (SMC-03 Contract; UCOS-CERT-SMC-03-d3ba585579bf93ef) — integrated by reference, not owned",
+    "member_SMC-04": "EC3-B11-U04 (SMC-04 Interface; UCOS-CERT-SMC-04-bcf64d8028ef3d1d) — integrated by reference, not owned",
+    "member_SMC-05": "EC3-B11-U05 (SMC-05 Operation; UCOS-CERT-SMC-05-5a06bcad4a3086c8) — integrated by reference, not owned",
+    "member_SMC-06": "EC3-B11-U06 (SMC-06 Composition; UCOS-CERT-SMC-06-370163eb1197edb3) — integrated by reference, not owned",
+    "member_SMC-07": "EC3-B11-U07 (SMC-07 Orchestration; UCOS-CERT-SMC-07-99f5148f4f1ba96c) — integrated by reference, not owned",
+    "member_SMC-08": "EC3-B11-U08 (SMC-08 Execution; UCOS-CERT-SMC-08-96c817b15dca3403) — integrated by reference, not owned",
+    "member_SMC-09": "EC3-B11-U09 (SMC-09 Policy; UCOS-CERT-SMC-09-61ee948b80beb04f) — integrated by reference, not owned",
+    "member_SMC-10": "EC3-B11-U10 (SMC-10 Security; UCOS-CERT-SMC-10-fb17b391ed14db5d) — integrated by reference, not owned"
+  },
+  "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+  "trace_format": "ucos-service-traceability/1.0.0",
+  "unit": "EC3-B11-U11"
+}

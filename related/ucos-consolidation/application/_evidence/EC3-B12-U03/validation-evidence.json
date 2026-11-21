@@ -1,0 +1,229 @@
+{
+  "accepted": true,
+  "blocking_failures": [],
+  "blueprint_id": "AMC-03",
+  "checks_run": [
+    "behavior-by-reference",
+    "composition-by-reference",
+    "foundation-reuse-integrity",
+    "founding-acyclic",
+    "lifecycle-valid",
+    "meta-class-single",
+    "meta-constraints",
+    "meta-relationships-closed",
+    "module-bounded",
+    "module-classified",
+    "module-cohesive",
+    "module-groups-features",
+    "module-identified-objectbound",
+    "module-ownership-partition",
+    "module-typed",
+    "module-value-fidelity",
+    "non-constitutive",
+    "provisional-state-disclosure",
+    "technology-independence",
+    "traceability-rooted"
+  ],
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 20,
+    "total": 20
+  },
+  "evidence_format": "ucos-validation-evidence/1.0.0",
+  "findings": [
+    {
+      "check_id": "behavior-by-reference",
+      "details": {
+        "behavior_ref": "ENG-005:RL-F2:runtime.module-transition"
+      },
+      "message": "behavior-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "composition-by-reference",
+      "details": {
+        "application_ref": "ENG-005:AMC-01:ucos.application.foundation",
+        "composition_ref": "ENG-005:PL-F2:PLATFORM-009.composition"
+      },
+      "message": "composition-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "PL-F2"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "lifecycle-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "AMC-03"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "AMK-01",
+          "AMK-03",
+          "AMK-05",
+          "AMK-06"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "AMR-02",
+          "AMR-03",
+          "AMR-07",
+          "AMR-10",
+          "AMR-12"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "module-bounded",
+      "details": {},
+      "message": "module-bounded satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "module-classified",
+      "details": {
+        "kind": "Core-Module"
+      },
+      "message": "module-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "module-cohesive",
+      "details": {},
+      "message": "module-cohesive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "module-groups-features",
+      "details": {
+        "owned_feature_count": 2
+      },
+      "message": "module-groups-features satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "module-identified-objectbound",
+      "details": {
+        "module_id": "UCOS-MODULE-ucos.application.module.foundation-42d78167ff63a8a9"
+      },
+      "message": "module-identified-objectbound satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "module-ownership-partition",
+      "details": {
+        "owned_feature_count": 2
+      },
+      "message": "module-ownership-partition satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "module-typed",
+      "details": {
+        "type_tag": "ucos.application.module.foundation"
+      },
+      "message": "module-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "module-value-fidelity",
+      "details": {
+        "value_digest": "42d78167ff63a8a9aeb0d0b16a0a880f02f0e2510dd6e2b25b915225eaecb317"
+      },
+      "message": "module-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "technology-independence",
+      "details": {},
+      "message": "technology-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 6
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-MODULE-ucos.application.module.foundation-42d78167ff63a8a9",
+  "verdict": "pass"
+}

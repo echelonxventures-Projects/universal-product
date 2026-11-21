@@ -1,0 +1,1001 @@
+{
+  "$law_checks": "Every law names a check that computes it. The contract refuses to construct itself if a law names a check that does not exist, or if a check exists that no law claims — the discipline UISD-000001 and UOBC-000001 already apply.",
+  "$not_a_second_authority": "CAA-INV-04 recognises a second identity authority by the counter it advances; the declared mint marker is 'category_seq'. This programme holds no counter and no marker. It opens no registry that allocates, issues no identifier, declares no lifecycle stage (AUE-BND-06) and declares no rival object model (CAA-INV-07). The Test Object Registry and the Verification Evidence Registry are both DERIVED PROJECTIONS: the first is a view of 00-MASTER/UCOS-UGA-001/01-EXECUTABLE-OBJECT-REGISTRY.json filtered to the objects pytest collects, the second is a content-addressed cache of results whose keys are computed from object content hashes that UCOS-UGA-001 already owns. Neither is truth; deleting either changes no verdict, only the cost of reaching it.",
+  "$why_this_exists": "./verify.sh executed one plan for every caller. Measured on the certification baseline: 11 628 tests, 97.61% coverage, every gate green, 2 814 s in pytest+coverage alone — and a developer changing one module paid all of it. The response that destroys assurance is to delete gates. The response that preserves it is to know which verification a change actually requires, to reuse evidence that provably still holds, and to execute independent read-only gates concurrently instead of sequentially. Nothing below removes a gate, lowers a threshold, or narrows a denominator; the whole of the change is in SELECTION, SCHEDULING and REUSE.",
+  "artifact_id": "UVI-000001",
+  "authority": "NONE — DERIVED TRUTH. This programme legislates nothing and owns no gate. Every obligation ./verify.sh enforced before it exists still exists, is still owned by the same instrument, and is still evaluated by the same command. What this programme owns is the QUESTION 'which verification does this change require, and in what order may it be executed' — never the question 'is this repository compliant', which remains with CMG-000001, UCOS-UGA-001, UAUE-000001, UOBC-000001, UISD-000001 and the coverage floor.",
+  "evidence_registry": {
+    "$certification_never_reuses": "integration and full declare evidence_reuse false. A certification that reuses a result certifies a cache. UVI-L-09 computes that no certification-eligible mode can reach a reuse decision at all.",
+    "$standing": "A CACHE, NOT A RECORD OF TRUTH. Every entry is keyed by a digest computed from the content hashes UCOS-UGA-001 already publishes for the stage's declared inputs, plus the stage's own command. A hit means the identical stage has already been executed over identical input and passed. Deleting the whole store changes no verdict — it only makes the next run pay again.",
+    "$tracked": "Untracked by design and by .gitignore. A cache in the tree would be a second answer to 'did this pass', and the first thing to drift.",
+    "home": ".ucos-verification-evidence/",
+    "reuse_conditions": [
+      "the mode declares evidence_reuse true",
+      "the stage declares reusable true",
+      "the recorded input digest equals the digest computed now",
+      "the recorded result is PASS",
+      "the recorded verification-intelligence version equals the running one"
+    ],
+    "tracked": false
+  },
+  "execution": {
+    "$standing": "Scheduling changes when a stage runs, never what it measures. UVI-L-08 computes that: the union of the shards must equal the whole selection exactly, and the coverage denominator must be identical to the one a single process would have produced.",
+    "test_sharding": {
+      "$isolated": "Path prefixes MEASURED to be unsafe to run beside anything else — typically because they assert a property of the whole working tree, or mutate one. Each entry must carry the measurement that justifies it. This is scheduling isolation and never selection: an isolated object still runs, in exactly one shard, and UVI-L-08 measures the union exactly as it does for every other unit. It is deliberately expensive — an isolated object serialises its own cost onto the wall clock — so the bar for adding one is a measurement, not a suspicion.",
+      "$max_workers": "A CEILING, not a count. The planner takes the smaller of this and the machine's own CPU count, so a two-core CI runner plans two shards and a fourteen-core workstation plans twelve. UVI_WORKERS overrides both, for measurement.",
+      "$shard_memory_budget_mb": "WHAT ONE SHARD IS ASSUMED TO COST IN RESIDENT MEMORY, declared because it is an assumption and an assumption may not be hidden in code. It bounds EXECUTION and never the PLAN: the partition stays a pure function of tracked inputs, so the plan digest is unchanged and CI's matrix — where each shard is a separate job on its own runner, and nothing contends — is unaffected. It governs only how many shard processes ./verify.sh starts at once ON ONE HOST. Measured cause: a fourteen-core workstation plans twelve shards, and twelve coverage-instrumented interpreters against 8.4 GiB of free memory were killed by the operating system mid-wave, which reports as a truncated run rather than as a refusal. The launcher now admits a further shard only while the host still holds this much headroom, and always runs at least one, so a constrained host runs the identical selection more slowly instead of dying. UVI_CONCURRENCY pins the ceiling explicitly.",
+      "$why_not_a_plugin": "pytest-xdist would add an unpinned distributed-execution dependency and move shard assignment inside a scheduler this repository does not own. Sharding by process keeps the assignment declared, deterministic and auditable, and adds no dependency to a toolchain that is pinned on purpose (DE-04).",
+      "assignment": "DETERMINISTIC LONGEST-PROCESSING-TIME. Test files are ordered by measured cost descending, ties broken by path, and each is placed in the least-loaded shard. Given one cost table and one selection the assignment is a pure function, so two planners on two machines produce identical shards.",
+      "cost_source": "00-MASTER/UVI-000001/test-cost-model.json — measured durations, absent entries priced at the declared default",
+      "enabled": true,
+      "isolated": [
+        {
+          "$effect": "It runs ALONE and FIRST, before the concurrent body. Alone because the other shards perturb it. First because it must observe the tree as verification FOUND it — the fixed point the preflight phase just established — rather than the tree eleven thousand tests happened to leave behind. Running it last was tried and measured: the suite regenerates derived views, so the object reached a different verdict depending on what had run before it, for reasons unrelated to what it measures. Nothing is deselected and nothing is skipped: the scope is identical, only the schedule differs.",
+          "$measured": "It asserts a property of the WHOLE working tree — it snapshots `git status --porcelain`, runs the observing stages, and asserts the tree did not move — and its autouse fixture runs `git checkout -- 00-BOOK/DATA/ 00-BOOK/REGISTRIES/ 00-BOOK/CONTROL-TOWER/` after every test in the module. Both directions were measured to interfere: a concurrent shard regenerating a derived view moves the tree under its assertion, and its own checkout reverts what that shard just wrote. Neither is a defect in the test, which is correct about a serial repository.",
+          "prefix": "platform/tests/test_verification_purity.py"
+        },
+        {
+          "$effect": "It runs ALONE, so no other shard is writing `coverage.xml` while it compares. This is SCHEDULING and not selection: the determinism assertion is unchanged, still fail-closed, and the object still runs in every mode that admits it. The gate was never wrong — its premise, an unchanging repository state, was being violated by the verification run itself, and isolation makes that premise true rather than weakening the claim.",
+          "$measured": "Its gate proves DETERMINISM — `identical repository state implies byte-identical outputs` — and one of the inputs that state includes is `coverage.xml`, from which intelligence/research/assimilation.py derives research findings. `coverage.xml` is gitignored and run-scoped, and every pytest shard rewrites it: measured during one ./verify.sh --fast, it changed 17 times in 80 seconds and was repeatedly TRUNCATED TO EMPTY (sha256 e3b0c44298..., the empty-file digest). The engine caches its corpus on the instance while verify_determinism() re-reads fresh, and the fixture holds that cache module-wide, so a concurrent truncation lands between the two reads. Measured on the failing run itself: `deterministic=false` with `checks=13/13 PASS`, findings 18 -> 14 and records 203 -> 198 — exactly the coverage-derived findings, lost mid-read.",
+          "prefix": "intelligence/tests/test_research_intelligence.py"
+        },
+        {
+          "$effect": "It runs ALONE, so no other shard is writing to `intelligence/UCOS-UPI-001/` while it writes. This is SCHEDULING and not selection: the test assertions are unchanged, still fail-closed, and the object still runs in every mode that admits it.",
+          "$measured": "One test (`test_engine_writes_only_inside_its_own_directory`) performs filesystem writes to a fixed shared directory `intelligence/UCOS-UPI-001/` with no process isolation. Under sharded execution multiple processes race to write the same filenames to the same location: 6 JSON outputs plus 25+ publication documents. The test is correct — it verifies write-scope containment — but its premise (exclusive access to the output directory) is violated by concurrent shards executing the same test. Standalone execution passes consistently (27 tests, 12.53s); sharded execution fails non-deterministically on write collisions.",
+          "prefix": "intelligence/tests/test_publication_intelligence.py"
+        }
+      ],
+      "isolation": "Every shard is a separate process with its own COVERAGE_FILE. Coverage data is combined before the floor is evaluated, so the floor is evaluated exactly once, over the union, by the coverage tool itself.",
+      "max_workers": 12,
+      "shard_memory_budget_mb": 1536
+    },
+    "topology": {
+      "EXTENDED": "serial, after POST",
+      "MAIN": "concurrent — every stage in it is READ_ONLY and measures a tree nothing is writing to any more",
+      "POST": "serial, after MAIN",
+      "PREFLIGHT": "concurrent — ruff reads tracked Python, prerequisite generation writes gitignored paths, and they share nothing",
+      "TESTS": "alone — the suite regenerates derived views and takes the git index lock, so nothing may read the tree beside it"
+    }
+  },
+  "gate": {
+    "exit_codes": {
+      "0": "COHERENT — every law holds",
+      "1": "INCOHERENT — a law was measured and refused",
+      "2": "FAULT — no verdict could be reached"
+    },
+    "invoked_by": "./verify.sh, as a declared contract stage",
+    "plane": "OBSERVE MODE — READ ONLY"
+  },
+  "laws": [
+    {
+      "check": "mode_constitution_completeness",
+      "id": "UVI-L-01",
+      "statement": "Every mode ./verify.sh accepts is declared here, and every mode declared here is accepted by ./verify.sh. Neither set may exceed the other.",
+      "title": "Mode Constitution Completeness"
+    },
+    {
+      "check": "exactly_one_default",
+      "id": "UVI-L-02",
+      "statement": "Exactly one mode is declared default, and the bare invocation of ./verify.sh resolves to it.",
+      "title": "Exactly One Default"
+    },
+    {
+      "check": "stage_registry_reconciliation",
+      "id": "UVI-L-03",
+      "statement": "The stage labels declared here, in declared order, equal the run_stage literals ./verify.sh declares, in source order. A stage cannot be classified without being declared, or declared without being classified.",
+      "title": "Stage Registry Reconciliation"
+    },
+    {
+      "check": "no_assurance_reduction",
+      "id": "UVI-L-04",
+      "statement": "Every stage of the pre-existing certification contract is present in every certification-eligible mode. No gate was removed, and no threshold was lowered.",
+      "title": "No Assurance Reduction"
+    },
+    {
+      "check": "no_mode_claims_more_than_it_measures",
+      "id": "UVI-L-05",
+      "statement": "Only a mode whose selection is the whole suite and whose coverage is the declared floor may be certification-eligible. Any mode that is not certification-eligible declares what it does not claim.",
+      "title": "A Mode May Not Claim More Than It Measures"
+    },
+    {
+      "check": "selection_is_derived",
+      "id": "UVI-L-06",
+      "statement": "No test path literal appears in the selector or in this declaration. Selection derives from identity, ownership, dependency, capability and relationship, and every declared substrate is actually read.",
+      "title": "Selection Is Derived, Never Authored"
+    },
+    {
+      "check": "fail_wide",
+      "id": "UVI-L-07",
+      "statement": "Every condition the selector cannot bound escalates to the whole suite under the coverage floor, and names the reason. An unbounded change never produces a narrow plan.",
+      "title": "Fail Wide"
+    },
+    {
+      "check": "topology_neutrality",
+      "id": "UVI-L-08",
+      "statement": "Scheduling and sharding change no measured obligation: the union of the shards equals the selection exactly, no test is placed twice, and the coverage floor is evaluated once over combined data.",
+      "title": "Execution Topology Neutrality"
+    },
+    {
+      "check": "evidence_reuse_integrity",
+      "id": "UVI-L-09",
+      "statement": "A result may be reused only when the recomputed input digest equals the recorded one, and never by a certification-eligible mode.",
+      "title": "Evidence Reuse Integrity"
+    },
+    {
+      "check": "deterministic_planning",
+      "id": "UVI-L-10",
+      "statement": "Planning twice over one repository state produces byte-identical plans, and no wall clock enters a plan.",
+      "title": "Deterministic Planning"
+    },
+    {
+      "check": "every_declared_read_set_resolves",
+      "id": "UVI-L-11",
+      "statement": "Every prefix a stage declares as a reuse input resolves to at least one registered object. A read-set that matches nothing is a declaration naming a path the repository does not carry, and it silently disables reuse for that stage forever rather than failing.",
+      "title": "Every Declared Read-Set Resolves"
+    },
+    {
+      "check": "every_stage_declares_a_read_set",
+      "id": "UVI-L-12",
+      "statement": "Every declared stage declares what it reads, whether or not it may be answered from cache. A stage with no read-set is a stage no impact analysis can relate a change to.",
+      "title": "Every Stage Declares A Read-Set"
+    },
+    {
+      "check": "read_set_is_independent_of_reuse_policy",
+      "id": "UVI-L-13",
+      "statement": "The read-set and the reuse policy are separate declarations and neither determines the other. Every non-reusable stage still resolves to a non-empty object population, and toggling the reuse flag changes neither the read-set nor what it resolves to.",
+      "title": "Read-Set Is Independent Of Reuse Policy"
+    },
+    {
+      "check": "evidence_identity_depends_on_the_read_set",
+      "id": "UVI-L-14",
+      "statement": "Widening or narrowing a stage's read-set changes its evidence key. A declared read-set that does not reach the key would be a declaration with no consequence.",
+      "title": "Evidence Identity Depends On The Read-Set"
+    },
+    {
+      "id": "UVI-L-15",
+      "title": "Non-reuse is argued, never defaulted",
+      "statement": "Every stage that is not reusable declares why it cannot be. constitution.py already refuses a REUSABLE stage that names no read-set, because its cache would cover nothing and every run would be a false hit; this refuses the mirror omission. A stage non-reusable for no recorded reason pays full cost on every run because nobody argued the alternative, and the argument is exactly where a reader learns whether a sound key is possible at all.",
+      "check": "non_reuse_is_argued"
+    }
+  ],
+  "mode_constitution": {
+    "$budget_seconds": "A DECLARED TARGET, never a gate. A verification that fails because it was slow is a verification that taught its callers to disable it. Exceeding a budget is reported by the plan and changes no verdict. 0 means no target is declared: certification is bounded by its obligations, not by a clock.",
+    "$default_rationale": "The bare invocation is the one a developer types dozens of times a day, so it must be the mode whose cost matches that frequency — and it must still run every governance gate, because a commit is exactly where an ungoverned change enters. --change is that mode: impact-selected tests, every gate. Certification is not lost by this, it is made EXPLICIT: ./verify.sh --full is the certification contract and .github/workflows/ec1-ci.yml invokes it by name. A default that silently means 'certify' is how a 47-minute command became something developers route around.",
+    "$standing": "THE CONSTITUTION OF MODES. A mode is a declared claim plus the obligations that claim requires. Modes are DATA here and nowhere else: ./verify.sh parses this list to learn which flags it accepts, so a mode cannot exist in the script and not in the constitution, and UVI-L-01 measures that both directions hold.",
+    "default_mode": "change",
+    "modes": [
+      {
+        "budget_seconds": 300,
+        "certification_eligible": false,
+        "claim": "The changed code lints, and every test reachable from the change passes.",
+        "claims_not": [
+          "governance conformance",
+          "coverage floor",
+          "certification"
+        ],
+        "coverage": "NOT_EVALUATED",
+        "evidence_reuse": true,
+        "flag": "--fast",
+        "id": "fast",
+        "parallel": true,
+        "purpose": "developer feedback while editing",
+        "selection": "IMPACT",
+        "stages": [
+          "ruff",
+          "prerequisites",
+          "pytest"
+        ]
+      },
+      {
+        "budget_seconds": 300,
+        "certification_eligible": false,
+        "claim": "The changed code lints, every test reachable from the change passes, and every governance, identity, lifecycle, evolution and certification gate in the contract holds over the repository as it now stands.",
+        "claims_not": [
+          "coverage floor",
+          "certification"
+        ],
+        "coverage": "NOT_EVALUATED",
+        "evidence_reuse": true,
+        "flag": "--change",
+        "id": "change",
+        "parallel": true,
+        "purpose": "commit validation — the default invocation",
+        "selection": "IMPACT",
+        "stages": "CONTRACT"
+      },
+      {
+        "budget_seconds": 1200,
+        "certification_eligible": true,
+        "claim": "The whole suite passes under the 90% coverage floor and every gate in the contract holds.",
+        "claims_not": [
+          "registration-state observation"
+        ],
+        "coverage": "FLOOR_90",
+        "evidence_reuse": false,
+        "flag": "--integration",
+        "id": "integration",
+        "parallel": true,
+        "purpose": "merge validation",
+        "selection": "WHOLE_SUITE",
+        "stages": "CONTRACT"
+      },
+      {
+        "budget_seconds": 0,
+        "certification_eligible": true,
+        "claim": "Everything --integration claims, plus that registration state is valid.",
+        "claims_not": [],
+        "coverage": "FLOOR_90",
+        "evidence_reuse": false,
+        "flag": "--full",
+        "id": "full",
+        "parallel": true,
+        "purpose": "release certification — the certification contract",
+        "selection": "WHOLE_SUITE",
+        "stages": "CONTRACT_AND_EXTENDED"
+      }
+    ]
+  },
+  "name": "Universal Verification Intelligence",
+  "no_assurance_reduction": {
+    "$standing": "THE RATCHET. These are the stage labels ./verify.sh declared BEFORE this programme existed, copied from 00-MASTER/UAKOS-CLOSURE-008/validation-record.json as it stood at the baseline run — 11 628 tests, 97.61% coverage, every gate green. UVI-L-04 measures that every one of them is still a declared stage AND is still admitted by every certification-eligible mode. Removing a gate, or quietly dropping one out of --full, fails here rather than being discovered later by its absence.",
+    "baseline_stages": [
+      "ruff lint + format-check (engine + platform)",
+      "prerequisite generation (knowledge · determinism · closure 1-3)",
+      "pytest + coverage gate (--cov-fail-under=90)",
+      "coverage report",
+      "governance enforce --pre",
+      "registry validate (schema + integrity)",
+      "meta-constitutional conformance (CMG-INV-01..12)",
+      "universal object governance (UGA-INV-01..10)",
+      "autonomous universal evolution (UAUE gate, every declared obligation)",
+      "evolution surface replay (history + 18 registers)",
+      "universal object birth contract (UOBC-000001, identity before existence)",
+      "universal infinite scope and direction (UISD-000001, unbounded and self-applied)"
+    ]
+  },
+  "principle": {
+    "$prohibited_condition_rationale": "A verification selector's dangerous failure is not slowness, it is a green run that skipped the affected test. So every mode declares exactly what it claims, no mode may claim more than it measured, and only the modes that measure the whole obligation are certification-eligible. UVI-L-05 computes that; it is not asserted.",
+    "prohibited_condition": "ASSURANCE REDUCTION BY SELECTION — a mode that reaches a verdict by measuring less than the obligation it claims to have measured.",
+    "standing": "DERIVED EXECUTION INTELLIGENCE, NOT AUTHORITY LAYER",
+    "statement": "Verification is a function of the change, not of the caller. The obligations are constant; the execution required to discharge them is derived."
+  },
+  "selection": {
+    "$standing": "Selection is DERIVED, never authored. No test path appears in this declaration or in engine/verification_intelligence/, and UVI-L-06 measures that: a literal test path in the selector would be a hand-maintained list wearing an engine's costume.",
+    "escalation": "FAIL WIDE. Every condition the layers cannot bound widens the plan to the whole suite under the coverage floor, and every widening names itself in the plan. The asymmetry is deliberate and is measured by UVI-L-07.",
+    "layers": [
+      {
+        "id": "IDENTITY",
+        "order": 1,
+        "rule": "Every changed path resolves to a registry record. A path with no record escalates: its dependents are unknown."
+      },
+      {
+        "id": "DEPENDENCY",
+        "order": 2,
+        "rule": "Transitive reverse closure over import edges. Every object that can reach the change is affected."
+      },
+      {
+        "id": "OWNERSHIP",
+        "order": 3,
+        "rule": "Every affected object contributes its owner, and every test object under an affected owner is selected — a test that exercises a module by subprocess or dynamic import has no import edge to it."
+      },
+      {
+        "id": "CAPABILITY",
+        "order": 4,
+        "rule": "Every affected owner resolves to a capability. An owner absent from the capability catalogue escalates rather than resolving to nothing."
+      },
+      {
+        "id": "RELATIONSHIP",
+        "order": 5,
+        "rule": "Every affected identity contributes its relationship-graph neighbours, and any test object among them is selected."
+      }
+    ],
+    "substrates": [
+      {
+        "id": "identity",
+        "provides": "universal_id, object_class, content_hash for every version-controlled object",
+        "source": "00-MASTER/UCOS-UGA-001/01-EXECUTABLE-OBJECT-REGISTRY.json"
+      },
+      {
+        "id": "ownership",
+        "provides": "the accountable owner of every object",
+        "source": "00-MASTER/UCOS-UGA-001/01-EXECUTABLE-OBJECT-REGISTRY.json"
+      },
+      {
+        "id": "dependency",
+        "provides": "resolved import edges, inverted for reverse reachability",
+        "source": "00-MASTER/UCOS-UGA-001/01-EXECUTABLE-OBJECT-REGISTRY.json"
+      },
+      {
+        "id": "capability",
+        "provides": "owner → capability, so a change reaches the capability's whole test surface and not only its importers",
+        "source": "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json"
+      },
+      {
+        "id": "relationship",
+        "provides": "owned_by / validated_by / evidenced_by / produces edges between identities that no import edge connects",
+        "source": "00-MASTER/UCOS-UGA-001/04-RELATIONSHIP-GRAPH.json"
+      }
+    ]
+  },
+  "self_application": {
+    "$meaning": "The selector is itself a selected object. engine/verification_intelligence/ carries universal identity, is owned, is registered, is tested, and its own change escalates like any other: it is named in the unbounded set, because a change to the thing that decides what to verify cannot be verified by asking it what to verify.",
+    "subject_of_own_laws": [
+      "UVI-000001"
+    ]
+  },
+  "stage_registry": {
+    "$standing": "THE REGISTRY OF STAGES. ./verify.sh remains the DECLARED CONTRACT — the run_stage literals in it are what 00-MASTER/UAKOS-CLOSURE-008/validation-record.json digests and what .github/workflows/uisd-gate.yml re-derives. This registry does not restate that contract, it CLASSIFIES it: for each declared stage, which plane it executes on, what it depends on, which phase it may run in, and whether its result may be reused. UVI-L-03 measures that the label set here and the run_stage literals in verify.sh are equal and identically ordered, so a stage can never be classified here and absent there, or added there and unclassified here.",
+    "phases": [
+      {
+        "id": "PREFLIGHT",
+        "meaning": "must complete before any stage that reads generated input",
+        "order": 1
+      },
+      {
+        "id": "TESTS",
+        "meaning": "the test suite, which runs alone",
+        "order": 2
+      },
+      {
+        "id": "MAIN",
+        "meaning": "the mutually independent body of the verification",
+        "order": 3
+      },
+      {
+        "id": "POST",
+        "meaning": "reads what the phases above produced",
+        "order": 4
+      },
+      {
+        "id": "EXTENDED",
+        "meaning": "outside the default contract; --full only",
+        "order": 5
+      }
+    ],
+    "planes": [
+      {
+        "id": "READ_ONLY",
+        "meaning": "reads the tree, writes nothing at all"
+      },
+      {
+        "id": "WRITES_IGNORED",
+        "meaning": "writes only to paths .gitignore excludes; cannot dirty the tracked tree"
+      },
+      {
+        "id": "WRITES_EVIDENCE",
+        "meaning": "writes coverage data and reports, all gitignored"
+      }
+    ],
+    "stages": [
+      {
+        "depends_on": [],
+        "id": "ruff",
+        "label": "ruff lint + format-check (engine + platform)",
+        "modes": [
+          "fast",
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "CD-01 / CD-04",
+        "phase": "PREFLIGHT",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "engine/",
+          "platform/",
+          "pyproject.toml"
+        ],
+        "reusable": true,
+        "reuse_inputs": [
+          "engine/",
+          "platform/",
+          "pyproject.toml"
+        ]
+      },
+      {
+        "$not_reusable": "It is a producer. Reusing a producer means not producing, and the consumers of what it produces are in the same run.",
+        "depends_on": [],
+        "id": "prerequisites",
+        "label": "prerequisite generation (knowledge · determinism · closure 1-3)",
+        "modes": [
+          "fast",
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "P0-FINAL-CONVERGENCE-001",
+        "phase": "PREFLIGHT",
+        "plane": "WRITES_IGNORED",
+        "read_set": [
+          "scripts/",
+          "engine/knowledge/",
+          "engine/determinism/",
+          "intelligence/research/",
+          "intelligence/publication/",
+          "intelligence/realization/",
+          "00-MASTER/UAKOS-CLOSURE-002/",
+          "00-MASTER/UAKOS-PHASE-001B/",
+          "00-BOOK/DATA/"
+        ],
+        "reusable": false
+      },
+      {
+        "$not_reusable": "The one stage whose result is the point of the run. It is selected, sharded and scheduled — never skipped, never reused.",
+        "$phase": "ALONE, and this was learned by measurement rather than reasoned in advance. It was first classified MAIN and overlapped with the governance gates on the grounds that those gates are READ_ONLY. Read-only is not sufficient for concurrency: the gates measure the WHOLE version-controlled boundary, and the suite regenerates derived views under 00-BOOK/DATA and takes the git index lock while it does — one module's autouse fixture runs `git checkout` after every test in it. Run together, UCOS-UGA-001 read a torn tree and took 491s instead of 6s on lock contention. The gates cost about eight seconds between them, so serialising this stage against them costs nothing measurable and buys a gate that is measuring a settled tree.",
+        "depends_on": [
+          "prerequisites"
+        ],
+        "id": "pytest",
+        "label": "pytest + coverage gate (--cov-fail-under=90)",
+        "modes": [
+          "fast",
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "CD-02",
+        "phase": "TESTS",
+        "plane": "WRITES_EVIDENCE",
+        "read_set": [
+          "**"
+        ],
+        "reusable": false,
+        "shardable": true
+      },
+      {
+        "$modes": "ALL FOUR. The gate costs ~10 seconds and its subject is the whole tracked population, so there is no mode under which skipping it is cheaper than being wrong: a selection-based run that skipped it could add an ungoverned artifact and report success.",
+        "$phase": "MAIN rather than POST. It does not read the coverage artifacts the pytest stage writes -- it derives its own population from `git ls-files` and parses it -- so it has no data dependency on the tests. It is DECLARED depends_on pytest anyway, because the denominator it governs is the denominator that run measured against, and verifying the scope in the same run that used it is the point of the ordering.",
+        "$plane": "READ_ONLY and asserted as such by .github/workflows/omega-gate.yml, which fails if `git status --porcelain` differs across the gate. Writing is `make omega-seal`, a separate explicit invocation, so a certification run cannot advance the bounds it is measured against.",
+        "depends_on": [
+          "pytest"
+        ],
+        "id": "omega",
+        "label": "omega gate (discovery · authority · reachability · ratchets · disposition)",
+        "modes": [
+          "fast",
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UCOS-OMEGA-001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "**"
+        ],
+        "reusable": false,
+        "shardable": false,
+        "$not_reusable": "Its subject is the tracked corpus itself: the gate derives scope from `git ls-files`, parses every module and measures five ratchets across the whole tree, so an honest cache key is every tracked file — and a key that broad hits only when nothing changed at all. It also depends on pytest and reads the coverage data THIS run produced, so a reused verdict would describe another run's denominator."
+      },
+      {
+        "depends_on": [
+          "prerequisites"
+        ],
+        "id": "governance-pre",
+        "label": "governance enforce --pre",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UMB-IMP-001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-BOOK/",
+          "00-SOURCE/"
+        ],
+        "reusable": true,
+        "reuse_inputs": [
+          "00-BOOK/",
+          "00-SOURCE/"
+        ]
+      },
+      {
+        "depends_on": [
+          "prerequisites"
+        ],
+        "id": "registry-validate",
+        "label": "registry validate (schema + integrity)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "CRAP-001 / CAEM-001 S-2",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-BOOK/DATA/",
+          "00-BOOK/SCHEMAS/",
+          "00-BOOK/tools/"
+        ],
+        "reusable": true,
+        "reuse_inputs": [
+          "00-BOOK/DATA/",
+          "00-BOOK/SCHEMAS/",
+          "00-BOOK/tools/"
+        ]
+      },
+      {
+        "depends_on": [],
+        "id": "meta-constitutional",
+        "label": "meta-constitutional conformance (CMG-INV-01..12)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "CMG-000001 Article L",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-CMG/",
+          "00-BOOK/DATA/"
+        ],
+        "reusable": true,
+        "reuse_inputs": [
+          "00-CMG/",
+          "00-BOOK/DATA/"
+        ]
+      },
+      {
+        "$not_reusable": "Its subject is the whole version-controlled boundary, so its input digest is the tree itself. A cache key that covers everything is never a hit and pretending otherwise would be the one reuse that could hide an unregistered object.",
+        "depends_on": [
+          "prerequisites"
+        ],
+        "id": "universal-object-governance",
+        "label": "universal object governance (UGA-INV-01..10)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UCOS-UGA-001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "**"
+        ],
+        "reusable": false
+      },
+      {
+        "$not_reusable": "Its subject includes the working tree and every ref, so its input digest is the repository state itself rather than a file set. A cache hit here would be precisely the hit that hides a hand-edited agent surface.",
+        "depends_on": [],
+        "id": "universal-context-closure",
+        "label": "universal context closure (every declared context invariant)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UCOS-UCTX-001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "**"
+        ],
+        "reusable": false
+      },
+      {
+        "$not_reusable": "Its subject is the certificate on disk against the measurement the gate and the independent verifier produce right now. A cache hit would be the hit that lets a stale certification stand while the state it describes has moved.",
+        "depends_on": [
+          "universal-context-closure"
+        ],
+        "id": "context-closure-certification",
+        "label": "context closure certification (UCOS-UCTX-001, Phase 10 claims at fixed point)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UCOS-UCTX-001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "**"
+        ],
+        "reusable": false
+      },
+      {
+        "$not_reusable": "Its subject is every discovered proposal plus the whole declared authority, and the fourth gate runs the independent verifier over the merged result. A cache key could not cover that without covering the declaration set itself.",
+        "depends_on": [
+          "universal-context-closure"
+        ],
+        "id": "context-proposal-gate",
+        "label": "context proposal gate (four declared gates, every discovered proposal)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UCOS-UCTX-001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "**"
+        ],
+        "reusable": false
+      },
+      {
+        "$not_reusable": "Its subject is the emitted surfaces plus every declared authority, so a cache key would have to cover the whole declaration set; a hit here would be the hit that hides a generator that started inventing text.",
+        "depends_on": [],
+        "id": "context-provenance",
+        "label": "independent context provenance (MB7)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UCOS-UCTX-001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "**"
+        ],
+        "reusable": false
+      },
+      {
+        "$not_reusable": "Its subject is every declared adopter's surfaces plus every authority each one names, so a cache key would have to cover every declaration set in the repository; a hit here would be the hit that hides a producer that started inventing text.",
+        "depends_on": [],
+        "id": "ufi-adopters",
+        "label": "independent producer verification (UFI, every declared adopter)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UCOS-UCTX-001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "**"
+        ],
+        "reusable": false
+      },
+      {
+        "depends_on": [],
+        "id": "autonomous-evolution",
+        "label": "autonomous universal evolution (UAUE gate, every declared obligation)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UAUE-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-MASTER/UAUE-000001/",
+          "engine/uaue/",
+          "engine/uckp/",
+          "engine/nucleus/",
+          "engine/foundation/"
+        ],
+        "reusable": true,
+        "reuse_inputs": [
+          "00-MASTER/UAUE-000001/",
+          "engine/uaue/"
+        ]
+      },
+      {
+        "depends_on": [],
+        "id": "evolution-replay",
+        "label": "evolution surface replay (history + 18 registers)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UAUE-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-MASTER/UAUE-000001/",
+          "engine/uaue/",
+          "engine/uckp/",
+          "engine/nucleus/",
+          "engine/foundation/"
+        ],
+        "reusable": true,
+        "reuse_inputs": [
+          "00-MASTER/UAUE-000001/",
+          "engine/uaue/"
+        ]
+      },
+      {
+        "depends_on": [],
+        "id": "object-birth",
+        "label": "universal object birth contract (UOBC-000001, identity before existence)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UOBC-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-MASTER/UOBC-000001/",
+          "engine/object_birth/",
+          "engine/uckp/",
+          "engine/foundation/"
+        ],
+        "reusable": true,
+        "reuse_inputs": [
+          "00-MASTER/UOBC-000001/",
+          "engine/object_birth/"
+        ]
+      },
+      {
+        "$not_reusable": "It scans declared roots across the whole repository for permanence declarations and closed enumerations, so like UGA its input is the tree.",
+        "depends_on": [],
+        "id": "infinite-scope",
+        "label": "universal infinite scope and direction (UISD-000001, unbounded and self-applied)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UISD-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "**"
+        ],
+        "reusable": false
+      },
+      {
+        "$not_reusable": "The set of files it measures is DECLARED IN DATA, not fixed by this registry: ucpa-declaration.json names the canonical register, the ratification record, the owner binding and every classified projection, and that projection set is expected to grow as further sites are classified. A static reuse_inputs list would therefore go stale silently, which is the one thing a reuse decision must never do, so this stage is recomputed rather than reused.",
+        "depends_on": [],
+        "id": "primitive-alignment",
+        "label": "constitutional primitive alignment (UCPA-000001, root ontology measured and reduced)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UCPA-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-MASTER/UCPA-000001/",
+          "engine/root_ontology/",
+          "engine/uckp/",
+          "engine/foundation/"
+        ],
+        "reusable": false
+      },
+      {
+        "$not_reusable": "The set of files it measures is DECLARED IN DATA, not fixed by this registry: uccfa-declaration.json names the canonical register, the ratification record and the constitutional laws register that carries LAW Ω∞-000, and it reads UCPA-000001's own declaration for the primitives rather than restating them. A static reuse_inputs list would go stale the moment any of those bindings changed, which is the one thing a reuse decision must never do, so this stage is recomputed rather than reused.",
+        "depends_on": [],
+        "id": "coordinate-alignment",
+        "label": "coordinate framework alignment (UCCFA-000001, five coordinates measured against the register)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UCCFA-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-MASTER/UCCFA-000001/",
+          "00-MASTER/UCPA-000001/",
+          "engine/coordinate_framework/",
+          "engine/uckp/"
+        ],
+        "reusable": false
+      },
+      {
+        "depends_on": [],
+        "id": "verification-intelligence",
+        "label": "universal verification intelligence (UVI-000001, selection derived and assurance preserved)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UVI-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-MASTER/UVI-000001/",
+          "engine/verification_intelligence/",
+          "engine/verification_impact/",
+          "verify.sh"
+        ],
+        "reusable": true,
+        "reuse_inputs": [
+          "00-MASTER/UVI-000001/",
+          "engine/verification_intelligence/",
+          "verify.sh"
+        ]
+      },
+      {
+        "$read_set": "The declaration, this capability's own source, and the three owners it binds to: UCOS-CEU-001 for the existence and epistemic vocabularies every reality state binds to (UCON-L-14 imports them), the kernel identity primitive every construct id is minted through, and Layer Zero's canonical digest. A change to any of them can change this gate's verdict, so a read-set omitting them would let a stale result be reused across exactly the change that mattered.",
+        "$reuse_inputs": "Deliberately narrower than read_set. The three owners are read but their content is not what the laws measure; the closure inventory ratchet, however, spans the whole repository, which is why this stage is reusable only on the declaration and its own source and re-runs on any change to either.",
+        "depends_on": [],
+        "id": "universal-construct",
+        "label": "universal construct foundation (UCON-000001, every construct disposed and nothing silently ignored)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UCON-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-MASTER/UCON-000001/",
+          "engine/construct/",
+          "engine/ceu/catalog.py",
+          "engine/kernel/identity.py",
+          "engine/uckp/canonical.py"
+        ],
+        "reusable": true,
+        "reuse_inputs": [
+          "00-MASTER/UCON-000001/",
+          "engine/construct/"
+        ]
+      },
+      {
+        "$read_set": "The declaration and this capability's own source. The stage additionally reads `Makefile`, `verify.sh` and every file under `.github/workflows/`, and those are deliberately NOT declared here: UVI-L-11 requires each declared prefix to resolve to a registered object, and the enforcement planes are outside the registration boundary by construction — 0 of the 1597 registered artifacts are .py or .yml. Declaring them would fault the law that keeps read-sets honest, which is why the stage is declared NOT reusable instead. See $reuse_inputs.",
+        "$reuse_inputs": "Narrower than read_set, and the stage is `reusable: false` regardless. UEC quantifies over `git ls-files`, so its verdict is a function of the WHOLE tracked tree rather than of any prefix set. A reuse key computed from two prefixes would be reused across the deletion of a workflow — the precise defect this stage exists to detect. `reusable: false` is therefore correctness rather than conservatism: a cached enforcement-closure result is a result about a repository that no longer exists.",
+        "depends_on": [],
+        "id": "universal-enforcement-closure",
+        "label": "universal enforcement closure (UEC-000001, every protection governed, invoked twice and covered)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UEC-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-MASTER/UEC-000001/",
+          "engine/enforcement_closure/"
+        ],
+        "reusable": false,
+        "reuse_inputs": [
+          "00-MASTER/UEC-000001/"
+        ],
+        "$not_reusable": "Its subject is every enforcement artifact in the repository. The read-set it declares (00-MASTER/UEC-000001/) is an IMPACT set — what must change for this stage to be selected — not a cache key; UVI-L-13 requires a read-set on both sides of the reuse policy and measures that the two declarations cannot be inferred from each other. A sound cache key here would have to cover the whole corpus, because adding an ungoverned engine anywhere is exactly what this gate exists to catch."
+      },
+      {
+        "$comment": "ADDED TO CLOSE A CAPABILITY THAT WAS BUILT AND NEVER INVOKED. The declaration, the sixteen-module engine, thirty-two laws and a passing suite all existed while no Makefile target, no workflow and no stage ran any of them, and the files were untracked so UEC's discovery could not see them either. Thirty-two laws measured nothing and every gate reported green.",
+        "$reuse_inputs": "Narrower than read_set, and the stage is `reusable: false` regardless. URKE's discovery quantifies over declared targets across the tree, so its verdict is a function of more than any prefix set; a reuse key computed from one prefix would be reused across a change the gate exists to see.",
+        "depends_on": [],
+        "id": "universal-recursive-knowledge",
+        "label": "universal recursive knowledge foundation (URKE-000001, every unknown governed and no mechanism closed against a future domain)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "URKE-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-MASTER/URKE-000001/",
+          "engine/recursive_knowledge/"
+        ],
+        "reusable": false,
+        "reuse_inputs": [
+          "00-MASTER/URKE-000001/"
+        ],
+        "$not_reusable": "Same shape as UEC. It measures that no mechanism is closed against a future domain, which is a property of the whole declared universe rather than of 00-MASTER/URKE-000001/, so no key narrower than the corpus is sound."
+      },
+      {
+        "$comment": "ADDED TO CLOSE THE RULES THAT DECIDE WHO MAY MUTATE WHAT, WHICH WERE DECIDING NOTHING. EX-015 made the mutation classes declarative and EX-016 made them decidable, and then no plane ever called them: `mutation_classification` was imported by exactly one file outside its own module, its own test. Neither it nor its register was in UEC-000001's governed inventory, so both could have been deleted with every gate green. Twice the classifier was effectively broken while every gate stayed green — R-09 declared with no predicate, so classify() returned ERROR for every subject in the corpus; then implemented but shadowed by R-08, so GOVERNED_ANALYSIS claimed 0 of 6751 tracked paths.",
+        "$read_set": "This capability's own source. The stage additionally reads `00-BOOK/DATA/mutation-governance-boundary.json` and the whole `git ls-files` census, and those are deliberately NOT declared here: UVI-L-11 requires each declared prefix to resolve to a registered object, and 00-BOOK/DATA/ is outside the registration boundary by construction while the tracked census is not a prefix at all. Declaring either would fault the law that keeps read-sets honest, which is why the stage is declared NOT reusable instead. Same construction as the universal-enforcement-closure stage, and for the same reason.",
+        "$reuse_inputs": "Narrower than the true input set, and the stage is `reusable: false` regardless. MGB-L-03 is a census over every tracked path, so the verdict is a function of the WHOLE tracked tree: a reuse key computed from one prefix would be reused across the addition of an artifact that empties or fills a class — the precise change this stage exists to see.",
+        "depends_on": [],
+        "id": "mutation-governance-boundary",
+        "label": "mutation governance boundary decidability (EX-018, every classification rule implemented, reachable and claiming subjects)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "EX-018",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "platform/repository_intelligence/"
+        ],
+        "reusable": false,
+        "reuse_inputs": [
+          "platform/repository_intelligence/"
+        ],
+        "$not_reusable": "EX-018 measures that every classification rule is implemented, reachable and claims subjects. Reachability and subject-claiming are properties of the tracked corpus, so a key naming the classifier would not cover the classified."
+      },
+      {
+        "depends_on": [],
+        "id": "mandate-disposition-closure",
+        "label": "mandate disposition closure (CAEM-001, every mandate disposed and no disposition invented)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "CAEM-001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "**"
+        ],
+        "reusable": false,
+        "shardable": false,
+        "$not_reusable": "The verdict is a function of the WHOLE tracked tree, not of any prefix set. CAEM-INV-04 requires that every disposition naming an owner resolves to a file that exists, and IMPLEMENTED is decided by a path-word test over the code files a concept's owners live in -- so a change anywhere in the repository can move a concept between PARTIAL and IMPLEMENTED without touching the register. A reuse key computed from the register alone would be reused across exactly the change that mattered. Same construction as the universal-enforcement-closure stage, and for the same reason. The stage costs 0.07s, so paying it on every run is cheaper than arguing a narrower key.",
+        "$read_set": "The mandate corpus, the committed disposition register and this capability's own source. The stage additionally greps the whole tree to confirm that every owner a disposition names still exists, and that is deliberately declared as '**' rather than enumerated: UVI-L-11 requires each declared prefix to resolve to a registered object, and 00-MASTER/ is outside the registration boundary by construction, so naming it would fault the law that keeps read-sets honest. '**' is the honest declaration of a whole-tree subject, the same one the omega stage uses.",
+        "$phase": "MAIN rather than POST. It reads the committed register, not any artifact the pytest stage writes, so it has no data dependency on the tests -- which is what lets it run concurrently with every other MAIN gate.",
+        "$modes": "Admitted by change, integration and full and excluded from fast. Its subject is the committed disposition register derived from the whole corpus, so a selection-based run that skipped it could add an undispositioned mandate and report success. Fast runs lint and test only, and carry no claim about mandates."
+      },
+      {
+        "depends_on": [],
+        "id": "initialization-independence",
+        "label": "cross-process initialization independence (BC-2, no verdict moves with initialization order)",
+        "modes": [
+          "change",
+          "integration",
+          "full"
+        ],
+        "owner": "UVI-000001",
+        "phase": "MAIN",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "engine/determinism/",
+          "engine/ceu/",
+          "engine/registry/universal/"
+        ],
+        "reusable": false,
+        "shardable": false,
+        "$not_reusable": "Its subject is the behaviour of a fresh interpreter over the imported tree, not a file set. Any module that runs at import time anywhere under the transitive closure of the identity authority can move a verdict, and that closure is not a prefix set a reuse key could name honestly. The stage costs about a third of a second for four child processes, so paying it on every run is cheaper than arguing a key that would be reused across exactly the change that mattered.",
+        "$read_set": "The determinism harness that owns the comparator, the CEU catalogue whose bootstrap is the declared initialization, and the identity authority whose kind space is the subject. Declared as three prefixes rather than '**' because the comparator reads no repository file at all -- it spawns interpreters and compares what they answer -- so the honest read set is the code those interpreters import to reach a verdict.",
+        "$phase": "MAIN rather than PREFLIGHT or POST. It reads no artifact any other stage produces and produces none, so it has no data dependency in either direction and runs concurrently with every other MAIN gate.",
+        "$modes": "Admitted by change, integration and full and excluded from fast. Its subject is import-time behaviour of the tree, which any source change can move, so a selection-based run that skipped it could land a module global that decides truth and report success. Fast runs lint and test only and carry no claim about initialization.",
+        "$plane": "READ_ONLY in the strict sense: three child interpreters, no clock, no network, and no write anywhere -- not even to a gitignored path. The gate-mode field H-06/CR-09 leaves open for the other twenty-five stages is declared here rather than deferred, because a comparator that could dirty the tree could not certify one."
+      },
+      {
+        "$modes": "Excluded from fast and change because those modes run --no-cov: there is no coverage data to summarise and a stale total is worse than none.",
+        "depends_on": [
+          "pytest"
+        ],
+        "id": "coverage-report",
+        "label": "coverage report",
+        "modes": [
+          "integration",
+          "full"
+        ],
+        "owner": "CD-02",
+        "phase": "POST",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "pyproject.toml"
+        ],
+        "reusable": false,
+        "$not_reusable": "It is a projection of THIS run's coverage data, produced by the pytest stage it depends on. A reused report would print a previous run's totals under the current run's verdict — not a stale result but a wrong one."
+      },
+      {
+        "depends_on": [],
+        "id": "registration-observation",
+        "label": "registration observation (register.sh --observe, read-only)",
+        "modes": [
+          "full"
+        ],
+        "owner": "REG-AUTO-001",
+        "phase": "EXTENDED",
+        "plane": "READ_ONLY",
+        "read_set": [
+          "00-BOOK/",
+          "00-SOURCE/"
+        ],
+        "reusable": false,
+        "$not_reusable": "Its subject is repository state at the moment it runs, not a file set. It is admitted only by --full, and UVI-L-09 already computes that a certification-eligible mode can never reach a reuse decision, so the flag here is not merely unset but unreachable."
+      }
+    ]
+  },
+  "version": "1.0"
+}

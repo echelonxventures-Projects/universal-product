@@ -1,0 +1,134 @@
+{
+  "declaration_id": "ULP-MEMORY-LAYERS-001",
+  "name": "Universal Persistent Evolutionary Graph Memory — layer declaration",
+  "version": "1.0",
+
+  "authority": "NONE — DERIVED TRUTH. This file CREATES NO MEMORY STORE, NO MEMORY ENGINE, NO KNOWLEDGE MEMORY AUTHORITY and NO HISTORY AUTHORITY. Every layer named here is owned, recorded and persisted by an owner that already exists; this is a RESOLUTION ORDER over those owners. A layer whose record is absent resolves EMPTY, never invented. Deleting this file removes a way of asking a question and changes no answer the repository already holds.",
+
+  "$governing_law": "UCI-001 Part XVI.5, carried by lifecycle stage UCL-S-0350: 'lineage and evolution are DERIVED projections over recorded history; no new store is created.' Also UCKP-ART-07 (every relationship is executable) and UCKP-ART-14 ('It appends; it never rewrites; it never terminates').",
+
+  "$why_this_is_data_and_not_code": "ADR-0007 requires every finite enumeration to be disclosed. A seven-member layer set written into source would be an undisclosed finite assumption about how many kinds of memory can exist. Declared here, an eighth layer is admitted by declaration — naming its owner, its record and its access shape — with no code change. That is the ADR-0013 extensibility claim, and engine/tests/expansion asserts it by adding a layer at runtime.",
+
+  "$not_a_source_of_truth": "The graph this declaration projects is a PROJECTION OF CANONICAL TRUTH and never the source of truth. Each resolved entry cites the governed record it came from, so a caller can always follow an answer back to the owner that declared it. An entry that cannot name its source is not returned.",
+
+  "$append_only": "Nothing here deletes. Supersession, evolution, lineage and resurrection are SURFACED as recorded by their owners; no entry is presented as removed. Where an owner records a supersession, the superseded state remains resolvable alongside its successor.",
+
+  "$no_clock": "No layer reads a clock. Ordering uses each owner's own recorded sequence — id-ledger 'seq', evolution 'cycle' — so a resolution is replayable. Where an owner records a wall-clock string it is carried VERBATIM as opaque data and never parsed, compared or normalised, because parsing it would import a calendar assumption. See engine/temporal/coordinate.py.",
+
+  "$access_modes": {
+    "map-of-lists": "The document at 'at' is a mapping from subject identity to a list of that subject's recorded states. The subject is the key.",
+    "list-match": "The document at 'at' is a list of records. A record belongs to the subject when any 'match_fields' entry equals the subject, or when the subject appears inside any 'contains_fields' list."
+  },
+
+  "$disclosures": [
+    "context: UCXI-000001 owns the context KIND vocabulary but persists NO per-subject context binding — CEU's bind-context is a runtime journal action (engine/ceu/existence.py:233-236) with no corpus record. The contextual placement resolved here is what the corpus artifact register actually declares (volume, program, category, traceability), attributed to that record and not to UCXI. Referred as finding P4-F-009.",
+    "relationship: no relationship representation in the repository carries temporal validity, a version or a supersession pointer (P4-F-002). Relationship memory therefore resolves the recorded edge set, not a history of edge states. This layer does NOT invent a validity field.",
+    "evidence: UKIP provenance chains are hash-chained and correct in memory but are not persisted (P4-F-006), so evidence memory resolves the evidence a knowledge object records, not the full provenance chain.",
+    "learning: learning is carried inside evolution memory as the 'learn' and 'knowledge-assimilation' stage records of the Article 14 cycle. It is deliberately NOT a separate layer, because a separate layer would imply a learning store that no owner holds (P4-F-008)."
+  ],
+
+  "layers": [
+    {
+      "layer": "identity",
+      "ordinal": 1,
+      "question": "What identities has this held, and in what order?",
+      "owner": "EPIC / REG-AUTO — universal identity allocation",
+      "record": "00-BOOK/DATA/id-ledger.json",
+      "access": {
+        "mode": "map-of-lists",
+        "at": ["history"],
+        "kind_field": "status",
+        "sequence_field": "seq",
+        "value_fields": ["version", "content_hash", "path", "name", "at"]
+      }
+    },
+    {
+      "layer": "context",
+      "ordinal": 2,
+      "question": "Where does this sit, and under what governed placement?",
+      "owner": "UCOS-UKB corpus placement register; context KIND vocabulary owned by UCXI-000001",
+      "record": "00-BOOK/DATA/artifacts.json",
+      "access": {
+        "mode": "list-match",
+        "at": ["artifacts"],
+        "match_fields": ["universal_id"],
+        "kind_field": "category",
+        "value_fields": ["volume", "program", "status", "version", "owner", "path"]
+      }
+    },
+    {
+      "layer": "relationship",
+      "ordinal": 3,
+      "question": "What is this related to, and by which declared relation?",
+      "owner": "UCKP ART-07 — universal knowledge graph semantics",
+      "record": "00-BOOK/DATA/relationships.json",
+      "access": {
+        "mode": "list-match",
+        "at": ["relationships"],
+        "match_fields": ["from", "to"],
+        "kind_field": "type",
+        "value_fields": ["edge_id", "from", "to", "inverse_of", "note"]
+      }
+    },
+    {
+      "layer": "knowledge",
+      "ordinal": 4,
+      "question": "What is known about this, and with what lifecycle?",
+      "owner": "UKDA / UKIP — canonical knowledge and knowledge integration",
+      "record": "knowledge/canonical-knowledge.json",
+      "access": {
+        "mode": "list-match",
+        "at": ["objects"],
+        "match_fields": ["cko_id"],
+        "contains_fields": ["knowledge_links", "decision_links", "supersedes", "dependencies"],
+        "kind_field": "kind",
+        "value_fields": ["cko_id", "lifecycle", "authority", "owner", "version", "superseded_by", "content_sha256"]
+      }
+    },
+    {
+      "layer": "evidence",
+      "ordinal": 5,
+      "question": "What evidence stands behind this?",
+      "owner": "UKIP provenance / UCKO evidence references",
+      "record": "knowledge/canonical-knowledge.json",
+      "access": {
+        "mode": "list-match",
+        "at": ["objects"],
+        "match_fields": ["cko_id"],
+        "contains_fields": ["evidence"],
+        "kind_field": "kind",
+        "value_fields": ["cko_id", "evidence", "certification", "validation", "content_sha256"]
+      }
+    },
+    {
+      "layer": "decision",
+      "ordinal": 6,
+      "question": "What was decided about this, and at which lifecycle stage?",
+      "owner": "UCDA-000001 — constitutional decision assimilation (CEP-002 Art 28)",
+      "record": "00-MASTER/UCDA-000001/ucda-decisions.json",
+      "access": {
+        "mode": "list-match",
+        "at": ["decisions"],
+        "match_fields": ["id", "work_package", "superseded_by"],
+        "contains_fields": ["evidence"],
+        "kind_field": "disposition",
+        "value_fields": ["id", "stage", "decision_class", "source_register", "title"]
+      }
+    },
+    {
+      "layer": "evolution",
+      "ordinal": 7,
+      "question": "How has this evolved, through which stages, and with what outcome?",
+      "owner": "UAUE-000001 projecting the UCKP ART-14 append-only EvolutionLedger",
+      "record": "00-MASTER/UAUE-000001/UAUE-EVOLUTION-HISTORY.json",
+      "access": {
+        "mode": "list-match",
+        "at": ["ledger", "records"],
+        "match_fields": ["subject"],
+        "kind_field": "stage",
+        "sequence_field": "cycle",
+        "value_fields": ["outcome", "digest", "cycle", "stage"]
+      }
+    }
+  ]
+}

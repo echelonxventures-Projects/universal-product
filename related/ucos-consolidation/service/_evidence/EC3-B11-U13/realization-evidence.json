@@ -1,0 +1,1268 @@
+{
+  "all_units_certified": true,
+  "all_units_frozen": true,
+  "artifact": "EC3-B11-U13-REALIZATION-EVIDENCE",
+  "authority": "ENGINEERING-EXECUTION-ONLY",
+  "baseline_digest": "deb2694f2f9405e843e338e38a6a678c9af6d547b055a8d3d3440a70cef4cd13",
+  "certification": {
+    "cce_gates": {
+      "advisory_failures": [],
+      "blocking_failures": [],
+      "blueprint_id": "BAND-11-FREEZE",
+      "certification_class": "engineering-readiness",
+      "certification_id": "UCOS-CERT-BAND-11-FREEZE-9969d19b734d2116",
+      "certified": true,
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 10,
+        "total": 10
+      },
+      "findings": [
+        {
+          "criterion_id": "CC-1",
+          "details": {
+            "gate": "architecture"
+          },
+          "message": "CC-1 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-10",
+          "details": {
+            "gate": "completeness"
+          },
+          "message": "CC-10 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-2",
+          "details": {
+            "gate": "dependencies"
+          },
+          "message": "CC-2 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-3",
+          "details": {
+            "gate": "coverage"
+          },
+          "message": "CC-3 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-4",
+          "details": {
+            "gate": "validation",
+            "verdict": "pass"
+          },
+          "message": "CC-4 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-5",
+          "details": {
+            "gate": "traceability"
+          },
+          "message": "CC-5 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-6",
+          "details": {
+            "evidence_sha256": "b472c82d5fdc5e60a3bb83d76f3a742d97a574a87eee49e4a1f9c6a43ec5951c",
+            "gate": "evidence"
+          },
+          "message": "CC-6 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-7",
+          "details": {
+            "gate": "certification-ready"
+          },
+          "message": "CC-7 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-8",
+          "details": {
+            "gate": "readiness"
+          },
+          "message": "CC-8 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-9",
+          "details": {
+            "gate": "gap-zero"
+          },
+          "message": "CC-9 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "record": {
+        "authority": "ENGINEERING-EXECUTION-ONLY",
+        "blueprint_id": "BAND-11-FREEZE",
+        "certification_class": "engineering-readiness",
+        "certification_id": "UCOS-CERT-BAND-11-FREEZE-9969d19b734d2116",
+        "certified": true,
+        "content_sha256": "9969d19b734d21165e70246fe00b3a621ca2e3e3fd7764dac1d0ec62875ab6ae",
+        "criteria": [
+          {
+            "criterion_id": "CC-1",
+            "details": {
+              "gate": "architecture"
+            },
+            "message": "CC-1 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-10",
+            "details": {
+              "gate": "completeness"
+            },
+            "message": "CC-10 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-2",
+            "details": {
+              "gate": "dependencies"
+            },
+            "message": "CC-2 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-3",
+            "details": {
+              "gate": "coverage"
+            },
+            "message": "CC-3 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-4",
+            "details": {
+              "gate": "validation",
+              "verdict": "pass"
+            },
+            "message": "CC-4 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-5",
+            "details": {
+              "gate": "traceability"
+            },
+            "message": "CC-5 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-6",
+            "details": {
+              "evidence_sha256": "b472c82d5fdc5e60a3bb83d76f3a742d97a574a87eee49e4a1f9c6a43ec5951c",
+              "gate": "evidence"
+            },
+            "message": "CC-6 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-7",
+            "details": {
+              "gate": "certification-ready"
+            },
+            "message": "CC-7 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-8",
+            "details": {
+              "gate": "readiness"
+            },
+            "message": "CC-8 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-9",
+            "details": {
+              "gate": "gap-zero"
+            },
+            "message": "CC-9 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          }
+        ],
+        "disclosure": {
+          "asserts_constitutional_finality": false,
+          "authority": "ENGINEERING-EXECUTION-ONLY",
+          "disclosure_id": "EC-1-PROVISIONAL-STATE",
+          "gate": "EC-1",
+          "gate_open": true,
+          "standard": "DE-05",
+          "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+        },
+        "evidence_ref": "b472c82d5fdc5e60a3bb83d76f3a742d97a574a87eee49e4a1f9c6a43ec5951c",
+        "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+        "standard_version": "1.0.0",
+        "status": "certified",
+        "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+        "version": "1.0.0"
+      },
+      "status": "certified",
+      "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+      "version": "1.0.0"
+    },
+    "evidence": {
+      "blocking_failures": [],
+      "blueprint_id": "BAND-11-FREEZE",
+      "certification_class": "engineering-readiness",
+      "certification_id": "UCOS-CERT-BAND-11-FREEZE-9969d19b734d2116",
+      "certified": true,
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 10,
+        "total": 10
+      },
+      "criteria_evaluated": [
+        "CC-1",
+        "CC-10",
+        "CC-2",
+        "CC-3",
+        "CC-4",
+        "CC-5",
+        "CC-6",
+        "CC-7",
+        "CC-8",
+        "CC-9"
+      ],
+      "evidence_format": "ucos-certification-evidence/1.0.0",
+      "findings": [
+        {
+          "criterion_id": "CC-1",
+          "details": {
+            "gate": "architecture"
+          },
+          "message": "CC-1 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-10",
+          "details": {
+            "gate": "completeness"
+          },
+          "message": "CC-10 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-2",
+          "details": {
+            "gate": "dependencies"
+          },
+          "message": "CC-2 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-3",
+          "details": {
+            "gate": "coverage"
+          },
+          "message": "CC-3 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-4",
+          "details": {
+            "gate": "validation",
+            "verdict": "pass"
+          },
+          "message": "CC-4 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-5",
+          "details": {
+            "gate": "traceability"
+          },
+          "message": "CC-5 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-6",
+          "details": {
+            "evidence_sha256": "b472c82d5fdc5e60a3bb83d76f3a742d97a574a87eee49e4a1f9c6a43ec5951c",
+            "gate": "evidence"
+          },
+          "message": "CC-6 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-7",
+          "details": {
+            "gate": "certification-ready"
+          },
+          "message": "CC-7 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-8",
+          "details": {
+            "gate": "readiness"
+          },
+          "message": "CC-8 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-9",
+          "details": {
+            "gate": "gap-zero"
+          },
+          "message": "CC-9 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "record_sha256": "9969d19b734d21165e70246fe00b3a621ca2e3e3fd7764dac1d0ec62875ab6ae",
+      "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+      "standard_version": "1.0.0",
+      "status": "certified",
+      "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+      "validation_evidence_ref": "b472c82d5fdc5e60a3bb83d76f3a742d97a574a87eee49e4a1f9c6a43ec5951c",
+      "version": "1.0.0"
+    },
+    "ledger": {
+      "count": 1,
+      "entries": [
+        {
+          "blueprint_id": "BAND-11-FREEZE",
+          "certification_id": "UCOS-CERT-BAND-11-FREEZE-9969d19b734d2116",
+          "entry_hash": "6b4308abb29ba1ca6b0a9fd9501e9d74abc8762b4b452c992eecb82d77458271",
+          "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "record_sha256": "9969d19b734d21165e70246fe00b3a621ca2e3e3fd7764dac1d0ec62875ab6ae",
+          "sequence": 0,
+          "status": "certified",
+          "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+          "version": "1.0.0"
+        }
+      ],
+      "head_hash": "6b4308abb29ba1ca6b0a9fd9501e9d74abc8762b4b452c992eecb82d77458271",
+      "ledger_format": "ucos-certification-ledger/1.0.0"
+    }
+  },
+  "criteria": {
+    "acceptance": {
+      "AC-1": true,
+      "AC-2": true,
+      "AC-3": true,
+      "AC-4": true,
+      "AC-5": true,
+      "AC-6": true,
+      "AC-7": true,
+      "AC-8": true
+    },
+    "certification_gates": {
+      "CC-1": true,
+      "CC-10": true,
+      "CC-2": true,
+      "CC-3": true,
+      "CC-4": true,
+      "CC-5": true,
+      "CC-6": true,
+      "CC-7": true,
+      "CC-8": true,
+      "CC-9": true
+    },
+    "service_compliance": {
+      "C1": true,
+      "C2": true,
+      "C3": true,
+      "C4": true,
+      "C5": true,
+      "C6": true,
+      "C7": true
+    },
+    "validation": {
+      "VC-1": true,
+      "VC-2": true,
+      "VC-3": true,
+      "VC-4": true,
+      "VC-5": true
+    }
+  },
+  "determination": "FROZEN",
+  "freeze": {
+    "all_units_certified": true,
+    "all_units_frozen": true,
+    "band_completion_certification_id": "UCOS-CERT-BAND-11-b11d3bf97651d7f4",
+    "band_completion_id": "UCOS-BAND11-ucos.service.band11.completion-13ba9a8b6b721448",
+    "band_completion_referenced": true,
+    "band_completion_unit": "EC3-B11-U12",
+    "baseline_digest": "deb2694f2f9405e843e338e38a6a678c9af6d547b055a8d3d3440a70cef4cd13",
+    "dependency_acyclic": true,
+    "effects": [
+      "FE-1",
+      "FE-2",
+      "FE-3",
+      "FE-4",
+      "FE-5"
+    ],
+    "effects_declared": true,
+    "freeze_class": "BAND-11-FREEZE",
+    "freeze_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+    "immutable_baseline": true,
+    "integration": {
+      "all_members_certified": true,
+      "closure_SMI_01": true,
+      "founding_acyclic_SMI_04": true,
+      "map_resolves": true,
+      "non_constitutive_SMI_06": true,
+      "non_projection_SMI_07": true,
+      "relationship_closure_SMI_02": true,
+      "reuse_by_reference_SMI_05": true,
+      "totality_SMI_03": true
+    },
+    "integration_closed": true,
+    "inventory_complete": true,
+    "meta_class_coverage_complete": true,
+    "meta_classes_covered": [
+      "SMC-01",
+      "SMC-02",
+      "SMC-03",
+      "SMC-04",
+      "SMC-05",
+      "SMC-06",
+      "SMC-07",
+      "SMC-08",
+      "SMC-09",
+      "SMC-10"
+    ],
+    "meta_model_certification_id": "UCOS-CERT-USM-312abed8081da1d5",
+    "meta_model_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de",
+    "meta_model_unit": "EC3-B11-U11",
+    "name": "ucos.service.band11.freeze",
+    "non_constitutive": true,
+    "non_projection": true,
+    "reuses_by_reference": true,
+    "state": "DEFINED",
+    "structure_digest": "deb2694f2f9405e843e338e38a6a678c9af6d547b055a8d3d3440a70cef4cd13",
+    "substrate_refs": [
+      "ENG-001",
+      "ENG-002",
+      "ENG-004",
+      "ENG-005",
+      "CCE"
+    ],
+    "type_tag": "ucos.core.band-freeze",
+    "unit_count": 12,
+    "units": [
+      {
+        "certification_id": "UCOS-CERT-SMC-01-6d805a1308da2f66",
+        "certified": true,
+        "concern_doc": "SERVICE-001…005 (SOE-01 root)",
+        "frozen": true,
+        "meta_class": "SMC-01",
+        "name": "Service",
+        "unit": "EC3-B11-U01"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-02-466c00507b04a1f9",
+        "certified": true,
+        "concern_doc": "SERVICE-006",
+        "frozen": true,
+        "meta_class": "SMC-02",
+        "name": "Capability",
+        "unit": "EC3-B11-U02"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-03-d3ba585579bf93ef",
+        "certified": true,
+        "concern_doc": "SERVICE-007",
+        "frozen": true,
+        "meta_class": "SMC-03",
+        "name": "Contract",
+        "unit": "EC3-B11-U03"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-04-bcf64d8028ef3d1d",
+        "certified": true,
+        "concern_doc": "SERVICE-008",
+        "frozen": true,
+        "meta_class": "SMC-04",
+        "name": "Interface",
+        "unit": "EC3-B11-U04"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-05-5a06bcad4a3086c8",
+        "certified": true,
+        "concern_doc": "SERVICE-009",
+        "frozen": true,
+        "meta_class": "SMC-05",
+        "name": "Operation",
+        "unit": "EC3-B11-U05"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-06-370163eb1197edb3",
+        "certified": true,
+        "concern_doc": "SERVICE-010",
+        "frozen": true,
+        "meta_class": "SMC-06",
+        "name": "Composition",
+        "unit": "EC3-B11-U06"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-07-99f5148f4f1ba96c",
+        "certified": true,
+        "concern_doc": "SERVICE-011",
+        "frozen": true,
+        "meta_class": "SMC-07",
+        "name": "Orchestration",
+        "unit": "EC3-B11-U07"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-08-96c817b15dca3403",
+        "certified": true,
+        "concern_doc": "SERVICE-012",
+        "frozen": true,
+        "meta_class": "SMC-08",
+        "name": "Execution",
+        "unit": "EC3-B11-U08"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-09-61ee948b80beb04f",
+        "certified": true,
+        "concern_doc": "SERVICE-013",
+        "frozen": true,
+        "meta_class": "SMC-09",
+        "name": "Policy",
+        "unit": "EC3-B11-U09"
+      },
+      {
+        "certification_id": "UCOS-CERT-SMC-10-fb17b391ed14db5d",
+        "certified": true,
+        "concern_doc": "SERVICE-014",
+        "frozen": true,
+        "meta_class": "SMC-10",
+        "name": "Security",
+        "unit": "EC3-B11-U10"
+      },
+      {
+        "certification_id": "UCOS-CERT-USM-312abed8081da1d5",
+        "certified": true,
+        "concern_doc": "SERVICE-005",
+        "frozen": true,
+        "meta_class": "USM",
+        "name": "Universal Service Meta-Model",
+        "unit": "EC3-B11-U11"
+      },
+      {
+        "certification_id": "UCOS-CERT-BAND-11-b11d3bf97651d7f4",
+        "certified": true,
+        "concern_doc": "MCP-003 MEP-02 (certification-of-certifications over U01…U11)",
+        "frozen": true,
+        "meta_class": "BAND-11",
+        "name": "Band-11 Realization Certification & Completion",
+        "unit": "EC3-B11-U12"
+      }
+    ],
+    "version": "1.0.0"
+  },
+  "freeze_class": "BAND-11-FREEZE",
+  "freeze_effect_definitions": {
+    "FE-1": "Immutability — no in-place modification of any frozen unit U01…U12.",
+    "FE-2": "Reuse mandate — downstream bands consume the Band-11 realization by reference.",
+    "FE-3": "Redefinition prohibition — no frozen construct, meta-class, or law is redefined.",
+    "FE-4": "Additive extension — new service concerns extend above, never inside, the baseline.",
+    "FE-5": "Supersession-only change — breaking change is a new artifact under ENG-000 control."
+  },
+  "freeze_effects": {
+    "FE-1": true,
+    "FE-2": true,
+    "FE-3": true,
+    "FE-4": true,
+    "FE-5": true
+  },
+  "freeze_precondition_definitions": {
+    "FP-1": "Existence — all twelve realization units U01…U12 exist and are CERTIFIED.",
+    "FP-2": "Dependency closure — the frozen unit founding graph is acyclic and downward-only.",
+    "FP-3": "Coverage — the concern units cover exactly the ten meta-classes SMC-01…10.",
+    "FP-4": "Consistency — the U12 band completion is CERTIFIED; the spine closes SMR-01…13.",
+    "FP-5": "Reuse integrity — every unit reused by reference; no redefinition, no new primitive.",
+    "FP-6": "Determinism — the freeze baseline recomputes byte-identically."
+  },
+  "freeze_preconditions": {
+    "FP-1": true,
+    "FP-2": true,
+    "FP-3": true,
+    "FP-4": true,
+    "FP-5": true,
+    "FP-6": true
+  },
+  "frozen_inventory": [
+    {
+      "certification_id": "UCOS-CERT-SMC-01-6d805a1308da2f66",
+      "certified": true,
+      "concern_doc": "SERVICE-001…005 (SOE-01 root)",
+      "frozen": true,
+      "meta_class": "SMC-01",
+      "name": "Service",
+      "unit": "EC3-B11-U01"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-02-466c00507b04a1f9",
+      "certified": true,
+      "concern_doc": "SERVICE-006",
+      "frozen": true,
+      "meta_class": "SMC-02",
+      "name": "Capability",
+      "unit": "EC3-B11-U02"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-03-d3ba585579bf93ef",
+      "certified": true,
+      "concern_doc": "SERVICE-007",
+      "frozen": true,
+      "meta_class": "SMC-03",
+      "name": "Contract",
+      "unit": "EC3-B11-U03"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-04-bcf64d8028ef3d1d",
+      "certified": true,
+      "concern_doc": "SERVICE-008",
+      "frozen": true,
+      "meta_class": "SMC-04",
+      "name": "Interface",
+      "unit": "EC3-B11-U04"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-05-5a06bcad4a3086c8",
+      "certified": true,
+      "concern_doc": "SERVICE-009",
+      "frozen": true,
+      "meta_class": "SMC-05",
+      "name": "Operation",
+      "unit": "EC3-B11-U05"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-06-370163eb1197edb3",
+      "certified": true,
+      "concern_doc": "SERVICE-010",
+      "frozen": true,
+      "meta_class": "SMC-06",
+      "name": "Composition",
+      "unit": "EC3-B11-U06"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-07-99f5148f4f1ba96c",
+      "certified": true,
+      "concern_doc": "SERVICE-011",
+      "frozen": true,
+      "meta_class": "SMC-07",
+      "name": "Orchestration",
+      "unit": "EC3-B11-U07"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-08-96c817b15dca3403",
+      "certified": true,
+      "concern_doc": "SERVICE-012",
+      "frozen": true,
+      "meta_class": "SMC-08",
+      "name": "Execution",
+      "unit": "EC3-B11-U08"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-09-61ee948b80beb04f",
+      "certified": true,
+      "concern_doc": "SERVICE-013",
+      "frozen": true,
+      "meta_class": "SMC-09",
+      "name": "Policy",
+      "unit": "EC3-B11-U09"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-10-fb17b391ed14db5d",
+      "certified": true,
+      "concern_doc": "SERVICE-014",
+      "frozen": true,
+      "meta_class": "SMC-10",
+      "name": "Security",
+      "unit": "EC3-B11-U10"
+    },
+    {
+      "certification_id": "UCOS-CERT-USM-312abed8081da1d5",
+      "certified": true,
+      "concern_doc": "SERVICE-005",
+      "frozen": true,
+      "meta_class": "USM",
+      "name": "Universal Service Meta-Model",
+      "unit": "EC3-B11-U11"
+    },
+    {
+      "certification_id": "UCOS-CERT-BAND-11-b11d3bf97651d7f4",
+      "certified": true,
+      "concern_doc": "MCP-003 MEP-02 (certification-of-certifications over U01…U11)",
+      "frozen": true,
+      "meta_class": "BAND-11",
+      "name": "Band-11 Realization Certification & Completion",
+      "unit": "EC3-B11-U12"
+    }
+  ],
+  "service_compliance_C1_C7": {
+    "compliance_format": "ucos-service-compliance/1.0.0",
+    "compliant": true,
+    "conditions": [
+      {
+        "backed_by": [
+          "freeze-typed",
+          "freeze-identified"
+        ],
+        "id": "C1",
+        "requirement": "Typed (USL-03), identified and objecthood-bound (USL-04/05).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "foundation-reuse-integrity"
+        ],
+        "id": "C2",
+        "requirement": "Reuses frozen foundations by reference without redefinition (USL-02).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "service-value-fidelity"
+        ],
+        "id": "C3",
+        "requirement": "Carries ENG-003 value; operation I/O is DF-2 data by reference (USL-08/11).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "freeze-inventory-complete",
+          "freeze-all-units-certified"
+        ],
+        "id": "C4",
+        "requirement": "Contract/interface/operation structure is explicit (USL-06/07/08).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "meta-relationships-closed",
+          "founding-acyclic"
+        ],
+        "id": "C5",
+        "materially_exercised": true,
+        "note": "the Band-11 frozen spine closes over exactly the thirteen meta-relationships SMR-01…13 via the CERTIFIED Universal Service Meta-Model (U11) and the twelve-unit founding graph is acyclic and downward-only — each relationship being an ENG-005 reference (USL-09 at freeze level)",
+        "requirement": "Composition/orchestration uses ENG-005 references; founding acyclic (USL-09).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "freeze-independence"
+        ],
+        "id": "C6",
+        "requirement": "Execution binds to RL-F2 by reference (USL-10).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "non-constitutive"
+        ],
+        "id": "C7",
+        "requirement": "Selects no technology, confers no authority, embeds no secret (USL-15).",
+        "status": "pass"
+      }
+    ],
+    "standard": "SERVICE-001 §12",
+    "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8"
+  },
+  "traceability": {
+    "backward": [
+      "BAND-11-FREEZE",
+      "EC3-B11-U12",
+      "SERVICE-015-SERVICE-FOUNDATION-FREEZE-DETERMINATION",
+      "MCP-003-MEP-02",
+      "ARCH-SERVICE-001",
+      "11-SERVICE@b7e7657"
+    ],
+    "closed": true,
+    "constitutional_anchor": "b7e7657",
+    "forward": [
+      "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+      "EC3-B11-U13-VALIDATION-EVIDENCE",
+      "EC3-B11-U13-CCE-CERTIFICATION",
+      "EC3-B11-U13-COMPLETION-REPORT"
+    ],
+    "implementation_anchor": "0595a91",
+    "meta_class": "BAND-11-FREEZE",
+    "rooted": true,
+    "substrate": [
+      "ENG-001",
+      "ENG-002",
+      "ENG-004",
+      "ENG-005",
+      "CCE"
+    ],
+    "substrate_reuse": {
+      "CCE": "service.service_certification.cce_gates — CERTIFIED ten-gate suite, reused verbatim",
+      "ENG-001": "engine.certification.contracts.content_hash (deterministic baseline seal)",
+      "ENG-002": "python frozen object (immutable objecthood bearing the freeze record)",
+      "ENG-004": "freeze-record typing discipline (ENG-004)",
+      "ENG-005": "each unit referenced by certification id (never owned)",
+      "unit_EC3-B11-U01": "SMC-01 Service (UCOS-CERT-SMC-01-6d805a1308da2f66) — certified realization frozen by reference, not owned",
+      "unit_EC3-B11-U02": "SMC-02 Capability (UCOS-CERT-SMC-02-466c00507b04a1f9) — certified realization frozen by reference, not owned",
+      "unit_EC3-B11-U03": "SMC-03 Contract (UCOS-CERT-SMC-03-d3ba585579bf93ef) — certified realization frozen by reference, not owned",
+      "unit_EC3-B11-U04": "SMC-04 Interface (UCOS-CERT-SMC-04-bcf64d8028ef3d1d) — certified realization frozen by reference, not owned",
+      "unit_EC3-B11-U05": "SMC-05 Operation (UCOS-CERT-SMC-05-5a06bcad4a3086c8) — certified realization frozen by reference, not owned",
+      "unit_EC3-B11-U06": "SMC-06 Composition (UCOS-CERT-SMC-06-370163eb1197edb3) — certified realization frozen by reference, not owned",
+      "unit_EC3-B11-U07": "SMC-07 Orchestration (UCOS-CERT-SMC-07-99f5148f4f1ba96c) — certified realization frozen by reference, not owned",
+      "unit_EC3-B11-U08": "SMC-08 Execution (UCOS-CERT-SMC-08-96c817b15dca3403) — certified realization frozen by reference, not owned",
+      "unit_EC3-B11-U09": "SMC-09 Policy (UCOS-CERT-SMC-09-61ee948b80beb04f) — certified realization frozen by reference, not owned",
+      "unit_EC3-B11-U10": "SMC-10 Security (UCOS-CERT-SMC-10-fb17b391ed14db5d) — certified realization frozen by reference, not owned",
+      "unit_EC3-B11-U11": "USM Universal Service Meta-Model (UCOS-CERT-USM-312abed8081da1d5) — certified realization frozen by reference, not owned",
+      "unit_EC3-B11-U12": "BAND-11 Band-11 Realization Certification & Completion (UCOS-CERT-BAND-11-b11d3bf97651d7f4) — certified realization frozen by reference, not owned"
+    },
+    "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+    "trace_format": "ucos-service-traceability/1.0.0",
+    "unit": "EC3-B11-U13"
+  },
+  "unit": "EC3-B11-U13",
+  "unit_count": 12,
+  "validation": {
+    "acceptance": {
+      "accepted": true,
+      "advisory_failures": [],
+      "blocking_failures": [],
+      "blueprint_id": "BAND-11-FREEZE",
+      "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+      "verdict": "pass"
+    },
+    "evidence": {
+      "accepted": true,
+      "blocking_failures": [],
+      "blueprint_id": "BAND-11-FREEZE",
+      "checks_run": [
+        "foundation-reuse-integrity",
+        "founding-acyclic",
+        "freeze-all-units-certified",
+        "freeze-all-units-frozen",
+        "freeze-band-completion-referenced",
+        "freeze-effects-declared",
+        "freeze-identified",
+        "freeze-immutable-baseline",
+        "freeze-independence",
+        "freeze-inventory-complete",
+        "freeze-non-projection",
+        "freeze-typed",
+        "freeze-valid-state",
+        "freeze-versioned",
+        "meta-class-single",
+        "meta-relationships-closed",
+        "non-constitutive",
+        "provisional-state-disclosure",
+        "service-value-fidelity",
+        "traceability-rooted"
+      ],
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 20,
+        "total": 20
+      },
+      "evidence_format": "ucos-validation-evidence/1.0.0",
+      "findings": [
+        {
+          "check_id": "foundation-reuse-integrity",
+          "details": {
+            "substrate": [
+              "ENG-001",
+              "ENG-002",
+              "ENG-004",
+              "ENG-005",
+              "CCE"
+            ]
+          },
+          "message": "foundation-reuse-integrity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "founding-acyclic",
+          "details": {},
+          "message": "founding-acyclic satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-all-units-certified",
+          "details": {
+            "units_certified": 12
+          },
+          "message": "freeze-all-units-certified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-all-units-frozen",
+          "details": {
+            "units_frozen": 12
+          },
+          "message": "freeze-all-units-frozen satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-band-completion-referenced",
+          "details": {},
+          "message": "freeze-band-completion-referenced satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-effects-declared",
+          "details": {},
+          "message": "freeze-effects-declared satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-identified",
+          "details": {
+            "freeze_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8"
+          },
+          "message": "freeze-identified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-immutable-baseline",
+          "details": {},
+          "message": "freeze-immutable-baseline satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-independence",
+          "details": {},
+          "message": "freeze-independence satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-inventory-complete",
+          "details": {
+            "unit_count": 12
+          },
+          "message": "freeze-inventory-complete satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-non-projection",
+          "details": {},
+          "message": "freeze-non-projection satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-typed",
+          "details": {
+            "type_tag": "ucos.core.band-freeze"
+          },
+          "message": "freeze-typed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-valid-state",
+          "details": {
+            "state": "DEFINED"
+          },
+          "message": "freeze-valid-state satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-versioned",
+          "details": {
+            "version": "1.0.0"
+          },
+          "message": "freeze-versioned satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-class-single",
+          "details": {
+            "coverage": "SMC-01…10"
+          },
+          "message": "meta-class-single satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-relationships-closed",
+          "details": {},
+          "message": "meta-relationships-closed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "non-constitutive",
+          "details": {},
+          "message": "non-constitutive satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "provisional-state-disclosure",
+          "details": {
+            "disclosure_id": "EC-1-PROVISIONAL-STATE"
+          },
+          "message": "provisional-state-disclosure satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "service-value-fidelity",
+          "details": {
+            "baseline_digest": "deb2694f2f9405e843e338e38a6a678c9af6d547b055a8d3d3440a70cef4cd13"
+          },
+          "message": "service-value-fidelity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "traceability-rooted",
+          "details": {
+            "links": 6
+          },
+          "message": "traceability-rooted satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+      "verdict": "pass"
+    },
+    "report": {
+      "accepted": true,
+      "blueprint_id": "BAND-11-FREEZE",
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 20,
+        "total": 20
+      },
+      "findings": [
+        {
+          "check_id": "foundation-reuse-integrity",
+          "details": {
+            "substrate": [
+              "ENG-001",
+              "ENG-002",
+              "ENG-004",
+              "ENG-005",
+              "CCE"
+            ]
+          },
+          "message": "foundation-reuse-integrity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "founding-acyclic",
+          "details": {},
+          "message": "founding-acyclic satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-all-units-certified",
+          "details": {
+            "units_certified": 12
+          },
+          "message": "freeze-all-units-certified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-all-units-frozen",
+          "details": {
+            "units_frozen": 12
+          },
+          "message": "freeze-all-units-frozen satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-band-completion-referenced",
+          "details": {},
+          "message": "freeze-band-completion-referenced satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-effects-declared",
+          "details": {},
+          "message": "freeze-effects-declared satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-identified",
+          "details": {
+            "freeze_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8"
+          },
+          "message": "freeze-identified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-immutable-baseline",
+          "details": {},
+          "message": "freeze-immutable-baseline satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-independence",
+          "details": {},
+          "message": "freeze-independence satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-inventory-complete",
+          "details": {
+            "unit_count": 12
+          },
+          "message": "freeze-inventory-complete satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-non-projection",
+          "details": {},
+          "message": "freeze-non-projection satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-typed",
+          "details": {
+            "type_tag": "ucos.core.band-freeze"
+          },
+          "message": "freeze-typed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-valid-state",
+          "details": {
+            "state": "DEFINED"
+          },
+          "message": "freeze-valid-state satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "freeze-versioned",
+          "details": {
+            "version": "1.0.0"
+          },
+          "message": "freeze-versioned satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-class-single",
+          "details": {
+            "coverage": "SMC-01…10"
+          },
+          "message": "meta-class-single satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-relationships-closed",
+          "details": {},
+          "message": "meta-relationships-closed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "non-constitutive",
+          "details": {},
+          "message": "non-constitutive satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "provisional-state-disclosure",
+          "details": {
+            "disclosure_id": "EC-1-PROVISIONAL-STATE"
+          },
+          "message": "provisional-state-disclosure satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "service-value-fidelity",
+          "details": {
+            "baseline_digest": "deb2694f2f9405e843e338e38a6a678c9af6d547b055a8d3d3440a70cef4cd13"
+          },
+          "message": "service-value-fidelity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "traceability-rooted",
+          "details": {
+            "links": 6
+          },
+          "message": "traceability-rooted satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+      "verdict": "pass"
+    }
+  },
+  "version": "1.0.0"
+}

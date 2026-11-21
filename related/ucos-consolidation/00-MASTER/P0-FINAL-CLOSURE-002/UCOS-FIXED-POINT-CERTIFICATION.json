@@ -1,0 +1,177 @@
+{
+  "authority": "NONE — DERIVED TRUTH. Measurement only.",
+  "baseline_identities": {
+    "authority_variance": "16e80a5122dc09c964cc943771596baa599ff6b17bb54a7f04ee91e95661ca8f",
+    "bookkeeping_variance": "0d0cc2ecd7f262a651308ac0e533f54efa3dd9051392cbe14e74a649fb6c38d7",
+    "certification_variance": "b2162a2e34c754107619b3364da0916e739720362c8946e3b6f115cfe15fa390",
+    "dictionary_variance": "bfef3aa150ec2552477ccb8fdf6677be4fb991ca4e961531a62e9f3de4392daa",
+    "lineage_variance": "e6d5bedbf6d05f0928298cfff639a78dfaa580399a5baea5e9fad4ef3b2291a6",
+    "ordering_variance": "2fe14eed34fdfd00b93b2f870a17ed9148bf73426ebd35d8328ee8b2e7fd143b",
+    "registry_variance": "73f2b9b95ab15ee680281938aee6f36a43d064cdaf4a63b17bbf8071a4c31a56",
+    "replay_variance": "d0be6ed0015dc708d8aa85160bb119c1a71fc87c6ec068b3b636931eec59859c"
+  },
+  "chain": [
+    {
+      "actuator": "rib",
+      "argv": [
+        "00-MASTER/UCOS-RIB-001/rib_engine.py"
+      ]
+    },
+    {
+      "actuator": "aee",
+      "argv": [
+        "00-MASTER/UCOS-AEE-001/aee_engine.py",
+        "--tier",
+        "standard"
+      ]
+    }
+  ],
+  "concurrent_writer_detected": false,
+  "consecutive_zero_drift_rounds": 5,
+  "digest": "db9d5c8e052987bda02cb3d594d332e036245bf79303de860e0d32692875a9bb",
+  "dimensions": {
+    "authority_variance": "00-MASTER/UCCEP-000000/uccep.json",
+    "bookkeeping_variance": "00-MASTER/UCL-000001/ucl.json",
+    "certification_variance": "00-MASTER/UCOS-AEE-001/aee.json",
+    "dictionary_variance": "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+    "lineage_variance": "00-MASTER/ACEE-000001/acee.json",
+    "ordering_variance": "00-MASTER/UCOS-RIB-001/10-IMPLEMENTATION-QUEUE.md",
+    "registry_variance": "00-MASTER/UCOS-RIB-001/rib.json",
+    "replay_variance": "00-MASTER/P0-LIFECYCLE-CLOSURE-001/UCOS-LIFECYCLE-REPLAY.json"
+  },
+  "met": true,
+  "phase": 8,
+  "programme": "P0-FINAL-CLOSURE-002",
+  "requirement": "5 consecutive rounds, 0 drift, 0 mutation, 0 variance",
+  "rounds": [
+    {
+      "actuator_failures": [],
+      "actuator_refusals": {},
+      "actuators": {
+        "aee": 0,
+        "rib": 0
+      },
+      "drift": 0,
+      "drifted_dimensions": [],
+      "identities": {
+        "authority_variance": "16e80a5122dc09c964cc943771596baa599ff6b17bb54a7f04ee91e95661ca8f",
+        "bookkeeping_variance": "0d0cc2ecd7f262a651308ac0e533f54efa3dd9051392cbe14e74a649fb6c38d7",
+        "certification_variance": "b2162a2e34c754107619b3364da0916e739720362c8946e3b6f115cfe15fa390",
+        "dictionary_variance": "bfef3aa150ec2552477ccb8fdf6677be4fb991ca4e961531a62e9f3de4392daa",
+        "lineage_variance": "e6d5bedbf6d05f0928298cfff639a78dfaa580399a5baea5e9fad4ef3b2291a6",
+        "ordering_variance": "2fe14eed34fdfd00b93b2f870a17ed9148bf73426ebd35d8328ee8b2e7fd143b",
+        "registry_variance": "73f2b9b95ab15ee680281938aee6f36a43d064cdaf4a63b17bbf8071a4c31a56",
+        "replay_variance": "d0be6ed0015dc708d8aa85160bb119c1a71fc87c6ec068b3b636931eec59859c"
+      },
+      "mutated_paths": [],
+      "mutation": 0,
+      "round": 1
+    },
+    {
+      "actuator_failures": [],
+      "actuator_refusals": {},
+      "actuators": {
+        "aee": 0,
+        "rib": 0
+      },
+      "drift": 0,
+      "drifted_dimensions": [],
+      "identities": {
+        "authority_variance": "16e80a5122dc09c964cc943771596baa599ff6b17bb54a7f04ee91e95661ca8f",
+        "bookkeeping_variance": "0d0cc2ecd7f262a651308ac0e533f54efa3dd9051392cbe14e74a649fb6c38d7",
+        "certification_variance": "b2162a2e34c754107619b3364da0916e739720362c8946e3b6f115cfe15fa390",
+        "dictionary_variance": "bfef3aa150ec2552477ccb8fdf6677be4fb991ca4e961531a62e9f3de4392daa",
+        "lineage_variance": "e6d5bedbf6d05f0928298cfff639a78dfaa580399a5baea5e9fad4ef3b2291a6",
+        "ordering_variance": "2fe14eed34fdfd00b93b2f870a17ed9148bf73426ebd35d8328ee8b2e7fd143b",
+        "registry_variance": "73f2b9b95ab15ee680281938aee6f36a43d064cdaf4a63b17bbf8071a4c31a56",
+        "replay_variance": "d0be6ed0015dc708d8aa85160bb119c1a71fc87c6ec068b3b636931eec59859c"
+      },
+      "mutated_paths": [],
+      "mutation": 0,
+      "round": 2
+    },
+    {
+      "actuator_failures": [],
+      "actuator_refusals": {},
+      "actuators": {
+        "aee": 0,
+        "rib": 0
+      },
+      "drift": 0,
+      "drifted_dimensions": [],
+      "identities": {
+        "authority_variance": "16e80a5122dc09c964cc943771596baa599ff6b17bb54a7f04ee91e95661ca8f",
+        "bookkeeping_variance": "0d0cc2ecd7f262a651308ac0e533f54efa3dd9051392cbe14e74a649fb6c38d7",
+        "certification_variance": "b2162a2e34c754107619b3364da0916e739720362c8946e3b6f115cfe15fa390",
+        "dictionary_variance": "bfef3aa150ec2552477ccb8fdf6677be4fb991ca4e961531a62e9f3de4392daa",
+        "lineage_variance": "e6d5bedbf6d05f0928298cfff639a78dfaa580399a5baea5e9fad4ef3b2291a6",
+        "ordering_variance": "2fe14eed34fdfd00b93b2f870a17ed9148bf73426ebd35d8328ee8b2e7fd143b",
+        "registry_variance": "73f2b9b95ab15ee680281938aee6f36a43d064cdaf4a63b17bbf8071a4c31a56",
+        "replay_variance": "d0be6ed0015dc708d8aa85160bb119c1a71fc87c6ec068b3b636931eec59859c"
+      },
+      "mutated_paths": [],
+      "mutation": 0,
+      "round": 3
+    },
+    {
+      "actuator_failures": [],
+      "actuator_refusals": {},
+      "actuators": {
+        "aee": 0,
+        "rib": 0
+      },
+      "drift": 0,
+      "drifted_dimensions": [],
+      "identities": {
+        "authority_variance": "16e80a5122dc09c964cc943771596baa599ff6b17bb54a7f04ee91e95661ca8f",
+        "bookkeeping_variance": "0d0cc2ecd7f262a651308ac0e533f54efa3dd9051392cbe14e74a649fb6c38d7",
+        "certification_variance": "b2162a2e34c754107619b3364da0916e739720362c8946e3b6f115cfe15fa390",
+        "dictionary_variance": "bfef3aa150ec2552477ccb8fdf6677be4fb991ca4e961531a62e9f3de4392daa",
+        "lineage_variance": "e6d5bedbf6d05f0928298cfff639a78dfaa580399a5baea5e9fad4ef3b2291a6",
+        "ordering_variance": "2fe14eed34fdfd00b93b2f870a17ed9148bf73426ebd35d8328ee8b2e7fd143b",
+        "registry_variance": "73f2b9b95ab15ee680281938aee6f36a43d064cdaf4a63b17bbf8071a4c31a56",
+        "replay_variance": "d0be6ed0015dc708d8aa85160bb119c1a71fc87c6ec068b3b636931eec59859c"
+      },
+      "mutated_paths": [],
+      "mutation": 0,
+      "round": 4
+    },
+    {
+      "actuator_failures": [],
+      "actuator_refusals": {},
+      "actuators": {
+        "aee": 0,
+        "rib": 0
+      },
+      "drift": 0,
+      "drifted_dimensions": [],
+      "identities": {
+        "authority_variance": "16e80a5122dc09c964cc943771596baa599ff6b17bb54a7f04ee91e95661ca8f",
+        "bookkeeping_variance": "0d0cc2ecd7f262a651308ac0e533f54efa3dd9051392cbe14e74a649fb6c38d7",
+        "certification_variance": "b2162a2e34c754107619b3364da0916e739720362c8946e3b6f115cfe15fa390",
+        "dictionary_variance": "bfef3aa150ec2552477ccb8fdf6677be4fb991ca4e961531a62e9f3de4392daa",
+        "lineage_variance": "e6d5bedbf6d05f0928298cfff639a78dfaa580399a5baea5e9fad4ef3b2291a6",
+        "ordering_variance": "2fe14eed34fdfd00b93b2f870a17ed9148bf73426ebd35d8328ee8b2e7fd143b",
+        "registry_variance": "73f2b9b95ab15ee680281938aee6f36a43d064cdaf4a63b17bbf8071a4c31a56",
+        "replay_variance": "d0be6ed0015dc708d8aa85160bb119c1a71fc87c6ec068b3b636931eec59859c"
+      },
+      "mutated_paths": [],
+      "mutation": 0,
+      "round": 5
+    }
+  ],
+  "rounds_executed": 5,
+  "title": "Five-Round Fixed-Point Certification",
+  "variance": {
+    "authority_variance": 0,
+    "bookkeeping_variance": 0,
+    "certification_variance": 0,
+    "dictionary_variance": 0,
+    "lineage_variance": 0,
+    "ordering_variance": 0,
+    "registry_variance": 0,
+    "replay_variance": 0
+  },
+  "verdict": "FIXED POINT CERTIFIED",
+  "zero_drift_rounds": 5
+}

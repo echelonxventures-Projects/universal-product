@@ -1,0 +1,39 @@
+{
+  "backward": [
+    "DMC-02",
+    "DATA-006",
+    "DATA-005",
+    "DATA-001",
+    "ARCH-DATA-001",
+    "10-DATA@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-ENTITY-ucos.data.entity.foundation-b014125ab4fbbe4f",
+    "EC3-B10-U03-VALIDATION-EVIDENCE",
+    "EC3-B10-U03-CCE-CERTIFICATION",
+    "EC3-B10-U03-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "30a2a02",
+  "meta_class": "DMC-02",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005"
+  ],
+  "substrate_reuse": {
+    "DMC-03": "data.attribute.Attribute — the CERTIFIED bears target (DMR-01); referenced only",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the entity)",
+    "ENG-004": "data.entity_meta.EntityKind + type_tag (ENG-004 typing discipline)",
+    "ENG-005": "borne-attribute + described-by identity references (DMR-01/04; by reference)",
+    "founding_root": "EC3-B10-U01 (DMC-01; UCOS-CERT-DMC-01-51e5964b38741e30) — transitive values target",
+    "founding_unit": "EC3-B10-U02 (DMC-03; UCOS-CERT-DMC-03-c57d36d3dbb2763d) — bears target, DMR-01"
+  },
+  "target_id": "UCOS-ENTITY-ucos.data.entity.foundation-b014125ab4fbbe4f",
+  "trace_format": "ucos-data-traceability/1.0.0",
+  "unit": "EC3-B10-U03"
+}

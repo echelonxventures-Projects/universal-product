@@ -1,0 +1,299 @@
+{
+  "schema": "ucos-imr-0000-platform-bindings",
+  "version": "1.0.0",
+  "authority": "NONE (DERIVED TRUTH) — this file asserts nothing. It is the machine-readable projection of the IMR-0000 artifacts under 00-MASTER/IMR-0000/. Where this file and its declaring artifact disagree, the artifact governs and this file SHALL be corrected. Where an IMR-0000 artifact and a located canonical instrument disagree, the located instrument governs.",
+  "mission": "IMR-0000",
+  "work_package": "WP-IMR-0000",
+  "subject_token": "CIOS",
+  "mission_home": "00-MASTER/IMR-0000/",
+  "baseline": "b26c5bb66c37717fe4eb96552bad4b9d8b74d890",
+  "branch": "programme/evo-usis-005",
+  "standing": "PROVISIONAL",
+  "tier_t1": "VACANT (VAC-01)",
+  "certification_ceiling": "CERTIFIED-PROVISIONAL",
+  "frozen": false,
+  "freeze_available": false,
+  "freeze_basis": "CEP-007 ineligible on three limbs (ratification, active certification, traceability closure); an attempt would be void under CEP-007 II.4/IV.4 (GD-10; CIOS-GAP-13)",
+  "notes": "Zero hard coding of located mechanism: every entry below is a pointer to a located owner or an explicit absence record. No corpus identifier appears here. No entry may be presented to REG-AUTO-001 or entered in id-ledger.json (NS-3).",
+
+  "immutable_inputs": {
+    "IMR-003A": {
+      "home": "00-MASTER/IMR-003A/",
+      "modified_by_this_mission": false,
+      "cardinalities": {
+        "planes": 4,
+        "partitions": 4,
+        "laws": 24,
+        "invariants": 12,
+        "engines": 24,
+        "ports": 48,
+        "public_ports": 8,
+        "stages": 24,
+        "identity_fields": 22,
+        "queues": 4,
+        "key_elements": 8,
+        "override_authorities": 2,
+        "open_gates": 7,
+        "gaps": 14
+      }
+    },
+    "IMR-003A-R1": {
+      "home": "00-MASTER/IMR-003A-R1/",
+      "modified_by_this_mission": false,
+      "registry_contracts": 14,
+      "located_bindings": 35,
+      "namespace_invariants": ["NS-1", "NS-2", "NS-3", "NS-4", "NS-5"]
+    }
+  },
+
+  "platform_layers": [
+    { "id": "L1", "name": "Located Authority Layer", "new": false, "owner": "each located instrument" },
+    { "id": "L2", "name": "Constitutional Layer", "new": false, "owner": "IMR-003A/01, /02" },
+    { "id": "L3", "name": "Engine Layer", "new": false, "owner": "IMR-003A/03, /04, /05, /06" },
+    { "id": "L4", "name": "Subsystem Layer", "new": true, "owner": "IMR-0000/02" },
+    { "id": "L5", "name": "Programme Layer", "new": false, "owner": "each future programme" }
+  ],
+
+  "subsystems": [
+    { "id": "SS-01", "canonical_name": "CIOS-CORE", "class": "ENGINE-BEARING", "engines": ["E-10", "E-19"], "planes": ["PL-A", "PL-C"], "public_ports": [] },
+    { "id": "SS-02", "canonical_name": "CIOS-IDENTITY", "class": "ENGINE-BEARING", "engines": ["E-07"], "planes": ["PL-A"], "public_ports": [] },
+    { "id": "SS-03", "canonical_name": "CIOS-PMS", "class": "BINDING-ONLY", "engines": [], "planes": [], "public_ports": [] },
+    { "id": "SS-04", "canonical_name": "CIOS-MRS", "class": "ENGINE-BEARING", "engines": ["E-01", "E-02"], "planes": ["PL-A"], "public_ports": ["CIOS-P-01"] },
+    { "id": "SS-05", "canonical_name": "CIOS-PLAN", "class": "ENGINE-BEARING", "engines": ["E-11", "E-13"], "planes": ["PL-A"], "public_ports": [] },
+    { "id": "SS-06", "canonical_name": "CIOS-SCHED", "class": "ENGINE-BEARING", "engines": ["E-12", "E-14"], "planes": ["PL-A"], "public_ports": [] },
+    { "id": "SS-07", "canonical_name": "CIOS-ORCH", "class": "ENGINE-BEARING", "engines": ["E-15", "E-16", "E-17"], "planes": ["PL-B"], "public_ports": ["CIOS-P-30"] },
+    { "id": "SS-08", "canonical_name": "CIOS-DAG", "class": "ENGINE-BEARING", "engines": ["E-08"], "planes": ["PL-A"], "public_ports": [] },
+    { "id": "SS-09", "canonical_name": "CIOS-KG", "class": "ENGINE-BEARING", "engines": ["E-03", "E-04"], "planes": ["PL-A"], "public_ports": [] },
+    { "id": "SS-10", "canonical_name": "CIOS-DT", "class": "BINDING-ONLY", "engines": [], "planes": [], "public_ports": [] },
+    { "id": "SS-11", "canonical_name": "CIOS-RCV", "class": "BINDING-ONLY", "engines": [], "planes": [], "public_ports": [] },
+    { "id": "SS-12", "canonical_name": "CIOS-OBS", "class": "ENGINE-BEARING", "engines": ["E-22", "E-23", "E-24"], "planes": ["PL-D"], "public_ports": ["CIOS-P-44", "CIOS-P-46", "CIOS-P-48"] },
+    { "id": "SS-13", "canonical_name": "CIOS-EI", "class": "ENGINE-BEARING", "engines": ["E-20", "E-21"], "planes": ["PL-C"], "public_ports": ["CIOS-P-40", "CIOS-P-42"] },
+    { "id": "SS-14", "canonical_name": "CIOS-GI", "class": "ENGINE-BEARING", "engines": ["E-09", "E-18"], "planes": ["PL-A", "PL-B"], "public_ports": ["CIOS-P-35"] },
+    { "id": "SS-15", "canonical_name": "CIOS-VI", "class": "ENGINE-BEARING", "engines": ["E-05", "E-06"], "planes": ["PL-A"], "public_ports": [] },
+    { "id": "SS-16", "canonical_name": "CIOS-CI", "class": "BINDING-ONLY", "engines": [], "planes": [], "public_ports": [] },
+    { "id": "SS-17", "canonical_name": "CIOS-EVO", "class": "BINDING-ONLY", "engines": [], "planes": [], "public_ports": [] }
+  ],
+
+  "subsystem_reconciliation": {
+    "subsystems": 17,
+    "engine_bearing": 12,
+    "binding_only": 5,
+    "absent": 0,
+    "engines_assigned": 24,
+    "engines_assigned_twice": 0,
+    "engines_unassigned": 0,
+    "engines_created": 0,
+    "ports_created": 0,
+    "public_ports_accounted": 8,
+    "subsystems_owning_a_mechanism": 0,
+    "duplicate_responsibilities": 0
+  },
+
+  "public_interface_catalogue": {
+    "platform_ports": [
+      { "id": "IF-01", "port": "CIOS-P-01", "subsystem": "SS-04", "direction": "INGRESS", "role": "sole submission entry point" },
+      { "id": "IF-02", "port": "CIOS-P-35", "subsystem": "SS-14", "direction": "INGRESS", "role": "sole override entry point" },
+      { "id": "IF-03", "port": "CIOS-P-30", "subsystem": "SS-07", "direction": "EGRESS", "role": "handoff to located Execution Queue" },
+      { "id": "IF-04", "port": "CIOS-P-40", "subsystem": "SS-13", "direction": "EGRESS", "role": "truth append" },
+      { "id": "IF-05", "port": "CIOS-P-42", "subsystem": "SS-13", "direction": "EGRESS", "role": "traceability emission" },
+      { "id": "IF-06", "port": "CIOS-P-44", "subsystem": "SS-12", "direction": "EGRESS", "role": "invariant findings" },
+      { "id": "IF-07", "port": "CIOS-P-46", "subsystem": "SS-12", "direction": "EGRESS", "role": "monotonicity findings" },
+      { "id": "IF-08", "port": "CIOS-P-48", "subsystem": "SS-12", "direction": "EGRESS", "role": "determinism findings" }
+    ],
+    "located_interfaces": [
+      { "id": "IFL-01", "capability": "programme registration/discovery", "bind_to": ["00-MASTER/UCCEP-000000/uccep.json:programs[]", "UCCEP-000006 P-5"] },
+      { "id": "IFL-02", "capability": "artifact registration and identity allocation", "bind_to": ["REG-AUTO-001", "00-BOOK/DATA/artifacts.json", "00-BOOK/DATA/id-ledger.json", "00-BOOK/tools/"] },
+      { "id": "IFL-03", "capability": "portfolio/programme roll-up", "bind_to": ["00-BOOK/DATA/control-tower.json", "STATUS-001"] },
+      { "id": "IFL-04", "capability": "canonical home/owner and closure truth", "bind_to": ["00-MASTER/UAKOS-CLOSURE-002/closure.json"] },
+      { "id": "IFL-05", "capability": "dispatch, READY, batches, item states, quality gates", "bind_to": ["IEC-001 03/04/05/06/08", "IEC-001 C5/C7/C11 (EC-3 lane)"] },
+      { "id": "IFL-06", "capability": "backlog, waves, order, critical path, readiness matrix", "bind_to": ["IMG-001 03-09"] },
+      { "id": "IFL-07", "capability": "twin and signals", "bind_to": ["00-BOOK/DATA/twin.json", "00-BOOK/DATA/signals.json", "UMB-002"] },
+      { "id": "IFL-08", "capability": "checkpoint and session recovery", "bind_to": ["00-MASTER/MCP-007-MASTER-RECOVERY.md", "00-MASTER/CHECKPOINTS/", "00-MASTER/MCP-002-MASTER-STATE.md", "MCS-000"] },
+      { "id": "IFL-09", "capability": "validation execution", "bind_to": ["00-CEP/CEP-004-...", "engine/validation", "verify.sh", "uccep.json:checks"] },
+      { "id": "IFL-10", "capability": "certification", "bind_to": ["00-CEP/CEP-005-...", "00-BOOK/DATA/certification.json", "engine/certification"] },
+      { "id": "IFL-11", "capability": "change, evolution, amendment", "bind_to": ["00-CEP/CEP-009-...", "UCI-001", "00-BOOK/DATA/change-ledger.json"] },
+      { "id": "IFL-12", "capability": "constitutional gate verdicts", "bind_to": ["00-MASTER/UCCEP-000000/uccep-bindings.json", "G-01..G-14"] }
+    ],
+    "total_binding_entries": 20,
+    "ports_created": 0,
+    "internal_ports_promoted": 0
+  },
+
+  "registry_specifications": [
+    { "id": "REG-01", "name": "Programme Registry", "located": true, "access": "R", "register": ["00-MASTER/UCCEP-000000/uccep.json:programs[]", "00-CMG/CMG-REGISTRY.json:artifacts[]"], "subsystem": "SS-03", "gap": null },
+    { "id": "REG-02", "name": "Mission Registry", "located": false, "access": "R", "register": ["convention: 00-MASTER/<PROGRAMME-ID>/00-*MISSION-REGISTRATION-RECORD.md"], "subsystem": "SS-03", "gap": "PGAP-05" },
+    { "id": "REG-03", "name": "Portfolio Registry", "located": true, "access": "R", "register": ["00-BOOK/DATA/control-tower.json:portfolio"], "subsystem": "SS-10", "gap": null },
+    { "id": "REG-04", "name": "Capability Registry", "located": true, "access": "R", "register": ["intelligence/UCOS-RIE-CAPABILITY-CATALOG.json", "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md"], "subsystem": "SS-03", "gap": "inherited GG-6 / CIOS-GAP-11" },
+    { "id": "REG-05", "name": "Subsystem Registry", "located": false, "access": "none", "register": [], "subsystem": "declares all 17", "gap": "PGAP-02" },
+    { "id": "REG-06", "name": "Interface Registry", "located": true, "access": "R", "register": ["00-MASTER/IMR-003A/05-CIOS-ENGINE-INTERFACES.md", "00-MASTER/IMR-003A-R1/06-INTERFACE-MATRIX.md"], "subsystem": "all with ports", "gap": null },
+    { "id": "REG-07", "name": "Contract Registry", "located": false, "access": "R (severally)", "register": ["00-MASTER/UCIC-001-...", "00-BOOK/SCHEMAS/*.schema.json", "00-MASTER/IMR-003A-R1/09-ARCHITECTURE-INTERFACE-FREEZE-REPORT.md"], "subsystem": "SS-03, SS-16", "gap": "PGAP-03" },
+    { "id": "REG-08", "name": "Dependency Registry", "located": true, "access": "R", "register": ["00-BOOK/DATA/artifacts.json:dependencies", "00-BOOK/DATA/relationships.json"], "subsystem": "SS-08", "gap": "inherited UCCEP-F-003 / CIOS-G-04" },
+    { "id": "REG-09", "name": "Evidence Registry", "located": true, "access": "R+A", "register": ["00-BOOK/DATA/signals.json", "00-MASTER/UCDA-000001/ucda-decisions.json"], "subsystem": "SS-13, SS-14", "gap": "inherited UCCEP-F-008" },
+    { "id": "REG-10", "name": "Validation Registry", "located": true, "access": "R", "register": ["00-MASTER/UCCEP-000000/uccep.json:checks"], "subsystem": "SS-15", "gap": "inherited UCCEP-F-006, UCCEP-F-001" },
+    { "id": "REG-11", "name": "Certification Registry", "located": true, "access": "R", "register": ["00-BOOK/DATA/certification.json", "00-BOOK/REGISTRIES/CERTIFICATION-REGISTRY.md"], "subsystem": "SS-16", "gap": "inherited CIOS-GAP-08, VAC-01" }
+  ],
+
+  "registry_posture": {
+    "specifications": 11,
+    "binding_located_register": 9,
+    "contract_only": 2,
+    "registries_created": 0,
+    "registries_written": 0,
+    "registry_entries_added": 0,
+    "freeze_registry_entries_added": 0,
+    "id_ledger_entries_created": 0,
+    "read_contracts_invented": 0,
+    "append_rights": 1
+  },
+
+  "register_relationship_types": [
+    { "id": "RR-1", "type": "DERIVES-FROM", "instances_created": 0 },
+    { "id": "RR-2", "type": "PROJECTS", "instances_created": 0 },
+    { "id": "RR-3", "type": "ALLOCATES-FOR", "instances_created": 0 },
+    { "id": "RR-4", "type": "GATES", "instances_created": 0 },
+    { "id": "RR-5", "type": "EVIDENCES", "instances_created": 0 },
+    { "id": "RR-6", "type": "REGENERATED-BY", "instances_created": 0 }
+  ],
+
+  "object_model": {
+    "attributes": 20,
+    "instruction_items": 19,
+    "additional_required_by_UOM_R_1": ["UOM-A-06 Home"],
+    "recorded": 17,
+    "derived": 3,
+    "produced_by_platform": 0,
+    "with_located_authority": 19,
+    "with_partial_authority": 1,
+    "without_authority": 0,
+    "reduces_to_CIOS_ID_fields": 22
+  },
+
+  "uniqueness_clauses": [
+    { "id": "UUP-01", "clause": "one canonical identity", "corpus_state": "SATISFIED as measured" },
+    { "id": "UUP-02", "clause": "one constitutional owner", "corpus_state": "SATISFIED as measured" },
+    { "id": "UUP-03", "clause": "one canonical registration", "corpus_state": "SATISFIED as measured" },
+    { "id": "UUP-04", "clause": "one lifecycle per axis", "corpus_state": "SATISFIED (0 new states)" },
+    { "id": "UUP-05", "clause": "one traceability chain", "corpus_state": "NOT ACHIEVED — UCCEP-F-002 (1198 artifacts)" },
+    { "id": "UUP-06", "clause": "one validation chain", "corpus_state": "DEGRADED — UCCEP-F-006" },
+    { "id": "UUP-07", "clause": "one certification chain", "corpus_state": "CEILING-BOUND — VAC-01" },
+    { "id": "UUP-08", "clause": "identity is immutable", "corpus_state": "SATISFIED" },
+    { "id": "UUP-09", "clause": "names may evolve; identity never", "corpus_state": "SATISFIED" }
+  ],
+
+  "lifecycle_axes": [
+    { "id": "LX-1", "name": "STANDING", "owner": ["REG-AUTO-001 §5 (7)", "CMG-REGISTRY.json:states (14)"], "new_states": 0 },
+    { "id": "LX-2", "name": "ADMISSION", "owner": ["IMR-003A/07 (24 stages)"], "new_states": 0 },
+    { "id": "LX-3", "name": "MUTABILITY", "owner": ["IMR-003A/01 Art V (4 partitions)"], "new_states": 0 },
+    { "id": "LX-4", "name": "EXECUTION", "owner": ["IEC-001 06 (10 states)"], "new_states": 0 }
+  ],
+
+  "platform_gates": [
+    { "id": "PG-01", "gate": "subsystem family admission (CIOS-SS-*)", "owner": "located owner of cios-bindings.json", "status": "OPEN" },
+    { "id": "PG-02", "gate": "engine-set cardinality change", "owner": "owner of CIOS-01 via CEP-009 III.1", "status": "OPEN" },
+    { "id": "PG-03", "gate": "subsystem register instantiation", "owner": "REG-AUTO-001 + Registration Authority", "status": "OPEN" },
+    { "id": "PG-04", "gate": "contract register instantiation", "owner": "Registration/Governance Authority", "status": "OPEN" },
+    { "id": "PG-05", "gate": "register-relationship edge types", "owner": "owner of UKB-ADV-000 / REG-AUTO-001", "status": "OPEN" },
+    { "id": "PG-06", "gate": "mission register", "owner": "REG-AUTO-001 + Registration Authority", "status": "OPEN" },
+    { "id": "PG-07", "gate": "platform concern admission", "owner": "Registration/Governance Authority", "inherits": "CIOS-G-02", "status": "OPEN" },
+    { "id": "PG-08", "gate": "platform supremacy (GOV-001 Part 11)", "owner": "Governance + Execution Authorities", "inherits": "CIOS-G-01", "status": "OPEN" },
+    { "id": "PG-09", "gate": "commit witness of IMR-0000", "owner": "repository operator / T4", "status": "OPEN" }
+  ],
+
+  "gaps": [
+    { "id": "PGAP-01", "disposition": "CLOSED as specification", "artifact": "02" },
+    { "id": "PGAP-02", "disposition": "NOT CLOSED — contract only", "gates": ["PG-01", "PG-03"] },
+    { "id": "PGAP-03", "disposition": "NOT CLOSED — contract only", "gates": ["PG-04"], "blocked_behind": "GG-6" },
+    { "id": "PGAP-04", "disposition": "CLOSED as specification", "gates": ["PG-05"] },
+    { "id": "PGAP-05", "disposition": "CLOSED as contract; register absent", "gates": ["PG-06"] },
+    { "id": "PGAP-06", "disposition": "CLOSED", "artifact": "03" },
+    { "id": "PGAP-07", "disposition": "CLOSED", "artifact": "04" },
+    { "id": "PGAP-08", "disposition": "CLOSED", "artifact": "07" },
+    { "id": "PGAP-09", "disposition": "CLOSED", "artifact": "08" },
+    { "id": "PGAP-10", "disposition": "CLOSED", "artifact": "18" },
+    { "id": "PGAP-11", "disposition": "CLOSED", "artifact": "24" }
+  ],
+
+  "findings": [
+    { "id": "PF-01", "finding": "object model carries 20 attributes, not 19", "class": "disclosed divergence" },
+    { "id": "PF-02", "finding": "AC-* citation ambiguity across IMR-003A and IMR-0000", "class": "citation rule" },
+    { "id": "PF-03", "finding": "00-MASTER/IMR-0000/ untracked at b26c5bb", "class": "inherited condition", "gate": "PG-09" },
+    { "id": "PF-04", "finding": "decision disposition obligation for D-1..D-7 undetermined", "class": "obligation owned elsewhere" },
+    { "id": "PF-05", "finding": "governing supremacy not conferred; composition and reference only", "class": "disclosed divergence" },
+    { "id": "PF-06", "finding": "no machine verifier authored (MC-05 forbids code)", "class": "mode consequence" },
+    { "id": "PF-07", "finding": "IEC-001 / IMG-001 cited by identifier; no file bears either name", "class": "inherited pointer qualification" }
+  ],
+
+  "self_checks": {
+    "declared": 12,
+    "pass": 12,
+    "fail": 0,
+    "pass_with_disclosure": ["PCK-07", "PCK-12"],
+    "pass_with_qualification": ["PCK-06"],
+    "machine_verifier_authored": false,
+    "located_gates_discharged": 0,
+    "cep_004_validations_claimed": 0,
+    "cep_005_certifications_claimed": 0
+  },
+
+  "stability_contract": {
+    "id": "ASC",
+    "version": "1.0",
+    "clauses": 10,
+    "scope": "IMR-0000/01..21",
+    "is_cep_007_freeze": false,
+    "seal_claimed": false,
+    "immutability_claimed": false,
+    "change_route": "CEP-009 III.1 with impact assessment",
+    "in_place_edits_permitted": 0,
+    "fixed_by_this_contract": {
+      "subsystems": 17,
+      "object_attributes": 20,
+      "uniqueness_clauses": 9,
+      "registry_specifications": 11,
+      "lifecycle_axes": 4,
+      "platform_ports": 8,
+      "located_interfaces": 12
+    },
+    "untouchable_by_this_contract": {
+      "engines": 24,
+      "ports": 48,
+      "stages": 24,
+      "identity_fields": 22,
+      "planes": 4,
+      "partitions": 4,
+      "laws": 24,
+      "invariants": 12,
+      "queues": 4,
+      "key_elements": 8,
+      "override_authorities": 2
+    }
+  },
+
+  "observed_repository_truth": {
+    "uakos_closure_002": { "determination": "CLOSED", "concept_total": 434, "gap_total": 0 },
+    "uccep_000000": { "certification": "CERTIFIED-PROVISIONAL", "tier": "boot", "gates_pass": "6/14", "programmes_pass": "6/16", "blocking": "none", "seal": "f10928ff68603bf1" },
+    "ucda_000001": { "state": "ASSIMILATED", "decisions": 64, "undispositioned": 0, "evidence": 205, "gate": "OPEN", "seal": "8d34d196a80a05b8" },
+    "checkpoints": 32
+  },
+
+  "mission_posture": {
+    "tokens_allocated": 0,
+    "namespaces_allocated": 0,
+    "cios_family_members_added": 0,
+    "cios_families_created": 0,
+    "identifiers_minted": 0,
+    "concerns_claimed": 0,
+    "gates_owned": 0,
+    "gates_discharged": 0,
+    "registries_created": 0,
+    "engines_created": 0,
+    "ports_created": 0,
+    "states_created": 0,
+    "graphs_created": 0,
+    "edge_instances_written": 0,
+    "executable_files_produced": 0,
+    "files_written_outside_mission_home": 0,
+    "imr_003a_files_modified": 0,
+    "reversible": true
+  }
+}

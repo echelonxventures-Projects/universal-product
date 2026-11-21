@@ -1,0 +1,30 @@
+{
+  "title": "UCOS Ω∞ Workflow (FLOW) Entity",
+  "description": "A UI workflow as a first-class artifact (UKB-008), native id FLOW-XXXXXX. Ordered steps composing screens, actions, and service calls.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["universal_id", "name", "flow_id"],
+  "properties": {
+    "universal_id": { "type": "string", "pattern": "^UCOS-FLOW-[0-9]{6}$" },
+    "flow_id": { "type": "string", "pattern": "^FLOW-[0-9]{6}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "steps": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "properties": {
+          "order": { "type": "integer", "minimum": 0 },
+          "screen": { "type": ["string", "null"], "pattern": "^UCOS-UI-[0-9]{6}$", "default": null },
+          "action": { "type": ["string", "null"], "default": null },
+          "service": { "type": ["string", "null"], "pattern": "^UCOS-SVC-[0-9]{6}$", "default": null },
+          "branch": { "type": ["string", "null"], "default": null }
+        }
+      },
+      "default": []
+    },
+    "entry": { "type": ["string", "null"], "default": null },
+    "exit": { "type": ["string", "null"], "default": null },
+    "implements": { "type": "array", "items": { "type": "string", "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$" }, "default": [] },
+    "derived_status": { "type": "string", "default": "NOT_STARTED" }
+  }
+}

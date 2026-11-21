@@ -1,0 +1,41 @@
+{
+  "artifact_id": "UCOS-UFI-ADOPTION-BASELINE-001",
+  "title": "Independence declaration — BASELINE-001",
+  "authority": "NONE — DERIVED TRUTH. This file confers no authority and states no rule. It names which instruments BASELINE-001's surfaces must be verified AGAINST, and where the reviewed templates for those surfaces live.",
+  "constitutional_superior": "UCKP-LAW-0001",
+  "schema": "ucos-independence-declaration",
+  "version": "1.0.0",
+  "owner": "BASELINE-001",
+  "framework": "00-BOOK/tools/ufi.py",
+  "$why_pointers": [
+    "Every field below is a POINTER into an instrument that already holds the list, never a",
+    "copy of it. UCKP-ART-03 makes a second authoring of the same knowledge void, so adopting",
+    "the framework may not require restating data that baseline.json or the registry already declares."
+  ],
+  "authorities": [
+    "00-BOOK/DATA/baseline-authority.json",
+    "00-MASTER/BASELINE-001/baseline.json",
+    "00-MASTER/BASELINE-001/baseline-declaration.json"
+  ],
+  "surfaces": {
+    "from": "00-BOOK/DATA/generated-artifact-registry.json",
+    "json_path": "entries[?owner=='BASELINE-001'].canonical_path",
+    "suffix": ".md",
+    "$why_suffix": [
+      "A RECORD FILE CANNOT BE ITS OWN PROVENANCE. baseline.json is declared above as an",
+      "AUTHORITY — it holds the measured records the seven prose surfaces project — and the",
+      "registry also lists it as a generated artifact, so without this filter it was checked",
+      "as a surface against a corpus that contains itself.",
+      "",
+      "That check was vacuous where it was not nonsense: every string in the file is in the",
+      "corpus by construction, and the 930 lines it reported were JSON syntax — `},` and",
+      "`\"id\": \"...\",` — classified as prose in no manifest. Not one of them named a defect,",
+      "and 930 of 1,127 findings is a report nobody can read.",
+      "",
+      "The pointer is kept rather than replaced by a list of the seven surfaces: a new",
+      "generated projection is picked up here with no edit, which is the property that stops",
+      "a surface from escaping verification by being added quietly."
+    ]
+  },
+  "manifest": "00-BOOK/DATA/independence/baseline-template-manifest.json"
+}

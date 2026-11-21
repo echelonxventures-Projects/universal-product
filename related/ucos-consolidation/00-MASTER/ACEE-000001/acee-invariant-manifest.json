@@ -1,0 +1,736 @@
+{
+  "manifest": {
+    "id": "ACEE-INVARIANT-MANIFEST-001",
+    "name": "Constitutional completion invariant manifest",
+    "authority": "NONE — DERIVED TRUTH. This manifest legislates no invariant and satisfies none. It RECORDS, for each constitutional completion invariant, the located owner Repository Truth already shows, the anchor inside that owner which evidences it, and a counter in a committed artifact by which it is measured. The engine then MEASURES: an owner that does not resolve, an anchor that is absent, or a measure that is unmet reports so, and the disposition follows from the measurement. Nothing here asserts that an invariant is satisfied.",
+    "open": true,
+    "closed_enumeration": false,
+    "admission": "Append a node record to `nodes`, or add another manifest matching the located manifest pattern. No engine change, no declaration change, no architectural redesign. The engine never reads this file by name: it is discovered by the declared root and suffix, so a second manifest is admitted by dropping it in.",
+    "ordinal_step": 10,
+    "$measure_comment": "`measure_source` names a COMMITTED artifact of another owner and `measure` is a dotted pointer into it. No register this programme writes may appear as a measure source: reading back its own output would make a view a source, and the engine fails closed on that.",
+    "$anchor_comment": "`anchor` is a literal that must occur inside the owner. It is what stops an owner from being cited for an obligation it does not actually evidence.",
+    "$disposition_comment": "Disposition is NOT recorded here. It is derived by the engine from the measurement, because a disposition written by hand would be an assertion and the constitution admits only measurement."
+  },
+  "nodes": [
+    {
+      "id": "ACEE-I-0010",
+      "invariant": "Universal Goal Understanding",
+      "ordinal": 10,
+      "owner": "00-MASTER/UCL-000001/ucl-declaration.json",
+      "anchor": "canonical_goals",
+      "authority_owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.goals_executed",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/UCL-000001/08-DETERMINISTIC-EXECUTION-AND-REPLAY-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0020",
+      "invariant": "Universal Context Assimilation",
+      "ordinal": 20,
+      "owner": "platform/universal_pipeline/catalog/uapf-pipelines.json",
+      "anchor": "context-assimilation",
+      "authority_owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "measure_source": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "measure": "concept_total",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/UAKOS-CLOSURE-002/closure.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0030",
+      "invariant": "Universal Repository Truth Discovery",
+      "ordinal": 30,
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "anchor": "determination",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "measure": "gap_total",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UAKOS-CLOSURE-002/closure.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0040",
+      "invariant": "Universal Knowledge Discovery",
+      "ordinal": 40,
+      "owner": "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+      "anchor": "Knowledge",
+      "authority_owner": "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.knowledge_objects_discovered",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "knowledge/canonical-knowledge.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0050",
+      "invariant": "Universal Capability Discovery",
+      "ordinal": 50,
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "anchor": "programs",
+      "authority_owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.capability_nodes_discovered",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/UCCEP-000000/uccep.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0060",
+      "invariant": "Universal Dependency Discovery",
+      "ordinal": 60,
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "anchor": "pipeline",
+      "authority_owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.dangling_relations",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCL-000001/05-CANONICAL-KNOWLEDGE-OBJECT-AND-GRAPH-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0070",
+      "invariant": "Universal Constraint Discovery",
+      "ordinal": 70,
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "anchor": "LXXVII",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.limit_tokens_present",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCL-000001/07-OPEN-WORLD-EXPANSION-AXIS-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0080",
+      "invariant": "Universal Risk Discovery",
+      "ordinal": 80,
+      "owner": "00-MASTER/UCOS-RIB-001/rib-blueprint.json",
+      "anchor": "severities",
+      "authority_owner": "00-MASTER/UCOS-RIB-001/rib-blueprint.json",
+      "measure_source": "00-MASTER/UCOS-RIB-001/rib.json",
+      "measure": "severities",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/UCOS-RIB-001/rib.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0090",
+      "invariant": "Universal Opportunity Discovery",
+      "ordinal": 90,
+      "owner": "00-MASTER/URRC-000001/urrc-bindings.json",
+      "anchor": "matrices",
+      "authority_owner": "00-MASTER/URRC-000001/urrc-bindings.json",
+      "measure_source": "00-MASTER/URRC-000001/urrc.json",
+      "measure": "matrices",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/URRC-000001/09-AUTOMATION-MATRIX.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0100",
+      "invariant": "Universal Alternative Strategy Generation",
+      "ordinal": 100,
+      "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "anchor": "classification_rules",
+      "authority_owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+      "measure_source": "00-MASTER/UCDA-000001/ucda.json",
+      "measure": "decision_total",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/05-DECISION-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0110",
+      "invariant": "Universal Constitutional Reasoning",
+      "ordinal": 110,
+      "owner": "00-MASTER/UCDA-000001/ucda-decisions.json",
+      "anchor": "dispositions",
+      "authority_owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCDA-000001/ucda.json",
+      "measure": "undispositioned",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCDA-000001/ucda.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0120",
+      "invariant": "Universal Trade-off Analysis",
+      "ordinal": 120,
+      "owner": "00-MASTER/UAIE-000001/uaie-architecture.json",
+      "anchor": "dispositions",
+      "authority_owner": "00-MASTER/UAIE-000001/uaie-architecture.json",
+      "measure_source": "00-MASTER/UAIE-000001/uaie.json",
+      "measure": "blocking_failures",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UAIE-000001/uaie.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0130",
+      "invariant": "Universal Self Challenge",
+      "ordinal": 130,
+      "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "anchor": "convergence",
+      "authority_owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "measure_source": "00-MASTER/UCOS-AEE-001/aee.json",
+      "measure": "unsatisfied_criteria",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/07-CONVERGENCE-CERTIFICATION.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0140",
+      "invariant": "Universal Reflection",
+      "ordinal": 140,
+      "owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "anchor": "pipeline_evolution",
+      "authority_owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "measure_source": "00-MASTER/UEI-000001/uei.json",
+      "measure": "gate_exit",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UEI-000001/uei.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0150",
+      "invariant": "Universal Self Correction",
+      "ordinal": 150,
+      "owner": "00-MASTER/UER-000001/uer-resilience.json",
+      "anchor": "pipeline_recovery",
+      "authority_owner": "00-MASTER/UER-000001/uer-resilience.json",
+      "measure_source": "00-MASTER/UER-000001/uer.json",
+      "measure": "gate_exit",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UER-000001/uer.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0160",
+      "invariant": "Universal Self Improvement",
+      "ordinal": 160,
+      "owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "anchor": "pipeline_continuous",
+      "authority_owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "measure_source": "00-MASTER/UEI-000001/uei.json",
+      "measure": "declaration_findings",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/08-LEARNING-LEDGER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0170",
+      "invariant": "Universal Engineering Planning",
+      "ordinal": 170,
+      "owner": "00-MASTER/UCOS-EG-001/07-ENGINEERING-LIFECYCLE.md",
+      "anchor": "Lifecycle",
+      "authority_owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.stage_nodes_discovered",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/UCL-000001/01-CONSTITUTIONAL-STAGE-GRAPH-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0180",
+      "invariant": "Universal Execution Coordination",
+      "ordinal": 180,
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "anchor": "reentrancy_env",
+      "authority_owner": "02-EXECUTION-LIFECYCLE.md",
+      "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
+      "measure": "independent_view.00-MASTER/ACEE-000001.gate_blocking",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCCEP-000000/uccep.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0190",
+      "invariant": "Universal Observation",
+      "ordinal": 190,
+      "owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "anchor": "UEI-CAP-01",
+      "authority_owner": "00-CEP/CEP-010-CONSTITUTIONAL-AUDIT-COMPLIANCE-ASSURANCE-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCOS-AEE-001/aee.json",
+      "measure": "unresolved_pointers",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/03-OBSERVATION-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0200",
+      "invariant": "Universal Measurement",
+      "ordinal": 200,
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "anchor": "checks",
+      "authority_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
+      "measure": "independent_view.00-MASTER/ACEE-000001.unproven",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCCEP-000000/uccep.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0210",
+      "invariant": "Universal Evidence",
+      "ordinal": 210,
+      "owner": "00-MASTER/UCDA-000001/ucda-decisions.json",
+      "anchor": "evidence",
+      "authority_owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCDA-000001/ucda.json",
+      "measure": "unevidenced",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCDA-000001/ucda.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0220",
+      "invariant": "Universal Validation",
+      "ordinal": 220,
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "anchor": "fail_closed",
+      "authority_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
+      "measure": "independent_view.00-MASTER/ACEE-000001.blocking_failures",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCCEP-000000/uccep.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0230",
+      "invariant": "Universal Verification",
+      "ordinal": 230,
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "anchor": "exit_semantics",
+      "authority_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
+      "measure": "independent_view.00-MASTER/ACEE-000001.blocking_unavailable",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "VERIFICATION-RUNBOOK.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0240",
+      "invariant": "Universal Certification",
+      "ordinal": 240,
+      "owner": "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md",
+      "anchor": "Gate",
+      "authority_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
+      "measure": "independent_view.00-MASTER/ACEE-000001.gate_exit",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0250",
+      "invariant": "Universal Registration",
+      "ordinal": 250,
+      "owner": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+      "anchor": "Registry",
+      "authority_owner": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.registry_artifacts_discovered",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-BOOK/DATA/artifacts.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0260",
+      "invariant": "Universal Repository Truth Update",
+      "ordinal": 260,
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "anchor": "sources",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "measure": "gaps.not_homed_concepts",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UAKOS-CLOSURE-002/closure.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0270",
+      "invariant": "Universal Knowledge Extraction",
+      "ordinal": 270,
+      "owner": "00-MASTER/UCOS-EKAP-001/06-KNOWLEDGE-ASSIMILATION-REPORT.md",
+      "anchor": "Knowledge",
+      "authority_owner": "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.knowledge_extractions_unmeasured",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCL-000001/12-KNOWLEDGE-EXTRACTION-AND-CAPABILITY-ELEVATION-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0280",
+      "invariant": "Universal Knowledge Registration",
+      "ordinal": 280,
+      "owner": "knowledge/canonical-knowledge.json",
+      "anchor": "objects",
+      "authority_owner": "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+      "measure_source": "knowledge/canonical-knowledge.json",
+      "measure": "count",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "knowledge/canonical-knowledge.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0290",
+      "invariant": "Universal Knowledge Evolution",
+      "ordinal": 290,
+      "owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "anchor": "UEI-CAP-14",
+      "authority_owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "measure_source": "00-MASTER/UEI-000001/uei.json",
+      "measure": "capabilities",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "knowledge/decisions.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0300",
+      "invariant": "Universal Capability Evolution",
+      "ordinal": 300,
+      "owner": "00-MASTER/UCEF-000001/ucef-framework.json",
+      "anchor": "construct_classes",
+      "authority_owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCEF-000001/ucef.json",
+      "measure": "guard_findings",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCEF-000001/ucef.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0310",
+      "invariant": "Universal Self Engineering",
+      "ordinal": 310,
+      "owner": "00-MASTER/UCL-000001/ucl-declaration.json",
+      "anchor": "self_evolution_path",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.self_evolution_steps_unbound",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCL-000001/13-SELF-EVOLUTION-AND-OMEGA-E05-READINESS-CERTIFICATION.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0320",
+      "invariant": "Universal Future Engineering Reduction",
+      "ordinal": 320,
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "anchor": "Reuse",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.capabilities_created",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/URRC-000001/03-REUSE-MATRIX.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0330",
+      "invariant": "Universal Explainability",
+      "ordinal": 330,
+      "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "anchor": "engineering_closable",
+      "authority_owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCOS-AEE-001/aee.json",
+      "measure": "unclassified_findings",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/04-DISCOVERY-AND-CLASSIFICATION-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0340",
+      "invariant": "Universal Self Assessment",
+      "ordinal": 340,
+      "owner": "00-MASTER/UCOS-AEE-001/aee-declaration.json",
+      "anchor": "learning",
+      "authority_owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "measure_source": "00-MASTER/UCOS-AEE-001/aee.json",
+      "measure": "stable_iterations",
+      "comparator": ">=",
+      "expect": 2,
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/AEE-LEARNING-LEDGER.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0350",
+      "invariant": "Universal Unknown Discovery",
+      "ordinal": 350,
+      "owner": "00-MASTER/UCOS-RIB-001/rib-blueprint.json",
+      "anchor": "gaps",
+      "authority_owner": "00-MASTER/UCOS-RIB-001/rib-blueprint.json",
+      "measure_source": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "measure": "gap_total",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCOS-RIB-001/rib.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0360",
+      "invariant": "Universal Deterministic Replay",
+      "ordinal": 360,
+      "owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "anchor": "Replay",
+      "authority_owner": "00-MASTER/UER-000001/uer-resilience.json",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.runs_nondeterministic",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCL-000001/08-DETERMINISTIC-EXECUTION-AND-REPLAY-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0370",
+      "invariant": "Universal Fixed Point",
+      "ordinal": 370,
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "anchor": "closure_criteria",
+      "authority_owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "measure_source": "00-MASTER/UCOS-RFP-001/rfp.json",
+      "measure": "closure_criteria",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/UCOS-RFP-001/rfp.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0380",
+      "invariant": "Universal Autonomous Capability Elevation",
+      "ordinal": 380,
+      "owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "anchor": "EVOLUTION",
+      "authority_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.elevations_unevidenced",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCL-000001/12-KNOWLEDGE-EXTRACTION-AND-CAPABILITY-ELEVATION-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0390",
+      "invariant": "Universal Engineering Capability Elevation",
+      "ordinal": 390,
+      "owner": "00-MASTER/UCL-000001/ucl-declaration.json",
+      "anchor": "elevation_measures",
+      "authority_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.relationship_ckos_discovered",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/UCL-000001/12-KNOWLEDGE-EXTRACTION-AND-CAPABILITY-ELEVATION-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0400",
+      "invariant": "Universal Constitutional Capability Elevation",
+      "ordinal": 400,
+      "owner": "00-MASTER/UCL-000001/ucl-declaration.json",
+      "anchor": "determination",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.stage_nodes_discovered",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/UCL-000001/10-CERTIFICATION-REPORT.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0410",
+      "invariant": "Auto Goal Intake",
+      "ordinal": 410,
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "anchor": "Receive Goal",
+      "authority_owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.stage_nodes_discovered",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/UCL-000001/01-CONSTITUTIONAL-STAGE-GRAPH-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0420",
+      "invariant": "Auto Canonical Owner Discovery",
+      "ordinal": 420,
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "anchor": "Canonical Owner Discovery",
+      "authority_owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.stage_nodes_unowned",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCL-000001/01-CONSTITUTIONAL-STAGE-GRAPH-REGISTER.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0430",
+      "invariant": "Auto Reuse Before Create",
+      "ordinal": 430,
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "anchor": "Reuse Before Create",
+      "authority_owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.capabilities_created",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/URRC-000001/03-REUSE-MATRIX.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0440",
+      "invariant": "Auto Architecture",
+      "ordinal": 440,
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "anchor": "Architect",
+      "authority_owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCEF-000001/ucef.json",
+      "measure": "validations",
+      "comparator": ">=",
+      "expect": 1,
+      "evidence": [
+        "00-MASTER/UCEF-000001/ucef.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0450",
+      "invariant": "Auto Engineering",
+      "ordinal": 450,
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "anchor": "Engineer",
+      "authority_owner": "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
+      "measure": "independent_view.00-MASTER/ACEE-000001.gate_exit",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCOS-EG-001/07-ENGINEERING-LIFECYCLE.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0460",
+      "invariant": "Auto Testing",
+      "ordinal": 460,
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "anchor": "Test",
+      "authority_owner": "00-MASTER/UCOS-EG-001/13-QUALITY-COMPLIANCE-RULES.md",
+      "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
+      "measure": "independent_view.00-MASTER/ACEE-000001.blocking_not_executed",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "VERIFICATION-RUNBOOK.md"
+      ]
+    },
+    {
+      "id": "ACEE-I-0470",
+      "invariant": "Auto Integration",
+      "ordinal": 470,
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "anchor": "Integrate",
+      "authority_owner": "00-MASTER/UCOS-EG-001/09-REPOSITORY-INTEGRATION-RULES.md",
+      "measure_source": "00-MASTER/UCCEP-000000/uccep.json",
+      "measure": "independent_view.00-MASTER/ACEE-000001.blocking_failures",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCCEP-000000/uccep.json"
+      ]
+    },
+    {
+      "id": "ACEE-I-0480",
+      "invariant": "Auto Next Elevated Engineering Cycle",
+      "ordinal": 480,
+      "owner": "00-MASTER/UCL-000001/ucl-stage-manifest.json",
+      "anchor": "Begin Next Elevated Engineering Cycle",
+      "authority_owner": "00-BOOK/CONTROL-TOWER/UCOS-Ω∞-AUTH-INF-001-INFINITE-EVOLUTION-UNIVERSAL-IDENTITY-AND-UNBOUNDED-EXPANSION-CONSTITUTION.md",
+      "measure_source": "00-MASTER/UCL-000001/ucl.json",
+      "measure": "counters.reentry_declarations_absent",
+      "comparator": "==",
+      "expect": 0,
+      "evidence": [
+        "00-MASTER/UCL-000001/01-CONSTITUTIONAL-STAGE-GRAPH-REGISTER.md"
+      ]
+    }
+  ]
+}

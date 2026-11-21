@@ -1,0 +1,264 @@
+name: UCOS-UFC-001 Universal Foundation Constitution Gate
+
+# UCOS-UFC-001 — the ONE law every Foundation capability obeys, and the measurement of it.
+#
+# Sixteen articles over thirteen governed domains, each bound to exactly one executable probe.
+# The law names no capability: its population is
+# platform/universal_foundation/catalog/foundation-capabilities.json, and UFC-09 is measured by
+# proving no governing module contains any identity from that register. Registering a Foundation
+# capability is therefore an entry in a declared document and requires NO change to any engine.
+#
+# Fail-closed properties worth naming, because each closes a defect class this repository has
+# actually suffered:
+#   * a probe that cannot execute reports FAULT, never a pass. The UCCEP fail-open — where four
+#     blocking checks reported satisfied without having run — is structurally impossible here:
+#     an unmeasured article withholds its maturity axis, and a gate with no bound probe faults.
+#   * an UNMEASURED freeze criterion withholds readiness exactly as firmly as a failure. A freeze
+#     declared over unmeasured criteria is the failure a freeze exists to prevent.
+#   * SUPERSESSION IS ENFORCED, NOT DOCUMENTED. The convergence job fails if a retired
+#     implementation reappears in the tree, which is what keeps the ownership convergence from
+#     silently regressing into two determinations over one population again.
+#   * the suites prove NON-VACUITY: a probe registry with no probes must drive every capability
+#     to FAULT, a present retired module must be reported as a second answer, and a governed
+#     narrower authority that copies a Foundation article must lose its exemption.
+#
+# Exit codes (every job):
+#   0  the measured determination discharges the gate
+#   1  the measured determination withholds it — the output names the article, capability,
+#      model, surface or criterion responsible
+#   2  fail-closed abort — a declaration is unusable, so no verdict may be asserted
+#
+# Standing: CERTIFIED-PROVISIONAL. AUTHORITY = NONE (DERIVED TRUTH). This gate determines
+# eligibility for a freeze and NEVER performs one; freezing is a constituent act.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ufc-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  convergence-gate:
+    name: Convergence (each constitutional model has exactly one implementation)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Relations are VERIFIED, not asserted. A SUPERSEDED surface must be absent from the tree,
+      # a DELEGATES surface must really import the canonical owner (measured over its import
+      # graph), a GOVERNED narrower authority must restate none of the canonical law, and a
+      # PROJECTION must hold no executable determination.
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Convergence gate (FG-14 exactly-once · FG-15 no-parallel-authority · FG-16 one-measurement)
+        run: make convergence-gate
+
+      - name: Publish the convergence determination
+        if: always()
+        run: |
+          make convergence 2>/dev/null 1>/dev/null || true
+          python3 -m platform.universal_foundation.constitution_cli convergence --detail --json \
+            > foundation-convergence.json 2>/dev/null || true
+
+      - name: Upload the convergence determination
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: foundation-convergence
+          path: foundation-convergence.json
+
+  constitution-gate:
+    name: Conformance (every capability against every article)
+    runs-on: ubuntu-latest
+    needs: convergence-gate
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Every probe is a real observation over the live capability: contracts are resolved and
+      # version-checked, services are registered into a fresh certified registry and resolved,
+      # import purity is measured by AST inspection, determinism by building twice and comparing
+      # fingerprints, and specialisation by searching module sources for repository locators.
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Constitution gate (sixteen articles, one executable probe each)
+        run: make constitution-gate
+
+      - name: Measured Foundation maturity (fourteen axes, each proven by declared gates)
+        run: make maturity
+
+      - name: Publish the conformance determination
+        if: always()
+        run: |
+          python3 -m platform.universal_foundation.constitution_cli conform --detail --json \
+            > foundation-conformance.json 2>/dev/null || true
+
+      - name: Upload the conformance determination
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: foundation-conformance
+          path: foundation-conformance.json
+
+  ownership-convergence:
+    name: Ownership convergence (one determination over one population)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The converged determination must REPRODUCE the retired engine-side measurement, not
+      # merely replace it. The suite pins that reproduction, so a change that quietly altered the
+      # measurement while retiring the second implementation would fail here.
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Install pinned test toolchain
+        run: python -m pip install --disable-pip-version-check "pytest==8.3.4" "pytest-cov==6.0.0" "coverage==7.15.2"
+
+      - name: Ownership convergence suite (reproduction · refusal to infer · recommendation is not ownership)
+        run: python -m pytest platform/tests/test_universal_ownership_convergence.py -q --no-cov
+
+      - name: The one canonical-home determination
+        run: make homing
+
+      # Governance minimisation: the RATIFIABLE residue is work reduced to a decision over a
+      # stated proposal; the REMEDIABLE residue names a located eligibility deficit and needs an
+      # act rather than an authority; and only what is neither — GOVERNANCE MINIMUM — is work an
+      # authority must originate. Reported, never enforced — a recommendation is not ownership.
+      - name: Governance workload (reduced to its irreducible minimum)
+        run: make homing-recommend
+
+  constitution-suites:
+    name: Constitutional suites (non-vacuity — the gates must be able to fail)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Install pinned test toolchain
+        run: python -m pip install --disable-pip-version-check "pytest==8.3.4" "pytest-cov==6.0.0" "coverage==7.15.2"
+
+      # --no-cov: these suites gate the Constitution, not repository coverage. The coverage floor
+      # is owned by ./verify.sh in ec1-ci.yml and is not duplicated here.
+      - name: Constitution suite (a gate with no probe must FAULT, never pass)
+        run: python -m pytest platform/tests/test_universal_constitution.py -q --no-cov
+
+      - name: Foundation suites (Truth · ownership · assimilation · measurement · composition)
+        run: |
+          python -m pytest \
+            platform/tests/test_universal_truth.py \
+            platform/tests/test_universal_ownership.py \
+            platform/tests/test_universal_assimilation.py \
+            platform/tests/test_universal_measurement.py \
+            platform/tests/test_universal_foundation.py \
+            -q --no-cov
+
+  freeze-readiness:
+    name: Freeze readiness (twelve criteria — UNMEASURED is not a pass)
+    runs-on: ubuntu-latest
+    needs: [convergence-gate, constitution-gate, constitution-suites]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Reported, not gated, on every branch: the determination is the instrument by which a
+      # freeze decision is taken, and taking that decision is a constituent act rather than a
+      # side effect of a green pipeline. `make freeze-gate` is the fail-closed form for the
+      # moment a freeze is actually proposed.
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Freeze readiness determination (declares eligibility; performs no freeze)
+        run: make freeze
+
+      - name: Publish the freeze determination
+        if: always()
+        run: |
+          python3 -m platform.universal_foundation.constitution_cli freeze --detail --json \
+            > foundation-freeze.json 2>/dev/null || true
+
+      - name: Upload the freeze determination
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: foundation-freeze
+          path: foundation-freeze.json

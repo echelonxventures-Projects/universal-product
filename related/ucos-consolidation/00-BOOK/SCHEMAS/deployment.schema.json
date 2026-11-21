@@ -1,0 +1,22 @@
+{
+  "title": "UCOS Ω∞ Deployment Entity",
+  "description": "A deployment/rollback/promotion (UKB-006). References a release + target environment. Result comes from Kubernetes/CD/GitOps signals.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["universal_id", "name", "environment"],
+  "properties": {
+    "universal_id": { "type": "string", "pattern": "^UCOS-DEP-[0-9]{6}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "kind": { "type": "string", "enum": ["DEPLOYMENT", "ROLLBACK", "PROMOTION"], "default": "DEPLOYMENT" },
+    "release": { "type": ["string", "null"], "pattern": "^UCOS-BLD-[0-9]{6}$", "default": null },
+    "environment": { "type": "string", "pattern": "^UCOS-ENV-[0-9]{6}$" },
+    "from_environment": { "type": ["string", "null"], "pattern": "^UCOS-ENV-[0-9]{6}$", "default": null },
+    "strategy": { "type": "string", "enum": ["ROLLING", "BLUE_GREEN", "CANARY", "RECREATE", "GITOPS"], "default": "ROLLING" },
+    "result": { "type": "string", "enum": ["SUCCEEDED", "FAILED", "IN_PROGRESS", "ROLLED_BACK", "UNKNOWN"], "default": "UNKNOWN" },
+    "started_at": { "type": ["string", "null"], "format": "date-time", "default": null },
+    "finished_at": { "type": ["string", "null"], "format": "date-time", "default": null },
+    "supersedes": { "type": ["string", "null"], "pattern": "^UCOS-DEP-[0-9]{6}$", "default": null },
+    "references": { "type": "array", "items": { "type": "string", "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$" }, "default": [] },
+    "derived_status": { "type": "string", "default": "NOT_STARTED" }
+  }
+}

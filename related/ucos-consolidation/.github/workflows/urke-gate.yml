@@ -1,0 +1,246 @@
+name: URKE-000001 Universal Recursive Knowledge Foundation Gate
+
+# URKE-000001 — the Universal Recursive Knowledge Foundation, measured in CI.
+#
+# WHY THIS FILE EXISTS AT ALL, STATED PLAINLY. The capability it gates was fully built and
+# entirely unwired. A declaration, a sixteen-module engine, thirty-two laws, a 249-subject
+# governed ledger and a passing suite were all present, and nothing anywhere invoked them: no
+# Makefile target, no workflow, no ./verify.sh stage, and no row in UEC-000001's governed
+# enforcement inventory. The files were untracked, so UEC's own discovery — which quantifies
+# over `git ls-files` — could not see them either, and every gate in the repository reported
+# green while thirty-two laws measured nothing. That is not a hypothetical: it is the state
+# this workflow was written to end, and it is the exact defect class UEC-L-04 refuses ("nothing
+# enforces by existing").
+#
+# THIS WORKFLOW ADDS NO AUTHORITY AND NO REGISTRY. It runs the executable form of the
+# capability's own declared laws and refuses the commit if a blocking law is refused. Every
+# vocabulary it touches is read from the declaration rather than restated here, so a rename in
+# the declaration cannot make a step below silently vacuous.
+#
+# WHAT THE LAWS PROVE. That every identified unknown becomes a governed subject with identity,
+# context, state, owner and authority; that residual is representable rather than dropped; that
+# histories are append-only; that the vocabulary lives in the declaration and not in the code;
+# that no state is terminal; that a future domain is admissible by data alone; that discovery
+# reaches a fixed point and never mutates constitutional truth; that nothing admitted can
+# silently disappear; that no subject exists outside governance or outside context; that no
+# completeness claim is declared; and that measurement is deterministic.
+#
+# THE NON-VACUITY CLAIM. Thirty-two laws that hold and cannot be made to fail would measure
+# nothing. `engine/tests/unit/test_recursive_knowledge.py` forges a violating state per law and
+# asserts the refusal, and the `urke-validation` job runs that suite. A green law table is only
+# meaningful alongside a green non-vacuity suite, which is why both jobs gate the third.
+#
+# OBSERVE MODE. The gate reads the declaration and the repository's committed source. It writes
+# nothing — not even to gitignored paths — unless `--evidence` is passed, and no step here
+# passes it. Determinism and tree purity are proven by running the gate twice and diffing both
+# the report and `git status --porcelain`, so a gate that dirtied the tree or read a clock fails
+# rather than being trusted.
+#
+# EXIT CODES. 0 OPEN, 1 CLOSED (a blocking law was measured and refused), 2 FAULT (no verdict
+# could be reached). Exit 1 and exit 2 are deliberately different answers: collapsing them would
+# let an unreadable declaration pass as whichever answer happened to be convenient.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: urke-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  declaration-soundness:
+    name: Declaration soundness (data, not code)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the capability installs nothing.
+      - name: The declaration rehydrates and its certification identity is complete
+        run: |
+          python3 - <<'PY'
+          import copy, json, sys
+
+          from engine.recursive_knowledge.declaration import DIGEST_EXCLUSIONS, parse
+          from engine.uckp.canonical import content_hash
+
+          path = "00-MASTER/URKE-000001/urke-declaration.json"
+          document = json.load(open(path, encoding="utf-8"))
+          baseline = content_hash(parse(copy.deepcopy(document), source=path).digest_payload())
+
+          # The identity must MOVE when the declaration's meaning moves. Stability alone cannot
+          # detect the defect class this repository measured in `engine/construct`, where
+          # flipping `blocking` on a law that decides OPEN/CLOSED left the digest byte-identical.
+          failures = 0
+          mutations = {
+              "flip the first law's blocking flag": lambda d: d["laws"][0].__setitem__(
+                  "blocking", not d["laws"][0]["blocking"]
+              ),
+              "rewrite the first law's statement": lambda d: d["laws"][0].__setitem__(
+                  "statement", "this law now says something else entirely"
+              ),
+              "change the declared authority": lambda d: d.__setitem__("authority", "OTHER"),
+          }
+          for name, mutate in mutations.items():
+              mutated = copy.deepcopy(document)
+              mutate(mutated)
+              if content_hash(parse(mutated, source=path).digest_payload()) == baseline:
+                  print(f"::error::{name} left the certification identity unchanged")
+                  failures += 1
+
+          # And it must NOT move for the declared exclusions, or the exclusion is a fiction.
+          for excluded in DIGEST_EXCLUSIONS:
+              if excluded == "source":
+                  moved = content_hash(parse(copy.deepcopy(document), source="/elsewhere.json").digest_payload())
+                  if moved != baseline:
+                      print("::error::the identity depends on the path it was read from")
+                      failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+      # This step was an inline heredoc reimplementing the rule, and it was the only place
+      # the rule ran: ./verify.sh could not reach it and UEC could not discover it, because a
+      # check living in workflow YAML is not a gate engine. It also flagged every string equal
+      # to a vocabulary member, and the members are ordinary words, so all seven of its
+      # findings were false positives. The rule is now URKE-L-33 in the engine, measured by
+      # the gate below in every plane, with both directions pinned in the suite.
+      - name: Every vocabulary lives in the declaration and not in the code (URKE-L-33)
+        run: python3 -m engine.recursive_knowledge.gate --law URKE-L-33 --gate --quiet
+
+  urke-validation:
+    name: Non-vacuity suite (every law must be able to refuse)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The coverage floor belongs to ./verify.sh in ec1-ci.yml and is deliberately not
+      # duplicated here; this job measures the suite, not the denominator.
+      - name: Install the pinned test toolchain
+        run: |
+          python -m pip install --disable-pip-version-check \
+            "pytest==8.3.4" "pytest-cov==6.0.0" "coverage==7.15.2"
+
+      - name: The foundation's own suite, including every forged violation
+        run: python -m pytest engine/tests/unit/test_recursive_knowledge.py -q --no-cov
+
+  urke-gate:
+    name: URKE gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: [declaration-soundness, urke-validation]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Thirty-two laws, measured and refused if they do not hold
+        run: python3 -m engine.recursive_knowledge.gate --gate --quiet
+
+      - name: Determinism and tree purity (two runs, byte-compared)
+        run: |
+          before="$(git status --porcelain)"
+          python3 -m engine.recursive_knowledge.gate --json --quiet > /tmp/urke-1.json
+          after_first="$(git status --porcelain)"
+          python3 -m engine.recursive_knowledge.gate --json --quiet > /tmp/urke-2.json
+          after_second="$(git status --porcelain)"
+          diff -u /tmp/urke-1.json /tmp/urke-2.json \
+            || { echo "::error::two measurements of one repository state differ"; exit 1; }
+          [ "$before" = "$after_first" ] && [ "$before" = "$after_second" ] \
+            || { echo "::error::the gate dirtied the working tree; it is declared OBSERVE MODE"; exit 1; }
+
+      - name: The report carries no clock reading and no machine path
+        run: |
+          python3 - <<'PY'
+          import json, re, sys
+
+          body = open("/tmp/urke-1.json", encoding="utf-8").read()
+          failures = 0
+          if re.search(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}", body):
+              print("::error::the report embeds a clock reading, so it cannot replay")
+              failures += 1
+          if "/home/runner" in body or "/Users/" in body:
+              print("::error::the report embeds an absolute machine path")
+              failures += 1
+          report = json.loads(body)
+          if report["status"] != "OPEN":
+              print(f"::error::the gate reported {report['status']}")
+              failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+      # Closes the drift between this workflow and the canonical verification path: if the
+      # stage is removed from verify.sh, this fails rather than CI quietly becoming the only
+      # place the gate runs. This is the check whose ABSENCE let the whole capability sit
+      # unwired, so it is deliberately derived from the declaration rather than hardcoded.
+      - name: ./verify.sh declares the stage and invokes this gate
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+
+          from engine.recursive_knowledge.declaration import load_declaration
+
+          label = load_declaration().gate["verify_stage_label"]
+          source = pathlib.Path("verify.sh").read_text(encoding="utf-8")
+          failures = 0
+          if label not in source:
+              print(f"::error::./verify.sh does not declare the stage {label!r}")
+              failures += 1
+          if "engine.recursive_knowledge.gate" not in source:
+              print("::error::the stage does not invoke engine.recursive_knowledge.gate")
+              failures += 1
+          declared = re.findall(r'^\s*run_stage "([^"]+)"', source, re.M)
+          if label not in declared:
+              print(f"::error::{label!r} is present but not as a run_stage")
+              failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+      # The complementary direction: UEC must be able to SEE this capability. An enforcement
+      # artifact outside the governed inventory is one nothing knows it depends on, and that is
+      # precisely the state URKE was in before this workflow existed.
+      - name: UEC governs this capability's whole enforcement surface
+        run: |
+          python3 - <<'PY'
+          import json, sys
+
+          declaration = json.load(
+              open("00-MASTER/UEC-000001/uec-declaration.json", encoding="utf-8")
+          )
+          governed = {row["identity"] for row in declaration["governed_enforcement"]}
+          required = {
+              "00-MASTER/URKE-000001/urke-declaration.json",
+              "engine/recursive_knowledge/gate.py",
+              "urke-gate",
+              ".github/workflows/urke-gate.yml",
+          }
+          missing = sorted(required - governed)
+          for item in missing:
+              print(f"::error::{item} is not in UEC-000001's governed enforcement inventory")
+          sys.exit(1 if missing else 0)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: urke-foundation-report
+          path: /tmp/urke-1.json
+          if-no-files-found: ignore
+
+      # Diagnostic only. The gate above already decided; this names the failing law in the log.
+      - name: Name the refusals (diagnostic)
+        if: failure()
+        run: python3 -m engine.recursive_knowledge.gate || true

@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "AMC-05",
+      "certification_id": "UCOS-CERT-AMC-05-3e5a7af2eb3e485f",
+      "entry_hash": "a568d15c826bc4f13e228c93921578199239d94b8a1acbe71650f72c18e5621b",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "3e5a7af2eb3e485f54ccaee5799e65edfe3290318b1e96c99c9df79679755f04",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-WORKFLOW-ucos.application.workflow.foundation-6a93c59ed2059159",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "a568d15c826bc4f13e228c93921578199239d94b8a1acbe71650f72c18e5621b",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

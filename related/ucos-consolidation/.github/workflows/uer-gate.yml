@@ -1,0 +1,88 @@
+name: UER-000001 Execution Resilience Gate
+
+# UER-000001 — UCOS Ω∞ Programme Ω∞-001A (Universal Execution Resilience).
+#
+# This workflow adds NO new validator, engine or capability. It runs the executable
+# expression of the execution-resilience contract declared in
+# 00-MASTER/UER-000001/uer-resilience.json, which BINDS the checkpoint, journal,
+# recovery, atomic-write, resume, work-package-ledger, continuation, replay-protection,
+# repository-safety and execution-health capabilities that already exist and are already
+# certified (EPIC-RTE-002 · repository operations · governance telemetry · the master
+# recovery/execution instruments). Binding a newly proven gap is an entry in that DATA
+# file — this workflow never needs to change, and no capability is enumerated here.
+#
+# Exit semantics of the gate:
+#   0  every mandated capability is covered, every pipeline step is bound, every
+#      mandatory validation and exit criterion is satisfied (gate OPEN)
+#   1  a capability, pipeline step, validation or exit criterion is unsatisfied (CLOSED)
+#   2  fail-closed abort — the declaration is unusable, so no verdict may be asserted
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uer-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: UER self-guards (declaration · zero-enumeration · write-scope · determinism)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+      - name: Declaration integrity (every home/evidence/programme reference resolves)
+        run: python3 00-MASTER/UER-000001/uer_engine.py --check-declaration
+
+      - name: Zero-enumeration / data-driven proof (no capability is hardcoded in the engine)
+        run: python3 00-MASTER/UER-000001/uer_engine.py --check-no-enumeration
+
+      - name: Forbidden-write guard (no engine, platform or corpus artefact is ever written)
+        run: python3 00-MASTER/UER-000001/uer_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical rendering across runs, no timestamps)
+        run: python3 00-MASTER/UER-000001/uer_engine.py --check-determinism
+
+  resilience-gate:
+    name: Execution Resilience Gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Execution Resilience Gate (fail-closed)
+        run: python3 00-MASTER/UER-000001/uer_engine.py --gate
+
+      - name: Publish the resilience determinations
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uer-determinations
+          path: |
+            00-MASTER/UER-000001/*.md
+            00-MASTER/UER-000001/uer.json
+            00-MASTER/UER-000001/evidence/
+          if-no-files-found: warn

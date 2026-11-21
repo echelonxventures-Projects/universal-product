@@ -1,0 +1,209 @@
+{
+  "accepted": true,
+  "blocking_failures": [],
+  "blueprint_id": "BAND-11-FREEZE",
+  "checks_run": [
+    "foundation-reuse-integrity",
+    "founding-acyclic",
+    "freeze-all-units-certified",
+    "freeze-all-units-frozen",
+    "freeze-band-completion-referenced",
+    "freeze-effects-declared",
+    "freeze-identified",
+    "freeze-immutable-baseline",
+    "freeze-independence",
+    "freeze-inventory-complete",
+    "freeze-non-projection",
+    "freeze-typed",
+    "freeze-valid-state",
+    "freeze-versioned",
+    "meta-class-single",
+    "meta-relationships-closed",
+    "non-constitutive",
+    "provisional-state-disclosure",
+    "service-value-fidelity",
+    "traceability-rooted"
+  ],
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 20,
+    "total": 20
+  },
+  "evidence_format": "ucos-validation-evidence/1.0.0",
+  "findings": [
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-004",
+          "ENG-005",
+          "CCE"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-all-units-certified",
+      "details": {
+        "units_certified": 12
+      },
+      "message": "freeze-all-units-certified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-all-units-frozen",
+      "details": {
+        "units_frozen": 12
+      },
+      "message": "freeze-all-units-frozen satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-band-completion-referenced",
+      "details": {},
+      "message": "freeze-band-completion-referenced satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-effects-declared",
+      "details": {},
+      "message": "freeze-effects-declared satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-identified",
+      "details": {
+        "freeze_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8"
+      },
+      "message": "freeze-identified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-immutable-baseline",
+      "details": {},
+      "message": "freeze-immutable-baseline satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-independence",
+      "details": {},
+      "message": "freeze-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-inventory-complete",
+      "details": {
+        "unit_count": 12
+      },
+      "message": "freeze-inventory-complete satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-non-projection",
+      "details": {},
+      "message": "freeze-non-projection satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-typed",
+      "details": {
+        "type_tag": "ucos.core.band-freeze"
+      },
+      "message": "freeze-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-valid-state",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "freeze-valid-state satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "freeze-versioned",
+      "details": {
+        "version": "1.0.0"
+      },
+      "message": "freeze-versioned satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "coverage": "SMC-01…10"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {},
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "service-value-fidelity",
+      "details": {
+        "baseline_digest": "deb2694f2f9405e843e338e38a6a678c9af6d547b055a8d3d3440a70cef4cd13"
+      },
+      "message": "service-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 6
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+  "verdict": "pass"
+}

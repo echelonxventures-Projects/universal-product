@@ -1,0 +1,47 @@
+{
+  "backward": [
+    "AMC-07",
+    "APPLICATION-011",
+    "APPLICATION-005",
+    "APPLICATION-001",
+    "ARCH-APPLICATION-001",
+    "12-APPLICATION@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-STATE-ucos.application.state.foundation-e22f76e909c5628e",
+    "EC3-B12-U07-VALIDATION-EVIDENCE",
+    "EC3-B12-U07-CCE-CERTIFICATION",
+    "EC3-B12-U07-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "1096d9d",
+  "meta_class": "AMC-07",
+  "referenced_units": [
+    "AMC-06",
+    "DF-2",
+    "RL-F2"
+  ],
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "represented bound data by reference (presents-data AMR-14); none redefined",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the state)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity; no parallel model)",
+    "ENG-004": "application.state_meta.StateKind + type_tag (ENG-004 typing, by reference)",
+    "ENG-005": "reference identifiers (holder, context, data, behavior refs)",
+    "RL-F2": "RUNTIME state concern by reference (§7, AMR-11 / STA-03); none redefined"
+  },
+  "target_id": "UCOS-STATE-ucos.application.state.foundation-e22f76e909c5628e",
+  "trace_format": "ucos-application-state-traceability/1.0.0",
+  "unit": "EC3-B12-U07"
+}

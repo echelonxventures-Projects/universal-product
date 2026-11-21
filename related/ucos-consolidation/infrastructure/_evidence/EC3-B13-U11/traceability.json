@@ -1,0 +1,47 @@
+{
+  "backward": [
+    "BAND-13",
+    "MCP-003-MEP-04",
+    "EC-3-AP-5-BAND-13-ADMISSION-DETERMINATION",
+    "ARCH-INFRASTRUCTURE-001",
+    "13-INFRASTRUCTURE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-BAND13-ucos.infrastructure.band13.completion-58610bf5cfb2df8c",
+    "EC3-B13-U11-VALIDATION-EVIDENCE",
+    "EC3-B13-U11-CCE-CERTIFICATION",
+    "EC3-B13-U11-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "2dee20b",
+  "meta_class": "BAND-13",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005",
+    "CCE"
+  ],
+  "substrate_reuse": {
+    "CCE": "infrastructure.capability_certification.cce_gates — CERTIFIED ten-gate suite (reused)",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the completion record)",
+    "ENG-004": "band-completion typing discipline (ENG-004)",
+    "ENG-005": "each unit referenced by certification id (never owned)",
+    "unit_EC3-B13-U01": "InfrastructureCapability — Universal Infrastructure Capability (afe5f834fc70b09784cfe0192244673d029b8ca1082f579b42bdab0d2f64d83b) — certified realization referenced, not owned",
+    "unit_EC3-B13-U02": "ComputeResource — Universal Infrastructure Compute (7653185f131306ebba6e19552501bacfa89382475f07d1383de929e288118cb8) — certified realization referenced, not owned",
+    "unit_EC3-B13-U03": "NetworkResource — Universal Infrastructure Network (8b2ffd4964acd46545bc23fa3c50a61a92cced77a9a2ff7fab6e32c6874e861f) — certified realization referenced, not owned",
+    "unit_EC3-B13-U04": "StorageHostingResource — Universal Infrastructure Storage-Hosting (155f783add94d7b769017ab01805e70a072e56106295425b1488222334ea360f) — certified realization referenced, not owned",
+    "unit_EC3-B13-U05": "Locality/IsolationBoundary/Node/Cluster/Environment/ProvisioningProcess — Universal Infrastructure Environment & Provisioning (f7a4241db99c9d2d60fffe441dff84e3ed52d44990b446c7c76f4366b118d4ae) — certified realization referenced, not owned",
+    "unit_EC3-B13-U06": "Topology/Distribution — Universal Infrastructure Topology & Distribution (e0f66304b79b6ad9ce9ab28c7449de3be1da4ab05436fd9e898d1e7f824ca47f) — certified realization referenced, not owned",
+    "unit_EC3-B13-U07": "AvailabilityTopology/ScalingArrangement — Universal Infrastructure Resilience & Availability (afdd120e61d7e333775f98c0769838f92b4094055ecf50487c85d8a4d2b21ffa) — certified realization referenced, not owned",
+    "unit_EC3-B13-U08": "SecurityFacet — Universal Infrastructure Security (5953f0d91f7d29b772e535a82274533b7902f47658b0bbe0aa68e12e72d0229b) — certified realization referenced, not owned",
+    "unit_EC3-B13-U09": "GovernanceFacet — Universal Infrastructure Governance (7df6764db9ee02d7ef238e9cbe6dbc6d4bc489cf3e9b7bca5176391803ee216b) — certified realization referenced, not owned",
+    "unit_EC3-B13-U10": "InfrastructureDependency — Universal Infrastructure Integration (UIMM) (7c89e922223abe8c3f8db5ceb85a1840e6130cccbce7fb37a2a328aa7d476260) — certified realization referenced, not owned"
+  },
+  "target_id": "UCOS-BAND13-ucos.infrastructure.band13.completion-58610bf5cfb2df8c",
+  "trace_format": "ucos-infrastructure-traceability/1.0.0",
+  "unit": "EC3-B13-U11"
+}

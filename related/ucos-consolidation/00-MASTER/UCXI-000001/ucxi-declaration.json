@@ -1,0 +1,64 @@
+{
+  "artifact_id": "UCXI-000001",
+  "title": "Universal Context Intelligence — the reference frame every context resolves in",
+  "authority": "AUTHORED REPOSITORY TRUTH, HELD SUBORDINATE UNDER UCKP-LAW-0001. This declaration recognises an implementation that already exists at engine/context/. It creates no authority, transfers no ownership, and adds no capability.",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "PROJECTION",
+    "relation": "PROJECTION",
+    "articles": [
+      "UCKP-ART-04",
+      "UCKP-ART-07",
+      "UCKP-ART-13"
+    ],
+    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+    "effect": "UCKP-ART-04 is the article CXL-10 is true under — representations hold no independent authority, and context describes without ever granting. UCKP-ART-13 is why a context's identity is a pure function of its identity tuple and why every derived artefact carries a reproducible seal (CXL-05, CXL-09). UCKP-ART-07 is named because this register declares eleven context RELATIONS, and each projects the relationship model declared there — this register does not own what a relationship IS."
+  },
+  "constitutional_basis": "UCKP-LAW-0001 (engine/uckp/law.py), UCOS-CAA-001, UCKP-ART-04, UCKP-ART-07, UCKP-ART-13",
+  "schema": "ucos-ucxi-declaration",
+  "version": "1.0.0",
+  "implementation": {
+    "home": "engine/context/",
+    "constitution": "engine/context/constitution.py",
+    "taxonomy": "engine/context/taxonomy.py",
+    "catalog": "engine/context/catalog.py",
+    "laws": "CXL-01 … CXL-12",
+    "$note": "Each law carries a check that computes its own compliance from the registry, the graph and where relevant a composition. A law with no reachable check would be manual governance, so the constitution refuses to construct itself if any law is unchecked."
+  },
+  "bounded_question": "In which reference frame does a context resolve, what kind of context is it, and how is a kind nobody has declared yet admitted?",
+  "owns": [
+    "context reference frames — CXL-03, every context bound to exactly one frame; CXL-04, no reference crosses a frame boundary without an explicit federation",
+    "the context taxonomy — the open classification tree over context kinds",
+    "the context extension mechanism — CXL-02, a future context type admitted as data, never invented at a call site",
+    "context binding resolution — the frame and resolution digest a consumer binds to"
+  ],
+  "does_not_own": [
+    "entity existence — UCOS-CEU-001. This register describes the frame a unit exists in; it never decides that the unit exists.",
+    "the relationship semantic model — UCKP-ART-07 at engine/uckp/graph.py. The eleven declared context relations are instances projecting that model.",
+    "identity allocation — UCOS-EPIC-001 / REG-AUTO-001.",
+    "permission — CXL-10 Zero Authority: context describes; it never grants. Observation is not permission.",
+    "governance decisions — CEP-002 Article 28 and UCDA-000001."
+  ],
+  "canonical_dependencies": {
+    "entity": "UCOS-CEU-001 — engine/ceu/",
+    "identity": "UCOS-EPIC-001 / REG-AUTO-001 — engine/registry/universal/identity.py",
+    "relationship_model": "UCKP-ART-07 — engine/uckp/graph.py",
+    "governance": "CEP-002 Article 28 / UCDA-000001",
+    "canonical_form": "UCKP-ART-13 — engine/uckp/canonical.py"
+  },
+  "openness": {
+    "closed_set": false,
+    "upper_limit": null,
+    "extension_mechanism": "ContextTaxonomy.extend — admits a future context type and returns a new taxonomy; a DATA edit, not a code edit",
+    "$current_kinds_are_examples_not_a_boundary": "The kinds recognised today — existence, reality, spatial, temporal, observer, identity, knowledge, linguistic, cultural, economic, governance, security, computational, environmental, regulatory — are the contexts this platform has needed so far. They are not a closed list, and no consumer branches on a particular kind.",
+    "$declared_future_path": "A measurement context is a recognised future declaration path and enters through CXL-02 like any other kind: as data, with no redesign of this register or its laws."
+  },
+  "invariants": [
+    "Every context resolves in exactly one frame (CXL-03).",
+    "A context kind is admitted by declaration, never invented at a call site (CXL-02).",
+    "A context's identity is a pure function of its identity tuple, minted by the single registration authority (CXL-05).",
+    "Context describes and never grants (CXL-10).",
+    "Context is superseded, never overwritten (CXL-12)."
+  ]
+}

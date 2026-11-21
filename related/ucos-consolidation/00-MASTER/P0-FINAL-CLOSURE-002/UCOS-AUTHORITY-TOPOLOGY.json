@@ -1,0 +1,160 @@
+{
+  "authority": "NONE — DERIVED TRUTH. Measurement only; this file certifies nothing and creates no authority.",
+  "phase": 2,
+  "tiers": [
+    {
+      "id": "T0",
+      "name": "Constitutional Source Corpus",
+      "subordinate_to": [],
+      "occupancy": "LOCATED"
+    },
+    {
+      "id": "T1",
+      "name": "Constitutional Authority",
+      "subordinate_to": [
+        "T0"
+      ],
+      "occupancy": "VACANT",
+      "vacancy": "VAC-01"
+    },
+    {
+      "id": "T1M",
+      "name": "Meta-Constitutional Authority",
+      "subordinate_to": [
+        "T1"
+      ],
+      "occupancy": "LOCATED"
+    },
+    {
+      "id": "T2",
+      "name": "Program Authority",
+      "subordinate_to": [
+        "T1"
+      ],
+      "occupancy": "LOCATED"
+    },
+    {
+      "id": "T2I",
+      "name": "Interpretive Authority",
+      "subordinate_to": [
+        "T1"
+      ],
+      "occupancy": "LOCATED"
+    },
+    {
+      "id": "T3",
+      "name": "Domain Authority",
+      "subordinate_to": [
+        "T1M",
+        "T2",
+        "T2I"
+      ],
+      "occupancy": "LOCATED"
+    },
+    {
+      "id": "T4",
+      "name": "Execution Authority",
+      "subordinate_to": [
+        "T3"
+      ],
+      "occupancy": "LOCATED"
+    },
+    {
+      "id": "T5",
+      "name": "Derived-Truth Authority",
+      "subordinate_to": [
+        "T4"
+      ],
+      "occupancy": "LOCATED"
+    }
+  ],
+  "orthogonal_tier_pairs": [
+    [
+      "T1M",
+      "T2"
+    ],
+    [
+      "T2I",
+      "T2"
+    ],
+    [
+      "T2I",
+      "T1M"
+    ]
+  ],
+  "vacancies": [
+    {
+      "id": "VAC-01",
+      "tier": "T1",
+      "declared_superior": "The ratified UCOS Omega-Infinity Constitution presupposed at CEP-000 §5.5 Tier 1 and §6.4",
+      "located": false,
+      "evidence": "The referent exists in the repository only as frozen non-normative source material under 00-SOURCE/CONSTITUTIONS/ (.docx). No ratified normative artifact occupies the tier.",
+      "closure_procedure": "CMG-000001 XVII.4: (a) record the vacancy; (b) record the determinations rendered provisional; (c) refer identification of the occupying authority to explicit ratification; (d) re-run authority resolution on closure.",
+      "open_question": "CMG-OQ-02",
+      "provisional_consequence": "Every determination depending on T1 — including the standing of CMG-000001 itself — is PROVISIONAL under CMG-L-12."
+    }
+  ],
+  "relationship_types": [
+    "DERIVES-AUTHORITY-FROM",
+    "SUBORDINATE-TO",
+    "ORTHOGONAL-TO",
+    "DELEGATES-TO",
+    "DEPENDS-ON",
+    "REFINES",
+    "COMPOSES",
+    "INHERITS-FROM",
+    "EXTENDS",
+    "AMENDS",
+    "SUPERSEDES",
+    "INTERPRETS",
+    "CERTIFIES",
+    "RATIFIES",
+    "CONFLICTS-WITH",
+    "TRACES-TO"
+  ],
+  "acyclic_relationship_types": [
+    "DERIVES-AUTHORITY-FROM",
+    "SUBORDINATE-TO",
+    "DEPENDS-ON",
+    "REFINES",
+    "COMPOSES",
+    "INHERITS-FROM",
+    "EXTENDS",
+    "AMENDS",
+    "SUPERSEDES",
+    "TRACES-TO"
+  ],
+  "check_nodes": 48,
+  "gate_nodes": 26,
+  "programme_nodes": 21,
+  "constituent_homes_with_independent_view": 92,
+  "independence_invariants": {
+    "no_authority_derives_standing_from_itself": {
+      "status": "ENFORCED",
+      "realization": "uccep_engine independent_view — per-home aggregate with that home's own gate/programme checks struck; constituency read from declaration (delegated_to / check owner), never enumerated",
+      "authority": "CMG-000001 LI.6; EDQ-004 (circular basis rejected as non-independent)",
+      "example": {
+        "home": "00-MASTER/ACEE-000001",
+        "struck": [
+          "CK-ACEE",
+          "CK-ACEE-SELF"
+        ]
+      }
+    },
+    "no_authority_derives_standing_from_a_dependent": {
+      "status": "ENFORCED",
+      "note": "same mechanism; a co-constituent of a home's programme is struck for that home"
+    },
+    "no_authority_derives_standing_from_a_circular_chain": {
+      "status": "ENFORCED",
+      "note": "the ACEE→AEE→UCCEP→ACEE cycle was the measured defect; it is cut at the aggregate"
+    },
+    "no_authority_certifies_itself": {
+      "status": "ENFORCED",
+      "authority": "CMG-000001 LI.6"
+    }
+  },
+  "unresolved": {
+    "T1": "VACANT (VAC-01) — see UCOS-VACANCY-DETERMINATION.json"
+  }
+}

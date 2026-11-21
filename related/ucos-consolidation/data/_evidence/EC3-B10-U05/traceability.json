@@ -1,0 +1,42 @@
+{
+  "backward": [
+    "DMC-06",
+    "DATA-010",
+    "DATA-005",
+    "DATA-001",
+    "ARCH-DATA-001",
+    "10-DATA@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-STORAGE-ucos.data.storage.foundation-b63d474835e6f132",
+    "EC3-B10-U05-VALIDATION-EVIDENCE",
+    "EC3-B10-U05-CCE-CERTIFICATION",
+    "EC3-B10-U05-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "30a2a02",
+  "meta_class": "DMC-06",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005"
+  ],
+  "substrate_reuse": {
+    "DMC-02": "data.entity.Entity — the CERTIFIED persists target (DMR-05); referenced only",
+    "DMC-05": "data.schema.Schema — the CERTIFIED conformance schema (DTA-07); referenced only",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the topology)",
+    "ENG-004": "data.storage_meta.StorageKind + type_tag (ENG-004 typing discipline)",
+    "ENG-005": "persisted-entity + schema + RUNTIME-state identity references (DMR-05/11)",
+    "RL-F2": "RUNTIME state concern — persistence behavior bound by reference (DMR-11/DTA-02)",
+    "founding_persists": "EC3-B10-U03 (DMC-02; UCOS-CERT-DMC-02-def41470d3bac196) — persists target, DMR-05",
+    "founding_root": "EC3-B10-U02 (DMC-03; UCOS-CERT-DMC-03-c57d36d3dbb2763d) → EC3-B10-U01 (DMC-01; UCOS-CERT-DMC-01-51e5964b38741e30) — transitive persists root",
+    "founding_unit": "EC3-B10-U04 (DMC-05; UCOS-CERT-DMC-05-e9edc215907c8695) — schema-aligned, DTA-07"
+  },
+  "target_id": "UCOS-STORAGE-ucos.data.storage.foundation-b63d474835e6f132",
+  "trace_format": "ucos-data-traceability/1.0.0",
+  "unit": "EC3-B10-U05"
+}

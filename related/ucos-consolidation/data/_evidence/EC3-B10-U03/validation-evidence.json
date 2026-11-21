@@ -1,0 +1,228 @@
+{
+  "accepted": true,
+  "blocking_failures": [],
+  "blueprint_id": "DMC-02",
+  "checks_run": [
+    "data-value-fidelity",
+    "entity-attributes-typed",
+    "entity-bears-attributes",
+    "entity-boundary-ownership",
+    "entity-boundedness",
+    "entity-classified",
+    "entity-identified",
+    "entity-named",
+    "entity-schema-before-active",
+    "entity-typed",
+    "foundation-reuse-integrity",
+    "founding-acyclic",
+    "lifecycle-valid",
+    "meta-class-single",
+    "meta-constraints",
+    "meta-relationships-closed",
+    "non-constitutive",
+    "provisional-state-disclosure",
+    "storage-independence",
+    "traceability-rooted"
+  ],
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 20,
+    "total": 20
+  },
+  "evidence_format": "ucos-validation-evidence/1.0.0",
+  "findings": [
+    {
+      "check_id": "data-value-fidelity",
+      "details": {
+        "value_digest": "b014125ab4fbbe4ff7e04c225b93b3e3e3a40b98e9ddf524f4a821d7fe258eb3"
+      },
+      "message": "data-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "entity-attributes-typed",
+      "details": {
+        "typed": 1
+      },
+      "message": "entity-attributes-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "entity-bears-attributes",
+      "details": {
+        "bears": [
+          "UCOS-ATTR-ucos.data.attribute.foundation-e9d6fb905537bbb2"
+        ]
+      },
+      "message": "entity-bears-attributes satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "entity-boundary-ownership",
+      "details": {
+        "boundary": "UCOS-ENTITY-REF:ucos.data.entity.foundation"
+      },
+      "message": "entity-boundary-ownership satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "entity-boundedness",
+      "details": {
+        "attribute_count": 1
+      },
+      "message": "entity-boundedness satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "entity-classified",
+      "details": {
+        "kind": "Master-Entity"
+      },
+      "message": "entity-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "entity-identified",
+      "details": {
+        "entity_id": "UCOS-ENTITY-ucos.data.entity.foundation-b014125ab4fbbe4f"
+      },
+      "message": "entity-identified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "entity-named",
+      "details": {
+        "name": "ucos.data.entity.foundation"
+      },
+      "message": "entity-named satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "entity-schema-before-active",
+      "details": {
+        "schema_described": false
+      },
+      "message": "entity-schema-before-active satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "entity-typed",
+      "details": {
+        "type_tag": "ucos.core.entity"
+      },
+      "message": "entity-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-004",
+          "ENG-005"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "lifecycle-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "DMC-02"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "DEA-K1",
+          "DEA-K2",
+          "DMK-01"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "DMR-01",
+          "DMR-04",
+          "DMR-10"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "storage-independence",
+      "details": {},
+      "message": "storage-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 6
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-ENTITY-ucos.data.entity.foundation-b014125ab4fbbe4f",
+  "verdict": "pass"
+}

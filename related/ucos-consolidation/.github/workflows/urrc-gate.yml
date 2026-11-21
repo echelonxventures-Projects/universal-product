@@ -1,0 +1,99 @@
+name: URRC-000001 Repository Reality Gate
+
+# URRC-000001 — Repository Reality & Constitutional Completion.
+#
+# This workflow adds NO new validator, engine, catalogue, registry or capability. It runs
+# the executable expression of the binding declaration in
+# 00-MASTER/URRC-000001/urrc-bindings.json, which binds each chartered deliverable either
+# to the canonical owner that already holds it, to a derivation over declared
+# machine-readable substrate, or to a counted probe of verified absence. Adding a
+# deliverable, matrix, gate, substrate, derivation or binding mode is an edit to that DATA
+# file — this workflow never needs to change, and nothing is enumerated here.
+#
+# Exit semantics of the gate:
+#   0  every blocking gate passed (gate OPEN)
+#   1  a blocking gate failed (gate CLOSED)
+#   2  fail-closed abort — the declaration or a required substrate is unusable, so no
+#      verdict may be asserted
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: urrc-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: URRC self-guards (eight, each fail-closed)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+      - name: Declaration integrity (identity, vocabulary, charter range, cross-reference)
+        run: python3 00-MASTER/URRC-000001/urrc_engine.py --check-declaration
+
+      - name: Zero-enumeration / data-driven proof (no deliverable is hardcoded)
+        run: python3 00-MASTER/URRC-000001/urrc_engine.py --check-no-enumeration
+
+      - name: Forbidden-write guard (no corpus, constitutional or owner zone is written)
+        run: python3 00-MASTER/URRC-000001/urrc_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical rendering across runs, no timestamps)
+        run: python3 00-MASTER/URRC-000001/urrc_engine.py --check-determinism
+
+      - name: Substrate usability (present, tracked, parsing, pointers resolving)
+        run: python3 00-MASTER/URRC-000001/urrc_engine.py --check-substrate
+
+      - name: No fabrication (every derived record carries evidence or an absence marker)
+        run: python3 00-MASTER/URRC-000001/urrc_engine.py --check-no-fabrication
+
+      - name: Reuse before create (the zero-duplication invariant, mechanized)
+        run: python3 00-MASTER/URRC-000001/urrc_engine.py --check-reuse-before-create
+
+      - name: Law namespace (no emitted byte reintroduces the ratified law token)
+        run: python3 00-MASTER/URRC-000001/urrc_engine.py --check-law-namespace
+
+  reality-gate:
+    name: Repository Reality Gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Repository Reality Gate (fail-closed)
+        run: python3 00-MASTER/URRC-000001/urrc_engine.py --gate
+
+      - name: Publish the reality determinations
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: urrc-determinations
+          path: |
+            00-MASTER/URRC-000001/*.md
+            00-MASTER/URRC-000001/urrc.json
+            00-MASTER/URRC-000001/evidence/
+          if-no-files-found: warn

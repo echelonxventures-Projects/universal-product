@@ -1,0 +1,48 @@
+{
+  "backward": [
+    "BAND-10",
+    "MCP-003-MEP-01",
+    "EC-3-AP-2-BAND-10-ADMISSION-DETERMINATION",
+    "ARCH-DATA-001",
+    "10-DATA@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+    "EC3-B10-U12-VALIDATION-EVIDENCE",
+    "EC3-B10-U12-CCE-CERTIFICATION",
+    "EC3-B10-U12-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "30a2a02",
+  "meta_class": "BAND-10",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005",
+    "CCE"
+  ],
+  "substrate_reuse": {
+    "CCE": "data.certification.cce_gates — the CERTIFIED ten-gate suite, reused verbatim",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the completion record)",
+    "ENG-004": "band-completion typing discipline (ENG-004)",
+    "ENG-005": "each unit referenced by certification id (never owned)",
+    "unit_EC3-B10-U01": "DMC-01 Datum (UCOS-CERT-DMC-01-51e5964b38741e30) — certified realization referenced, not owned",
+    "unit_EC3-B10-U02": "DMC-03 Attribute (UCOS-CERT-DMC-03-c57d36d3dbb2763d) — certified realization referenced, not owned",
+    "unit_EC3-B10-U03": "DMC-02 Entity (UCOS-CERT-DMC-02-def41470d3bac196) — certified realization referenced, not owned",
+    "unit_EC3-B10-U04": "DMC-05 Schema (UCOS-CERT-DMC-05-e9edc215907c8695) — certified realization referenced, not owned",
+    "unit_EC3-B10-U05": "DMC-06 Storage (UCOS-CERT-DMC-06-aa8d65c34494943a) — certified realization referenced, not owned",
+    "unit_EC3-B10-U06": "DMC-07 Lifecycle (UCOS-CERT-DMC-07-10cb52fd186c7693) — certified realization referenced, not owned",
+    "unit_EC3-B10-U07": "DMC-08 Governance-Object (UCOS-CERT-DMC-08-07e9db1834b26c10) — certified realization referenced, not owned",
+    "unit_EC3-B10-U08": "DMC-09 Quality-Object (UCOS-CERT-DMC-09-a384f960567e9ffb) — certified realization referenced, not owned",
+    "unit_EC3-B10-U09": "DMC-10 Security-Object (UCOS-CERT-DMC-10-afa02b108e3ca0c5) — certified realization referenced, not owned",
+    "unit_EC3-B10-U10": "DMC-04 Relationship (UCOS-CERT-DMC-04-29b2b5d6ede59cce) — certified realization referenced, not owned",
+    "unit_EC3-B10-U11": "UDM Universal Data Meta-Model (UCOS-CERT-UDM-9f3f055879bb2b43) — certified realization referenced, not owned"
+  },
+  "target_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+  "trace_format": "ucos-data-traceability/1.0.0",
+  "unit": "EC3-B10-U12"
+}

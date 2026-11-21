@@ -1,0 +1,4782 @@
+{
+  "artifact_id": "URKE-000001",
+  "name": "Universal Recursive Knowledge, Discovery, Research and Evolution Foundation",
+  "version": "1.0.0",
+  "authority": "NONE — DERIVED TRUTH. This declaration certifies nothing, admits no construct and owns no vocabulary another capability already owns. It declares the lifecycle the not-yet-known travels, and every claim in it is measured by engine/recursive_knowledge/contract.py rather than asserted here.",
+  "constitutional_superior": "UCON-000001",
+  "$constitutional_superior": "UCON-000001 owns disposition. URKE owns none of it and re-implements none of it: every subject admitted here is presented into the UCON construct registry and receives its disposition there. That is why 'governed' never means 'admitted' in this capability, and why a subject can be fully governed while UCON has quarantined it.",
+  "strategic_superior": "USRD-000001",
+  "$strategic_superior": "USRD-000001 sets direction and implements nothing. Three of its principles are directly measurable here and are bound to laws rather than quoted: the reality principle (URKE-L-27), declaration-implementation parity (URKE-L-28) and continuous improvement (URKE-L-29). The rest constrain what may be claimed, which URKE-L-21 enforces.",
+  "principle": {
+    "statement": "No identified unknown, contradiction, gap, limitation or unresolved question exists outside a governed lifecycle, and no mechanism here is closed against a future domain it has not met.",
+    "$statement": "Two halves, both measured. The first is arithmetic: what is admitted is counted, chained and not removable (URKE-L-18), and everything admitted carries a disposition (URKE-L-19) and a context (URKE-L-20). The second is structural: the vocabularies are data, so a state, a domain, a relation, a context, a reality or a temporal system nobody has named is admitted at runtime without a byte of this package changing (URKE-L-09, L-10, L-16, L-17).",
+    "not_claimed": "That the population is exhaustive. An unknown nobody has identified is absent from it by construction, and that bound is recorded as gap URKE-G-11 rather than argued away."
+  },
+  "design_rule": {
+    "statement": "A new primitive, entity class, state or vocabulary is admitted only on proof that the condition cannot be expressed through an existing subject, a relationship, an attribute, a qualifier, a context, evidence, governance or history.",
+    "$statement": "Applied, not aspired to. Forty-one lifecycle states, twenty-six unknown classes, thirty-two object kinds and fourteen entity classes were drafted for this capability and collapsed to seven states, two entity classes and two structural primitives. Every condition they named is still expressible and the condition catalogue records each one as a composition; URKE-L-30 realises every entry on every run and URKE-L-32 measures that the primitive count has not drifted upward while the data grew.",
+    "preferred_order": [
+      "attribute",
+      "qualifier",
+      "relationship",
+      "composition",
+      "evidence",
+      "governance",
+      "history",
+      "state",
+      "entity class",
+      "primitive"
+    ],
+    "new_primitive_proof_required": [
+      "what capability cannot currently be represented",
+      "why it cannot be represented through subject, relationship, attribute, qualifier, context, evidence, governance or history",
+      "what measurable capability is gained",
+      "what measurable complexity is added",
+      "why the tradeoff is justified"
+    ],
+    "success_criterion": "Expressive power divided by structural complexity. The ratio is reported every run and is expected to rise as data grows, because data growth is not architecture growth."
+  },
+  "primitives": {
+    "bound": 2,
+    "$bound": "Two, and the bound is measured rather than intended: URKE-L-32 refuses a count above it. A third is possible and must be a deliberate, visible act accompanied by the proof the design rule requires.",
+    "entity_class_bound": 2,
+    "state_bound": 9,
+    "$state_bound": "Headroom of two above the seven declared states, so a genuinely new lifecycle condition can be admitted at runtime while a drift back toward a state per concept is refused.",
+    "elements": [
+      {
+        "primitive": "SUBJECT",
+        "definition": "An identified thing under governed lifecycle. A fact, a context, a contradiction, a gap, a research programme, a discovery, a reality, a temporal system, a declared law and a construct nobody has named are all one of these. What differs between them is data.",
+        "module": "engine/recursive_knowledge/model.py",
+        "symbol": "GovernedEntity"
+      },
+      {
+        "primitive": "RELATIONSHIP",
+        "definition": "A governed link between two subjects, carrying its own basis and evidence. The second and last structural primitive, because it is the only thing whose subject is a pair. Every taxonomy that would otherwise have become a type hierarchy is expressed with these instead.",
+        "module": "engine/recursive_knowledge/ledger.py",
+        "symbol": "relate"
+      }
+    ],
+    "supporting": [
+      {
+        "device": "ATTRIBUTE",
+        "definition": "A named value on a subject. Where a taxonomy would otherwise grow.",
+        "module": "engine/recursive_knowledge/model.py",
+        "symbol": "ATTRIBUTE_READERS"
+      },
+      {
+        "device": "QUALIFIER",
+        "definition": "A declared attribute vocabulary. Where a state would otherwise multiply.",
+        "module": "engine/recursive_knowledge/composition.py",
+        "symbol": "qualify"
+      },
+      {
+        "device": "CONTEXT",
+        "definition": "A subject that situates other subjects. Not a special case: a subject with the context profile, which may contain and reference other contexts.",
+        "module": "engine/recursive_knowledge/composition.py",
+        "symbol": "situate"
+      },
+      {
+        "device": "EVIDENCE",
+        "definition": "A recorded observation offered for or against a claim.",
+        "module": "engine/recursive_knowledge/model.py",
+        "symbol": "Evidence"
+      },
+      {
+        "device": "STATE",
+        "definition": "Where a subject sits in the lattice, qualified by attributes.",
+        "module": "engine/recursive_knowledge/states.py",
+        "symbol": "transition"
+      },
+      {
+        "device": "GOVERNANCE",
+        "definition": "The authority answerable for a subject, and the disposition it reached.",
+        "module": "engine/recursive_knowledge/bridge.py",
+        "symbol": "HANDLERS"
+      },
+      {
+        "device": "HISTORY",
+        "definition": "The append-only record of what happened to a subject.",
+        "module": "engine/recursive_knowledge/ledger.py",
+        "symbol": "KnowledgeLedger"
+      }
+    ],
+    "$supporting": "Expressive devices that are deliberately not primitives: each is data carried by a subject, and none is a type. They are declared so the distinction stays measurable — a device that quietly became a class would show up as a primitive-count refusal."
+  },
+  "identity": {
+    "namespace": "ucos.recursive-knowledge",
+    "key_domain": "urke.natural-key",
+    "minted_by": "engine/kernel/identity.py::mint",
+    "$minted_by": "Identity is derived, never assigned, and it is not a new grammar. UMK-000001 already owns deterministic identity; URKE folds a natural key through the Layer Zero digest and mints under its own namespace."
+  },
+  "states": {
+    "initial": "UNKNOWN",
+    "$initial": "The weakest available claim. Starting anywhere stronger would make the framework assert knowledge at admission time.",
+    "settled": [
+      "KNOWN",
+      "SUPERSEDED"
+    ],
+    "$settled": "The states in which no discovery workflow is owed. Settled is not terminal: both name successors, so a settled subject can be reopened the moment evidence changes. Everything else is eligible for discovery, and URKE-L-40 computes eligibility from this row rather than from a list of favoured classes.",
+    "classes": [
+      {
+        "class": "epistemic",
+        "definition": "About what is or is not known.",
+        "binding_required": true
+      },
+      {
+        "class": "verification",
+        "definition": "About what evidence supports or refutes.",
+        "binding_required": true
+      },
+      {
+        "class": "governance",
+        "definition": "About who must decide next.",
+        "binding_required": false
+      },
+      {
+        "class": "lifecycle",
+        "definition": "About where in the working lifecycle the subject sits.",
+        "binding_required": false
+      }
+    ],
+    "binding_owners": [
+      {
+        "owner": "UCOS-CEU-001",
+        "reader": "ceu_populations",
+        "definition": "The existence universe owns the existence, knowledge, epistemic and temporal-model vocabularies. URKE binds to its rows and copies none of them."
+      },
+      {
+        "owner": "UKDA-000001",
+        "reader": "ukda_lifecycle",
+        "definition": "The knowledge-object lifecycle stages."
+      }
+    ],
+    "seed": [
+      {
+        "identifier": "UNKNOWN",
+        "title": "Unknown",
+        "state_class": "epistemic",
+        "definition": "Identified and unresolved. Which flavour of not-knowing — residual, a stated question, unobserved, unmeasured, or inaccessible to every instrument — is the articulation and observability qualifiers, not five states.",
+        "terminal": false,
+        "successors": [
+          "BLOCKED",
+          "CONTESTED",
+          "KNOWN",
+          "RESEARCHING",
+          "SUPERSEDED",
+          "UNDECIDABLE"
+        ],
+        "binding": {
+          "member": "unknown",
+          "owner": "UCOS-CEU-001",
+          "population": "epistemic-state"
+        },
+        "binding_gap": null,
+        "ucon_research_state": "open"
+      },
+      {
+        "identifier": "RESEARCHING",
+        "title": "Researching",
+        "state_class": "lifecycle",
+        "definition": "Under active investigation. Whether the activity is investigation, experiment, verification or validation is the activity qualifier.",
+        "terminal": false,
+        "successors": [
+          "BLOCKED",
+          "CONTESTED",
+          "KNOWN",
+          "SUPERSEDED",
+          "UNDECIDABLE",
+          "UNKNOWN"
+        ],
+        "binding": null,
+        "binding_gap": {
+          "gap_id": "URKE-G-01",
+          "finding": "No owner carries a research-activity vocabulary. No declared vocabulary owner carries a row for this lifecycle condition, so URKE holds it locally and discloses that it does.",
+          "referred_to": "UKDA-000001",
+          "remediation": "Propose a row with the named owner, or accept the local holding and its disclosure."
+        },
+        "ucon_research_state": "in-progress"
+      },
+      {
+        "identifier": "BLOCKED",
+        "title": "Blocked",
+        "state_class": "governance",
+        "definition": "Cannot advance until a named requirement is met. What is required — research, an instrument, an authority, knowledge, science, mathematics, discovery or a future capability — is the blocked-on qualifier. Eight conditions the directives named separately are one state and one qualifier.",
+        "terminal": false,
+        "successors": [
+          "CONTESTED",
+          "KNOWN",
+          "RESEARCHING",
+          "SUPERSEDED",
+          "UNDECIDABLE",
+          "UNKNOWN"
+        ],
+        "binding": null,
+        "binding_gap": {
+          "gap_id": "URKE-G-02",
+          "finding": "No owner carries a blocking-requirement vocabulary. No declared vocabulary owner carries a row for this lifecycle condition, so URKE holds it locally and discloses that it does.",
+          "referred_to": "engine/governance",
+          "remediation": "Propose a row with the named owner, or accept the local holding and its disclosure."
+        },
+        "ucon_research_state": "open"
+      },
+      {
+        "identifier": "KNOWN",
+        "title": "Known",
+        "state_class": "epistemic",
+        "definition": "Held with a recorded basis. Whether it is verified, validated, certified or relied on is the independent axes, because those are orthogonal to being held. A gap whose closure criteria are satisfied rests here: what was missing is now known.",
+        "terminal": false,
+        "successors": [
+          "BLOCKED",
+          "CONTESTED",
+          "RESEARCHING",
+          "SUPERSEDED",
+          "UNDECIDABLE",
+          "UNKNOWN"
+        ],
+        "binding": {
+          "member": "certainty",
+          "owner": "UCOS-CEU-001",
+          "population": "knowledge-state"
+        },
+        "binding_gap": null,
+        "ucon_research_state": "supported"
+      },
+      {
+        "identifier": "CONTESTED",
+        "title": "Contested",
+        "state_class": "verification",
+        "definition": "Incompatible positions are held at once. Whether the conflict is a refutation by evidence, an internal inconsistency, an evidence standoff or a dispute between authorities is the conflict-kind qualifier.",
+        "terminal": false,
+        "successors": [
+          "BLOCKED",
+          "KNOWN",
+          "RESEARCHING",
+          "SUPERSEDED",
+          "UNDECIDABLE",
+          "UNKNOWN"
+        ],
+        "binding": {
+          "member": "contradicted",
+          "owner": "UCOS-CEU-001",
+          "population": "epistemic-state"
+        },
+        "binding_gap": null,
+        "ucon_research_state": "refuted"
+      },
+      {
+        "identifier": "UNDECIDABLE",
+        "title": "Undecidable",
+        "state_class": "epistemic",
+        "definition": "No decision procedure available to this repository settles it. Recorded, never dropped.",
+        "terminal": false,
+        "successors": [
+          "BLOCKED",
+          "CONTESTED",
+          "KNOWN",
+          "RESEARCHING",
+          "SUPERSEDED",
+          "UNKNOWN"
+        ],
+        "binding": null,
+        "binding_gap": {
+          "gap_id": "URKE-G-03",
+          "finding": "UCON-000001 discloses the same absence for its own undecidable state; URKE inherits the gap rather than inventing a binding. No declared vocabulary owner carries a row for this lifecycle condition, so URKE holds it locally and discloses that it does.",
+          "referred_to": "UCOS-CEU-001",
+          "remediation": "Propose a row with the named owner, or accept the local holding and its disclosure."
+        },
+        "ucon_research_state": "undecidable"
+      },
+      {
+        "identifier": "SUPERSEDED",
+        "title": "Superseded",
+        "state_class": "governance",
+        "definition": "Replaced by a named later subject and retained in full. Whether it is superseded, deprecated or retired is the withdrawal qualifier.",
+        "terminal": false,
+        "successors": [
+          "BLOCKED",
+          "CONTESTED",
+          "KNOWN",
+          "RESEARCHING",
+          "UNDECIDABLE",
+          "UNKNOWN"
+        ],
+        "binding": {
+          "member": "superseded",
+          "owner": "UKDA-000001",
+          "population": "lifecycle"
+        },
+        "binding_gap": null,
+        "ucon_research_state": "superseded"
+      }
+    ],
+    "$successor_mesh": "Every state names every other. With seven states that is not laxity, it is the honest shape: a subject can become contested from any state and can be reopened after supersession, so there is no working sequence to enforce. What constrains movement is evidence and governance, both recorded, neither a graph edge."
+  },
+  "lifecycle_axes": {
+    "$purpose": "Existence, representation, admission, verification, validation, certification and acceptance are seven independent axes, not seven points on one scale. A single status field would make 'we can write it down' and 'we believe it' the same observable, and representation before understanding would stop being expressible — which is the one thing this capability exists to make possible. URKE-L-31 realises the whole cross-product.",
+    "seed": [
+      {
+        "axis": "existence",
+        "definition": "Whether the thing is held to be, independent of whether we wrote it down.",
+        "initial": "unresolved",
+        "values": [
+          "unresolved",
+          "claimed",
+          "observed"
+        ]
+      },
+      {
+        "axis": "representation",
+        "definition": "Whether the repository can express it. Representation precedes understanding.",
+        "initial": "represented",
+        "values": [
+          "absent",
+          "represented"
+        ]
+      },
+      {
+        "axis": "admission",
+        "definition": "Whether the construct foundation has dispositioned it.",
+        "initial": "not-presented",
+        "values": [
+          "not-presented",
+          "presented",
+          "disposed"
+        ]
+      },
+      {
+        "axis": "verification",
+        "definition": "What measurement says.",
+        "initial": "unverified",
+        "values": [
+          "unverified",
+          "under-verification",
+          "partially-verified",
+          "verified",
+          "refuted"
+        ]
+      },
+      {
+        "axis": "validation",
+        "definition": "Whether it is fit for the purpose offered.",
+        "initial": "unvalidated",
+        "values": [
+          "unvalidated",
+          "under-validation",
+          "validated",
+          "invalidated"
+        ]
+      },
+      {
+        "axis": "certification",
+        "definition": "Whether an authority attested to it.",
+        "initial": "uncertified",
+        "values": [
+          "uncertified",
+          "certified",
+          "revoked"
+        ]
+      },
+      {
+        "axis": "acceptance",
+        "definition": "Whether the repository relies on it.",
+        "initial": "unaccepted",
+        "values": [
+          "unaccepted",
+          "accepted",
+          "declined-for-use"
+        ]
+      }
+    ]
+  },
+  "qualifiers": {
+    "confidence_qualifier": "confidence",
+    "$confidence_qualifier": "The qualifier that records how well supported a claim is held to be. Named so a module can reach it by role.",
+    "$purpose": "Where a lifecycle state would otherwise multiply. Each qualifier below replaced between two and eight drafted states, and each definition records which. A qualifier value nobody declared is admitted through URKE-EP-03 and changes no byte of the package; a state cannot be added that cheaply, and that asymmetry is the design rule made operational.",
+    "seed": [
+      {
+        "qualifier": "knowledge_status",
+        "definition": "How well the subject is known. With the domain attribute this replaces an entire family of unknown classes: unknown physics is two data values, not a type.",
+        "initial": "unstated",
+        "values": [
+          "unstated",
+          "known",
+          "partially-known",
+          "unknown",
+          "undecidable",
+          "contested"
+        ]
+      },
+      {
+        "qualifier": "articulation",
+        "definition": "How precisely the not-knowing can be stated. Replaces UNKNOWN / KNOWN_UNKNOWN / UNKNOWN_UNKNOWN as three states.",
+        "initial": "unstated",
+        "values": [
+          "unstated",
+          "residual",
+          "stated-question",
+          "stated-claim"
+        ]
+      },
+      {
+        "qualifier": "observability",
+        "definition": "Why the subject has not been observed. Replaces UNOBSERVED / UNMEASURED / NOT_YET_MEASURABLE / UNOBSERVABLE / NOT_YET_DISCOVERED as five states.",
+        "initial": "unstated",
+        "values": [
+          "unstated",
+          "observed",
+          "not-yet-observed",
+          "not-yet-measured",
+          "not-yet-discovered",
+          "no-instrument-exists",
+          "inaccessible-from-every-frame"
+        ]
+      },
+      {
+        "qualifier": "blocked_on",
+        "definition": "What a blocked subject waits for. Replaces RESEARCH_REQUIRED / DISCOVERY_REQUIRED / INSTRUMENT_REQUIRED / AUTHORITY_REQUIRED / KNOWLEDGE_NOT_YET_AVAILABLE / SCIENCE_NOT_YET_AVAILABLE / MATHEMATICS_NOT_YET_AVAILABLE / FUTURE_DEPENDENT as eight states.",
+        "initial": "nothing",
+        "values": [
+          "nothing",
+          "research",
+          "discovery",
+          "instrument",
+          "authority",
+          "knowledge",
+          "science",
+          "mathematics",
+          "future-capability"
+        ]
+      },
+      {
+        "qualifier": "conflict_kind",
+        "definition": "What incompatibility stands. Replaces CONTRADICTED / CONTRADICTORY / CONTESTED / DISPUTED as four states.",
+        "initial": "none",
+        "values": [
+          "none",
+          "refuted-by-evidence",
+          "internally-inconsistent",
+          "evidence-standoff",
+          "authority-dispute"
+        ]
+      },
+      {
+        "qualifier": "withdrawal",
+        "definition": "How something left use. Replaces SUPERSEDED / DEPRECATED / RETIRED as three states.",
+        "initial": "none",
+        "values": [
+          "none",
+          "superseded",
+          "deprecated",
+          "retired"
+        ]
+      },
+      {
+        "qualifier": "activity",
+        "definition": "What is being done. Replaces RESEARCHING / EXPERIMENTING / UNDER_VERIFICATION / UNDER_VALIDATION as four states.",
+        "initial": "none",
+        "values": [
+          "none",
+          "investigating",
+          "experimenting",
+          "verifying",
+          "validating"
+        ]
+      },
+      {
+        "qualifier": "record_stage",
+        "definition": "How far the subject travelled through recording. Replaces PRESENTED / RECORDED as states; both are events in a pipeline, not places a subject rests.",
+        "initial": "unstated",
+        "values": [
+          "unstated",
+          "presented",
+          "recorded"
+        ]
+      },
+      {
+        "qualifier": "confidence",
+        "definition": "How well supported the claim is held to be, stated rather than implied.",
+        "initial": "unassessed",
+        "values": [
+          "unassessed",
+          "low",
+          "moderate",
+          "high",
+          "contested"
+        ]
+      },
+      {
+        "qualifier": "epistemic_form",
+        "definition": "What kind of claim it is. Replaces a type per knowledge-object kind and a type per discovery-object kind — thirty-two drafted classes — with one open qualifier.",
+        "initial": "unclassified",
+        "values": [
+          "unclassified",
+          "fact",
+          "hypothesis",
+          "theory",
+          "model",
+          "observation",
+          "assumption",
+          "question",
+          "rule",
+          "law",
+          "authority",
+          "capability",
+          "evidence",
+          "confidence-assessment",
+          "limitation",
+          "future-concept",
+          "ontology",
+          "taxonomy",
+          "vocabulary",
+          "programme",
+          "experiment",
+          "discovery-event",
+          "discovery-finding",
+          "discovery-outcome",
+          "discovery-failure",
+          "discovery-revision",
+          "discovery-path",
+          "temporal-system",
+          "location-system",
+          "measurement-system",
+          "identity-system",
+          "reality-model",
+          "governance-rule",
+          "verification-rule",
+          "validation-rule"
+        ]
+      }
+    ]
+  },
+  "domains": {
+    "residual": "unclassified-domain",
+    "$purpose": "A domain is data. Unknown physics is the domain 'physics' with knowledge status 'unknown', not a class named UnknownPhysics — which is why admitting a science nobody has named is one row here and no code anywhere.",
+    "seed": [
+      {
+        "identifier": "mathematics",
+        "definition": "Structures, proofs, decidability and formal systems."
+      },
+      {
+        "identifier": "physics",
+        "definition": "Matter, energy, spacetime and their laws."
+      },
+      {
+        "identifier": "biology",
+        "definition": "Living systems and their mechanisms."
+      },
+      {
+        "identifier": "chemistry",
+        "definition": "Substances, reactions and their regimes."
+      },
+      {
+        "identifier": "computation",
+        "definition": "Models of computation and their limits."
+      },
+      {
+        "identifier": "intelligence",
+        "definition": "Cognition, reasoning and learning."
+      },
+      {
+        "identifier": "ontology",
+        "definition": "What kinds of thing there are."
+      },
+      {
+        "identifier": "taxonomy",
+        "definition": "How kinds are classified."
+      },
+      {
+        "identifier": "governance",
+        "definition": "Who decides what, and to whom they answer."
+      },
+      {
+        "identifier": "verification",
+        "definition": "How a claim is checked."
+      },
+      {
+        "identifier": "validation",
+        "definition": "Whether something is fit for a purpose."
+      },
+      {
+        "identifier": "economics",
+        "definition": "Value, exchange and allocation."
+      },
+      {
+        "identifier": "security",
+        "definition": "Threat, adversary and protection."
+      },
+      {
+        "identifier": "temporal",
+        "definition": "Time, chronology, ordering and causality."
+      },
+      {
+        "identifier": "location",
+        "definition": "Position, frame and place."
+      },
+      {
+        "identifier": "measurement",
+        "definition": "Units, instruments and traceability."
+      },
+      {
+        "identifier": "identity",
+        "definition": "Naming, minting and re-finding."
+      },
+      {
+        "identifier": "reality",
+        "definition": "Modes and structures of reality."
+      },
+      {
+        "identifier": "universe",
+        "definition": "Containers of realities."
+      },
+      {
+        "identifier": "civilization",
+        "definition": "Populations, their institutions and conventions."
+      },
+      {
+        "identifier": "dimension",
+        "definition": "Axes of variation."
+      },
+      {
+        "identifier": "substrate",
+        "definition": "What a system runs on."
+      },
+      {
+        "identifier": "language",
+        "definition": "Notation, encoding and interpretation."
+      },
+      {
+        "identifier": "construct",
+        "definition": "The repository's own constructs."
+      },
+      {
+        "identifier": "discovery",
+        "definition": "How the unknown is found."
+      },
+      {
+        "identifier": "research",
+        "definition": "How the unknown is investigated."
+      },
+      {
+        "identifier": "knowledge",
+        "definition": "Knowledge itself, including knowledge about knowledge."
+      },
+      {
+        "identifier": "learning",
+        "definition": "How the repository comes to hold something."
+      },
+      {
+        "identifier": "evolution",
+        "definition": "How anything governed changes."
+      },
+      {
+        "identifier": "future-domain",
+        "definition": "A field of inquiry that does not exist yet, admitted so its arrival is a data row rather than a redesign."
+      },
+      {
+        "identifier": "unclassified-domain",
+        "definition": "The residual: a domain not yet determined. Never an error."
+      }
+    ]
+  },
+  "relations": {
+    "residual": "unclassified-relation",
+    "$purpose": "Relationships carry what taxonomies would otherwise carry. Reflexive meta-knowledge is the reflects-on relation rather than a second layer; context containment is contained-by rather than a nesting field; a contradiction's consequences are generated-by rather than four object kinds; classification is classified-as rather than a subtype per class.",
+    "seed": [
+      {
+        "relation": "derived-from",
+        "definition": "The source was produced from the target.",
+        "inverse": "produced"
+      },
+      {
+        "relation": "supersedes",
+        "definition": "The source replaces the target, which is retained.",
+        "inverse": "superseded-by"
+      },
+      {
+        "relation": "contradicts",
+        "definition": "The source and target cannot both hold.",
+        "inverse": "contradicts"
+      },
+      {
+        "relation": "affects",
+        "definition": "A change to the target changes the source's standing.",
+        "inverse": "affected-by"
+      },
+      {
+        "relation": "generated-by",
+        "definition": "The target caused the source to be admitted.",
+        "inverse": "generated"
+      },
+      {
+        "relation": "depends-on",
+        "definition": "The source cannot resolve until the target does.",
+        "inverse": "depended-on-by"
+      },
+      {
+        "relation": "reflects-on",
+        "definition": "The source is knowledge about the target. This one relation is the whole of the reflexive meta-knowledge mechanism: no second layer.",
+        "inverse": "reflected-on-by"
+      },
+      {
+        "relation": "classified-as",
+        "definition": "The source is an instance of the target vocabulary member.",
+        "inverse": "classifies"
+      },
+      {
+        "relation": "contained-by",
+        "definition": "The source sits inside the target context. Contexts contain contexts through this relation rather than through a nesting field.",
+        "inverse": "contains"
+      },
+      {
+        "relation": "located-in",
+        "definition": "The source holds within the target reality.",
+        "inverse": "locates"
+      },
+      {
+        "relation": "timed-in",
+        "definition": "The source is referenced against the target temporal system.",
+        "inverse": "times"
+      },
+      {
+        "relation": "evidenced-by",
+        "definition": "The target is offered in support of the source.",
+        "inverse": "evidence-for"
+      },
+      {
+        "relation": "blocked-by",
+        "definition": "The source cannot advance until the target is met.",
+        "inverse": "blocks"
+      },
+      {
+        "relation": "resolves",
+        "definition": "The source settles the target.",
+        "inverse": "resolved-by"
+      },
+      {
+        "relation": "governs",
+        "definition": "The source holds decision rights over the target.",
+        "inverse": "governed-by"
+      },
+      {
+        "relation": "verifies",
+        "definition": "The source is a measurement of the target.",
+        "inverse": "verified-by"
+      },
+      {
+        "relation": "validates",
+        "definition": "The source judges the target fit for a purpose.",
+        "inverse": "validated-by"
+      },
+      {
+        "relation": "reviews",
+        "definition": "The source is a review of the target.",
+        "inverse": "reviewed-by"
+      },
+      {
+        "relation": "unclassified-relation",
+        "definition": "The residual: a link whose relation is not yet determined.",
+        "inverse": "unclassified-relation"
+      }
+    ]
+  },
+  "entity_classes": {
+    "universal": "subject",
+    "link": "relationship",
+    "$link": "The class whose subject is a pair. Named here so a module can reach it without writing a scanned vocabulary member as a literal.",
+    "$universal": "Everything is a subject unless its subject is a pair, in which case it is a relationship. URKE-L-32 refuses a third class: what would have been one is a profile, which is data.",
+    "seed": [
+      {
+        "entity_class": "subject",
+        "title": "Subject",
+        "definition": "The universal governed object. Everything is one of these except a link between two of them.",
+        "governance": "URKE-000001",
+        "ucon_kind": "concept",
+        "ucon_facet": "none",
+        "bridge_handler": "present_plain",
+        "required_attributes": [
+          "identity",
+          "entity_class",
+          "natural_key",
+          "title",
+          "classification",
+          "context",
+          "state",
+          "state_history",
+          "owner",
+          "origin",
+          "governance",
+          "axes",
+          "evolution_metadata",
+          "payload"
+        ]
+      },
+      {
+        "entity_class": "relationship",
+        "title": "Relationship",
+        "definition": "The only irreducible second class: its subject is a pair, which no attribute set on a single subject can express without inventing one.",
+        "governance": "URKE-000001",
+        "ucon_kind": "relationship",
+        "ucon_facet": "none",
+        "bridge_handler": "present_plain",
+        "required_attributes": [
+          "identity",
+          "entity_class",
+          "natural_key",
+          "title",
+          "classification",
+          "context",
+          "state",
+          "state_history",
+          "owner",
+          "origin",
+          "governance",
+          "axes",
+          "evolution_metadata",
+          "payload",
+          "source",
+          "target",
+          "relation",
+          "basis",
+          "evidence"
+        ]
+      }
+    ]
+  },
+  "profiles": {
+    "default": "subject",
+    "roles": [
+      {
+        "role": "situation",
+        "profile": "context"
+      },
+      {
+        "role": "vocabulary_row",
+        "profile": "vocabulary"
+      },
+      {
+        "role": "disclosure",
+        "profile": "gap"
+      },
+      {
+        "role": "conflict",
+        "profile": "contradiction"
+      },
+      {
+        "role": "investigation",
+        "profile": "research"
+      },
+      {
+        "role": "lesson",
+        "profile": "learning"
+      },
+      {
+        "role": "change_record",
+        "profile": "evolution"
+      },
+      {
+        "role": "change_proposal",
+        "profile": "architecture-proposal"
+      },
+      {
+        "role": "finding",
+        "profile": "discovery"
+      },
+      {
+        "role": "statement",
+        "profile": "claim"
+      },
+      {
+        "role": "sighting",
+        "profile": "observation"
+      }
+    ],
+    "$roles": "A role is a code symbol bound to a profile. Modules address profiles through these because writing a profile name in source would hardcode a scanned vocabulary member, which URKE-L-06 refuses. Adding a profile therefore needs a role only if code must reach it by name; data-only profiles need nothing.",
+    "$purpose": "A profile is the requirement set a subject carries because of what it is, keyed on its classification and declared as data. This is the whole of the entity collapse: a contradiction and a gap need different histories, and that difference is a row here rather than a class in code. A profile nobody declared is admitted through URKE-EP-05.",
+    "seed": [
+      {
+        "profile": "subject",
+        "required_attributes": [],
+        "required_payload": [],
+        "definition": "The default: no requirement beyond the universal set."
+      },
+      {
+        "profile": "context",
+        "required_attributes": [
+          "payload"
+        ],
+        "required_payload": [
+          "context_kind"
+        ],
+        "definition": "A subject that situates other subjects. Location, time, reality, universe, civilization, organisation, execution environment and knowledge domain are all contexts, and none is a primitive. Containment and reference are relations."
+      },
+      {
+        "profile": "contradiction",
+        "required_attributes": [
+          "lineage",
+          "evidence",
+          "competing_positions",
+          "candidate_resolutions",
+          "affected",
+          "affected_entities",
+          "resolution_status",
+          "resolution_history",
+          "verification_history"
+        ],
+        "required_payload": [],
+        "definition": "Competing claims that cannot all hold, with everything they affect and every attempt to resolve them retained."
+      },
+      {
+        "profile": "gap",
+        "required_attributes": [
+          "severity",
+          "evidence",
+          "resolution_path",
+          "review_schedule",
+          "closure_criteria"
+        ],
+        "required_payload": [],
+        "definition": "An assumption, limitation, unknown, open question, unresolved finding, missing evidence, missing knowledge, verification deficiency, coverage deficiency or future risk."
+      },
+      {
+        "profile": "research",
+        "required_attributes": [
+          "evidence",
+          "lineage"
+        ],
+        "required_payload": [
+          "questions",
+          "hypotheses",
+          "experiments",
+          "dependencies",
+          "limitations",
+          "blockers",
+          "outcomes",
+          "confidence",
+          "history"
+        ],
+        "definition": "An investigation of something unresolved. Recursive: research may generate further research, discovery, verification work or governance review, each as a related subject."
+      },
+      {
+        "profile": "discovery",
+        "required_attributes": [
+          "evidence",
+          "lineage"
+        ],
+        "required_payload": [],
+        "definition": "Something a detector identified. Questions, hypotheses, observations, experiments, evidence, gaps, findings, failures, revisions and outcomes are this profile with a different epistemic form."
+      },
+      {
+        "profile": "learning",
+        "required_attributes": [
+          "evidence",
+          "lineage"
+        ],
+        "required_payload": [
+          "stage"
+        ],
+        "definition": "A candidate lesson travelling the governed pipeline. Its stage is data."
+      },
+      {
+        "profile": "evolution",
+        "required_attributes": [
+          "evidence",
+          "lineage"
+        ],
+        "required_payload": [
+          "subject",
+          "operator",
+          "before",
+          "after"
+        ],
+        "definition": "One governed change to a declared subject, carrying the digest before and after."
+      },
+      {
+        "profile": "vocabulary",
+        "required_attributes": [
+          "payload"
+        ],
+        "required_payload": [
+          "definition"
+        ],
+        "definition": "A declared vocabulary member, itself governed, so extending a vocabulary is a recorded act."
+      },
+      {
+        "profile": "observation",
+        "required_attributes": [
+          "evidence"
+        ],
+        "required_payload": [],
+        "definition": "Something seen, with its observer named."
+      },
+      {
+        "profile": "claim",
+        "required_attributes": [
+          "evidence"
+        ],
+        "required_payload": [],
+        "definition": "Something asserted, with what is offered for it."
+      },
+      {
+        "profile": "architecture-proposal",
+        "required_attributes": [
+          "evidence",
+          "lineage",
+          "resolution_path"
+        ],
+        "required_payload": [
+          "construct",
+          "unrepresentable_because",
+          "capability_gained",
+          "complexity_added",
+          "tradeoff_justification",
+          "impact",
+          "verification",
+          "validation",
+          "governance_decision"
+        ],
+        "definition": "A proposal to change the constitutional foundation itself. Architecture is a governed subject: it may evolve, and it may not evolve silently. The burden of proof sits on the change, which is why every payload key above is required and a proposal missing one is refused rather than recorded as provisional."
+      }
+    ]
+  },
+  "context": {
+    "$purpose": "Context is a subject, not a primitive special case. Earth, a temporal frame, a civilization, a simulation and an execution environment are all contexts, and each is a subject with the context profile. Containment and reference are relations, so a context inside a context needs no nesting field and no recursion in code. URKE-L-20 refuses a subject with no context and refuses a context whose own context does not resolve.",
+    "root": "unknown-future-reality",
+    "$root": "The root context is the residual reality, deliberately: the outermost thing this repository can name is a reality it has not met, which is the honest top of the chain and the reason nothing bottoms out in a hardcoded planet.",
+    "kinds": [
+      {
+        "kind": "reality",
+        "definition": "A mode or structure of reality."
+      },
+      {
+        "kind": "universe",
+        "definition": "A container of realities."
+      },
+      {
+        "kind": "location",
+        "definition": "A place, at any scale."
+      },
+      {
+        "kind": "temporal-frame",
+        "definition": "A time reference frame."
+      },
+      {
+        "kind": "civilization",
+        "definition": "A population and its institutions."
+      },
+      {
+        "kind": "organization",
+        "definition": "A body with decision rights."
+      },
+      {
+        "kind": "execution-environment",
+        "definition": "Where computation happens."
+      },
+      {
+        "kind": "knowledge-domain",
+        "definition": "A field of inquiry."
+      },
+      {
+        "kind": "governance-domain",
+        "definition": "A scope of decision rights."
+      },
+      {
+        "kind": "simulation-domain",
+        "definition": "A simulated setting."
+      },
+      {
+        "kind": "physical-domain",
+        "definition": "A physical setting."
+      },
+      {
+        "kind": "unclassified-context",
+        "definition": "The residual: a context whose kind is not determined."
+      }
+    ],
+    "residual_kind": "unclassified-context"
+  },
+  "context_instances": {
+    "$purpose": "Contexts the architecture must be able to represent. These are instances, not conditions: Earth and Mars are distinguished by identity, not by a different composition of state, axes and qualifiers, so listing them in the condition catalogue asked the uniqueness measurement to separate things classification does not separate. Their admissibility is measured by URKE-L-09 and their governance by URKE-L-17.",
+    "instances": [
+      {
+        "instance": "earth",
+        "domain": "location"
+      },
+      {
+        "instance": "moon",
+        "domain": "location"
+      },
+      {
+        "instance": "mars",
+        "domain": "location"
+      },
+      {
+        "instance": "orbital-habitat",
+        "domain": "location"
+      },
+      {
+        "instance": "galaxy",
+        "domain": "location"
+      },
+      {
+        "instance": "reality",
+        "domain": "reality"
+      },
+      {
+        "instance": "multireality",
+        "domain": "reality"
+      },
+      {
+        "instance": "temporal-frame",
+        "domain": "temporal"
+      },
+      {
+        "instance": "simulation",
+        "domain": "reality"
+      },
+      {
+        "instance": "civilization",
+        "domain": "civilization"
+      },
+      {
+        "instance": "organization",
+        "domain": "governance"
+      },
+      {
+        "instance": "execution-environment",
+        "domain": "computation"
+      },
+      {
+        "instance": "future-construct",
+        "domain": "future-domain"
+      }
+    ]
+  },
+  "condition_catalogue": {
+    "$purpose": "Every condition any directive for this capability named by hand, resolved to a composition of one state, axis values, qualifier values and a domain. This is the evidence that collapsing the taxonomy cost no expressive power: URKE-L-30 realises every row on every measurement and refuses any that cannot be composed. Collisions — two conditions composing identically — are reported rather than hidden, because that is the real cost of composition and it belongs in the open.",
+    "conditions": [
+      {
+        "condition": "KNOWN",
+        "named_by": "URKE-000001",
+        "state": "KNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "knowledge_status": "known"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "VERIFIED",
+        "named_by": "URKE-000001",
+        "state": "KNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {},
+        "axes": {
+          "verification": "verified"
+        }
+      },
+      {
+        "condition": "PARTIALLY_VERIFIED",
+        "named_by": "URKE-000001",
+        "state": "KNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {},
+        "axes": {
+          "verification": "partially-verified"
+        }
+      },
+      {
+        "condition": "HYPOTHESIZED",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "articulation": "stated-claim",
+          "epistemic_form": "hypothesis"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "OBSERVED",
+        "named_by": "URKE-000001",
+        "state": "KNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "epistemic_form": "observation",
+          "observability": "observed"
+        },
+        "axes": {
+          "existence": "observed"
+        }
+      },
+      {
+        "condition": "UNOBSERVED",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "observability": "not-yet-observed"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "KNOWN_UNKNOWN",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "articulation": "stated-question"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_UNKNOWN",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "articulation": "residual"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNDECIDABLE",
+        "named_by": "URKE-000001",
+        "state": "UNDECIDABLE",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "knowledge_status": "undecidable"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNOBSERVABLE",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "observability": "inaccessible-from-every-frame"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "NOT_YET_MEASURABLE",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "observability": "no-instrument-exists"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "CONTRADICTED",
+        "named_by": "URKE-000001",
+        "state": "CONTESTED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "conflict_kind": "refuted-by-evidence"
+        },
+        "axes": {
+          "verification": "refuted"
+        }
+      },
+      {
+        "condition": "CONTESTED",
+        "named_by": "URKE-000001",
+        "state": "CONTESTED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "conflict_kind": "evidence-standoff"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "ESCALATED",
+        "named_by": "URKE-000001",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "blocked_on": "authority",
+          "record_stage": "recorded"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "RESEARCHING",
+        "named_by": "URKE-000001",
+        "state": "RESEARCHING",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "activity": "investigating"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "EXPERIMENTING",
+        "named_by": "URKE-000001",
+        "state": "RESEARCHING",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "activity": "experimenting"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DEFERRED",
+        "named_by": "URKE-000001",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "blocked_on": "nothing"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "SUPERSEDED",
+        "named_by": "URKE-000001",
+        "state": "SUPERSEDED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "withdrawal": "superseded"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "OPEN",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {},
+        "axes": {}
+      },
+      {
+        "condition": "CLOSED",
+        "named_by": "URKE-000001",
+        "state": "KNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "articulation": "stated-claim",
+          "knowledge_status": "known"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_MATHEMATICS",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "mathematics",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_PHYSICS",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "physics",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_ONTOLOGY",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "ontology",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_INTELLIGENCE",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "intelligence",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_GOVERNANCE",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "governance",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_ECONOMICS",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "economics",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_SECURITY",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "security",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_TEMPORAL",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "temporal",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_REALITY",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "reality",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_DIMENSION",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "dimension",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_SUBSTRATE",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "substrate",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_COMPUTATION",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "computation",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_LANGUAGE",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "language",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_CONSTRUCT",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "construct",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNKNOWN_DISCOVERY",
+        "named_by": "URKE-000001",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNMEASURED",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "observability": "not-yet-measured"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UNVERIFIED",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "articulation": "stated-claim"
+        },
+        "axes": {
+          "verification": "unverified"
+        }
+      },
+      {
+        "condition": "UNVALIDATED",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "articulation": "stated-claim"
+        },
+        "axes": {
+          "validation": "unvalidated",
+          "verification": "verified"
+        }
+      },
+      {
+        "condition": "CONTRADICTORY",
+        "named_by": "steer-1c35f27e",
+        "state": "CONTESTED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "conflict_kind": "internally-inconsistent"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "FUTURE_DEPENDENT",
+        "named_by": "steer-1c35f27e",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "blocked_on": "future-capability"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "RESEARCH_REQUIRED",
+        "named_by": "steer-1c35f27e",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "blocked_on": "research"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DISCOVERY_REQUIRED",
+        "named_by": "steer-b36fdbd4",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "blocked_on": "discovery"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "INSTRUMENT_REQUIRED",
+        "named_by": "steer-1c35f27e",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "blocked_on": "instrument"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "AUTHORITY_REQUIRED",
+        "named_by": "steer-1c35f27e",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "blocked_on": "authority",
+          "record_stage": "unstated"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "KNOWLEDGE_NOT_YET_AVAILABLE",
+        "named_by": "steer-1c35f27e",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "blocked_on": "knowledge"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "SCIENCE_NOT_YET_AVAILABLE",
+        "named_by": "steer-1c35f27e",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "blocked_on": "science"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "MATHEMATICS_NOT_YET_AVAILABLE",
+        "named_by": "steer-1c35f27e",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "blocked_on": "mathematics"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "NOT_YET_DISCOVERED",
+        "named_by": "steer-2be28076",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "observability": "not-yet-discovered"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "NOT_YET_VERIFIABLE",
+        "named_by": "steer-2be28076",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "blocked_on": "instrument",
+          "observability": "no-instrument-exists"
+        },
+        "axes": {
+          "verification": "unverified"
+        }
+      },
+      {
+        "condition": "NOT_YET_VALIDATABLE",
+        "named_by": "steer-2be28076",
+        "state": "BLOCKED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "articulation": "stated-claim",
+          "blocked_on": "authority"
+        },
+        "axes": {
+          "validation": "unvalidated"
+        }
+      },
+      {
+        "condition": "UnknownBiology",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "biology",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UnknownChemistry",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "chemistry",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UnknownCivilization",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "civilization",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UnknownUniverse",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "universe",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UnknownVerification",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "verification",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UnknownMeasurement",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "measurement",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UnknownLocation",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "location",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UnknownIdentity",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "identity",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UnknownKnowledge",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "knowledge",
+        "qualifiers": {
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "Presented",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "record_stage": "presented"
+        },
+        "axes": {
+          "admission": "presented"
+        }
+      },
+      {
+        "condition": "Recorded",
+        "named_by": "steer-1c35f27e",
+        "state": "UNKNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "record_stage": "recorded"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "UnderVerification",
+        "named_by": "steer-1c35f27e",
+        "state": "RESEARCHING",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "activity": "verifying"
+        },
+        "axes": {
+          "verification": "under-verification"
+        }
+      },
+      {
+        "condition": "UnderValidation",
+        "named_by": "steer-1c35f27e",
+        "state": "RESEARCHING",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "activity": "validating"
+        },
+        "axes": {
+          "validation": "under-validation"
+        }
+      },
+      {
+        "condition": "Validated",
+        "named_by": "steer-1c35f27e",
+        "state": "KNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {},
+        "axes": {
+          "validation": "validated"
+        }
+      },
+      {
+        "condition": "Certified",
+        "named_by": "steer-1c35f27e",
+        "state": "KNOWN",
+        "domain": "unclassified-domain",
+        "qualifiers": {},
+        "axes": {
+          "certification": "certified"
+        }
+      },
+      {
+        "condition": "Disputed",
+        "named_by": "steer-1c35f27e",
+        "state": "CONTESTED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "conflict_kind": "authority-dispute"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "Deprecated",
+        "named_by": "steer-1c35f27e",
+        "state": "SUPERSEDED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "withdrawal": "deprecated"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "Retired",
+        "named_by": "steer-1c35f27e",
+        "state": "SUPERSEDED",
+        "domain": "unclassified-domain",
+        "qualifiers": {
+          "withdrawal": "retired"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryEvent",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "discovery-event"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryFinding",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "discovery-finding"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryOutcome",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "discovery-outcome"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryFailure",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "discovery-failure"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryRevision",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "discovery-revision"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryPath",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "discovery-path"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryEvidence",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "evidence"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryObservation",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "observation"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryHypothesis",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "hypothesis"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryQuestion",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "question"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryExperiment",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "experiment"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryGap",
+        "named_by": "steer-b36fdbd4",
+        "state": "UNKNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "articulation": "stated-question",
+          "knowledge_status": "unknown"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "KnowledgeAboutKnowledge",
+        "named_by": "steer-1c35f27e",
+        "state": "KNOWN",
+        "domain": "knowledge",
+        "qualifiers": {
+          "epistemic_form": "fact"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "VerificationAboutVerification",
+        "named_by": "steer-1c35f27e",
+        "state": "KNOWN",
+        "domain": "verification",
+        "qualifiers": {
+          "epistemic_form": "fact"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "GovernanceAboutGovernance",
+        "named_by": "steer-1c35f27e",
+        "state": "KNOWN",
+        "domain": "governance",
+        "qualifiers": {
+          "epistemic_form": "fact"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "ResearchAboutResearch",
+        "named_by": "steer-1c35f27e",
+        "state": "KNOWN",
+        "domain": "research",
+        "qualifiers": {
+          "epistemic_form": "fact"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "DiscoveryAboutDiscovery",
+        "named_by": "steer-1c35f27e",
+        "state": "KNOWN",
+        "domain": "discovery",
+        "qualifiers": {
+          "epistemic_form": "fact"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "LearningAboutLearning",
+        "named_by": "steer-1c35f27e",
+        "state": "KNOWN",
+        "domain": "learning",
+        "qualifiers": {
+          "epistemic_form": "fact"
+        },
+        "axes": {}
+      },
+      {
+        "condition": "EvolutionAboutEvolution",
+        "named_by": "steer-1c35f27e",
+        "state": "KNOWN",
+        "domain": "evolution",
+        "qualifiers": {
+          "epistemic_form": "fact"
+        },
+        "axes": {}
+      }
+    ]
+  },
+  "contradiction": {
+    "minimum_positions": 2,
+    "affected_dimensions": [
+      "knowledge",
+      "authorities",
+      "governance",
+      "verification",
+      "validation"
+    ],
+    "generates": [
+      "research",
+      "discovery",
+      "verification",
+      "governance-review"
+    ],
+    "verification_requires": [
+      "verifier",
+      "verdict",
+      "assumptions",
+      "limitations",
+      "basis"
+    ],
+    "$verification_requires": "A verification event declaring no assumptions or no limitations is refused, on the same principle UCON-000001 applies to verifiers: a verification that claims to assume nothing has not been examined.",
+    "classes": [
+      {
+        "identifier": "logical",
+        "definition": "Two statements that cannot both be true under the declared logic.",
+        "ucon_contradiction_class": "logical"
+      },
+      {
+        "identifier": "evidential",
+        "definition": "Two bodies of evidence pointing in opposite directions.",
+        "ucon_contradiction_class": "evidential"
+      },
+      {
+        "identifier": "authority-conflict",
+        "definition": "Two authorities claiming the same decision.",
+        "ucon_contradiction_class": "authority-conflict"
+      },
+      {
+        "identifier": "temporal",
+        "definition": "A conflict appearing only under a particular ordering or frame.",
+        "ucon_contradiction_class": "temporal"
+      },
+      {
+        "identifier": "framework",
+        "definition": "Positions expressible only in frameworks that cannot be reconciled as stated.",
+        "ucon_contradiction_class": "framework"
+      },
+      {
+        "identifier": "measurement",
+        "definition": "Two measurements of one quantity disagreeing beyond their declared uncertainty.",
+        "ucon_contradiction_class": "measurement"
+      },
+      {
+        "identifier": "undetermined",
+        "definition": "The residual: a contradiction whose class is not determined.",
+        "ucon_contradiction_class": "undetermined"
+      }
+    ],
+    "resolution_states": [
+      {
+        "identifier": "open",
+        "definition": "Recorded, unresolved, owned.",
+        "contradicting": true,
+        "ucon_resolution_state": "open"
+      },
+      {
+        "identifier": "under-research",
+        "definition": "A research subject is investigating it.",
+        "contradicting": true,
+        "ucon_resolution_state": "under-research"
+      },
+      {
+        "identifier": "resolved-by-evidence",
+        "definition": "New measured evidence decided it.",
+        "contradicting": false,
+        "ucon_resolution_state": "resolved-by-evidence"
+      },
+      {
+        "identifier": "resolved-by-supersession",
+        "definition": "One position was superseded.",
+        "contradicting": false,
+        "ucon_resolution_state": "resolved-by-supersession"
+      },
+      {
+        "identifier": "resolved-by-reframing",
+        "definition": "The conflict dissolved once the framing was corrected.",
+        "contradicting": false,
+        "ucon_resolution_state": "resolved-by-reframing"
+      },
+      {
+        "identifier": "undecidable",
+        "definition": "No available decision procedure applies.",
+        "contradicting": true,
+        "ucon_resolution_state": "undecidable"
+      }
+    ]
+  },
+  "gaps": {
+    "classes": [
+      {
+        "identifier": "assumption",
+        "definition": "Taken as true without measurement.",
+        "ucon_unknown_class": "unknown-knowledge-form"
+      },
+      {
+        "identifier": "limitation",
+        "definition": "Something the repository cannot do, stated as a bound.",
+        "ucon_unknown_class": "unknown-knowledge-form"
+      },
+      {
+        "identifier": "unknown",
+        "definition": "Something not known, recorded as an object.",
+        "ucon_unknown_class": "unknown-unclassified"
+      },
+      {
+        "identifier": "open-question",
+        "definition": "A question stated precisely and unanswered.",
+        "ucon_unknown_class": "unknown-unclassified"
+      },
+      {
+        "identifier": "unresolved-finding",
+        "definition": "A finding not carried to closure.",
+        "ucon_unknown_class": "unknown-knowledge-form"
+      },
+      {
+        "identifier": "missing-evidence",
+        "definition": "A claim held with less evidence than its state requires.",
+        "ucon_unknown_class": "unknown-knowledge-form"
+      },
+      {
+        "identifier": "missing-knowledge",
+        "definition": "Knowledge needed and not held.",
+        "ucon_unknown_class": "unknown-knowledge-form"
+      },
+      {
+        "identifier": "verification-deficiency",
+        "definition": "A verification absent, stale or itself unverified.",
+        "ucon_unknown_class": "unknown-knowledge-form"
+      },
+      {
+        "identifier": "coverage-deficiency",
+        "definition": "A declared surface measurement does not reach.",
+        "ucon_unknown_class": "unknown-knowledge-form"
+      },
+      {
+        "identifier": "future-risk",
+        "definition": "A risk not present now and foreseeable.",
+        "ucon_unknown_class": "unknown-future-domain"
+      },
+      {
+        "identifier": "unclassified-gap",
+        "definition": "The residual: a gap whose class is not determined.",
+        "ucon_unknown_class": "unknown-unclassified"
+      }
+    ],
+    "residual": "unclassified-gap",
+    "severities": [
+      {
+        "identifier": "S0-CONSTITUTIONAL",
+        "rank": 0,
+        "definition": "Affects a constitutional invariant."
+      },
+      {
+        "identifier": "S1-ARCHITECTURAL",
+        "rank": 1,
+        "definition": "Affects a structural decision more than one capability relies on."
+      },
+      {
+        "identifier": "S2-OPERATIONAL",
+        "rank": 2,
+        "definition": "Affects operation of a capability."
+      },
+      {
+        "identifier": "S3-LOCAL",
+        "rank": 3,
+        "definition": "Local to one module or artifact."
+      },
+      {
+        "identifier": "SU-UNASSESSED",
+        "rank": 9,
+        "definition": "Not yet assessed. Never treated as low."
+      }
+    ],
+    "closure_rule": "all_criteria_satisfied",
+    "$closure_rule": "A gap settles only when every declared criterion is recorded satisfied with a basis, and a gap with no criteria cannot be admitted at all — which is what stops settlement from meaning 'stopped being looked at'.",
+    "review": {
+      "cadence_unit": "ledger-sequence",
+      "$cadence_unit": "Counted in ledger sequence, not wall-clock time, because the measurement must be identical on two runs of the same bytes. The consequence is disclosed as URKE-G-09 rather than hidden.",
+      "default_cadence": 64,
+      "minimum_cadence": 1
+    }
+  },
+  "discovery": {
+    "$never_mutates": "Discovery admits subjects into the URKE ledger and writes nothing else. URKE-L-12 parses this package and refuses any forbidden write call reachable from the discovery module, then re-measures the declaration digest after a run.",
+    "write_scope": [
+      "engine/recursive_knowledge/ledger.py::KnowledgeLedger.admit"
+    ],
+    "scope_excludes_role": "finding",
+    "$scope_excludes_role": "Discovery does not inspect its own findings. Measured defect: with findings in scope the engine reported on its reports and each pass produced more, so it never converged and the fixed-point law could not hold. The exclusion is narrow and its cost is disclosed as URKE-G-18: a finding is not itself checked for an owner, a context or a definition.",
+    "forbidden_write_calls": [
+      "open",
+      "write_text",
+      "write_bytes",
+      "writelines",
+      "mkdir",
+      "replace",
+      "remove",
+      "unlink",
+      "rmtree",
+      "rename",
+      "dump",
+      "system",
+      "run",
+      "Popen"
+    ],
+    "priority_scale": [
+      "P0",
+      "P1",
+      "P2",
+      "P3",
+      "PU"
+    ],
+    "impact_scale": [
+      "constitutional",
+      "architectural",
+      "operational",
+      "local",
+      "unassessed"
+    ],
+    "targets": [
+      {
+        "identifier": "concept",
+        "definition": "A concept in use and not defined."
+      },
+      {
+        "identifier": "ontology",
+        "definition": "A link structure declared and ungoverned, or used and undeclared."
+      },
+      {
+        "identifier": "taxonomy",
+        "definition": "A classification that classifies nothing."
+      },
+      {
+        "identifier": "governance-structure",
+        "definition": "A subject whose governing authority is not resolvable."
+      },
+      {
+        "identifier": "scientific-domain",
+        "definition": "A domain named and unpopulated."
+      },
+      {
+        "identifier": "intelligence-form",
+        "definition": "An intelligence-domain subject with nothing verified about it."
+      },
+      {
+        "identifier": "contradiction",
+        "definition": "A contradiction with no resolution path."
+      },
+      {
+        "identifier": "gap",
+        "definition": "A gap unowned, uncriteria'd, unresearched or overdue."
+      },
+      {
+        "identifier": "opportunity",
+        "definition": "A research subject that could advance and has not."
+      },
+      {
+        "identifier": "limitation",
+        "definition": "A declared bound that nothing tracks."
+      },
+      {
+        "identifier": "composition",
+        "definition": "A subject with no context, or a context nothing sits in."
+      },
+      {
+        "identifier": "unexplored-space",
+        "definition": "A declared dimension, system or residual with nothing recorded."
+      }
+    ],
+    "sources": [
+      {
+        "source_id": "URKE-DS-01",
+        "detector": "unknown_without_research",
+        "target": "gap",
+        "priority": "P1",
+        "impact": "architectural",
+        "definition": "A gap in an unresolved state with no research subject derived from it."
+      },
+      {
+        "source_id": "URKE-DS-02",
+        "detector": "contradiction_without_resolution_path",
+        "target": "contradiction",
+        "priority": "P0",
+        "impact": "constitutional",
+        "definition": "A standing contradiction whose resolution history is empty."
+      },
+      {
+        "source_id": "URKE-DS-03",
+        "detector": "subject_without_owner",
+        "target": "governance-structure",
+        "priority": "P0",
+        "impact": "architectural",
+        "definition": "A subject resting on the declared unassigned owner token."
+      },
+      {
+        "source_id": "URKE-DS-04",
+        "detector": "gap_overdue_for_review",
+        "target": "gap",
+        "priority": "P2",
+        "impact": "operational",
+        "definition": "An unsettled gap whose review point the ledger has advanced past."
+      },
+      {
+        "source_id": "URKE-DS-05",
+        "detector": "state_without_successor",
+        "target": "limitation",
+        "priority": "P0",
+        "impact": "constitutional",
+        "definition": "A declared state from which nothing is reachable."
+      },
+      {
+        "source_id": "URKE-DS-06",
+        "detector": "vocabulary_binding_gap",
+        "target": "unexplored-space",
+        "priority": "P2",
+        "impact": "architectural",
+        "definition": "A declared state binding to no owner, holding a vocabulary locally."
+      },
+      {
+        "source_id": "URKE-DS-07",
+        "detector": "subject_without_governance",
+        "target": "governance-structure",
+        "priority": "P0",
+        "impact": "constitutional",
+        "definition": "A subject whose governing authority is empty or unresolvable."
+      },
+      {
+        "source_id": "URKE-DS-08",
+        "detector": "research_without_evidence",
+        "target": "opportunity",
+        "priority": "P2",
+        "impact": "operational",
+        "definition": "A research subject under investigation with no evidence recorded."
+      },
+      {
+        "source_id": "URKE-DS-09",
+        "detector": "reality_dimension_unresolved",
+        "target": "unexplored-space",
+        "priority": "P2",
+        "impact": "architectural",
+        "definition": "A reality leaving a declared dimension unresolved."
+      },
+      {
+        "source_id": "URKE-DS-10",
+        "detector": "temporal_epoch_unresolved",
+        "target": "unexplored-space",
+        "priority": "P2",
+        "impact": "architectural",
+        "definition": "A temporal system whose epoch is unresolved."
+      },
+      {
+        "source_id": "URKE-DS-11",
+        "detector": "domain_without_subject",
+        "target": "scientific-domain",
+        "priority": "P1",
+        "impact": "architectural",
+        "definition": "A declared domain with nothing classified under it — a field named and unrecorded."
+      },
+      {
+        "source_id": "URKE-DS-12",
+        "detector": "qualifier_value_unused",
+        "target": "taxonomy",
+        "priority": "P3",
+        "impact": "local",
+        "definition": "A declared qualifier value nothing uses: a classification that classifies nothing."
+      },
+      {
+        "source_id": "URKE-DS-13",
+        "detector": "subject_without_verification",
+        "target": "intelligence-form",
+        "priority": "P1",
+        "impact": "architectural",
+        "definition": "An intelligence-domain subject with no verification recorded against it."
+      },
+      {
+        "source_id": "URKE-DS-14",
+        "detector": "subject_without_definition",
+        "target": "concept",
+        "priority": "P3",
+        "impact": "local",
+        "definition": "A vocabulary subject whose payload carries no definition."
+      },
+      {
+        "source_id": "URKE-DS-15",
+        "detector": "relation_without_basis",
+        "target": "ontology",
+        "priority": "P1",
+        "impact": "architectural",
+        "definition": "A relationship carrying no basis: a link nobody has to account for."
+      },
+      {
+        "source_id": "URKE-DS-16",
+        "detector": "subject_without_context",
+        "target": "composition",
+        "priority": "P0",
+        "impact": "constitutional",
+        "definition": "A subject sitting in no context. Every subject exists within one."
+      },
+      {
+        "source_id": "URKE-DS-17",
+        "detector": "residual_population",
+        "target": "unexplored-space",
+        "priority": "P1",
+        "impact": "architectural",
+        "definition": "Everything resting in a residual domain, form or relation — the honest measure of what the taxonomy has not resolved, and the nearest proxy for what no detector can see."
+      }
+    ]
+  },
+  "evolution": {
+    "$observable": "Every evolution step is a subject in the same append-only chained ledger as everything else, carrying subject, operator, before-digest, after-digest and basis. Evolution of the framework is measured by the framework, which is what makes URKE-L-13 computable.",
+    "entry_point": "engine/recursive_knowledge/evolution.py::evolve",
+    "$entry_point": "One entry point for every subject. URKE-L-15 parses the module and refuses a branch keyed on a subject identifier, because a special case for one subject is the beginning of a special case for each.",
+    "operators": [
+      {
+        "identifier": "extend",
+        "definition": "Add a member to a declared vocabulary. Narrowing is not expressible here.",
+        "implementation": "operator_extend"
+      },
+      {
+        "identifier": "refine",
+        "definition": "Change a definition or a binding without removing a member.",
+        "implementation": "operator_refine"
+      },
+      {
+        "identifier": "supersede",
+        "definition": "Replace a member with a named later member, retaining the earlier one.",
+        "implementation": "operator_supersede"
+      },
+      {
+        "identifier": "bind",
+        "definition": "Attach a locally held vocabulary to the authority that owns it.",
+        "implementation": "operator_bind"
+      }
+    ],
+    "subjects": [
+      {
+        "identifier": "ontology",
+        "definition": "How the repository expresses ontology.",
+        "operators": [
+          "extend",
+          "refine",
+          "supersede",
+          "bind"
+        ]
+      },
+      {
+        "identifier": "taxonomy",
+        "definition": "How the repository expresses taxonomy.",
+        "operators": [
+          "extend",
+          "refine",
+          "supersede"
+        ]
+      },
+      {
+        "identifier": "vocabulary",
+        "definition": "How the repository expresses vocabulary.",
+        "operators": [
+          "extend",
+          "refine",
+          "supersede",
+          "bind"
+        ]
+      },
+      {
+        "identifier": "governance",
+        "definition": "How the repository expresses governance.",
+        "operators": [
+          "extend",
+          "refine",
+          "supersede",
+          "bind"
+        ]
+      },
+      {
+        "identifier": "verification",
+        "definition": "How the repository expresses verification.",
+        "operators": [
+          "extend",
+          "refine",
+          "supersede"
+        ]
+      },
+      {
+        "identifier": "validation",
+        "definition": "How the repository expresses validation.",
+        "operators": [
+          "extend",
+          "refine",
+          "supersede"
+        ]
+      },
+      {
+        "identifier": "authority",
+        "definition": "How the repository expresses authority.",
+        "operators": [
+          "extend",
+          "refine",
+          "supersede"
+        ]
+      },
+      {
+        "identifier": "research",
+        "definition": "How the repository expresses research.",
+        "operators": [
+          "extend",
+          "refine"
+        ]
+      },
+      {
+        "identifier": "discovery",
+        "definition": "How the repository expresses discovery.",
+        "operators": [
+          "extend",
+          "refine"
+        ]
+      },
+      {
+        "identifier": "learning",
+        "definition": "How the repository expresses learning.",
+        "operators": [
+          "extend",
+          "refine"
+        ]
+      },
+      {
+        "identifier": "knowledge",
+        "definition": "How the repository expresses knowledge.",
+        "operators": [
+          "extend",
+          "refine",
+          "supersede"
+        ]
+      },
+      {
+        "identifier": "identity",
+        "definition": "How the repository expresses identity.",
+        "operators": [
+          "extend",
+          "bind"
+        ]
+      },
+      {
+        "identifier": "context",
+        "definition": "How the repository expresses context.",
+        "operators": [
+          "extend",
+          "refine",
+          "bind"
+        ]
+      },
+      {
+        "identifier": "location",
+        "definition": "How the repository expresses location.",
+        "operators": [
+          "extend",
+          "refine",
+          "bind"
+        ]
+      },
+      {
+        "identifier": "temporal-system",
+        "definition": "How the repository expresses temporal system.",
+        "operators": [
+          "extend",
+          "refine",
+          "bind"
+        ]
+      },
+      {
+        "identifier": "unit-system",
+        "definition": "How the repository expresses unit system.",
+        "operators": [
+          "extend",
+          "refine",
+          "bind"
+        ]
+      },
+      {
+        "identifier": "economic-system",
+        "definition": "How the repository expresses economic system.",
+        "operators": [
+          "extend",
+          "refine"
+        ]
+      },
+      {
+        "identifier": "security-system",
+        "definition": "How the repository expresses security system.",
+        "operators": [
+          "extend",
+          "refine"
+        ]
+      },
+      {
+        "identifier": "reality-model",
+        "definition": "How the repository expresses reality model.",
+        "operators": [
+          "extend",
+          "refine",
+          "bind"
+        ]
+      },
+      {
+        "identifier": "intelligence-model",
+        "definition": "How the repository expresses intelligence model.",
+        "operators": [
+          "extend",
+          "refine",
+          "supersede"
+        ]
+      }
+    ]
+  },
+  "self_evolution": {
+    "$purpose": "The subjects this capability must extend in itself, exercised in memory on every measurement so the claim is performed rather than asserted.",
+    "subjects": [
+      {
+        "identifier": "knowledge",
+        "exercised_by": "admit_state"
+      },
+      {
+        "identifier": "ontology",
+        "exercised_by": "admit_relation"
+      },
+      {
+        "identifier": "taxonomy",
+        "exercised_by": "admit_domain"
+      },
+      {
+        "identifier": "governance",
+        "exercised_by": "admit_evolution_subject"
+      },
+      {
+        "identifier": "verification",
+        "exercised_by": "admit_axis"
+      },
+      {
+        "identifier": "research",
+        "exercised_by": "admit_gap_class"
+      },
+      {
+        "identifier": "discovery",
+        "exercised_by": "admit_discovery_source"
+      },
+      {
+        "identifier": "context",
+        "exercised_by": "admit_context"
+      },
+      {
+        "identifier": "learning",
+        "exercised_by": "admit_learning_stage"
+      },
+      {
+        "identifier": "vocabulary",
+        "exercised_by": "admit_qualifier_value"
+      }
+    ]
+  },
+  "self_improvement": {
+    "$purpose": "Self-improvement as measurable mechanism rather than claim. Each row names a live symbol that runs on every measurement and leaves a record in the ledger; URKE-L-37 refuses a mechanism whose symbol is absent, that does not run, or that produces no evidence.",
+    "mechanisms": [
+      {
+        "mechanism": "self-observation",
+        "module": "ledger",
+        "symbol": "summary",
+        "behaviour": "reports its own population, states and histories"
+      },
+      {
+        "mechanism": "self-analysis",
+        "module": "discovery",
+        "symbol": "discover",
+        "behaviour": "runs its declared detectors over its own ledger"
+      },
+      {
+        "mechanism": "self-validation",
+        "module": "declaration",
+        "symbol": "parse",
+        "behaviour": "refuses its own declaration when incoherent"
+      },
+      {
+        "mechanism": "self-verification",
+        "module": "contract",
+        "symbol": "measure",
+        "behaviour": "measures its own laws and names every refusal"
+      },
+      {
+        "mechanism": "self-learning",
+        "module": "subjects",
+        "symbol": "advance",
+        "behaviour": "moves a candidate lesson through the pipeline"
+      },
+      {
+        "mechanism": "self-correction",
+        "module": "subjects",
+        "symbol": "close_gap",
+        "behaviour": "closes its own gaps only against satisfied criteria"
+      },
+      {
+        "mechanism": "self-healing",
+        "module": "ledger",
+        "symbol": "supersede",
+        "behaviour": "replaces a damaged record without removing it"
+      },
+      {
+        "mechanism": "self-adaptation",
+        "module": "admission",
+        "symbol": "ADMISSIONS",
+        "behaviour": "admits vocabulary it was not built with"
+      },
+      {
+        "mechanism": "self-evolution",
+        "module": "evolution",
+        "symbol": "evolve",
+        "behaviour": "records changes to its own declared subjects"
+      },
+      {
+        "mechanism": "self-governance",
+        "module": "bridge",
+        "symbol": "govern",
+        "behaviour": "presents its own subjects rather than dispositioning"
+      },
+      {
+        "mechanism": "self-auditing",
+        "module": "ledger",
+        "symbol": "chain_is_intact",
+        "behaviour": "verifies its own journal for tampering"
+      },
+      {
+        "mechanism": "self-research",
+        "module": "research",
+        "symbol": "open_research",
+        "behaviour": "opens research on its own unresolved subjects"
+      },
+      {
+        "mechanism": "self-discovery",
+        "module": "discovery",
+        "symbol": "REALITY_PROBES",
+        "behaviour": "compares its declaration against the world"
+      }
+    ]
+  },
+  "learning": {
+    "$purpose": "One governed pipeline. No path reaches the final stage without passing every stage in order, and URKE-L-36 forges each bypass and asserts the refusal. Reversal is supersession, never deletion: a retracted lesson keeps its record and gains a successor.",
+    "stages": [
+      {
+        "stage": "observe",
+        "definition": "Something was seen. No claim yet."
+      },
+      {
+        "stage": "record",
+        "definition": "The observation was written into the ledger with identity and lineage."
+      },
+      {
+        "stage": "analyze",
+        "definition": "It was examined and a candidate claim was formed."
+      },
+      {
+        "stage": "hypothesize",
+        "definition": "The claim was stated as something testable."
+      },
+      {
+        "stage": "experiment",
+        "definition": "A measurement was performed against it."
+      },
+      {
+        "stage": "validate",
+        "definition": "Fitness for the purpose offered was judged and an authority decided."
+      },
+      {
+        "stage": "operationalize",
+        "definition": "It was dispositioned by the construct foundation and is relied on."
+      }
+    ],
+    "bypass_refused": true,
+    "reversal_operator": "supersede"
+  },
+  "meta_knowledge": {
+    "$purpose": "Knowledge about knowledge needs no new layer: the subject of a subject is expressed with the declared reflects-on relation. URKE-L-35 admits each reflexive form through that relation and refuses if any requires new structure.",
+    "relation": "reflects-on",
+    "subjects": [
+      {
+        "identifier": "knowledge-about-knowledge",
+        "reflects_on": "knowledge"
+      },
+      {
+        "identifier": "research-about-research",
+        "reflects_on": "research"
+      },
+      {
+        "identifier": "discovery-about-discovery",
+        "reflects_on": "discovery"
+      },
+      {
+        "identifier": "verification-about-verification",
+        "reflects_on": "verification"
+      },
+      {
+        "identifier": "validation-about-validation",
+        "reflects_on": "validation"
+      },
+      {
+        "identifier": "governance-about-governance",
+        "reflects_on": "governance"
+      },
+      {
+        "identifier": "learning-about-learning",
+        "reflects_on": "learning"
+      },
+      {
+        "identifier": "evolution-about-evolution",
+        "reflects_on": "evolution"
+      }
+    ]
+  },
+  "reality": {
+    "$data_driven": "A reality is a row, not a branch. Declared dimensions are resolved from this data and an unresolved dimension is the declared token, never a default and never a silence. Admitting a reality nobody has named leaves every byte of the package unchanged, which URKE-L-16 measures.",
+    "unresolved_token": "unresolved",
+    "dimensions": [
+      {
+        "identifier": "location-system",
+        "definition": "How a position is named."
+      },
+      {
+        "identifier": "coordinate-system",
+        "definition": "The frame positions are expressed in."
+      },
+      {
+        "identifier": "unit-system",
+        "definition": "The units quantities are expressed in."
+      },
+      {
+        "identifier": "temporal-system",
+        "definition": "The time reference system in force."
+      },
+      {
+        "identifier": "calendar-system",
+        "definition": "How dates are named."
+      },
+      {
+        "identifier": "communication-model",
+        "definition": "The latency and reachability regime."
+      },
+      {
+        "identifier": "governance-model",
+        "definition": "Who governs here."
+      },
+      {
+        "identifier": "economic-model",
+        "definition": "How value is exchanged here."
+      },
+      {
+        "identifier": "measurement-model",
+        "definition": "What can be measured here and how."
+      }
+    ],
+    "frame_kind_owner": "engine/context/catalog/reference-frames.json",
+    "seed": [
+      {
+        "identifier": "earth",
+        "title": "Earth",
+        "residual": false,
+        "frame_kind": "planetary",
+        "frame_kind_gap": null,
+        "systems": {
+          "location-system": "geodetic-place",
+          "coordinate-system": "planetary-datum",
+          "unit-system": "si",
+          "temporal-system": "utc",
+          "calendar-system": "civil-calendar",
+          "communication-model": "terrestrial-low-latency",
+          "governance-model": "multi-jurisdictional",
+          "economic-model": "fiat-multi-currency",
+          "measurement-model": "si-traceable"
+        }
+      },
+      {
+        "identifier": "moon",
+        "title": "Moon",
+        "residual": false,
+        "frame_kind": "planetary",
+        "frame_kind_gap": null,
+        "systems": {
+          "location-system": "selenographic-place",
+          "coordinate-system": "mean-earth-axis",
+          "unit-system": "si",
+          "temporal-system": "lunar-coordinated-time",
+          "calendar-system": "mission-calendar",
+          "communication-model": "cislunar-delayed",
+          "governance-model": "treaty-derived",
+          "economic-model": "unresolved",
+          "measurement-model": "si-traceable"
+        }
+      },
+      {
+        "identifier": "mars",
+        "title": "Mars",
+        "residual": false,
+        "frame_kind": "planetary",
+        "frame_kind_gap": null,
+        "systems": {
+          "location-system": "areographic-place",
+          "coordinate-system": "areocentric-datum",
+          "unit-system": "si",
+          "temporal-system": "mars-coordinated-time",
+          "calendar-system": "sol-calendar",
+          "communication-model": "interplanetary-high-delay",
+          "governance-model": "unresolved",
+          "economic-model": "unresolved",
+          "measurement-model": "si-traceable"
+        }
+      },
+      {
+        "identifier": "orbital-habitat",
+        "title": "Orbital Habitat",
+        "residual": false,
+        "frame_kind": "orbital",
+        "frame_kind_gap": null,
+        "systems": {
+          "location-system": "orbital-element-set",
+          "coordinate-system": "station-body-fixed",
+          "unit-system": "si",
+          "temporal-system": "mission-elapsed-time",
+          "calendar-system": "mission-calendar",
+          "communication-model": "orbital-intermittent",
+          "governance-model": "operator-derived",
+          "economic-model": "unresolved",
+          "measurement-model": "si-traceable"
+        }
+      },
+      {
+        "identifier": "interplanetary-system",
+        "title": "Interplanetary System",
+        "residual": false,
+        "frame_kind": "interstellar",
+        "frame_kind_gap": {
+          "gap_id": "URKE-G-04",
+          "finding": "The reference frame catalogue declares an interstellar frame kind for corridors between bodies and no distinct interplanetary kind, so this reality binds to the nearest declared kind.",
+          "referred_to": "UCXI-000001",
+          "remediation": "Declare an interplanetary frame kind, or record that interstellar covers both scales."
+        },
+        "systems": {
+          "location-system": "barycentric-place",
+          "coordinate-system": "inertial-celestial",
+          "unit-system": "si",
+          "temporal-system": "tt",
+          "calendar-system": "civil-calendar",
+          "communication-model": "interplanetary-high-delay",
+          "governance-model": "unresolved",
+          "economic-model": "unresolved",
+          "measurement-model": "si-traceable"
+        }
+      },
+      {
+        "identifier": "future-settlement",
+        "title": "Future Settlement",
+        "residual": false,
+        "frame_kind": "planetary",
+        "frame_kind_gap": null,
+        "systems": {
+          "location-system": "unresolved",
+          "coordinate-system": "unresolved",
+          "unit-system": "si",
+          "temporal-system": "unresolved",
+          "calendar-system": "unresolved",
+          "communication-model": "unresolved",
+          "governance-model": "unresolved",
+          "economic-model": "unresolved",
+          "measurement-model": "unresolved"
+        }
+      },
+      {
+        "identifier": "digital-reality",
+        "title": "Digital Reality",
+        "residual": false,
+        "frame_kind": "virtual",
+        "frame_kind_gap": null,
+        "systems": {
+          "location-system": "addressable-namespace",
+          "coordinate-system": "graph-position",
+          "unit-system": "dimensionless-count",
+          "temporal-system": "logical-sequence",
+          "calendar-system": "sequence-only",
+          "communication-model": "in-substrate",
+          "governance-model": "operator-derived",
+          "economic-model": "unresolved",
+          "measurement-model": "instrumented-counter"
+        }
+      },
+      {
+        "identifier": "simulated-reality",
+        "title": "Simulated Reality",
+        "residual": false,
+        "frame_kind": "simulated",
+        "frame_kind_gap": null,
+        "systems": {
+          "location-system": "simulation-place",
+          "coordinate-system": "simulation-grid",
+          "unit-system": "simulation-unit",
+          "temporal-system": "simulated-timeline",
+          "calendar-system": "sequence-only",
+          "communication-model": "in-simulation",
+          "governance-model": "operator-derived",
+          "economic-model": "simulation-scrip",
+          "measurement-model": "simulation-instrument"
+        }
+      },
+      {
+        "identifier": "distributed-substrate",
+        "title": "Distributed Substrate",
+        "residual": false,
+        "frame_kind": "distributed",
+        "frame_kind_gap": null,
+        "systems": {
+          "location-system": "mesh-node-set",
+          "coordinate-system": "graph-position",
+          "unit-system": "dimensionless-count",
+          "temporal-system": "logical-sequence",
+          "calendar-system": "sequence-only",
+          "communication-model": "partition-tolerant",
+          "governance-model": "unresolved",
+          "economic-model": "unresolved",
+          "measurement-model": "instrumented-counter"
+        }
+      },
+      {
+        "identifier": "unknown-future-reality",
+        "title": "Unknown Future Reality",
+        "residual": true,
+        "frame_kind": "",
+        "frame_kind_gap": {
+          "gap_id": "URKE-G-05",
+          "finding": "The residual reality binds to no frame kind by construction: a residual that named one would be a prediction about a reality nobody has met.",
+          "referred_to": "URKE-000001",
+          "remediation": "None. The gap is the correct state and it is disclosed rather than defaulted."
+        },
+        "systems": {
+          "location-system": "unresolved",
+          "coordinate-system": "unresolved",
+          "unit-system": "unresolved",
+          "temporal-system": "unresolved",
+          "calendar-system": "unresolved",
+          "communication-model": "unresolved",
+          "governance-model": "unresolved",
+          "economic-model": "unresolved",
+          "measurement-model": "unresolved"
+        }
+      }
+    ]
+  },
+  "temporal": {
+    "$no_finite_assumption": "No epoch, calendar, planet, coordinate or clock literal appears in this package's source. Each is a field below, and the residual system declares its epoch unresolved rather than inheriting one. URKE-L-17 parses the package for the declared literals and refuses any occurrence.",
+    "unresolved_token": "unresolved",
+    "exempt_modules": [
+      "engine/recursive_knowledge/evidence.py"
+    ],
+    "$exempt_modules": "The evidence writer holds the single clock reading in this capability, and naming the clock requires the literal the scan forbids everywhere else. It is exempt from the temporal scan and from nothing else; the reading enters evidence only and is an input to no digest, no identity and no verdict.",
+    "system_type_owner": "engine/temporal/coordinate.py::SystemType",
+    "chronology_owner": "UCOS-CEU-001",
+    "forbidden_source_literals": [
+      "1970-01-01",
+      "1972-01-01",
+      "2000-01-01",
+      "J2000",
+      "gregorian",
+      "unix epoch",
+      "datetime.now",
+      "time.time",
+      "utcnow",
+      "latitude",
+      "longitude",
+      "nation-state",
+      "wgs84"
+    ],
+    "seed": [
+      {
+        "identifier": "utc",
+        "title": "Coordinated Universal Time",
+        "system_type": "physical",
+        "chronology_model": "historical",
+        "epoch": "leap-second-aligned",
+        "calendar_system": "civil-calendar",
+        "causality_model": "single-total-order",
+        "reference_frame": "earth",
+        "conversion_authority": "BIPM",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "tai",
+        "title": "International Atomic Time",
+        "system_type": "physical",
+        "chronology_model": "historical",
+        "epoch": "atomic-continuous",
+        "calendar_system": "civil-calendar",
+        "causality_model": "single-total-order",
+        "reference_frame": "earth",
+        "conversion_authority": "BIPM",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "tt",
+        "title": "Terrestrial Time",
+        "system_type": "physical",
+        "chronology_model": "historical",
+        "epoch": "ephemeris-aligned",
+        "calendar_system": "civil-calendar",
+        "causality_model": "single-total-order",
+        "reference_frame": "interplanetary-system",
+        "conversion_authority": "IAU",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "lunar-coordinated-time",
+        "title": "Lunar Coordinated Time",
+        "system_type": "physical",
+        "chronology_model": "historical",
+        "epoch": "unresolved",
+        "calendar_system": "mission-calendar",
+        "causality_model": "single-total-order",
+        "reference_frame": "moon",
+        "conversion_authority": "unresolved",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "mars-coordinated-time",
+        "title": "Mars Coordinated Time",
+        "system_type": "physical",
+        "chronology_model": "historical",
+        "epoch": "unresolved",
+        "calendar_system": "sol-calendar",
+        "causality_model": "single-total-order",
+        "reference_frame": "mars",
+        "conversion_authority": "unresolved",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "mission-elapsed-time",
+        "title": "Mission Elapsed Time",
+        "system_type": "contextual",
+        "chronology_model": "historical",
+        "epoch": "mission-declared",
+        "calendar_system": "mission-calendar",
+        "causality_model": "single-total-order",
+        "reference_frame": "orbital-habitat",
+        "conversion_authority": "mission-operator",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "logical-sequence",
+        "title": "Logical Sequence",
+        "system_type": "logical",
+        "chronology_model": "historical",
+        "epoch": "sequence-zero",
+        "calendar_system": "sequence-only",
+        "causality_model": "partial-order",
+        "reference_frame": "digital-reality",
+        "conversion_authority": "URKE-000001",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "simulated-timeline",
+        "title": "Simulated Timeline",
+        "system_type": "simulated",
+        "chronology_model": "simulated",
+        "epoch": "simulation-declared",
+        "calendar_system": "sequence-only",
+        "causality_model": "single-total-order",
+        "reference_frame": "simulated-reality",
+        "conversion_authority": "simulation-operator",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "branching-chronology",
+        "title": "Branching Chronology",
+        "system_type": "logical",
+        "chronology_model": "branching",
+        "epoch": "branch-declared",
+        "calendar_system": "sequence-only",
+        "causality_model": "branching-causality",
+        "reference_frame": "unresolved",
+        "conversion_authority": "unresolved",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "recursive-chronology",
+        "title": "Recursive Chronology",
+        "system_type": "logical",
+        "chronology_model": "recursive",
+        "epoch": "unresolved",
+        "calendar_system": "sequence-only",
+        "causality_model": "recursive-causality",
+        "reference_frame": "unresolved",
+        "conversion_authority": "unresolved",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "predictive-chronology",
+        "title": "Predictive Chronology",
+        "system_type": "logical",
+        "chronology_model": "predicted",
+        "epoch": "unresolved",
+        "calendar_system": "sequence-only",
+        "causality_model": "single-total-order",
+        "reference_frame": "unresolved",
+        "conversion_authority": "unresolved",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "alternative-chronology",
+        "title": "Alternative Chronology",
+        "system_type": "logical",
+        "chronology_model": "alternative",
+        "epoch": "unresolved",
+        "calendar_system": "sequence-only",
+        "causality_model": "branching-causality",
+        "reference_frame": "unresolved",
+        "conversion_authority": "unresolved",
+        "epoch_gap": null
+      },
+      {
+        "identifier": "unknown-future-temporal-system",
+        "title": "Unknown Future Temporal System",
+        "system_type": "unknown",
+        "chronology_model": "unknown",
+        "epoch": "unresolved",
+        "calendar_system": "unresolved",
+        "causality_model": "unresolved",
+        "reference_frame": "unresolved",
+        "conversion_authority": "unresolved",
+        "epoch_gap": {
+          "gap_id": "URKE-G-06",
+          "finding": "The residual temporal system declares no epoch by construction. A residual with an epoch would be an assumption about a chronology nobody has met.",
+          "referred_to": "URKE-000001",
+          "remediation": "None. The unresolved epoch is the correct value, declared rather than defaulted."
+        }
+      }
+    ]
+  },
+  "ownership": {
+    "unassigned_token": "UNASSIGNED",
+    "$unassigned_token": "An explicit token, so 'nobody owns this' is a fact a detector finds rather than a blank that reads as an oversight. Admission still requires the attribute to be present.",
+    "roles": [
+      {
+        "identifier": "URKE-000001",
+        "definition": "This capability, for subjects describing its own declared vocabulary."
+      },
+      {
+        "identifier": "UNASSIGNED",
+        "definition": "No owner assigned yet. Discoverable, never silent."
+      },
+      {
+        "identifier": "REPOSITORY-OWNER",
+        "definition": "The human authority of record."
+      },
+      {
+        "identifier": "UCON-000001",
+        "definition": "The construct foundation."
+      },
+      {
+        "identifier": "UCOS-CEU-001",
+        "definition": "The existence universe."
+      },
+      {
+        "identifier": "UKDA-000001",
+        "definition": "The knowledge object authority."
+      },
+      {
+        "identifier": "UCXI-000001",
+        "definition": "The context and location authority."
+      },
+      {
+        "identifier": "UOBC-000001",
+        "definition": "The object birth authority."
+      },
+      {
+        "identifier": "UIS-001",
+        "definition": "The identity authority."
+      },
+      {
+        "identifier": "CMG-000002",
+        "definition": "The temporal authority."
+      },
+      {
+        "identifier": "engine/governance",
+        "definition": "The governance engine."
+      }
+    ]
+  },
+  "extension_points": [
+    {
+      "point_id": "URKE-EP-01",
+      "subject": "lifecycle state",
+      "owner": "URKE-000001",
+      "admission": "admit_state",
+      "evolution_subject": "knowledge"
+    },
+    {
+      "point_id": "URKE-EP-02",
+      "subject": "domain",
+      "owner": "URKE-000001",
+      "admission": "admit_domain",
+      "evolution_subject": "taxonomy"
+    },
+    {
+      "point_id": "URKE-EP-03",
+      "subject": "qualifier value",
+      "owner": "URKE-000001",
+      "admission": "admit_qualifier_value",
+      "evolution_subject": "vocabulary"
+    },
+    {
+      "point_id": "URKE-EP-04",
+      "subject": "relation",
+      "owner": "URKE-000001",
+      "admission": "admit_relation",
+      "evolution_subject": "ontology"
+    },
+    {
+      "point_id": "URKE-EP-05",
+      "subject": "profile",
+      "owner": "URKE-000001",
+      "admission": "admit_profile",
+      "evolution_subject": "ontology"
+    },
+    {
+      "point_id": "URKE-EP-06",
+      "subject": "discovery source",
+      "owner": "URKE-000001",
+      "admission": "admit_discovery_source",
+      "evolution_subject": "discovery"
+    },
+    {
+      "point_id": "URKE-EP-07",
+      "subject": "evolution subject",
+      "owner": "URKE-000001",
+      "admission": "admit_evolution_subject",
+      "evolution_subject": "governance"
+    },
+    {
+      "point_id": "URKE-EP-08",
+      "subject": "reality",
+      "owner": "URKE-000001",
+      "admission": "admit_reality",
+      "evolution_subject": "reality-model"
+    },
+    {
+      "point_id": "URKE-EP-09",
+      "subject": "temporal system",
+      "owner": "URKE-000001",
+      "admission": "admit_temporal_system",
+      "evolution_subject": "temporal-system"
+    },
+    {
+      "point_id": "URKE-EP-10",
+      "subject": "lifecycle axis",
+      "owner": "URKE-000001",
+      "admission": "admit_axis",
+      "evolution_subject": "verification"
+    },
+    {
+      "point_id": "URKE-EP-11",
+      "subject": "gap class",
+      "owner": "URKE-000001",
+      "admission": "admit_gap_class",
+      "evolution_subject": "research"
+    },
+    {
+      "point_id": "URKE-EP-12",
+      "subject": "learning stage",
+      "owner": "URKE-000001",
+      "admission": "admit_learning_stage",
+      "evolution_subject": "learning"
+    },
+    {
+      "point_id": "URKE-EP-13",
+      "subject": "composition",
+      "owner": "URKE-000001",
+      "admission": "admit_context",
+      "evolution_subject": "context"
+    },
+    {
+      "point_id": "URKE-EP-14",
+      "subject": "architectural change",
+      "owner": "URKE-000001",
+      "admission": "admit_architecture_proposal",
+      "evolution_subject": "ontology"
+    }
+  ],
+  "future_domain_subjects": [
+    {
+      "identifier": "scientific-domain",
+      "admission": "admit_domain"
+    },
+    {
+      "identifier": "mathematical-domain",
+      "admission": "admit_domain"
+    },
+    {
+      "identifier": "intelligence-model",
+      "admission": "admit_domain"
+    },
+    {
+      "identifier": "ontology",
+      "admission": "admit_relation"
+    },
+    {
+      "identifier": "governance-model",
+      "admission": "admit_evolution_subject"
+    },
+    {
+      "identifier": "verification-model",
+      "admission": "admit_axis"
+    },
+    {
+      "identifier": "reality-model",
+      "admission": "admit_reality"
+    },
+    {
+      "identifier": "temporal-system",
+      "admission": "admit_temporal_system"
+    },
+    {
+      "identifier": "location-system",
+      "admission": "admit_context"
+    },
+    {
+      "identifier": "civilization",
+      "admission": "admit_context"
+    },
+    {
+      "identifier": "substrate",
+      "admission": "admit_context"
+    },
+    {
+      "identifier": "future-construct",
+      "admission": "admit_profile"
+    }
+  ],
+  "admissibility_test": {
+    "question": "Can this mechanism represent, govern, research, verify, validate, evolve and integrate a future scientific domain, future intelligence model, future ontology, future temporal system, future reality model, future civilization or future construct without architectural redesign?",
+    "$question": "Applied as a measurement. Every subject is admitted at runtime on every measurement and the package fingerprint is compared before and after; a mechanism that cannot answer yes fails URKE-L-10.",
+    "subjects": [
+      "scientific-domain",
+      "mathematical-domain",
+      "intelligence-model",
+      "ontology",
+      "governance-model",
+      "verification-model",
+      "reality-model",
+      "temporal-system",
+      "location-system",
+      "civilization",
+      "substrate",
+      "future-construct"
+    ]
+  },
+  "substrate": {
+    "$purpose": "The mechanisms a future recursive capability stands on. Each is a live module symbol, and URKE-L-41 refuses an element whose module or symbol is absent, a capability requiring an undeclared element, and an element no capability requires.",
+    "elements": [
+      {
+        "substrate_id": "URKE-S-01",
+        "mechanism": "append-only chained ledger with no removal path",
+        "module": "engine/recursive_knowledge/ledger.py",
+        "symbol": "KnowledgeLedger"
+      },
+      {
+        "substrate_id": "URKE-S-02",
+        "mechanism": "open state lattice with no terminal member",
+        "module": "engine/recursive_knowledge/states.py",
+        "symbol": "transition"
+      },
+      {
+        "substrate_id": "URKE-S-03",
+        "mechanism": "governed admission for every declared data vocabulary",
+        "module": "engine/recursive_knowledge/admission.py",
+        "symbol": "ADMISSIONS"
+      },
+      {
+        "substrate_id": "URKE-S-04",
+        "mechanism": "continuous discovery converging to a fixed point",
+        "module": "engine/recursive_knowledge/discovery.py",
+        "symbol": "DETECTORS"
+      },
+      {
+        "substrate_id": "URKE-S-05",
+        "mechanism": "governed evolution carrying before and after digests",
+        "module": "engine/recursive_knowledge/evolution.py",
+        "symbol": "OPERATORS"
+      },
+      {
+        "substrate_id": "URKE-S-06",
+        "mechanism": "profile-driven requirement enforcement at admission",
+        "module": "engine/recursive_knowledge/model.py",
+        "symbol": "missing_attributes"
+      },
+      {
+        "substrate_id": "URKE-S-07",
+        "mechanism": "disposition binding to the construct foundation",
+        "module": "engine/recursive_knowledge/bridge.py",
+        "symbol": "HANDLERS"
+      },
+      {
+        "substrate_id": "URKE-S-08",
+        "mechanism": "independent lifecycle axes",
+        "module": "engine/recursive_knowledge/states.py",
+        "symbol": "axis_initial"
+      },
+      {
+        "substrate_id": "URKE-S-09",
+        "mechanism": "data-driven reality registry",
+        "module": "engine/recursive_knowledge/worlds.py",
+        "symbol": "resolve"
+      },
+      {
+        "substrate_id": "URKE-S-10",
+        "mechanism": "data-driven temporal registry",
+        "module": "engine/recursive_knowledge/worlds.py",
+        "symbol": "resolve"
+      },
+      {
+        "substrate_id": "URKE-S-11",
+        "mechanism": "declaration-versus-measured-reality probes",
+        "module": "engine/recursive_knowledge/discovery.py",
+        "symbol": "REALITY_PROBES"
+      },
+      {
+        "substrate_id": "URKE-S-12",
+        "mechanism": "tamper-evident journal verification",
+        "module": "engine/recursive_knowledge/ledger.py",
+        "symbol": "chain_is_intact"
+      },
+      {
+        "substrate_id": "URKE-S-13",
+        "mechanism": "governed contradictions with resolution and verification history",
+        "module": "engine/recursive_knowledge/subjects.py",
+        "symbol": "record_contradiction"
+      },
+      {
+        "substrate_id": "URKE-S-14",
+        "mechanism": "governed gap lifecycle with closure criteria and review",
+        "module": "engine/recursive_knowledge/subjects.py",
+        "symbol": "close_gap"
+      },
+      {
+        "substrate_id": "URKE-S-15",
+        "mechanism": "research lifecycle derivable from any unresolved subject",
+        "module": "engine/recursive_knowledge/research.py",
+        "symbol": "open_research"
+      },
+      {
+        "substrate_id": "URKE-S-16",
+        "mechanism": "governed relationships carrying basis and evidence",
+        "module": "engine/recursive_knowledge/ledger.py",
+        "symbol": "relate"
+      },
+      {
+        "substrate_id": "URKE-S-17",
+        "mechanism": "composition of state, axes and qualifiers in place of new types",
+        "module": "engine/recursive_knowledge/composition.py",
+        "symbol": "express"
+      },
+      {
+        "substrate_id": "URKE-S-18",
+        "mechanism": "context as a subject, containing and referencing contexts",
+        "module": "engine/recursive_knowledge/composition.py",
+        "symbol": "situate"
+      },
+      {
+        "substrate_id": "URKE-S-19",
+        "mechanism": "governed learning pipeline with no bypass",
+        "module": "engine/recursive_knowledge/subjects.py",
+        "symbol": "advance"
+      },
+      {
+        "substrate_id": "URKE-S-20",
+        "mechanism": "representability measurement before any architectural change",
+        "module": "engine/recursive_knowledge/proposal.py",
+        "symbol": "representability"
+      },
+      {
+        "substrate_id": "URKE-S-21",
+        "mechanism": "governed architectural change proposal with impact analysis",
+        "module": "engine/recursive_knowledge/proposal.py",
+        "symbol": "propose"
+      }
+    ]
+  },
+  "future_capabilities": {
+    "$purpose": "This capability is a substrate, not a repository. These are the capabilities it exists to make implementable without architectural redesign.",
+    "$not_claimed": "That any of them exists, or that the substrate is sufficient for them. What is measured is that each named element is present and exercised.",
+    "seed": [
+      {
+        "identifier": "recursive-self-learning",
+        "requires": [
+          "URKE-S-01",
+          "URKE-S-02",
+          "URKE-S-19",
+          "URKE-S-15"
+        ]
+      },
+      {
+        "identifier": "recursive-self-validation",
+        "requires": [
+          "URKE-S-01",
+          "URKE-S-06",
+          "URKE-S-08"
+        ]
+      },
+      {
+        "identifier": "recursive-self-verification",
+        "requires": [
+          "URKE-S-01",
+          "URKE-S-08",
+          "URKE-S-13"
+        ]
+      },
+      {
+        "identifier": "recursive-self-governance",
+        "requires": [
+          "URKE-S-03",
+          "URKE-S-07",
+          "URKE-S-06"
+        ]
+      },
+      {
+        "identifier": "recursive-self-correction",
+        "requires": [
+          "URKE-S-05",
+          "URKE-S-13",
+          "URKE-S-14"
+        ]
+      },
+      {
+        "identifier": "recursive-self-healing",
+        "requires": [
+          "URKE-S-05",
+          "URKE-S-12",
+          "URKE-S-14"
+        ]
+      },
+      {
+        "identifier": "recursive-self-defense",
+        "requires": [
+          "URKE-S-11",
+          "URKE-S-12",
+          "URKE-S-13"
+        ]
+      },
+      {
+        "identifier": "recursive-anti-tampering",
+        "requires": [
+          "URKE-S-01",
+          "URKE-S-12"
+        ]
+      },
+      {
+        "identifier": "recursive-anti-theft",
+        "requires": [
+          "URKE-S-01",
+          "URKE-S-12",
+          "URKE-S-07"
+        ]
+      },
+      {
+        "identifier": "recursive-anti-corruption",
+        "requires": [
+          "URKE-S-11",
+          "URKE-S-12",
+          "URKE-S-06"
+        ]
+      },
+      {
+        "identifier": "recursive-research-generation",
+        "requires": [
+          "URKE-S-04",
+          "URKE-S-15",
+          "URKE-S-02"
+        ]
+      },
+      {
+        "identifier": "recursive-discovery-generation",
+        "requires": [
+          "URKE-S-04",
+          "URKE-S-01"
+        ]
+      },
+      {
+        "identifier": "recursive-capability-evolution",
+        "requires": [
+          "URKE-S-03",
+          "URKE-S-05"
+        ]
+      },
+      {
+        "identifier": "recursive-ontology-evolution",
+        "requires": [
+          "URKE-S-03",
+          "URKE-S-05",
+          "URKE-S-16"
+        ]
+      },
+      {
+        "identifier": "recursive-taxonomy-evolution",
+        "requires": [
+          "URKE-S-03",
+          "URKE-S-05",
+          "URKE-S-17"
+        ]
+      },
+      {
+        "identifier": "recursive-verification-evolution",
+        "requires": [
+          "URKE-S-05",
+          "URKE-S-08",
+          "URKE-S-13"
+        ]
+      },
+      {
+        "identifier": "recursive-governance-evolution",
+        "requires": [
+          "URKE-S-03",
+          "URKE-S-05",
+          "URKE-S-07"
+        ]
+      },
+      {
+        "identifier": "recursive-intelligence-evolution",
+        "requires": [
+          "URKE-S-03",
+          "URKE-S-05",
+          "URKE-S-15"
+        ]
+      },
+      {
+        "identifier": "recursive-temporal-evolution",
+        "requires": [
+          "URKE-S-10",
+          "URKE-S-03",
+          "URKE-S-05"
+        ]
+      },
+      {
+        "identifier": "recursive-location-evolution",
+        "requires": [
+          "URKE-S-09",
+          "URKE-S-18",
+          "URKE-S-03"
+        ]
+      },
+      {
+        "identifier": "governed-architectural-evolution",
+        "requires": [
+          "URKE-S-20",
+          "URKE-S-21",
+          "URKE-S-05"
+        ]
+      }
+    ]
+  },
+  "anti_finite_mechanisms": {
+    "$purpose": "No capability may assume its ontology, taxonomy, vocabulary, science, mathematics, intelligence models, governance models, verification models or reality models are complete. Operationally that obligation is six governed mechanisms, each a live symbol. URKE-L-43 resolves and exercises every one.",
+    "$implementation_may_be_finite": "The implementation is finite; the architecture does not require finiteness. That is the distinction these mechanisms exist to hold, and it is why every bound above is a declared number a law reads rather than a constant in code.",
+    "mechanisms": [
+      {
+        "mechanism": "extension",
+        "module": "engine/recursive_knowledge/admission.py",
+        "symbol": "ADMISSIONS",
+        "definition": "A member nobody declared is admitted at runtime."
+      },
+      {
+        "mechanism": "replacement",
+        "module": "engine/recursive_knowledge/evolution.py",
+        "symbol": "operator_refine",
+        "definition": "A definition changes without removing a member."
+      },
+      {
+        "mechanism": "supersession",
+        "module": "engine/recursive_knowledge/ledger.py",
+        "symbol": "supersede",
+        "definition": "A member is replaced by a named later one and retained."
+      },
+      {
+        "mechanism": "subjects",
+        "module": "engine/recursive_knowledge/subjects.py",
+        "symbol": "record_contradiction",
+        "definition": "Two incompatible positions are held at once, as an object."
+      },
+      {
+        "mechanism": "coexistence",
+        "module": "engine/recursive_knowledge/ledger.py",
+        "symbol": "of_class",
+        "definition": "Incompatible members coexist without removal."
+      },
+      {
+        "mechanism": "future-discovery",
+        "module": "engine/recursive_knowledge/discovery.py",
+        "symbol": "discover",
+        "definition": "What is missing is found by measurement rather than review."
+      }
+    ]
+  },
+  "forbidden_outcomes": {
+    "$purpose": "The four outcomes no code path here may produce. URKE-L-38 measures each: a presented subject always produces a record, a recorded subject is always retrievable, no refusal is silent, and no failure is untracked.",
+    "outcomes": [
+      {
+        "outcome": "ignore",
+        "definition": "A presented subject that produces no record."
+      },
+      {
+        "outcome": "lose",
+        "definition": "A recorded subject that later cannot be found."
+      },
+      {
+        "outcome": "silent-reject",
+        "definition": "A refusal leaving no trace of what was refused."
+      },
+      {
+        "outcome": "untracked-failure",
+        "definition": "A failure neither recorded nor surfaced."
+      }
+    ]
+  },
+  "implementation_priorities": {
+    "$purpose": "The ordering used to settle design questions here, recorded so a later reader can tell a decision from an accident.",
+    "priorities": [
+      "A working implementation before a larger declaration.",
+      "Measured laws before declared intentions.",
+      "Non-vacuous tests before coverage.",
+      "Evidence generation before reporting.",
+      "Deterministic behaviour before convenience.",
+      "Extensibility before additional vocabulary.",
+      "Composition before proliferation."
+    ]
+  },
+  "architecture_evolution": {
+    "$purpose": "An architecture freeze is not a claim that architecture can never change; it is a claim that change is governed. Three tiers, with different burdens: the constitutional foundation is stable and the burden of proof sits on any change to it, architecture itself is a governed subject that may evolve through an evidenced proposal, and domains are unbounded and evolve by adding a data row.",
+    "tiers": [
+      {
+        "tier": "constitutional-foundation",
+        "scope": "the two structural primitives, the two entity classes, the state lattice",
+        "burden_of_proof": "change",
+        "mechanism": "architectural change proposal",
+        "$note": "Stability is the default and needs no argument; change needs evidence that the existing primitives cannot represent the construct."
+      },
+      {
+        "tier": "governed-architectural-evolution",
+        "scope": "how the foundation is measured, enforced and bound to other capabilities",
+        "burden_of_proof": "change",
+        "mechanism": "architectural change proposal with impact analysis",
+        "$note": "Architecture is a subject in the ledger like anything else, so its changes carry lineage and are replayable."
+      },
+      {
+        "tier": "unlimited-domain-evolution",
+        "scope": "domains, qualifier values, relations, profiles, contexts, realities, temporal systems, discovery sources, states within the declared bound",
+        "burden_of_proof": "none",
+        "mechanism": "governed admission",
+        "$note": "Unbounded by construction. Unknown mathematics, unknown physics, an unknown civilization or a reality nobody has met are each one admitted row and no code change, which URKE-L-09 measures."
+      }
+    ],
+    "proposal_requirements": [
+      "proposal",
+      "evidence",
+      "verification",
+      "validation",
+      "lineage",
+      "impact",
+      "governance_decision"
+    ],
+    "$proposal_requirements": "All seven, and URKE-L-44 forges a proposal missing each one in turn and asserts the refusal. A proposal that could be recorded incomplete would be an architectural mutation with a paper trail that reads as governance.",
+    "default_rule": [
+      "attempt representation with the existing primitives",
+      "measure representability rather than judging it",
+      "if representable, extend data only and record the composition",
+      "if not representable, raise an architectural change proposal",
+      "subject the proposal to governance, verification and validation"
+    ],
+    "$default_rule": "Executable, not advisory: engine/recursive_knowledge/proposal.py::representability performs step two and returns either the composition that expresses the construct or the reason no composition does. URKE-L-45 exercises both outcomes every run, so 'architecture evolves by evidence, not by anticipation' is a measured behaviour.",
+    "silent_mutation_refused": true
+  },
+  "stability": {
+    "$purpose": "Perfect stability is not claimed and cannot be. What is implemented is continuous measurement: every stability property below resolves to a live measurement, and every instability it finds becomes a governed subject like anything else — which is why no new primitive was needed to hold one. An instability is a gap or a contradiction, and it is therefore already investigable, verifiable, researchable and correctable.",
+    "$not_claimed": "That the system is stable, that instability is prevented, or that every instability is detectable. Only that what is detected is governed.",
+    "properties": [
+      {
+        "property": "measurable",
+        "measured_by": "chain_integrity"
+      },
+      {
+        "property": "observable",
+        "measured_by": "population_reconciles"
+      },
+      {
+        "property": "explainable",
+        "measured_by": "every_finding_names_its_detector"
+      },
+      {
+        "property": "governable",
+        "measured_by": "every_instability_is_a_governed_subject"
+      },
+      {
+        "property": "verifiable",
+        "measured_by": "declaration_matches_measured_world"
+      },
+      {
+        "property": "validatable",
+        "measured_by": "profile_requirements_hold"
+      },
+      {
+        "property": "improvable",
+        "measured_by": "instability_generates_research"
+      },
+      {
+        "property": "recoverable",
+        "measured_by": "supersession_restores_without_deletion"
+      },
+      {
+        "property": "evolvable",
+        "measured_by": "stability_mechanisms_are_evolution_subjects"
+      }
+    ],
+    "instability_becomes": "gap",
+    "$instability_becomes": "Detected instability is admitted as a gap subject: detectable because a detector found it, representable because a gap is a profile not a type, traceable through its lineage, attributable through its owner, analyzable because it is eligible for research, and correctable because a gap closes only against satisfied criteria.",
+    "exempt": [],
+    "$exempt": "No stability mechanism is exempt from review. The list is empty and a law refuses a non-empty one."
+  },
+  "strategic_direction": {
+    "directive": "USRD-000001",
+    "$reality_principle": "Measured reality takes precedence over this declaration. Where the two disagree the disagreement is admitted as a governed contradiction carrying both positions, and it is never resolved by editing the measurement.",
+    "reality_probes": [
+      {
+        "probe_id": "URKE-RP-01",
+        "probe": "state_binding_reality",
+        "declared": "states.seed[].binding",
+        "measured": "the live vocabulary each declared owner carries",
+        "on_conflict": "admit a contradiction of the declared class and refuse the law"
+      },
+      {
+        "probe_id": "URKE-RP-02",
+        "probe": "gap_class_binding_reality",
+        "declared": "gaps.classes[].ucon_unknown_class",
+        "measured": "the unknown classes UCON-000001 declares",
+        "on_conflict": "admit a contradiction of the declared class and refuse the law"
+      },
+      {
+        "probe_id": "URKE-RP-03",
+        "probe": "reality_frame_reality",
+        "declared": "reality.seed[].frame_kind",
+        "measured": "the frame kinds the reference frame catalogue carries",
+        "on_conflict": "admit a contradiction of the declared class and refuse the law"
+      },
+      {
+        "probe_id": "URKE-RP-04",
+        "probe": "temporal_system_type_reality",
+        "declared": "temporal.seed[].system_type",
+        "measured": "the system types the temporal capability implements",
+        "on_conflict": "admit a contradiction of the declared class and refuse the law"
+      },
+      {
+        "probe_id": "URKE-RP-05",
+        "probe": "research_state_mapping_reality",
+        "declared": "states.seed[].ucon_research_state",
+        "measured": "the research states UCON-000001 declares",
+        "on_conflict": "admit a contradiction of the declared class and refuse the law"
+      },
+      {
+        "probe_id": "URKE-RP-06",
+        "probe": "contradiction_binding_reality",
+        "declared": "contradiction.classes[]",
+        "measured": "the contradiction classes and resolution states UCON-000001 declares",
+        "on_conflict": "admit a contradiction of the declared class and refuse the law"
+      }
+    ],
+    "conflict_contradiction_class": "evidential",
+    "conflict_owner": "URKE-000001",
+    "parity_layers": [
+      {
+        "layer": "implementation",
+        "evidence": "engine/recursive_knowledge/",
+        "measured_by": "module_present"
+      },
+      {
+        "layer": "enforcement",
+        "evidence": "engine/recursive_knowledge/gate.py",
+        "measured_by": "module_present"
+      },
+      {
+        "layer": "measurement",
+        "evidence": "engine/recursive_knowledge/contract.py",
+        "measured_by": "module_present"
+      },
+      {
+        "layer": "verification",
+        "evidence": "engine/tests/unit/test_recursive_knowledge.py",
+        "measured_by": "path_present"
+      },
+      {
+        "layer": "validation",
+        "evidence": "engine/recursive_knowledge/declaration.py",
+        "measured_by": "module_present"
+      },
+      {
+        "layer": "evidence",
+        "evidence": "engine/recursive_knowledge/evidence.py",
+        "measured_by": "module_present"
+      },
+      {
+        "layer": "auditability",
+        "evidence": "engine/recursive_knowledge/ledger.py",
+        "measured_by": "module_present"
+      },
+      {
+        "layer": "failure_detection",
+        "evidence": "engine/recursive_knowledge/discovery.py",
+        "measured_by": "module_present"
+      },
+      {
+        "layer": "remediation",
+        "evidence": "gaps[].resolution_path",
+        "measured_by": "every_gap_names_a_resolution_path"
+      },
+      {
+        "layer": "evolution_pathway",
+        "evidence": "engine/recursive_knowledge/evolution.py",
+        "measured_by": "module_present"
+      }
+    ],
+    "$parity_layers": "A capability missing any layer is partial, and the report says so rather than rounding up. Standing is computed, never asserted.",
+    "review": {
+      "$purpose": "No capability is permanently exempt from review, including this one.",
+      "self_review_gap": "URKE-G-12",
+      "cadence": 64,
+      "exempt": [],
+      "$exempt": "Empty, and URKE-L-29 refuses a non-empty list. An exemption mechanism that exists is an exemption mechanism that will be used."
+    }
+  },
+  "bound_vocabularies": {
+    "$purpose": "Explicit reachability. The construct foundation declares fourteen unknown classes and this capability declares eleven gap classes, so reachability cannot be read off the gap table alone. Each row below states which declared member reaches which class of the superior vocabulary. Nothing is inferred from a name resembling another name.",
+    "ucon_unknown_classes": [
+      {
+        "ucon_class": "unknown-mathematics",
+        "reached_by": "mathematics",
+        "via": "domains.seed"
+      },
+      {
+        "ucon_class": "unknown-physics",
+        "reached_by": "physics",
+        "via": "domains.seed"
+      },
+      {
+        "ucon_class": "unknown-ontology",
+        "reached_by": "ontology",
+        "via": "domains.seed"
+      },
+      {
+        "ucon_class": "unknown-intelligence",
+        "reached_by": "intelligence",
+        "via": "domains.seed"
+      },
+      {
+        "ucon_class": "unknown-governance",
+        "reached_by": "governance",
+        "via": "domains.seed"
+      },
+      {
+        "ucon_class": "unknown-economic-model",
+        "reached_by": "economics",
+        "via": "domains.seed"
+      },
+      {
+        "ucon_class": "unknown-temporal-model",
+        "reached_by": "temporal",
+        "via": "domains.seed"
+      },
+      {
+        "ucon_class": "unknown-reality-model",
+        "reached_by": "reality",
+        "via": "domains.seed"
+      },
+      {
+        "ucon_class": "unknown-location-model",
+        "reached_by": "location",
+        "via": "domains.seed"
+      },
+      {
+        "ucon_class": "unknown-computation-model",
+        "reached_by": "computation",
+        "via": "domains.seed"
+      },
+      {
+        "ucon_class": "unknown-identity-model",
+        "reached_by": "identity",
+        "via": "domains.seed"
+      },
+      {
+        "ucon_class": "unknown-knowledge-form",
+        "reached_by": "missing-knowledge",
+        "via": "gaps.classes"
+      },
+      {
+        "ucon_class": "unknown-future-domain",
+        "reached_by": "future-risk",
+        "via": "gaps.classes"
+      },
+      {
+        "ucon_class": "unknown-unclassified",
+        "reached_by": "unclassified-gap",
+        "via": "gaps.classes"
+      }
+    ]
+  },
+  "gap_disclosure": {
+    "$purpose": "Every gap this declaration discloses about itself is admitted into the ledger as a governed gap. The attributes an inline binding gap does not carry are declared here per disclosure source rather than invented in code, so URKE-L-25 measures data against data.",
+    "closure_criterion_template": "the remediation this gap names is performed and the performance is recorded",
+    "review_cadence": 64,
+    "sources": [
+      {
+        "source": "state_binding",
+        "classification": "limitation",
+        "severity": "S1-ARCHITECTURAL",
+        "definition": "A declared state holding a vocabulary locally because no owner carries a row for it."
+      },
+      {
+        "source": "reality_frame_binding",
+        "classification": "assumption",
+        "severity": "S2-OPERATIONAL",
+        "definition": "A reality whose frame-kind binding is approximate or absent."
+      },
+      {
+        "source": "temporal_epoch",
+        "classification": "unknown",
+        "severity": "S2-OPERATIONAL",
+        "definition": "A temporal system whose epoch is unresolved."
+      },
+      {
+        "source": "declared",
+        "classification": "limitation",
+        "severity": "S1-ARCHITECTURAL",
+        "definition": "A limitation stated directly rather than as a side effect of a binding."
+      }
+    ]
+  },
+  "disclosed_gaps": [
+    {
+      "gap_id": "URKE-G-07",
+      "classification": "limitation",
+      "severity": "S2-OPERATIONAL",
+      "finding": "Subjects minted here carry no birth record: the object birth authority has not declared this namespace, so it does not know these identities exist.",
+      "referred_to": "UOBC-000001",
+      "remediation": "Declare the namespace with the object birth authority and bind admission to it."
+    },
+    {
+      "gap_id": "URKE-G-08",
+      "classification": "limitation",
+      "severity": "S1-ARCHITECTURAL",
+      "finding": "Declared ownership roles are authority tokens checked against this declaration, not principals resolved through an identity authority. An owner is verifiable as declared, not as real.",
+      "referred_to": "UIS-001",
+      "remediation": "Resolve ownership tokens through the identity authority."
+    },
+    {
+      "gap_id": "URKE-G-09",
+      "classification": "limitation",
+      "severity": "S1-ARCHITECTURAL",
+      "finding": "Review cadence is counted in ledger sequence, not elapsed time, because a clock reading would make two measurements of the same bytes differ. A review can be surfaced as due because work advanced past it, and not because time passed.",
+      "referred_to": "CMG-000002",
+      "remediation": "Bind the review schedule to a temporal authority supplying a replayable coordinate."
+    },
+    {
+      "gap_id": "URKE-G-10",
+      "classification": "coverage-deficiency",
+      "severity": "S1-ARCHITECTURAL",
+      "finding": "Discovery detects the conditions its declared detectors describe. A condition no detector describes is not detected, and this capability cannot measure how large that set is.",
+      "referred_to": "URKE-000001",
+      "remediation": "None available: a detector for an unanticipated condition cannot be written before the condition is anticipated. The residual-population detector is the nearest proxy and is not the same measurement."
+    },
+    {
+      "gap_id": "URKE-G-11",
+      "classification": "limitation",
+      "severity": "S2-OPERATIONAL",
+      "finding": "The population governed here is the population presented. An unknown nobody has identified is absent from the ledger, and its absence is indistinguishable from its non-existence.",
+      "referred_to": "URKE-000001",
+      "remediation": "None available. This is the bound the principle is stated against: every identified unknown is governed, which is not a claim that every unknown is identified."
+    },
+    {
+      "gap_id": "URKE-G-12",
+      "classification": "verification-deficiency",
+      "severity": "S1-ARCHITECTURAL",
+      "finding": "This capability is subject to review on the terms it imposes on everything else, and its review is counted in ledger sequence rather than elapsed time.",
+      "referred_to": "REPOSITORY-OWNER",
+      "remediation": "Review the laws, bindings and residual gaps whenever the ledger advances past the declared cadence, and record the review as an evolution step against the verification subject."
+    },
+    {
+      "gap_id": "URKE-G-13",
+      "classification": "limitation",
+      "severity": "S1-ARCHITECTURAL",
+      "finding": "The reality principle is enforced over the declared probes. A divergence between this declaration and a measured reality no probe examines is not detected.",
+      "referred_to": "URKE-000001",
+      "remediation": "Add a probe whenever a new cross-capability binding is declared. Both counts are reported so the ratio is visible."
+    },
+    {
+      "gap_id": "URKE-G-15",
+      "classification": "coverage-deficiency",
+      "severity": "S0-CONSTITUTIONAL",
+      "finding": "The declaration exceeds the implementation. Thirty-two laws are declared and none is yet implemented, measured or tested; eight of the ten declared binding kinds have no implementing symbol; twelve of the fifteen declared modules do not exist; there is no gate, no evidence writer, no test suite and no verify.sh stage. Until those exist this capability is DECLARED and not IMPLEMENTED, and no part of it may be reported as complete.",
+      "referred_to": "REPOSITORY-OWNER",
+      "remediation": "Implement the modules the substrate declares, bind every declared law to a measured check with a positive and a negative test, generate evidence, wire the gate into verify.sh, and close this gap only when the gate is measured OPEN on a clean checkout."
+    },
+    {
+      "gap_id": "URKE-G-16",
+      "classification": "verification-deficiency",
+      "severity": "S0-CONSTITUTIONAL",
+      "finding": "No law has a positive test or a negative test, so no law is known to be enforceable rather than merely computable. A law that cannot be made to fail measures nothing.",
+      "referred_to": "REPOSITORY-OWNER",
+      "remediation": "Add, for every declared law, a test that forges a violating state and asserts the refusal, and a test that asserts the law holds on the seeded ledger."
+    },
+    {
+      "gap_id": "URKE-G-17",
+      "classification": "limitation",
+      "severity": "S1-ARCHITECTURAL",
+      "finding": "The self-improvement and future-capability registers name mechanisms and capabilities that are declared, not implemented. Every self-* mechanism is therefore a governed future capability at this point and none may be reported as an implemented behaviour.",
+      "referred_to": "REPOSITORY-OWNER",
+      "remediation": "Implement each declared mechanism, bind it to the law that exercises it, and record the evidence it produces; until then the register is a plan under governance."
+    },
+    {
+      "gap_id": "URKE-G-18",
+      "classification": "coverage-deficiency",
+      "severity": "S2-OPERATIONAL",
+      "finding": "Discovery excludes its own findings from detector scope, so a finding that is unowned, contextless or undefined is not itself detected. Without the exclusion discovery never reached a fixed point, which was the worse defect.",
+      "referred_to": "URKE-000001",
+      "remediation": "Give findings a narrower detector set of their own, so they are inspected without the inspection cascading."
+    },
+    {
+      "gap_id": "URKE-G-14",
+      "classification": "assumption",
+      "severity": "S2-OPERATIONAL",
+      "finding": "Composition replaces a type per condition, so two conditions composing to the same state, axes and qualifiers are indistinguishable in the ledger. The catalogue records the intended reading; the ledger records the composition.",
+      "referred_to": "URKE-000001",
+      "remediation": "Add a qualifier whenever two conditions must be told apart, which is a data change. Collisions are measured every run and reported rather than argued about."
+    }
+  ],
+  "non_goals": {
+    "$purpose": "The phrases this capability must never declare, kept as data so the detector cannot match its own source. The ratchet runs both ways: an undeclared occurrence refuses, and a preserved site whose occurrence has vanished also refuses.",
+    "forbidden_phrases": [
+      "future completeness",
+      "guaranteed first discovery",
+      "guaranteed future knowledge",
+      "guaranteed contradiction elimination",
+      "guaranteed scientific supremacy",
+      "guaranteed omniscience",
+      "guaranteed perfect prediction",
+      "guaranteed elimination of unknowns",
+      "guaranteed future invention",
+      "elimination of uncertainty",
+      "provably complete",
+      "complete knowledge",
+      "omniscient",
+      "every possible unknown",
+      "all future knowledge",
+      "eliminates all contradictions",
+      "discovers everything",
+      "knows everything",
+      "cannot be wrong",
+      "perfect prediction",
+      "total knowledge",
+      "perfect security",
+      "perfect correctness",
+      "permanently secure",
+      "permanently complete",
+      "final architecture"
+    ],
+    "preserved_sites": [],
+    "stated_non_goals": [
+      "The population of unknowns here is not claimed exhaustive.",
+      "No claim is made to identify a discovery before anyone else.",
+      "No claim is made that future knowledge is obtainable.",
+      "No claim is made that contradictions will be eliminated.",
+      "No claim is made that unknowns or uncertainty will be eliminated.",
+      "No claim of scientific precedence over any other body of work is made.",
+      "No claim is made to know what has not been measured.",
+      "No claim is made that predictions are correct.",
+      "No security posture is claimed; this capability claims none.",
+      "No correctness is claimed beyond what the laws measure.",
+      "No completeness is claimed now or later, and a review obligation is carried as a governed gap."
+    ]
+  },
+  "self_application": {
+    "$purpose": "What this capability measures about itself every run, so its claims are performed rather than described.",
+    "seeded_populations": [
+      {
+        "population": "states.seed",
+        "reader": "seed_states",
+        "entity_class": "subject"
+      },
+      {
+        "population": "domains.seed",
+        "reader": "seed_domains",
+        "entity_class": "subject"
+      },
+      {
+        "population": "qualifiers.seed",
+        "reader": "seed_qualifiers",
+        "entity_class": "subject"
+      },
+      {
+        "population": "relations.seed",
+        "reader": "seed_relations",
+        "entity_class": "subject"
+      },
+      {
+        "population": "profiles.seed",
+        "reader": "seed_profiles",
+        "entity_class": "subject"
+      },
+      {
+        "population": "lifecycle_axes.seed",
+        "reader": "seed_axes",
+        "entity_class": "subject"
+      },
+      {
+        "population": "gaps.classes",
+        "reader": "seed_gap_classes",
+        "entity_class": "subject"
+      },
+      {
+        "population": "reality.seed",
+        "reader": "seed_realities",
+        "entity_class": "subject"
+      },
+      {
+        "population": "temporal.seed",
+        "reader": "seed_temporal_systems",
+        "entity_class": "subject"
+      },
+      {
+        "population": "context.kinds",
+        "reader": "seed_context_kinds",
+        "entity_class": "subject"
+      },
+      {
+        "population": "evolution.subjects",
+        "reader": "seed_evolution_subjects",
+        "entity_class": "subject"
+      },
+      {
+        "population": "discovery.sources",
+        "reader": "seed_discovery_sources",
+        "entity_class": "subject"
+      },
+      {
+        "population": "learning.stages",
+        "reader": "seed_learning_stages",
+        "entity_class": "subject"
+      },
+      {
+        "population": "future_capabilities.seed",
+        "reader": "seed_future_capabilities",
+        "entity_class": "subject"
+      },
+      {
+        "population": "substrate.elements",
+        "reader": "seed_substrate_elements",
+        "entity_class": "subject"
+      }
+    ]
+  },
+  "metrics": {
+    "$purpose": "The complexity budget, reported on every measurement. Architectural growth that adds primitives without adding expressive power is visible here as a falling ratio, and URKE-L-32 refuses a primitive count above the declared bound.",
+    "reported": [
+      "primitive_count",
+      "entity_class_count",
+      "state_count",
+      "axis_count",
+      "qualifier_count",
+      "qualifier_value_count",
+      "domain_count",
+      "relation_count",
+      "profile_count",
+      "condition_count",
+      "law_count",
+      "data_row_count",
+      "complexity_ratio"
+    ],
+    "complexity_ratio": "condition_count / primitive_count"
+  },
+  "source_discipline": {
+    "package": "engine/recursive_knowledge",
+    "$purpose": "Domain vocabulary is data. A member of any scanned vocabulary appearing as a string literal in this package's source is a hardcoded vocabulary and URKE-L-07 refuses it. Binding names are the opposite case: they are code symbols the declaration names on purpose and must appear in the source, because that is what a two-way binding is.",
+    "scanned_vocabularies": [
+      "states.seed[].identifier",
+      "states.classes[].class",
+      "domains.seed[].identifier",
+      "qualifiers.seed[].qualifier",
+      "qualifiers.seed[].values[]",
+      "relations.seed[].relation",
+      "profiles.seed[].profile",
+      "entity_classes.seed[].entity_class",
+      "lifecycle_axes.seed[].axis",
+      "lifecycle_axes.seed[].values[]",
+      "gaps.classes[].identifier",
+      "gaps.severities[].identifier",
+      "contradiction.classes[].identifier",
+      "contradiction.resolution_states[].identifier",
+      "reality.seed[].identifier",
+      "reality.dimensions[].identifier",
+      "temporal.seed[].identifier",
+      "context.kinds[].kind",
+      "evolution.subjects[].identifier",
+      "evolution.operators[].identifier",
+      "discovery.targets[].identifier",
+      "learning.stages[].stage",
+      "future_capabilities.seed[].identifier",
+      "meta_knowledge.subjects[].identifier"
+    ],
+    "binding_kinds": [
+      {
+        "kind": "law check",
+        "declared_at": "laws[].check",
+        "implemented_in": "contract.py::LAW_CHECKS"
+      },
+      {
+        "kind": "detector",
+        "declared_at": "discovery.sources[].detector",
+        "implemented_in": "discovery.py::DETECTORS"
+      },
+      {
+        "kind": "admission",
+        "declared_at": "extension_points[].admission",
+        "implemented_in": "admission.py::ADMISSIONS"
+      },
+      {
+        "kind": "operator",
+        "declared_at": "evolution.operators[].implementation",
+        "implemented_in": "evolution.py::OPERATORS"
+      },
+      {
+        "kind": "bridge handler",
+        "declared_at": "entity_classes.seed[].bridge_handler",
+        "implemented_in": "bridge.py::HANDLERS"
+      },
+      {
+        "kind": "population reader",
+        "declared_at": "self_application.seeded_populations[].reader",
+        "implemented_in": "ledger.py::POPULATION_READERS"
+      },
+      {
+        "kind": "attribute reader",
+        "declared_at": "entity_classes.seed[].required_attributes + profiles.seed[]",
+        "implemented_in": "model.py::ATTRIBUTE_READERS"
+      },
+      {
+        "kind": "vocabulary owner reader",
+        "declared_at": "states.binding_owners[].reader",
+        "implemented_in": "states.py::OWNER_READERS"
+      },
+      {
+        "kind": "parity measure",
+        "declared_at": "strategic_direction.parity_layers[].measured_by",
+        "implemented_in": "contract.py::PARITY_MEASURES"
+      },
+      {
+        "kind": "reality probe",
+        "declared_at": "strategic_direction.reality_probes[].probe",
+        "implemented_in": "probes.py::REALITY_PROBES"
+      }
+    ],
+    "exempt_modules": [
+      "engine/recursive_knowledge/declaration.py"
+    ],
+    "$exempt_modules": "The parser names the JSON keys it reads. A key name is the shape of a document, not a member of a vocabulary, and a parser that could not name its own keys could not be written. No vocabulary member is exempt anywhere, including here."
+  },
+  "laws": [
+    {
+      "law_id": "URKE-L-01",
+      "statement": "Every identified unknown becomes a governed subject: for every declared domain an unknown is admitted and receives identity, a context, a state, an owner, a governing authority and a disposition.",
+      "check": "every_identified_unknown_is_governed",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-02",
+      "statement": "Every residual is representable: the residual domain, epistemic form, articulation, relation, gap class and context kind each admit a subject rather than refusing one.",
+      "check": "residual_is_representable",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-03",
+      "statement": "Profile requirements are enforced at admission: for every declared profile, omitting any required attribute or required payload key is refused. This is what carries the contradiction and gap attribute sets, which are profiles rather than classes.",
+      "check": "profile_requirements_are_enforced",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-04",
+      "statement": "Histories are append-only: a state transition, a resolution step and a verification event each append, the earlier entries are byte-identical afterwards, and a verification declaring no assumptions or no limitations is refused.",
+      "check": "histories_are_append_only",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-05",
+      "statement": "A gap settles only when every declared closure criterion is recorded satisfied with a basis, and a review the ledger has advanced past is surfaced as a finding rather than dropped.",
+      "check": "gap_closure_and_review_are_governed",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-06",
+      "statement": "No member of any declared domain vocabulary appears as a string literal in this package's source: every one is read from the declaration.",
+      "check": "vocabulary_is_declared_not_coded",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-07",
+      "statement": "No state is terminal, and every declared state is reachable from the initial state.",
+      "check": "no_state_is_terminal",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-08",
+      "statement": "A state, domain, qualifier value, relation, profile, axis, gap class, discovery source, learning stage, context, reality and temporal system nobody declared can each be admitted at runtime, and admitting all of them changes no byte of this package.",
+      "check": "data_extension_needs_no_redesign",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-09",
+      "statement": "Every subject of the admissibility test is admissible at runtime — a future scientific domain, mathematical domain, intelligence model, ontology, governance model, verification model, reality model, temporal system, location system, civilization, substrate and future construct — and each admission is exercised on every measurement.",
+      "check": "future_domain_is_admissible",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-10",
+      "statement": "Discovery run twice over one ledger state admits nothing the second time, and a ledger carrying a detectable condition yields a finding: it converges without being inert.",
+      "check": "discovery_reaches_a_fixed_point",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-11",
+      "statement": "Discovery writes nothing outside the ledger: no forbidden write call is reachable from the discovery module, and the declaration digest is unchanged by a run.",
+      "check": "discovery_never_mutates_constitutional_truth",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-12",
+      "statement": "Every declared discovery target is claimed by a source, every declared source is implemented, and every implemented detector is claimed by a source.",
+      "check": "discovery_covers_every_declared_target",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-13",
+      "statement": "Evolution is observable, traceable and verifiable through one mechanism: every step carries subject, operator, before-digest, after-digest and basis; every declared subject evolves through the same entry point; no branch keyed on a subject identifier exists; and the chain detects tampering.",
+      "check": "evolution_is_one_traceable_mechanism",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-14",
+      "statement": "Realities and temporal systems are data: every declared reality resolves all declared dimensions or names them unresolved, every temporal system binds to a live system type and chronology model, no epoch, calendar, planet or coordinate literal is embedded in this package, and admitting a reality and a temporal system nobody declared changes no byte of it.",
+      "check": "worlds_are_data_driven",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-15",
+      "statement": "Nothing admitted can silently disappear and no forbidden outcome is reachable: the admitted count reconciles with the ledger population and the journal length, the chain is intact, no removal path exists, a presented subject always produces a record, a recorded subject is always retrievable, and no refusal is silent.",
+      "check": "nothing_admitted_can_silently_disappear",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-16",
+      "statement": "No subject exists outside governance: every ledger subject is presented into the UCON-000001 construct registry and carries exactly one active disposition there.",
+      "check": "no_subject_exists_outside_governance",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-17",
+      "statement": "No subject exists outside context: every subject names a context that is itself a governed subject, and the context of a context resolves to the declared root without a special case.",
+      "check": "no_subject_exists_outside_context",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-18",
+      "statement": "No declared guarantee of completeness, first discovery, future knowledge, contradiction elimination, supremacy, omniscience, perfect prediction, perfect security, perfect correctness or perfect stability appears in this package.",
+      "check": "no_completeness_claim_is_declared",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-19",
+      "statement": "Two measurements of the same committed bytes produce identical reports: no clock reading, no machine path, no iteration-order dependence.",
+      "check": "measurement_is_deterministic",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-20",
+      "statement": "Bound vocabularies are neither copied nor narrowed: every state binds to a row its owner carries or discloses a gap naming a finding, a referral and a remediation; no owner population is restated wholesale; and every UCON-000001 unknown class, contradiction class and resolution state is reachable through a declared binding.",
+      "check": "bound_vocabulary_is_neither_copied_nor_narrowed",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-21",
+      "statement": "Every gap this declaration discloses about itself is admitted into the ledger as a governed gap carrying every attribute the gap profile requires.",
+      "check": "disclosed_gaps_are_themselves_governed",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-22",
+      "statement": "Measured reality takes precedence over this declaration, parity is measured and review is not waivable: every declared probe is performed and a divergence is admitted as a governed contradiction that refuses this law, every parity layer is present, and the exemption lists are empty with this capability's own review obligation carried as a governed gap.",
+      "check": "reality_parity_and_review_are_enforced",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-23",
+      "statement": "Expressive power was preserved and the architecture did not grow: every condition any directive named is realised as a composition of one state, the independent axes and declared qualifiers with no type of its own; the primitive, entity-class and state counts stay within their declared bounds; and the complexity ratio is reported.",
+      "check": "expressiveness_is_preserved_within_bounds",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-24",
+      "statement": "The lifecycle axes are independent: the whole cross-product of declared axis values is reachable, and moving one axis changes no other.",
+      "check": "lifecycle_axes_are_independent",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-25",
+      "statement": "Every relationship is a governed subject carrying source, target, relation, basis and evidence, and one naming an absent endpoint is refused.",
+      "check": "relationships_carry_governance",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-26",
+      "statement": "Nothing unresolved becomes invisible: a gap and a contradiction each generate a research subject, a contradiction generates every declared consequence, and reflexive meta-knowledge is admitted through the declared relation with no new architectural layer.",
+      "check": "unresolved_generates_research",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-27",
+      "statement": "No learning path reaches the final stage without passing every declared stage in order, every bypass is forged and refused on every measurement, and reversal is supersession rather than deletion.",
+      "check": "learning_pipeline_cannot_be_bypassed",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-28",
+      "statement": "Every declared substrate element, anti-finite mechanism and self-improvement mechanism resolves to a live module symbol, is exercised on every measurement, and leaves a record: evidence rather than a claim.",
+      "check": "declared_mechanisms_are_live_and_exercised",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-29",
+      "statement": "Architecture may evolve and may not mutate silently: a change to the constitutional foundation requires a proposal carrying every declared requirement and one missing any is refused; and representability is measured first, so a construct the existing primitives can express yields a data extension rather than a proposal.",
+      "check": "architectural_change_requires_a_governed_proposal",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-30",
+      "statement": "Representation requires no understanding: a subject that is not understood, internally inconsistent, unverifiable, untestable and dependent on future science and future instrumentation is admitted, receives a disposition and becomes a governed research subject.",
+      "check": "representation_requires_no_understanding",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-31",
+      "statement": "Every subject in an unsettled state is eligible for a discovery workflow, and eligibility is computed from the declared lattice rather than from a list of favoured classes.",
+      "check": "unresolved_is_eligible_for_discovery",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-32",
+      "statement": "Stability is measured rather than claimed: every declared stability property resolves to a live measurement, every detected instability is admitted as a governed subject eligible for research, and no stability mechanism is exempt from review.",
+      "check": "stability_is_measured_and_instability_is_governed",
+      "blocking": true
+    },
+    {
+      "law_id": "URKE-L-33",
+      "statement": "The declared vocabulary is not hardcoded: no module compares against, tests membership against, or enumerates a declared state, domain, relation or reality member. A member may be spelled in code as a serialization key or a label, which decides nothing; deciding from one forces a code change whenever the declaration gains a member, which is the harm this law names.",
+      "check": "vocabulary_is_not_hardcoded",
+      "blocking": true
+    }
+  ],
+  "evidence": {
+    "home": ".ucos/recursive-knowledge/",
+    "$home": "Untracked by design. Evidence here is a record of a measurement, never Repository Truth, and deleting the directory changes no verdict.",
+    "records": [
+      {
+        "record_name": "recursive-knowledge-report.json",
+        "producer": "engine/recursive_knowledge/evidence.py::build",
+        "content": "the law report and the complexity metrics"
+      },
+      {
+        "record_name": "knowledge-ledger.json",
+        "producer": "engine/recursive_knowledge/evidence.py::write_ledger",
+        "content": "every governed subject, its histories and the journal chain"
+      }
+    ]
+  },
+  "gate": {
+    "command": "python -m engine.recursive_knowledge.gate --gate --quiet",
+    "repair_command": "make urke",
+    "verify_stage_label": "universal recursive knowledge foundation (URKE-000001, every unknown governed and no mechanism closed against a future domain)",
+    "exit_codes": [
+      {
+        "code": 0,
+        "meaning": "OPEN — every blocking law was measured and holds"
+      },
+      {
+        "code": 1,
+        "meaning": "CLOSED — a blocking law was measured and refused"
+      },
+      {
+        "code": 2,
+        "meaning": "FAULT — no verdict could be reached"
+      }
+    ]
+  },
+  "closed_set": false,
+  "upper_limit": null
+}

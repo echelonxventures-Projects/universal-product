@@ -1,0 +1,156 @@
+name: UIS-001 Identity Conformance Gate (G-24)
+
+# UIS-001 — Universal Identity System Conformance.
+#
+# This workflow adds NO new identity authority, engine, registry, dictionary, namespace,
+# resolver, lifecycle or identifier family. It runs the executable expression of the
+# declaration in 00-MASTER/UIS-001/uis-declaration.json, which binds the identity
+# architecture the repository has ALREADY legislated to the identity data the repository
+# has ALREADY recorded:
+#
+#   AIF        (02-MASTER/…ABSOLUTE-IDENTITY-FEDERATION-AND-CONTINUITY-CONSTITUTION.md)
+#              governs the law of identity — twenty-four ratified laws, five identity planes,
+#              and the A/G-AUTH obligation that there be exactly ONE identity authority.
+#   ENG-001    (07-ENGINEERING/…UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md) is the
+#              engineering architecture of record — twenty Universal Identity Laws declared
+#              as binding invariants whose violation is a failure condition.
+#   UMB-003/4/5/8/9/10 realize them in the artifact plane, each by append-only owner amendment.
+#   AUTH-INF-001 legislates unbounded lawful expansion in every direction.
+#
+# Adding a capability, a law, a plane, a mechanism, a bookkeeping obligation or an
+# unboundedness dimension is an edit to that DATA file — this workflow never needs to
+# change, and nothing is enumerated here.
+#
+# WHY THIS RUNS IN CI. The gap Ω-E03 closed was not a missing capability: every identity
+# capability already had a located canonical owner, so CREATE was refused for all of them.
+# The gap was that NONE of it was measured — twenty laws declared as binding invariants
+# that nothing checked, an "exactly one identity authority" that nothing verified, four
+# identifier schemes across four planes with no crosswalk, and unbounded expansion asserted
+# but never probed. A gate that only runs locally is a gate that stops running.
+#
+# WHAT IT PROVES over a fresh checkout of the committed HEAD:
+#   · every identity capability maps to a located canonical owner, and NONE is dispositioned
+#     CREATE — a capability whose owner resolves cannot be created a second time without
+#     manufacturing a parallel authority;
+#   · every architecture the law obliges declares that it realizes the single identity authority;
+#   · every declared identity plane is realized by exactly one located mechanism, so the four
+#     identifier schemes are crosswalked and never merged;
+#   · every identity law is bound to its owner, and every law the located data can decide is
+#     measured — a law that cannot be decided is reported as such rather than passing silently;
+#   · universal bookkeeping binds to located fields and to members of the closed facet set;
+#   · every direction of lawful unbounded expansion has a located extension path;
+#   · every standing divergence stays inside its declared bound, and no bound is slack.
+#
+# Exit semantics of the gate:
+#   0  identity conformance is bound (gate OPEN)
+#   1  a blocking dimension failed (gate CLOSED)
+#   2  fail-closed abort — the declaration or a located source is unusable, so no verdict
+#      may be asserted
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uis-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: UIS-001 self-guards (nine, each fail-closed)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Declaration integrity (ids unique, owners resolve, claimants write-protected)
+        run: python3 00-MASTER/UIS-001/uis_engine.py --check-declaration
+
+      - name: Zero-enumeration proof (the engine names no identity, namespace or path)
+        run: python3 00-MASTER/UIS-001/uis_engine.py --check-no-enumeration
+
+      - name: Forbidden-write guard (writes only inside its own operational-memory lane)
+        run: python3 00-MASTER/UIS-001/uis_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical rendering; no wall-clock, no commit identity)
+        run: python3 00-MASTER/UIS-001/uis_engine.py --check-determinism
+
+      - name: Knowledge Once (every identity and namespace is discovered, never defined here)
+        run: python3 00-MASTER/UIS-001/uis_engine.py --check-knowledge-once
+
+      # The append-only identity records must be provably unwritable by the measurement that
+      # reads them: erasing or editing one is the very defect this programme reports.
+      - name: Record immutability (write set ∩ located record set = ∅)
+        run: python3 00-MASTER/UIS-001/uis_engine.py --check-record-immutability
+
+      # The programme that refuses a fifth identifier scheme must not become one.
+      - name: No identity minting (emits no identifier the ledger does not already record)
+        run: python3 00-MASTER/UIS-001/uis_engine.py --check-no-identity-minting
+
+      - name: Bound tightness (no disclosed divergence is inflated to hide a regression)
+        run: python3 00-MASTER/UIS-001/uis_engine.py --check-bounds-tight
+
+      - name: No authority (claims none, and decides no divergence it is obliged to refer)
+        run: python3 00-MASTER/UIS-001/uis_engine.py --check-no-authority
+
+  identity-conformance-gate:
+    name: Identity Conformance Gate (fresh checkout, fail-closed)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout committed HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Identity Conformance Gate (fail-closed)
+        run: python3 00-MASTER/UIS-001/uis_engine.py --gate
+
+      # The registers are DERIVED TRUTH (AIF AX-01): they must be a pure function of the
+      # declaration and the located sources. If the committed bytes differ from what the
+      # declaration produces, the committed registers are not evidence of anything.
+      - name: Replay (the committed registers are the product of the declaration)
+        run: |
+          python3 00-MASTER/UIS-001/uis_engine.py --render --quiet
+          git diff --exit-code -- 00-MASTER/UIS-001 \
+            || { echo "::error::UIS-001 REPLAY DRIFT — committed registers are not the product of the declaration"; exit 1; }
+          echo "UIS-001 replay: no drift"
+
+      # Diagnostic only, and only when the gate has already failed.
+      - name: Name the failing dimension
+        if: failure()
+        run: |
+          python3 00-MASTER/UIS-001/uis_engine.py || true
+          git diff --stat || true

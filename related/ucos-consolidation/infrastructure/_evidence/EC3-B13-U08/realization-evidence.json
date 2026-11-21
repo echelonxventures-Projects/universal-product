@@ -1,0 +1,4722 @@
+{
+  "artifact": "EC3-B13-U08-REALIZATION-EVIDENCE",
+  "authority": "ENGINEERING-EXECUTION-ONLY",
+  "certification_ids": {
+    "authentication": "UCOS-CERT-Security-24065a48cb0781d7",
+    "authorization": "UCOS-CERT-Security-4e6d75a7f6f8669c",
+    "confidentiality": "UCOS-CERT-Security-6bee6231a00cbcc1",
+    "integrity": "UCOS-CERT-Security-da71a18983ec91f0",
+    "isolation": "UCOS-CERT-Security-5f160ded44de26b8"
+  },
+  "certification_ledger": {
+    "count": 5,
+    "entries": [
+      {
+        "blueprint_id": "Security",
+        "certification_id": "UCOS-CERT-Security-8d059d510e055dd7",
+        "entry_hash": "5befd4d3d6b7c9f85ce6e81034f1b259657e295967c694841abe16c33912a06f",
+        "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "record_sha256": "8d059d510e055dd7e7f38fcb00840d34c358c3c6ddb518461d2693f294a806e8",
+        "sequence": 0,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Security",
+        "certification_id": "UCOS-CERT-Security-a92fc954a1ffeb9a",
+        "entry_hash": "79268185565933d6abb694d51efa672ef2c06616cf965a9abb77c0e0f77bf141",
+        "prev_hash": "5befd4d3d6b7c9f85ce6e81034f1b259657e295967c694841abe16c33912a06f",
+        "record_sha256": "a92fc954a1ffeb9ae77a13f73dcd14f1ab8d9fa1f176eb2e6f823deb68aa003a",
+        "sequence": 1,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Security",
+        "certification_id": "UCOS-CERT-Security-e40ebe0662b32731",
+        "entry_hash": "c7b988acc6c07b01280175806e28cee85e6260e267e6e020f6b8bafd532df72d",
+        "prev_hash": "79268185565933d6abb694d51efa672ef2c06616cf965a9abb77c0e0f77bf141",
+        "record_sha256": "e40ebe0662b32731e0428c789899d9647d5bc392f8e8b972dc10b1aa708c2296",
+        "sequence": 2,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Security",
+        "certification_id": "UCOS-CERT-Security-10a33c491a29876c",
+        "entry_hash": "8e5630ccf5b2403817f2975d83ca22957e679d8dba9a6c94e4c25afc8d6b6f22",
+        "prev_hash": "c7b988acc6c07b01280175806e28cee85e6260e267e6e020f6b8bafd532df72d",
+        "record_sha256": "10a33c491a29876c82a89df4062f8b18f8c8f14be80aeda0a15d76520e9e4f24",
+        "sequence": 3,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+        "version": "1.0.0"
+      },
+      {
+        "blueprint_id": "Security",
+        "certification_id": "UCOS-CERT-Security-38efa8f2336051aa",
+        "entry_hash": "5953f0d91f7d29b772e535a82274533b7902f47658b0bbe0aa68e12e72d0229b",
+        "prev_hash": "8e5630ccf5b2403817f2975d83ca22957e679d8dba9a6c94e4c25afc8d6b6f22",
+        "record_sha256": "38efa8f2336051aa384fd9c5555a35b62d9352219fb9952f7fe25a661800eaeb",
+        "sequence": 4,
+        "status": "certified",
+        "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+        "version": "1.0.0"
+      }
+    ],
+    "head_hash": "5953f0d91f7d29b772e535a82274533b7902f47658b0bbe0aa68e12e72d0229b",
+    "ledger_format": "ucos-certification-ledger/1.0.0"
+  },
+  "construct_ids": {
+    "authentication": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+    "authorization": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+    "confidentiality": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+    "integrity": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+    "isolation": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771"
+  },
+  "constructs": [
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Security",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Security-5f160ded44de26b8",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "63895053a42565ab9eb76f9a830ecc4923d5eb8af7a976973759361a59bce37f",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Security",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Security-5f160ded44de26b8",
+            "certified": true,
+            "content_sha256": "5f160ded44de26b82c7389d20f407cceea9767399e6d9882f477976bdbbc1070",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "63895053a42565ab9eb76f9a830ecc4923d5eb8af7a976973759361a59bce37f",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "63895053a42565ab9eb76f9a830ecc4923d5eb8af7a976973759361a59bce37f",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Security",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Security-5f160ded44de26b8",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "63895053a42565ab9eb76f9a830ecc4923d5eb8af7a976973759361a59bce37f",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "5f160ded44de26b82c7389d20f407cceea9767399e6d9882f477976bdbbc1070",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771",
+          "validation_evidence_ref": "63895053a42565ab9eb76f9a830ecc4923d5eb8af7a976973759361a59bce37f",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Security-5f160ded44de26b8",
+      "construct": {
+        "construct_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771",
+        "depends_on": [],
+        "evaluates": [
+          "ENG-005:ENG-002:infrastructure.hosting.substrate"
+        ],
+        "evaluative_verdict": "indeterminate",
+        "facet": "isolation",
+        "meta_class": "SecurityFacet",
+        "non_enforcing": true,
+        "references": [
+          "ENG-005:IsolationBoundary:infrastructure.isolation.boundary"
+        ],
+        "relationships": [
+          "evaluates",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "IsolationBoundary",
+          "DATA-014",
+          "SERVICE-014",
+          "APPLICATION-013"
+        ],
+        "type_tag": "ucos.infrastructure.security.isolation.foundation",
+        "value_digest": "d62f8abed441877117b723878bb34da39f4fb9f68ec697a8eb45976b34f0d4a8"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-security-typed",
+              "infra-security-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "security-evaluates-objectbound"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "security-evaluative-nonenforcing",
+              "authority-boundary"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive",
+              "no-secret-material"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "SecurityFacet",
+          "INFRASTRUCTURE-013",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "facet": "isolation",
+        "forward": [
+          "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771",
+          "EC3-B13-U08-ISOLATION-VALIDATION-EVIDENCE",
+          "EC3-B13-U08-ISOLATION-CCE-CERTIFICATION",
+          "EC3-B13-U08-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "990336f",
+        "meta_class": "SecurityFacet",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "IsolationBoundary",
+          "DATA-014",
+          "SERVICE-014",
+          "APPLICATION-013"
+        ],
+        "substrate_reuse": {
+          "APPLICATION-013": "application security classification reused by reference (Authorization)",
+          "DATA-014": "data security classification reused by reference (Confidentiality/Integrity)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.security type_tag (typed construct)",
+          "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+          "IsolationBoundary": "INFRASTRUCTURE-011 (U05) reused by reference (Isolation facet)",
+          "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+          "SERVICE-014": "service security classification reused by reference (Integrity)"
+        },
+        "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U08"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "SecurityFacet",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "SecurityFacet",
+          "checks_run": [
+            "authority-boundary",
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "infra-security-construct-kind",
+            "infra-security-identified-objectbound",
+            "infra-security-typed",
+            "infra-security-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "no-secret-material",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "security-evaluates-objectbound",
+            "security-evaluative-nonenforcing",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "RL-F2",
+                  "IsolationBoundary",
+                  "DATA-014",
+                  "SERVICE-014",
+                  "APPLICATION-013"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-construct-kind",
+              "details": {},
+              "message": "infra-security-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771"
+              },
+              "message": "infra-security-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.security.isolation.foundation"
+              },
+              "message": "infra-security-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-value-fidelity",
+              "details": {
+                "value_digest": "d62f8abed441877117b723878bb34da39f4fb9f68ec697a8eb45976b34f0d4a8"
+              },
+              "message": "infra-security-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "SecurityFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluates-objectbound",
+              "details": {
+                "facet": "isolation"
+              },
+              "message": "security-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluative-nonenforcing",
+              "details": {
+                "facet": "isolation",
+                "verdict": "evaluative-nonenforcing"
+              },
+              "message": "security-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "SecurityFacet",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "RL-F2",
+                  "IsolationBoundary",
+                  "DATA-014",
+                  "SERVICE-014",
+                  "APPLICATION-013"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-construct-kind",
+              "details": {},
+              "message": "infra-security-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771"
+              },
+              "message": "infra-security-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.security.isolation.foundation"
+              },
+              "message": "infra-security-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-value-fidelity",
+              "details": {
+                "value_digest": "d62f8abed441877117b723878bb34da39f4fb9f68ec697a8eb45976b34f0d4a8"
+              },
+              "message": "infra-security-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "SecurityFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluates-objectbound",
+              "details": {
+                "facet": "isolation"
+              },
+              "message": "security-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluative-nonenforcing",
+              "details": {
+                "facet": "isolation",
+                "verdict": "evaluative-nonenforcing"
+              },
+              "message": "security-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.isolation.foundation-d62f8abed4418771",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Security",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Security-24065a48cb0781d7",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "bda403aeb7cce8edbaf0c1f0b810346218ca7c078636efacff0682a9492b8c63",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Security",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Security-24065a48cb0781d7",
+            "certified": true,
+            "content_sha256": "24065a48cb0781d7c6b00cc8186c51f0f07328df0bbd2a9e99b9b80bea956cea",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "bda403aeb7cce8edbaf0c1f0b810346218ca7c078636efacff0682a9492b8c63",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "bda403aeb7cce8edbaf0c1f0b810346218ca7c078636efacff0682a9492b8c63",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Security",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Security-24065a48cb0781d7",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "bda403aeb7cce8edbaf0c1f0b810346218ca7c078636efacff0682a9492b8c63",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "24065a48cb0781d7c6b00cc8186c51f0f07328df0bbd2a9e99b9b80bea956cea",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+          "validation_evidence_ref": "bda403aeb7cce8edbaf0c1f0b810346218ca7c078636efacff0682a9492b8c63",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Security-24065a48cb0781d7",
+      "construct": {
+        "construct_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+        "depends_on": [],
+        "evaluates": [
+          "ENG-005:ENG-002:infrastructure.hosting.substrate"
+        ],
+        "evaluative_verdict": "indeterminate",
+        "facet": "authentication",
+        "meta_class": "SecurityFacet",
+        "non_enforcing": true,
+        "references": [
+          "ENG-005:RL-F2:runtime.policy.foundation"
+        ],
+        "relationships": [
+          "evaluates",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "IsolationBoundary",
+          "DATA-014",
+          "SERVICE-014",
+          "APPLICATION-013"
+        ],
+        "type_tag": "ucos.infrastructure.security.authentication.foundation",
+        "value_digest": "89d3733c2aa787091456415673d458e732597206f80e3ce45dbf9b77e8339c68"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-security-typed",
+              "infra-security-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "security-evaluates-objectbound"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "security-evaluative-nonenforcing",
+              "authority-boundary"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive",
+              "no-secret-material"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "SecurityFacet",
+          "INFRASTRUCTURE-013",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "facet": "authentication",
+        "forward": [
+          "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+          "EC3-B13-U08-AUTHENTICATION-VALIDATION-EVIDENCE",
+          "EC3-B13-U08-AUTHENTICATION-CCE-CERTIFICATION",
+          "EC3-B13-U08-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "990336f",
+        "meta_class": "SecurityFacet",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "IsolationBoundary",
+          "DATA-014",
+          "SERVICE-014",
+          "APPLICATION-013"
+        ],
+        "substrate_reuse": {
+          "APPLICATION-013": "application security classification reused by reference (Authorization)",
+          "DATA-014": "data security classification reused by reference (Confidentiality/Integrity)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.security type_tag (typed construct)",
+          "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+          "IsolationBoundary": "INFRASTRUCTURE-011 (U05) reused by reference (Isolation facet)",
+          "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+          "SERVICE-014": "service security classification reused by reference (Integrity)"
+        },
+        "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U08"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "SecurityFacet",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "SecurityFacet",
+          "checks_run": [
+            "authority-boundary",
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "infra-security-construct-kind",
+            "infra-security-identified-objectbound",
+            "infra-security-typed",
+            "infra-security-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "no-secret-material",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "security-evaluates-objectbound",
+            "security-evaluative-nonenforcing",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "RL-F2",
+                  "IsolationBoundary",
+                  "DATA-014",
+                  "SERVICE-014",
+                  "APPLICATION-013"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-construct-kind",
+              "details": {},
+              "message": "infra-security-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709"
+              },
+              "message": "infra-security-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.security.authentication.foundation"
+              },
+              "message": "infra-security-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-value-fidelity",
+              "details": {
+                "value_digest": "89d3733c2aa787091456415673d458e732597206f80e3ce45dbf9b77e8339c68"
+              },
+              "message": "infra-security-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "SecurityFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluates-objectbound",
+              "details": {
+                "facet": "authentication"
+              },
+              "message": "security-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluative-nonenforcing",
+              "details": {
+                "facet": "authentication",
+                "verdict": "evaluative-nonenforcing"
+              },
+              "message": "security-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "SecurityFacet",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "RL-F2",
+                  "IsolationBoundary",
+                  "DATA-014",
+                  "SERVICE-014",
+                  "APPLICATION-013"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-construct-kind",
+              "details": {},
+              "message": "infra-security-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709"
+              },
+              "message": "infra-security-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.security.authentication.foundation"
+              },
+              "message": "infra-security-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-value-fidelity",
+              "details": {
+                "value_digest": "89d3733c2aa787091456415673d458e732597206f80e3ce45dbf9b77e8339c68"
+              },
+              "message": "infra-security-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "SecurityFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluates-objectbound",
+              "details": {
+                "facet": "authentication"
+              },
+              "message": "security-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluative-nonenforcing",
+              "details": {
+                "facet": "authentication",
+                "verdict": "evaluative-nonenforcing"
+              },
+              "message": "security-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authentication.foundation-89d3733c2aa78709",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Security",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Security-4e6d75a7f6f8669c",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "d741a85b27e2d8f1fa18a66d623ae8936a0940ffcd4276efebeaedc405b68a6d",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Security",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Security-4e6d75a7f6f8669c",
+            "certified": true,
+            "content_sha256": "4e6d75a7f6f8669cf80a83ef1dea448a8e937ce086079e11c19ac237c8874679",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "d741a85b27e2d8f1fa18a66d623ae8936a0940ffcd4276efebeaedc405b68a6d",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "d741a85b27e2d8f1fa18a66d623ae8936a0940ffcd4276efebeaedc405b68a6d",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Security",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Security-4e6d75a7f6f8669c",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "d741a85b27e2d8f1fa18a66d623ae8936a0940ffcd4276efebeaedc405b68a6d",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "4e6d75a7f6f8669cf80a83ef1dea448a8e937ce086079e11c19ac237c8874679",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+          "validation_evidence_ref": "d741a85b27e2d8f1fa18a66d623ae8936a0940ffcd4276efebeaedc405b68a6d",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Security-4e6d75a7f6f8669c",
+      "construct": {
+        "construct_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+        "depends_on": [],
+        "evaluates": [
+          "ENG-005:ENG-002:infrastructure.hosting.substrate"
+        ],
+        "evaluative_verdict": "indeterminate",
+        "facet": "authorization",
+        "meta_class": "SecurityFacet",
+        "non_enforcing": true,
+        "references": [
+          "ENG-005:RL-F2:runtime.policy.foundation",
+          "ENG-005:APPLICATION-013:application.security.classification"
+        ],
+        "relationships": [
+          "evaluates",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "IsolationBoundary",
+          "DATA-014",
+          "SERVICE-014",
+          "APPLICATION-013"
+        ],
+        "type_tag": "ucos.infrastructure.security.authorization.foundation",
+        "value_digest": "cc4e881839c0d628bf153f76c37842519b8f1896b3e3b5f417ac6066e6287a7c"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-security-typed",
+              "infra-security-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "security-evaluates-objectbound"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "security-evaluative-nonenforcing",
+              "authority-boundary"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive",
+              "no-secret-material"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "SecurityFacet",
+          "INFRASTRUCTURE-013",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "facet": "authorization",
+        "forward": [
+          "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+          "EC3-B13-U08-AUTHORIZATION-VALIDATION-EVIDENCE",
+          "EC3-B13-U08-AUTHORIZATION-CCE-CERTIFICATION",
+          "EC3-B13-U08-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "990336f",
+        "meta_class": "SecurityFacet",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "IsolationBoundary",
+          "DATA-014",
+          "SERVICE-014",
+          "APPLICATION-013"
+        ],
+        "substrate_reuse": {
+          "APPLICATION-013": "application security classification reused by reference (Authorization)",
+          "DATA-014": "data security classification reused by reference (Confidentiality/Integrity)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.security type_tag (typed construct)",
+          "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+          "IsolationBoundary": "INFRASTRUCTURE-011 (U05) reused by reference (Isolation facet)",
+          "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+          "SERVICE-014": "service security classification reused by reference (Integrity)"
+        },
+        "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U08"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "SecurityFacet",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "SecurityFacet",
+          "checks_run": [
+            "authority-boundary",
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "infra-security-construct-kind",
+            "infra-security-identified-objectbound",
+            "infra-security-typed",
+            "infra-security-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "no-secret-material",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "security-evaluates-objectbound",
+            "security-evaluative-nonenforcing",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "RL-F2",
+                  "IsolationBoundary",
+                  "DATA-014",
+                  "SERVICE-014",
+                  "APPLICATION-013"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-construct-kind",
+              "details": {},
+              "message": "infra-security-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628"
+              },
+              "message": "infra-security-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.security.authorization.foundation"
+              },
+              "message": "infra-security-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-value-fidelity",
+              "details": {
+                "value_digest": "cc4e881839c0d628bf153f76c37842519b8f1896b3e3b5f417ac6066e6287a7c"
+              },
+              "message": "infra-security-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "SecurityFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluates-objectbound",
+              "details": {
+                "facet": "authorization"
+              },
+              "message": "security-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluative-nonenforcing",
+              "details": {
+                "facet": "authorization",
+                "verdict": "evaluative-nonenforcing"
+              },
+              "message": "security-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "SecurityFacet",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "RL-F2",
+                  "IsolationBoundary",
+                  "DATA-014",
+                  "SERVICE-014",
+                  "APPLICATION-013"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-construct-kind",
+              "details": {},
+              "message": "infra-security-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628"
+              },
+              "message": "infra-security-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.security.authorization.foundation"
+              },
+              "message": "infra-security-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-value-fidelity",
+              "details": {
+                "value_digest": "cc4e881839c0d628bf153f76c37842519b8f1896b3e3b5f417ac6066e6287a7c"
+              },
+              "message": "infra-security-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "SecurityFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluates-objectbound",
+              "details": {
+                "facet": "authorization"
+              },
+              "message": "security-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluative-nonenforcing",
+              "details": {
+                "facet": "authorization",
+                "verdict": "evaluative-nonenforcing"
+              },
+              "message": "security-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.authorization.foundation-cc4e881839c0d628",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Security",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Security-6bee6231a00cbcc1",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "e67df6a8b2bb2070bfd497eca4959f27e221d2b40ee71624e1096fb4e24c0e3b",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Security",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Security-6bee6231a00cbcc1",
+            "certified": true,
+            "content_sha256": "6bee6231a00cbcc1365eac5990aaadb5541fddc7f95792ef1df20be34e996190",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "e67df6a8b2bb2070bfd497eca4959f27e221d2b40ee71624e1096fb4e24c0e3b",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "e67df6a8b2bb2070bfd497eca4959f27e221d2b40ee71624e1096fb4e24c0e3b",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Security",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Security-6bee6231a00cbcc1",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "e67df6a8b2bb2070bfd497eca4959f27e221d2b40ee71624e1096fb4e24c0e3b",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "6bee6231a00cbcc1365eac5990aaadb5541fddc7f95792ef1df20be34e996190",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+          "validation_evidence_ref": "e67df6a8b2bb2070bfd497eca4959f27e221d2b40ee71624e1096fb4e24c0e3b",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Security-6bee6231a00cbcc1",
+      "construct": {
+        "construct_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+        "depends_on": [],
+        "evaluates": [
+          "ENG-005:ENG-002:infrastructure.hosting.substrate"
+        ],
+        "evaluative_verdict": "indeterminate",
+        "facet": "confidentiality",
+        "meta_class": "SecurityFacet",
+        "non_enforcing": true,
+        "references": [
+          "ENG-005:DATA-014:data.security.classification"
+        ],
+        "relationships": [
+          "evaluates",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "IsolationBoundary",
+          "DATA-014",
+          "SERVICE-014",
+          "APPLICATION-013"
+        ],
+        "type_tag": "ucos.infrastructure.security.confidentiality.foundation",
+        "value_digest": "a65959539be199e4402c7037ba6c2cba47ae0476745feff763cdf1b60b43ebe4"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-security-typed",
+              "infra-security-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "security-evaluates-objectbound"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "security-evaluative-nonenforcing",
+              "authority-boundary"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive",
+              "no-secret-material"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "SecurityFacet",
+          "INFRASTRUCTURE-013",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "facet": "confidentiality",
+        "forward": [
+          "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+          "EC3-B13-U08-CONFIDENTIALITY-VALIDATION-EVIDENCE",
+          "EC3-B13-U08-CONFIDENTIALITY-CCE-CERTIFICATION",
+          "EC3-B13-U08-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "990336f",
+        "meta_class": "SecurityFacet",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "IsolationBoundary",
+          "DATA-014",
+          "SERVICE-014",
+          "APPLICATION-013"
+        ],
+        "substrate_reuse": {
+          "APPLICATION-013": "application security classification reused by reference (Authorization)",
+          "DATA-014": "data security classification reused by reference (Confidentiality/Integrity)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.security type_tag (typed construct)",
+          "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+          "IsolationBoundary": "INFRASTRUCTURE-011 (U05) reused by reference (Isolation facet)",
+          "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+          "SERVICE-014": "service security classification reused by reference (Integrity)"
+        },
+        "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U08"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "SecurityFacet",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "SecurityFacet",
+          "checks_run": [
+            "authority-boundary",
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "infra-security-construct-kind",
+            "infra-security-identified-objectbound",
+            "infra-security-typed",
+            "infra-security-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "no-secret-material",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "security-evaluates-objectbound",
+            "security-evaluative-nonenforcing",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "RL-F2",
+                  "IsolationBoundary",
+                  "DATA-014",
+                  "SERVICE-014",
+                  "APPLICATION-013"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-construct-kind",
+              "details": {},
+              "message": "infra-security-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4"
+              },
+              "message": "infra-security-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.security.confidentiality.foundation"
+              },
+              "message": "infra-security-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-value-fidelity",
+              "details": {
+                "value_digest": "a65959539be199e4402c7037ba6c2cba47ae0476745feff763cdf1b60b43ebe4"
+              },
+              "message": "infra-security-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "SecurityFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluates-objectbound",
+              "details": {
+                "facet": "confidentiality"
+              },
+              "message": "security-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluative-nonenforcing",
+              "details": {
+                "facet": "confidentiality",
+                "verdict": "evaluative-nonenforcing"
+              },
+              "message": "security-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "SecurityFacet",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "RL-F2",
+                  "IsolationBoundary",
+                  "DATA-014",
+                  "SERVICE-014",
+                  "APPLICATION-013"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-construct-kind",
+              "details": {},
+              "message": "infra-security-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4"
+              },
+              "message": "infra-security-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.security.confidentiality.foundation"
+              },
+              "message": "infra-security-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-value-fidelity",
+              "details": {
+                "value_digest": "a65959539be199e4402c7037ba6c2cba47ae0476745feff763cdf1b60b43ebe4"
+              },
+              "message": "infra-security-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "SecurityFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluates-objectbound",
+              "details": {
+                "facet": "confidentiality"
+              },
+              "message": "security-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluative-nonenforcing",
+              "details": {
+                "facet": "confidentiality",
+                "verdict": "evaluative-nonenforcing"
+              },
+              "message": "security-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.confidentiality.foundation-a65959539be199e4",
+          "verdict": "pass"
+        }
+      }
+    },
+    {
+      "certification": {
+        "cce_gates": {
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "Security",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Security-da71a18983ec91f0",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "0126e2c8f19bf2eb7f0d3d68107256c575ca94f572dd7662b1da7e1dbd731493",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record": {
+            "authority": "ENGINEERING-EXECUTION-ONLY",
+            "blueprint_id": "Security",
+            "certification_class": "engineering-readiness",
+            "certification_id": "UCOS-CERT-Security-da71a18983ec91f0",
+            "certified": true,
+            "content_sha256": "da71a18983ec91f087786081a02675af704e8913fa0ec5ed983c1ad6b0d70f38",
+            "criteria": [
+              {
+                "criterion_id": "CC-1",
+                "details": {
+                  "gate": "architecture"
+                },
+                "message": "CC-1 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-10",
+                "details": {
+                  "gate": "completeness"
+                },
+                "message": "CC-10 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-2",
+                "details": {
+                  "gate": "dependencies"
+                },
+                "message": "CC-2 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-3",
+                "details": {
+                  "gate": "coverage"
+                },
+                "message": "CC-3 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-4",
+                "details": {
+                  "gate": "validation",
+                  "verdict": "pass"
+                },
+                "message": "CC-4 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-5",
+                "details": {
+                  "gate": "traceability"
+                },
+                "message": "CC-5 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-6",
+                "details": {
+                  "evidence_sha256": "0126e2c8f19bf2eb7f0d3d68107256c575ca94f572dd7662b1da7e1dbd731493",
+                  "gate": "evidence"
+                },
+                "message": "CC-6 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-7",
+                "details": {
+                  "gate": "certification-ready"
+                },
+                "message": "CC-7 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-8",
+                "details": {
+                  "gate": "readiness"
+                },
+                "message": "CC-8 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              },
+              {
+                "criterion_id": "CC-9",
+                "details": {
+                  "gate": "gap-zero"
+                },
+                "message": "CC-9 satisfied",
+                "severity": "blocking",
+                "status": "pass"
+              }
+            ],
+            "disclosure": {
+              "asserts_constitutional_finality": false,
+              "authority": "ENGINEERING-EXECUTION-ONLY",
+              "disclosure_id": "EC-1-PROVISIONAL-STATE",
+              "gate": "EC-1",
+              "gate_open": true,
+              "standard": "DE-05",
+              "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+            },
+            "evidence_ref": "0126e2c8f19bf2eb7f0d3d68107256c575ca94f572dd7662b1da7e1dbd731493",
+            "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+            "standard_version": "1.0.0",
+            "status": "certified",
+            "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+            "version": "1.0.0"
+          },
+          "status": "certified",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+          "version": "1.0.0"
+        },
+        "evidence": {
+          "blocking_failures": [],
+          "blueprint_id": "Security",
+          "certification_class": "engineering-readiness",
+          "certification_id": "UCOS-CERT-Security-da71a18983ec91f0",
+          "certified": true,
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 10,
+            "total": 10
+          },
+          "criteria_evaluated": [
+            "CC-1",
+            "CC-10",
+            "CC-2",
+            "CC-3",
+            "CC-4",
+            "CC-5",
+            "CC-6",
+            "CC-7",
+            "CC-8",
+            "CC-9"
+          ],
+          "evidence_format": "ucos-certification-evidence/1.0.0",
+          "findings": [
+            {
+              "criterion_id": "CC-1",
+              "details": {
+                "gate": "architecture"
+              },
+              "message": "CC-1 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-10",
+              "details": {
+                "gate": "completeness"
+              },
+              "message": "CC-10 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-2",
+              "details": {
+                "gate": "dependencies"
+              },
+              "message": "CC-2 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-3",
+              "details": {
+                "gate": "coverage"
+              },
+              "message": "CC-3 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-4",
+              "details": {
+                "gate": "validation",
+                "verdict": "pass"
+              },
+              "message": "CC-4 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-5",
+              "details": {
+                "gate": "traceability"
+              },
+              "message": "CC-5 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-6",
+              "details": {
+                "evidence_sha256": "0126e2c8f19bf2eb7f0d3d68107256c575ca94f572dd7662b1da7e1dbd731493",
+                "gate": "evidence"
+              },
+              "message": "CC-6 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-7",
+              "details": {
+                "gate": "certification-ready"
+              },
+              "message": "CC-7 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-8",
+              "details": {
+                "gate": "readiness"
+              },
+              "message": "CC-8 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "criterion_id": "CC-9",
+              "details": {
+                "gate": "gap-zero"
+              },
+              "message": "CC-9 satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "record_sha256": "da71a18983ec91f087786081a02675af704e8913fa0ec5ed983c1ad6b0d70f38",
+          "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+          "standard_version": "1.0.0",
+          "status": "certified",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+          "validation_evidence_ref": "0126e2c8f19bf2eb7f0d3d68107256c575ca94f572dd7662b1da7e1dbd731493",
+          "version": "1.0.0"
+        }
+      },
+      "certification_id": "UCOS-CERT-Security-da71a18983ec91f0",
+      "construct": {
+        "construct_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+        "depends_on": [],
+        "evaluates": [
+          "ENG-005:ENG-002:infrastructure.hosting.substrate"
+        ],
+        "evaluative_verdict": "indeterminate",
+        "facet": "integrity",
+        "meta_class": "SecurityFacet",
+        "non_enforcing": true,
+        "references": [
+          "ENG-005:DATA-014:data.security.classification",
+          "ENG-005:SERVICE-014:service.security.classification"
+        ],
+        "relationships": [
+          "evaluates",
+          "dependsOn"
+        ],
+        "state": "DEFINED",
+        "substrate_refs": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "IsolationBoundary",
+          "DATA-014",
+          "SERVICE-014",
+          "APPLICATION-013"
+        ],
+        "type_tag": "ucos.infrastructure.security.integrity.foundation",
+        "value_digest": "dbedb02476bef39f29b735a3a9f962607e77829ed075be31548df6fa95e53e54"
+      },
+      "infrastructure_compliance_C1_C7": {
+        "compliant": true,
+        "conditions": [
+          {
+            "id": "C1",
+            "status": "pass",
+            "validation_checks": [
+              "infra-security-typed",
+              "infra-security-identified-objectbound"
+            ]
+          },
+          {
+            "id": "C2",
+            "status": "pass",
+            "validation_checks": [
+              "foundation-reuse-integrity"
+            ]
+          },
+          {
+            "id": "C3",
+            "status": "pass",
+            "validation_checks": [
+              "security-evaluates-objectbound"
+            ]
+          },
+          {
+            "id": "C4",
+            "status": "pass",
+            "validation_checks": [
+              "security-evaluative-nonenforcing",
+              "authority-boundary"
+            ]
+          },
+          {
+            "id": "C5",
+            "status": "pass",
+            "validation_checks": [
+              "founding-acyclic",
+              "meta-relationships-closed"
+            ]
+          },
+          {
+            "id": "C6",
+            "status": "pass",
+            "validation_checks": [
+              "lifecycle-valid"
+            ]
+          },
+          {
+            "id": "C7",
+            "status": "pass",
+            "validation_checks": [
+              "technology-independence",
+              "non-constitutive",
+              "no-secret-material"
+            ]
+          }
+        ],
+        "standard": "INFRASTRUCTURE-001 §12 (C1…C7)"
+      },
+      "traceability": {
+        "backward": [
+          "SecurityFacet",
+          "INFRASTRUCTURE-013",
+          "INFRASTRUCTURE-005",
+          "INFRASTRUCTURE-001",
+          "ARCH-INFRASTRUCTURE-001",
+          "13-INFRASTRUCTURE@b7e7657"
+        ],
+        "closed": true,
+        "constitutional_anchor": "b7e7657",
+        "facet": "integrity",
+        "forward": [
+          "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+          "EC3-B13-U08-INTEGRITY-VALIDATION-EVIDENCE",
+          "EC3-B13-U08-INTEGRITY-CCE-CERTIFICATION",
+          "EC3-B13-U08-COMPLETION-REPORT"
+        ],
+        "implementation_anchor": "990336f",
+        "meta_class": "SecurityFacet",
+        "rooted": true,
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "IsolationBoundary",
+          "DATA-014",
+          "SERVICE-014",
+          "APPLICATION-013"
+        ],
+        "substrate_reuse": {
+          "APPLICATION-013": "application security classification reused by reference (Authorization)",
+          "DATA-014": "data security classification reused by reference (Confidentiality/Integrity)",
+          "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+          "ENG-002": "python frozen object (immutable objecthood; the evaluated object by ref)",
+          "ENG-003": "engine.certification.contracts.canonical_json (value fidelity)",
+          "ENG-004": "infrastructure.security type_tag (typed construct)",
+          "ENG-005": "reference identifiers (evaluates/reuse refs; no new relationship construct)",
+          "IsolationBoundary": "INFRASTRUCTURE-011 (U05) reused by reference (Isolation facet)",
+          "RL-F2": "runtime policy referenced by reference (UIL-14); never enforced, never redefined",
+          "SERVICE-014": "service security classification reused by reference (Integrity)"
+        },
+        "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+        "trace_format": "ucos-infrastructure-traceability/1.0.0",
+        "unit": "EC3-B13-U08"
+      },
+      "validation": {
+        "acceptance": {
+          "accepted": true,
+          "advisory_failures": [],
+          "blocking_failures": [],
+          "blueprint_id": "SecurityFacet",
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+          "verdict": "pass"
+        },
+        "evidence": {
+          "accepted": true,
+          "blocking_failures": [],
+          "blueprint_id": "SecurityFacet",
+          "checks_run": [
+            "authority-boundary",
+            "foundation-reuse-integrity",
+            "founding-acyclic",
+            "infra-security-construct-kind",
+            "infra-security-identified-objectbound",
+            "infra-security-typed",
+            "infra-security-value-fidelity",
+            "lifecycle-valid",
+            "meta-class-single",
+            "meta-constraints",
+            "meta-relationships-closed",
+            "no-secret-material",
+            "non-constitutive",
+            "provisional-state-disclosure",
+            "security-evaluates-objectbound",
+            "security-evaluative-nonenforcing",
+            "technology-independence",
+            "traceability-rooted"
+          ],
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "evidence_format": "ucos-validation-evidence/1.0.0",
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "RL-F2",
+                  "IsolationBoundary",
+                  "DATA-014",
+                  "SERVICE-014",
+                  "APPLICATION-013"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-construct-kind",
+              "details": {},
+              "message": "infra-security-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f"
+              },
+              "message": "infra-security-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.security.integrity.foundation"
+              },
+              "message": "infra-security-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-value-fidelity",
+              "details": {
+                "value_digest": "dbedb02476bef39f29b735a3a9f962607e77829ed075be31548df6fa95e53e54"
+              },
+              "message": "infra-security-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "SecurityFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluates-objectbound",
+              "details": {
+                "facet": "integrity"
+              },
+              "message": "security-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluative-nonenforcing",
+              "details": {
+                "facet": "integrity",
+                "verdict": "evaluative-nonenforcing"
+              },
+              "message": "security-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+          "verdict": "pass"
+        },
+        "report": {
+          "accepted": true,
+          "blueprint_id": "SecurityFacet",
+          "counts": {
+            "advisory_failed": 0,
+            "blocking_failed": 0,
+            "failed": 0,
+            "passed": 18,
+            "total": 18
+          },
+          "findings": [
+            {
+              "check_id": "authority-boundary",
+              "details": {
+                "boundary": "authority-none"
+              },
+              "message": "authority-boundary satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "foundation-reuse-integrity",
+              "details": {
+                "substrate": [
+                  "ENG-001",
+                  "ENG-002",
+                  "ENG-003",
+                  "ENG-004",
+                  "ENG-005",
+                  "RL-F2",
+                  "IsolationBoundary",
+                  "DATA-014",
+                  "SERVICE-014",
+                  "APPLICATION-013"
+                ]
+              },
+              "message": "foundation-reuse-integrity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "founding-acyclic",
+              "details": {
+                "founding": "vacuously-acyclic"
+              },
+              "message": "founding-acyclic satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-construct-kind",
+              "details": {},
+              "message": "infra-security-construct-kind satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-identified-objectbound",
+              "details": {
+                "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f"
+              },
+              "message": "infra-security-identified-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-typed",
+              "details": {
+                "type_tag": "ucos.infrastructure.security.integrity.foundation"
+              },
+              "message": "infra-security-typed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "infra-security-value-fidelity",
+              "details": {
+                "value_digest": "dbedb02476bef39f29b735a3a9f962607e77829ed075be31548df6fa95e53e54"
+              },
+              "message": "infra-security-value-fidelity satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "lifecycle-valid",
+              "details": {
+                "state": "DEFINED"
+              },
+              "message": "lifecycle-valid satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-class-single",
+              "details": {
+                "meta_class": "SecurityFacet"
+              },
+              "message": "meta-class-single satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-constraints",
+              "details": {
+                "constraints": [
+                  "WF-1",
+                  "WF-2"
+                ]
+              },
+              "message": "meta-constraints satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "meta-relationships-closed",
+              "details": {
+                "relationships": [
+                  "evaluates",
+                  "dependsOn"
+                ]
+              },
+              "message": "meta-relationships-closed satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "no-secret-material",
+              "details": {
+                "secret_free": true
+              },
+              "message": "no-secret-material satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "non-constitutive",
+              "details": {},
+              "message": "non-constitutive satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "provisional-state-disclosure",
+              "details": {
+                "disclosure_id": "EC-1-PROVISIONAL-STATE"
+              },
+              "message": "provisional-state-disclosure satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluates-objectbound",
+              "details": {
+                "facet": "integrity"
+              },
+              "message": "security-evaluates-objectbound satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "security-evaluative-nonenforcing",
+              "details": {
+                "facet": "integrity",
+                "verdict": "evaluative-nonenforcing"
+              },
+              "message": "security-evaluative-nonenforcing satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "technology-independence",
+              "details": {},
+              "message": "technology-independence satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            },
+            {
+              "check_id": "traceability-rooted",
+              "details": {
+                "links": 6
+              },
+              "message": "traceability-rooted satisfied",
+              "severity": "blocking",
+              "status": "pass"
+            }
+          ],
+          "target_id": "UCOS-INFRA-SECURITY-ucos.infrastructure.security.integrity.foundation-dbedb02476bef39f",
+          "verdict": "pass"
+        }
+      }
+    }
+  ],
+  "criteria": {
+    "acceptance": {
+      "AC-1": true,
+      "AC-2": true,
+      "AC-3": true,
+      "AC-4": true,
+      "AC-5": true,
+      "AC-6": true,
+      "AC-7": true
+    },
+    "certification_gates": {
+      "CC-1": true,
+      "CC-10": true,
+      "CC-2": true,
+      "CC-3": true,
+      "CC-4": true,
+      "CC-5": true,
+      "CC-6": true,
+      "CC-7": true,
+      "CC-8": true,
+      "CC-9": true
+    },
+    "infrastructure_compliance": {
+      "C1": true,
+      "C2": true,
+      "C3": true,
+      "C4": true,
+      "C5": true,
+      "C6": true,
+      "C7": true
+    },
+    "validation": {
+      "VC-1": true,
+      "VC-2": true,
+      "VC-3": true,
+      "VC-4": true,
+      "VC-5": true
+    }
+  },
+  "determination": "COMPLETE",
+  "facets": [
+    "isolation",
+    "authentication",
+    "authorization",
+    "confidentiality",
+    "integrity"
+  ],
+  "meta_class": "SecurityFacet",
+  "meta_validity_WF": {
+    "WF-1": true,
+    "WF-10": true,
+    "WF-11": true,
+    "WF-12": true,
+    "WF-2": true,
+    "WF-3": true
+  },
+  "uil_conformance": {
+    "UIL-01": true,
+    "UIL-02": true,
+    "UIL-03": true,
+    "UIL-04": true,
+    "UIL-05": true,
+    "UIL-07": true,
+    "UIL-14": true,
+    "UIL-15": true
+  },
+  "unit": "EC3-B13-U08",
+  "version": "1.0.0"
+}

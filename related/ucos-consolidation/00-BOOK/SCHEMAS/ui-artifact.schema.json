@@ -1,0 +1,21 @@
+{
+  "title": "UCOS Ω∞ UI Screen Entity",
+  "description": "A UI screen as a first-class artifact (UKB-008), native id UI-XXXXXX. Tracks wireframes, designs, components, screenshots, versions, dependencies. State derived from design/code/test/deploy signals.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["universal_id", "name", "screen_id"],
+  "properties": {
+    "universal_id": { "type": "string", "pattern": "^UCOS-UI-[0-9]{6}$" },
+    "screen_id": { "type": "string", "pattern": "^UI-[0-9]{6}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "route": { "type": ["string", "null"], "default": null },
+    "wireframe": { "type": ["string", "null"], "default": null },
+    "design": { "type": ["string", "null"], "default": null },
+    "components": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "screenshots": { "type": "array", "items": { "type": "object", "additionalProperties": true }, "default": [] },
+    "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$", "default": "1.0.0" },
+    "dependencies": { "type": "array", "items": { "type": "string", "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$" }, "default": [] },
+    "implements": { "type": "array", "items": { "type": "string", "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$" }, "default": [] },
+    "derived_status": { "type": "string", "default": "NOT_STARTED" }
+  }
+}

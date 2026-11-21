@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "AvailabilityTopology",
+  "target_id": "UCOS-INFRA-AVAILABILITYTOPOLOGY-ucos.infrastructure.availabilitytopology.foundation-ae91e052c7c64012",
+  "verdict": "pass"
+}

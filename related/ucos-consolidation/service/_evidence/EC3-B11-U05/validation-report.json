@@ -1,0 +1,236 @@
+{
+  "accepted": true,
+  "blueprint_id": "SMC-05",
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 22,
+    "total": 22
+  },
+  "findings": [
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "DF-2"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {},
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "lifecycle-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "SMC-05"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "SMK-01",
+          "SMK-02",
+          "SMK-04",
+          "SMK-05",
+          "SMK-07"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "SMR-02",
+          "SMR-03",
+          "SMR-04",
+          "SMR-07",
+          "SMR-10",
+          "SMR-11",
+          "SMR-13"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "operation-behavior-by-reference",
+      "details": {
+        "behavior_ref": "ENG-005:RL-F2:runtime.invocation"
+      },
+      "message": "operation-behavior-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "operation-classified",
+      "details": {
+        "kind": "Command-Operation"
+      },
+      "message": "operation-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "operation-contract-bound",
+      "details": {
+        "contract_ref": "ENG-005:SOE-03:ucos.service.contract.foundation"
+      },
+      "message": "operation-contract-bound satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "operation-effect-honest",
+      "details": {
+        "effects": [
+          "write"
+        ],
+        "kind": "Command-Operation"
+      },
+      "message": "operation-effect-honest satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "operation-execution-by-reference",
+      "details": {
+        "execution_ref": "ENG-005:RL-F2:runtime.execution"
+      },
+      "message": "operation-execution-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "operation-identified-objectbound",
+      "details": {
+        "operation_id": "UCOS-OPERATION-ucos.service.operation.foundation-4553e5f68a6b566d"
+      },
+      "message": "operation-identified-objectbound satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "operation-interface-addressed",
+      "details": {
+        "interface_ref": "ENG-005:SOE-04:ucos.service.interface.foundation"
+      },
+      "message": "operation-interface-addressed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "operation-io-is-data",
+      "details": {
+        "inputs": 1,
+        "outputs": 1
+      },
+      "message": "operation-io-is-data satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "operation-provided-by-service",
+      "details": {
+        "service_ref": "ENG-005:SOE-01:ucos.service.foundation"
+      },
+      "message": "operation-provided-by-service satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "operation-signature-bounded",
+      "details": {
+        "effects": [
+          "write"
+        ],
+        "faults": 1
+      },
+      "message": "operation-signature-bounded satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "operation-typed",
+      "details": {
+        "type_tag": "ucos.service.operation.foundation"
+      },
+      "message": "operation-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "service-value-fidelity",
+      "details": {
+        "value_digest": "4553e5f68a6b566d8a868fcc3238e2ffdd8367545924c49629ebeaf509b1da64"
+      },
+      "message": "service-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "technology-independence",
+      "details": {},
+      "message": "technology-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 7
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-OPERATION-ucos.service.operation.foundation-4553e5f68a6b566d",
+  "verdict": "pass"
+}

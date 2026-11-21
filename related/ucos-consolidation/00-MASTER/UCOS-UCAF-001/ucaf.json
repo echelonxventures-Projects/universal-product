@@ -1,0 +1,3105 @@
+{
+  "admission": {
+    "admitted_to_meta_registry": false,
+    "basis": "00-CMG/CMG-000001 ARTICLE LXXVI.2(b) forbids admitting a substantive concept into the meta-constitutional layer, so this programme claims no namespace token there (ARTICLE XLI.5) and is absent from the meta registry by design.",
+    "classification": "SUBSTANTIVE",
+    "concepts": [
+      {
+        "canonical_owner": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+        "concept": "execution authority — which authority may authorize an execution, and under what authorization",
+        "disposition": "REUSE",
+        "disposition_located": true,
+        "id": "UCAF-AD-01",
+        "owner_resolved": true,
+        "refusal_recorded": true
+      },
+      {
+        "canonical_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+        "concept": "constitutional tier lattice — the ordered tiers of authority and their occupancy",
+        "disposition": "REUSE",
+        "disposition_located": true,
+        "id": "UCAF-AD-02",
+        "owner_resolved": true,
+        "refusal_recorded": true
+      },
+      {
+        "canonical_owner": "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md",
+        "concept": "tier vesting — which occupant each authority tier of the Program vests in",
+        "disposition": "REUSE",
+        "disposition_located": true,
+        "id": "UCAF-AD-03",
+        "owner_resolved": true,
+        "refusal_recorded": true
+      },
+      {
+        "canonical_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+        "concept": "gate execution tiers — the boot, standard and full tiers by which verification work is scheduled",
+        "disposition": "REUSE",
+        "disposition_located": true,
+        "id": "UCAF-AD-04",
+        "owner_resolved": true,
+        "refusal_recorded": true
+      },
+      {
+        "canonical_owner": "00-MASTER/UCOS-UCAF-001/ucaf-authority.json",
+        "concept": "authority realization — the binding between a located authority and the executable plane that exercises it",
+        "disposition": "EXTEND",
+        "disposition_located": true,
+        "id": "UCAF-AD-05",
+        "owner_resolved": true,
+        "refusal_recorded": true
+      },
+      {
+        "canonical_owner": "00-MASTER/UCOS-UCAF-001/ucaf-authority.json",
+        "concept": "tier projection fidelity — agreement between the canonical lattice and the machine projection every gate reads",
+        "disposition": "EXTEND",
+        "disposition_located": true,
+        "id": "UCAF-AD-06",
+        "owner_resolved": true,
+        "refusal_recorded": true
+      }
+    ],
+    "meta_registry": "00-CMG/CMG-REGISTRY.json",
+    "rejected_alternatives": [
+      "CREATE a Universal Execution Authority programme — refused: 00-CEP/CEP-003 vests execution authority and 00-CMG/CMG-REGISTRY.json already delegates execution-operation to it, so discovery yields an owner and 00-CMG/CMG-000001 LXXVII.2(a) requires REUSE.",
+      "CREATE a Tier Governance programme — refused: 00-CMG/CMG-000001 ARTICLE XVI legislates exactly one precedence lattice and ARTICLE XVI.8 already governs tier admission; a second governor of tiers would breach CMG-INV-02.",
+      "Admit either concept into the meta-constitutional registry — refused: both are substantive and 00-CMG/CMG-000001 LXXVI.2(b) forbids admitting a substantive concept there.",
+      "Unify gate execution tiers with the constitutional precedence lattice — refused: they are distinct owned concepts sharing a word, and unifying them by reinterpretation is what 00-CMG/CMG-000001 LXXVI.6 forbids.",
+      "Close the recorded vacancy by reading the charter's vesting of the tier as its occupant — refused: 00-CMG/CMG-000001 XVII.4 forbids promoting a lower instrument into a vacant tier and LXXXI.5 voids any reading that does, so corroboration is measured only for tiers the projection already reports located."
+    ]
+  },
+  "audit_ledger": [
+    {
+      "authority": "AUTH-01",
+      "entry": 1,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-02",
+      "entry": 2,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-03",
+      "entry": 3,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-04",
+      "entry": 4,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-05",
+      "entry": 5,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-06",
+      "entry": 6,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-07",
+      "entry": 7,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-08",
+      "entry": 8,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-09",
+      "entry": 9,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-10",
+      "entry": 10,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-11",
+      "entry": 11,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-12",
+      "entry": 12,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-13",
+      "entry": 13,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "AUTH-14",
+      "entry": 14,
+      "evidence": 1,
+      "kind": "AUTHORITY-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "authority": "GOV-01",
+      "entry": 15,
+      "evidence": 1,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "GOV-02",
+      "entry": 16,
+      "evidence": 1,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "GOV-03",
+      "entry": 17,
+      "evidence": 1,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "GOV-04",
+      "entry": 18,
+      "evidence": 1,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "GOV-05",
+      "entry": 19,
+      "evidence": 1,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "GOV-06",
+      "entry": 20,
+      "evidence": 1,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "GOV-07",
+      "entry": 21,
+      "evidence": 1,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "GOV-08",
+      "entry": 22,
+      "evidence": 1,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "GOV-09",
+      "entry": 23,
+      "evidence": 2,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "GOV-10",
+      "entry": 24,
+      "evidence": 1,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "GOV-11",
+      "entry": 25,
+      "evidence": 1,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "GOV-12",
+      "entry": 26,
+      "evidence": 2,
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "authority": "CEP-003::EXECUTION",
+      "entry": 27,
+      "evidence": 1,
+      "kind": "INSTRUMENT-AUTHORITY",
+      "owner": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "authority": "CEP-004::VALIDATION",
+      "entry": 28,
+      "evidence": 1,
+      "kind": "INSTRUMENT-AUTHORITY",
+      "owner": "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "authority": "CEP-005::CERTIFICATION",
+      "entry": 29,
+      "evidence": 1,
+      "kind": "INSTRUMENT-AUTHORITY",
+      "owner": "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "authority": "CEP-006::RATIFICATION",
+      "entry": 30,
+      "evidence": 1,
+      "kind": "INSTRUMENT-AUTHORITY",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "authority": "CEP-007::FREEZE",
+      "entry": 31,
+      "evidence": 1,
+      "kind": "INSTRUMENT-AUTHORITY",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "authority": "CEP-008::EVIDENCE",
+      "entry": 32,
+      "evidence": 1,
+      "kind": "INSTRUMENT-AUTHORITY",
+      "owner": "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "authority": "CEP-009::AMENDMENT",
+      "entry": 33,
+      "evidence": 1,
+      "kind": "INSTRUMENT-AUTHORITY",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "authority": "CEP-010::AUDIT",
+      "entry": 34,
+      "evidence": 1,
+      "kind": "INSTRUMENT-AUTHORITY",
+      "owner": "00-CEP/CEP-010-CONSTITUTIONAL-AUDIT-COMPLIANCE-ASSURANCE-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    }
+  ],
+  "authorities": [
+    {
+      "definition": "Decision rights / \"Who May Decide.\" Grants the right to act; outputs Legitimacy, Jurisdiction, Power, Responsibility, Accountability.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-01",
+        "SRC-02",
+        "SRC-03",
+        "SRC-05",
+        "SRC-07",
+        "SRC-09"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-01",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "AUTHORITY",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "Source of Legitimate Authority; highest authority; outputs Authority Origin, Boundary, Delegation, Derivation.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02",
+        "SRC-03",
+        "SRC-06",
+        "SRC-07"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-02",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "SOVEREIGNTY",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "Authority derives from sovereignty; governance derives from authority; execution derives from governance.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02",
+        "SRC-07"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-03",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "Authority derivation chain",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "Authority must be explicit, traceable, auditable, governed, revocable, bounded; requires accountability; no action without authority; no authority beyond jurisdiction; constitutional authority is supreme.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02",
+        "SRC-09"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-04",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "Authority preconditions",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "\"Authority Precedes Action\" / \"Authority Before Change.\"",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-01",
+        "SRC-02",
+        "SRC-07",
+        "SRC-08"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-05",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "Authority-before-action law",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "Sovereignty cannot be assumed, fabricated, or bypassed; delegation does not transfer sovereignty; remains inviolable.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-06",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "Sovereignty inviolability",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "Absolute prohibition.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02",
+        "SRC-07"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-07",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "\"Nothing May Bypass Sovereignty\"",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "Authority flows downward, never upward: EXISTENCE→RELATIONSHIP→AUTHORITY→SOVEREIGNTY→INVARIANTS→META-CONSTITUTION→GOVERNANCE→EXECUTION.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-03",
+        "SRC-07"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-08",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "Universal Authority Flow",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "Government = sovereign institution; roles held by parties; delegation bounded; responsibility attached to role.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-09",
+        "SRC-02"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-09",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "Jurisdiction / Delegation / Roles",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "Defines Rights, Duties, Powers, Authorities, Boundaries, Jurisdictions, Ratification, Amendment Rules, Conflict Resolution.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02",
+        "SRC-03",
+        "SRC-06",
+        "SRC-07"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-10",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "Meta-Constitution authority scope",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "\"This Constitution is the supreme governing authority… Nothing supersedes the Constitution.\"",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-01",
+        "SRC-02"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-11",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "Constitutional supremacy",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "\"Sovereignty Origin = Invariant Principles\"; authority flow: Principles > Constitutions > Governance Systems > Organizations > Implementations > Executions, \"never the reverse.\"",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-08"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-12",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "Sovereignty Origin doctrine ⚠",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "The exogenous UCOS Ω∞ Constituent Authority — the out-of-corpus stakeholder acting through Terminal T4 / UCOS-RAT-001 — is the identified sovereign source of the constitutional order; grounds the AUTH-03 derivation chain. Holds CAC-01/02/07.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "AMD-01"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-13",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "Constituent Authority (sovereign seat)",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "Standing constituted organ empowered to perform ratification (GOV-03), chartered by and deriving authority from AUTH-13 (per AUTH-03); bounded, revocable, auditable (AUTH-04).",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "AMD-02"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "AUTH-14",
+      "kind": "AUTHORITY-CONSTRUCT",
+      "name": "Ratification Authority (`RA-Ω∞`)",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-01"
+    },
+    {
+      "definition": "Establishes decision rules; operational authority layer. \"Governance must exist before execution.\"",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-01",
+        "SRC-02",
+        "SRC-03",
+        "SRC-07"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-01",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "GOVERNANCE (definition)",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "\"Governance Precedes Execution\" / \"Governance Before Execution\"; \"No Execution Without Authority.\"",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02",
+        "SRC-03",
+        "SRC-07"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-02",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "Governance-before-execution law",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "Decision Formation, Deliberation, Voting, Ratification, Review, Audit, Compliance, Remediation, Enforcement.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02",
+        "SRC-06",
+        "SRC-07"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-03",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "Governance functions",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "Must be transparent, observable, enforceable, auditable, ratifiable; preserve sovereignty, legitimacy, order; remain constitutional.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-04",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "Governance qualities",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "Registry Loading, Schema Validation, Dependency/Constraint/Authority/Evidence Resolution, Governance Verification, Impact Analysis, Execution Planning, Reality Compilation, Runtime Generation.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02",
+        "SRC-06",
+        "SRC-08"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-05",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "Compiler Governance",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "\"Governance Registry\" as part of Registry Universe; \"Nothing Exists Operationally Until It Exists In A Registry.\"",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02",
+        "SRC-03",
+        "SRC-05",
+        "SRC-08",
+        "SRC-09"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-06",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "Governance registry",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "Evolution requires governance / ratification; may improve but shall not violate invariants.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02",
+        "SRC-07",
+        "SRC-08"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-07",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "Evolution governance",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "Federation requires sovereignty/trust/governance/accountability/observability; voluntary; preserves identity/authority/sovereignty/legitimacy.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-02"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-08",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "Federation governance",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "Historical / Present / Future governance; temporal policies, authorities, evidence. Universal Time Universe governance.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-08",
+        "SRC-12",
+        "SRC-13",
+        "SRC-02",
+        "/"
+      ],
+      "evidence_resolved": [
+        "/",
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-09",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "Temporal governance",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "\"Principle-Centric Adaptive Meta-Governance\"; layered authority stack (Sovereignty Origin → Invariant Principles → Meta-Constitution → Governance Generation → Polycentric → Federated Domain → Organizations → Implementations → Executions).",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "SRC-08"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-10",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "Governance doctrine (meta)",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "A ratification is valid when issued by `RA-Ω∞` (AUTH-14) under the sovereign charter (AUTH-13), recorded in the canonical registry, and evidenced (date, ratifier, basis, traceability). Founding ratification: Constituent Authority as sole ratifier; subsequent: `RA-Ω∞` under a recorded threshold. Enforceable (GOV-04) + auditable (CM-005); satisfies \"Audit Before Trust\" (LAW-INV02).",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "AMD-04",
+        "AMD-06",
+        "AMD-01",
+        "RAT-01"
+      ],
+      "evidence_resolved": [
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-11",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "Ratification decision + audit procedure",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "Constitutional change is lawful only via a ratifiable act (CM-007, BOOK IX). Tiered evolution (RAT-07): *structural* change (root ontology, invariants, supremacy, authority chain, universal law canon) requires ratification (Ω-010); *routine* change requires governance only (LAW Ω∞-018). Entrenched items (LAW-INV02) amendable only by a further exogenous constituent act.",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "AMD-05",
+        "AMD-07",
+        "AMD-08",
+        "/"
+      ],
+      "evidence_resolved": [
+        "/",
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "GOV-12",
+      "kind": "GOVERNANCE-CONSTRUCT",
+      "name": "Self-amendment procedure + evolution gate",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "source": "UCAF-SRC-02"
+    },
+    {
+      "definition": "## ARTICLE I — EXECUTION AUTHORITY",
+      "evidence": [
+        "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md"
+      ],
+      "evidence_resolved": [
+        "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md"
+      ],
+      "id": "CEP-003::EXECUTION",
+      "kind": "INSTRUMENT-AUTHORITY",
+      "name": "Execution Authority",
+      "owner": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "definition": "## ARTICLE I — VALIDATION AUTHORITY",
+      "evidence": [
+        "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md"
+      ],
+      "evidence_resolved": [
+        "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md"
+      ],
+      "id": "CEP-004::VALIDATION",
+      "kind": "INSTRUMENT-AUTHORITY",
+      "name": "Validation Authority",
+      "owner": "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "definition": "## ARTICLE I — CERTIFICATION AUTHORITY",
+      "evidence": [
+        "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md"
+      ],
+      "evidence_resolved": [
+        "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md"
+      ],
+      "id": "CEP-005::CERTIFICATION",
+      "kind": "INSTRUMENT-AUTHORITY",
+      "name": "Certification Authority",
+      "owner": "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "definition": "## ARTICLE I — RATIFICATION AUTHORITY",
+      "evidence": [
+        "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md"
+      ],
+      "evidence_resolved": [
+        "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md"
+      ],
+      "id": "CEP-006::RATIFICATION",
+      "kind": "INSTRUMENT-AUTHORITY",
+      "name": "Ratification Authority",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "definition": "## ARTICLE I — FREEZE AUTHORITY",
+      "evidence": [
+        "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+      ],
+      "evidence_resolved": [
+        "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+      ],
+      "id": "CEP-007::FREEZE",
+      "kind": "INSTRUMENT-AUTHORITY",
+      "name": "Freeze Authority",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "definition": "## ARTICLE I — EVIDENCE AUTHORITY",
+      "evidence": [
+        "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md"
+      ],
+      "evidence_resolved": [
+        "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md"
+      ],
+      "id": "CEP-008::EVIDENCE",
+      "kind": "INSTRUMENT-AUTHORITY",
+      "name": "Evidence Authority",
+      "owner": "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "definition": "## ARTICLE I — AMENDMENT AUTHORITY",
+      "evidence": [
+        "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+      ],
+      "evidence_resolved": [
+        "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+      ],
+      "id": "CEP-009::AMENDMENT",
+      "kind": "INSTRUMENT-AUTHORITY",
+      "name": "Amendment Authority",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    },
+    {
+      "definition": "## ARTICLE I — AUDIT AUTHORITY",
+      "evidence": [
+        "00-CEP/CEP-010-CONSTITUTIONAL-AUDIT-COMPLIANCE-ASSURANCE-CONSTITUTION.md"
+      ],
+      "evidence_resolved": [
+        "00-CEP/CEP-010-CONSTITUTIONAL-AUDIT-COMPLIANCE-ASSURANCE-CONSTITUTION.md"
+      ],
+      "id": "CEP-010::AUDIT",
+      "kind": "INSTRUMENT-AUTHORITY",
+      "name": "Audit Authority",
+      "owner": "00-CEP/CEP-010-CONSTITUTIONAL-AUDIT-COMPLIANCE-ASSURANCE-CONSTITUTION.md",
+      "source": "UCAF-SRC-03"
+    }
+  ],
+  "authority_sources": [
+    {
+      "discovered": 14,
+      "format": "markdown-table",
+      "id": "UCAF-SRC-01",
+      "name": "Located authority constructs",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "reason": null,
+      "resolved": true
+    },
+    {
+      "discovered": 12,
+      "format": "markdown-table",
+      "id": "UCAF-SRC-02",
+      "name": "Located governance constructs",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "reason": null,
+      "resolved": true
+    },
+    {
+      "discovered": 8,
+      "format": "article-authority",
+      "id": "UCAF-SRC-03",
+      "name": "Instrument authorities declared by the constitutional programme",
+      "owner": "00-CEP/CEP-0*.md",
+      "reason": null,
+      "resolved": true
+    }
+  ],
+  "blocking_failures": [],
+  "canonical_lattice": [
+    {
+      "content": "The frozen source material from which constitutional intent derives",
+      "id": "T0",
+      "located": true,
+      "name": "Constitutional Source Corpus",
+      "status": "Located, frozen, non-normative-as-law",
+      "vacant": false
+    },
+    {
+      "content": "The ratified constitution of substance presupposed by CEP-000 §5.5 Tier 1",
+      "id": "T1",
+      "located": false,
+      "name": "Constitutional Authority",
+      "status": "OCCUPIED — by the ratified law canon registered at `02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md` (UCOS-RAT-002 D-RAT-02-02; the VAC-01 record retired at LXXVIII.9)",
+      "vacant": false
+    },
+    {
+      "content": "This instrument — recognition of constitutionality; orthogonal to T1, not superior to it",
+      "id": "T1M",
+      "located": true,
+      "name": "Meta-Constitutional Authority",
+      "status": "Located (PROVISIONAL)",
+      "vacant": false
+    },
+    {
+      "content": "CEP-000 and its derived CEP instruments; supreme over constitutional-engineering process",
+      "id": "T2",
+      "located": true,
+      "name": "Program Authority",
+      "status": "Located",
+      "vacant": false
+    },
+    {
+      "content": "AUTH-INF-001; binds reading, enacts nothing; orthogonal to T2",
+      "id": "T2I",
+      "located": true,
+      "name": "Interpretive Authority",
+      "status": "Located",
+      "vacant": false
+    },
+    {
+      "content": "Domain constitutions governing substance within one domain",
+      "id": "T3",
+      "located": true,
+      "name": "Domain Authority",
+      "status": "Located",
+      "vacant": false
+    },
+    {
+      "content": "Agents and engines acting within a gate",
+      "id": "T4",
+      "located": true,
+      "name": "Execution Authority",
+      "status": "Located",
+      "vacant": false
+    },
+    {
+      "content": "State, checkpoints, evidence, reports, registries, projections — assert nothing",
+      "id": "T5",
+      "located": true,
+      "name": "Derived-Truth Authority",
+      "status": "Located",
+      "vacant": false
+    }
+  ],
+  "capabilities": [
+    {
+      "capability": "Authority Registry",
+      "discharged": true,
+      "id": "UCAF-CAP-01",
+      "measure": "authorities_registered",
+      "measured": true,
+      "obligation": "every authority the repository defines is registered as an addressable record derived from its located definition",
+      "value": 34
+    },
+    {
+      "capability": "Authority Delegation",
+      "discharged": true,
+      "id": "UCAF-CAP-02",
+      "measure": "delegations_registered",
+      "measured": true,
+      "obligation": "every located delegation of a concern to an owner is registered, and its owner resolves",
+      "value": 62
+    },
+    {
+      "capability": "Authority Resolution",
+      "discharged": true,
+      "id": "UCAF-CAP-03",
+      "measure": "resolutions_answered",
+      "measured": true,
+      "obligation": "every declared competence question resolves to an answer read out of a located instrument, or is reported UNRESOLVED",
+      "value": 17
+    },
+    {
+      "capability": "Authority Validation",
+      "discharged": true,
+      "id": "UCAF-CAP-04",
+      "measure": "validations_measured",
+      "measured": true,
+      "obligation": "every declared validation dimension is measured, and a declared dimension with no measurement fails closed",
+      "value": 22
+    },
+    {
+      "capability": "Authority Succession",
+      "discharged": true,
+      "id": "UCAF-CAP-05",
+      "measure": "successions_registered",
+      "measured": true,
+      "obligation": "every located supersession determination over an authoritative source is registered and its source tokens resolve",
+      "value": 15
+    },
+    {
+      "capability": "Authority Scope",
+      "discharged": true,
+      "id": "UCAF-CAP-06",
+      "measure": "scope_rules_bound",
+      "measured": true,
+      "obligation": "every declared scope rule binds to a located clause, and the clause text is verified present",
+      "value": 17
+    },
+    {
+      "capability": "Authority Verification",
+      "discharged": true,
+      "id": "UCAF-CAP-07",
+      "measure": "records_verified",
+      "measured": true,
+      "obligation": "every registered record is verified against the located file it was derived from, by path existence and content digest",
+      "value": 11
+    },
+    {
+      "capability": "Authority Evidence",
+      "discharged": true,
+      "id": "UCAF-CAP-08",
+      "measure": "authorities_with_evidence",
+      "measured": true,
+      "obligation": "every registered authority carries at least one evidence pointer that resolves in the repository",
+      "value": 34
+    },
+    {
+      "capability": "Authority Audit",
+      "discharged": true,
+      "id": "UCAF-CAP-09",
+      "measure": "audit_entries",
+      "measured": true,
+      "obligation": "the registry emits an append-only, content-addressed audit ledger sufficient to reconstruct the registration deterministically",
+      "value": 34
+    },
+    {
+      "capability": "Authority Revocation",
+      "discharged": true,
+      "id": "UCAF-CAP-10",
+      "measure": "revocations_registered",
+      "measured": true,
+      "obligation": "the revocation channel exists, is append-only, and every entry names a resolving authority and an existing record — per CEP-002 13.5 a revocation takes effect upon record",
+      "value": 0
+    },
+    {
+      "capability": "Authority Certification",
+      "discharged": true,
+      "id": "UCAF-CAP-11",
+      "measure": "undefined_references",
+      "measured": true,
+      "obligation": "no authority remains undefined: every authority-shaped reference in the declared surfaces resolves to a registered authority",
+      "value": 0
+    },
+    {
+      "capability": "Authority Realization",
+      "discharged": true,
+      "id": "UCAF-CAP-12",
+      "measure": "realizations_bound",
+      "measured": true,
+      "obligation": "every authority token minted in the executable plane is discovered, classified against a declared non-constitutional token class, and collides with no registered constitutional authority; and every declared realization binding resolves to a located module, a located enforcement symbol and a located vesting clause",
+      "value": 1
+    },
+    {
+      "capability": "Tier Governance",
+      "discharged": true,
+      "id": "UCAF-CAP-13",
+      "measure": "tiers_corroborated",
+      "measured": true,
+      "obligation": "the machine tier projection is faithful to the canonical constitutional precedence lattice in membership, name and located status; every tier the projection reports located is corroborated by a located occupant; and every authority tier the charter vests is present in the lattice",
+      "value": 8
+    },
+    {
+      "capability": "Authority Admission",
+      "discharged": true,
+      "id": "UCAF-CAP-14",
+      "measure": "dispositions_owned",
+      "measured": true,
+      "obligation": "every concept this programme admits carries a recorded disposition drawn from the located totality rule and a canonical owner that resolves, and no concept is admitted by creating a parallel authority",
+      "value": 6
+    }
+  ],
+  "counts": {
+    "audit_entries": 34,
+    "authorities": 34,
+    "authority_kinds": 3,
+    "canonical_tiers": 8,
+    "capabilities": 14,
+    "capabilities_discharged": 14,
+    "concepts_admitted": 6,
+    "delegations": 62,
+    "dispositions_owned": 6,
+    "minted_collisions": 0,
+    "minted_token_classes": 9,
+    "minted_tokens": 27,
+    "minted_unclassified": 0,
+    "realizations": 1,
+    "realizations_bound": 1,
+    "reconciliation_required": 0,
+    "reconciliations": 3,
+    "resolutions": 17,
+    "resolutions_answered": 17,
+    "scope_rules": 17,
+    "scope_rules_bound": 17,
+    "successions": 15,
+    "surfaces_scanned": 196,
+    "tiers": 8,
+    "tiers_corroborated": 8,
+    "tiers_faithful": 8,
+    "tiers_vested": 4,
+    "undefined_references": 0,
+    "vacant_tiers": 0
+  },
+  "delegations": [
+    {
+      "concern": "constitutional-engineering-process-and-program-authority",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-01",
+      "owner": "CEP-000",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "governance-operation-jurisdiction-ownership-assignment-escalation-and-conflict-resolution",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-02",
+      "owner": "CEP-002",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "execution-operation",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-03",
+      "owner": "CEP-003",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "validation-operation",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-04",
+      "owner": "CEP-004",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "certification-operation",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-05",
+      "owner": "CEP-005",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "ratification-operation-and-finality",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-06",
+      "owner": "CEP-006",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "freeze-immutability-baselines-and-supersession-mechanics",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-07",
+      "owner": "CEP-007",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "evidence-and-traceability-operation",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-08",
+      "owner": "CEP-008",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "amendment-and-evolution-operation",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-09",
+      "owner": "CEP-009",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "compliance-monitoring-and-assurance-operation",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-10",
+      "owner": "CEP-010",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "audit-operation-drift-and-contradiction-detection",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-11",
+      "owner": "CEP-010",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "constitutional-interpretation",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-12",
+      "owner": "AUTH-INF-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "artifact-registration-identity-allocation-and-classification",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-13",
+      "owner": "REG-AUTO-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "status-determination-and-validity",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-14",
+      "owner": "STATUS-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "change-intelligence-regeneration-and-synchronization",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-15",
+      "owner": "UCI-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "governance-integration-and-execution-architecture",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-16",
+      "owner": "GOV-INT-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "repository-truth-knowledge-content-and-canonical-homes",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-17",
+      "owner": "UCOS-BOOK-000000",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "repository-closure-specification",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-18",
+      "owner": "CONST-01",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "successor-governance-and-program-remit-separation",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-19",
+      "owner": "CONST-07",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "long-term-evolution-admissible-path-for-architectural-ideas",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-20",
+      "owner": "CONST-10",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "constitutional-glossary-and-frozen-terminology",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-21",
+      "owner": "CONST-11",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "architecture-baseline-change-control",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-22",
+      "owner": "AB-001-07",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "engineering-governance-and-implementation-admission",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-23",
+      "owner": "EG-001-01",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "measurement-authority",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-24",
+      "owner": "UMA-001-01",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "technology-selection-and-constraint",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-25",
+      "owner": "TECH-CONST-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "nucleus-and-universe-composition-model",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-26",
+      "owner": "NUCLEUS-001-02",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "domain-substance-data",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-27",
+      "owner": "DATA-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "domain-substance-runtime",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-28",
+      "owner": "RUNTIME-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "domain-substance-application",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-29",
+      "owner": "APPLICATION-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "domain-substance-infrastructure",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-30",
+      "owner": "INFRASTRUCTURE-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "domain-substance-service",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-31",
+      "owner": "SERVICE-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "domain-substance-platform",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-32",
+      "owner": "PLATFORM-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "domain-substance-security",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-33",
+      "owner": "SECURITY-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "canonical-runtime-catalog-model",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-34",
+      "owner": "CAT-000",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "universal-reference-architecture-model",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-35",
+      "owner": "REF-000",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "generation-frameworks",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-36",
+      "owner": "05-GENERATION",
+      "owner_named": true,
+      "owner_resolved": true
+    },
+    {
+      "concern": "implementation-orchestration-and-realization",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-37",
+      "owner": "06-IMPLEMENTATION",
+      "owner_named": true,
+      "owner_resolved": true
+    },
+    {
+      "concern": "engineering-foundation-identity-object-type-and-relationship-architectures",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-38",
+      "owner": "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-IDENTITY-SYSTEM-MASTER-ARCHITECTURE.md",
+      "owner_named": true,
+      "owner_resolved": true
+    },
+    {
+      "concern": "intelligence-substrate-sciences-universes-and-intelligence-registries",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-39",
+      "owner": "15-UNIVERSAL-SCIENCE-INTELLIGENCE",
+      "owner_named": true,
+      "owner_resolved": true
+    },
+    {
+      "concern": "enforcement-machinery-gates-and-guards",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-40",
+      "owner": "Makefile",
+      "owner_named": true,
+      "owner_resolved": true
+    },
+    {
+      "concern": "repository-integrity",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-41",
+      "owner": "CONST-02",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "vision-assimilation",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-42",
+      "owner": "CONST-03",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "architectural-completeness-as-distinct-from-closure",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-43",
+      "owner": "CONST-04",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "repository-state-machine",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-44",
+      "owner": "CONST-05",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "closure-metrics-computation",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-45",
+      "owner": "CONST-06",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "single-canonical-closure-pipeline",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-46",
+      "owner": "CONST-08",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "repository-lifecycle",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-47",
+      "owner": "CONST-09",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "constitutional-engineering-operational-law-invariants-and-artifact-state-model",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-48",
+      "owner": "CEP-001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "deferral-register-lifecycle-states-entry-exit-review-cadence-and-custody",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-49",
+      "owner": "CEP-002",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "canonical-object-identity-registry-relationship-graph-and-invariant-validation",
+      "disposition": "REUSE",
+      "id": "CMG-DLG-50",
+      "owner": "UCKP-LAW-0001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "absolute-constitutional-laws-canonicity",
+      "disposition": "RETAINED",
+      "id": "CMG-DLG-51",
+      "owner": "UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "definition-of-constitution-and-constitutional-artifact",
+      "disposition": "RETAIN",
+      "id": "CMG-RET-01",
+      "owner": "CMG-000001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "recognition-of-constitutionality-and-the-constitution-registry",
+      "disposition": "RETAIN",
+      "id": "CMG-RET-02",
+      "owner": "CMG-000001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "classification-taxonomy-and-ontology-of-constitutional-objects",
+      "disposition": "RETAIN",
+      "id": "CMG-RET-03",
+      "owner": "CMG-000001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "constitutional-precedence-lattice-and-authority-resolution",
+      "disposition": "RETAIN",
+      "id": "CMG-RET-04",
+      "owner": "CMG-000001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "allocation-of-concerns-to-owners-and-the-delegation-register",
+      "disposition": "RETAIN",
+      "id": "CMG-RET-05",
+      "owner": "CMG-000001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "recording-of-vacancies-gaps-and-open-constitutional-questions",
+      "disposition": "RETAIN",
+      "id": "CMG-RET-06",
+      "owner": "CMG-000001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "meta-level-identity-identifier-naming-and-namespace-rules",
+      "disposition": "RETAIN",
+      "id": "CMG-RET-07",
+      "owner": "CMG-000001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "meta-lifecycle-phase-model-and-mapping-to-located-state-model",
+      "disposition": "RETAIN",
+      "id": "CMG-RET-08",
+      "owner": "CMG-000001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "admission-of-new-constitutional-kinds-and-unknown-future-concepts",
+      "disposition": "RETAIN",
+      "id": "CMG-RET-09",
+      "owner": "CMG-000001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "meta-constitutional-completeness-verification-and-readiness-certification-criteria",
+      "disposition": "RETAIN",
+      "id": "CMG-RET-10",
+      "owner": "CMG-000001",
+      "owner_named": true,
+      "owner_resolved": false
+    },
+    {
+      "concern": "meta-constitutional-invariants-and-their-mechanical-verification",
+      "disposition": "RETAIN",
+      "id": "CMG-RET-11",
+      "owner": "CMG-000001",
+      "owner_named": true,
+      "owner_resolved": false
+    }
+  ],
+  "determination": "AUTHORITY-MODEL-BOUND",
+  "exit_criteria": [
+    {
+      "criterion": "the authority model exists as machine-readable, addressable, verified structure derived from located instruments",
+      "id": "UCAF-EX-01"
+    },
+    {
+      "criterion": "no authority-shaped reference in the declared surfaces is undefined",
+      "id": "UCAF-EX-02"
+    },
+    {
+      "criterion": "every competence question a gate needs to ask resolves to a located clause",
+      "id": "UCAF-EX-03"
+    },
+    {
+      "criterion": "every recorded vacancy is registered, complete, and reported without promotion",
+      "id": "UCAF-EX-04"
+    },
+    {
+      "criterion": "every conflict between a recorded claim of authority absence and located evidence of authority presence is measured, cited and referred to the claim owner",
+      "id": "UCAF-EX-05"
+    },
+    {
+      "criterion": "no authority token minted in the executable plane collides with a registered constitutional authority, every such token is disclosed and classified, and every declared realization of a located authority resolves to the module, the enforcement symbol and the vesting clause it names",
+      "id": "UCAF-EX-06"
+    },
+    {
+      "criterion": "the machine tier projection every gate reads is faithful to the canonical constitutional precedence lattice in membership, name and located status, and drift between them closes the gate",
+      "id": "UCAF-EX-07"
+    },
+    {
+      "criterion": "every tier reported located names a located occupant, every authority tier the charter vests is present in the lattice, and no vacant tier is corroborated as occupied",
+      "id": "UCAF-EX-08"
+    },
+    {
+      "criterion": "every concept this programme admits carries a located canonical owner and a recorded disposition drawn from the located totality rule, and no admission creates a parallel authority",
+      "id": "UCAF-EX-09"
+    }
+  ],
+  "findings": [
+    {
+      "blocking": false,
+      "class": "MEASURED-GOVERNANCE-GAP",
+      "disposition": "IMPLEMENTED",
+      "evidence": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "00-CMG/CMG-REGISTRY.json"
+      ],
+      "id": "UCAF-F-001",
+      "note": "Before this programme every authority in the repository existed only as a prose table or an article of an instrument. The tier lattice alone was machine-readable. Consequently no gate could resolve which authority was competent for an act, no gate could detect an authority referenced but never defined, and no gate could detect that a recorded claim of authority absence had been contradicted by later located evidence. Closed by deriving the registry from the located instruments rather than by authoring a second authority model.",
+      "owner": "00-MASTER/UCOS-UCAF-001/ucaf-authority.json",
+      "title": "The authority model was prose-only, so no gate could resolve a competence question"
+    },
+    {
+      "blocking": false,
+      "class": "STANDING-CONSTITUTIONAL-CONFLICT",
+      "disposition": "REGISTERED",
+      "evidence": [
+        "00-CMG/CMG-REGISTRY.json",
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md",
+        "09-DR-RAT-11-ASSESSMENT.md"
+      ],
+      "id": "UCAF-F-002",
+      "note": "The meta-constitutional projection records a vacant constitutional tier on the evidence that no ratified normative artifact occupies it. Located instruments elsewhere record an exogenous constituent act that identified the sovereign seat, chartered a standing ratification organ, and fixed document supremacy. Both are Repository Truth. Deciding between them is reserved to the claim owner under CEP-002 Article 23; this programme measures both sides, cites both, and refers. It does not promote any instrument into the vacant tier, which CMG-000001 XVII.4 forbids and LXXXI.5 voids.",
+      "owner": "00-CMG/CMG-REGISTRY.json",
+      "title": "A recorded vacancy and later located evidence of authority both stand; the conflict is referred, not decided"
+    },
+    {
+      "blocking": false,
+      "class": "DECLARED-SCOPE-BOUNDARY",
+      "disposition": "GOVERNED",
+      "evidence": [
+        "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "UCAF-F-003",
+      "note": "This programme can prove from located evidence which authority is competent for an act. It cannot perform the act: CEP-006 I.5 provides that ratification authority is never self-conferred by execution authority and acts only upon an authorization, and CEP-006 I.4 caps any in-corpus determination at PROVISIONAL. Recording a ratification is therefore owned by the ratification registry, and conferring one is owned by the located authority — never by this engine.",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "title": "Competence to ratify and the ratifying act are distinct, and only the first is closable by measurement"
+    },
+    {
+      "blocking": false,
+      "class": "MEASURED-GOVERNANCE-GAP",
+      "disposition": "IMPLEMENTED",
+      "evidence": [
+        "engine/runtime/execution/authorization.py",
+        "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md"
+      ],
+      "id": "UCAF-F-004",
+      "note": "The runtime refused an authorization that 'asserts a foreign authority', but no gate could say which authorities were not foreign: the minted token was a free string bound to no registered authority, to no vesting instrument and to no tier. Nothing prevented a module from minting a token that reads as a constitutional authority, and nothing required a new authority-shaped constant to be disclosed. Closed by DISCOVERING every such token from the executable plane and measuring two independent properties — that no token collides with a registered constitutional authority, and that every discovered token is classified with its basis. The declared classes cannot narrow the discovered population and cannot waive the collision check.",
+      "owner": "00-MASTER/UCOS-UCAF-001/ucaf-authority.json",
+      "title": "The executable plane minted authority tokens that resolved to nothing"
+    },
+    {
+      "blocking": false,
+      "class": "MEASURED-GOVERNANCE-GAP",
+      "disposition": "IMPLEMENTED",
+      "evidence": [
+        "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+        "00-CMG/CMG-REGISTRY.json",
+        "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md"
+      ],
+      "id": "UCAF-F-005",
+      "note": "CMG-000001 ARTICLE XVI.2 legislates the one precedence lattice as prose and CMG-REGISTRY.json projects it as data; every gate that resolves rank reads the projection. Acyclicity and vacancy completeness were validated, but membership, tier name and located status were never compared against the canonical instrument, so a projection could drift from what it projects and every dependent gate would inherit the drift silently. The charter's own four-tier vesting, which XVI.5 obliges the lattice to remain consistent with, was likewise unmeasured. Closed by reading all three located instruments against each other. Corroboration is computed only for tiers the projection already reports located, so no measurement here can promote an instrument into the recorded vacancy.",
+      "owner": "00-MASTER/UCOS-UCAF-001/ucaf-authority.json",
+      "title": "The tier projection every gate reads was never read against the instrument it projects"
+    }
+  ],
+  "gate": "OPEN",
+  "gate_exit": 0,
+  "minted_authority_tokens": [
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/acceptance/contracts.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "ACCEPTANCE_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/certification/contracts.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "CERTIFICATION_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "DERIVED-TRUTH",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/context/__init__.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "AUTHORITY",
+      "token": "NONE (DERIVED TRUTH)"
+    },
+    {
+      "class": "DERIVED-TRUTH",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/context/certification.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "AUTHORITY",
+      "token": "NONE (DERIVED TRUTH)"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/governance/contracts.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "GOVERNANCE_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/knowledge/certification.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "KNOWLEDGE_CERTIFICATION_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/knowledge/ukip/certification.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "KNOWLEDGE_INTELLIGENCE_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "DERIVED-TRUTH",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/omega_governance/__init__.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "AUTHORITY",
+      "token": "NONE (DERIVED TRUTH)"
+    },
+    {
+      "class": "DERIVED-AUTHORITY-OF-LAST-RESORT",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/omega_governance/authority.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "UNIVERSAL_FALLBACK_AUTHORITY",
+      "token": "UCOS-UNIVERSAL-AUTHORITY"
+    },
+    {
+      "class": "DERIVED-TRUTH",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/omega_governance/reference/__init__.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "AUTHORITY",
+      "token": "NONE (DERIVED TRUTH)"
+    },
+    {
+      "class": "DERIVED-TRUTH",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/omega_governance/temporal/__init__.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "AUTHORITY",
+      "token": "NONE (DERIVED TRUTH)"
+    },
+    {
+      "class": "PROJECTION-ROLE-NAME",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/root_ontology/model.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "ROLE_AUTHORITY",
+      "token": "AUTHORITY"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/runtime/bridge/contracts.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "BRIDGE_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/runtime/execution/authorization.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "EXECUTION_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "RESOLUTION-LEDGER-FIELD",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/uckp/intelligence.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "ACCOUNTABLE_AUTHORITY",
+      "token": "accountable_authority"
+    },
+    {
+      "class": "DELTA-REGISTER-KEY",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/uckp/state.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "AUTHORITY",
+      "token": "authority"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/universal_certification/contracts.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "UCERT_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "DERIVED-OWNERSHIP-OF-LAST-RESORT",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "engine/universal_discovery/authority.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "REPOSITORY_AUTHORITY",
+      "token": "UCOS-REPOSITORY-ROOT"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "platform/commercial_intelligence/contracts.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "COMMERCIAL_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "platform/repository_intelligence/contracts.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "REPOSITORY_INTELLIGENCE_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "platform/repository_operations/contracts.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "OPERATIONS_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "platform/universal_assurance/contracts.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "ASSURANCE_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "IMPLEMENTATION-CONFORMANCE",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "platform/universal_foundation/constitution.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "FOUNDATION_CONSTITUTION_AUTHORITY",
+      "token": "Universal Foundation Constitutional Authority"
+    },
+    {
+      "class": "CONSTITUTIONAL-GATE-IDENTITY",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "platform/universal_foundation/convergence.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "GATE_NO_PARALLEL_AUTHORITY",
+      "token": "FG-15-NO-PARALLEL-AUTHORITY"
+    },
+    {
+      "class": "DERIVED-TRUTH",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "platform/universal_pipeline/governance.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "GOVERNANCE_AUTHORITY",
+      "token": "NONE (DERIVED TRUTH)"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "platform/universal_validation/contracts.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "VALIDATION_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "class": "ENGINEERING-EXECUTION",
+      "classified": true,
+      "constitutional_collision": false,
+      "owner": "platform/validation_intelligence/contracts.py",
+      "source": "UCAF-REAL-01",
+      "symbol": "INTELLIGENCE_AUTHORITY",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    }
+  ],
+  "programme": {
+    "authority": "NONE — DERIVED TRUTH. This programme creates no authority, confers no authority, occupies no tier and ratifies nothing. It reads the located instruments that define the repository's authorities and reports what they say.",
+    "disclosure": "**DISCLOSURE.** CERTIFIED-PROVISIONAL. This programme holds no ratification authority and no constitutional authority: it registers, resolves, validates and audits the authorities the repository has already located. Where this register and a located instrument differ, the located instrument governs.",
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "00-BOOK/DATA/",
+      "00-CEP/",
+      "00-CMG/",
+      "01-WORKING/",
+      "02-MASTER/"
+    ],
+    "governing_instruments": [
+      "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md",
+      "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+      "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md"
+    ],
+    "id": "UCOS-UCAF-001",
+    "name": "Universal Constitutional Authority Framework",
+    "operational_home": "00-MASTER/UCOS-UCAF-001/",
+    "version": "1.1"
+  },
+  "realization_token_classes": [
+    {
+      "basis": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md ARTICLE I.3 — execution authority SHALL NOT govern, ratify, decide constitutional content, or exercise a power reserved to a higher tier. A module minting this token discloses that it acts and holds nothing.",
+      "class": "ENGINEERING-EXECUTION",
+      "constitutional": false,
+      "id": "UCAF-TC-01",
+      "token": "ENGINEERING-EXECUTION-ONLY"
+    },
+    {
+      "basis": "00-CMG/CMG-000001 ARTICLE XVI.2 — the derived-truth tier records and asserts nothing. A module minting this token discloses that it computes and refuses rather than legislating.",
+      "class": "DERIVED-TRUTH",
+      "constitutional": false,
+      "id": "UCAF-TC-02",
+      "token": "NONE (DERIVED TRUTH)"
+    },
+    {
+      "basis": "engine/uckp/state.py — one of the five delta registers a UCKP transition is required to carry. The constant is a register key in a state record, not a claim to hold authority; it is disclosed here rather than filtered in code so that the discovered population is never quietly narrowed.",
+      "class": "DELTA-REGISTER-KEY",
+      "constitutional": false,
+      "id": "UCAF-TC-03",
+      "token": "authority"
+    },
+    {
+      "basis": "platform/universal_foundation/constitution.py — the declared owner of UCOS-UFC-001, the law governing whether a Foundation CAPABILITY conforms across the thirteen domains it names (contracts, services, providers, policies, registries, runtimes, lifecycle, compatibility, evolution, governance, certification, composition, specialization). Its subject is implementation conformance, never constitutional content: it cannot ratify, cannot legislate, cannot vest or revoke a tier, and cannot override a located canonical owner. Its standing is AUTHORITY = NONE (DERIVED TRUTH) under 00-CMG/CMG-000001 ARTICLE XVI.2 — it measures and refuses. Disclosed here rather than filtered in code so the discovered population is never quietly narrowed.",
+      "class": "IMPLEMENTATION-CONFORMANCE",
+      "constitutional": false,
+      "id": "UCAF-TC-04",
+      "token": "Universal Foundation Constitutional Authority"
+    },
+    {
+      "basis": "platform/universal_foundation/convergence.py — the identity of the executable gate that proves UCOS-UFC-001 UFC-15, the article FORBIDDING a parallel constitutional authority. The symbol name ends in AUTHORITY because the article it proves is about authority; the constant is the name of a measurement, not a claim to hold anything. Classified for the same reason as UCAF-TC-03: the discovered population is disclosed in full and narrowed by declaration, never by a filter in code.",
+      "class": "CONSTITUTIONAL-GATE-IDENTITY",
+      "constitutional": false,
+      "id": "UCAF-TC-05",
+      "token": "FG-15-NO-PARALLEL-AUTHORITY"
+    },
+    {
+      "basis": "engine/uckp/intelligence.py — the field name under which an entry of the constitutional `category_ownership_resolution` declares the party accountable for a category's population, read by the declared-versus-measured category integrity join (PHASE-UCF-013). The constant is a JSON key in a resolution record, not a claim to hold authority. What the key names is held distinct from constitutional authority in three separate ways, each already determined: the value is a governance entity accountable for a category's population POLICY, severed by PHASE-UCF-012 D4 from the Ownership.owner value space (Facet 7) precisely so it cannot be aggregated into one; what a category IS remains GOVERNED_CATEGORIES under Article 17, which the ledger cites and never re-declares (PHASE-UCF-012 § 8.2, 'there is no vacancy here'); and the reasoner that reads the key reports at OBSERVATION severity and can move no certification verdict. The resolution sections it belongs to are recognitive, never constitutive — each records a standing that measurement already shows to hold and grants no right (PHASE-UCF-012 § 6.3). Disclosed here rather than renamed in code, for the same reason as UCAF-TC-03 and UCAF-TC-05: the discovered population is narrowed by declaration, never by a filter — and a symbol chosen to fall outside the discovery pattern would be that filter under another name.",
+      "class": "RESOLUTION-LEDGER-FIELD",
+      "constitutional": false,
+      "id": "UCAF-TC-06",
+      "token": "accountable_authority"
+    },
+    {
+      "basis": "engine/root_ontology/model.py — the name of one of the four ROLES a site may hold in UCPA-000001's classification of artifacts that state the root ontology (AUTHORITY, RATIFICATION_RECORD, PROJECTION, SUPERSEDED). The constant is a role LABEL compared against declared data, not a claim to hold authority: the programme's own standing is AUTHORITY = NONE (DERIVED TRUTH), it legislates no ontology, and UCPA-L-06 requires the single site bearing this role to be the canonical owner that 00-MASTER/URRC-000001/urrc-bindings.json D-24 already binds — so the label can only ever point at an owner determined elsewhere, and can never vest one. Disclosed here rather than renamed in code for the reason UCAF-TC-06 records: a symbol chosen to fall outside the discovery pattern would be a filter under another name, and the discovered population must be narrowed by declaration only.",
+      "class": "PROJECTION-ROLE-NAME",
+      "constitutional": false,
+      "id": "UCAF-TC-07",
+      "token": "AUTHORITY"
+    },
+    {
+      "basis": "00-MASTER/UCOS-UGA-001 declares the repository's ownership function TOTAL: its last rule is unconditional, so every path resolves to exactly one owner and 'unowned' is structurally unreachable. UCOS-OMEGA-001's Ω-A-07 is that last rule in executable form, and this token is the owner it names -- the repository owning what nothing more specific claims. It legislates nothing and asserts nothing about the artifact beyond the fact that no declaration, programme home, invocation plane or importer claimed it. MEASURED PROPERTY OF THIS TOKEN IN THE CURRENT TREE: Ω-A-07 fires zero times, so the token is minted as a definition and reached by no artifact. That is the intended state -- the rule exists to make the function total, and the rule being UNUSED is what makes the derivation informative rather than vacuous. The authority_of_last_resort ratchet is CONVERGENT at 0 and refuses the first artifact that reaches it.",
+      "class": "DERIVED-OWNERSHIP-OF-LAST-RESORT",
+      "constitutional": false,
+      "id": "UCAF-TC-08",
+      "token": "UCOS-REPOSITORY-ROOT"
+    },
+    {
+      "basis": "engine/omega_governance/authority.py — the owner UCOS-OMEGA-001's authority resolver names when all seven of its tiers have been consulted and every one abstained. It is the terminal rung of a resolution walk and its purpose is TOTALITY: a resolver returning nothing for an unclaimed artifact hands every caller the same decision to make separately, and they do not make it the same way. THE TOKEN LEGISLATES NOTHING AND VESTS NOTHING, and the module is built so it cannot be read as though it did: every arrival is recorded as a FallbackEvent carrying the tiers consulted and the tiers that actually had sources, counted by the scale-free `fallback_density` and named subject-by-subject by `unattributed`, precisely so 'nobody owns this' can never be mistaken for 'the universal authority owns this'. It marks an unowned artifact; it does not claim one. This is the omega_governance analogue of UCAF-TC-08's UCOS-REPOSITORY-ROOT, and it is disclosed here rather than renamed in code for the reason UCAF-TC-06 records: the discovered population is narrowed by declaration only, and a symbol chosen to fall outside the discovery pattern would be a filter under another name.",
+      "class": "DERIVED-AUTHORITY-OF-LAST-RESORT",
+      "constitutional": false,
+      "id": "UCAF-TC-09",
+      "token": "UCOS-UNIVERSAL-AUTHORITY"
+    }
+  ],
+  "realizations": [
+    {
+      "authority": "Execution Authority",
+      "authority_resolved": [
+        "CEP-003::EXECUTION"
+      ],
+      "bound": true,
+      "guard_present": true,
+      "guard_symbol": "require_authorization",
+      "id": "UCAF-RB-01",
+      "owner": "engine/runtime/execution/authorization.py",
+      "tier": "Execution Authority",
+      "tier_located": true,
+      "token": "ENGINEERING-EXECUTION-ONLY",
+      "token_symbol": "EXECUTION_AUTHORITY",
+      "vested_by_definer": true,
+      "vesting_instrument": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "vesting_located": true
+    }
+  ],
+  "reconciliations": [
+    {
+      "claim": "no located authority is competent to ratify",
+      "claim_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "claim_stands": false,
+      "closes_vacancy": false,
+      "evidence_absent": [],
+      "evidence_located": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md",
+        "09-DR-RAT-11-ASSESSMENT.md"
+      ],
+      "id": "UCAF-RC-01",
+      "outcome": "CLAIM-NO-LONGER-LOCATED",
+      "ratifies": false,
+      "referred_to": "00-MASTER/UCCEP-000000/uccep-bindings.json"
+    },
+    {
+      "claim": "no ratified normative artifact occupies the vacant constitutional tier",
+      "claim_owner": "00-CMG/CMG-REGISTRY.json",
+      "claim_stands": false,
+      "closes_vacancy": false,
+      "evidence_absent": [],
+      "evidence_located": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "01-WORKING/SUPERSESSION-REGISTER.md",
+        "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md"
+      ],
+      "id": "UCAF-RC-02",
+      "outcome": "CLAIM-NO-LONGER-LOCATED",
+      "ratifies": false,
+      "referred_to": "00-CMG/CMG-REGISTRY.json"
+    },
+    {
+      "claim": "the corpus contains no authority competent to ratify anything",
+      "claim_owner": "00-CMG/README.md",
+      "claim_stands": false,
+      "closes_vacancy": false,
+      "evidence_absent": [],
+      "evidence_located": [
+        "01-WORKING/AUTHORITY-REGISTER.md",
+        "01-WORKING/AUTHORITY-REGISTER.md"
+      ],
+      "id": "UCAF-RC-03",
+      "outcome": "CLAIM-NO-LONGER-LOCATED",
+      "ratifies": false,
+      "referred_to": "00-CMG/CMG-000014-CONSTITUTIONAL-OPEN-QUESTIONS-FOR-RATIFICATION.md"
+    }
+  ],
+  "resolutions": [
+    {
+      "answers": [
+        "AUTH-13",
+        "AUTH-03",
+        "AUTH-06"
+      ],
+      "id": "UCAF-R-01",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "question": "Which authority is the root of the authority derivation chain?"
+    },
+    {
+      "answers": [
+        "AUTH-14",
+        "GOV-03",
+        "AUTH-13",
+        "AUTH-03",
+        "AUTH-04",
+        "GOV-11"
+      ],
+      "id": "UCAF-R-02",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "question": "Which authority is competent to perform ratification?"
+    },
+    {
+      "answers": [
+        "GOV-11",
+        "AUTH-14",
+        "AUTH-13",
+        "GOV-04"
+      ],
+      "id": "UCAF-R-03",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "question": "By what procedure is a ratification valid and audited?"
+    },
+    {
+      "answers": [
+        "GOV-12"
+      ],
+      "id": "UCAF-R-04",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "question": "By what procedure may the constitutional order be amended?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-05",
+      "in_corpus": false,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "question": "Which authority is superior for constitutional finality?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-06",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "question": "Which authority may confer PROVISIONAL acceptance, and what is the ceiling of an in-corpus determination?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-07",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "question": "Which ratification states admit an artifact to the freeze lifecycle?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-08",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "question": "Which authority allocates canonical ownership of a concern?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-09",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "question": "Which authority may revoke a delegation, and when does the revocation take effect?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-10",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "question": "Which authority resolves a contested authority over the same artifact?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-11",
+      "in_corpus": false,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md",
+      "question": "Was the exogenous constituent act performed, and are its constituent capabilities discharged?"
+    },
+    {
+      "answers": [
+        "AUTH-13",
+        "AUTH-14",
+        "GOV-11",
+        "GOV-12",
+        "AUTH-03"
+      ],
+      "id": "UCAF-R-12",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "question": "Is the located authority derivation chain rooted?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-13",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "question": "Which authority may authorize an execution, and may execution authority confer its own authorization?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-14",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "question": "Upon what does an execution unit enter AUTHORIZED, and what is the consequence of a denied authorization?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-15",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "question": "In which tier does execution authority vest, and which instrument vests it?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-16",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "question": "Which authority governs the ordering of authority tiers, and how many precedence lattices are there?"
+    },
+    {
+      "answers": [],
+      "id": "UCAF-R-17",
+      "in_corpus": true,
+      "located": true,
+      "outcome": "ANSWERED",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "question": "By what procedure is a new authority tier admitted, and may admission renumber an existing tier?"
+    }
+  ],
+  "revocations": [],
+  "scope_rules": [
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-01",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "rule": "authority must be explicit, traceable, auditable, governed, revocable and bounded; no action without authority; no authority beyond jurisdiction"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-02",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md",
+      "rule": "sovereignty cannot be assumed, fabricated or bypassed; delegation does not transfer sovereignty"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-03",
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "rule": "governance shall never self-elevate and shall never create a governance power not established by its instrument"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-04",
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "rule": "governance shall not assert, simulate or substitute for constitutional authority"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-05",
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "rule": "delegation flows only downward, is bounded, recorded and revocable, and never exceeds the delegator's own power"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-06",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "rule": "ratification authority shall never be self-conferred by execution authority and acts only upon an authorization"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-07",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md",
+      "rule": "where finality requires an authority outside the corpus, that authority is superior for finality and in-corpus ratification confers only PROVISIONAL acceptance"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-08",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "rule": "resolution reaching a vacant tier shall not skip the tier and shall not promote a lower instrument into it"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-09",
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "rule": "a steward shall not confer authority, decide constitutional content, or exceed delegated bounds"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-10",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md",
+      "rule": "freeze authority shall never be self-conferred by execution authority and preserves only"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-11",
+      "owner": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "rule": "execution authority acts only within a stage that is in the EXECUTING condition, performs exactly the single next authorized action, and writes only to the declared write area of the active stage"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-12",
+      "owner": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "rule": "execution authority shall not govern, ratify, decide constitutional content, or exercise a power reserved to a higher tier"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-13",
+      "owner": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "rule": "execution authority never self-authorizes an action and acts only upon an authorization granted under the authorization article"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-14",
+      "owner": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "rule": "an authorization shall never be self-conferred by execution authority and shall never bypass a gate, a governance control or a preservation rule"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-15",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "rule": "every tier is subordinate to every tier above it except where an orthogonality is declared, and rank is never decided by recency, size or prominence"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-16",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "rule": "the tier set is open: a new tier is admitted by declaring its position relative to existing tiers, and admission shall not renumber an existing tier"
+    },
+    {
+      "bound": true,
+      "id": "UCAF-SCOPE-17",
+      "owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "rule": "the lattice shall be consistent with, and shall not amend, the four-tier Program authority order already declared by the charter"
+    }
+  ],
+  "seal_sha256": "f93e2920c15edaf80c08abd1007bbf0cd478565f7fe2e95de49970145709f9c8",
+  "source_token_registers": [
+    {
+      "id": "UCAF-TOK-01",
+      "name": "Source document register",
+      "reason": null,
+      "tokens": 13
+    },
+    {
+      "id": "UCAF-TOK-02",
+      "name": "Ratification determination identifiers",
+      "reason": null,
+      "tokens": 34
+    }
+  ],
+  "successions": [
+    {
+      "authoritative_tokens": [
+        "SRC-01",
+        "SRC-02"
+      ],
+      "concept": "Root axiom (BEING vs triad)",
+      "id": "SUP-01",
+      "resolved": true,
+      "status": "✅ RATIFIED (UCOS-RAT-001 / RAT-01) — BEING = axiom-only (non-layer): supreme as axiom, not an addressable layer; layered"
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-02",
+        "SRC-03"
+      ],
+      "concept": "SPACE-TIME (root vs coordinate)",
+      "id": "SUP-02",
+      "resolved": true,
+      "status": "✅ RATIFIED (UCOS-RAT-001 / RAT-03) — coordinate model; Ω-LAW-02 retired as a root law (reframed as coordinate-applicabil"
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-02"
+      ],
+      "concept": "`LAW Ω∞-0xx` numbering collision",
+      "id": "SUP-03",
+      "resolved": true,
+      "status": "✅ RATIFIED (UCOS-RAT-001 / RAT-09) — SRC-07 15-law set renumbered out of the `LAW Ω∞` namespace to alias family `ROA-LAW"
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-02"
+      ],
+      "concept": "Core law ID scheme",
+      "id": "SUP-04",
+      "resolved": true,
+      "status": "Subordinate — same laws under legacy/domain IDs; map to canonical set. SRC-04 retained as DOMAIN specialization."
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-02",
+        "SRC-03"
+      ],
+      "concept": "Sovereignty origin",
+      "id": "SUP-05",
+      "resolved": true,
+      "status": "ADVISORY superseded — SRC-08 stack is explicitly a recommendation (\"I would formalize\"); not ratified. FLAG-RATIFY if ad"
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-02"
+      ],
+      "concept": "Invariant set",
+      "id": "SUP-06",
+      "resolved": true,
+      "status": "✅ RATIFIED (UCOS-RAT-001 / RAT-04) — layered coexistence: LAW-INV02 (Eternal Invariants) is the canonical, entrenched or"
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-02"
+      ],
+      "concept": "Root Ontology chain canonical form",
+      "id": "SUP-07",
+      "resolved": true,
+      "status": "✅ RATIFIED (UCOS-RAT-001 / RAT-02) — 4-primitive canonical form: EXISTENCE→RELATIONSHIP→TRANSFORMATION beneath the BEING"
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-03"
+      ],
+      "concept": "Civilization Foundation Stack",
+      "id": "SUP-08",
+      "resolved": true,
+      "status": "Concurring — consistent; SRC-06 superseded by SRC-02."
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-02"
+      ],
+      "concept": "Registry Universe",
+      "id": "SUP-09",
+      "resolved": true,
+      "status": "Concurring — canonical superset in SRC-02."
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-03"
+      ],
+      "concept": "Reality Compiler pipeline",
+      "id": "SUP-10",
+      "resolved": true,
+      "status": "Concurring — identical pipeline."
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-02"
+      ],
+      "concept": "Architectural layer stack",
+      "id": "SUP-11",
+      "resolved": true,
+      "status": "Subordinate — architectural views of same stack; SRC-08/06/07 subordinate to SRC-02."
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-02"
+      ],
+      "concept": "Absolute Architectural Constitution (document)",
+      "id": "SUP-12",
+      "resolved": true,
+      "status": "Superseded — SRC-06 fully contained in SRC-02."
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-01"
+      ],
+      "concept": "Triplicated Ω-Articles & Ω-Laws",
+      "id": "SUP-13",
+      "resolved": true,
+      "status": "Subordinate copies — SRC-09/10 are derivations carrying SRC-01 content."
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-02"
+      ],
+      "concept": "Supreme governing authority (document supremacy)",
+      "id": "SUP-14",
+      "resolved": true,
+      "status": "✅ RATIFIED (UCOS-RAT-001 / RAT-11) — SRC-02 is the supreme governing document (frozen 81-doc superset). SRC-01's suprema"
+    },
+    {
+      "authoritative_tokens": [
+        "SRC-04",
+        "SRC-09",
+        "SRC-12"
+      ],
+      "concept": "Commerce / Party / Temporal ontologies",
+      "id": "SUP-15",
+      "resolved": true,
+      "status": "Retained as domain specializations subordinate to the universal root ontology (ONTOLOGY-REGISTER Part F)."
+    }
+  ],
+  "tier_governance": [
+    {
+      "canonical_name": "Constitutional Source Corpus",
+      "canonical_occupant": "The frozen source material from which constitutional intent derives",
+      "canonical_status": "Located, frozen, non-normative-as-law",
+      "corroborated": true,
+      "corroboration": [
+        "canonical-lattice-content"
+      ],
+      "faithful": true,
+      "id": "T0",
+      "projected_name": "Constitutional Source Corpus",
+      "projected_occupancy": "LOCATED",
+      "vacant": false
+    },
+    {
+      "canonical_name": "Constitutional Authority",
+      "canonical_occupant": "The ratified constitution of substance presupposed by CEP-000 §5.5 Tier 1",
+      "canonical_status": "OCCUPIED — by the ratified law canon registered at `02-MASTER/UCOS-ABSOLUTE-CONSTITUTIONAL-LAWS-REGISTER.md` (UCOS-RAT-002 D-RAT-02-02; the VAC-01 record retired at LXXVIII.9)",
+      "corroborated": true,
+      "corroboration": [
+        "canonical-lattice-content",
+        "registered-artifact",
+        "charter-vesting"
+      ],
+      "faithful": true,
+      "id": "T1",
+      "projected_name": "Constitutional Authority",
+      "projected_occupancy": "LOCATED",
+      "vacant": false
+    },
+    {
+      "canonical_name": "Meta-Constitutional Authority",
+      "canonical_occupant": "This instrument — recognition of constitutionality; orthogonal to T1, not superior to it",
+      "canonical_status": "Located (PROVISIONAL)",
+      "corroborated": true,
+      "corroboration": [
+        "canonical-lattice-content",
+        "registered-artifact"
+      ],
+      "faithful": true,
+      "id": "T1M",
+      "projected_name": "Meta-Constitutional Authority",
+      "projected_occupancy": "LOCATED",
+      "vacant": false
+    },
+    {
+      "canonical_name": "Program Authority",
+      "canonical_occupant": "CEP-000 and its derived CEP instruments; supreme over constitutional-engineering process",
+      "canonical_status": "Located",
+      "corroborated": true,
+      "corroboration": [
+        "canonical-lattice-content",
+        "registered-artifact",
+        "charter-vesting"
+      ],
+      "faithful": true,
+      "id": "T2",
+      "projected_name": "Program Authority",
+      "projected_occupancy": "LOCATED",
+      "vacant": false
+    },
+    {
+      "canonical_name": "Interpretive Authority",
+      "canonical_occupant": "AUTH-INF-001; binds reading, enacts nothing; orthogonal to T2",
+      "canonical_status": "Located",
+      "corroborated": true,
+      "corroboration": [
+        "canonical-lattice-content",
+        "registered-artifact"
+      ],
+      "faithful": true,
+      "id": "T2I",
+      "projected_name": "Interpretive Authority",
+      "projected_occupancy": "LOCATED",
+      "vacant": false
+    },
+    {
+      "canonical_name": "Domain Authority",
+      "canonical_occupant": "Domain constitutions governing substance within one domain",
+      "canonical_status": "Located",
+      "corroborated": true,
+      "corroboration": [
+        "canonical-lattice-content",
+        "registered-artifact"
+      ],
+      "faithful": true,
+      "id": "T3",
+      "projected_name": "Domain Authority",
+      "projected_occupancy": "LOCATED",
+      "vacant": false
+    },
+    {
+      "canonical_name": "Execution Authority",
+      "canonical_occupant": "Agents and engines acting within a gate",
+      "canonical_status": "Located",
+      "corroborated": true,
+      "corroboration": [
+        "canonical-lattice-content",
+        "registered-artifact",
+        "located-authority-of-the-same-name",
+        "charter-vesting"
+      ],
+      "faithful": true,
+      "id": "T4",
+      "projected_name": "Execution Authority",
+      "projected_occupancy": "LOCATED",
+      "vacant": false
+    },
+    {
+      "canonical_name": "Derived-Truth Authority",
+      "canonical_occupant": "State, checkpoints, evidence, reports, registries, projections — assert nothing",
+      "canonical_status": "Located",
+      "corroborated": true,
+      "corroboration": [
+        "canonical-lattice-content",
+        "charter-vesting"
+      ],
+      "faithful": true,
+      "id": "T5",
+      "projected_name": "Derived-Truth Authority",
+      "projected_occupancy": "LOCATED",
+      "vacant": false
+    }
+  ],
+  "tier_vesting": [
+    {
+      "id": "UCAF-VEST-01-1",
+      "name": "Constitutional Authority",
+      "occupant": "the ratified UCOS Ω∞ Constitution and its concerns",
+      "ordinal": "1",
+      "owner": "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md"
+    },
+    {
+      "id": "UCAF-VEST-01-2",
+      "name": "Program Authority",
+      "occupant": "this Charter and its derived CEP instruments",
+      "ordinal": "2",
+      "owner": "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md"
+    },
+    {
+      "id": "UCAF-VEST-01-3",
+      "name": "Execution Authority",
+      "occupant": "the autonomous execution agent, acting only within the current stage gate",
+      "ordinal": "3",
+      "owner": "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md"
+    },
+    {
+      "id": "UCAF-VEST-01-4",
+      "name": "Derived-Truth Authority",
+      "occupant": "program state, checkpoints, evidence, and reports, which assert nothing and are always reconciled against repository reality",
+      "ordinal": "4",
+      "owner": "00-CEP/CEP-000-CONSTITUTIONAL-ENGINEERING-CHARTER.md"
+    }
+  ],
+  "tiers": [
+    {
+      "id": "T0",
+      "name": "Constitutional Source Corpus",
+      "occupancy": "LOCATED",
+      "subordinate_to": [],
+      "vacancy": null
+    },
+    {
+      "id": "T1",
+      "name": "Constitutional Authority",
+      "occupancy": "LOCATED",
+      "subordinate_to": [
+        "T0"
+      ],
+      "vacancy": null
+    },
+    {
+      "id": "T1M",
+      "name": "Meta-Constitutional Authority",
+      "occupancy": "LOCATED",
+      "subordinate_to": [
+        "T1"
+      ],
+      "vacancy": null
+    },
+    {
+      "id": "T2",
+      "name": "Program Authority",
+      "occupancy": "LOCATED",
+      "subordinate_to": [
+        "T1"
+      ],
+      "vacancy": null
+    },
+    {
+      "id": "T2I",
+      "name": "Interpretive Authority",
+      "occupancy": "LOCATED",
+      "subordinate_to": [
+        "T1"
+      ],
+      "vacancy": null
+    },
+    {
+      "id": "T3",
+      "name": "Domain Authority",
+      "occupancy": "LOCATED",
+      "subordinate_to": [
+        "T1M",
+        "T2",
+        "T2I"
+      ],
+      "vacancy": null
+    },
+    {
+      "id": "T4",
+      "name": "Execution Authority",
+      "occupancy": "LOCATED",
+      "subordinate_to": [
+        "T3"
+      ],
+      "vacancy": null
+    },
+    {
+      "id": "T5",
+      "name": "Derived-Truth Authority",
+      "occupancy": "LOCATED",
+      "subordinate_to": [
+        "T4"
+      ],
+      "vacancy": null
+    }
+  ],
+  "undefined_references": [],
+  "unverified_sources": [],
+  "vacancies": [],
+  "vacant_tiers": [],
+  "validations": [
+    {
+      "blocking": true,
+      "dimension": "SOURCE-RESOLUTION",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-01",
+      "measured": true,
+      "obligation": "every declared authority source resolves to an existing owner and yields at least one authority",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "DEFINITION-PRESENT",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-02",
+      "measured": true,
+      "obligation": "every registered authority carries a non-empty located definition",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "EVIDENCE-RESOLUTION",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-03",
+      "measured": true,
+      "obligation": "every registered authority carries at least one evidence pointer that resolves in the repository",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "NO-SELF-CONFERRAL",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-04",
+      "measured": true,
+      "obligation": "no registered authority names only itself as its source",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "TIER-LATTICE-ACYCLIC",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-05",
+      "measured": true,
+      "obligation": "the located tier lattice is acyclic and every subordinate reference resolves",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "VACANCY-COMPLETE",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-06",
+      "measured": true,
+      "obligation": "every located vacancy record carries its tier, its evidence, its closure procedure, its open question and its provisional consequence",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "NO-UNDEFINED-AUTHORITY",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-07",
+      "measured": true,
+      "obligation": "every authority-shaped reference in the declared surfaces resolves to a registered authority",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "RESOLUTION-ANSWERED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-08",
+      "measured": true,
+      "obligation": "every declared competence question resolves to an answer located in its named instrument",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "SCOPE-BOUND",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-09",
+      "measured": true,
+      "obligation": "every declared scope rule binds to a located clause whose text is present",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "DELEGATION-OWNED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-10",
+      "measured": true,
+      "obligation": "every registered delegation names an owner that resolves to a located instrument or path",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "SUCCESSION-SOURCED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-11",
+      "measured": true,
+      "obligation": "every registered succession names an authoritative source token that resolves",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "REVOCATION-VALID",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-12",
+      "measured": true,
+      "obligation": "every recorded revocation names a registered authority and an existing record path",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "RECONCILIATION-MEASURED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-13",
+      "measured": true,
+      "obligation": "every declared reconciliation is measured on both sides and carries a decided outcome",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "CAPABILITY-DISCHARGED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-14",
+      "measured": true,
+      "obligation": "every declared capability is discharged by a measure that ran",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "NO-VACANCY-PROMOTION",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-15",
+      "measured": true,
+      "obligation": "no vacant tier is reported as occupied by this programme, and no reconciliation is reported as a ratification",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "REALIZATION-NO-COLLISION",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-16",
+      "measured": true,
+      "obligation": "no authority token minted in the executable plane equals a registered constitutional authority, by identifier or by name",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "REALIZATION-CLASSIFIED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-17",
+      "measured": true,
+      "obligation": "every authority token discovered in the executable plane belongs to a declared token class that records why it is not a constitutional authority",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "REALIZATION-BOUND",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-18",
+      "measured": true,
+      "obligation": "every declared realization binding resolves: its module exists, its token symbol is assigned there, its enforcement symbol is present, the authority it names resolves to exactly one registered authority, the tier it names is a located tier of the canonical lattice, and its vesting clause is located",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "TIER-PROJECTION-FAITHFUL",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-19",
+      "measured": true,
+      "obligation": "the machine tier projection and the canonical constitutional lattice agree on membership, on tier name and on located status, in both directions",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "TIER-OCCUPANCY-CORROBORATED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-20",
+      "measured": true,
+      "obligation": "every tier the projection reports located is corroborated by at least one located occupant, and no vacant tier is corroborated",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "TIER-VESTING-CONSISTENT",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-21",
+      "measured": true,
+      "obligation": "every authority tier the charter vests is present by name in the canonical lattice, and no vested tier is absent from it",
+      "satisfied": true
+    },
+    {
+      "blocking": true,
+      "dimension": "DISPOSITION-OWNED",
+      "failure_count": 0,
+      "failures": [],
+      "id": "UCAF-VAL-22",
+      "measured": true,
+      "obligation": "every admitted concept carries a disposition drawn from the located totality rule, a canonical owner that resolves, and a recorded reason CREATE was refused; no disposition is CREATE",
+      "satisfied": true
+    }
+  ],
+  "verified_sources": [
+    {
+      "digest": "956e02b1f095f31a",
+      "owner": "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md"
+    },
+    {
+      "digest": "1cdc63daa6699dd9",
+      "owner": "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md"
+    },
+    {
+      "digest": "baff1ab6ed903ade",
+      "owner": "00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md"
+    },
+    {
+      "digest": "48524217103d2589",
+      "owner": "00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md"
+    },
+    {
+      "digest": "8b31db6ac535912e",
+      "owner": "00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md"
+    },
+    {
+      "digest": "08c25caeed43bb47",
+      "owner": "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md"
+    },
+    {
+      "digest": "13da7567a2a90516",
+      "owner": "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md"
+    },
+    {
+      "digest": "87259b7248b424f3",
+      "owner": "00-CEP/CEP-010-CONSTITUTIONAL-AUDIT-COMPLIANCE-ASSURANCE-CONSTITUTION.md"
+    },
+    {
+      "digest": "a17e0a0ab88a50af",
+      "owner": "00-CMG/CMG-REGISTRY.json"
+    },
+    {
+      "digest": "dfb00c53931ccb92",
+      "owner": "01-WORKING/AUTHORITY-REGISTER.md"
+    },
+    {
+      "digest": "7328ac44248dfa9b",
+      "owner": "01-WORKING/SUPERSESSION-REGISTER.md"
+    }
+  ]
+}

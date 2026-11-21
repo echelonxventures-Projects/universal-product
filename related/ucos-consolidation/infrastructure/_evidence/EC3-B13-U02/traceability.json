@@ -1,0 +1,40 @@
+{
+  "backward": [
+    "ComputeResource",
+    "INFRASTRUCTURE-007",
+    "INFRASTRUCTURE-005",
+    "INFRASTRUCTURE-001",
+    "ARCH-INFRASTRUCTURE-001",
+    "13-INFRASTRUCTURE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+    "EC3-B13-U02-VALIDATION-EVIDENCE",
+    "EC3-B13-U02-CCE-CERTIFICATION",
+    "EC3-B13-U02-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "ce7d5d0",
+  "meta_class": "ComputeResource",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2"
+  ],
+  "substrate_reuse": {
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the compute resource)",
+    "ENG-003": "engine.certification.contracts.canonical_json (capacity + value fidelity)",
+    "ENG-004": "infrastructure.compute type_tag Compute Class (typing)",
+    "ENG-005": "reference identifiers (hosts/locatedAt refs; no new construct)",
+    "RL-F2": "hosted execution bound by reference (ICMP-01 / UIL-10); no runtime concern redefined"
+  },
+  "target_id": "UCOS-INFRA-COMPUTE-ucos.infrastructure.compute.foundation-65f6fb3c45c52cd8",
+  "trace_format": "ucos-infrastructure-traceability/1.0.0",
+  "unit": "EC3-B13-U02"
+}

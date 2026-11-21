@@ -1,0 +1,40 @@
+{
+  "backward": [
+    "Environment",
+    "INFRASTRUCTURE-011",
+    "INFRASTRUCTURE-005",
+    "INFRASTRUCTURE-001",
+    "ARCH-INFRASTRUCTURE-001",
+    "13-INFRASTRUCTURE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-INFRA-ENVIRONMENT-ucos.infrastructure.environment.foundation-407ddc4ae587c6d6",
+    "EC3-B13-U05-ENVIRONMENT-VALIDATION-EVIDENCE",
+    "EC3-B13-U05-ENVIRONMENT-CCE-CERTIFICATION",
+    "EC3-B13-U05-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "2ee4842",
+  "meta_class": "Environment",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2"
+  ],
+  "substrate_reuse": {
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the construct)",
+    "ENG-003": "engine.certification.contracts.canonical_json (value fidelity, no parallel model)",
+    "ENG-004": "infrastructure.environment type_tag (typed construct)",
+    "ENG-005": "reference identifiers (contains / locatedAt / boundary / provisions refs; no new construct)",
+    "RL-F2": "provisioning workflow/state bound by reference (IENV-04 / UIL-10); no runtime concern redefined, no PLATFORM-012/013 re-founded"
+  },
+  "target_id": "UCOS-INFRA-ENVIRONMENT-ucos.infrastructure.environment.foundation-407ddc4ae587c6d6",
+  "trace_format": "ucos-infrastructure-traceability/1.0.0",
+  "unit": "EC3-B13-U05"
+}

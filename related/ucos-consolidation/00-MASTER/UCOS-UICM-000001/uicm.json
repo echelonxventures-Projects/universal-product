@@ -1,0 +1,1020 @@
+{
+  "programme": {
+    "id": "UCOS-UICM-000001",
+    "name": "Universal Implementation Closure Matrix",
+    "version": "1.0.0",
+    "authority": "NONE (DERIVED TRUTH)",
+    "classification": "SUBSTANTIVE",
+    "operational_home": "00-MASTER/UCOS-UICM-000001",
+    "engine_home": "engine/uicm",
+    "mission": "Measure, for every discovered UCOS capability, whether each declared closure dimension is closed, and refuse any closure claim that is not carried by evidence.",
+    "disposition": "MEASUREMENT AND CERTIFICATION LAYER ONLY",
+    "disclosure": "This programme legislates no lifecycle, mints no identifier, opens no registry and issues no certificate of its own. Where a UICM measurement and a located instrument differ, the located instrument governs and UICM records a referred finding.",
+    "namespace_token": null,
+    "why_no_namespace_token": "The programme is SUBSTANTIVE, so CMG-000001 Article LXXVI.2(b) forbids its admission into the meta-constitutional layer. It claims no token in 00-CMG/CMG-REGISTRY.json and measures that absence (UICM-INV-14)."
+  },
+  "created_capabilities": [
+    {
+      "id": "UICM-CAP-01",
+      "capability": "Capability x Dimension Closure Matrix",
+      "disposition": "CREATE",
+      "why_no_owner_exists": "No artifact in the repository crosses capability x dimension into one grid. UAKOS-CLOSURE-002 measures concepts, UAKOS-CLOSURE-009 measures requirements with one scalar maturity level each, and its lifecycle_dimensions map is repository-wide rather than per capability.",
+      "home": "engine/uicm/matrix.py"
+    },
+    {
+      "id": "UICM-CAP-02",
+      "capability": "Capability-keyed Closure Obligation Register",
+      "disposition": "CREATE",
+      "why_no_owner_exists": "Located obligation registers are keyed by gap class (RG-A01) or baseline condition (BC-01). None is keyed by capability identity.",
+      "home": "engine/uicm/obligation.py"
+    },
+    {
+      "id": "UICM-CAP-03",
+      "capability": "Closure State Machine",
+      "disposition": "CREATE",
+      "why_no_owner_exists": "No enumeration with these six members and no transition table over them exists. Nearest analogues are UAUE EXIT_CLOSED / GateReport.open and UCKP SATISFIED / VIOLATED / UNMEASURED, neither of which models a closure lifecycle.",
+      "home": "engine/uicm/model.py"
+    }
+  ],
+  "prohibited_creations": [
+    {
+      "kind": "identity registry",
+      "canonical_owner": "00-MASTER/UCOS-UGA-001",
+      "uicm_relationship": "READ"
+    },
+    {
+      "kind": "capability registry",
+      "canonical_owner": "knowledge/canonical-knowledge.json",
+      "uicm_relationship": "READ"
+    },
+    {
+      "kind": "artifact registry",
+      "canonical_owner": "00-MASTER/UCOS-UGA-001/01-EXECUTABLE-OBJECT-REGISTRY.json",
+      "uicm_relationship": "READ"
+    },
+    {
+      "kind": "evidence registry",
+      "canonical_owner": "engine/registry/universal (EvidenceRegistry)",
+      "uicm_relationship": "REFERENCE"
+    },
+    {
+      "kind": "certification engine",
+      "canonical_owner": "engine/universal_certification",
+      "uicm_relationship": "INVOKE"
+    }
+  ],
+  "canonical_sources": {
+    "capability_identity": {
+      "id": "SRC-CAPABILITY-IDENTITY",
+      "path": "knowledge/canonical-knowledge.json",
+      "required": true,
+      "root_key": "objects",
+      "universe": "CAPABILITY",
+      "title_prefix": "Capability: ",
+      "id_field": "cko_id",
+      "owner_field": "owner",
+      "lifecycle_field": "lifecycle",
+      "authority_field": "authority",
+      "provides": "capability identity, canonical owner, lifecycle, authority",
+      "uicm_relationship": "READ — UICM mints no capability identifier"
+    },
+    "artifact_identity": {
+      "id": "SRC-ARTIFACT-IDENTITY",
+      "path": "00-MASTER/UCOS-UGA-001/01-EXECUTABLE-OBJECT-REGISTRY.json",
+      "required": true,
+      "root_key": "entries",
+      "path_field": "path",
+      "id_field": "universal_id",
+      "owner_field": "owner",
+      "digest_field": "content_hash",
+      "certification_field": "certification_status",
+      "evidence_field": "evidence_class",
+      "validation_contract_field": "validation_contract",
+      "identity_authority": "UCOS-UGA-001",
+      "provides": "per-artifact universal identity, content digest, governance status",
+      "uicm_relationship": "READ — UICM mints no artifact identifier"
+    },
+    "implementation_intelligence": {
+      "id": "SRC-IMPLEMENTATION",
+      "path": "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+      "required": true,
+      "root_key": "capabilities",
+      "location_field": "canonical_location",
+      "status_field": "implementation_status",
+      "reuse_field": "reuse",
+      "prohibited_field": "replacement_prohibited",
+      "implementation_present_states": [
+        "IMPLEMENTED",
+        "CERTIFIED"
+      ],
+      "implementation_absent_states": [
+        "PLANNED"
+      ],
+      "provides": "implementation location and status per capability",
+      "uicm_relationship": "READ AS DATA — engine must never import the intelligence package"
+    },
+    "registration": {
+      "id": "SRC-REGISTRATION",
+      "path": "pyproject.toml",
+      "required": true,
+      "coverage_source_key": [
+        "tool",
+        "coverage",
+        "run",
+        "source"
+      ],
+      "coverage_addopts_key": [
+        "tool",
+        "pytest",
+        "ini_options",
+        "addopts"
+      ],
+      "coverage_addopts_prefix": "--cov=",
+      "scripts_key": [
+        "project",
+        "scripts"
+      ],
+      "provides": "coverage denominator membership and published entrypoints",
+      "uicm_relationship": "READ"
+    },
+    "gate_binding": {
+      "id": "SRC-GATE-BINDING",
+      "path": ".github/workflows",
+      "required": true,
+      "suffix": ".yml",
+      "provides": "continuous-integration gate binding per capability",
+      "uicm_relationship": "READ"
+    },
+    "verification_binding": {
+      "id": "SRC-VERIFICATION-BINDING",
+      "path": "verify.sh",
+      "required": true,
+      "provides": "canonical verification-entry-point binding per capability",
+      "uicm_relationship": "READ"
+    }
+  },
+  "population": {
+    "capability_roots": [
+      "engine",
+      "platform"
+    ],
+    "capability_depth_max": 1,
+    "excluded_namespaces": [
+      "tests"
+    ],
+    "package_marker": "__init__.py",
+    "artifact_extension": ".py",
+    "admission_requirement": "a Capability row in SRC-CAPABILITY-IDENTITY and a row in SRC-IMPLEMENTATION",
+    "boundary": "git ls-files -z --cached --exclude-standard",
+    "why_derived": "The population is a rule over the tracked boundary, never a list. Admitting a capability is an append-only edit to the canonical sources and requires no change to the engine (zero enumeration).",
+    "why_depth_zero_included": "knowledge/canonical-knowledge.json carries Capability rows for the namespace roots themselves (engine, platform). Excluding them would orphan engine/__init__.py and platform/__init__.py."
+  },
+  "closure_states": [
+    {
+      "id": "DISCOVERED",
+      "ordinal": 1,
+      "meaning": "The closure obligation exists and is registered. Nothing has been measured.",
+      "requires_evidence": false,
+      "requires_gap": false,
+      "is_pass": false,
+      "may_transition_to": [
+        "BLOCKED",
+        "MEASURED",
+        "SUPERSEDED"
+      ]
+    },
+    {
+      "id": "MEASURED",
+      "ordinal": 2,
+      "meaning": "A probe executed and produced a finding. The finding is not yet adjudicated.",
+      "requires_evidence": true,
+      "requires_gap": false,
+      "is_pass": false,
+      "may_transition_to": [
+        "BLOCKED",
+        "CLOSED",
+        "OPEN",
+        "SUPERSEDED"
+      ]
+    },
+    {
+      "id": "OPEN",
+      "ordinal": 3,
+      "meaning": "Measured, and the dimension requirement is not satisfied.",
+      "requires_evidence": true,
+      "requires_gap": true,
+      "is_pass": false,
+      "may_transition_to": [
+        "BLOCKED",
+        "CLOSED",
+        "MEASURED",
+        "SUPERSEDED"
+      ]
+    },
+    {
+      "id": "BLOCKED",
+      "ordinal": 4,
+      "meaning": "The dimension cannot be measured or cannot be satisfied while a dependency stands. A probe that cannot execute reports BLOCKED and never a pass.",
+      "requires_evidence": true,
+      "requires_gap": true,
+      "is_pass": false,
+      "may_transition_to": [
+        "CLOSED",
+        "MEASURED",
+        "OPEN",
+        "SUPERSEDED"
+      ]
+    },
+    {
+      "id": "CLOSED",
+      "ordinal": 5,
+      "meaning": "Measured, satisfied, and carried by evidence.",
+      "requires_evidence": true,
+      "requires_gap": false,
+      "is_pass": true,
+      "may_transition_to": [
+        "BLOCKED",
+        "CERTIFIED",
+        "OPEN",
+        "SUPERSEDED"
+      ]
+    },
+    {
+      "id": "CERTIFIED",
+      "ordinal": 6,
+      "meaning": "Closure has been certified by the located certification owner. Reachable only from CLOSED.",
+      "requires_evidence": true,
+      "requires_gap": false,
+      "is_pass": true,
+      "may_transition_to": [
+        "BLOCKED",
+        "OPEN",
+        "SUPERSEDED"
+      ]
+    },
+    {
+      "id": "SUPERSEDED",
+      "ordinal": 7,
+      "meaning": "A historical observation that a later observation of the same coordinate replaced. Terminal: an observation is never edited, so the only way a state changes is that a new observation supersedes it.",
+      "requires_evidence": true,
+      "requires_gap": false,
+      "is_pass": false,
+      "may_transition_to": []
+    }
+  ],
+  "state_rules": [
+    "A cell may occupy only a declared state.",
+    "A state transition must be declared in may_transition_to of the origin state.",
+    "CERTIFIED is reachable only from CLOSED, and only with a certification decision from the located certification owner.",
+    "Every state whose requires_evidence is true must carry a non-empty evidence digest.",
+    "Every state whose requires_gap is true must have a registered gap.",
+    "A probe that cannot execute yields BLOCKED. It may never yield a pass state.",
+    "SUPERSEDED is terminal: it has no outgoing transition, because a superseded observation is history and history does not move.",
+    "A state never changes in place. A change of state is a new observation that names the observation it supersedes, so the prior state remains readable forever.",
+    "Exactly one observation per coordinate is current. Every earlier observation of that coordinate is SUPERSEDED by derivation, never by edit."
+  ],
+  "closure_dimensions": [
+    {
+      "id": "existence",
+      "ordinal": 1,
+      "name": "Existence Closure",
+      "question": "Does the capability exist?",
+      "requirement": "The artifact exists on the tracked boundary and carries a capability identity.",
+      "probe": "probe_existence",
+      "evidence_kind": "boundary-membership",
+      "blocking": true,
+      "owner_reference": "SRC-CAPABILITY-IDENTITY",
+      "ucic_stages": [
+        1
+      ],
+      "probe_parameters": {}
+    },
+    {
+      "id": "architecture",
+      "ordinal": 2,
+      "name": "Architecture Closure",
+      "question": "Is architecture defined?",
+      "requirement": "The capability declares its constitution, scope and ownership boundary in its own module documentation.",
+      "probe": "probe_architecture",
+      "evidence_kind": "declaration-digest",
+      "blocking": true,
+      "owner_reference": "SRC-CAPABILITY-IDENTITY",
+      "ucic_stages": [
+        1,
+        3
+      ],
+      "probe_parameters": {
+        "declaration_min_chars": 120,
+        "why": "A one-line summary states what a module is called, not what it owns. The threshold is the shortest genuine module constitution in the corpus."
+      }
+    },
+    {
+      "id": "ownership",
+      "ordinal": 3,
+      "name": "Ownership Closure",
+      "question": "Does exactly one canonical owner exist?",
+      "requirement": "Exactly one capability-identity row and exactly one implementation row name the capability.",
+      "probe": "probe_ownership",
+      "evidence_kind": "owner-reference",
+      "blocking": true,
+      "owner_reference": "SRC-CAPABILITY-IDENTITY",
+      "ucic_stages": [
+        3
+      ],
+      "probe_parameters": {}
+    },
+    {
+      "id": "identity",
+      "ordinal": 4,
+      "name": "Identity Closure",
+      "question": "Does every artifact have deterministic identity?",
+      "requirement": "Every tracked artifact of the capability carries a universal identity minted by the identity authority.",
+      "probe": "probe_identity",
+      "evidence_kind": "identity-reference",
+      "blocking": true,
+      "owner_reference": "SRC-ARTIFACT-IDENTITY",
+      "ucic_stages": [
+        13
+      ],
+      "probe_parameters": {}
+    },
+    {
+      "id": "registry",
+      "ordinal": 5,
+      "name": "Registry Closure",
+      "question": "Is every artifact registered?",
+      "requirement": "The capability is registered in the capability register, the implementation catalogue and the coverage denominator.",
+      "probe": "probe_registry",
+      "evidence_kind": "registration-reference",
+      "blocking": true,
+      "owner_reference": "SRC-REGISTRATION",
+      "ucic_stages": [
+        13
+      ],
+      "probe_parameters": {}
+    },
+    {
+      "id": "dependency",
+      "ordinal": 6,
+      "name": "Dependency Closure",
+      "question": "Are all dependencies resolved?",
+      "requirement": "Every first-party import target of the capability resolves to a tracked module.",
+      "probe": "probe_dependency",
+      "evidence_kind": "resolution-set",
+      "blocking": true,
+      "owner_reference": "SRC-REGISTRATION",
+      "ucic_stages": [
+        2
+      ],
+      "probe_parameters": {}
+    },
+    {
+      "id": "implementation",
+      "ordinal": 7,
+      "name": "Implementation Closure",
+      "question": "Does executable implementation exist?",
+      "requirement": "The implementation catalogue reports an implementation-present state and the capability ships executable modules.",
+      "probe": "probe_implementation",
+      "evidence_kind": "implementation-reference",
+      "blocking": true,
+      "owner_reference": "SRC-IMPLEMENTATION",
+      "ucic_stages": [
+        4
+      ],
+      "probe_parameters": {
+        "status_source": "implementation_intelligence"
+      }
+    },
+    {
+      "id": "contract",
+      "ordinal": 8,
+      "name": "Contract Closure",
+      "question": "Are interfaces and contracts defined?",
+      "requirement": "The capability publishes an explicit interface surface from its package root.",
+      "probe": "probe_contract",
+      "evidence_kind": "interface-surface",
+      "blocking": true,
+      "owner_reference": "SRC-CAPABILITY-IDENTITY",
+      "ucic_stages": [
+        4,
+        5
+      ],
+      "probe_parameters": {
+        "interface_symbol": "__all__"
+      }
+    },
+    {
+      "id": "validation",
+      "ordinal": 9,
+      "name": "Validation Closure",
+      "question": "Can correctness be measured?",
+      "requirement": "A located test suite exercises the capability, so correctness is measurable.",
+      "probe": "probe_validation",
+      "evidence_kind": "suite-reference",
+      "blocking": true,
+      "owner_reference": "SRC-REGISTRATION",
+      "ucic_stages": [
+        5,
+        6
+      ],
+      "probe_parameters": {}
+    },
+    {
+      "id": "verification",
+      "ordinal": 10,
+      "name": "Verification Closure",
+      "question": "Can correctness be proven?",
+      "requirement": "Every identified artifact carries a content digest, so a claim about it can be recomputed rather than trusted.",
+      "probe": "probe_verification",
+      "evidence_kind": "digest-set",
+      "blocking": true,
+      "owner_reference": "SRC-ARTIFACT-IDENTITY",
+      "ucic_stages": [
+        6
+      ],
+      "probe_parameters": {}
+    },
+    {
+      "id": "testing",
+      "ordinal": 11,
+      "name": "Testing Closure",
+      "question": "Are behaviours tested?",
+      "requirement": "At least one executable test case is attributed to the capability by import.",
+      "probe": "probe_testing",
+      "evidence_kind": "case-count",
+      "blocking": true,
+      "owner_reference": "SRC-REGISTRATION",
+      "ucic_stages": [
+        7
+      ],
+      "probe_parameters": {}
+    },
+    {
+      "id": "coverage",
+      "ordinal": 12,
+      "name": "Coverage Closure",
+      "question": "Are executable paths measured?",
+      "requirement": "The capability is inside the branch-coverage denominator, so its executable paths are measured.",
+      "probe": "probe_coverage",
+      "evidence_kind": "denominator-membership",
+      "blocking": true,
+      "owner_reference": "SRC-REGISTRATION",
+      "ucic_stages": [
+        8
+      ],
+      "probe_parameters": {}
+    },
+    {
+      "id": "determinism",
+      "ordinal": 13,
+      "name": "Determinism Closure",
+      "question": "Does replay produce identical results?",
+      "requirement": "A located instrument asks the replay question of this capability.",
+      "probe": "probe_determinism",
+      "evidence_kind": "replay-obligation",
+      "blocking": true,
+      "owner_reference": "SRC-VERIFICATION-BINDING",
+      "ucic_stages": [
+        6
+      ],
+      "probe_parameters": {
+        "replay_markers": [
+          "--replay",
+          "determinism"
+        ],
+        "why": "A workflow asserts replay when it runs a replay flag or a determinism comparison. Both markers are declared so tightening the test is a declaration edit."
+      }
+    },
+    {
+      "id": "governance",
+      "ordinal": 14,
+      "name": "Governance Closure",
+      "question": "Are mutation boundaries controlled?",
+      "requirement": "Every artifact of the capability is under the object-governance boundary with a named validation contract.",
+      "probe": "probe_governance",
+      "evidence_kind": "governance-status",
+      "blocking": true,
+      "owner_reference": "SRC-ARTIFACT-IDENTITY",
+      "ucic_stages": [
+        3,
+        13
+      ],
+      "probe_parameters": {}
+    },
+    {
+      "id": "evidence",
+      "ordinal": 15,
+      "name": "Evidence Closure",
+      "question": "Is proof evidence generated?",
+      "requirement": "The capability itself produces evidence: an evidence producer module or a declared evidence format. A classification of an artifact is not a producer of evidence.",
+      "probe": "probe_evidence",
+      "evidence_kind": "producer-reference",
+      "blocking": true,
+      "owner_reference": "SRC-CAPABILITY-IDENTITY",
+      "ucic_stages": [
+        9
+      ],
+      "probe_parameters": {
+        "producer_module": "evidence",
+        "reference_only_fields": [
+          "evidence_present",
+          "evidence_class"
+        ],
+        "why": "A producer closes the dimension. The two reference fields are classifications of an artifact rather than producers of evidence, so they are recorded and do not close it."
+      }
+    },
+    {
+      "id": "certification",
+      "ordinal": 16,
+      "name": "Certification Closure",
+      "question": "Has closure been certified?",
+      "requirement": "A certification instrument that can reach a verdict names the capability. A mention in a certification document is not a decision procedure.",
+      "probe": "probe_certification",
+      "evidence_kind": "instrument-reference",
+      "blocking": true,
+      "owner_reference": "SRC-GATE-BINDING",
+      "ucic_stages": [
+        10
+      ],
+      "probe_parameters": {
+        "instrument_module": "certification",
+        "why": "An instrument that can reach a verdict closes the dimension. A mention inside a certification document is not a decision procedure."
+      }
+    },
+    {
+      "id": "evolution",
+      "ordinal": 17,
+      "name": "Evolution Closure",
+      "question": "Can the capability evolve safely?",
+      "requirement": "A change to the capability is caught: it is in the coverage denominator, carries regression tests, and is bound to a gate or a published entrypoint.",
+      "probe": "probe_evolution",
+      "evidence_kind": "safety-net",
+      "blocking": true,
+      "owner_reference": "SRC-GATE-BINDING",
+      "ucic_stages": [
+        11,
+        14,
+        15
+      ],
+      "probe_parameters": {
+        "required_net_size": 3,
+        "why": "Measured paths, regression cases and a bound gate or entrypoint. Any one alone fails to catch a regression, so all three are required."
+      }
+    }
+  ],
+  "resolution_bindings": {
+    "authority": "NONE - DERIVED TRUTH",
+    "what_this_is": "For each declared dimension: the instrument a gap of that dimension is closed by, and the located gate that validates the change. Nothing here assigns work, records progress or confers a write right.",
+    "what_this_is_not": "Not an ownership register and not an authority. No owner is declared here, because an owner is a function of a path: the located TOTAL ownership function below is applied to the resolved target, so a resolution owner is read and never asserted. No status, assignee, timestamp or attempt count may ever be added to this block or to the gap projection derived from it - a closure is only ever a measurement, so recorded intent would be a claim nobody measured.",
+    "why_not_per_gap": "Resolution routing is a property of the dimension, not of a reading. Seventeen declared rows project onto every registered gap by total function, so a per-gap ownership table would be a second matrix of the same truth.",
+    "digest_disposition": "Read by the engine, excluded from the declaration digest. The declaration digest is the identity of the standard being applied - what closure means - and knowing which file discharges a gap does not change what closure means.",
+    "ownership_authority": {
+      "id": "SRC-OWNERSHIP-RULES",
+      "programme": "UCOS-UGA-001",
+      "declaration": "00-MASTER/UCOS-UGA-001/uga-declaration.json",
+      "rules_key": "ownership_rules",
+      "home": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+      "symbol": "derive_owner",
+      "property": "TOTAL - the last rule is unconditional, so no path is unowned",
+      "uicm_relationship": "READ - the located function is called with a path and its answer is recorded unchanged. UICM implements no ownership rule of its own, so a rule change in that declaration reaches this projection without an edit here."
+    },
+    "location_placeholder": "{location}",
+    "location_source": "Capability.location, read from SRC-CAPABILITY-IDENTITY",
+    "ordering": "Rows are declared in dimension ordinal order and the loader refuses any other order, so the projection is a function of the declaration rather than of the order someone happened to type.",
+    "bindings": [
+      {
+        "dimension": "existence",
+        "target": "knowledge/canonical-knowledge.json",
+        "gate": "verify.sh 1b",
+        "why": "Existence is measured against the capability register; a capability absent from it is absent from the population."
+      },
+      {
+        "dimension": "architecture",
+        "target": "{location}/__init__.py",
+        "gate": "verify.sh 1",
+        "why": "probe_architecture reads the capability's own package-root documentation."
+      },
+      {
+        "dimension": "ownership",
+        "target": "knowledge/canonical-knowledge.json",
+        "gate": "verify.sh 1b",
+        "why": "Duplicate or absent ownership is a row count in the capability register."
+      },
+      {
+        "dimension": "identity",
+        "target": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+        "gate": "verify.sh 6b",
+        "why": "Identity is minted only by the identity authority; the artifact registry is its output, so the producer is the instrument that must run."
+      },
+      {
+        "dimension": "registry",
+        "target": "pyproject.toml",
+        "gate": "verify.sh 2",
+        "why": "Registration closure is measured over the coverage source list and the pytest addopts."
+      },
+      {
+        "dimension": "dependency",
+        "target": "{location}/__init__.py",
+        "gate": "verify.sh 1",
+        "why": "An unresolved import belongs to the capability's own package; the package root is its unit of custody under the located ownership rules."
+      },
+      {
+        "dimension": "implementation",
+        "target": "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+        "gate": "verify.sh 1b",
+        "why": "Implementation status is read from the implementation catalogue, never asserted here."
+      },
+      {
+        "dimension": "contract",
+        "target": "{location}/__init__.py",
+        "gate": "verify.sh 1",
+        "why": "probe_contract reads exactly one file per capability: an __all__ assignment at the package root. Editing the declared source register cannot close it."
+      },
+      {
+        "dimension": "validation",
+        "target": "{location}/__init__.py",
+        "gate": "verify.sh 2",
+        "why": "A suite is attributed to the capability it imports, so the closing change is inside the capability's own unit of custody."
+      },
+      {
+        "dimension": "verification",
+        "target": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+        "gate": "verify.sh 6b",
+        "why": "Verification closure is measured over artifact content digests, which the identity authority produces."
+      },
+      {
+        "dimension": "testing",
+        "target": "{location}/__init__.py",
+        "gate": "verify.sh 2",
+        "why": "Regression cases are attributed by import, so the closing change is inside the capability's own unit of custody."
+      },
+      {
+        "dimension": "coverage",
+        "target": "pyproject.toml",
+        "gate": "verify.sh 2",
+        "why": "Denominator membership is the same two keys as registry closure; the dimension holds no independent instrument."
+      },
+      {
+        "dimension": "determinism",
+        "target": "verify.sh",
+        "gate": "verify.sh 6d",
+        "why": "A replay assertion is a stage in the canonical verification entry point or a declared replay marker in a bound workflow."
+      },
+      {
+        "dimension": "governance",
+        "target": "00-MASTER/UCOS-UGA-001/uga_engine.py",
+        "gate": "verify.sh 6b",
+        "why": "The object-governance boundary is the identity authority's output; the dimension closes as a side effect of identity closure."
+      },
+      {
+        "dimension": "evidence",
+        "target": "{location}/evidence.py",
+        "gate": "verify.sh 2",
+        "why": "probe_evidence reads the capability's own module names for the declared producer module. The declared source register cannot close it."
+      },
+      {
+        "dimension": "certification",
+        "target": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+        "gate": "uccep-gate.yml",
+        "why": "A gate binding closes it. The certification verdict itself remains with the located certification owner named in certification_binding."
+      },
+      {
+        "dimension": "evolution",
+        "target": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+        "gate": "uccep-gate.yml",
+        "why": "Measured paths and regression cases plus a bound gate; the binding is the part no capability can supply alone."
+      }
+    ]
+  },
+  "lifecycle_crosswalk": {
+    "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+    "owner_id": "UCIC-001",
+    "binding": "BIND, DO NOT FORK",
+    "why": "UCIC-001 already owns the single deterministic lifecycle every capability follows. A second lifecycle was refused once already (02-CANONICAL-OWNERSHIP-MATRIX.md addendum Omega-E04). Each UICM dimension therefore declares the UCIC-001 stage ordinals it measures, and UICM legislates no stage of its own.",
+    "stages": [
+      {
+        "ordinal": 1,
+        "stage": "Discovery"
+      },
+      {
+        "ordinal": 2,
+        "stage": "Dependency Verification"
+      },
+      {
+        "ordinal": 3,
+        "stage": "Authority Verification"
+      },
+      {
+        "ordinal": 4,
+        "stage": "Implementation"
+      },
+      {
+        "ordinal": 5,
+        "stage": "Static Validation"
+      },
+      {
+        "ordinal": 6,
+        "stage": "Dynamic Validation"
+      },
+      {
+        "ordinal": 7,
+        "stage": "Test Execution"
+      },
+      {
+        "ordinal": 8,
+        "stage": "Coverage Verification"
+      },
+      {
+        "ordinal": 9,
+        "stage": "Evidence Generation"
+      },
+      {
+        "ordinal": 10,
+        "stage": "Certification"
+      },
+      {
+        "ordinal": 11,
+        "stage": "Repository Intelligence Update"
+      },
+      {
+        "ordinal": 12,
+        "stage": "Digital Twin Update"
+      },
+      {
+        "ordinal": 13,
+        "stage": "Registry Update"
+      },
+      {
+        "ordinal": 14,
+        "stage": "Commit Readiness"
+      },
+      {
+        "ordinal": 15,
+        "stage": "Production Readiness"
+      }
+    ]
+  },
+  "certification_binding": {
+    "owner": "engine/universal_certification",
+    "owner_id": "UCOS-EPIC-006",
+    "binding": "PROJECT",
+    "why": "UICM is not a certification authority. It projects its measurement into the three inputs the located certifier already consumes and reports that owner's decision unchanged. It cannot issue, override or upgrade a verdict, and a NOT-CERTIFIED decision is reported as-is.",
+    "consumed_inputs": [
+      "ValidationInput",
+      "MeasurementInput",
+      "RepositoryTruthInput"
+    ],
+    "certification_class": "universal-readiness",
+    "disclosure_owner": "engine/foundation/contracts/disclosure.py",
+    "prohibited": [
+      "issuing a certificate of UICM's own",
+      "overriding the located owner's status",
+      "approving a decision the owner did not certify"
+    ]
+  },
+  "gap_classification": [
+    {
+      "id": "UICM-GC-01",
+      "class": "ABSENT-OBLIGATION",
+      "meaning": "No located instrument asks the dimension question of this capability. The dimension is open by absence of an obligation, not by a failed one."
+    },
+    {
+      "id": "UICM-GC-02",
+      "class": "REGISTRY-DRIFT",
+      "meaning": "A located register is stale against the tracked boundary, so a live invariant is already violated."
+    },
+    {
+      "id": "UICM-GC-03",
+      "class": "UNSATISFIED-REQUIREMENT",
+      "meaning": "The obligation exists, the probe executed, and the requirement is not met."
+    },
+    {
+      "id": "UICM-GC-04",
+      "class": "UNMEASURABLE",
+      "meaning": "A required input was absent, so no verdict is reachable. Fail closed."
+    }
+  ],
+  "invariants": [
+    {
+      "id": "UICM-INV-01",
+      "name": "STATE_VOCABULARY_CONFORMANCE",
+      "measure": "the declared closure states and the engine state machine are the same set",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-02",
+      "name": "PROBE_DIMENSION_BIJECTION",
+      "measure": "every declared dimension has an implemented probe and every implemented probe is declared",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-03",
+      "name": "OBLIGATION_TOTALITY",
+      "measure": "every matrix cell has exactly one registered obligation",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-04",
+      "name": "NO_UNEVIDENCED_CLOSURE",
+      "measure": "no cell in a state requiring evidence carries an empty evidence digest",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-05",
+      "name": "NO_UNREGISTERED_GAP",
+      "measure": "every cell in a state requiring a gap has a registered gap",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-06",
+      "name": "NO_DUPLICATE_OWNERSHIP",
+      "measure": "no capability carries more than one canonical owner",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-07",
+      "name": "NO_DUPLICATE_IDENTITY",
+      "measure": "every capability identity is read from the capability register and none is minted by UICM",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-08",
+      "name": "NO_INVENTED_CAPABILITY",
+      "measure": "every capability in the matrix exists on the tracked boundary and in both canonical registers",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-09",
+      "name": "NO_ORPHAN_ARTIFACT",
+      "measure": "every tracked artifact under a declared root resolves to exactly one capability",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-10",
+      "name": "NO_HIDDEN_GAP",
+      "measure": "the gap register cardinality equals the count of cells not in a pass state",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-11",
+      "name": "MATRIX_TOTALITY",
+      "measure": "cell count equals capabilities multiplied by dimensions",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-12",
+      "name": "STATE_LEGALITY",
+      "measure": "every cell state and every recorded transition is declared",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-13",
+      "name": "MEASUREMENT_DETERMINISM",
+      "measure": "two measurements of an unchanged tree produce an identical matrix digest",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-14",
+      "name": "NO_PARALLEL_AUTHORITY",
+      "measure": "UICM writes only inside its own operational home and claims no meta-constitutional namespace token",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-15",
+      "name": "NO_ENUMERATION",
+      "measure": "no dimension, state, root, source path or capability name is an executable string constant in the engine",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-16",
+      "name": "APPEND_ONLY_REGISTERS",
+      "measure": "no mutating or deleting operation exists anywhere in the engine, and every record type is immutable",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-17",
+      "name": "OBSERVATION_LINEAGE",
+      "measure": "every observation after a coordinate's first names the observation it supersedes, every chain link recomputes, and exactly one observation per coordinate is current",
+      "blocking": true
+    },
+    {
+      "id": "UICM-INV-18",
+      "name": "SUPERSESSION_TERMINALITY",
+      "measure": "SUPERSEDED has no outgoing transition, every non-current observation is SUPERSEDED, and no current observation is",
+      "blocking": true
+    }
+  ],
+  "record_set": [
+    {
+      "ordinal": "00",
+      "artifact": "00-UNIVERSAL-IMPLEMENTATION-CLOSURE-MATRIX.md",
+      "renderer": "matrix",
+      "kind": "DERIVED"
+    },
+    {
+      "ordinal": "01",
+      "artifact": "01-CLOSURE-OBLIGATION-REGISTER.json",
+      "renderer": "obligations",
+      "kind": "DERIVED"
+    },
+    {
+      "ordinal": "02",
+      "artifact": "02-CLOSURE-OBSERVATION-REGISTRY.json",
+      "renderer": "observations",
+      "kind": "DERIVED"
+    },
+    {
+      "ordinal": "03",
+      "artifact": "03-CLOSURE-MEASUREMENT-REPORT.json",
+      "renderer": "measurement",
+      "kind": "DERIVED"
+    },
+    {
+      "ordinal": "04",
+      "artifact": "04-CLOSURE-GAP-REGISTER.json",
+      "renderer": "gaps",
+      "kind": "DERIVED"
+    },
+    {
+      "ordinal": "05",
+      "artifact": "05-CLOSURE-CERTIFICATION.md",
+      "renderer": "certification",
+      "kind": "DERIVED"
+    }
+  ],
+  "determinism": {
+    "forbidden_in_emitted_bytes": [
+      "wall clock",
+      "generated_at",
+      "timestamp",
+      "commit identity",
+      "working-tree status",
+      "coverage percentage",
+      "elapsed",
+      "duration"
+    ],
+    "why_no_coverage_percentage": "A measured percentage is an observation of an execution, not repository content, so a committed register carrying one has no fixed point. Coverage Closure therefore measures denominator membership, which is repository content, and the percentage stays an execution observation reported by the gate and written to no committed byte.",
+    "json": {
+      "indent": 2,
+      "ensure_ascii": false,
+      "trailing_newline": true
+    },
+    "digest": "sha256 over engine.uckp.canonical.canonical_json",
+    "fixed_point": "A second render over an unchanged repository rewrites no byte."
+  },
+  "exit_criteria": [
+    {
+      "id": "UICM-EXIT-01",
+      "criterion": "The matrix is total over the discovered population and every declared dimension."
+    },
+    {
+      "id": "UICM-EXIT-02",
+      "criterion": "No hidden gaps: every non-pass cell is a registered gap."
+    },
+    {
+      "id": "UICM-EXIT-03",
+      "criterion": "No duplicate ownership, no duplicate identity, no invented capability, no orphan artifact."
+    },
+    {
+      "id": "UICM-EXIT-04",
+      "criterion": "Every closure claim carries evidence, and no unmeasurable dimension is reported as a pass."
+    },
+    {
+      "id": "UICM-EXIT-05",
+      "criterion": "The matrix digest reproduces across processes."
+    },
+    {
+      "id": "UICM-EXIT-06",
+      "criterion": "Certification is delegated to the located certification owner and reflects measured reality."
+    },
+    {
+      "id": "UICM-EXIT-07",
+      "criterion": "Every register is append-only and immutable, and no mutating operation exists in the engine."
+    },
+    {
+      "id": "UICM-EXIT-08",
+      "criterion": "Every state transition is an observation carrying explicit lineage to the observation it supersedes."
+    }
+  ],
+  "registry_model": {
+    "mutability": "APPEND-ONLY IMMUTABLE",
+    "operations_permitted": [
+      "append",
+      "read",
+      "verify"
+    ],
+    "operations_forbidden": [
+      "update",
+      "delete",
+      "remove",
+      "overwrite",
+      "clear",
+      "pop",
+      "truncate",
+      "set"
+    ],
+    "why": "A closure measurement that can be edited after the fact is not evidence of anything. Every register in this programme is append-only and hash-chained, so a record cannot be altered or reordered without breaking every link after it, and the absence of a mutating operation is measured over this package's own source (UICM-INV-16) rather than asserted.",
+    "record_immutability": "Every record type is a frozen dataclass. There is no setter, no in-place update and no delete path anywhere in the engine.",
+    "supersession": "Correction is expressed by appending a superseding observation with explicit lineage, never by mutating the corrected record."
+  }
+}

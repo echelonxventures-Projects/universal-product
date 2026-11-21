@@ -1,0 +1,244 @@
+{
+  "schema": "ucos-reference-frames",
+  "version": "1.0.0",
+  "$comment": "THE declared reference frames. Everything in this file is DATA. engine/context/location.py contains no frame, no axis value, no calendar, no time standard, no language, no currency, no unit system, no tax model, no jurisdiction and no governance model — every one of them is an entry here. That is what makes AC-001 (zero hardcoding) checkable rather than asserted: the resolver has nothing to fall back on, so an axis this file does not declare resolves to UNRESOLVED and is reported, never defaulted.",
+  "$axis_value_comment": "An axis value is a REFERENCE to a registered authority, not a semantic literal. 'calendar.gregorian' names a calendar authority; the resolver never interprets it, never parses it, and never branches on it. Replacing every value below with values from a civilisation nobody has met requires no code change.",
+  "$frame_kind_comment": "frame_kind is an open string. The kinds used below (abstract, physical, digital, virtual, simulated, distributed, planetary, orbital, interplanetary, interstellar, galactic, universal) are declarations, not an enumeration the code knows about.",
+  "root": "unresolved",
+  "frames": [
+    {
+      "key": "unresolved",
+      "title": "Unresolved Frame",
+      "frame_kind": "abstract",
+      "parent": null,
+      "axes": {},
+      "description": "The root frame. It declares no axis at all, so resolving against it yields nine unresolved axes and zero defaults. Its existence is the proof that the resolver has no built-in assumptions to fall back on."
+    },
+    {
+      "key": "existence-actual",
+      "title": "Actual Existence Frame",
+      "frame_kind": "universal",
+      "parent": "unresolved",
+      "axes": {
+        "existence": "existence.actual",
+        "observer": "observer.existence-actual",
+        "reality": "reality.actual"
+      },
+      "description": "An existence and reality frame for subjects that actually exist. Sibling frames may declare modelled, simulated, planned or hypothetical modes without touching this one."
+    },
+    {
+      "key": "existence-simulated",
+      "title": "Simulated Existence Frame",
+      "frame_kind": "simulated",
+      "parent": "unresolved",
+      "axes": {
+        "existence": "existence.simulated",
+        "observer": "observer.existence-simulated",
+        "reality": "reality.simulated"
+      },
+      "description": "A second existence frame, present so that 'at least two frames resolve' is measurable and so no frame is privileged."
+    },
+    {
+      "key": "civilization-alpha",
+      "title": "Civilization Alpha Frame",
+      "frame_kind": "universal",
+      "parent": "existence-actual",
+      "axes": {
+        "civilization": "civilization.alpha",
+        "universe": "universe.observable-alpha"
+      },
+      "description": "A civilisation and universe frame. Named by ordinal, not by species or planet, so nothing about its occupants is assumed."
+    },
+    {
+      "key": "civilization-beta",
+      "title": "Civilization Beta Frame",
+      "frame_kind": "universal",
+      "parent": "existence-simulated",
+      "axes": {
+        "civilization": "civilization.beta",
+        "universe": "universe.modelled-beta"
+      },
+      "description": "A second civilisation in a second universe, resolving a fully disjoint axis set from Alpha."
+    },
+    {
+      "key": "planetary-a1",
+      "title": "Planetary Body A1 Frame",
+      "frame_kind": "planetary",
+      "parent": "civilization-alpha",
+      "axes": {
+        "calendar": "calendar.a1-solar",
+        "currency": "currency.a1-standard",
+        "execution-context": "execution.a1-baseline",
+        "governance": "governance.a1-representative",
+        "jurisdiction": "jurisdiction.a1-federal",
+        "language": "language.a1-common",
+        "location": "location.planetary.a1",
+        "policy": "policy.a1-baseline",
+        "regulation": "regulation.a1-federal-code",
+        "spatial": "spatial.planetary-a1",
+        "tax": "tax.a1-value-added",
+        "temporal": "temporal.planetary-a1",
+        "time-standard": "time.a1-mean-solar",
+        "units": "units.a1-metric"
+      },
+      "description": "A planetary reference frame with a complete axis set. Every dependent axis is declared here, so a subject in this frame resolves all sixteen axes."
+    },
+    {
+      "key": "planetary-a1-region-r7",
+      "title": "Planetary A1 Region R7 Frame",
+      "frame_kind": "physical",
+      "parent": "planetary-a1",
+      "axes": {
+        "jurisdiction": "jurisdiction.a1-r7-state",
+        "language": "language.a1-r7-vernacular",
+        "location": "location.planetary.a1.region.r7",
+        "regulation": "regulation.a1-r7-statute",
+        "spatial": "spatial.planetary-a1-region-r7",
+        "tax": "tax.a1-r7-consumption",
+        "temporal": "temporal.planetary-a1-region-r7",
+        "time-standard": "time.a1-offset-r7"
+      },
+      "description": "A sub-planetary locality. It overrides five axes and inherits the rest, which is how a location refines context without restating it. This is the AC-007 'a city resolves its own time, language, jurisdiction and tax' case."
+    },
+    {
+      "key": "planetary-b4",
+      "title": "Planetary Body B4 Frame",
+      "frame_kind": "planetary",
+      "parent": "civilization-alpha",
+      "axes": {
+        "calendar": "calendar.b4-sol",
+        "currency": "currency.b4-scrip",
+        "execution-context": "execution.b4-baseline",
+        "governance": "governance.b4-council",
+        "jurisdiction": "jurisdiction.b4-charter",
+        "language": "language.b4-colonial",
+        "location": "location.planetary.b4",
+        "policy": "policy.b4-baseline",
+        "regulation": "regulation.b4-charter-code",
+        "spatial": "spatial.planetary-b4",
+        "tax": "tax.b4-levy",
+        "temporal": "temporal.planetary-b4",
+        "time-standard": "time.b4-mean-sol",
+        "units": "units.b4-native"
+      },
+      "description": "A second planetary body in the same civilisation, resolving a completely different calendar, time standard, unit system, language, currency, jurisdiction, governance model, regulation and tax model. This is the AC-007 'off-world colony' case, and it required no code change."
+    },
+    {
+      "key": "planetary-b4-settlement-alpha",
+      "title": "Planetary B4 Settlement Alpha Frame",
+      "frame_kind": "physical",
+      "parent": "planetary-b4",
+      "axes": {
+        "governance": "governance.b4-settlement-assembly",
+        "location": "location.planetary.b4.settlement.alpha",
+        "spatial": "spatial.planetary-b4-settlement-alpha",
+        "temporal": "temporal.planetary-b4-settlement-alpha",
+        "time-standard": "time.b4-settlement-alpha-offset"
+      },
+      "description": "A settlement on B4. Overrides two axes; inherits ten."
+    },
+    {
+      "key": "orbital-station-o2",
+      "title": "Orbital Station O2 Frame",
+      "frame_kind": "orbital",
+      "parent": "civilization-alpha",
+      "axes": {
+        "calendar": "calendar.o2-mission-elapsed",
+        "currency": "currency.o2-allocation-credit",
+        "execution-context": "execution.o2-baseline",
+        "governance": "governance.o2-command",
+        "jurisdiction": "jurisdiction.o2-registry-state",
+        "language": "language.o2-operational",
+        "location": "location.orbital.o2",
+        "policy": "policy.o2-baseline",
+        "regulation": "regulation.o2-operating-rules",
+        "spatial": "spatial.orbital-station-o2",
+        "tax": "tax.o2-none-declared",
+        "temporal": "temporal.orbital-station-o2",
+        "time-standard": "time.o2-mission-elapsed",
+        "units": "units.o2-metric"
+      },
+      "description": "A non-planetary physical frame. Its calendar is mission-elapsed rather than astronomical, which is the case that breaks any implementation that assumed a planetary day."
+    },
+    {
+      "key": "virtual-realm-v9",
+      "title": "Virtual Realm V9 Frame",
+      "frame_kind": "virtual",
+      "parent": "civilization-beta",
+      "axes": {
+        "calendar": "calendar.v9-tick",
+        "currency": "currency.v9-token",
+        "execution-context": "execution.v9-baseline",
+        "governance": "governance.v9-quorum",
+        "jurisdiction": "jurisdiction.v9-realm-charter",
+        "language": "language.v9-symbolic",
+        "location": "location.virtual.v9",
+        "policy": "policy.v9-baseline",
+        "regulation": "regulation.v9-realm-rules",
+        "spatial": "spatial.virtual-realm-v9",
+        "tax": "tax.v9-transaction-fee",
+        "temporal": "temporal.virtual-realm-v9",
+        "time-standard": "time.v9-logical-clock",
+        "units": "units.v9-abstract"
+      },
+      "description": "A wholly non-physical location whose time standard is a logical clock and whose calendar is a tick count. Location here is not a place; it is an addressable frame."
+    },
+    {
+      "key": "distributed-mesh-d3",
+      "title": "Distributed Mesh D3 Frame",
+      "frame_kind": "distributed",
+      "parent": "civilization-beta",
+      "axes": {
+        "calendar": "calendar.d3-epoch-count",
+        "currency": "currency.d3-mesh-unit",
+        "execution-context": "execution.d3-baseline",
+        "governance": "governance.d3-consensus",
+        "jurisdiction": "jurisdiction.d3-mesh-compact",
+        "language": "language.d3-interlingua",
+        "location": "location.distributed.d3",
+        "policy": "policy.d3-baseline",
+        "regulation": "regulation.d3-compact-rules",
+        "spatial": "spatial.distributed-mesh-d3",
+        "tax": "tax.d3-none-declared",
+        "temporal": "temporal.distributed-mesh-d3",
+        "time-standard": "time.d3-partial-order",
+        "units": "units.d3-abstract"
+      },
+      "description": "A frame with no single locus and no total time order. Its time standard is a partial order, which is the case that breaks any implementation assuming a single wall clock."
+    },
+    {
+      "key": "interstellar-corridor-i1",
+      "title": "Interstellar Corridor I1 Frame",
+      "frame_kind": "interstellar",
+      "parent": "civilization-alpha",
+      "axes": {
+        "calendar": "calendar.i1-proper-time",
+        "currency": "currency.i1-energy-quantum",
+        "execution-context": "execution.i1-baseline",
+        "governance": "governance.i1-accord",
+        "jurisdiction": "jurisdiction.i1-corridor-accord",
+        "language": "language.i1-beacon",
+        "location": "location.interstellar.i1",
+        "policy": "policy.i1-baseline",
+        "regulation": "regulation.i1-accord-rules",
+        "spatial": "spatial.interstellar-corridor-i1",
+        "tax": "tax.i1-transit-levy",
+        "temporal": "temporal.interstellar-corridor-i1",
+        "time-standard": "time.i1-proper-time",
+        "units": "units.i1-natural"
+      },
+      "description": "A frame in which proper time is the time standard and the value system is energetic. Present so that interstellar and galactic scales are exercised, not merely claimed."
+    },
+    {
+      "key": "partial-frame-p0",
+      "title": "Partially Declared Frame P0",
+      "frame_kind": "abstract",
+      "parent": "civilization-alpha",
+      "axes": {
+        "location": "location.partial.p0",
+        "spatial": "spatial.partial-frame-p0"
+      },
+      "description": "A frame that declares a location and nothing else. Resolving it reports every dependent axis as UNRESOLVED, with the derivation path that would have supplied it. Its purpose is to prove the resolver refuses to invent a value it was not given."
+    }
+  ]
+}

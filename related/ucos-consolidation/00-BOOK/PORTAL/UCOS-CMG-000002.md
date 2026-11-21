@@ -1,0 +1,16 @@
+# UCOS-CMG-000002 — 00-CMG — CONSTITUTIONAL META GOVERNANCE
+
+Breadcrumbs: [UCOS-BOOK-000000](UCOS-BOOK-000000.md) › [UCOS-CMG-000002](UCOS-CMG-000002.md)
+
+- Volume: VOL-002  ·  Status: UNDER_REVIEW  ·  Twin: [—]
+- Native: CMG-000000  ·  Program: CMG
+- Parent: [UCOS-BOOK-000000](UCOS-BOOK-000000.md)
+- Source: [00-CMG/README.md](../../00-CMG/README.md)
+
+## Children (forward)
+- (none)
+
+## Backlinks (reverse)
+- [UCOS-BOOK-000000](UCOS-BOOK-000000.md) —Child→
+
+Return: [Portal Index](index.md) · [Master Index](../UCOS-BOOK-000000-UNIVERSAL-MASTER-KNOWLEDGE-BOOK.md)

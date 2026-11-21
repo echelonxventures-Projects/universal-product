@@ -1,0 +1,74 @@
+name: UAKOS-CLOSURE-008 Constitutional Assimilation Gate
+
+# UAKOS-CLOSURE-008 — Constitutional Assimilation & Repository Completion (final closure).
+#
+# This workflow adds NO new validator and NO new registry. It runs the executable form of the
+# completion determination: every verified knowledge object must hold exactly one of six
+# terminal constitutional states, every approved item must hold an EXISTING canonical
+# destination / owner / constitutional authority, and every semantic mapping must still
+# resolve at HEAD. It runs with `--render`, i.e. from the in-repo `assimilation.json` alone —
+# the external KNOWLEDGE-ASSIMILATION evidence tree is deliberately NOT required, which is
+# the proof that the repository is self-contained.
+#
+# Exit semantics:
+#   0  REPOSITORY CONSTITUTIONALLY COMPLETE (every blocking gate passed)
+#   1  a blocking gate failed — an object is unclassified/unhomed/unowned, or a mapping or a
+#      canonical destination no longer resolves in the repository (fail-closed)
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: assimilation-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  assimilation-gate:
+    name: Constitutional assimilation gate (fail-closed) + register drift gate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the gate installs nothing.
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Completion gate (unclassified = 0, remaining approved candidates = 0)
+        run: python3 00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py --render --gate
+
+      - name: Register drift gate (committed registers must be the rendered fixed point)
+        run: |
+          python3 00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py --render
+          git diff --exit-code -- 00-MASTER/UAKOS-CLOSURE-008 \
+            || { echo "::error::rendered registers differ from the committed registers"; exit 1; }
+
+      - name: Publish the assimilation registers + evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uakos-closure-008-assimilation
+          path: |
+            00-MASTER/UAKOS-CLOSURE-008/*.md
+            00-MASTER/UAKOS-CLOSURE-008/EVIDENCE-MANIFEST.json
+            00-MASTER/UAKOS-CLOSURE-008/evidence/
+          if-no-files-found: warn

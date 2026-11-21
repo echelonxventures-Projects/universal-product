@@ -1,0 +1,69 @@
+{
+  "artifact_id": "BASELINE-001-AUTHORITY-001",
+  "title": "BASELINE-001 Authority — canonical truth for baseline inheritance surfaces",
+  "authority": "AUTHORED REPOSITORY TRUTH, HELD AS A PROJECTION UNDER UCKP-LAW-0001. This instrument holds the canonical data that BASELINE-001's surfaces must project. It creates no authority beyond what BASELINE-001's declaration already establishes.",
+  "constitutional_superior": {
+    "authority": "UCKP-LAW-0001",
+    "home": "engine/uckp/law.py",
+    "role": "PROJECTION",
+    "relation": "PROJECTION",
+    "articles": [
+      "UCKP-ART-03",
+      "UCKP-ART-04",
+      "UCKP-ART-11",
+      "UCKP-ART-18"
+    ],
+    "binding": "00-BOOK/DATA/constitutional-authority-alignment.json",
+    "effect": "UCKP-ART-11 makes generated output a view that never owns truth. This authority extracts the truth BASELINE-001 already holds so UFI can verify surfaces against it. UCKP-ART-18 requires reuse before creation; this instrument reuses BASELINE-001's existing data rather than authoring a second copy."
+  },
+  "constitutional_basis": "UCKP-LAW-0001 (engine/uckp/law.py), UCOS-CAA-001",
+  "schema": "baseline-authority",
+  "version": "1.0.0",
+  "source": "00-MASTER/BASELINE-001/baseline.json",
+  "why_this_exists": [
+    "MB7 — BASELINE-001 validates only by its own programme. baseline_engine.py emits baseline.json",
+    "and markdown surfaces, then validates those surfaces by reading baseline.json again. A generator",
+    "that is uniformly wrong emits self-consistent output, and every check derived from that same run",
+    "agrees with it. BASELINE-001 cannot be shown CORRECT, only CONSISTENT.",
+    "",
+    "This authority extracts the canonical data from baseline.json so UFI can verify BASELINE-001's",
+    "markdown surfaces independently. UFI reads this authority and the surfaces, but never imports,",
+    "executes or reads baseline_engine.py — breaking the self-validation loop."
+  ],
+  "baseline_data": {
+    "from": "00-MASTER/BASELINE-001/baseline.json",
+    "json_path": "baselines"
+  },
+  "capability_data": {
+    "from": "00-MASTER/BASELINE-001/baseline.json",
+    "json_path": "capabilities"
+  },
+  "validation_data": {
+    "from": "00-MASTER/BASELINE-001/baseline.json",
+    "json_path": "validations"
+  },
+  "finding_data": {
+    "from": "00-MASTER/BASELINE-001/baseline.json",
+    "json_path": "findings"
+  },
+  "inheritance_rules": {
+    "from": "00-MASTER/BASELINE-001/baseline.json",
+    "json_path": "inheritance_rules"
+  },
+  "non_inheritance_rules": {
+    "from": "00-MASTER/BASELINE-001/baseline.json",
+    "json_path": "non_inheritance_rules"
+  },
+  "scope_rules": {
+    "from": "00-MASTER/BASELINE-001/baseline.json",
+    "json_path": "scope_rules"
+  },
+  "elevation_prohibitions": {
+    "from": "00-MASTER/BASELINE-001/baseline.json",
+    "json_path": "elevation_prohibitions"
+  },
+  "programme": {
+    "from": "00-MASTER/BASELINE-001/baseline.json",
+    "json_path": "programme"
+  }
+}

@@ -1,0 +1,260 @@
+{
+  "artifact_id": "UCPA-000001",
+  "name": "Universal Constitutional Primitive Alignment",
+  "version": "1.0",
+  "authority": "NONE — DERIVED TRUTH. This declaration legislates no ontology. The root ontology is owned by 01-WORKING/ONTOLOGY-REGISTER.md (bound as canonical_owner at 00-MASTER/URRC-000001/urrc-bindings.json D-24) and was adjudicated and RATIFIED by 02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md (RAT-01/RAT-02/RAT-03) as recorded in 01-WORKING/SUPERSESSION-REGISTER.md (SUP-01/SUP-02/SUP-07). This programme mints no primitive, opens no counter, issues no identifier and admits no element the canonical register does not already declare. UCPA-L-01 is the structural proof: every primitive named here must be found in the register, by id AND by element name, or the gate closes.",
+
+  "$why_this_exists": "The root ontology was correct and unenforced. ONT-02, ONT-03 and ONT-04 appeared in no .py and no .json file anywhere in the repository — the constitutional primitives existed only as markdown prose, so no gate measured them and the register's own reduction obligation ('all Part-F ontologies must reduce to the Part-A root primitives') was asserted and never computed. A future edit reinstating the superseded 5-primitive chain, or re-promoting BEING to an addressable layer, would have passed ./verify.sh --full. Separately, the 33-facet model (engine/uckp/facets.py) and the root primitives were co-resident and unreconciled: no artifact related a facet to a primitive. This programme supplies the missing measurement and the missing mapping, and nothing else.",
+
+  "$not_a_second_authority": "A second ontology authority would be recognisable by its ability to introduce a primitive the register does not carry. UCPA cannot: primitive_binding is measured against the register (UCPA-L-01) and its standing against the ratification record (UCPA-L-02), both read at measurement time from the files that own them. The facet side of the mapping is IMPORTED from engine.uckp.facets.Facet rather than restated (UCPA-L-03), so this declaration cannot silently disagree with the facet model — it can only fail. UCPA-L-06 additionally requires that the claimant this declaration marks AUTHORITY is the same path 00-MASTER/URRC-000001/urrc-bindings.json already names.",
+
+  "principle": "A primitive is not a name in a document. It is an obligation that something measures. The four constitutional primitives are settled law; this programme makes them computable without restating them.",
+
+  "$ontology_source_comment": "The register is READ, never copied. Paths are declared here so the gate has a subject; the CONTENT at those paths is authoritative and this file holds none of it.",
+  "ontology_source": {
+    "canonical_owner": "01-WORKING/ONTOLOGY-REGISTER.md",
+    "owner_binding": "00-MASTER/URRC-000001/urrc-bindings.json",
+    "owner_binding_id": "D-24",
+    "ratification_record": "01-WORKING/SUPERSESSION-REGISTER.md",
+    "constituent_act": "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md",
+    "$constituent_source": "The frozen constituent SOURCE of the root ontology is SRC-02 (UCOS-RAT-001 §2, row 'Root ontology (BEING axiom + 4-primitive chain)'). Source is origin, not repository-truth ownership; the two roles are distinct and are not in conflict."
+  },
+
+  "$standing_comment": "AXIOM = supreme as ground, NOT an addressable node in the layered derivation tree (RAT-01). LAYER = an addressable point an object may be anchored to. The layer chain is ordered: to transform, a thing must relate; to relate, it must exist.",
+  "primitive_binding": [
+    {
+      "id": "ONT-01",
+      "element": "BEING",
+      "standing": "AXIOM",
+      "layer_order": null,
+      "ratified_by": "SUP-01",
+      "meaning": "That Which Is. Nothing supersedes Being.",
+      "basis": "01-WORKING/SUPERSESSION-REGISTER.md SUP-01, RATIFIED: 'BEING = axiom-only (non-layer): supreme as axiom, not an addressable layer; layered ontology begins at EXISTENCE.'"
+    },
+    {
+      "id": "ONT-02",
+      "element": "EXISTENCE",
+      "standing": "LAYER",
+      "layer_order": 1,
+      "ratified_by": "SUP-07",
+      "meaning": "That a thing is, and persists in coordinates.",
+      "basis": "01-WORKING/ONTOLOGY-REGISTER.md ONT-02, 'Root primitive #1'; chain ratified at SUP-07."
+    },
+    {
+      "id": "ONT-03",
+      "element": "RELATIONSHIP",
+      "standing": "LAYER",
+      "layer_order": 2,
+      "ratified_by": "SUP-07",
+      "meaning": "That a thing is connected to other things.",
+      "basis": "01-WORKING/ONTOLOGY-REGISTER.md ONT-03, 'Root primitive #2'; chain ratified at SUP-07."
+    },
+    {
+      "id": "ONT-04",
+      "element": "TRANSFORMATION",
+      "standing": "LAYER",
+      "layer_order": 3,
+      "ratified_by": "SUP-07",
+      "meaning": "That a thing may change under governance.",
+      "basis": "01-WORKING/ONTOLOGY-REGISTER.md ONT-04, 'Root primitive #3'; chain ratified at SUP-07."
+    }
+  ],
+
+  "$ratified_standing_comment": "The rows UCPA-L-02 parses out of the ratification record, and the standing each row must yield. The phrases are the register's own words; the law reads them from the file rather than trusting this copy, and a disagreement closes the gate.",
+  "ratified_standing": [
+    {
+      "supersession_id": "SUP-01",
+      "element": "BEING",
+      "requires_standing": "AXIOM",
+      "evidence_phrase": "axiom-only"
+    },
+    {
+      "supersession_id": "SUP-07",
+      "element": "EXISTENCE",
+      "requires_standing": "LAYER",
+      "evidence_phrase": "EXISTENCE→RELATIONSHIP→TRANSFORMATION"
+    },
+    {
+      "supersession_id": "SUP-07",
+      "element": "RELATIONSHIP",
+      "requires_standing": "LAYER",
+      "evidence_phrase": "EXISTENCE→RELATIONSHIP→TRANSFORMATION"
+    },
+    {
+      "supersession_id": "SUP-07",
+      "element": "TRANSFORMATION",
+      "requires_standing": "LAYER",
+      "evidence_phrase": "EXISTENCE→RELATIONSHIP→TRANSFORMATION"
+    }
+  ],
+
+  "$facet_reduction_comment": "THE CANONICAL MAPPING Scope A requires. The left-hand side is NOT enumerated here as truth — engine.uckp.facets.Facet is imported and UCPA-L-03 measures that this table covers it exactly, in both directions. The reduction rule is stated once and applied uniformly: a facet reduces to EXISTENCE when its question can be answered by examining the object alone; to RELATIONSHIP when answering it requires naming a second entity; to TRANSFORMATION when answering it requires a sequence of states. Each row cites the facet's own declared question from engine/uckp/facets.py as its basis, so the mapping is auditable against the model it maps.",
+  "facet_reduction_rule": "A facet reduces to the primitive whose obligation it discharges: EXISTENCE if answerable from the object alone; RELATIONSHIP if a second entity must be named; TRANSFORMATION if a sequence of states is required.",
+  "facet_reduction": [
+    { "facet": "identity", "primitive": "ONT-02", "basis": "'Which unique, immutable thing is this?' — answerable from the object alone." },
+    { "facet": "semantic-identity", "primitive": "ONT-02", "basis": "'What does it mean, independent of what it is called?' — meaning inheres in the object." },
+    { "facet": "ontology", "primitive": "ONT-02", "basis": "'What kind of being is it?' — a statement about the object itself." },
+    { "facet": "taxonomy", "primitive": "ONT-03", "basis": "'Where does it sit in the classification of knowledge?' — a position relative to a classification scheme; a second entity must be named." },
+    { "facet": "authority", "primitive": "ONT-03", "basis": "'By what authority does it exist, and from whom is that derived?' — names an authority and a derivation chain." },
+    { "facet": "provenance", "primitive": "ONT-04", "basis": "'Where did it come from, through which hands?' — a custody sequence over time." },
+    { "facet": "ownership", "primitive": "ONT-03", "basis": "'Who is accountable for it?' — names an accountable party." },
+    { "facet": "dependencies", "primitive": "ONT-03", "basis": "'What must exist for it to exist?' — names other existences." },
+    { "facet": "relationships", "primitive": "ONT-03", "basis": "'How is it bound to everything else?' — the primitive itself." },
+    { "facet": "lifecycle", "primitive": "ONT-04", "basis": "'What stage of existence is it in?' — a stage presupposes an ordered progression of states." },
+    { "facet": "temporal-history", "primitive": "ONT-04", "basis": "'What happened to it, in order?' — an ordered sequence of states." },
+    { "facet": "certification", "primitive": "ONT-03", "basis": "'Who certified it, and to what standard?' — names a certifier and a standard." },
+    { "facet": "validation", "primitive": "ONT-02", "basis": "'Was it checked against its declared shape?' — the object measured against its own declaration; no second entity." },
+    { "facet": "verification", "primitive": "ONT-03", "basis": "'Was it checked against reality?' — reality is the second term of the comparison." },
+    { "facet": "traceability", "primitive": "ONT-03", "basis": "'What upstream intent and downstream effect does it connect?' — connection is the operative word." },
+    { "facet": "evidence", "primitive": "ONT-03", "basis": "'What proof supports every claim made about it?' — names supporting artifacts." },
+    { "facet": "context", "primitive": "ONT-02", "basis": "'Under what conditions is it true?' — a condition of the object's own standing." },
+    { "facet": "evolution-history", "primitive": "ONT-04", "basis": "'Through which constitutional states has it passed?' — an ordered sequence of states." },
+    { "facet": "replay", "primitive": "ONT-04", "basis": "'How can it be reproduced exactly?' — reproduction of a sequence of transformations." },
+    { "facet": "audit", "primitive": "ONT-04", "basis": "'Who did what to it, when, and provably?' — acts ordered in time." },
+    { "facet": "discovery", "primitive": "ONT-03", "basis": "'How is it found without anyone listing it?' — reachability is a relation between a seeker and the object." },
+    { "facet": "metadata", "primitive": "ONT-02", "basis": "'What machine-readable description does it publish?' — the object's self-description." },
+    { "facet": "constraints", "primitive": "ONT-02", "basis": "'What must always hold of it?' — an invariant of the object's continued being." },
+    { "facet": "policies", "primitive": "ONT-04", "basis": "'What rules govern its use?' — rules bound how it may change and be acted upon." },
+    { "facet": "runtime-bindings", "primitive": "ONT-04", "basis": "'Which execution environments can act on it?' — acting on it is transformation." },
+    { "facet": "projection-bindings", "primitive": "ONT-04", "basis": "'Which views are generated from it?' — generation is a transformation of the object into a view." },
+    { "facet": "persistence-bindings", "primitive": "ONT-02", "basis": "'Which storage mechanisms hold copies of it?' — EXISTENCE is defined as persisting in coordinates; this is that persistence." },
+    { "facet": "security-context", "primitive": "ONT-03", "basis": "'Who may see and change it?' — names the permitted parties." },
+    { "facet": "governance-context", "primitive": "ONT-03", "basis": "'Which governance body decides about it?' — names a governing body." },
+    { "facet": "compliance-context", "primitive": "ONT-03", "basis": "'Which obligations must it satisfy?' — names external obligations." },
+    { "facet": "knowledge-context", "primitive": "ONT-03", "basis": "'Which knowledge universe does it belong to?' — names a containing universe." },
+    { "facet": "observer-context", "primitive": "ONT-03", "basis": "'From whose vantage point is it described?' — names an observer." },
+    { "facet": "existence-context", "primitive": "ONT-02", "basis": "'Under what conditions does it exist at all?' — the conditions of the object's existence." }
+  ],
+
+  "$projection_comment": "Every site Repository Truth was found to restate the root ontology, classified under the Single Authority Principle. AUTHORITY owns it. RATIFICATION_RECORD records its adjudication. PROJECTION restates it and must reduce to it. SUPERSEDED restates a form the ratification replaced; it is classified, never edited — supersession is the forward channel (CEP-007 XIII), and MIP-v2's own preamble supplies the rule: 'Where any rule herein conflicts with a higher frozen constitutional instrument, the higher instrument governs and this rule is void to the extent of the conflict.'",
+  "projections": [
+    {
+      "id": "UCPA-PROJ-01",
+      "path": "01-WORKING/ONTOLOGY-REGISTER.md",
+      "role": "AUTHORITY",
+      "note": "Canonical owner per URRC-000001 D-24. Part A holds ONT-01..ONT-05."
+    },
+    {
+      "id": "UCPA-PROJ-02",
+      "path": "01-WORKING/SUPERSESSION-REGISTER.md",
+      "role": "RATIFICATION_RECORD",
+      "note": "SUP-01 / SUP-02 / SUP-07 record the adjudication as RATIFIED."
+    },
+    {
+      "id": "UCPA-PROJ-03",
+      "path": "02-MASTER/UCOS-RAT-001-REPOSITORY-RATIFICATION-DETERMINATION.md",
+      "role": "RATIFICATION_RECORD",
+      "note": "The constituent act. RAT-01/RAT-02/RAT-03 ADJUDICATED to RATIFIED."
+    },
+    {
+      "id": "UCPA-PROJ-04",
+      "path": "00-CEP/STAGE-02-S2-03-UNIVERSE-FOUNDATION-BINDING.md",
+      "role": "PROJECTION",
+      "note": "§2.5 carries the ratified form and cites RAT-01/02/03 by name."
+    },
+    {
+      "id": "UCPA-PROJ-05",
+      "path": "07-ENGINEERING/UCOS-Ω∞-UNIVERSAL-OBJECT-SYSTEM-MASTER-ARCHITECTURE.md",
+      "role": "PROJECTION",
+      "note": "States 'RAT-01/02/03 are honored; BEING remains axiom-only; the four-primitive root is untouched'."
+    },
+    {
+      "id": "UCPA-PROJ-06",
+      "path": "02-MASTER/APP-001-APPLICATION-FOUNDATION-CONSTITUTION.md",
+      "role": "PROJECTION",
+      "note": "'every Application reduces to EXISTENCE → RELATIONSHIP → TRANSFORMATION beneath the BEING axiom (ONT-01…04)'."
+    },
+    {
+      "id": "UCPA-PROJ-07",
+      "path": "UCOS-OMEGA-INFINITY-MASTER-IMPLEMENTATION-PLAN-V2.md",
+      "role": "SUPERSEDED",
+      "superseded_by": "UCPA-001-CONSTITUTIONAL-PRIMITIVE-ALIGNMENT-DETERMINATION.md",
+      "note": "§ROOT ONTOLOGY renders BEING as a layer and states every entity is 'anchored to exactly one point on this ontology'. RAT-01 ratified that BEING is not an addressable node. BASELINE DATE 2026-07-17 precedes UCOS-RAT-001: ordinary supersession, void to the extent of the conflict by MIP-v2's own preamble."
+    },
+    {
+      "id": "UCPA-PROJ-08",
+      "path": "UMN-001-UNIVERSAL-MICRO-NUCLEUS-CONSTITUTIONAL-DETERMINATION.md",
+      "role": "SUPERSEDED",
+      "superseded_by": "UCPA-001-CONSTITUTIONAL-PRIMITIVE-ALIGNMENT-DETERMINATION.md",
+      "note": "Deliverable 3 assigns the root ontology to MIP-v2 as OWNED, contradicting URRC-000001 D-24; line 501 repeats the BEING-as-layer chain. Determination date 2026-08-06 postdates the ratification, so this is drift rather than ordinary supersession."
+    }
+  ],
+
+  "$openness_comment": "The primitive set must never become a closed enumeration. UCPA-L-07 admits a synthetic primitive into a copy of the binding and requires the copy to remain usable; refusal is a violation. This mirrors UCKP-INV-14 (engine/uckp/vocabulary.py is_extensible) and satisfies CMG-000001 XIV.7 — the ontology IS OPEN to new entity types under Article LXXVI, and admission is an APPEND that alters no existing cardinality.",
+  "openness": {
+    "probe_id": "ONT-PROBE",
+    "probe_element": "UCPA-FUTURE-PROBE",
+    "probe_standing": "LAYER",
+    "requirement": "A primitive admitted by append must not alter the standing, layer_order or ratified_by of any existing primitive."
+  },
+
+  "$self_application_comment": "A programme that measures reduction must itself reduce, or it is claiming an exemption from the law it enforces.",
+  "self_application": {
+    "reduces_to": "ONT-03",
+    "basis": "UCPA is a measurement of how other things are bound to the root ontology. Its question — 'does this artifact reduce to a declared primitive?' — cannot be answered without naming a second entity, so the programme reduces to RELATIONSHIP.",
+    "measured_by": "UCPA-L-08"
+  },
+
+  "laws": [
+    {
+      "id": "UCPA-L-01",
+      "title": "Every bound primitive is an element the canonical register already declares",
+      "statement": "For each entry in primitive_binding, the ONT id and the element name shall both be found in the canonical owner named by ontology_source. A primitive this declaration names but the register does not carry is an invented primitive and is refused.",
+      "check": "primitives_are_declared_by_the_register"
+    },
+    {
+      "id": "UCPA-L-02",
+      "title": "Standing is the standing the ratification record gives",
+      "statement": "For each entry in ratified_standing, the named supersession row shall be present in the ratification record, shall carry the declared evidence phrase, and the standing this declaration assigns that element shall equal the standing the row requires.",
+      "check": "standing_matches_the_ratification_record"
+    },
+    {
+      "id": "UCPA-L-03",
+      "title": "The facet reduction is total and single-valued over the live facet model",
+      "statement": "facet_reduction shall cover every member of engine.uckp.facets.Facet exactly once, shall name no facet that model does not declare, and every primitive it names shall be a bound primitive. The facet model is imported, never restated.",
+      "check": "facet_reduction_covers_the_facet_model"
+    },
+    {
+      "id": "UCPA-L-04",
+      "title": "Nothing reduces to the axiom",
+      "statement": "No facet shall reduce to a primitive whose standing is AXIOM. BEING is supreme as ground and is not an addressable node in the layered derivation tree, so nothing may be anchored to it.",
+      "check": "no_reduction_targets_the_axiom"
+    },
+    {
+      "id": "UCPA-L-05",
+      "title": "Every classified projection exists, and every superseded one names a superseding instrument that exists",
+      "statement": "Each projection path shall resolve to a file present in the repository. Each projection whose role is SUPERSEDED shall name a superseded_by instrument, and that instrument shall exist and shall name the superseded path.",
+      "check": "projections_resolve_and_supersessions_are_real"
+    },
+    {
+      "id": "UCPA-L-06",
+      "title": "One authority, and it is the one the binding register names",
+      "statement": "Exactly one projection shall hold role AUTHORITY, its path shall equal ontology_source.canonical_owner, and that same path shall be the canonical_owner recorded under ontology_source.owner_binding_id in the owner binding file.",
+      "check": "authority_is_single_and_matches_the_owner_binding"
+    },
+    {
+      "id": "UCPA-L-07",
+      "title": "The primitive set is open",
+      "statement": "Admitting the declared probe primitive by append shall produce a usable binding in which no existing primitive's standing, layer order or ratification changed. A binding that cannot accept a future primitive is a closed enumeration and is refused.",
+      "check": "the_primitive_set_admits_a_future_member"
+    },
+    {
+      "id": "UCPA-L-08",
+      "title": "The programme reduces to a primitive it declares",
+      "statement": "self_application shall name a primitive that primitive_binding carries, that primitive shall not be the axiom, and the law it names as its measure shall be a law this declaration declares.",
+      "check": "the_programme_reduces_to_a_declared_primitive"
+    }
+  ],
+
+  "$law_checks": "Each law names exactly one check. engine/root_ontology/contract.py implements exactly that set of names. engine/root_ontology/model.py refuses BOTH directions: a law naming a check that does not exist is manual governance, and a check no law claims is dead code that looks like enforcement (the GP-4 defect recorded in GATE-PURITY-DETERMINATION.md).",
+
+  "gate": {
+    "module": "engine.root_ontology.gate",
+    "mode": "OBSERVE",
+    "writes": "nothing, including gitignored paths",
+    "exit_codes": { "0": "OPEN — every law holds", "1": "CLOSED — a law was measured and refused", "2": "FAULT — no verdict could be reached" },
+    "stage_label": "constitutional primitive alignment (UCPA-000001, root ontology measured and reduced)"
+  },
+
+  "certification_boundary": "Certifies that the eight declared laws were measured against the declared surfaces at the declared paths. Certifies no ontology, no primitive, no baseline, and no artifact other than this programme's own declaration."
+}

@@ -1,0 +1,197 @@
+name: ACEE-000001 Autonomous Constitutional Engineering Gate (G-26)
+
+# ACEE-000001 — Autonomous Constitutional Engineering.
+#
+# AUTHORITY = NONE (DERIVED TRUTH). This programme legislates no lifecycle, opens no
+# registry, mints no identifier, admits no capability and certifies nothing. It BINDS an
+# engineering goal to the constitutional lifecycle the repository already legislated.
+#
+# What it is NOT, and why that matters here:
+#   * not a second lifecycle — the stage graph is CONSUMED from
+#     00-MASTER/UCL-000001/ucl-stage-manifest.json; a re-derivation would be a parallel
+#     lifecycle, which CMG-000001 Art LXXVI.6 forbids.
+#   * not a second loop — 00-MASTER/UCOS-AEE-001 owns the repository-directed loop. This
+#     engine invokes NO capability and re-runs NO owner, so it never observes a run of
+#     itself (the self-observation topology RFP-3 forbids) and opens no second execution
+#     surface. Actuation is discharged by the located owners of the declared pipeline
+#     stages, and by no one else.
+#   * not a second registry, dictionary, identifier scheme, reasoning engine, learning
+#     engine or discovery engine.
+#
+# What the gate proves:
+#   * goals and constitutional completion invariants are DISCOVERED from located manifest
+#     patterns, never enumerated in the engine or in the declaration, so admitting a
+#     further one is an append to data;
+#   * every goal traverses the consumed lifecycle to a plan that is COMPLETE (every step
+#     binds a located canonical owner and constitutional authority) and DETERMINISTIC;
+#   * no plan step would require engineering infrastructure that does not already exist —
+#     the measured form of the claim that future engineering is reduced to domain work;
+#   * every completion invariant is measured against a located owner whose cited anchor is
+#     actually present, using a counter in ANOTHER owner's committed artifact, so nothing
+#     is self-satisfied;
+#   * every disposition is DERIVED from measurement and resolves to a value the repository
+#     already legislates, with CREATE reachable only where no canonical owner exists;
+#   * no privileged path exists — this engine is a subject in its own goal plane, and no
+#     literal that could steer a branch names its own home.
+#
+# Zero-enumeration is classified by POSITION, not appearance: a literal that can steer a
+# branch is EXECUTABLE GOVERNANCE and may never carry a discovered value; a rendered
+# heading is PRESENTATION and governs nothing.
+#
+# Stdlib only — the guards install nothing.
+#
+# Exit 0 gate OPEN · 1 gate CLOSED · 2 fail-closed abort (no verdict may be asserted).
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: acee-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: ACEE-000001 self-guards (seventeen, each fail-closed)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Declaration integrity (ids unique, owners resolve, anchors present, claimants write-protected)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-declaration
+
+      - name: Zero-enumeration proof (no discovered value can steer a branch)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-no-enumeration
+
+      - name: No privileged logic (this engine is a subject in its own goal plane)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-no-privileged-logic
+
+      - name: Reuse before create (nothing is created where a canonical owner is located)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-reuse-before-create
+
+      - name: Forbidden-write guard (writes only inside its own operational-memory lane)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical rendering; no wall-clock, no commit identity)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-determinism
+
+      - name: Implementation independence (no object originates from implementation source)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-implementation-independence
+
+      - name: Open world (no architectural bound; every axis names a located registrar)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-open-world
+
+      - name: No parallel authority (no located engineering authority is claimed here)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-no-parallel-authority
+
+      - name: Goal plane executable (every goal reaches a complete, bound, deterministic plan)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-goal-plane-executable
+
+      - name: Completion invariant coverage (owned, anchored and measured against Repository Truth)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-invariant-coverage
+
+      - name: Canonical Knowledge Object identity (exactly one object per governed entity)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-cko-identity
+
+      - name: Semantic identity (immutable, singular, free of mutable inputs)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-semantic-identity
+
+      - name: Knowledge once (nothing discovered is restated in the declaration)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-knowledge-once
+
+      - name: Record immutability (write set ∩ located record set = ∅)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-record-immutability
+
+      - name: Future engineering reduction is measured, not asserted
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-reduction-measured
+
+      - name: Bound tightness (no disclosed divergence is inflated)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --check-bounds-tight
+
+  engineering-gate:
+    name: Autonomous Constitutional Engineering Gate (fresh checkout, fail-closed)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout committed HEAD
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Autonomous Constitutional Engineering Gate (fail-closed)
+        run: python3 00-MASTER/ACEE-000001/acee_engine.py --gate
+
+      - name: Replay (the committed registers are the product of the declaration)
+        run: |
+          python3 00-MASTER/ACEE-000001/acee_engine.py --render --quiet
+          git diff --exit-code -- 00-MASTER/ACEE-000001 \
+            || { echo "::error::ACEE-000001 REPLAY DRIFT — committed registers are not the product of the declaration"; exit 1; }
+          echo "ACEE-000001 replay: no drift"
+
+      - name: Engineer an arbitrary goal twice and prove the plan identity is stable
+        run: |
+          python3 00-MASTER/ACEE-000001/acee_engine.py \
+            --engineer "arbitrary constitutional engineering goal" \
+            --subject "00-MASTER/UEI-000001/uei-evolution.json" > /tmp/acee-plan-a.json
+          python3 00-MASTER/ACEE-000001/acee_engine.py \
+            --engineer "arbitrary constitutional engineering goal" \
+            --subject "00-MASTER/UEI-000001/uei-evolution.json" > /tmp/acee-plan-b.json
+          diff -q /tmp/acee-plan-a.json /tmp/acee-plan-b.json \
+            || { echo "::error::ACEE-000001 planning is not deterministic for a fixed goal"; exit 1; }
+          echo "ACEE-000001 planning: deterministic for a fixed goal"
+
+      - name: Prove an undeclared goal needs no new engineering infrastructure
+        run: |
+          python3 - <<'PY'
+          import json, subprocess, sys
+          out = subprocess.run(
+              [sys.executable, "00-MASTER/ACEE-000001/acee_engine.py",
+               "--engineer", "an engineering goal this repository has never been asked before",
+               "--subject", "00-MASTER/UER-000001/uer-resilience.json"],
+              capture_output=True, text=True, check=True).stdout
+          plan = json.loads(out)
+          assert plan["steps_total"] > 0, "the plan traversed no stage"
+          assert plan["steps_unbound"] == 0, f"{plan['steps_unbound']} plan steps bind no located owner"
+          assert plan["steps_requiring_new_infrastructure"] == 0, "the plan requires new engineering infrastructure"
+          print(f"undeclared goal: {plan['steps_total']} stages, all bound, zero new infrastructure, "
+                f"disposition {plan['disposition']}")
+          PY
+
+      # Diagnostic only, and only when the gate has already failed.
+      - name: Name the failing dimension
+        if: failure()
+        run: |
+          python3 00-MASTER/ACEE-000001/acee_engine.py || true
+          git diff --stat || true

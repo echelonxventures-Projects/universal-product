@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "BAND-10",
+      "certification_id": "UCOS-CERT-BAND-10-e9cd8b0b6399aa7a",
+      "entry_hash": "68fcaa68a8850ac6e2ae8cbe9e74b1512e447fa7c9cb27598b206b5629c43eed",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "e9cd8b0b6399aa7accf9cbaab35c8627e4164da6b68e2ff1b05d2dee87a4ddad",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "68fcaa68a8850ac6e2ae8cbe9e74b1512e447fa7c9cb27598b206b5629c43eed",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

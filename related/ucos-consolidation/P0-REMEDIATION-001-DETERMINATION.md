@@ -1,0 +1,437 @@
+# P0-REMEDIATION-001 — Final Certification Determination
+
+| Field | Value |
+|---|---|
+| MISSION | UCOS-P0-REMEDIATION-001 |
+| MODE | FAIL-CLOSED |
+| AUTHORITY | None (derived truth — measurements only) |
+| METHOD | Executable re-measurement of every located authority; root-cause correction; replay to fixed point |
+| BASELINE COMMIT | `a034ebfa` |
+| FINAL COMMIT | see `git log` at the head of this branch |
+| **FINAL VERDICT** | **INCOMPLETE** |
+| DATE | 2026-08-10 |
+
+Every number below was produced by running the repository's own engines. Where a
+measurement contradicts the mission's stated baseline, the measurement governs — the
+mission's own rule that executable authority outranks narrative record.
+
+---
+
+## Section 1 — Truth authority determination (Phase R1 / Phase 1)
+
+**Question.** For every register, is `Truth(register)` the committed register or the
+generated register?
+
+**Answer — the generated register, with one decisive qualification.** Repository law
+splits the corpus in two and gives each half a different truth rule:
+
+| Class | Truth rule | Authority |
+|---|---|---|
+| Repository Truth (tracked, human-authored corpus files of an included type) | the **committed** file IS the truth | GOV-005 §5.1, §5.3; RTBD-001 §7 |
+| Generated registers (DATA/, REGISTRIES/, CONTROL-TOWER/, PORTAL/, the `00-MASTER/**` programme registers, `knowledge/`, RIE outputs) | the **generator** is the truth; the committed copy is an obligation to match it | `00-BOOK/tools/register.sh --guard` |
+
+The executable authority is `register.sh --guard`, which regenerates and then fails
+(exit 3) if the committed DATA/REGISTRIES/CONTROL-TOWER/PORTAL differ from what was
+regenerated. A committed register that disagrees with its generator is therefore not
+evidence — it is *the defect the guard exists to catch*. RTBD-001 §7 settles the
+recursion question: generated products are **products of** Repository Truth, never
+part of it, so the generator can never be outranked by its own output.
+
+**Consequence applied throughout this mission:** wherever a committed register and a
+fresh measurement disagreed, the measurement was treated as truth and the register was
+rebuilt — never the reverse.
+
+---
+
+## Section 2 — Root causes found and corrected
+
+Three engines were measuring something other than what their own declarations say they
+measure. No threshold was moved, no bound widened, no finding suppressed, no exclusion
+added, no waiver created.
+
+### RC-1 — UCOS-RIB-001 reported five architectural cycles that do not exist
+
+`rib_engine._imports()` walked **every** `ast.Import` node in a module, so an import
+written inside a function body counted as an import-time dependency edge. All five
+reported `CYC-ARCHITECTURAL` cycles were closed *exclusively* by deliberately deferred
+imports — `engine/uckp/assimilation.py::_projections` and
+`platform/universal_ownership/cli.py`.
+
+This was not a judgement call. The repository already owns this measurement elsewhere
+and already states the rule:
+
+- `platform/repository_intelligence/substrate.py` separates `import_time_imports` from
+  `imports`, on the stated ground that a `TYPE_CHECKING` import and a function-body
+  import "neither can deadlock module initialisation, so neither can close an import
+  cycle."
+- `platform/repository_intelligence/discovery.py` records that reading `imports`
+  instead "reported both recorded cycles against code that was already decoupled on
+  purpose" — and names the `universal_foundation → universal_measurement →
+  universal_ownership` loop closed by "a single function-local import in
+  `universal_ownership/cli.py`". That is one of the five RIB reported.
+
+RIB was a second, divergent implementation of a measurement that has a canonical owner
+— itself a violation of RIB's own VER-07 ("no derived matrix restates a matrix already
+bound to a canonical owner").
+
+**Independent verification.** A reimplementation of both rules over the tracked Python
+corpus reproduced RIB's five cycles exactly under the every-node rule and **zero** under
+the import-time rule, while `PLN-MODULE` — the plane the blueprint itself describes as
+"where a true Python import cycle would break execution" — reported zero non-benign
+cycles under *either* rule. No true cycle is concealed by the correction: a true cycle
+is by construction made of import-time edges.
+
+**Correction.** `_imports()` now excludes imports nested in a function or class body,
+matching the canonical owner. **GATE-03 and GATE-10 PASS.**
+
+### RC-2 — the knowledge store was generated at 9% of itself
+
+`scripts/generate-prerequisites.sh` ran **one** of the knowledge pipeline's **three**
+declared steps. RTBD-001 §3.2 declares the pipeline as `init` → `capabilities --write`
+→ `docs` and verifies the result byte-identically; the script ran `init` alone, leaving
+the store at 11 CKOs instead of 121 and leaving `knowledge/handbooks/` — output the
+ignore authority excludes on the stated ground that it is "regenerated each run" —
+regenerated by nothing.
+
+Measured consequence: ACEE-000001 reported `PRV-KNOWLEDGE objects=11` against a
+committed register of 121. Register content depended on *which generation steps had been
+run*, not on repository state — drift by definition.
+
+**Correction.** All three steps now run. The store returns to its declared size, and
+UCL-000001's measurement returns into agreement with its committed register (465
+relations, 208 unidentified targets — both exactly as committed). That agreement is
+itself the proof the correction is right.
+
+### RC-3 — six determination documents each minted a private namespace
+
+UIS-001 closed on the blocking `UIS-V-14` ratchet (`namespaces_ungoverned <= 74`),
+measuring 80. Six root-level determination documents added since the register was last
+generated had each minted its own single-use category namespace through the path-derived
+catch-all — `P0FINA`, `P0FREE`, `R1REPO`, `RTBD00`, `STAGE0`, `W34CUN` — each landing in
+`VOL-000` with its own name as its own programme, i.e. governed by nothing.
+
+UMB-004 §5 is explicit: "A namespace minted without a declared rule is a namespace no
+authority governs." The remedy is the one UMB-004 §5 names — **declare the rule**. The
+V-14 bound of 74 is untouched.
+
+Two parts were required, because identity is immutable and path-keyed (`allocate()`
+returns an existing `by_path` entry's `universal_id` verbatim, so no rule can renumber
+or retire a minted namespace):
+
+1. **Declare the six.** Each exact-path rule carries the category its artifact already
+   bears, so the declared rule agrees with the immutable identity instead of
+   contradicting it, and gives each document the CONTROL TOWER home its `VOL-000` orphan
+   state denied it.
+2. **Prevent recurrence.** A `DET` first-class family (GOV-005 Part 4) plus a trailing
+   rule routes every future `P0-*`, `RTBD-*`, `STAGE-N-*`, `R-N-*`, `W3-*` document to
+   one governed namespace. Without this the defect returns on the next determination
+   committed — including this document.
+
+**Ungoverned returns to 74. UIS-001 gate OPEN, 24/24 criteria.**
+
+### RC-4 — the capability catalogue was stale
+
+`intelligence/UCOS-RIE-CAPABILITY-CATALOG.json` was nine capabilities behind the tree,
+so RIB GATE-07 reported six uncatalogued units (`engine.ceu`, `engine.nucleus`,
+`platform.universal_control_plane`, `platform.universal_generator`,
+`platform.universal_master_plan`, `platform.universal_project_state`). Regenerating via
+`python3 -m intelligence.rie build` took the catalogue from 110 to 119 records.
+**uncatalogued_units 6 → 0. GATE-07 PASS.**
+
+---
+
+## Section 3 — Authority closure matrix (measured)
+
+| Authority | Baseline (measured at `a034ebfa`) | Final (measured) | Movement |
+|---|---|---|---|
+| **UCOS-RIB-001** | NOT CERTIFIED — REPOSITORY MUST STOP, gate CLOSED, gates 9/12 | **BLUEPRINT CERTIFIED — REPOSITORY MAY PROCEED**, gate OPEN, **12/12**, dirty=0 | **CLEARED** |
+| **UIS-001** | IDENTITY-CONFORMANCE-NOT-ESTABLISHED, gate CLOSED, 23/24, 80 ungoverned | **IDENTITY-CONFORMANCE-BOUND**, gate OPEN, **24/24**, 74 ungoverned | **CLEARED** |
+| **UCDA-000001** | ASSIMILATED, gate OPEN | **ASSIMILATED**, gate OPEN, 0 undispositioned | already passing |
+| **UCCEP-000000** | NOT-CERTIFIED, gates 18/26, programmes 13/21, blocking CK-UCL + CK-UIS | NOT-CERTIFIED, gates **25/26**, programmes **20/21**, blocking **CK-UCL** (+`CK-ACEE` via the loop below) | **advanced, not cleared** |
+| **ACEE-000001** | (masked — see below) | gate CLOSED, blocking ACEE-V-07 + ACEE-V-10 | **open, downstream of UCCEP** |
+| **UCOS-AEE-001** | NOT-CONVERGED, blocking CONV-02 | NOT-CONVERGED, blocking CONV-02 | **open, downstream of UCCEP** |
+| **UCL-000001** | NOT-ESTABLISHED, gate CLOSED, blocking UCL-V-41 | NOT-ESTABLISHED, gate CLOSED, blocking **UCL-V-41** | **ROOT BLOCKER** |
+| **UAKOS-CLOSURE-009** | ASSIMILATION-INCOMPLETE, 140/549 (25.5%) | unchanged | **open, independent** |
+| **UCOS-COMP-000001 (CCE)** | declared, no executable realization | unchanged | **open** |
+| `./verify.sh --full` | PASS (7 stages) | **PASS (8 stages incl. drift gate)** | holds |
+| Replay drift | — | **0 over two full rounds** | **CLEARED** |
+
+### A correction to two intermediate readings
+
+Mid-mission, ACEE-000001 measured `ESTABLISHED` and UCOS-AEE-001 measured
+`CONVERGED-PROVISIONAL`, and both were reported as cleared. **Both readings were wrong**,
+and for the same reason: they were taken against a **stale committed `uccep.json`** that
+still recorded a historical all-pass full-tier state. UCCEP's standard tier withholds
+emission by design, so the stale register survived every standard-tier run and was only
+refreshed once UCCEP was measured at its recorded `full` tier.
+
+Against the honest UCCEP register:
+
+- **ACEE closes.** Five invariants read `uccep.json` — `ACEE-I-0180`, `-0220`, `-0240`,
+  `-0450`, `-0470`, measuring `gate_blocking`, `blocking_failures` and `gate_exit` —
+  and go unsatisfied, closing `ACEE-V-07` and `ACEE-V-10`.
+- **AEE stops converging.** Its violated observations are `OBS-AGGREGATE-BLOCKING`,
+  `-GATE-EXIT`, `-GATES-PASS`, `-PROGRAMMES-PASS` (all blocking) and `-CEILING`
+  (non-blocking) — **every one of them sourced from `uccep.json`**. Observations fall
+  from 37/38 to 32/38 and `CONV-02` is violated again.
+
+Neither is a regression introduced by this mission and neither is a defect in those
+engines. It is fail-closed behaviour working exactly as designed: a stale register was
+masking a real failure, the register was refreshed, and the truth propagated. The
+honest conclusion is that **ACEE and AEE are not independent authorities at all — they
+are downstream reporters of UCCEP**, and therefore of UCL-V-41.
+
+Reporting them as cleared would have been precisely the "narrative certification" this
+mission forbids.
+
+---
+
+## Section 4 — The root blocker: UCL-V-41
+
+Every remaining fail-closed authority except UAKOS-CLOSURE-009 reduces to one measurement.
+
+```
+                        ┌─> ACEE-I-0180/0220/0240/0450/0470 ─> ACEE-V-07 / V-10  (ACEE CLOSED)
+UCL-V-41 ─> UCCEP CK-UCL┤                    │
+                    ^   └─> AEE OBS-AGGREGATE-{BLOCKING,GATE-EXIT,
+                    │       GATES-PASS,PROGRAMMES-PASS} ─> CONV-02  (AEE NOT-CONVERGED)
+                    └────────── CK-ACEE ─────┘      (mutual: UCCEP executes acee_engine)
+```
+
+Three of the four remaining fail-closed authorities — UCCEP, ACEE and AEE — carry no
+independent defect of their own. Each is reporting UCL-V-41 through a different lens.
+
+
+**UCL-V-41**: `relationships_without_target_identity <= 98`. Measured: **217**.
+
+**Root cause, measured.** Every one of the 217 unidentified targets was classified
+against repository law:
+
+| Count | Class | Can it ever carry a registered constitutional identity? |
+|---:|---|---|
+| 119 | Generated RIE output family (`intelligence/UCOS-RIE-*`) | **No** — `config.py` proves registration is *unsatisfiable*: every RIE output embeds the hash of the registers that registration itself regenerates, a self-referential relation with no fixpoint |
+| 58 | Operational memory (`00-MASTER/**`) | **No** — UCOS-RECON-C1: execution state "must never consume permanent corpus identities" |
+| 20 | Directories | **No** — not artifacts |
+| 7 | Generator machinery (`00-BOOK/tools/**`) | **No** — corpus-internal exclude; the registry must not list itself |
+| 7 | Source code (`.py`, `.sh`) | **No** — `INCLUDE_EXTENSIONS` is `.md/.txt/.docx/.json` |
+| 5 | Generated registers (`00-BOOK/DATA`, `CONTROL-TOWER`) | **No** — generated |
+| 1 | CI config (`.github/`) | **No** — excluded |
+| **0** | **Eligible-but-unregistered** | — |
+
+**There is no registration defect.** Zero of the 217 are artifacts that *should* carry
+an identity and don't. The metric counts exactly the set the repository has
+*deliberately and correctly* declared non-registerable.
+
+**Why the gate now fires.** The count rose 208 → 217 during this mission for one reason:
+the capability catalogue legitimately gained nine capabilities, so the knowledge store
+gained nine capability facts, each citing the catalogue as its source. `UCL-V-41` is a
+fixed ratchet on a quantity that **grows monotonically with legitimate knowledge-base
+growth**. It will re-close this gate on every future capability added, permanently.
+
+**Why it was not "fixed" here.** The three available remedies are:
+
+| Option | Assessment |
+|---|---|
+| (a) Bind capability facts to a target carrying registered identity | **Impossible.** No such target exists: the catalogue is generated (unsatisfiable), its producer is `.py`, its contract lives in `00-MASTER/`. |
+| (b) Raise the bound from 98 to 217 | **Forbidden** by this mission, and correctly so — it is a ratchet. |
+| (c) Refine V-41 to count only targets *eligible* for registered identity | **Correct in substance, but out of scope for an agent.** It changes the semantics of a blocking constitutional measurement. |
+
+Option (c) is the recommended remediation and has a strong precedent in RC-1 above —
+but RC-1 was safe to apply unilaterally *because the repository already declared the
+correct rule elsewhere and named the exact false positives*. No equivalent declared
+rule exists for V-41; on the contrary, UCL's own declaration says a deliberately
+unregistered target "carries no constitutional identity, and that is REPORTED rather
+than patched with its path." Reporting is clearly right. Whether *gating* on the raw
+count is right is a live constitutional question with a legitimate argument on both
+sides, and it is the repository owner's to decide, not an agent's. Deciding it silently
+would be indistinguishable from weakening a gate to make a failure pass.
+
+**Recommended remediation (owner decision required).** Amend `UCL-V-41` to measure
+`relationships whose target is ELIGIBLE for registered constitutional identity and lacks
+one`, deriving eligibility from the already-authoritative `REGISTRATION_SCOPE` /
+`NON_ARTIFACT_SCOPE` definitions in `00-BOOK/tools/config.py`. On today's corpus that
+measure is **0**, so the bound could simultaneously be ratcheted from 98 to **0** —
+strictly *stronger* than today's gate, and stable under legitimate growth.
+
+---
+
+## Section 5 — Replay convergence and determinism (Phases R4/R5, F)
+
+**Fixed point: ACHIEVED for the corrected regeneration path.**
+
+Procedure per round: `scripts/generate-prerequisites.sh` → `00-BOOK/tools/register.sh`
+→ `uaie --render` → RIB → UIS → UCL → ACEE → UCDA → AEE → UCCEP, then `git status`.
+
+| Round | Files drifting |
+|---|---|
+| 1 | **0** |
+| 2 | **0** |
+
+`./verify.sh --full` passes with the registration + drift gate (`register.sh --guard`)
+green — the executable proof that `regenerated == committed`.
+
+**Entropy sources: none located in the authority engines.** A scan of every
+`00-MASTER/*/[a-z]*_engine.py` for `datetime.now()`, `time.time()`, `uuid.*`, `random.*`
+returned **0 hits**. The one wall-clock write in the identity path (`first_seen` in
+`ukb.py::allocate`) is append-only and fires only for a path never seen before, so it
+cannot drift on replay. RIE's envelope avoids the `coverage.xml` timestamp by hashing
+the consumed measurement rather than the file bytes.
+
+**One structural fragility, disclosed.** UCCEP's `full` tier *executes* downstream
+engines including `acee_engine.py`, while ACEE reads `uccep.json`. This is a genuine
+mutual dependency — a cycle in the authority graph, not merely an ordering constraint.
+
+It was tested rather than assumed. Running `acee_engine` → `uccep_engine --tier full`
+again over the settled state left **both registers byte-identical** (sha256 verified on
+`acee.json` and `uccep.json`), with ACEE `gate CLOSED` and UCCEP
+`blocking = [CK-ACEE, CK-UCL]` in both rounds. The loop therefore has a stable fixed
+point and does not oscillate; it settles on consistent mutual failure, which is correct
+fail-closed behaviour.
+
+The practical consequence is that these two registers are only mutually consistent when
+regenerated in dependency order from a clean committed tree — which is exactly how the
+stale `uccep.json` masked ACEE's true state for part of this mission. Worth an owner's
+attention independent of this mission.
+
+---
+
+## Section 6 — CCE realization determination (Phase R6 / Phase C)
+
+**Verdict: Case C — executable realization MISSING.** This is not an inference; the
+repository states it. `adr/0002-aeos-phase-1-architectural-determination.md` records:
+
+> | **CCE (completeness)** | `02-MASTER/UCOS-COMP-000001` + `06-IMPLEMENTATION/…` | **SPEC ONLY** | **REALIZE (compose the 10 gates over existing engines)** |
+
+The constitution `02-MASTER/UCOS-COMP-000001-…-CONSTITUTION.md` declares ten fail-closed
+gates and — valuably — names the **existing** control that closes each one, so the
+realization is a composition, not new logic:
+
+| Gate | Closed by (already exists) |
+|---|---|
+| G1 Architecture Complete | `CoverageEngine.report()` orphan lists |
+| G2 Dependencies Closed | `engine/validation/checks.py::DependencyClosureCheck` |
+| G3 Coverage Verified | `platform/coverage/certification.py::assess` |
+| G4 Validation Passed | `engine/validation/executor.py::ValidationEngine.validate` + `enforce_acceptance` |
+| G5 Traceability Complete | `ProvenanceCheck` + coverage edge `trace()` |
+| G6 Evidence Complete | `ValidationEvidencePresentCriterion` + `evidence_sha256` |
+| G7 Certification Ready | `engine/certification/criteria.py::default_criteria` |
+| G8 Readiness Approved | `platform/certification/status.py::evaluate_readiness` |
+| G9 Gap Count = Zero | `CoverageEngine.report()["gaps"]` |
+| G10 Completeness Certified | `CertificationEngine.certify` + hash-chained `CertificationLedger.append` |
+
+**CCE aggregate verdict is therefore UNMEASURED, and `CCE = COMPLETE` cannot be
+asserted.** Implementing it was not attempted in this mission: it is a substantial new
+registered authority requiring its own declaration, tests and certification, and
+building it while G3/G9 cannot pass (Section 7) would produce an engine whose first
+honest verdict is `INCOMPLETE` — no closer to the objective and a large new surface to
+certify.
+
+---
+
+## Section 7 — Coverage determination (Phase R8 / Phase E)
+
+**Measured, not asserted** (`coverage.xml` at the final commit):
+
+| Dimension | Covered | Total | Rate | Missing |
+|---|---:|---:|---:|---:|
+| Statements | 67,816 | 70,928 | **95.6100%** | **3,112** |
+| Branches | 13,854 | 15,270 | **90.7300%** | **1,416** |
+
+The mission's stated baseline of 94.7470% is not reproduced; the measured statement rate
+is 95.61% and the **branch** rate — which the mission also requires at 100% — is 90.73%,
+materially further from target than the single figure suggests.
+
+**Gap: 4,528 uncovered points across 143 files**, heavily concentrated:
+
+| Uncovered lines | File |
+|---:|---|
+| 333 | `platform/commercial_intelligence/validation.py` |
+| 275 | `platform/repository_intelligence/discovery.py` |
+| 195 | `platform/repository_intelligence/cli.py` |
+| 168 | `platform/repository_intelligence/graph.py` |
+| 124 | `platform/repository_intelligence/substrate.py` |
+| 104 | `platform/universal_provider/framework.py` |
+| 104 | `platform/repository_intelligence/recommendation.py` |
+
+`100.0000%` on both dimensions was **not attempted and is not achieved.** Closing 4,528
+points is a test-authoring programme across 143 files, not a defect fix; attempting it
+partially would have produced no measurable authority movement while risking the
+corrections that did land. The gate that exists (`--cov-fail-under=90`) passes.
+
+Note for scoping: `00-MASTER/**` — every constitutional authority engine, including the
+three corrected here — is **outside coverage scope entirely** and carries no tests. A
+genuine 100% mandate would first have to decide whether operational-memory engines are
+in scope, which changes the size of the task by a large factor.
+
+---
+
+## Section 8 — UAKOS-CLOSURE-009
+
+**ASSIMILATION-INCOMPLETE — 140 of 549 requirements FULLY ASSIMILATED (25.5009%),
+409 PARTIAL, baseline WITHHELD (12 preconditions unproven).** Independent of the
+UCL-V-41 chain. The open gap classes are authoring obligations, not code defects:
+
+| Count | Gap class |
+|---:|---|
+| 549 | `NO-RUNTIME-EVIDENCE` — runtime dimensions must leave BLOCKED/NOT_STARTED |
+| 471 | `CAPABILITY-TIER-UNPOPULATED` |
+| 406 | `CANONICAL-OWNERSHIP-INFERRED` — each needs a declared definitional home |
+| 177 | `DEFERRED-AND-UNREALIZED` |
+| 118 | `AUTHORITY-UNDECLARED-AT-CANONICAL-HOME` |
+| 92 / 67 | `NO-VALIDATION-EVIDENCE` / `NO-VERIFICATION-EVIDENCE` |
+| 42 | `IMPLEMENTATION-ABSENT` |
+
+Closing these requires human constitutional authorship — declaring canonical homes,
+adding authority rows, realizing 42 absent implementations, ledgering real executions.
+It cannot be discharged by an agent without fabricating the very evidence the mission
+forbids fabricating.
+
+---
+
+## Section 9 — Final constitutional verdict
+
+### **INCOMPLETE**
+
+Asserting `COMPLETE + CERTIFIED + FROZEN` would require claiming, against measured
+evidence, that CCE is realized, that coverage is 100%, that UCL-000001 and UCCEP-000000
+and ACEE-000001 pass, and that 409 requirements are assimilated. Every one of those is
+measurably false today.
+
+| Success criterion | Required | Measured | Met |
+|---|---|---|---|
+| UCOS-RIB | CERTIFIED | **BLUEPRINT CERTIFIED**, 12/12 | **YES** |
+| UIS | PASS | **gate OPEN**, 24/24 | **YES** |
+| UCDA | PASS | **ASSIMILATED**, gate OPEN | **YES** |
+| Drift gate | PASS | **PASS**, 0 drift over 2 rounds | **YES** |
+| `./verify.sh` | PASS | **PASS** (8/8 stages, `--full`) | **YES** |
+| Fixed point | VERIFIED | **VERIFIED** | **YES** |
+| UCCEP | PASS | NOT-CERTIFIED (25/26, blocking CK-UCL) | NO |
+| ACEE | PASS | gate CLOSED (downstream of UCCEP) | NO |
+| AEE | CONVERGED | NOT-CONVERGED, CONV-02 (downstream of UCCEP) | NO |
+| UCL | PASS | gate CLOSED (**UCL-V-41 — root**) | NO |
+| UAKOS-CLOSURE | PASS | ASSIMILATION-INCOMPLETE (25.5%) | NO |
+| CCE | COMPLETE | **no executable realization** | NO |
+| Coverage | 100.0000% | 95.6100% stmts / 90.7300% branches | NO |
+
+**Four independent blockers remain**, in ascending order of cost:
+
+1. **UCL-V-41** — one owner decision (Section 4). Unblocks **four** authorities at once:
+   UCL, UCCEP, ACEE and AEE, none of which carries an independent defect. The
+   recommended amendment makes the gate *stronger*, not weaker.
+2. **CCE realization** — compose ten gates over engines that already exist (Section 6).
+3. **UAKOS-CLOSURE-009** — 409 requirements requiring human constitutional authorship.
+4. **Coverage to 100%** — 4,528 points across 143 files, plus a scope decision on
+   `00-MASTER/**`.
+
+Nothing in this determination was closed by waiver, exemption, suppression, accepted
+risk, threshold change, coverage exclusion, or narrative certification. Four defects
+were found and repaired at the root (RC-1…RC-4); three authorities moved to PASS and
+hold there from a clean tree; replay drift went to zero and a fixed point was proven by
+byte-identity; and what remains open is stated as open — including two authorities this
+mission briefly and wrongly reported as cleared, corrected in Section 3.
+
+---
+
+*AUTHORITY = NONE. This is derived truth — a measurement, reproducible by re-running
+the commands cited above. Repository law is the sole authority; this document claims
+none.*

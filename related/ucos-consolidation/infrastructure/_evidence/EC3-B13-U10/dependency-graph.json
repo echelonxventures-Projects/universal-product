@@ -1,0 +1,374 @@
+{
+  "acyclic": true,
+  "all_nodes_present": true,
+  "artifact": "EC3-B13-U10-INTEGRATION-DEPENDENCY-GRAPH",
+  "downward_only": true,
+  "edge_count": 24,
+  "edges": [
+    {
+      "basis": "reuses",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-5067ba3eaadf8d62",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.compute-reuses-capability-dc0d4c4b66fe141c",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U02:infrastructure.compute",
+      "source_index": 2,
+      "target": "ENG-005:EC3-B13-U01:infrastructure.capability",
+      "target_index": 1
+    },
+    {
+      "basis": "reuses",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-e7a8bfa7bccb2eb9",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.network-reuses-capability-171e1eba1b772a43",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U03:infrastructure.network",
+      "source_index": 3,
+      "target": "ENG-005:EC3-B13-U01:infrastructure.capability",
+      "target_index": 1
+    },
+    {
+      "basis": "reuses",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-868b0bb7ad8ed23f",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.storage-reuses-capability-4fb0946a5d3bc554",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U04:infrastructure.storage",
+      "source_index": 4,
+      "target": "ENG-005:EC3-B13-U01:infrastructure.capability",
+      "target_index": 1
+    },
+    {
+      "basis": "contains",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-b34b39d6c4a599f0",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.environment-contains-compute-745e4ee0a640d91e",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U05:infrastructure.environment",
+      "source_index": 5,
+      "target": "ENG-005:EC3-B13-U02:infrastructure.compute",
+      "target_index": 2
+    },
+    {
+      "basis": "contains",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-cb071277030350dc",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.environment-contains-network-a4c1b7a94d756d18",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U05:infrastructure.environment",
+      "source_index": 5,
+      "target": "ENG-005:EC3-B13-U03:infrastructure.network",
+      "target_index": 3
+    },
+    {
+      "basis": "provisions",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-1f7ba9f96a5bacae",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.environment-provisions-storage-708e6b2a215132ec",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U05:infrastructure.environment",
+      "source_index": 5,
+      "target": "ENG-005:EC3-B13-U04:infrastructure.storage",
+      "target_index": 4
+    },
+    {
+      "basis": "arranges",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-60465c52cfeee560",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.topology-arranges-environment-15f61f8dab893ce8",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U06:infrastructure.topology",
+      "source_index": 6,
+      "target": "ENG-005:EC3-B13-U05:infrastructure.environment",
+      "target_index": 5
+    },
+    {
+      "basis": "sustains",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-bee5b521e3e426f5",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.resilience-sustains-environment-d4c52a5d8c8cc822",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U07:infrastructure.resilience",
+      "source_index": 7,
+      "target": "ENG-005:EC3-B13-U05:infrastructure.environment",
+      "target_index": 5
+    },
+    {
+      "basis": "arranges",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-68c08ce0ff18c4ae",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.resilience-arranges-topology-ea53f539054207d0",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U07:infrastructure.resilience",
+      "source_index": 7,
+      "target": "ENG-005:EC3-B13-U06:infrastructure.topology",
+      "target_index": 6
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-bed4983edb45b15f",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.security-evaluates-capability-62094d32b0861c22",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U08:infrastructure.security",
+      "source_index": 8,
+      "target": "ENG-005:EC3-B13-U01:infrastructure.capability",
+      "target_index": 1
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-928a91dbc1aaa838",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.security-evaluates-compute-6e45c089282cbe47",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U08:infrastructure.security",
+      "source_index": 8,
+      "target": "ENG-005:EC3-B13-U02:infrastructure.compute",
+      "target_index": 2
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-53778dd413c0914b",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.security-evaluates-network-91d06c439da1318f",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U08:infrastructure.security",
+      "source_index": 8,
+      "target": "ENG-005:EC3-B13-U03:infrastructure.network",
+      "target_index": 3
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-18586cdb571fa2f0",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.security-evaluates-storage-bdb6f2deb010c094",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U08:infrastructure.security",
+      "source_index": 8,
+      "target": "ENG-005:EC3-B13-U04:infrastructure.storage",
+      "target_index": 4
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-b2505e020d5836a6",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.security-evaluates-environment-9b9def270571f2d8",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U08:infrastructure.security",
+      "source_index": 8,
+      "target": "ENG-005:EC3-B13-U05:infrastructure.environment",
+      "target_index": 5
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-4d032aeff1ca2767",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.security-evaluates-topology-3aa53c9329f83027",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U08:infrastructure.security",
+      "source_index": 8,
+      "target": "ENG-005:EC3-B13-U06:infrastructure.topology",
+      "target_index": 6
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-4497b55f8c9a10a4",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.security-evaluates-resilience-15f4cd698289c6ed",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U08:infrastructure.security",
+      "source_index": 8,
+      "target": "ENG-005:EC3-B13-U07:infrastructure.resilience",
+      "target_index": 7
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-d35eec3cf2227cb6",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.governance-evaluates-capability-5baa3f7e920de6a3",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U09:infrastructure.governance",
+      "source_index": 9,
+      "target": "ENG-005:EC3-B13-U01:infrastructure.capability",
+      "target_index": 1
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-d942ba60ebeb0f08",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.governance-evaluates-compute-8272594a3830ed2d",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U09:infrastructure.governance",
+      "source_index": 9,
+      "target": "ENG-005:EC3-B13-U02:infrastructure.compute",
+      "target_index": 2
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-efe48b0b2fce266d",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.governance-evaluates-network-54e64b0456d0afc4",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U09:infrastructure.governance",
+      "source_index": 9,
+      "target": "ENG-005:EC3-B13-U03:infrastructure.network",
+      "target_index": 3
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-17bc3d90c7ad401b",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.governance-evaluates-storage-330c840af030f124",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U09:infrastructure.governance",
+      "source_index": 9,
+      "target": "ENG-005:EC3-B13-U04:infrastructure.storage",
+      "target_index": 4
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-e2c18ecba1cf1fd4",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.governance-evaluates-environment-9d0126aabf6d0028",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U09:infrastructure.governance",
+      "source_index": 9,
+      "target": "ENG-005:EC3-B13-U05:infrastructure.environment",
+      "target_index": 5
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-b94dfe7d2a96cece",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.governance-evaluates-topology-3873608a8bf4342b",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U09:infrastructure.governance",
+      "source_index": 9,
+      "target": "ENG-005:EC3-B13-U06:infrastructure.topology",
+      "target_index": 6
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-81a443a3f416b337",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.governance-evaluates-resilience-833df83ff9a56ce3",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U09:infrastructure.governance",
+      "source_index": 9,
+      "target": "ENG-005:EC3-B13-U07:infrastructure.resilience",
+      "target_index": 7
+    },
+    {
+      "basis": "evaluates",
+      "certification_id": "UCOS-CERT-InfrastructureDependency-98e25d980f5cd696",
+      "construct_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.governance-evaluates-security-f621acd73a9149f4",
+      "downward_only": true,
+      "relationship": "dependsOn",
+      "source": "ENG-005:EC3-B13-U09:infrastructure.governance",
+      "source_index": 9,
+      "target": "ENG-005:EC3-B13-U08:infrastructure.security",
+      "target_index": 8
+    }
+  ],
+  "node_count": 9,
+  "nodes": [
+    {
+      "index": 1,
+      "meta_classes": [
+        "InfrastructureCapability"
+      ],
+      "module": "capability",
+      "ref": "ENG-005:EC3-B13-U01:infrastructure.capability",
+      "title": "Universal Infrastructure Capability",
+      "unit": "EC3-B13-U01"
+    },
+    {
+      "index": 2,
+      "meta_classes": [
+        "ComputeResource"
+      ],
+      "module": "compute",
+      "ref": "ENG-005:EC3-B13-U02:infrastructure.compute",
+      "title": "Universal Infrastructure Compute",
+      "unit": "EC3-B13-U02"
+    },
+    {
+      "index": 3,
+      "meta_classes": [
+        "NetworkResource"
+      ],
+      "module": "network",
+      "ref": "ENG-005:EC3-B13-U03:infrastructure.network",
+      "title": "Universal Infrastructure Network",
+      "unit": "EC3-B13-U03"
+    },
+    {
+      "index": 4,
+      "meta_classes": [
+        "StorageHostingResource"
+      ],
+      "module": "storage",
+      "ref": "ENG-005:EC3-B13-U04:infrastructure.storage",
+      "title": "Universal Infrastructure Storage-Hosting",
+      "unit": "EC3-B13-U04"
+    },
+    {
+      "index": 5,
+      "meta_classes": [
+        "Locality",
+        "IsolationBoundary",
+        "Node",
+        "Cluster",
+        "Environment",
+        "ProvisioningProcess"
+      ],
+      "module": "environment",
+      "ref": "ENG-005:EC3-B13-U05:infrastructure.environment",
+      "title": "Universal Infrastructure Environment & Provisioning",
+      "unit": "EC3-B13-U05"
+    },
+    {
+      "index": 6,
+      "meta_classes": [
+        "Topology",
+        "Distribution"
+      ],
+      "module": "topology",
+      "ref": "ENG-005:EC3-B13-U06:infrastructure.topology",
+      "title": "Universal Infrastructure Topology & Distribution",
+      "unit": "EC3-B13-U06"
+    },
+    {
+      "index": 7,
+      "meta_classes": [
+        "AvailabilityTopology",
+        "ScalingArrangement"
+      ],
+      "module": "resilience",
+      "ref": "ENG-005:EC3-B13-U07:infrastructure.resilience",
+      "title": "Universal Infrastructure Resilience & Availability",
+      "unit": "EC3-B13-U07"
+    },
+    {
+      "index": 8,
+      "meta_classes": [
+        "SecurityFacet"
+      ],
+      "module": "security",
+      "ref": "ENG-005:EC3-B13-U08:infrastructure.security",
+      "title": "Universal Infrastructure Security",
+      "unit": "EC3-B13-U08"
+    },
+    {
+      "index": 9,
+      "meta_classes": [
+        "GovernanceFacet"
+      ],
+      "module": "governance",
+      "ref": "ENG-005:EC3-B13-U09:infrastructure.governance",
+      "title": "Universal Infrastructure Governance",
+      "unit": "EC3-B13-U09"
+    }
+  ],
+  "unit": "EC3-B13-U10"
+}

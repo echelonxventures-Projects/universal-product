@@ -1,0 +1,1170 @@
+{
+  "all_units_certified": true,
+  "artifact": "EC3-B10-U12-REALIZATION-EVIDENCE",
+  "authority": "ENGINEERING-EXECUTION-ONLY",
+  "band_class": "BAND-10",
+  "certification": {
+    "cce_gates": {
+      "advisory_failures": [],
+      "blocking_failures": [],
+      "blueprint_id": "BAND-10",
+      "certification_class": "engineering-readiness",
+      "certification_id": "UCOS-CERT-BAND-10-e9cd8b0b6399aa7a",
+      "certified": true,
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 10,
+        "total": 10
+      },
+      "findings": [
+        {
+          "criterion_id": "CC-1",
+          "details": {
+            "gate": "architecture"
+          },
+          "message": "CC-1 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-10",
+          "details": {
+            "gate": "completeness"
+          },
+          "message": "CC-10 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-2",
+          "details": {
+            "gate": "dependencies"
+          },
+          "message": "CC-2 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-3",
+          "details": {
+            "gate": "coverage"
+          },
+          "message": "CC-3 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-4",
+          "details": {
+            "gate": "validation",
+            "verdict": "pass"
+          },
+          "message": "CC-4 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-5",
+          "details": {
+            "gate": "traceability"
+          },
+          "message": "CC-5 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-6",
+          "details": {
+            "evidence_sha256": "8f84b64975558edce70b45bac4bec6ca1c83e423751740b9325b3aac1d93d5a2",
+            "gate": "evidence"
+          },
+          "message": "CC-6 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-7",
+          "details": {
+            "gate": "certification-ready"
+          },
+          "message": "CC-7 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-8",
+          "details": {
+            "gate": "readiness"
+          },
+          "message": "CC-8 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-9",
+          "details": {
+            "gate": "gap-zero"
+          },
+          "message": "CC-9 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "record": {
+        "authority": "ENGINEERING-EXECUTION-ONLY",
+        "blueprint_id": "BAND-10",
+        "certification_class": "engineering-readiness",
+        "certification_id": "UCOS-CERT-BAND-10-e9cd8b0b6399aa7a",
+        "certified": true,
+        "content_sha256": "e9cd8b0b6399aa7accf9cbaab35c8627e4164da6b68e2ff1b05d2dee87a4ddad",
+        "criteria": [
+          {
+            "criterion_id": "CC-1",
+            "details": {
+              "gate": "architecture"
+            },
+            "message": "CC-1 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-10",
+            "details": {
+              "gate": "completeness"
+            },
+            "message": "CC-10 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-2",
+            "details": {
+              "gate": "dependencies"
+            },
+            "message": "CC-2 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-3",
+            "details": {
+              "gate": "coverage"
+            },
+            "message": "CC-3 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-4",
+            "details": {
+              "gate": "validation",
+              "verdict": "pass"
+            },
+            "message": "CC-4 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-5",
+            "details": {
+              "gate": "traceability"
+            },
+            "message": "CC-5 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-6",
+            "details": {
+              "evidence_sha256": "8f84b64975558edce70b45bac4bec6ca1c83e423751740b9325b3aac1d93d5a2",
+              "gate": "evidence"
+            },
+            "message": "CC-6 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-7",
+            "details": {
+              "gate": "certification-ready"
+            },
+            "message": "CC-7 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-8",
+            "details": {
+              "gate": "readiness"
+            },
+            "message": "CC-8 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          },
+          {
+            "criterion_id": "CC-9",
+            "details": {
+              "gate": "gap-zero"
+            },
+            "message": "CC-9 satisfied",
+            "severity": "blocking",
+            "status": "pass"
+          }
+        ],
+        "disclosure": {
+          "asserts_constitutional_finality": false,
+          "authority": "ENGINEERING-EXECUTION-ONLY",
+          "disclosure_id": "EC-1-PROVISIONAL-STATE",
+          "gate": "EC-1",
+          "gate_open": true,
+          "standard": "DE-05",
+          "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+        },
+        "evidence_ref": "8f84b64975558edce70b45bac4bec6ca1c83e423751740b9325b3aac1d93d5a2",
+        "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+        "standard_version": "1.0.0",
+        "status": "certified",
+        "target_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+        "version": "1.0.0"
+      },
+      "status": "certified",
+      "target_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+      "version": "1.0.0"
+    },
+    "evidence": {
+      "blocking_failures": [],
+      "blueprint_id": "BAND-10",
+      "certification_class": "engineering-readiness",
+      "certification_id": "UCOS-CERT-BAND-10-e9cd8b0b6399aa7a",
+      "certified": true,
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 10,
+        "total": 10
+      },
+      "criteria_evaluated": [
+        "CC-1",
+        "CC-10",
+        "CC-2",
+        "CC-3",
+        "CC-4",
+        "CC-5",
+        "CC-6",
+        "CC-7",
+        "CC-8",
+        "CC-9"
+      ],
+      "evidence_format": "ucos-certification-evidence/1.0.0",
+      "findings": [
+        {
+          "criterion_id": "CC-1",
+          "details": {
+            "gate": "architecture"
+          },
+          "message": "CC-1 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-10",
+          "details": {
+            "gate": "completeness"
+          },
+          "message": "CC-10 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-2",
+          "details": {
+            "gate": "dependencies"
+          },
+          "message": "CC-2 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-3",
+          "details": {
+            "gate": "coverage"
+          },
+          "message": "CC-3 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-4",
+          "details": {
+            "gate": "validation",
+            "verdict": "pass"
+          },
+          "message": "CC-4 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-5",
+          "details": {
+            "gate": "traceability"
+          },
+          "message": "CC-5 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-6",
+          "details": {
+            "evidence_sha256": "8f84b64975558edce70b45bac4bec6ca1c83e423751740b9325b3aac1d93d5a2",
+            "gate": "evidence"
+          },
+          "message": "CC-6 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-7",
+          "details": {
+            "gate": "certification-ready"
+          },
+          "message": "CC-7 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-8",
+          "details": {
+            "gate": "readiness"
+          },
+          "message": "CC-8 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "criterion_id": "CC-9",
+          "details": {
+            "gate": "gap-zero"
+          },
+          "message": "CC-9 satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "record_sha256": "e9cd8b0b6399aa7accf9cbaab35c8627e4164da6b68e2ff1b05d2dee87a4ddad",
+      "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+      "standard_version": "1.0.0",
+      "status": "certified",
+      "target_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+      "validation_evidence_ref": "8f84b64975558edce70b45bac4bec6ca1c83e423751740b9325b3aac1d93d5a2",
+      "version": "1.0.0"
+    },
+    "ledger": {
+      "count": 1,
+      "entries": [
+        {
+          "blueprint_id": "BAND-10",
+          "certification_id": "UCOS-CERT-BAND-10-e9cd8b0b6399aa7a",
+          "entry_hash": "68fcaa68a8850ac6e2ae8cbe9e74b1512e447fa7c9cb27598b206b5629c43eed",
+          "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+          "record_sha256": "e9cd8b0b6399aa7accf9cbaab35c8627e4164da6b68e2ff1b05d2dee87a4ddad",
+          "sequence": 0,
+          "status": "certified",
+          "target_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+          "version": "1.0.0"
+        }
+      ],
+      "head_hash": "68fcaa68a8850ac6e2ae8cbe9e74b1512e447fa7c9cb27598b206b5629c43eed",
+      "ledger_format": "ucos-certification-ledger/1.0.0"
+    }
+  },
+  "completion": {
+    "all_units_certified": true,
+    "band_class": "BAND-10",
+    "band_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+    "dependency_acyclic": true,
+    "integration": {
+      "all_members_certified": true,
+      "closure_DMI_01": true,
+      "founding_acyclic_DMI_04": true,
+      "map_resolves": true,
+      "non_constitutive_DMI_06": true,
+      "non_projection_DMI_07": true,
+      "relationship_closure_DMI_02": true,
+      "reuse_by_reference_DMI_05": true,
+      "totality_DMI_03": true
+    },
+    "integration_closed": true,
+    "inventory_complete": true,
+    "meta_class_coverage_complete": true,
+    "meta_classes_covered": [
+      "DMC-01",
+      "DMC-02",
+      "DMC-03",
+      "DMC-04",
+      "DMC-05",
+      "DMC-06",
+      "DMC-07",
+      "DMC-08",
+      "DMC-09",
+      "DMC-10"
+    ],
+    "meta_model_certification_id": "UCOS-CERT-UDM-9f3f055879bb2b43",
+    "meta_model_id": "UCOS-METAMODEL-ucos.data.metamodel.universal-09e277250f3892df",
+    "meta_model_unit": "EC3-B10-U11",
+    "name": "ucos.data.band10.completion",
+    "non_constitutive": true,
+    "non_projection": true,
+    "reuses_by_reference": true,
+    "state": "DEFINED",
+    "structure_digest": "63750c0130e66c526160953ad5188b660386101669f7f73d9498f1fa7cd849b4",
+    "substrate_refs": [
+      "ENG-001",
+      "ENG-002",
+      "ENG-004",
+      "ENG-005",
+      "CCE"
+    ],
+    "type_tag": "ucos.core.band-completion",
+    "unit_count": 11,
+    "units": [
+      {
+        "certification_id": "UCOS-CERT-DMC-01-51e5964b38741e30",
+        "certified": true,
+        "concern_doc": "DATA-001…005 (DOE-01 root)",
+        "meta_class": "DMC-01",
+        "name": "Datum",
+        "unit": "EC3-B10-U01"
+      },
+      {
+        "certification_id": "UCOS-CERT-DMC-03-c57d36d3dbb2763d",
+        "certified": true,
+        "concern_doc": "DATA-007",
+        "meta_class": "DMC-03",
+        "name": "Attribute",
+        "unit": "EC3-B10-U02"
+      },
+      {
+        "certification_id": "UCOS-CERT-DMC-02-def41470d3bac196",
+        "certified": true,
+        "concern_doc": "DATA-006",
+        "meta_class": "DMC-02",
+        "name": "Entity",
+        "unit": "EC3-B10-U03"
+      },
+      {
+        "certification_id": "UCOS-CERT-DMC-05-e9edc215907c8695",
+        "certified": true,
+        "concern_doc": "DATA-009",
+        "meta_class": "DMC-05",
+        "name": "Schema",
+        "unit": "EC3-B10-U04"
+      },
+      {
+        "certification_id": "UCOS-CERT-DMC-06-aa8d65c34494943a",
+        "certified": true,
+        "concern_doc": "DATA-010",
+        "meta_class": "DMC-06",
+        "name": "Storage",
+        "unit": "EC3-B10-U05"
+      },
+      {
+        "certification_id": "UCOS-CERT-DMC-07-10cb52fd186c7693",
+        "certified": true,
+        "concern_doc": "DATA-011",
+        "meta_class": "DMC-07",
+        "name": "Lifecycle",
+        "unit": "EC3-B10-U06"
+      },
+      {
+        "certification_id": "UCOS-CERT-DMC-08-07e9db1834b26c10",
+        "certified": true,
+        "concern_doc": "DATA-012",
+        "meta_class": "DMC-08",
+        "name": "Governance-Object",
+        "unit": "EC3-B10-U07"
+      },
+      {
+        "certification_id": "UCOS-CERT-DMC-09-a384f960567e9ffb",
+        "certified": true,
+        "concern_doc": "DATA-013",
+        "meta_class": "DMC-09",
+        "name": "Quality-Object",
+        "unit": "EC3-B10-U08"
+      },
+      {
+        "certification_id": "UCOS-CERT-DMC-10-afa02b108e3ca0c5",
+        "certified": true,
+        "concern_doc": "DATA-014",
+        "meta_class": "DMC-10",
+        "name": "Security-Object",
+        "unit": "EC3-B10-U09"
+      },
+      {
+        "certification_id": "UCOS-CERT-DMC-04-29b2b5d6ede59cce",
+        "certified": true,
+        "concern_doc": "DATA-008",
+        "meta_class": "DMC-04",
+        "name": "Relationship",
+        "unit": "EC3-B10-U10"
+      },
+      {
+        "certification_id": "UCOS-CERT-UDM-9f3f055879bb2b43",
+        "certified": true,
+        "concern_doc": "DATA-005",
+        "meta_class": "UDM",
+        "name": "Universal Data Meta-Model",
+        "unit": "EC3-B10-U11"
+      }
+    ],
+    "version": "1.0.0"
+  },
+  "completion_criteria": {
+    "BCC-1": true,
+    "BCC-2": true,
+    "BCC-3": true,
+    "BCC-4": true,
+    "BCC-5": true,
+    "BCC-6": true,
+    "BCC-7": true,
+    "BCC-8": true
+  },
+  "completion_criteria_definitions": {
+    "BCC-1": "All eleven realization units physically exist and are CERTIFIED.",
+    "BCC-2": "Meta-class realization complete — DMC-01…10 realized; no eleventh meta-class.",
+    "BCC-3": "Meta-model integration complete — the DATA-005 model-of-the-model is CERTIFIED.",
+    "BCC-4": "Dependency closure acyclic, downward-only; no forward/upward dependency.",
+    "BCC-5": "Consistency — the whole-band spine closes over DMR-01…12 (via U11).",
+    "BCC-6": "Reuse by reference — no EL-1/prior-unit concept redefined; no new primitive.",
+    "BCC-7": "Non-constitutive — the completion confers no authority and selects no technology.",
+    "BCC-8": "Non-projection — realization completion is not operational/deployment readiness."
+  },
+  "criteria": {
+    "acceptance": {
+      "AC-1": true,
+      "AC-2": true,
+      "AC-3": true,
+      "AC-4": true,
+      "AC-5": true,
+      "AC-6": true,
+      "AC-7": true,
+      "AC-8": true
+    },
+    "certification_gates": {
+      "CC-1": true,
+      "CC-10": true,
+      "CC-2": true,
+      "CC-3": true,
+      "CC-4": true,
+      "CC-5": true,
+      "CC-6": true,
+      "CC-7": true,
+      "CC-8": true,
+      "CC-9": true
+    },
+    "data_compliance": {
+      "C1": true,
+      "C2": true,
+      "C3": true,
+      "C4": true,
+      "C5": true,
+      "C6": true,
+      "C7": true
+    },
+    "validation": {
+      "VC-1": true,
+      "VC-2": true,
+      "VC-3": true,
+      "VC-4": true,
+      "VC-5": true
+    }
+  },
+  "data_compliance_C1_C7": {
+    "compliance_format": "ucos-data-compliance/1.0.0",
+    "compliant": true,
+    "conditions": [
+      {
+        "backed_by": [
+          "band10-typed",
+          "band10-identified"
+        ],
+        "id": "C1",
+        "requirement": "Typed (UDL-03), identified and objecthood-bound (UDL-04/05).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "foundation-reuse-integrity"
+        ],
+        "id": "C2",
+        "requirement": "Reuses frozen foundations by reference without redefinition (UDL-02).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "data-value-fidelity"
+        ],
+        "id": "C3",
+        "requirement": "Value is ENG-003 value (UDL-06).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "band10-inventory-complete",
+          "band10-all-units-certified"
+        ],
+        "id": "C4",
+        "requirement": "Entity/attribute/schema structure is explicit (UDL-07/08/10).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "meta-relationships-closed",
+          "founding-acyclic"
+        ],
+        "id": "C5",
+        "materially_exercised": true,
+        "note": "the Band-10 spine closes over exactly the twelve meta-relationships DMR-01…12 via the CERTIFIED Universal Data Meta-Model (U11) and the eleven-unit founding graph is acyclic and downward-only — each relationship being an ENG-005 reference (UDL-09 at band level)",
+        "requirement": "Relationships are ENG-005 references; founding structure acyclic (UDL-09).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "band10-independence"
+        ],
+        "id": "C6",
+        "requirement": "Selects no technology; describes storage abstractly (UDL-11/15).",
+        "status": "pass"
+      },
+      {
+        "backed_by": [
+          "non-constitutive"
+        ],
+        "id": "C7",
+        "requirement": "Confers no authority and embeds no secret (UDL-15).",
+        "status": "pass"
+      }
+    ],
+    "standard": "DATA-001 §12",
+    "target_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52"
+  },
+  "determination": "COMPLETE",
+  "readiness_criteria": {
+    "BRC-1": true,
+    "BRC-2": true,
+    "BRC-3": true,
+    "BRC-4": true,
+    "BRC-5": true,
+    "BRC-6": true,
+    "BRC-7": true,
+    "BRC-8": true
+  },
+  "readiness_criteria_definitions": {
+    "BRC-1": "Completeness — all eleven realization units U01…U11 present in the inventory.",
+    "BRC-2": "Certification — every unit U01…U11 is CCE-CERTIFIED (reused by reference).",
+    "BRC-3": "Meta-class coverage — concern units cover exactly the ten meta-classes DMC-01…10.",
+    "BRC-4": "Dependency closure — the unit founding graph is acyclic and downward-only.",
+    "BRC-5": "Reuse integrity — every unit reuses EL-1/prior units by reference; no redefinition.",
+    "BRC-6": "Meta-model integration — U11 closes DMI-01…07 over the ten meta-classes.",
+    "BRC-7": "Traceability — the band lineage is rooted and closes to the 10-DATA anchor.",
+    "BRC-8": "Determinism — the completion record recomputes byte-identically."
+  },
+  "traceability": {
+    "backward": [
+      "BAND-10",
+      "MCP-003-MEP-01",
+      "EC-3-AP-2-BAND-10-ADMISSION-DETERMINATION",
+      "ARCH-DATA-001",
+      "10-DATA@b7e7657"
+    ],
+    "closed": true,
+    "constitutional_anchor": "b7e7657",
+    "forward": [
+      "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+      "EC3-B10-U12-VALIDATION-EVIDENCE",
+      "EC3-B10-U12-CCE-CERTIFICATION",
+      "EC3-B10-U12-COMPLETION-REPORT"
+    ],
+    "implementation_anchor": "30a2a02",
+    "meta_class": "BAND-10",
+    "rooted": true,
+    "substrate": [
+      "ENG-001",
+      "ENG-002",
+      "ENG-004",
+      "ENG-005",
+      "CCE"
+    ],
+    "substrate_reuse": {
+      "CCE": "data.certification.cce_gates — the CERTIFIED ten-gate suite, reused verbatim",
+      "ENG-001": "engine.certification.contracts.content_hash (deterministic identity)",
+      "ENG-002": "python frozen object (immutable objecthood bearing the completion record)",
+      "ENG-004": "band-completion typing discipline (ENG-004)",
+      "ENG-005": "each unit referenced by certification id (never owned)",
+      "unit_EC3-B10-U01": "DMC-01 Datum (UCOS-CERT-DMC-01-51e5964b38741e30) — certified realization referenced, not owned",
+      "unit_EC3-B10-U02": "DMC-03 Attribute (UCOS-CERT-DMC-03-c57d36d3dbb2763d) — certified realization referenced, not owned",
+      "unit_EC3-B10-U03": "DMC-02 Entity (UCOS-CERT-DMC-02-def41470d3bac196) — certified realization referenced, not owned",
+      "unit_EC3-B10-U04": "DMC-05 Schema (UCOS-CERT-DMC-05-e9edc215907c8695) — certified realization referenced, not owned",
+      "unit_EC3-B10-U05": "DMC-06 Storage (UCOS-CERT-DMC-06-aa8d65c34494943a) — certified realization referenced, not owned",
+      "unit_EC3-B10-U06": "DMC-07 Lifecycle (UCOS-CERT-DMC-07-10cb52fd186c7693) — certified realization referenced, not owned",
+      "unit_EC3-B10-U07": "DMC-08 Governance-Object (UCOS-CERT-DMC-08-07e9db1834b26c10) — certified realization referenced, not owned",
+      "unit_EC3-B10-U08": "DMC-09 Quality-Object (UCOS-CERT-DMC-09-a384f960567e9ffb) — certified realization referenced, not owned",
+      "unit_EC3-B10-U09": "DMC-10 Security-Object (UCOS-CERT-DMC-10-afa02b108e3ca0c5) — certified realization referenced, not owned",
+      "unit_EC3-B10-U10": "DMC-04 Relationship (UCOS-CERT-DMC-04-29b2b5d6ede59cce) — certified realization referenced, not owned",
+      "unit_EC3-B10-U11": "UDM Universal Data Meta-Model (UCOS-CERT-UDM-9f3f055879bb2b43) — certified realization referenced, not owned"
+    },
+    "target_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+    "trace_format": "ucos-data-traceability/1.0.0",
+    "unit": "EC3-B10-U12"
+  },
+  "unit": "EC3-B10-U12",
+  "unit_count": 11,
+  "unit_inventory": [
+    {
+      "certification_id": "UCOS-CERT-DMC-01-51e5964b38741e30",
+      "certified": true,
+      "concern_doc": "DATA-001…005 (DOE-01 root)",
+      "meta_class": "DMC-01",
+      "name": "Datum",
+      "unit": "EC3-B10-U01"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-03-c57d36d3dbb2763d",
+      "certified": true,
+      "concern_doc": "DATA-007",
+      "meta_class": "DMC-03",
+      "name": "Attribute",
+      "unit": "EC3-B10-U02"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-02-def41470d3bac196",
+      "certified": true,
+      "concern_doc": "DATA-006",
+      "meta_class": "DMC-02",
+      "name": "Entity",
+      "unit": "EC3-B10-U03"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-05-e9edc215907c8695",
+      "certified": true,
+      "concern_doc": "DATA-009",
+      "meta_class": "DMC-05",
+      "name": "Schema",
+      "unit": "EC3-B10-U04"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-06-aa8d65c34494943a",
+      "certified": true,
+      "concern_doc": "DATA-010",
+      "meta_class": "DMC-06",
+      "name": "Storage",
+      "unit": "EC3-B10-U05"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-07-10cb52fd186c7693",
+      "certified": true,
+      "concern_doc": "DATA-011",
+      "meta_class": "DMC-07",
+      "name": "Lifecycle",
+      "unit": "EC3-B10-U06"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-08-07e9db1834b26c10",
+      "certified": true,
+      "concern_doc": "DATA-012",
+      "meta_class": "DMC-08",
+      "name": "Governance-Object",
+      "unit": "EC3-B10-U07"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-09-a384f960567e9ffb",
+      "certified": true,
+      "concern_doc": "DATA-013",
+      "meta_class": "DMC-09",
+      "name": "Quality-Object",
+      "unit": "EC3-B10-U08"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-10-afa02b108e3ca0c5",
+      "certified": true,
+      "concern_doc": "DATA-014",
+      "meta_class": "DMC-10",
+      "name": "Security-Object",
+      "unit": "EC3-B10-U09"
+    },
+    {
+      "certification_id": "UCOS-CERT-DMC-04-29b2b5d6ede59cce",
+      "certified": true,
+      "concern_doc": "DATA-008",
+      "meta_class": "DMC-04",
+      "name": "Relationship",
+      "unit": "EC3-B10-U10"
+    },
+    {
+      "certification_id": "UCOS-CERT-UDM-9f3f055879bb2b43",
+      "certified": true,
+      "concern_doc": "DATA-005",
+      "meta_class": "UDM",
+      "name": "Universal Data Meta-Model",
+      "unit": "EC3-B10-U11"
+    }
+  ],
+  "validation": {
+    "acceptance": {
+      "accepted": true,
+      "advisory_failures": [],
+      "blocking_failures": [],
+      "blueprint_id": "BAND-10",
+      "target_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+      "verdict": "pass"
+    },
+    "evidence": {
+      "accepted": true,
+      "blocking_failures": [],
+      "blueprint_id": "BAND-10",
+      "checks_run": [
+        "band10-all-units-certified",
+        "band10-identified",
+        "band10-independence",
+        "band10-inventory-complete",
+        "band10-metamodel-integration-closed",
+        "band10-non-projection",
+        "band10-typed",
+        "band10-valid-state",
+        "band10-versioned",
+        "data-value-fidelity",
+        "foundation-reuse-integrity",
+        "founding-acyclic",
+        "meta-class-single",
+        "meta-relationships-closed",
+        "non-constitutive",
+        "provisional-state-disclosure",
+        "traceability-rooted"
+      ],
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 17,
+        "total": 17
+      },
+      "evidence_format": "ucos-validation-evidence/1.0.0",
+      "findings": [
+        {
+          "check_id": "band10-all-units-certified",
+          "details": {
+            "units_certified": 11
+          },
+          "message": "band10-all-units-certified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-identified",
+          "details": {
+            "band_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52"
+          },
+          "message": "band10-identified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-independence",
+          "details": {},
+          "message": "band10-independence satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-inventory-complete",
+          "details": {
+            "unit_count": 11
+          },
+          "message": "band10-inventory-complete satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-metamodel-integration-closed",
+          "details": {},
+          "message": "band10-metamodel-integration-closed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-non-projection",
+          "details": {},
+          "message": "band10-non-projection satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-typed",
+          "details": {
+            "type_tag": "ucos.core.band-completion"
+          },
+          "message": "band10-typed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-valid-state",
+          "details": {
+            "state": "DEFINED"
+          },
+          "message": "band10-valid-state satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-versioned",
+          "details": {
+            "version": "1.0.0"
+          },
+          "message": "band10-versioned satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "data-value-fidelity",
+          "details": {
+            "value_digest": "63750c0130e66c526160953ad5188b660386101669f7f73d9498f1fa7cd849b4"
+          },
+          "message": "data-value-fidelity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "foundation-reuse-integrity",
+          "details": {
+            "substrate": [
+              "ENG-001",
+              "ENG-002",
+              "ENG-004",
+              "ENG-005",
+              "CCE"
+            ]
+          },
+          "message": "foundation-reuse-integrity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "founding-acyclic",
+          "details": {},
+          "message": "founding-acyclic satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-class-single",
+          "details": {
+            "coverage": "DMC-01…10"
+          },
+          "message": "meta-class-single satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-relationships-closed",
+          "details": {},
+          "message": "meta-relationships-closed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "non-constitutive",
+          "details": {},
+          "message": "non-constitutive satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "provisional-state-disclosure",
+          "details": {
+            "disclosure_id": "EC-1-PROVISIONAL-STATE"
+          },
+          "message": "provisional-state-disclosure satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "traceability-rooted",
+          "details": {
+            "links": 5
+          },
+          "message": "traceability-rooted satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "target_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+      "verdict": "pass"
+    },
+    "report": {
+      "accepted": true,
+      "blueprint_id": "BAND-10",
+      "counts": {
+        "advisory_failed": 0,
+        "blocking_failed": 0,
+        "failed": 0,
+        "passed": 17,
+        "total": 17
+      },
+      "findings": [
+        {
+          "check_id": "band10-all-units-certified",
+          "details": {
+            "units_certified": 11
+          },
+          "message": "band10-all-units-certified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-identified",
+          "details": {
+            "band_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52"
+          },
+          "message": "band10-identified satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-independence",
+          "details": {},
+          "message": "band10-independence satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-inventory-complete",
+          "details": {
+            "unit_count": 11
+          },
+          "message": "band10-inventory-complete satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-metamodel-integration-closed",
+          "details": {},
+          "message": "band10-metamodel-integration-closed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-non-projection",
+          "details": {},
+          "message": "band10-non-projection satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-typed",
+          "details": {
+            "type_tag": "ucos.core.band-completion"
+          },
+          "message": "band10-typed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-valid-state",
+          "details": {
+            "state": "DEFINED"
+          },
+          "message": "band10-valid-state satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "band10-versioned",
+          "details": {
+            "version": "1.0.0"
+          },
+          "message": "band10-versioned satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "data-value-fidelity",
+          "details": {
+            "value_digest": "63750c0130e66c526160953ad5188b660386101669f7f73d9498f1fa7cd849b4"
+          },
+          "message": "data-value-fidelity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "foundation-reuse-integrity",
+          "details": {
+            "substrate": [
+              "ENG-001",
+              "ENG-002",
+              "ENG-004",
+              "ENG-005",
+              "CCE"
+            ]
+          },
+          "message": "foundation-reuse-integrity satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "founding-acyclic",
+          "details": {},
+          "message": "founding-acyclic satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-class-single",
+          "details": {
+            "coverage": "DMC-01…10"
+          },
+          "message": "meta-class-single satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "meta-relationships-closed",
+          "details": {},
+          "message": "meta-relationships-closed satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "non-constitutive",
+          "details": {},
+          "message": "non-constitutive satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "provisional-state-disclosure",
+          "details": {
+            "disclosure_id": "EC-1-PROVISIONAL-STATE"
+          },
+          "message": "provisional-state-disclosure satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        },
+        {
+          "check_id": "traceability-rooted",
+          "details": {
+            "links": 5
+          },
+          "message": "traceability-rooted satisfied",
+          "severity": "blocking",
+          "status": "pass"
+        }
+      ],
+      "target_id": "UCOS-BAND10-ucos.data.band10.completion-63750c0130e66c52",
+      "verdict": "pass"
+    }
+  },
+  "version": "1.0.0"
+}

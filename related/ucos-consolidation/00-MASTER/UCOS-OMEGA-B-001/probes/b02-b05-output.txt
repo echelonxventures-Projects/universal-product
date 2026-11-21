@@ -1,0 +1,113 @@
+
+==============================================================================
+B-02.1  GUARD KIND CENSUS — how many kinds of rule can a transition express?
+==============================================================================
+  Transition fields          : ['source', 'target', 'rule', 'justification', 'requires_reason', 'blocked_by']
+  GUARD-BEARING fields       : ['requires_reason', 'blocked_by']   -> guard kinds = 2
+  Transition is frozen       : True
+  blocked_by is tuple[GovernanceState, ...] — a MEMBERSHIP TEST ONLY. state.check reads it
+  as `state in transition.blocked_by`, so it can express 'forbidden while holding X' and
+  nothing else: no count, no threshold, no predicate, no context.
+
+==============================================================================
+B-02.2  N-OF-M APPROVALS, ATTEMPTED
+==============================================================================
+  target edge: Ω²-S-22  UNCERTIFIED -> CERTIFIED
+  available levers: requires_reason=False, blocked_by=['CONTRADICTED', 'UNATTRIBUTED', 'UNGOVERNED', 'UNKNOWN']
+  [REFUSED    ] N-of-M approvals
+      check() ACCEPTED a reason naming ONE approver where three are required (edge=Ω²-S-22). The shortfall is undetectable: the only
+      carrier is `reason: str` and the only test is `not reason.strip()` (state.py check()).
+
+==============================================================================
+B-02.3  JUSTIFICATION SEMANTICS, ATTEMPTED (Ω∞-A G-02 reproduction)
+==============================================================================
+    reason='x'                ACCEPTED  rule=Ω²-S-12  -> EXEMPTED
+    reason='.'                ACCEPTED  rule=Ω²-S-12  -> EXEMPTED
+    reason='0'                ACCEPTED  rule=Ω²-S-12  -> EXEMPTED
+    reason='no'               ACCEPTED  rule=Ω²-S-12  -> EXEMPTED
+    reason='TODO'             ACCEPTED  rule=Ω²-S-12  -> EXEMPTED
+    reason='  see ticket  '   ACCEPTED  rule=Ω²-S-12  -> EXEMPTED
+  [REFUSED    ] semantic justification
+      Ω²-S-12 (UNGOVERNED -> EXEMPTED, requires_reason=True) accepted every string above.
+      The guard is syntactic: `not reason.strip()`. Ω∞-A G-02 reproduced exactly.
+
+==============================================================================
+B-02.4  THE EIGHT GOVERNANCE CAPABILITIES, ATTEMPTED AGAINST authority.py
+==============================================================================
+  three sources claimed 'art' at OWNER (BOB twice, ALICE once)
+    link.claims  = ('ALICE', 'BOB')   <- set()-deduped, so BOB's two votes became one
+    link.selected= 'ALICE'  <- sorted(set(claims))[0], an ALPHABETICAL pick
+    chain.authority = 'ALICE'  (a single str)
+    link.contested  = True
+  [REFUSED    ] N-of-M / quorum
+      multiplicity is recorded as a CONTEST flag and collapsed to one alphabetically chosen
+      string. There is no count, threshold or roster anywhere in the model.
+  [REFUSED    ] weighted authority
+      AuthorityLink.__post_init__ applies set() to claims, DESTROYING vote multiplicity before
+      any aggregation could occur. Weight has no field to live in.
+  AuthorityTier    fields: ['rank', 'name', 'rule', 'description', 'fallback']
+  AuthorityLink    fields: ['rank', 'tier', 'sources', 'claims', 'selected']
+  AuthorityChain   fields: ['subject', 'authority', 'tier', 'rule', 'links', 'fallback']
+  AuthoritySource.claim signature: (subject: str) -> str   # no context, no as-of, no domain
+  AuthorityResolver public methods: ['fallback_events', 'register', 'report', 'resolve', 'resolve_all', 'sources_at']
+  [REFUSED    ] delegation
+      no authority->authority relation exists; MappingSource.claims is subject->authority.
+  [REFUSED    ] conditional authority
+      claim() takes only a subject; resolve() passes nothing else. No condition can be recorded.
+  [REFUSED    ] time-bounded authority
+      no valid_from/valid_until on any type; resolve() has no as-of parameter; only FallbackEvent
+      carries a TemporalCoordinate, and only on fallback arrivals.
+  [REFUSED    ] revocable authority
+      AuthorityResolver has no unregister/revoke; register() only appends. The single mutation
+      channel (MappingSource.claims dict aliasing) emits no event.
+  [EXPRESSIBLE] multi-domain authority
+      PARTIAL: scope-by-SUBJECT works via ABSTAIN. Scope-by-DOMAIN does not — AuthoritySource.tier()
+      returns exactly one tier and AuthorityChain has no domain/scope field.
+
+==============================================================================
+B-05.1  CERTIFICATION COUPLING POINTS, AS BUILT
+==============================================================================
+  certification.py present: False
+
+  The de facto certification input set, as built — the blocked_by tuples on every
+  edge inbound to a CERTIFICATION-axis position:
+    Ω²-S-26  -> CERTIFIED                reason_required=False  blockers=CONTRADICTED, UNATTRIBUTED, UNGOVERNED, UNKNOWN
+    Ω²-S-22  -> CERTIFIED                reason_required=False  blockers=CONTRADICTED, UNATTRIBUTED, UNGOVERNED, UNKNOWN
+    Ω²-S-29  -> CONDITIONALLY_CERTIFIED  reason_required=True   blockers=(none)
+    Ω²-S-23  -> CONDITIONALLY_CERTIFIED  reason_required=True   blockers=CONTRADICTED, UNATTRIBUTED, UNKNOWN
+    Ω²-S-30  -> REJECTED                 reason_required=True   blockers=(none)
+    Ω²-S-27  -> REJECTED                 reason_required=True   blockers=(none)
+    Ω²-S-24  -> REJECTED                 reason_required=True   blockers=(none)
+    Ω²-S-34  -> REJECTED                 reason_required=True   blockers=(none)
+    Ω²-S-32  -> UNCERTIFIED              reason_required=True   blockers=(none)
+    Ω²-S-33  -> UNCERTIFIED              reason_required=False  blockers=(none)
+    Ω²-S-31  -> UNVERIFIABLE             reason_required=True   blockers=(none)
+    Ω²-S-28  -> UNVERIFIABLE             reason_required=True   blockers=(none)
+    Ω²-S-25  -> UNVERIFIABLE             reason_required=True   blockers=(none)
+
+  COUPLING POINT: the certification precondition set is the frozen `blocked_by` tuple on
+  two frozen dataclass instances (Ω²-S-22, Ω²-S-26) held in the module-level constant
+  INITIAL_TRANSITIONS. It is a FIXED ENUMERATION of four preconditions, and it exists
+  TODAY — before certification.py is written. Ω∞-A A-11 recorded this as UNKNOWN/unbuilt;
+  it is measurable now.
+
+==============================================================================
+B-05.2  AN EIGHTH CERTIFICATION INPUT, ATTEMPTED AT RUNTIME
+==============================================================================
+  registered a 7th axis at runtime: PROVENANCE  (axes now 7)
+  Rule 3 holds for the VOCABULARY: zero source edits required. ✓
+
+  Now make it a certification precondition — i.e. an EIGHTH certification input:
+    existing edge Ω²-S-22 blocked_by = ['CONTRADICTED', 'UNATTRIBUTED', 'UNGOVERNED', 'UNKNOWN']
+    ATTEMPT 1 (assign blocked_by)      : REFUSED   FrozenInstanceError: cannot assign to field 'blocked_by'
+    ATTEMPT 2 (register replacement)   : REFUSED   StateError: the edge UNCERTIFIED -> CERTIFIED is already declared as Ω²-S-22, and a second declaration as Ω²-S-22-v2 would make the applicable guard depend on tab
+
+    ATTEMPT 3 (does it gate a decision?): CERTIFIED PERMITTED via Ω²-S-22
+  [REFUSED    ] eighth certification input, registered at runtime, zero source edits
+      The vocabulary widened (7 axes, UNPROVENANCED declared) and the artifact still certifies.
+      The new concern is registrable and NON-BINDING. Making it bind requires editing
+      INITIAL_TRANSITIONS in state.py. Ω∞-A Step 2's exit criterion FAILS on current code.
+
+  And note the compounding effect measured by B-01:
+    assert_total now reports every pre-existing record as incomplete (Ω∞-A C-02),
+      -> assert_total RAISED : these artifacts hold no position on at least one registered axis, so their governance record is silent about a concern the model requires th

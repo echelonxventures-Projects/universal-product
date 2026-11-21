@@ -1,0 +1,56 @@
+{
+  "backward": [
+    "UAM",
+    "APPLICATION-005",
+    "APPLICATION-004",
+    "APPLICATION-003",
+    "APPLICATION-001",
+    "ARCH-APPLICATION-001",
+    "12-APPLICATION@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-METAMODEL-ucos.application.metamodel.universal-2c2de069de3e71ff",
+    "EC3-B12-U11-VALIDATION-EVIDENCE",
+    "EC3-B12-U11-CCE-CERTIFICATION",
+    "EC3-B12-U11-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "3899a1f",
+  "meta_class": "UAM",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "PL-F2",
+    "SF-2",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "AMC-01..10": "the ten CERTIFIED concern-meta-class realizations — referenced, not owned",
+    "DF-2": "DATA represented-data concern — bound by reference (AMR-14 presents-data)",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the meta-model record)",
+    "ENG-004": "meta-class + meta-relationship typing discipline (ENG-004)",
+    "ENG-005": "meta-relationship edges + member certification references (§3 / AMR-01…14)",
+    "PL-F2": "PLATFORM composition concern — bound by reference (AMR-07 assembled-by; AMR-12)",
+    "RL-F2": "RUNTIME behaviour/state concern — bound by reference (AMR-11 behaves-as; AMR-06)",
+    "SF-2": "SERVICE contracted-operation concern — bound by reference (AMR-13 consumes-operation)",
+    "member_AMC-01": "EC3-B12-U01 (AMC-01 Application; UCOS-CERT-AMC-01-d998321c1b00d7ff) — integrated by reference, not owned",
+    "member_AMC-02": "EC3-B12-U02 (AMC-02 Capability; UCOS-CERT-AMC-02-11e2bb8f2e5cc83b) — integrated by reference, not owned",
+    "member_AMC-03": "EC3-B12-U03 (AMC-03 Module; UCOS-CERT-AMC-03-aee97c46c547be1b) — integrated by reference, not owned",
+    "member_AMC-04": "EC3-B12-U04 (AMC-04 Feature; UCOS-CERT-AMC-04-131cf02cedaf8143) — integrated by reference, not owned",
+    "member_AMC-05": "EC3-B12-U05 (AMC-05 Workflow; UCOS-CERT-AMC-05-3e5a7af2eb3e485f) — integrated by reference, not owned",
+    "member_AMC-06": "EC3-B12-U06 (AMC-06 Interaction; UCOS-CERT-AMC-06-e95086b05372c21e) — integrated by reference, not owned",
+    "member_AMC-07": "EC3-B12-U07 (AMC-07 State; UCOS-CERT-AMC-07-153621617870c034) — integrated by reference, not owned",
+    "member_AMC-08": "EC3-B12-U08 (AMC-08 Composition; UCOS-CERT-AMC-08-dd8203eac65fe31e) — integrated by reference, not owned",
+    "member_AMC-09": "EC3-B12-U09 (AMC-09 Security; UCOS-CERT-AMC-09-b4e73a0096642169) — integrated by reference, not owned",
+    "member_AMC-10": "EC3-B12-U10 (AMC-10 Governance; UCOS-CERT-AMC-10-daa79bb6f252508a) — integrated by reference, not owned"
+  },
+  "target_id": "UCOS-METAMODEL-ucos.application.metamodel.universal-2c2de069de3e71ff",
+  "trace_format": "ucos-application-traceability/1.0.0",
+  "unit": "EC3-B12-U11"
+}

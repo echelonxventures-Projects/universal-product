@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "InfrastructureCapability",
+  "target_id": "UCOS-INFRA-CAPABILITY-ucos.infrastructure.capability.foundation-0ecdd206025821e0",
+  "verdict": "pass"
+}

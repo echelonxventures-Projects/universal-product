@@ -1,0 +1,110 @@
+
+==============================================================================
+B-01.1  SHIPPED STATE SPACE, MEASURED
+==============================================================================
+  ATTRIBUTION      2 positions
+  CERTIFICATION    5 positions
+  CONSISTENCY      2 positions
+  CUSTODY          5 positions
+  GOVERNANCE       3 positions
+  MEASUREMENT      3 positions
+  PRODUCT          900
+  EDGES            36
+  Ω∞-A reported 900 vectors and 36 edges. Reproduced: True
+
+==============================================================================
+B-01.2  GROWTH FUNCTION, RE-DERIVED FROM THE Ω∞-A DATA POINTS
+==============================================================================
+  |S|(n) = 900 · 2 · 3^(n-7) for n >= 7, i.e. Θ(3^n) — exponential in AXIS COUNT
+  n=6   computed=900            Ω∞-A reported=900            match=True
+  n=7   computed=1800           Ω∞-A reported=1800           match=True
+  n=10  computed=48600          Ω∞-A reported=48600          match=True
+  n=20  computed=2869781400     Ω∞-A reported=2869781400     match=True
+
+==============================================================================
+B-01.3  ASSURANCE CONTENT PER VECTOR — the measurement Ω∞-A did not take
+==============================================================================
+
+  invariant target: CERTIFIED
+    axes any guard on an inbound edge can read : ['ATTRIBUTION', 'CERTIFICATION', 'CONSISTENCY', 'CUSTODY', 'GOVERNANCE']
+    DISTINGUISHABLE cases                     : 300
+    vectors an exhaustive proof enumerates    : 900
+    REDUNDANCY FACTOR                        : 3x
+
+  invariant target: EXEMPTED
+    axes any guard on an inbound edge can read : ['CUSTODY', 'GOVERNANCE']
+    DISTINGUISHABLE cases                     : 15
+    vectors an exhaustive proof enumerates    : 900
+    REDUNDANCY FACTOR                        : 60x
+
+  invariant target: GOVERNED
+    axes any guard on an inbound edge can read : ['ATTRIBUTION', 'CUSTODY', 'GOVERNANCE']
+    DISTINGUISHABLE cases                     : 30
+    vectors an exhaustive proof enumerates    : 900
+    REDUNDANCY FACTOR                        : 30x
+
+  A newly registered axis appears in NO existing edge's blocked_by, so it cannot enter
+  the relevant set. Registering an axis with k positions therefore multiplies the
+  enumeration by k and adds EXACTLY ZERO distinguishable cases.
+
+  Redundancy factor for `UNKNOWN never certifies` as axes are registered:
+    n=6   enumerated=900            distinguishing=300  redundancy=3x
+    n=7   enumerated=1800           distinguishing=300  redundancy=6x
+    n=10  enumerated=48600          distinguishing=300  redundancy=162x
+    n=20  enumerated=2869781400     distinguishing=300  redundancy=9,565,938x
+
+==============================================================================
+B-01.4  THE EXHAUSTIVE PROOF, EXECUTED ON THE SHIPPED MODEL
+==============================================================================
+  vectors enumerated        : 900
+  vectors holding UNKNOWN   : 180
+  violations found          : 0
+  wall seconds              : 0.0020
+  cost per unit of assurance: 0.000007 s per distinguishable case
+
+==============================================================================
+B-01.5  THE STRUCTURAL PROOF, EXECUTED — O(|E|), INDEPENDENT OF AXIS COUNT
+==============================================================================
+  edges_inspected                            36
+  inbound_to_UNKNOWN                         []
+  inbound_to_CERTIFIED                       ['Ω²-S-26', 'Ω²-S-22']
+  inbound_to_CERTIFIED_not_guarding_UNKNOWN  []
+  holds                                      True
+  seconds                                    4.4874963350594044e-05
+
+==============================================================================
+B-01.6  FAILURE THRESHOLD, MEASURED BY REGISTRATION (Rule 3 used as advertised)
+==============================================================================
+  axes               |S|    enumerated  UNKNOWN-held  viol     seconds
+  6                  900           900           180     0      0.0020
+  7                2,700         2,700           540     0      0.0074
+  8                8,100         8,100         1,620     0      0.0258
+  9               24,300        24,300         4,860     0      0.0859
+  10              72,900        72,900        14,580     0      0.2920
+  11             218,700       218,700        43,740     0      0.9829
+  12             656,100       656,100       131,220     0      3.2346
+  13           1,968,300     1,968,300       393,660     0     11.0793
+
+  Extrapolated at the measured per-vector rate (same code, same machine):
+    n=16  |S|=        35,429,400  ~           199 s  (~       0.0 days)
+    n=18  |S|=       318,864,600  ~         1,795 s  (~       0.0 days)
+    n=20  |S|=     2,869,781,400  ~        16,154 s  (~       0.2 days)
+    n=25  |S|=   697,356,880,200  ~     3,925,314 s  (~      45.4 days)
+
+==============================================================================
+B-01.7  DELIVERABLE Ω-2.9 — DOES THE EXHAUSTIVE PROOF EXIST?
+==============================================================================
+  invariants.py        ABSENT
+  certification.py     ABSENT
+  registry.py          ABSENT
+  contradiction.py     ABSENT
+  selfverify.py        ABSENT
+  adapters.py          ABSENT
+  evidence.py          ABSENT
+  __main__.py          ABSENT
+  schema.py            ABSENT
+
+  state.py:58 asserts `invariants.unknown_never_certifies` enumerates all 900 vectors.
+  __init__.py:34 lists invariants.py as 'seven executable proofs, two of them exhaustive'.
+  The module is ABSENT. The exhaustive proof is a DOCUMENTED CLAIM, not a built artifact —
+  which is why B-01.4 above had to reconstruct it in this probe to measure it at all.

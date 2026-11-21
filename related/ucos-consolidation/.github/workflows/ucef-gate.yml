@@ -1,0 +1,122 @@
+name: UCEF-000001 Constitutional Evolution Gate
+
+# UCEF-000001 — Universal Constitutional Evolution Framework (CEP-009-AMD-001).
+#
+# This workflow adds NO new validator, engine, authority or capability. It runs the executable
+# expression of the constitutional-evolution contract declared in
+# 00-MASTER/UCEF-000001/ucef-framework.json, whose NORMATIVE home is ADDENDUM B of
+# 00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md — the located owner of
+# constitutional evolution (00-CMG/CMG-000001 Article LXXXII, CMG-DLG-09).
+#
+# Every law, lifecycle stage, acceptance property, expansion axis, construct class and
+# governance obligation in that DATA file BINDS to an authority that already exists: the
+# meta-governance construct taxonomy, ontology, Constitution Registry, reuse and extension
+# rules and admission procedure (00-CMG/CMG-000001 Art XIII, XIV, XV, XL, XLI, LXXVI, LXXVII);
+# governance change control and decision assimilation (00-CEP/CEP-002 Art 20, 21, 28);
+# validation (00-CEP/CEP-004 with verify.sh); certification (00-CEP/CEP-005 with the
+# CERTIFICATION-REGISTRY); evidence and traceability (00-CEP/CEP-008); freeze and supersession
+# (00-CEP/CEP-007); automatic artifact registration (REG-AUTO-001 with
+# 00-BOOK/tools/register.sh); the universal implementation contract (00-MASTER/UCIC-001); and
+# the evolution registry (00-CEP/CEP-009 Art XVI with 00-MASTER/EVOLUTION-001).
+#
+# Nothing is enumerated here. Admitting a further construct class, expansion axis, lifecycle
+# stage, acceptance property, governance obligation or validation dimension is an entry in the
+# DATA file — this workflow never needs to change. The `--check-no-enumeration` self-guard
+# proves the same of the engine.
+#
+# Exit semantics of the gate:
+#   0  every law is anchored to a located basis, every lifecycle stage is bound to a located
+#      owner OUTSIDE this programme, every acceptance property is discharged by a located
+#      mechanism, the construct register is declared OPEN and non-exhaustive, no expansion axis
+#      declares a finite bound, the stage graph is acyclic with complete dependency closure,
+#      and every mandatory validation dimension and exit criterion is satisfied (gate OPEN)
+#   1  a binding, validation dimension or exit criterion is unsatisfied (gate CLOSED)
+#   2  fail-closed abort — the declaration is unusable, so no verdict may be asserted
+#
+# Standing: CERTIFIED-PROVISIONAL. Tier T1 is VACANT (VAC-01 / CMG-OQ-02) and no ratification
+# authority exists within the located corpus (CMG-OQ-01), so no determination this gate reports
+# is ratified or final.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ucef-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: UCEF self-guards (declaration · zero-enumeration · write-scope · determinism · reuse · open-world)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+      - name: Declaration integrity (every law basis, stage owner, mechanism and instrument resolves)
+        run: python3 00-MASTER/UCEF-000001/ucef_engine.py --check-declaration
+
+      - name: Zero-enumeration (no law, stage, construct class, axis, property or dimension is hardcoded)
+        run: python3 00-MASTER/UCEF-000001/ucef_engine.py --check-no-enumeration
+
+      - name: Forbidden-write guard (no frozen, corpus or certified artifact is ever written)
+        run: python3 00-MASTER/UCEF-000001/ucef_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical assessment and rendering, no wall-clock emitted)
+        run: python3 00-MASTER/UCEF-000001/ucef_engine.py --check-determinism
+
+      - name: Reuse-before-create guard (no bound authority lies inside this programme's own home)
+        run: python3 00-MASTER/UCEF-000001/ucef_engine.py --check-reuse-before-create
+
+      - name: Open-world guard (no finite architectural ceiling is declared anywhere)
+        run: python3 00-MASTER/UCEF-000001/ucef_engine.py --check-open-world
+
+  constitutional-evolution-gate:
+    name: Constitutional Evolution Gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Constitutional Evolution Gate (fail-closed)
+        run: python3 00-MASTER/UCEF-000001/ucef_engine.py --gate
+
+      # The committed registers must equal the rendered fixed point, exactly as the other
+      # replay gates require. A drift here means the registers were hand-edited or a binding
+      # moved without regeneration.
+      - name: Replay drift gate (committed registers == rendered fixed point)
+        run: |
+          python3 00-MASTER/UCEF-000001/ucef_engine.py --render
+          git diff --exit-code -- 00-MASTER/UCEF-000001
+
+      - name: Publish the constitutional-evolution registers
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ucef-determinations
+          path: |
+            00-MASTER/UCEF-000001/*.md
+            00-MASTER/UCEF-000001/ucef.json
+            00-MASTER/UCEF-000001/evidence/
+          if-no-files-found: warn

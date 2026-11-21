@@ -1,0 +1,127 @@
+
+==============================================================================
+B-03.1  VOCABULARY IDENTITY — can any registry state what it contains?
+==============================================================================
+  registry                  digest?   declared_by?   diverges_from?  public API
+  DomainRegistry            NO        NO             NO              ['assert_authority_total', 'capable', 'declare', 'declare_domain', 'known', 'report', 'resolve', 'unexecutable_invariants', 'validate']
+  StateRegistry             NO        NO             NO              ['axes', 'declare', 'declare_name', 'initial', 'known', 'on_axis', 'resolve']
+  TransitionGraph           NO        NO             NO              ['edge', 'incoming', 'known', 'on_axis', 'outgoing', 'register', 'rule']
+  TransformationRegistry    NO        NO             NO              ['apply', 'between', 'computable', 'declare', 'declared', 'path', 'register', 'report', 'resolve', 'uncomputable']
+  CapabilityRegistry        NO        NO             NO              ['declare', 'declare_name', 'known', 'resolve']
+  CodecRegistry             NO        NO             NO              ['known', 'register', 'resolve', 'supporting']
+  IdentityRegistry          NO        NO             NO              ['known', 'register', 'resolve']
+
+  MEASURED: zero of seven registries can state what they contain. `grep -rn 'def digest'
+  engine/omega_governance/` returns nothing. `declared_by` exists ONLY on Provenance
+  (domain.py:240), which is per-DOMAIN, not per-REGISTRY.
+
+==============================================================================
+B-03.2  DIVERGENT VOCABULARIES, ONE RECORD, TWO SUCCESSES
+==============================================================================
+  the SAME value, fingerprint 428a2df3b3994c77f591a9085c0bc264fda76887d2ecf8ff8d107bd4b67bbb4b
+    node A findings : ("missing required field 'owner'",)
+    node B findings : () — VALID
+    node A domain authority: NODE-A-AUTHORITY
+    node B domain authority: NODE-B-AUTHORITY
+
+  DIVERGENT VERDICT on one record: A=INVALID, B=VALID.
+  Neither registry can detect the other. There is no comparison operator, no digest, and
+  no contradiction class for vocabulary divergence. Ω∞-A A-14 / G-10 reproduced.
+
+  MANUAL comparison via encoding.fingerprint(registry.report()):
+    node A: f28892b84564bd1549411daa47b254e608072c30212eb0babed5409a82fe95d0
+    node B: 9496894df8bd6602f8f9c4977a30006eb2a377b843c280246d1a8c5adcd4b325
+    differ: True  <- a digest IS derivable, but no code path produces or uses it
+
+==============================================================================
+B-03.3  NAME AGREEMENT WITH MEANING DIVERGENCE
+==============================================================================
+  node A declares MASS = kilograms; node B declares MASS = pounds
+    node A validate(MASS[70]) : () — VALID
+    node B validate(MASS[70]) : () — VALID
+  Both VALID. `Field.kind` is a free string this architecture deliberately never
+  interprets, so 'kilograms' vs 'pounds' lives only in prose. C-04 reproduced.
+
+  Does the registry's OWN conflict check catch it inside one process?
+    same-name/different-description in ONE registry: REFUSED (domain 'MASS' is already declared with different content; one name with two sche)
+    -> the check is INTRA-process only. Across two registries it cannot fire.
+
+==============================================================================
+B-03.4  REGISTRY FEDERATION, ATTEMPTED
+==============================================================================
+  node A holds: ['ALPHA']
+  node B holds: ['BETA']
+    DomainRegistry.merge            present: False
+    DomainRegistry.union            present: False
+    DomainRegistry.diverges_from    present: False
+    DomainRegistry.compare          present: False
+    DomainRegistry.digest           present: False
+    DomainRegistry.version          present: False
+    DomainRegistry.as_of            present: False
+
+  Federation by MERGE is possible only by re-declaring B's domains into A by hand, and
+  the merge is SILENT: declare() returns the existing entry for an identical name and
+  raises only on differing CONTENT (domain.py:409-421). A merge therefore either succeeds
+  silently or raises on the FIRST conflict — it cannot report a population of divergences.
+
+==============================================================================
+B-04.1  TRANSFORMATION ARITY, BY SIGNATURE
+==============================================================================
+  Transformation fields : ['identifier', 'source', 'target', 'authority', 'description', 'invertible', 'lossy']
+    source: str  (exactly ONE)   target: str  (exactly ONE)
+  registry edge index   : dict[tuple[str, str], str]  -> ONE edge per ordered pair
+  register signature    : (self, transformation: 'Transformation', computation: 'Callable[[Value], Value] | None' = None) -> 'Transformation'
+  computation type      : Callable[[Value], Value]  -> ONE value in, ONE value out
+  apply signature       : (self, value: 'Value', target: 'str') -> 'TransformationOutcome'
+  path signature        : (self, source: 'str', target: 'str') -> 'tuple[Transformation, ...]'
+
+  FOUR FIXED ASSUMPTIONS, all structural:
+    fixed inputs      Transformation.source is a single str; Callable takes one Value
+    fixed outputs     Transformation.target is a single str; Callable returns one Value
+    fixed cardinality 1:1 — enforced by the dict[tuple[str,str], str] edge index
+    fixed topology    a DIRECTED GRAPH searched by BFS; a hyperedge has no representation
+
+==============================================================================
+B-04.2  N-ARY TRANSFORMATION, ATTEMPTED THREE WAYS
+==============================================================================
+  attempt 1: declare a 3-source transformation directly
+    REFUSED   AttributeError: 'tuple' object has no attribute 'strip'
+
+  attempt 2: the documented workaround — invent a composite intermediate domain
+    ACCEPTED — but SPACE_TIME_FRAME must now be DECLARED as a reference domain with
+    its own schema. That is a SCHEMA MODIFICATION, i.e. the workaround IS the barrier.
+    And the composite loses the fact that it has three parts: 'SPACE_TIME_FRAME'
+
+  attempt 3: fan-in as multiple 1:1 edges — is it distinguishable from a chain?
+    two edges now target VELOCITY: ['Ω∞-PROBE-A', 'Ω∞-PROBE-B', 'Ω∞-PROBE-VEL-2']
+    But nothing records that BOTH are required. path('SPACE','VELOCITY') returns
+    ['Ω∞-PROBE-A'] — a COMPLETE route, so
+    apply() would convert from SPACE alone and report success. Conjunction is
+    indistinguishable from ALTERNATIVE.
+
+==============================================================================
+B-04.3  TWO AUTHORITIES FOR ONE PAIR, ATTEMPTED
+==============================================================================
+  declared MARS_SOL -> SI_SECOND on authority IAU
+    a SECOND authority for the same pair: REFUSED
+      MARS_SOL -> SI_SECOND is already declared as 'Ω∞-PROBE-IAU'; a second declaration as 'Ω∞-PROBE-NASA' would make the applicable authority and loss statement depend on registration order
+
+  CONSEQUENCE (new, not in Ω∞-A): the edge index is keyed by (source, target), so exactly
+  ONE authority may relate any two domains. Two ephemeris publishers, two precisions, or a
+  superseded factor alongside its replacement are all inexpressible. A registry built to
+  remove 'a factor nobody answers for' cannot hold 'a factor two bodies answer for
+  differently' — which is the normal condition in physical metrology.
+
+==============================================================================
+B-04.4  LOSSY PROXY FOR A NON-ENCODABLE ARTIFACT, ATTEMPTED (Ω∞-A C-01)
+==============================================================================
+  declared: {'transformation': 'Ω∞-PROBE-PROXY', 'source': 'PHYSICAL_SPECIMEN', 'target': 'ARTIFACT', 'authority': 'PROBE-LAB', 'description': 'a specimen is governed by proxy through its catalogue record', 'invertible': False, 'lossy': True}
+  computable here: False
+
+  The proxy relationship IS declarable as a lossy, authority-bearing, non-computable
+  transformation. Ω∞-A C-01's open action is therefore MECHANICALLY AVAILABLE and simply
+  UNTAKEN — no shipped declaration uses it. Falsification criterion 3 of the Ω∞-A core
+  proposal (the one it ranked MOST LIKELY to fire) does NOT fire: no sixth mechanism is
+  needed for physical reference.
+  RESIDUAL: `lossy: bool` states THAT fidelity is lost, never HOW MUCH. Fidelity remains
+  unquantified, so two proxies of very different quality are indistinguishable.

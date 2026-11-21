@@ -1,0 +1,17 @@
+{
+  "title": "UCOS Ω∞ Digital-Twin Connector Definition",
+  "description": "A registered connector (UKB-001) that ingests authoritative external state into append-only signals. Reference interface in 00-BOOK/tools/connectors/base.py. Embeds no secret (RR-07); credentials are external secret-manager handles only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["connector_id", "name", "sources", "mode"],
+  "properties": {
+    "connector_id": { "type": "string", "pattern": "^UCOS-CONN-[0-9]{6}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "sources": { "type": "array", "items": { "type": "string", "enum": ["GITHUB", "GITHUB_ACTIONS", "JIRA", "SONARQUBE", "OWASP", "TRIVY", "PROMETHEUS", "GRAFANA", "OPENTELEMETRY", "KUBERNETES", "CLOUD"] }, "minItems": 1 },
+    "dimensions": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "mode": { "type": "string", "enum": ["EVENT", "POLL_INCREMENTAL"] },
+    "cursor_key": { "type": ["string", "null"], "description": "Key in connector-cursors.json holding the high-water mark.", "default": null },
+    "secret_handle": { "type": ["string", "null"], "description": "External secret-manager handle (env://, vault://, awssm://). Never a secret value.", "default": null },
+    "status": { "type": "string", "enum": ["ACTIVE", "PLANNED", "DISABLED", "STALE"], "default": "PLANNED" }
+  }
+}

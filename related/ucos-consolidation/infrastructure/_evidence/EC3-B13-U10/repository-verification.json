@@ -1,0 +1,10 @@
+{
+  "artifact": "EC3-B13-U10-REPOSITORY-VERIFICATION",
+  "branch": "governance-reconciliation",
+  "branch_ok": true,
+  "clean": false,
+  "constitutional_anchor": "b7e7657",
+  "expected_branch": "governance-reconciliation",
+  "head": "5ed500b",
+  "unit": "EC3-B13-U10"
+}

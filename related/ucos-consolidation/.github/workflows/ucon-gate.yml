@@ -1,0 +1,340 @@
+name: UCON-000001 Universal Construct Foundation Gate
+
+# UCON-000001 — the Universal Construct Foundation, measured in CI.
+#
+# This workflow adds NO new authority and NO new registry. It runs the executable form of the
+# capability's own sixteen laws and refuses the commit if any blocking law is refused.
+#
+# WHAT IT ADDS NO AUTHORITY OVER. It does not own the ontology (01-WORKING/ONTOLOGY-REGISTER.md
+# via UCPA-000001), the existence or epistemic vocabularies (UCOS-CEU-001), identity
+# (UCKP-ART-05), context and location axes (UCXI-000001), temporal coordinates (CMG-000002) or
+# birth (UOBC-000001). Every reality state UCON declares NAMES the UCOS-CEU-001 row it derives
+# from, and law UCON-L-14 imports those seeds and refuses a binding CEU does not carry — so this
+# gate failing is either a UCON defect or a CEU change, never a private vocabulary drifting.
+#
+# WHY IT RUNS IN CI. The defect the capability closes was invisible precisely because it looked
+# like success. A construct whose classifying kind was unregistered raised MetaTypeUnknownError
+# and left no record, so "we governed a refusal" and "we never saw it" were the same observable
+# state; a contradiction was a three-string finding recomputed each run with no identity; an
+# unknown was a coercion-failure message. None of that produced a red build. A gate that only
+# ran locally would restore exactly that condition the first time somebody was in a hurry.
+#
+# WHAT EACH LAW PROVES, and which of them PERFORM rather than inspect:
+#   L-01  every construct carries exactly one active disposition — and a forged construct with
+#         none, or with two, is refused by the model (non-vacuity is measured, not argued)
+#   L-02  the rule set is total: exactly one catch-all and it is last, verified by presenting a
+#         construct engineered to match no specific rule and requiring the catch-all to take it
+#   L-03  the catch-all is ESCALATE, never REJECT. THE load-bearing law. A REJECT catch-all would
+#         discard precisely the constructs the rules failed to anticipate — the unforeseen, the
+#         future-originated, the currently unrepresentable — while reporting a clean, total,
+#         fully-covered run. Measured in two halves: against the declared expectation, and
+#         structurally (the catch-all disposition must reach every other one in a single step)
+#   L-04  operators are bound two-way to the declared rules, in both directions
+#   L-05  nothing is silently ignored: the population cannot exceed the presentations, and a
+#         REJECT must remain referenceable or a refusal becomes unreadable
+#   L-06  unknowns, contradictions, research and discovery objects are governed objects, and ANY
+#         construct is promotable to a research object
+#   L-07  recursive discovery reaches a fixed point — run twice, the second mints nothing
+#   L-08  PERFORMED: eleven categories this repository has never modelled are registered, and
+#         the package's own source fingerprint must be byte-identical afterwards
+#   L-09  PERFORMED: all nine declared extension points are admitted in memory, and every
+#         pre-existing declaration member must survive byte-identically
+#   L-10  nothing is terminal, and every state strong enough to certify can still fall to one
+#         that cannot — falsification stays reachable from the strongest state
+#   L-11  PERFORMED + STRUCTURAL: the whole 8x8 disposition x reality cross-product is realised,
+#         and both modules are parsed to confirm neither imports the other
+#   L-12  a verifier declaring no assumptions or no limitations is refused
+#   L-13  RATCHET, both directions: an undeclared guarantee claim in this package's own source,
+#         and a preserved site whose occurrence has gone, are both failures
+#   L-14  every reality state binds to a UCOS-CEU-001 row CEU actually carries, or discloses why
+#         no row exists — imported from the owner, never copied
+#   L-15  RATCHET, both directions: an undisclosed closure inside governed scope, and a stale
+#         disclosure, are both failures; and the population outside scope may not rise
+#   L-16  two measurements of one repository state produce identical bytes
+#
+# THE NON-VACUITY CLAIM. Sixteen laws that hold and cannot be made to fail would measure nothing.
+# engine/tests/unit/test_construct_foundation.py forges a violating state for each and asserts
+# the refusal, and job `ucon-validation` runs that suite. A green law table is only meaningful
+# alongside a green non-vacuity suite, which is why both jobs gate the third.
+#
+# OBSERVE MODE. The gate reads the declaration, the repository's committed source and its own
+# fingerprint. It writes nothing — not even to gitignored paths — unless --evidence is passed,
+# and no step here passes it. Determinism and tree-purity are proven by running the gate twice
+# and diffing both the report and `git status --porcelain`, so a gate that dirtied the tree or
+# read a clock would fail rather than be trusted.
+#
+# EXIT CODES. 0 OPEN, 1 CLOSED (a blocking law was measured and refused), 2 FAULT (no verdict
+# could be reached). Exit 1 and exit 2 are deliberately different answers: collapsing them would
+# let an unreadable declaration pass as whichever answer happened to be convenient.
+#
+# Standing: CERTIFIED-PROVISIONAL. AUTHORITY = NONE (DERIVED TRUTH).
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ucon-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  declaration-soundness:
+    name: Declaration soundness (data, not code)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the capability installs nothing.
+
+      # test_the_module_entry_point_is_reachable spawns .ec1-venv/bin/python directly, so a
+      # runner without the canonical venv fails it with FileNotFoundError — an environment
+      # fault reported as a construct-foundation defect. Bootstrapping through the same
+      # environment owner verify.sh uses keeps CI and local execution the same predicate.
+      - name: Bootstrap the canonical environment (creates .ec1-venv)
+        run: ./bootstrap.sh
+      - name: The declaration is coherent against every implemented registry
+        run: |
+          python3 - <<'PY'
+          from engine.construct.audit import available_forms
+          from engine.construct.contract import available_checks
+          from engine.construct.declaration import load_declaration
+          from engine.construct.disposition import available_operators
+          from engine.construct.extension import available_admissions
+          from engine.construct.views import available_selectors
+
+          declaration = load_declaration()
+          problems = declaration.validate(
+              available_checks(),
+              available_operators(),
+              available_selectors(),
+              available_admissions(),
+              available_forms(),
+          )
+          for problem in problems:
+              print(f"::error::{problem}")
+          raise SystemExit(1 if problems else 0)
+          PY
+
+      # Every expectation below is DERIVED from the committed declaration rather than restated,
+      # so a rename in the declaration cannot make this step silently vacuous.
+      - name: Every vocabulary lives in the declaration and not in the code
+        run: |
+          python3 - <<'PY'
+          import ast, pathlib, sys
+
+          from engine.construct.declaration import load_declaration
+
+          declaration = load_declaration()
+          # The names a vocabulary member would appear as if somebody had written one into the
+          # engine. Derived from the declaration, so this list cannot go stale.
+          forbidden = {
+              *declaration.disposition_ids,
+              *declaration.reality_ids,
+              *declaration.unknown_classes,
+              *declaration.contradiction_classes,
+              *declaration.research_states,
+              *(rule.rule_id for rule in declaration.rules),
+          }
+          # The modules permitted to name a vocabulary member are the ones whose whole job is to
+          # measure or render one. The model and the engines must not.
+          engines = ("model.py", "declaration.py", "registry.py", "disposition.py", "reality.py")
+          failures = 0
+          for name in engines:
+              path = pathlib.Path("engine/construct") / name
+              tree = ast.parse(path.read_text(encoding="utf-8"))
+              for node in ast.walk(tree):
+                  if not isinstance(node, ast.Constant) or not isinstance(node.value, str):
+                      continue
+                  if node.value in forbidden:
+                      print(
+                          f"::error file={path},line={node.lineno}::"
+                          f"{name} names the vocabulary member {node.value!r}; it belongs in "
+                          "the declaration"
+                      )
+                      failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+      - name: Every disclosed closure names a closing invariant and an admission path
+        run: |
+          python3 - <<'PY'
+          import sys
+
+          from engine.construct.declaration import load_declaration
+
+          failures = 0
+          for disclosure in load_declaration().audit.disclosures:
+              if not disclosure.closing_invariant:
+                  print(f"::error::{disclosure.closure_id} names no closing invariant")
+                  failures += 1
+              if not disclosure.admission:
+                  print(f"::error::{disclosure.closure_id} names no admission path")
+                  failures += 1
+              if not disclosure.intentional and not disclosure.gap:
+                  print(f"::error::{disclosure.closure_id} is unintentional and names no gap")
+                  failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+  ucon-validation:
+    name: Non-vacuity suite (every law must be able to refuse)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # The coverage floor belongs to ./verify.sh in ec1-ci.yml and is deliberately not
+      # duplicated here; this job measures the suite, not the denominator.
+
+      # test_the_module_entry_point_is_reachable spawns .ec1-venv/bin/python directly, so a
+      # runner without the canonical venv fails it with FileNotFoundError — an environment
+      # fault reported as a construct-foundation defect. Bootstrapping through the same
+      # environment owner verify.sh uses keeps CI and local execution the same predicate.
+      - name: Bootstrap the canonical environment (creates .ec1-venv)
+        run: ./bootstrap.sh
+      - name: Install the pinned test toolchain
+        run: |
+          python -m pip install --disable-pip-version-check \
+            "pytest==8.3.4" "pytest-cov==6.0.0" "coverage==7.15.2"
+
+      - name: The foundation's own suite, including every forged violation
+        run: python -m pytest engine/tests/unit/test_construct_foundation.py -q --no-cov
+
+  ucon-gate:
+    name: UCON gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: [declaration-soundness, ucon-validation]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # test_the_module_entry_point_is_reachable spawns .ec1-venv/bin/python directly, so a
+      # runner without the canonical venv fails it with FileNotFoundError — an environment
+      # fault reported as a construct-foundation defect. Bootstrapping through the same
+      # environment owner verify.sh uses keeps CI and local execution the same predicate.
+      - name: Bootstrap the canonical environment (creates .ec1-venv)
+        run: ./bootstrap.sh
+      - name: Sixteen laws, measured and refused if they do not hold
+        run: python3 -m engine.construct.gate --gate --quiet
+
+      - name: Determinism and tree purity (two runs, byte-compared)
+        run: |
+          before="$(git status --porcelain)"
+          python3 -m engine.construct.gate --json --quiet > /tmp/ucon-1.json
+          after_first="$(git status --porcelain)"
+          python3 -m engine.construct.gate --json --quiet > /tmp/ucon-2.json
+          after_second="$(git status --porcelain)"
+          diff -u /tmp/ucon-1.json /tmp/ucon-2.json \
+            || { echo "::error::two measurements of one repository state differ"; exit 1; }
+          [ "$before" = "$after_first" ] && [ "$before" = "$after_second" ] \
+            || { echo "::error::the gate dirtied the working tree; it is declared OBSERVE MODE"; exit 1; }
+
+      - name: The report carries no clock reading and no machine path
+        run: |
+          python3 - <<'PY'
+          import json, re, sys
+
+          body = open("/tmp/ucon-1.json", encoding="utf-8").read()
+          failures = 0
+          if re.search(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}", body):
+              print("::error::the report embeds a clock reading, so it cannot replay")
+              failures += 1
+          if "/home/runner" in body or "/Users/" in body:
+              print("::error::the report embeds an absolute machine path")
+              failures += 1
+          report = json.loads(body)
+          if report["status"] != "OPEN":
+              print(f"::error::the gate reported {report['status']}")
+              failures += 1
+          if report["counts"]["holds"] != report["counts"]["laws"]:
+              print("::error::not every law holds")
+              failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+      # The closure inventory is the audit deliverable. It must be derivable in CI and its
+      # ratchet must hold, or the inventory is a document rather than an instrument.
+      - name: The extensibility inventory is derivable and its ratchet holds
+        run: |
+          python3 -m engine.construct.gate --inventory --gate --quiet > /tmp/ucon-inventory.json
+          python3 - <<'PY'
+          import json, sys
+
+          inventory = json.load(open("/tmp/ucon-inventory.json", encoding="utf-8"))
+          failures = 0
+          if inventory["counts"]["total"] < 500:
+              print("::error::the inventory is too small to be measuring this repository")
+              failures += 1
+          for closure in inventory["undisclosed_in_governed_scope"]:
+              print(
+                  f"::error file={closure['module']},line={closure['line']}::"
+                  f"{closure['symbol']} is an undisclosed closure inside governed scope"
+              )
+              failures += 1
+          for closure_id in inventory["stale_disclosures"]:
+              print(f"::error::{closure_id} is a stale disclosure")
+              failures += 1
+          for form, counts in inventory["baseline_exceeded"].items():
+              print(
+                  f"::error::{form}: {counts['measured']} exceeds the declared baseline "
+                  f"{counts['baseline']}"
+              )
+              failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+      # Closes the drift between this workflow and the canonical verification path: if the
+      # stage is removed from verify.sh, this fails rather than CI quietly becoming the only
+      # place the gate runs.
+      - name: ./verify.sh declares the stage and invokes this gate
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+
+          from engine.construct.declaration import load_declaration
+
+          label = load_declaration().gate["verify_stage_label"]
+          source = pathlib.Path("verify.sh").read_text(encoding="utf-8")
+          failures = 0
+          if label not in source:
+              print(f"::error::./verify.sh does not declare the stage {label!r}")
+              failures += 1
+          if "engine.construct.gate" not in source:
+              print("::error::the stage does not invoke engine.construct.gate")
+              failures += 1
+          declared = re.findall(r'^\s*run_stage "([^"]+)"', source, re.M)
+          if label not in declared:
+              print(f"::error::{label!r} is present but not as a run_stage")
+              failures += 1
+          sys.exit(1 if failures else 0)
+          PY
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: ucon-foundation-report
+          path: |
+            /tmp/ucon-1.json
+            /tmp/ucon-inventory.json
+          if-no-files-found: ignore
+
+      # Diagnostic only. The gate above already decided; this names the failing law in the log.
+      - name: Name the refusals (diagnostic)
+        if: failure()
+        run: python3 -m engine.construct.gate || true

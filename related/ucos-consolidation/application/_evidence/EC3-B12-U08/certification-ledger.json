@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "AMC-08",
+      "certification_id": "UCOS-CERT-AMC-08-dd8203eac65fe31e",
+      "entry_hash": "eccaaf63911035a5a1224b3128c212ee1a7756eef8553545f7e3aef5b6510228",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "dd8203eac65fe31e493ef0e7a54f3168b8ef99b4e60b2505fd07c56fb774e4d5",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-COMPOSITION-ucos.application.composition.foundation-ef71e0ec2e86b09e",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "eccaaf63911035a5a1224b3128c212ee1a7756eef8553545f7e3aef5b6510228",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

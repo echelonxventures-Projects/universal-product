@@ -1,0 +1,76 @@
+{
+  "compliance_format": "ucos-application-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "state-typed",
+        "state-identified-objectbound"
+      ],
+      "id": "C1",
+      "requirement": "Typed (UAL-03), identified and objecthood-bound (UAL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (UAL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "state-presents-data"
+      ],
+      "id": "C3",
+      "note": "the state binds/presents its data as DF-2 data by reference (AMR-14 / STA-C4 / UAL-13); the capability-delivery-via-SF-2 clause (UAL-06) is scoped to the Feature/Capability units (AMC-02/04) — a state conditions delivery, it does not itself deliver capability by consuming operations",
+      "requirement": "Delivers capability via SF-2 operations under contract; I/O is DF-2 by ref (UAL-06/13).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "state-classified",
+        "state-context-bound",
+        "state-lifecycle-decidable"
+      ],
+      "id": "C4",
+      "note": "for the State the module/feature/interaction clauses (UAL-07/08/11) are scoped to the Module (AMC-03), Feature (AMC-04), and Interaction (AMC-06) units; the state analog is materially exercised — every state declares its context (STA-06) and a decidable current lifecycle position (STA-07 / STA-K2)",
+      "requirement": "Modules bounded, features explicit, interactions typed (UAL-07/08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "founding-acyclic",
+        "meta-relationships-closed",
+        "state-held-by"
+      ],
+      "id": "C5",
+      "note": "the state composes nothing structurally and participates in no founding relationship (AMR-02/03/05); its relationships (AMR-06/10/11/14) are all ENG-005 references, so its founding graph is empty and therefore acyclic (AMK-03, vacuous); structural module/application composition (UAL-09) is the Composition concern (AMC-08)",
+      "requirement": "Composition uses ENG-005 references; founding structure acyclic (UAL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "state-binds-runtime-state",
+        "lifecycle-valid",
+        "state-transition-recorded"
+      ],
+      "id": "C6",
+      "note": "materially exercised at the state level — THE governing condition of AMC-07: the application state binds the frozen RL-F2 RUNTIME state concern by reference (behaves-as, AMR-11 / STA-03) and advances forward-only with every transition recorded as a RUNTIME event (UAL-12 / STA-04/05); it re-founds no runtime or state concern",
+      "requirement": "Workflow/process and state bind to RL-F2/SF-2 by reference (UAL-10/12).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive",
+        "technology-independence"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (UAL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "APPLICATION-001 §12",
+  "target_id": "UCOS-STATE-ucos.application.state.foundation-e22f76e909c5628e"
+}

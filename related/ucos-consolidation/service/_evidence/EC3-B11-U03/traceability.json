@@ -1,0 +1,41 @@
+{
+  "backward": [
+    "SMC-03",
+    "SOE-03",
+    "SERVICE-007",
+    "SERVICE-005",
+    "SERVICE-001",
+    "ARCH-SERVICE-001",
+    "11-SERVICE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-CONTRACT-ucos.service.contract.foundation-a171c40a5923bee0",
+    "EC3-B11-U03-VALIDATION-EVIDENCE",
+    "EC3-B11-U03-CCE-CERTIFICATION",
+    "EC3-B11-U03-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "0595a91",
+  "meta_class": "SMC-03",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "typed I/O bound by reference to represented DATA (SMR-13); not redefined",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the contract)",
+    "ENG-003": "engine.certification.contracts.canonical_json (typed-value fidelity; no parallel)",
+    "ENG-004": "service.contract_meta.ContractKind + type_tag (ENG-004 typing, by reference)",
+    "ENG-005": "reference identifiers (I/O data / policy refs; no new construct)"
+  },
+  "target_id": "UCOS-CONTRACT-ucos.service.contract.foundation-a171c40a5923bee0",
+  "trace_format": "ucos-service-traceability/1.0.0",
+  "unit": "EC3-B11-U03"
+}

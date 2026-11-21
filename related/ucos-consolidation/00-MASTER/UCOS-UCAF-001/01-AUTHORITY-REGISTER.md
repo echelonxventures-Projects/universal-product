@@ -1,0 +1,49 @@
+# UCOS-UCAF-001 · Authority Registry
+
+Every record below is DISCOVERED from the located instrument named in its owner
+column. No authority is defined by this programme.
+
+| Authority | Kind | Name | Located definition (owner) | Evidence resolved |
+|---|---|---|---|---|
+| `AUTH-01` | AUTHORITY-CONSTRUCT | AUTHORITY | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-02` | AUTHORITY-CONSTRUCT | SOVEREIGNTY | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-03` | AUTHORITY-CONSTRUCT | Authority derivation chain | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-04` | AUTHORITY-CONSTRUCT | Authority preconditions | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-05` | AUTHORITY-CONSTRUCT | Authority-before-action law | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-06` | AUTHORITY-CONSTRUCT | Sovereignty inviolability | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-07` | AUTHORITY-CONSTRUCT | "Nothing May Bypass Sovereignty" | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-08` | AUTHORITY-CONSTRUCT | Universal Authority Flow | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-09` | AUTHORITY-CONSTRUCT | Jurisdiction / Delegation / Roles | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-10` | AUTHORITY-CONSTRUCT | Meta-Constitution authority scope | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-11` | AUTHORITY-CONSTRUCT | Constitutional supremacy | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-12` | AUTHORITY-CONSTRUCT | Sovereignty Origin doctrine ⚠ | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-13` | AUTHORITY-CONSTRUCT | Constituent Authority (sovereign seat) | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `AUTH-14` | AUTHORITY-CONSTRUCT | Ratification Authority (`RA-Ω∞`) | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `GOV-01` | GOVERNANCE-CONSTRUCT | GOVERNANCE (definition) | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `GOV-02` | GOVERNANCE-CONSTRUCT | Governance-before-execution law | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `GOV-03` | GOVERNANCE-CONSTRUCT | Governance functions | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `GOV-04` | GOVERNANCE-CONSTRUCT | Governance qualities | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `GOV-05` | GOVERNANCE-CONSTRUCT | Compiler Governance | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `GOV-06` | GOVERNANCE-CONSTRUCT | Governance registry | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `GOV-07` | GOVERNANCE-CONSTRUCT | Evolution governance | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `GOV-08` | GOVERNANCE-CONSTRUCT | Federation governance | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `GOV-09` | GOVERNANCE-CONSTRUCT | Temporal governance | `01-WORKING/AUTHORITY-REGISTER.md` | 2 |
+| `GOV-10` | GOVERNANCE-CONSTRUCT | Governance doctrine (meta) | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `GOV-11` | GOVERNANCE-CONSTRUCT | Ratification decision + audit procedure | `01-WORKING/AUTHORITY-REGISTER.md` | 1 |
+| `GOV-12` | GOVERNANCE-CONSTRUCT | Self-amendment procedure + evolution gate | `01-WORKING/AUTHORITY-REGISTER.md` | 2 |
+| `CEP-003::EXECUTION` | INSTRUMENT-AUTHORITY | Execution Authority | `00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md` | 1 |
+| `CEP-004::VALIDATION` | INSTRUMENT-AUTHORITY | Validation Authority | `00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md` | 1 |
+| `CEP-005::CERTIFICATION` | INSTRUMENT-AUTHORITY | Certification Authority | `00-CEP/CEP-005-CONSTITUTIONAL-CERTIFICATION-CONSTITUTION.md` | 1 |
+| `CEP-006::RATIFICATION` | INSTRUMENT-AUTHORITY | Ratification Authority | `00-CEP/CEP-006-CONSTITUTIONAL-RATIFICATION-CONSTITUTION.md` | 1 |
+| `CEP-007::FREEZE` | INSTRUMENT-AUTHORITY | Freeze Authority | `00-CEP/CEP-007-CONSTITUTIONAL-FREEZE-CONSTITUTION.md` | 1 |
+| `CEP-008::EVIDENCE` | INSTRUMENT-AUTHORITY | Evidence Authority | `00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md` | 1 |
+| `CEP-009::AMENDMENT` | INSTRUMENT-AUTHORITY | Amendment Authority | `00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md` | 1 |
+| `CEP-010::AUDIT` | INSTRUMENT-AUTHORITY | Audit Authority | `00-CEP/CEP-010-CONSTITUTIONAL-AUDIT-COMPLIANCE-ASSURANCE-CONSTITUTION.md` | 1 |
+
+## Sources read
+
+| Source | Owner | Format | Discovered | Resolved |
+|---|---|---|---|---|
+| `UCAF-SRC-01` | `01-WORKING/AUTHORITY-REGISTER.md` | markdown-table | 14 | YES |
+| `UCAF-SRC-02` | `01-WORKING/AUTHORITY-REGISTER.md` | markdown-table | 12 | YES |
+| `UCAF-SRC-03` | `00-CEP/CEP-0*.md` | article-authority | 8 | YES |

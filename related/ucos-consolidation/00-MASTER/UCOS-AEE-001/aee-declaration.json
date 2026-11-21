@@ -1,0 +1,1090 @@
+{
+  "$comment": [
+    "UCOS-AEE-001 — AUTONOMOUS EVOLUTION ENGINE (declaration). This file is DATA and is the",
+    "ONLY place the programme's vocabulary, principles, mandate sources, actuators,",
+    "observations, classification rules, decision values, convergence criteria, learning",
+    "dimensions and continuous-mode bindings are stated. aee_engine.py contains no actuator",
+    "name, no observation name, no owner path, no mandate identifier, no class name and no",
+    "decision name: everything it executes, measures, classifies and decides is read from",
+    "here. Adding an actuator, an observation, a classification rule, a decision value or a",
+    "convergence criterion is an append-only edit to this file and requires NO engine change.",
+    "",
+    "WHAT THIS PROGRAMME ADDS, AND WHY IT IS NOT A SECOND HOME FOR AN EXISTING CAPABILITY.",
+    "Every phase of the evolution loop already has a located, certified owner in this",
+    "repository, and this programme creates none of them. It creates no validator, no gate,",
+    "no registry, no schema, no measurement and no certification. What no located programme",
+    "owned is the CLOSED LOOP itself: every entry point in the repository is a one-shot",
+    "process, so nothing re-executed the located owners, re-read their sealed determinations,",
+    "compared consecutive readings, and asserted a fixed point over the OBSERVATION VECTOR.",
+    "This programme is that driver and only that driver. Its authority is NONE.",
+    "",
+    "KNOWLEDGE ONCE. The loop's phases are not restated here. They are READ at run time from",
+    "the located declarations that already own them (see mandate_sources). Every actuator and",
+    "every observation binds itself to those phases by identifier, and --check-declaration",
+    "fails closed if a bound identifier does not resolve in the located source. A phase added",
+    "to a mandate source is therefore discovered here automatically and, if nothing discharges",
+    "it, is surfaced as an uncovered mandate rather than silently ignored.",
+    "",
+    "WHAT THIS PROGRAMME DELIBERATELY DOES NOT DO. It does not execute the repository",
+    "fixed-point gate. UCOS-RFP-001 owns that condition, requires a clean committed tree to",
+    "begin (RFP CLO-01), and runs the aggregate certifier as one of its own pipeline stages.",
+    "A driver that emits artifacts cannot assert a clean tree over itself, and a driver that",
+    "invoked the fixed-point engine which invokes the aggregate certifier would reproduce the",
+    "CYC-RECURSE topology RFP exists to forbid. AEE's convergence is over the observation",
+    "vector; byte-level repository closure remains RFP's, measured by its own gate in CI.",
+    "This scope boundary is recorded as a finding, not left implicit."
+  ],
+
+  "programme": {
+    "id": "UCOS-AEE-001",
+    "name": "Autonomous Evolution Engine",
+    "version": "1.0",
+    "authority": "NONE — DERIVED TRUTH. This programme legislates nothing, registers nothing, certifies nothing and owns no capability. It sequences located owners, reads their sealed determinations, and asserts convergence over what they report.",
+    "operational_home": "00-MASTER/UCOS-AEE-001/",
+    "terminal_state": false,
+    "governing_instruments": [
+      "00-CEP/CEP-003-CONSTITUTIONAL-EXECUTION-CONSTITUTION.md",
+      "00-CEP/CEP-004-CONSTITUTIONAL-VALIDATION-CONSTITUTION.md",
+      "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md",
+      "00-CEP/CEP-009-CONSTITUTIONAL-AMENDMENT-EVOLUTION-CONSTITUTION.md",
+      "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+      "00-MASTER/MCS-000-MASTER-CONTEXT-SYSTEM-ARCHITECTURE.md",
+      "00-MASTER/UCOS-RFP-001/rfp-declaration.json"
+    ],
+    "evolution_owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md",
+    "closure_owner": "00-MASTER/UCOS-RFP-001/rfp_engine.py",
+    "operational_memory_owner": "00-MASTER/MCS-000-MASTER-CONTEXT-SYSTEM-ARCHITECTURE.md",
+    "reentrancy_env": "UCOS_RFP_ACTIVE",
+    "$reentrancy_comment": "UCOS-RFP-001 exports this variable while its pipeline is active. This engine refuses to run when it is set, which is what keeps the driver out of the fixed-point engine's own pipeline (RFP CYC-RECURSE).",
+    "forbidden_write_prefixes": [
+      "00-SOURCE/",
+      "99-FREEZE/",
+      "00-BOOK/",
+      "00-CEP/",
+      "00-CMG/",
+      "engine/",
+      "platform/",
+      "data/",
+      "service/",
+      "application/",
+      "infrastructure/"
+    ]
+  },
+
+  "$vocabulary_comment": "The programme's normative vocabulary. Each term is DEFINED here and referenced by identifier from the principles, the convergence criteria and the emitted reports.",
+  "vocabulary": [
+    {
+      "id": "VOC-ACTUATOR",
+      "term": "Actuator",
+      "definition": "A located, already-owned executable that this programme invokes in order to REGENERATE a sealed determination. An actuator is never authored by this programme and never validates anything on its behalf."
+    },
+    {
+      "id": "VOC-OBSERVATION",
+      "term": "Observation",
+      "definition": "A single measured reading taken from a located owner's own sealed output, addressed by a dotted pointer and compared against a declared expectation by a generic operator. An observation performs no analysis of its own; it reports what its owner already determined."
+    },
+    {
+      "id": "VOC-VECTOR",
+      "term": "Observation vector",
+      "definition": "The ordered tuple of every observation's measured verdict in one iteration. It is the object over which this programme asserts a fixed point."
+    },
+    {
+      "id": "VOC-FINDING",
+      "term": "Finding",
+      "definition": "An observation whose measured value violates its declared expectation. A finding is discovered, never listed by hand: the set of findings is a function of the located owners' sealed outputs."
+    },
+    {
+      "id": "VOC-MANDATE",
+      "term": "Mandate",
+      "definition": "A loop phase or standing obligation READ from a located declaration that already owns it. Mandates are never restated in this file."
+    },
+    {
+      "id": "VOC-ITERATION",
+      "term": "Iteration",
+      "definition": "One complete pass of actuation followed by observation, classification and decision."
+    },
+    {
+      "id": "VOC-CONVERGENCE",
+      "term": "Convergence",
+      "definition": "The state in which consecutive iterations produce an identical observation vector and every blocking criterion is satisfied. Convergence is measured, never asserted."
+    },
+    {
+      "id": "VOC-RESIDUE",
+      "term": "Residue",
+      "definition": "A working-tree entry appearing during an iteration. Residue is ATTRIBUTED to the actuator whose declared write zone contains it; residue that no declared write zone explains is unattributed and blocks convergence."
+    },
+    {
+      "id": "VOC-LEARNING",
+      "term": "Learning",
+      "definition": "The deterministic persistence of what an iteration established — measured values, exercised write zones, assigned classes and decisions, and the iteration at which stability was reached — so a later run resolves an identical finding by lookup instead of rediscovery. It is a knowledge projection, not a statistical model."
+    },
+    {
+      "id": "VOC-CEILING",
+      "term": "Certification ceiling",
+      "definition": "A standing, located finding that bounds the verdict this programme may assert without itself failing the gate. A ceiling is disclosed; it is never silently dropped."
+    }
+  ],
+
+  "$principle_comment": "The permanent principles. AEE-1 is the loop obligation. AEE-2..AEE-6 are the admission rules that keep the loop constitutional. AEE-7..AEE-8 bind and inherit. Each names the located instrument that already enforces it.",
+  "principle": [
+    {
+      "id": "AEE-1",
+      "principle": "The loop is closed. Actuation is followed by observation, observation by classification, classification by decision, and the whole by a measured comparison against the previous iteration. A pass that does not compare itself to its predecessor is not an iteration.",
+      "owner": "00-MASTER/UEI-000001/uei-evolution.json"
+    },
+    {
+      "id": "AEE-2",
+      "principle": "Zero new authority. Every actuator is a located owner's own entry point and every observation reads a located owner's own sealed output. This programme adds no validator, gate, registry, schema or certification.",
+      "owner": "00-MASTER/URRC-000001/urrc_engine.py"
+    },
+    {
+      "id": "AEE-3",
+      "principle": "Zero enumeration. No actuator, observation, mandate, class, decision or owner path appears as a literal in the engine source, so extension is an edit to this declaration alone.",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json"
+    },
+    {
+      "id": "AEE-4",
+      "principle": "Own memory only. Every byte this programme writes lands inside its own operational home. Actuators write their owners' homes because they ARE those owners; this programme writes nobody else's.",
+      "owner": "00-MASTER/MCS-000-MASTER-CONTEXT-SYSTEM-ARCHITECTURE.md"
+    },
+    {
+      "id": "AEE-5",
+      "principle": "Absence of evidence is never evidence. A required actuator that did not execute, and an observation whose pointer does not resolve, are failures — never silent passes.",
+      "owner": "00-CEP/CEP-008-CONSTITUTIONAL-EVIDENCE-TRACEABILITY-CONSTITUTION.md"
+    },
+    {
+      "id": "AEE-6",
+      "principle": "Determinism. The emitted set is a function of the repository alone: no timestamp, no duration, no commit identity and no absolute path is recorded, so regeneration at an unchanged tree is byte-identical.",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json"
+    },
+    {
+      "id": "AEE-7",
+      "principle": "Byte-level repository closure is not this programme's to assert. It belongs to the fixed-point owner and is measured by that owner's own gate.",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp_engine.py"
+    },
+    {
+      "id": "AEE-8",
+      "principle": "Classification and decision are derived from declared rules over mechanically derived properties of a finding. No finding is classified by hand and none is left without a class and a decision.",
+      "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md"
+    }
+  ],
+
+  "$tier_comment": "Ordered execution tiers. A tier includes every actuator at or below it. 'observe' actuates nothing and is the fast read-only pass; 'standard' runs the light actuators; 'closure' adds the heavy aggregate certifier, which itself runs verification, determinism and the registration-drift gate.",
+  "tiers": [
+    { "id": "TIER-OBSERVE", "tier": "observe", "order": 0, "actuates": false },
+    { "id": "TIER-STANDARD", "tier": "standard", "order": 1, "actuates": true },
+    { "id": "TIER-CLOSURE", "tier": "closure", "order": 2, "actuates": true }
+  ],
+
+  "$mandate_sources_comment": [
+    "The loop's phases and standing obligations are READ from these located declarations.",
+    "They are NOT restated in this file — that is what makes the binding verifiable rather",
+    "than decorative. 'collection_pointer' selects a member of a keyed collection when the",
+    "source holds several pipelines; 'member_pointer' names the ordered phase array;",
+    "'id_field' and 'label_field' name the identifier and human label within each member.",
+    "A phase appended to any source is discovered on the next run with no edit here."
+  ],
+  "mandate_sources": [
+    {
+      "id": "MS-EVOLUTION-PIPELINE",
+      "name": "Universal Autonomous Pipeline Framework — declared evolution pipeline",
+      "owner": "platform/universal_pipeline/catalog/uapf-pipelines.json",
+      "collection_pointer": "pipelines",
+      "select_field": "pipeline_id",
+      "select_value": "uapf.evolution",
+      "member_pointer": "stages",
+      "id_field": "stage_id",
+      "label_field": "description"
+    },
+    {
+      "id": "MS-BUILD-PIPELINE",
+      "name": "Universal Autonomous Pipeline Framework — declared implementation pipeline",
+      "owner": "platform/universal_pipeline/catalog/uapf-pipelines.json",
+      "collection_pointer": "pipelines",
+      "select_field": "pipeline_id",
+      "select_value": "uapf.build",
+      "member_pointer": "stages",
+      "id_field": "stage_id",
+      "label_field": "description"
+    },
+    {
+      "id": "MS-EVOLUTION-LOOP",
+      "name": "Universal Evolution Intelligence — declared evolution loop",
+      "owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "collection_pointer": null,
+      "select_field": null,
+      "select_value": null,
+      "member_pointer": "pipeline_evolution",
+      "id_field": "id",
+      "label_field": "step"
+    },
+    {
+      "id": "MS-CONTINUOUS-LOOP",
+      "name": "Universal Evolution Intelligence — declared standing continuous obligations",
+      "owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "collection_pointer": null,
+      "select_field": null,
+      "select_value": null,
+      "member_pointer": "pipeline_continuous",
+      "id_field": "id",
+      "label_field": "step"
+    }
+  ],
+
+  "$actuator_comment": [
+    "Located owners this programme invokes to regenerate their own sealed determinations.",
+    "'argv' tokens $PY and $PY3 are resolved to the canonical venv interpreter and the",
+    "running interpreter respectively; nothing else is substituted and no shell is used.",
+    "'writes' is the declared write zone, used only to ATTRIBUTE residue — it grants no",
+    "permission. 'required' marks an actuator whose failure blocks convergence. 'mandate'",
+    "binds the actuator to the loop phases it discharges, by identifiers that must resolve",
+    "in the mandate sources above."
+  ],
+  "actuators": [
+    {
+      "id": "ACT-KNOWLEDGE-CLOSURE",
+      "name": "Constitutional concept closure (knowledge-once evidence)",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "argv": ["$PY", "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py"],
+      "env": { "CLOSURE_SKIP_CORPUS": "1" },
+      "$env_comment": "The repository-only pass, declared identically by UCOS-RFP-001 STAGE-CLOSURE. Without it the engine also scans a corpus directory OUTSIDE the repository, making its output a function of the machine rather than of the tracked tree — and an observation that is not a function of the repository can have no fixed point in the repository.",
+      "writes": ["00-MASTER/UAKOS-CLOSURE-002/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["context-assimilation", "canonical-knowledge-discovery", "UEI-EVO-01", "UEI-EVO-12", "UEI-CON-06"]
+    },
+    {
+      "id": "ACT-KNOWLEDGE-GAP-PLAN",
+      "name": "Knowledge gap disposition and planning",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/phase2_engine.py",
+      "argv": ["$PY", "00-MASTER/UAKOS-CLOSURE-002/phase2_engine.py"],
+      "env": {},
+      "writes": ["00-MASTER/UAKOS-CLOSURE-002/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["gap-analysis", "UEI-EVO-03"]
+    },
+    {
+      "id": "ACT-READINESS-PROJECTION",
+      "name": "Implementation readiness and wave projection",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/phase3_engine.py",
+      "argv": ["$PY", "00-MASTER/UAKOS-CLOSURE-002/phase3_engine.py"],
+      "env": {},
+      "writes": ["00-MASTER/UAKOS-CLOSURE-002/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["implementation-readiness-assessment", "reserve-execution", "UEI-EVO-09"]
+    },
+    {
+      "id": "ACT-DECISION-ASSIMILATION",
+      "name": "Constitutional decision register and disposition",
+      "owner": "00-MASTER/UCDA-000001/ucda_engine.py",
+      "argv": ["$PY", "00-MASTER/UCDA-000001/ucda_engine.py", "--quiet"],
+      "env": {},
+      "writes": ["00-MASTER/UCDA-000001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["conflict-detection", "UEI-EVO-08"]
+    },
+    {
+      "id": "ACT-EVOLUTION-INTELLIGENCE",
+      "name": "Evolution intelligence capability bindings",
+      "owner": "00-MASTER/UEI-000001/uei_engine.py",
+      "argv": ["$PY", "00-MASTER/UEI-000001/uei_engine.py", "--quiet"],
+      "env": {},
+      "writes": ["00-MASTER/UEI-000001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["UEI-EVO-02", "UEI-EVO-15", "UEI-CON-03"]
+    },
+    {
+      "id": "ACT-EXECUTION-RESILIENCE",
+      "name": "Execution resilience and recovery bindings",
+      "owner": "00-MASTER/UER-000001/uer_engine.py",
+      "argv": ["$PY", "00-MASTER/UER-000001/uer_engine.py", "--quiet"],
+      "env": {},
+      "writes": ["00-MASTER/UER-000001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["execute-integration", "execute-implementation", "UEI-EVO-10"]
+    },
+    {
+      "id": "ACT-REPOSITORY-REALITY",
+      "name": "Reuse, duplication, conflict, gap, completeness and readiness matrices",
+      "owner": "00-MASTER/URRC-000001/urrc_engine.py",
+      "argv": ["$PY", "00-MASTER/URRC-000001/urrc_engine.py"],
+      "env": {},
+      "writes": ["00-MASTER/URRC-000001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["reuse-analysis", "duplicate-detection", "dependency-discovery", "impact-analysis", "discover-dependencies", "update-dependency-graph", "UEI-EVO-04", "UEI-EVO-07"]
+    },
+    {
+      "id": "ACT-PLATFORM-BINDING",
+      "name": "Platform capability binding register",
+      "owner": "00-MASTER/UAEP-000001/uaep_engine.py",
+      "argv": ["$PY", "00-MASTER/UAEP-000001/uaep_engine.py", "--render", "--quiet"],
+      "env": {},
+      "writes": ["00-MASTER/UAEP-000001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["update-capability-graph", "UEI-CON-08"]
+    },
+    {
+      "id": "ACT-EVOLUTION-FRAMEWORK",
+      "name": "Universal constitutional evolution framework registers",
+      "owner": "00-MASTER/UCEF-000001/ucef_engine.py",
+      "argv": ["$PY", "00-MASTER/UCEF-000001/ucef_engine.py", "--render"],
+      "env": {},
+      "writes": ["00-MASTER/UCEF-000001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["UEI-EVO-11", "UEI-EVO-13"]
+    },
+    {
+      "id": "ACT-ARCHITECTURAL-BLUEPRINT",
+      "name": "Repository implementation blueprint and architectural admission",
+      "owner": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "argv": ["$PY", "00-MASTER/UCOS-RIB-001/rib_engine.py"],
+      "env": {},
+      "writes": ["00-MASTER/UCOS-RIB-001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["architectural-validation", "UEI-EVO-06"]
+    },
+    {
+      "id": "ACT-ROADMAP-PROJECTION",
+      "name": "Master execution roadmap projection",
+      "owner": "00-MASTER/UCOS-MXR-001/roadmap_engine.py",
+      "argv": ["$PY", "00-MASTER/UCOS-MXR-001/roadmap_engine.py", "--render"],
+      "env": {},
+      "writes": ["00-MASTER/UCOS-MXR-001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["UEI-EVO-05"]
+    },
+    {
+      "id": "ACT-CORPUS-CURRENCY",
+      "name": "Knowledge corpus currency and export inventory",
+      "owner": "00-MASTER/UKAP-001/corpus_engine.py",
+      "argv": ["$PY", "00-MASTER/UKAP-001/corpus_engine.py", "--render"],
+      "env": {},
+      "writes": ["00-MASTER/UKAP-001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["repository-truth-discovery", "UEI-CON-04"]
+    },
+    {
+      "id": "ACT-CONSTITUTIONAL-ASSIMILATION",
+      "name": "Constitutional assimilation and superiority registers",
+      "owner": "00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py",
+      "argv": ["$PY", "00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py", "--render"],
+      "env": {},
+      "writes": ["00-MASTER/UAKOS-CLOSURE-008/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["update-repository-truth"]
+    },
+    {
+      "id": "ACT-META-KERNEL",
+      "name": "Universal meta-kernel — open metatype system",
+      "owner": "00-MASTER/UMK-000001/umk_engine.py",
+      "argv": ["$PY", "00-MASTER/UMK-000001/umk_engine.py"],
+      "env": {},
+      "writes": ["00-MASTER/UMK-000001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["update-ontology", "update-taxonomy"]
+    },
+    {
+      "id": "ACT-PROVIDER-FRAMEWORK",
+      "name": "Universal provider framework — kernel realization layer",
+      "owner": "00-MASTER/UPF-000001/upf_engine.py",
+      "argv": ["$PY", "00-MASTER/UPF-000001/upf_engine.py"],
+      "env": {},
+      "writes": ["00-MASTER/UPF-000001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["canonical-identity-assignment"]
+    },
+    {
+      "id": "ACT-CIVILIZATION-PLATFORM",
+      "name": "Meta-civilization platform generation layer",
+      "owner": "00-MASTER/MCOS-000001/mcos_engine.py",
+      "argv": ["$PY", "00-MASTER/MCOS-000001/mcos_engine.py"],
+      "env": {},
+      "writes": ["00-MASTER/MCOS-000001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["UEI-EVO-13"]
+    },
+    {
+      "id": "ACT-REGISTRY-BINDING",
+      "name": "Universal artifact registry binding",
+      "owner": "00-MASTER/UCOS-UAR-001/uar_engine.py",
+      "argv": ["$PY", "00-MASTER/UCOS-UAR-001/uar_engine.py"],
+      "env": {},
+      "writes": ["00-MASTER/UCOS-UAR-001/"],
+      "tier": "standard",
+      "required": true,
+      "heavy": false,
+      "mandate": ["canonical-registration", "repository-registration"]
+    },
+    {
+      "id": "ACT-AGGREGATE-CERTIFIER",
+      "name": "Aggregate constitutional gate — every located gate, heavy tier included",
+      "owner": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "argv": ["$PY", "00-MASTER/UCCEP-000000/uccep_engine.py", "--tier", "full", "--quiet"],
+      "env": {},
+      "$tier_comment": "The committed determinations of this owner were produced at its own 'full' tier; invoking it at any lower tier would rewrite them with a narrower scope and manufacture drift. The full tier is also what runs verification, the determinism double-build and the registration-drift gate, which is why those mandates are discharged here and nowhere else.",
+      "writes": ["00-MASTER/UCCEP-000000/", "determinism-evidence/", ".coverage", "coverage.xml"],
+      "tier": "closure",
+      "required": true,
+      "heavy": true,
+      "mandate": ["constitutional-validation", "verification", "certification", "execute-validation", "execute-verification", "execute-certification", "execute-repository-validation", "execute-verify-sh", "update-registries", "update-evidence", "update-traceability", "UEI-CON-02", "UEI-CON-05"]
+    }
+  ],
+
+  "$observation_comment": [
+    "Readings taken from located owners' own sealed outputs. This programme measures nothing",
+    "itself: every value below was determined by the owner named in 'owner' and merely READ",
+    "here. 'pointer' is a dotted path into the source document. 'operator' is one of the",
+    "engine's generic comparison operators and carries no domain knowledge. 'blocking' marks",
+    "an observation whose violation blocks convergence; a non-blocking observation must name",
+    "the located finding that governs it, so nothing is quietly tolerated."
+  ],
+  "observations": [
+    {
+      "id": "OBS-AGGREGATE-BLOCKING",
+      "name": "No blocking constitutional check failed",
+      "owner": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "source": "00-MASTER/UCCEP-000000/uccep.json",
+      "pointer": "independent_view.00-MASTER/UCOS-AEE-001.blocking_failures",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["constitutional-validation"]
+    },
+    {
+      "id": "OBS-AGGREGATE-UNPROVEN",
+      "name": "No blocking check was left without evidence",
+      "owner": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "source": "00-MASTER/UCCEP-000000/uccep.json",
+      "pointer": "independent_view.00-MASTER/UCOS-AEE-001.unproven",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["execute-verification"]
+    },
+    {
+      "id": "OBS-AGGREGATE-GATE-EXIT",
+      "name": "The aggregate constitutional gate exits clean",
+      "owner": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "source": "00-MASTER/UCCEP-000000/uccep.json",
+      "pointer": "independent_view.00-MASTER/UCOS-AEE-001.gate_exit",
+      "operator": "equals",
+      "expect": 0,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-EVO-14"]
+    },
+    {
+      "id": "OBS-AGGREGATE-GATES-PASS",
+      "name": "Every constitutional gate reports a passing verdict",
+      "owner": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "source": "00-MASTER/UCCEP-000000/uccep.json",
+      "pointer": "independent_view.00-MASTER/UCOS-AEE-001.gates",
+      "operator": "every_field_in",
+      "expect": { "field": "verdict", "allowed": ["PASS", "PASS-WITH-ADVISORY"] },
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["certification"]
+    },
+    {
+      "id": "OBS-AGGREGATE-PROGRAMMES-PASS",
+      "name": "Every delegated programme reports a passing verdict",
+      "owner": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "source": "00-MASTER/UCCEP-000000/uccep.json",
+      "pointer": "independent_view.00-MASTER/UCOS-AEE-001.programs",
+      "operator": "every_field_in",
+      "expect": { "field": "verdict", "allowed": ["PASS", "PASS-WITH-ADVISORY"] },
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["execute-repository-validation"]
+    },
+    {
+      "id": "OBS-AGGREGATE-CEILING",
+      "name": "No standing finding bounds the attainable certification",
+      "owner": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "source": "00-MASTER/UCCEP-000000/uccep.json",
+      "pointer": "certification_ceiling",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": false,
+      "governed_by_finding": "AEE-F-001",
+      "mandate": ["UEI-CON-01"]
+    },
+    {
+      "id": "OBS-KNOWLEDGE-DETERMINATION",
+      "name": "Constitutional knowledge closure is reached",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "source": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "pointer": "determination",
+      "operator": "equals",
+      "expect": "CLOSED",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["canonical-knowledge-discovery"]
+    },
+    {
+      "id": "OBS-KNOWLEDGE-GAPS",
+      "name": "Zero knowledge-closure gaps remain",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "source": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "pointer": "gap_total",
+      "operator": "equals",
+      "expect": 0,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["gap-analysis", "UEI-EVO-12"]
+    },
+    {
+      "id": "OBS-KNOWLEDGE-DISPOSITION",
+      "name": "Knowledge gap disposition is closed",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/phase2_engine.py",
+      "source": "00-MASTER/UAKOS-CLOSURE-002/phase2.json",
+      "pointer": "determination",
+      "operator": "equals",
+      "expect": "CLOSED",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-EVO-03"]
+    },
+    {
+      "id": "OBS-READINESS-STATUS",
+      "name": "Measured repository status is closed",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/phase3_engine.py",
+      "source": "00-MASTER/UAKOS-CLOSURE-002/phase3.json",
+      "pointer": "repository_status",
+      "operator": "equals",
+      "expect": "CLOSED",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["implementation-readiness-assessment"]
+    },
+    {
+      "id": "OBS-READINESS-BLOCKING-GAPS",
+      "name": "Zero located blocking gaps remain",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/phase3_engine.py",
+      "source": "00-MASTER/UAKOS-CLOSURE-002/phase3.json",
+      "pointer": "located_blocking_gaps",
+      "operator": "equals",
+      "expect": 0,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["reserve-execution"]
+    },
+    {
+      "id": "OBS-READINESS-UNRESOLVED",
+      "name": "Zero unresolved planning items remain",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/phase3_engine.py",
+      "source": "00-MASTER/UAKOS-CLOSURE-002/phase3.json",
+      "pointer": "unresolved_total",
+      "operator": "equals",
+      "expect": 0,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["execute-implementation", "UEI-EVO-09"]
+    },
+    {
+      "id": "OBS-READINESS-WRITE-SCOPE",
+      "name": "The readiness owner wrote nothing outside its own memory",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/phase3_engine.py",
+      "source": "00-MASTER/UAKOS-CLOSURE-002/phase3.json",
+      "pointer": "wrote_outside_own_memory",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["update-repository-truth"]
+    },
+    {
+      "id": "OBS-DECISION-GATE",
+      "name": "The constitutional decision gate is open",
+      "owner": "00-MASTER/UCDA-000001/ucda_engine.py",
+      "source": "00-MASTER/UCDA-000001/ucda.json",
+      "pointer": "gate",
+      "operator": "equals",
+      "expect": "OPEN",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["conflict-detection"]
+    },
+    {
+      "id": "OBS-DECISION-UNDISPOSITIONED",
+      "name": "No constitutional decision lacks a disposition",
+      "owner": "00-MASTER/UCDA-000001/ucda_engine.py",
+      "source": "00-MASTER/UCDA-000001/ucda.json",
+      "pointer": "undispositioned",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-EVO-08"]
+    },
+    {
+      "id": "OBS-DECISION-UNEVIDENCED",
+      "name": "No constitutional decision lacks evidence",
+      "owner": "00-MASTER/UCDA-000001/ucda_engine.py",
+      "source": "00-MASTER/UCDA-000001/ucda.json",
+      "pointer": "unevidenced",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["update-evidence"]
+    },
+    {
+      "id": "OBS-DECISION-CONVERSATION-ONLY",
+      "name": "No agreed decision remains only in conversation",
+      "owner": "00-MASTER/UCDA-000001/ucda_engine.py",
+      "source": "00-MASTER/UCDA-000001/ucda.json",
+      "pointer": "conversation_only",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["context-assimilation"]
+    },
+    {
+      "id": "OBS-EVOLUTION-GATE",
+      "name": "The evolution intelligence gate is open",
+      "owner": "00-MASTER/UEI-000001/uei_engine.py",
+      "source": "00-MASTER/UEI-000001/uei.json",
+      "pointer": "gate",
+      "operator": "equals",
+      "expect": "OPEN",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-CON-03"]
+    },
+    {
+      "id": "OBS-EVOLUTION-CAPABILITIES-COVERED",
+      "name": "Every declared evolution capability resolves to a located home",
+      "owner": "00-MASTER/UEI-000001/uei_engine.py",
+      "source": "00-MASTER/UEI-000001/uei.json",
+      "pointer": "metrics.capabilities_uncovered",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-EVO-02"]
+    },
+    {
+      "id": "OBS-EVOLUTION-CAPABILITIES-GOVERNED",
+      "name": "Every declared evolution capability is governed",
+      "owner": "00-MASTER/UEI-000001/uei_engine.py",
+      "source": "00-MASTER/UEI-000001/uei.json",
+      "pointer": "metrics.capabilities_ungoverned",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-EVO-15"]
+    },
+    {
+      "id": "OBS-RESILIENCE-GATE",
+      "name": "The execution resilience gate is open",
+      "owner": "00-MASTER/UER-000001/uer_engine.py",
+      "source": "00-MASTER/UER-000001/uer.json",
+      "pointer": "gate",
+      "operator": "equals",
+      "expect": "OPEN",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["execute-integration", "UEI-EVO-10"]
+    },
+    {
+      "id": "OBS-REALITY-GATE",
+      "name": "The repository reality gate is open",
+      "owner": "00-MASTER/URRC-000001/urrc_engine.py",
+      "source": "00-MASTER/URRC-000001/urrc.json",
+      "pointer": "gate",
+      "operator": "equals",
+      "expect": "OPEN",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["impact-analysis"]
+    },
+    {
+      "id": "OBS-REALITY-GUARDS",
+      "name": "The repository reality guards report nothing",
+      "owner": "00-MASTER/URRC-000001/urrc_engine.py",
+      "source": "00-MASTER/URRC-000001/urrc.json",
+      "pointer": "guard_findings",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["duplicate-detection"]
+    },
+    {
+      "id": "OBS-REALITY-DELIVERABLES-BOUND",
+      "name": "Every reality deliverable is bound to located substrate",
+      "owner": "00-MASTER/URRC-000001/urrc_engine.py",
+      "source": "00-MASTER/URRC-000001/urrc.json",
+      "pointer": "metrics.deliverables_unbound",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["reuse-analysis", "UEI-EVO-04", "UEI-EVO-07"]
+    },
+    {
+      "id": "OBS-REALITY-UNKNOWN-BINDINGS",
+      "name": "No declared binding resolves to an unknown owner",
+      "owner": "00-MASTER/URRC-000001/urrc_engine.py",
+      "source": "00-MASTER/URRC-000001/urrc.json",
+      "pointer": "metrics.declared_unknown_bindings",
+      "operator": "equals",
+      "expect": 0,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["dependency-discovery", "discover-dependencies", "update-dependency-graph"]
+    },
+    {
+      "id": "OBS-PLATFORM-GATE",
+      "name": "The platform capability binding gate is open",
+      "owner": "00-MASTER/UAEP-000001/uaep_engine.py",
+      "source": "00-MASTER/UAEP-000001/uaep.json",
+      "pointer": "gate",
+      "operator": "equals",
+      "expect": "OPEN",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["update-capability-graph"]
+    },
+    {
+      "id": "OBS-PLATFORM-BLOCKING",
+      "name": "No platform capability binding failure stands",
+      "owner": "00-MASTER/UAEP-000001/uaep_engine.py",
+      "source": "00-MASTER/UAEP-000001/uaep.json",
+      "pointer": "blocking_failures",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-CON-08"]
+    },
+    {
+      "id": "OBS-PLATFORM-HOMES-RESOLVED",
+      "name": "Every declared platform home resolves in Repository Truth",
+      "owner": "00-MASTER/UAEP-000001/uaep_engine.py",
+      "source": "00-MASTER/UAEP-000001/uaep.json",
+      "pointer": "counts.homes_resolved",
+      "operator": "equals_sibling",
+      "expect": { "sibling": "counts.homes_declared" },
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["canonical-identity-assignment"]
+    },
+    {
+      "id": "OBS-FRAMEWORK-VERDICT",
+      "name": "The constitutional evolution framework gate is open",
+      "owner": "00-MASTER/UCEF-000001/ucef_engine.py",
+      "source": "00-MASTER/UCEF-000001/ucef.json",
+      "pointer": "verdict",
+      "operator": "equals",
+      "expect": "GATE-OPEN",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-EVO-11"]
+    },
+    {
+      "id": "OBS-FRAMEWORK-GUARDS",
+      "name": "The evolution framework guards report nothing",
+      "owner": "00-MASTER/UCEF-000001/ucef_engine.py",
+      "source": "00-MASTER/UCEF-000001/ucef.json",
+      "pointer": "guard_findings",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-EVO-13"]
+    },
+    {
+      "id": "OBS-FRAMEWORK-CRITERIA",
+      "name": "Every evolution framework criterion is discharged",
+      "owner": "00-MASTER/UCEF-000001/ucef_engine.py",
+      "source": "00-MASTER/UCEF-000001/ucef.json",
+      "pointer": "counts.criteria_discharged",
+      "operator": "equals_sibling",
+      "expect": { "sibling": "counts.criteria" },
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["update-ontology", "update-taxonomy"]
+    },
+    {
+      "id": "OBS-BLUEPRINT-GATE",
+      "name": "The architectural blueprint gate is open",
+      "owner": "00-MASTER/UCOS-RIB-001/rib_engine.py",
+      "source": "00-MASTER/UCOS-RIB-001/rib.json",
+      "pointer": "gate",
+      "operator": "equals",
+      "expect": "OPEN",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["architectural-validation", "UEI-EVO-06", "UEI-CON-07"]
+    },
+    {
+      "id": "OBS-REGISTRY-GATE",
+      "name": "The universal artifact registry binding gate is open",
+      "owner": "00-MASTER/UCOS-UAR-001/uar_engine.py",
+      "source": "00-MASTER/UCOS-UAR-001/uar.json",
+      "pointer": "gate",
+      "operator": "equals",
+      "expect": "OPEN",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["canonical-registration", "repository-registration", "update-registries"]
+    },
+    {
+      "id": "OBS-CORPUS-CURRENCY",
+      "name": "The knowledge corpus is current",
+      "owner": "00-MASTER/UKAP-001/corpus_engine.py",
+      "source": "00-MASTER/UKAP-001/corpus.json",
+      "pointer": "determination",
+      "operator": "equals",
+      "expect": "CORPUS CURRENT",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["repository-truth-discovery", "UEI-CON-04"]
+    },
+    {
+      "id": "OBS-ASSIMILATION-DETERMINATION",
+      "name": "Constitutional assimilation is complete",
+      "owner": "00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py",
+      "source": "00-MASTER/UAKOS-CLOSURE-008/assimilation.json",
+      "pointer": "determination",
+      "operator": "equals",
+      "expect": "REPOSITORY CONSTITUTIONALLY COMPLETE",
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["update-traceability"]
+    },
+    {
+      "id": "OBS-ROADMAP-VERDICT",
+      "name": "The master execution roadmap is executable",
+      "owner": "00-MASTER/UCOS-MXR-001/roadmap_engine.py",
+      "source": "00-MASTER/UCOS-MXR-001/roadmap.json",
+      "pointer": "verdict",
+      "operator": "not_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-EVO-05"]
+    },
+    {
+      "id": "OBS-FIXED-POINT-DECLARATION-SEAL",
+      "name": "The fixed-point owner's declaration seal is present",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp_engine.py",
+      "source": "00-MASTER/UCOS-RFP-001/rfp.json",
+      "pointer": "declaration_seal_sha256",
+      "operator": "not_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-CON-05"]
+    },
+    {
+      "id": "OBS-FIXED-POINT-FINDINGS",
+      "name": "The fixed-point owner records no undispositioned finding",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp_engine.py",
+      "source": "00-MASTER/UCOS-RFP-001/rfp.json",
+      "pointer": "findings",
+      "operator": "is_empty",
+      "expect": null,
+      "blocking": true,
+      "governed_by_finding": null,
+      "mandate": ["UEI-CON-02"]
+    }
+  ],
+
+  "$class_comment": "The classification values. This programme adds none: the register is owned by EVOLUTION-001 §2 and every value below is that register's, referenced by name so a finding's class is always a located constitutional value.",
+  "classes": [
+    { "id": "CLS-NEW-CAPABILITY", "class": "New capability", "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md" },
+    { "id": "CLS-EXTENSION", "class": "Extension", "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md" },
+    { "id": "CLS-ENHANCEMENT", "class": "Enhancement", "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md" },
+    { "id": "CLS-INFRASTRUCTURE", "class": "Infrastructure", "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md" },
+    { "id": "CLS-DOCUMENTATION", "class": "Documentation", "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md" },
+    { "id": "CLS-REFACTORING", "class": "Refactoring", "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md" },
+    { "id": "CLS-DEFECT-CORRECTION", "class": "Defect correction", "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md" },
+    { "id": "CLS-CONSTITUTIONAL-AMENDMENT", "class": "Constitutional amendment", "owner": "00-MASTER/EVOLUTION-001/EVOLUTION-GOVERNANCE-MODEL.md" }
+  ],
+
+  "$decision_comment": "The decision values available to the decision engine. 'requires_evidence' marks a decision that may not be recorded without naming the located instrument or owner that justifies it.",
+  "decisions": [
+    { "id": "DEC-IMPLEMENT", "decision": "IMPLEMENT", "definition": "Engineering work inside constitutional scope closes the finding.", "requires_evidence": true },
+    { "id": "DEC-REUSE", "decision": "REUSE", "definition": "A located capability already satisfies the finding; bind to it rather than build.", "requires_evidence": true },
+    { "id": "DEC-COMPOSE", "decision": "COMPOSE", "definition": "Several located capabilities together satisfy the finding.", "requires_evidence": true },
+    { "id": "DEC-EXTEND", "decision": "EXTEND", "definition": "A located capability satisfies the finding once its declared scope is widened.", "requires_evidence": true },
+    { "id": "DEC-MERGE", "decision": "MERGE", "definition": "Two homes hold the same concept; one absorbs the other.", "requires_evidence": true },
+    { "id": "DEC-DEPRECATE", "decision": "DEPRECATE", "definition": "The subject is superseded and retires by append-only succession.", "requires_evidence": true },
+    { "id": "DEC-REPLACE", "decision": "REPLACE", "definition": "The subject is superseded by a successor that assumes its authority.", "requires_evidence": true },
+    { "id": "DEC-IGNORE", "decision": "IGNORE", "definition": "The reading is a false positive against Repository Truth.", "requires_evidence": true },
+    { "id": "DEC-REJECT", "decision": "REJECT", "definition": "The finding is refused with recorded evidence.", "requires_evidence": true },
+    { "id": "DEC-ESCALATE", "decision": "ESCALATE", "definition": "Closure requires an authority this repository does not contain; no engineering act can discharge it.", "requires_evidence": true },
+    { "id": "DEC-DEFER", "decision": "DEFER", "definition": "Closure is admissible but blocked by a declared dependency; it waits on that dependency and on nothing else.", "requires_evidence": true }
+  ],
+
+  "$classification_rule_comment": [
+    "Ordered rules; the FIRST whose predicate matches assigns the class and the decision.",
+    "Predicates are evaluated over properties DERIVED mechanically from the finding — never",
+    "over its identity — which is what makes classification automatic rather than manual.",
+    "Available derived properties: 'blocking' (the observation blocks convergence),",
+    "'governed' (a located finding already governs the observation), 'escalated' (the",
+    "governing finding is declared non-engineering-closable), and 'actuator_failure' (the",
+    "finding is a required actuator's non-zero exit rather than a reading).",
+    "The final rule carries an empty predicate and is therefore total: no finding can fall",
+    "through unclassified, which is what CONV-05 measures."
+  ],
+  "classification_rules": [
+    {
+      "id": "CR-ACTUATOR-FAILURE",
+      "when": { "actuator_failure": true },
+      "class": "Defect correction",
+      "decision": "IMPLEMENT",
+      "rationale": "A required located owner failed to execute. The loop cannot read a determination that was never produced, so the failure is a defect in the executable path and closes by engineering."
+    },
+    {
+      "id": "CR-ESCALATED-CEILING",
+      "when": { "governed": true, "escalated": true },
+      "class": "Constitutional amendment",
+      "decision": "ESCALATE",
+      "rationale": "The governing finding records that no located authority is competent to close the subject. An engineering act cannot discharge a vacancy of authority, so the finding leaves engineering scope and stands as a disclosed ceiling."
+    },
+    {
+      "id": "CR-GOVERNED-GAP",
+      "when": { "governed": true, "escalated": false },
+      "class": "Enhancement",
+      "decision": "DEFER",
+      "rationale": "A located owner has already registered this gap and holds the work package that closes it. Acting here would create a second home for a disposition that is already owned, so the finding waits on its owner and on nothing else."
+    },
+    {
+      "id": "CR-BLOCKING-REGRESSION",
+      "when": { "blocking": true, "governed": false },
+      "class": "Defect correction",
+      "decision": "IMPLEMENT",
+      "rationale": "A blocking expectation that no located finding governs was satisfied by construction when the expectation was declared. Its violation is therefore a regression against Repository Truth and closes by engineering."
+    },
+    {
+      "id": "CR-RESIDUAL",
+      "when": {},
+      "class": "Enhancement",
+      "decision": "DEFER",
+      "rationale": "Total residual rule. A non-blocking, ungoverned reading is a real but unprioritised divergence; it is recorded with a class and a decision so that nothing is discovered and then dropped."
+    }
+  ],
+
+  "$convergence_comment": "The measured conditions of the loop's fixed point. Every criterion is MEASURED; 'expect' is the only accepted value. 'required_stable_iterations' is how many consecutive iterations must produce an identical observation vector before convergence may be asserted — one pass proves nothing about stability.",
+  "convergence": {
+    "max_iterations": 4,
+    "required_stable_iterations": 2,
+    "criteria": [
+      { "id": "CONV-01", "criterion": "the observation vector is identical across the required number of consecutive iterations", "measure": "unstable_transitions", "expect": 0, "blocking": true },
+      { "id": "CONV-02", "criterion": "every blocking observation is satisfied", "measure": "blocking_violations", "expect": 0, "blocking": true },
+      { "id": "CONV-03", "criterion": "every required actuator in the selected tier exits successfully", "measure": "actuator_failures", "expect": 0, "blocking": true },
+      { "id": "CONV-04", "criterion": "every mandate bound by an actuator or an observation resolves in a located mandate source", "measure": "unresolved_mandate_bindings", "expect": 0, "blocking": true },
+      { "id": "CONV-05", "criterion": "every discovered finding carries a class and a decision", "measure": "unclassified_findings", "expect": 0, "blocking": true },
+      { "id": "CONV-06", "criterion": "all working-tree residue is attributable to a declared write zone", "measure": "unattributed_residue", "expect": 0, "blocking": true },
+      { "id": "CONV-07", "criterion": "every observation pointer resolves in its located source", "measure": "unresolved_pointers", "expect": 0, "blocking": true }
+    ]
+  },
+
+  "$learning_comment": "What an iteration retains so a later run resolves an identical finding by lookup rather than rediscovery. The ledger is a generated, deterministic projection: it carries no timestamp and no commit identity, so an unchanged repository regenerates it byte-identically.",
+  "learning": {
+    "ledger": "AEE-LEARNING-LEDGER.json",
+    "dimensions": [
+      { "id": "LD-OBSERVATION", "dimension": "observation", "retains": "the measured value and verdict of every declared observation at the terminal iteration, keyed by observation identifier" },
+      { "id": "LD-ACTUATOR", "dimension": "actuator", "retains": "the residue each actuator actually produced, so a declared write zone that is never exercised is visible as over-declaration" },
+      { "id": "LD-DECISION", "dimension": "decision", "retains": "the class, decision and matched rule every finding received, so an identical finding is never re-adjudicated from scratch" },
+      { "id": "LD-CONVERGENCE", "dimension": "convergence", "retains": "the iteration index at which the observation vector became stable, and the vector digest at every iteration" },
+      { "id": "LD-MANDATE", "dimension": "mandate", "retains": "the mandate universe read from the located sources and which actuator or observation discharges each member, so an uncovered phase is surfaced rather than assumed" }
+    ]
+  },
+
+  "$continuous_comment": [
+    "Cadence. The repository contains no resident process, no scheduler and no daemon, and its",
+    "session hooks are deliberately frozen. Inventing one would be new, unadjudicated surface,",
+    "so this programme does not. Cadence is bound to the authorities that already provide it:",
+    "continuous integration on every push and pull request, and the operator-invocable targets.",
+    "The standing obligations themselves are not restated here — they are READ from the located",
+    "continuous-loop declaration named in mandate_sources."
+  ],
+  "continuous": {
+    "cadence_owners": [
+      { "id": "CAD-CI", "owner": ".github/workflows/aee-gate.yml", "trigger": "every push and pull request", "note": "A gate a programme must enrol in is a gate the next programme forgets; this one runs unconditionally." },
+      { "id": "CAD-OPERATOR", "owner": "Makefile", "trigger": "operator invocation", "note": "The same predicate CI runs, reachable locally, so the loop is never a CI-only artefact." }
+    ],
+    "closure_authority": {
+      "id": "CAD-CLOSURE",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp_engine.py",
+      "note": "Byte-level repository closure is asserted by this owner's own gate over a clean committed tree. This programme never invokes it, which is what keeps the driver out of the fixed-point engine's pipeline."
+    }
+  },
+
+  "$findings_comment": "Dispositioned findings of this programme itself. A finding recorded here narrows what the programme may claim; it is never a way to pass the gate. 'engineering_closable' false means no act inside this repository can discharge it — the decision engine reads this property to reach ESCALATE rather than inventing work that cannot succeed.",
+  "findings": [
+    {
+      "id": "AEE-F-001",
+      "title": "A certification ceiling stands: the aggregate certifier reports standing located findings",
+      "class": "STANDING-CONSTITUTIONAL-CEILING",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "evidence": ["00-MASTER/UCCEP-000000/uccep.json", "00-MASTER/UCCEP-000000/uccep-bindings.json"],
+      "disposition": "REGISTERED",
+      "blocking": false,
+      "engineering_closable": false,
+      "note": "The ceiling is a union: one component is a measured traceability gap owned by a located work package, the other is a vacancy of ratifying authority. The vacancy cannot be closed by any act inside this repository, so the composite ceiling is not engineering-closable and this programme discloses it instead of asserting an unqualified verdict."
+    },
+    {
+      "id": "AEE-F-002",
+      "title": "Convergence here is over the observation vector, not over the repository's bytes",
+      "class": "DECLARED-SCOPE-BOUNDARY",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "evidence": ["00-MASTER/UCOS-RFP-001/rfp-declaration.json", "00-MASTER/UCOS-RFP-001/rfp.json"],
+      "disposition": "GOVERNED",
+      "blocking": false,
+      "engineering_closable": false,
+      "note": "Byte-level closure requires a clean committed tree to begin and runs the aggregate certifier as one of its own stages. A driver that emits artifacts cannot assert cleanliness over itself, and invoking the fixed-point engine from here would rebuild the recursion topology that engine exists to forbid. The condition is not weakened, only owned elsewhere and measured by its own gate."
+    },
+    {
+      "id": "AEE-F-003",
+      "title": "Cadence is bound to continuous integration, not to a resident process",
+      "class": "DECLARED-SCOPE-BOUNDARY",
+      "owner": ".github/workflows/aee-gate.yml",
+      "evidence": [".github/workflows/aee-gate.yml", "Makefile"],
+      "disposition": "GOVERNED",
+      "blocking": false,
+      "engineering_closable": false,
+      "note": "No resident process, scheduler or armed session hook exists anywhere in this repository, and the hooks that did exist were deliberately disarmed. A daemon would be unadjudicated surface. The loop therefore runs on every push and on operator invocation, which is the cadence authority the repository actually has."
+    }
+  ]
+}

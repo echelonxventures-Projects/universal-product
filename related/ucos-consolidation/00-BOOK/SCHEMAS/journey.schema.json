@@ -1,0 +1,19 @@
+{
+  "title": "UCOS Ω∞ UX Journey Entity",
+  "description": "A user journey as a first-class artifact (UKB-008), native id UX-XXXXXX. A persona pursuing a goal across ordered flows, with a success metric and funnel stages.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["universal_id", "name", "journey_id"],
+  "properties": {
+    "universal_id": { "type": "string", "pattern": "^UCOS-UX-[0-9]{6}$" },
+    "journey_id": { "type": "string", "pattern": "^UX-[0-9]{6}$" },
+    "name": { "type": "string", "minLength": 1 },
+    "persona": { "type": ["string", "null"], "default": null },
+    "goal": { "type": ["string", "null"], "default": null },
+    "flows": { "type": "array", "items": { "type": "string", "pattern": "^UCOS-FLOW-[0-9]{6}$" }, "default": [] },
+    "success_metric": { "type": ["string", "null"], "default": null },
+    "funnel_stages": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "implements": { "type": "array", "items": { "type": "string", "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$" }, "default": [] },
+    "derived_status": { "type": "string", "default": "NOT_STARTED" }
+  }
+}

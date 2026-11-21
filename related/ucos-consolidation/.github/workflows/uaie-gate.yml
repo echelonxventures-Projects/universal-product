@@ -1,0 +1,185 @@
+name: UAIE-000001 Architectural Intelligence Gate
+
+# UAIE-000001 — the architectural intelligence faculty binding and register-plane reasoning
+# register.
+#
+# The mission this programme records names ten architectural faculties — semantic graph,
+# architectural reasoning, dependency, ownership, duplication, gap, evolution, reuse,
+# constitutional and completion intelligence — and twelve subjects the repository must be able to
+# reason about. EVERY ONE of them already had a canonical owner and a located register before
+# this programme existed. This gate asserts that each faculty still resolves to a home and a
+# symbol that exist, to an analysis already registered in 00-MASTER/UCOS-UAR-001, and to the
+# declared registers it reasons over — so a rename, a move or a deletion closes the gate instead
+# of quietly invalidating the claim that this repository can reason about itself.
+#
+# WHAT THIS PROGRAMME ADDS. Exactly three analyses, and each is an entry in the LOCATED analysis
+# registry rather than a registry of its own: cross-register consistency, faculty binding
+# resolution, and closure over the faculty relation. The first is the one measurement no located
+# owner performed — each owner validates its own register and none reads one register's
+# references against what the repository still holds, so a register that drifts while its own
+# owner stays green is invisible individually and visible only across them.
+#
+# WHAT IT DOES NOT CREATE. No engine, no registry, no catalogue, no identity, no graph, no
+# lifecycle, no authority and no namespace. The programme is classified SUBSTANTIVE under
+# 00-CMG/CMG-000001 Article LXXVI.2(b), which forbids admitting a substantive concept into the
+# meta-constitutional layer, so it is deliberately ABSENT from 00-CMG/CMG-REGISTRY.json — and
+# --check-no-parallel-authority MEASURES that absence rather than asserting it, closing the gate
+# on a mismatch in either direction.
+#
+# Fail-closed properties worth naming, because each closes a defect class this repository has
+# actually suffered:
+#   * a declared validation dimension the engine does not measure FAILS CLOSED rather than
+#     reporting satisfied — absence of evidence is never evidence.
+#   * the gate is proven NON-VACUOUS by unit scenarios: thirty-three distinct mutations drive it to
+#     CLOSED, so a gate that always passes cannot go unnoticed.
+#   * every input the engine reads is version-controlled, so this gate does not depend on
+#     untracked local state.
+#   * nothing is enumerated in code: every faculty, owner, home, symbol, register, path, probe
+#     and anchor is data, and --check-no-enumeration fails if any of it leaks into the source.
+#
+# Exit codes:
+#   0  every faculty and every register resolves, every blocking dimension satisfied (gate OPEN)
+#   1  a binding, a register or a validation dimension is unsatisfied (gate CLOSED), or a
+#      self-guard failed
+#   2  fail-closed abort — the declaration is unusable, so no verdict may be asserted
+#
+# Standing: CERTIFIED-PROVISIONAL. AUTHORITY = NONE (DERIVED TRUTH). This programme holds no
+# ratification authority; where its register and a canonical owner differ, the owner governs.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: uaie-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: UAIE self-guards (declaration · zero-enumeration · write-scope · determinism · reuse · register-plane · no-parallel-authority · evolution-contract)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Declaration integrity (no duplicate id, no empty mandatory field, no CREATE disposition)
+        run: python3 00-MASTER/UAIE-000001/uaie_engine.py --check-declaration
+
+      - name: Zero-enumeration (no faculty, owner, home, register, path or anchor is hardcoded)
+        run: python3 00-MASTER/UAIE-000001/uaie_engine.py --check-no-enumeration
+
+      - name: Forbidden-write guard (every rendered target resolves inside this programme)
+        run: python3 00-MASTER/UAIE-000001/uaie_engine.py --check-write-scope
+
+      - name: Self-determinism (two renders byte-identical, no wall-clock emitted)
+        run: python3 00-MASTER/UAIE-000001/uaie_engine.py --check-determinism
+
+      - name: Reuse-before-create guard (no faculty or owner points inside this programme)
+        run: python3 00-MASTER/UAIE-000001/uaie_engine.py --check-reuse-before-create
+
+      - name: Register-plane guard (every declared register resolves, parses and is claimed)
+        run: python3 00-MASTER/UAIE-000001/uaie_engine.py --check-register-plane
+
+      - name: No-parallel-authority guard (measured absence from the meta-constitutional plane)
+        run: python3 00-MASTER/UAIE-000001/uaie_engine.py --check-no-parallel-authority
+
+      - name: Evolution-contract guard (every obligation binds to a located owner and gate)
+        run: python3 00-MASTER/UAIE-000001/uaie_engine.py --check-evolution-contract
+
+  architectural-intelligence-gate:
+    name: Architectural Intelligence Gate (fail-closed)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Architectural Intelligence Gate (every faculty and register resolves in Repository Truth)
+        run: python3 00-MASTER/UAIE-000001/uaie_engine.py --gate
+
+      # Replay drift: the committed registers must be the deterministic product of the committed
+      # declaration. This is the programme's fixed point, and it is assertable here because the
+      # engine emits no clock and reads no untracked input, so a replay is reproducible.
+      - name: Replay drift (committed registers equal a replay of the committed declaration)
+        run: |
+          python3 00-MASTER/UAIE-000001/uaie_engine.py --render --quiet
+          git diff --exit-code -- 00-MASTER/UAIE-000001 \
+            || { echo "UAIE-000001 REPLAY DRIFT — committed registers are not the product of the declaration" >&2; exit 1; }
+
+      - name: Publish the architectural intelligence registers
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uaie-architectural-intelligence-register
+          path: |
+            00-MASTER/UAIE-000001/*.md
+            00-MASTER/UAIE-000001/uaie.json
+
+  architectural-intelligence-tests:
+    name: Architectural intelligence suite (non-vacuity — the gate must be able to fail)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # This gate reads artifacts .gitignore excludes as "regenerated each run" — the census
+      # roots include data/, intelligence/ and 00-MASTER/, which hold declared generated
+      # inputs. Without them the population measured in CI is smaller than the one the
+      # ratchets were declared against, so the gate fails for a reason that has nothing to do
+      # with truth. verify.sh:364: a prerequisite generated after the gate that consumes it is
+      # not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Install pinned test toolchain
+        run: python -m pip install --disable-pip-version-check "pytest==8.3.4" "pytest-cov==6.0.0" "coverage==7.15.2"
+
+      # --no-cov: this suite gates the binding, not repository coverage. The coverage floor is
+      # owned by ./verify.sh in ec1-ci.yml and is not duplicated here.
+      - name: Architectural intelligence suite (includes the mutations that drive the gate CLOSED)
+        run: python -m pytest engine/tests/unit/test_uaie_architectural_intelligence.py -q --no-cov

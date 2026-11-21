@@ -1,0 +1,17 @@
+{
+  "$comment": "FROZEN BY BATCH B-01b (SessionStart Mutation Freeze). AUTHORITY = Repository Recovery Authority; this file confers no constitutional authority and legislates nothing. The active hook list is deliberately EMPTY so that session initialization performs NO automatic regeneration. MANUAL EXECUTION IS FULLY PRESERVED and is untouched by this batch: the Makefile targets remain exactly as they were (regenerate, -gate, and -self for every affected programme). Nothing is deleted; no engine, declaration or capability is modified. FAIL-CLOSED PROPERTY: if the hook loader ignores unknown keys, no hook fires because `hooks` is empty; if a loader were strict about unknown keys, this file fails to load and no hook fires either. Both outcomes satisfy the freeze. SCOPE: this batch does NOT touch CI (.github/workflows/**, which is batch B-01c), does NOT roll back any file, and does NOT repair registrations, namespaces or ownership. .kiro/hooks/uakos-closure-002.json is deliberately LEFT ARMED because its entire output is gitignored (.gitignore:52-56) and therefore produces no drift - it is the model this freeze aims to generalise. RESTORE: see $rollback_B01b.",
+  "$rationale_B01b": "This hook regenerated 19 TRACKED files under 00-MASTER/URRC-000001/ on every session start (+229/-229 value churn). Its own output embeds 'WORKING TREE DIRTY (N entries)', so a determination measured against a concurrently-mutating tree contradicted its own check-determinism contract in spirit.",
+  "$rollback_B01b": "git checkout -- .kiro/hooks/urrc-000001.json",
+  "version": "v1",
+  "hooks": [],
+  "$frozen_hook_B01b": {
+    "name": "URRC-000001 Repository Reality Gate",
+    "trigger": "SessionStart",
+    "description": "Runs the URRC-000001 Repository Reality Gate at session start, so the repository-reality posture is surfaced from Repository Truth: how many chartered deliverables are bound, how much declared substrate is usable, how many derivations were measured, how many gates passed, how many facts are declared non-derivable, the gate outcome and the seal. The programme creates no catalogue, registry, roadmap, graph, sequence or authority: it binds canonical owners by pointer, derives what has no owner, and declares verified absence with a counted probe rather than filling it in. Deterministic, stdlib-only, non-blocking at session start; fail-closed as a gate. AUTHORITY = NONE (DERIVED TRUTH).",
+    "action": {
+      "type": "command",
+      "command": "python3 00-MASTER/URRC-000001/urrc_engine.py 2>/dev/null | grep '^URRC-000001:' || true",
+      "timeout": 120
+    }
+  }
+}

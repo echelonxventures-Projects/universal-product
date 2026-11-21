@@ -1,0 +1,148 @@
+{
+  "title": "UCOS Ω∞ Universal Artifact",
+  "description": "A single artifact registered in the Universal Master Knowledge Book. Every reachable artifact in the UCOS Ω∞ ecosystem has exactly one Universal Artifact record. The Universal Artifact ID is an append-only overlay identifier; it never renames or renumbers the artifact's native program identifier.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "universal_id",
+    "name",
+    "volume",
+    "page_start",
+    "page_end",
+    "status",
+    "version",
+    "path"
+  ],
+  "properties": {
+    "universal_id": {
+      "type": "string",
+      "description": "Globally unique, immutable, never-reused Universal Artifact ID.",
+      "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$"
+    },
+    "native_id": {
+      "type": ["string", "null"],
+      "description": "The artifact's own program identifier (e.g. ENG-000, ARCH-DATA-001, CAT-000, IMP-014, RUNTIME-001, RAT-11). Preserved verbatim; never modified by the UKB.",
+      "default": null
+    },
+    "name": {
+      "type": "string",
+      "description": "Canonical human-readable name.",
+      "minLength": 1
+    },
+    "description": {
+      "type": "string",
+      "description": "Short description of the artifact's purpose."
+    },
+    "category": {
+      "type": "string",
+      "description": "Provenance / identifier namespace (program family).",
+      "pattern": "^[A-Z][A-Z0-9]{1,11}$"
+    },
+    "volume": {
+      "type": "string",
+      "description": "Thematic volume placement.",
+      "pattern": "^VOL-[0-9]{3}$"
+    },
+    "page_start": {
+      "type": "integer",
+      "description": "First Universal Page Number (UPN) allocated to this artifact.",
+      "minimum": 1
+    },
+    "page_end": {
+      "type": "integer",
+      "description": "Last Universal Page Number (UPN) allocated to this artifact.",
+      "minimum": 1
+    },
+    "status": {
+      "type": "string",
+      "description": "Lifecycle status (see status.schema.json enum).",
+      "enum": [
+        "NOT_STARTED",
+        "PLANNED",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "UNDER_REVIEW",
+        "APPROVED",
+        "IMPLEMENTED",
+        "TESTED",
+        "CERTIFIED",
+        "DEPLOYED",
+        "PRODUCTION",
+        "FROZEN",
+        "SUPERSEDED",
+        "RETIRED",
+        "ACTIVE",
+        "COMPLETE",
+        "FINAL"
+      ]
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version of the artifact content.",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "default": "1.0.0"
+    },
+    "parent": {
+      "type": ["string", "null"],
+      "description": "Universal Artifact ID of the parent (Volume/Program/predecessor container). Null only for UCOS-BOOK-000000.",
+      "default": null
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "Universal Artifact IDs this artifact depends on (Depends-On edges).",
+      "items": { "type": "string", "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$" },
+      "default": []
+    },
+    "program": {
+      "type": "string",
+      "description": "Program the artifact belongs to (e.g. CONSOLIDATION, EES, IMP, ARCH, CAT, REF, GEN, ENG, RUNTIME, UKB, SOURCE)."
+    },
+    "owner": {
+      "type": "string",
+      "description": "Accountable owner role.",
+      "default": "UNASSIGNED"
+    },
+    "tags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "path": {
+      "type": "string",
+      "description": "Repository-relative direct link to the artifact file."
+    },
+    "return_link": {
+      "type": "string",
+      "description": "Repository-relative return link (default: the Master Index).",
+      "default": "00-BOOK/UCOS-BOOK-000000-UNIVERSAL-MASTER-KNOWLEDGE-BOOK.md"
+    },
+    "content_hash": {
+      "type": ["string", "null"],
+      "description": "SHA-256 of the artifact file at registration time (integrity / change detection).",
+      "default": null
+    },
+    "traceability": { "$ref": "#/$defs/traceability" }
+  },
+  "$defs": {
+    "traceability": {
+      "type": "object",
+      "description": "Requirement to Operations traceability chain references (Universal Artifact IDs or external markers).",
+      "additionalProperties": false,
+      "properties": {
+        "requirement": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "architecture": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "design": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "implementation": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "source_code": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "unit_test": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "integration_test": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "functional_test": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "security_test": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "certification": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "deployment": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "production": { "type": "array", "items": { "type": "string" }, "default": [] },
+        "operations": { "type": "array", "items": { "type": "string" }, "default": [] }
+      }
+    }
+  }
+}

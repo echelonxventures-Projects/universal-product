@@ -1,0 +1,74 @@
+{
+  "compliance_format": "ucos-service-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "interface-typed",
+        "interface-identified-objectbound"
+      ],
+      "id": "C1",
+      "requirement": "Typed (USL-03), identified and objecthood-bound (USL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (USL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "service-value-fidelity",
+        "interface-io-is-data"
+      ],
+      "id": "C3",
+      "note": "operation I/O (DF-2) materially exercised at the interface surface (SIN-07/SMR-13); ENG-003 value explicit",
+      "requirement": "Carries ENG-003 value; operation I/O is DF-2 data by reference (USL-08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "interface-typed",
+        "interface-classified",
+        "interface-sole-surface"
+      ],
+      "id": "C4",
+      "note": "interface structure explicit (USL-07 / SIN-01/03) — materially exercised; contract/operation scoped to SMC-03/05",
+      "requirement": "Contract/interface/operation structure is explicit (USL-06/07/08).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "founding-acyclic",
+        "meta-relationships-closed"
+      ],
+      "id": "C5",
+      "note": "composition/orchestration scoped to SMC-06/07; interface founding (exposes) acyclic",
+      "requirement": "Composition/orchestration uses ENG-005 references; founding acyclic (USL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "interface-behavior-by-reference"
+      ],
+      "id": "C6",
+      "note": "interface interaction binds RUNTIME (RL-F2) by reference (SMR-11 / SIN-C5); execution scoped to SMC-08",
+      "requirement": "Execution binds to RL-F2 by reference (USL-10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive",
+        "technology-independence"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (USL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "SERVICE-001 §12",
+  "target_id": "UCOS-INTERFACE-ucos.service.interface.foundation-85393aa8604aa727"
+}

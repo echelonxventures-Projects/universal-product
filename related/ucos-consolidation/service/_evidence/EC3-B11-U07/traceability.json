@@ -1,0 +1,43 @@
+{
+  "backward": [
+    "SMC-07",
+    "SOE-07",
+    "SERVICE-011",
+    "SERVICE-005",
+    "SERVICE-001",
+    "ARCH-SERVICE-001",
+    "11-SERVICE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-ORCHESTRATION-ucos.service.orchestration.foundation-19e52f93764681e8",
+    "EC3-B11-U07-VALIDATION-EVIDENCE",
+    "EC3-B11-U07-CCE-CERTIFICATION",
+    "EC3-B11-U07-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "0595a91",
+  "meta_class": "SMC-07",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "RL-F2",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "inter-step data bound by reference (SMR-13); represented data not redefined",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the orchestration)",
+    "ENG-003": "engine.certification.contracts.canonical_json (structural value fidelity)",
+    "ENG-004": "service.orchestration_meta.OrchestrationKind + type_tag (ENG-004 typing, by ref)",
+    "ENG-005": "reference identifiers (step/composed/contract/data refs; no new construct)",
+    "RL-F2": "workflow/orchestration/event bound by reference (SMR-11; RUNTIME-009/013/008)"
+  },
+  "target_id": "UCOS-ORCHESTRATION-ucos.service.orchestration.foundation-19e52f93764681e8",
+  "trace_format": "ucos-service-traceability/1.0.0",
+  "unit": "EC3-B11-U07"
+}

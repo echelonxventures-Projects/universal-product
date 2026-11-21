@@ -1,0 +1,23 @@
+{
+  "title": "UCOS Ω∞ Volume",
+  "description": "A root Volume of the Universal Master Knowledge Book. Volumes are permanent, append-only, and never renumbered. New volumes may be appended without limit.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["volume_id", "serial", "name", "category", "status"],
+  "properties": {
+    "volume_id": { "type": "string", "pattern": "^VOL-[0-9]{3}$" },
+    "serial": { "type": "integer", "minimum": 0 },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string" },
+    "category": {
+      "type": "string",
+      "description": "Primary identifier namespace associated with this volume.",
+      "pattern": "^[A-Z][A-Z0-9]{1,11}$"
+    },
+    "status": { "type": "string", "enum": ["ACTIVE", "PLANNED", "FROZEN", "RETIRED"] },
+    "artifact_count": { "type": "integer", "minimum": 0, "default": 0 },
+    "page_range_start": { "type": ["integer", "null"], "minimum": 1, "default": null },
+    "page_range_end": { "type": ["integer", "null"], "minimum": 1, "default": null },
+    "index_path": { "type": "string", "description": "Repository-relative link to the volume index." }
+  }
+}

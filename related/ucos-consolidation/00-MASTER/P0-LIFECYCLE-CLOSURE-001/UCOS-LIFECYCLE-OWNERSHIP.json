@@ -1,0 +1,471 @@
+{
+  "authority": "NONE — DERIVED TRUTH",
+  "digest": "bdb88cea795c102e73d133f9b707d1b79c3a2a886edbba8237e1328516d2951b",
+  "measurements": {
+    "distinct_owners": 45,
+    "exactly_one_owner_each": true,
+    "ownership_ambiguities": 45,
+    "ownership_collisions": 0,
+    "ownership_gaps": 0,
+    "stages": 45
+  },
+  "owners": {
+    "UCL-S-0010": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UCOS-AEE-001/01-MANDATE-COVERAGE-REGISTER.md"
+    },
+    "UCL-S-0020": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UCOS-AEE-001/04-DISCOVERY-AND-CLASSIFICATION-REGISTER.md"
+    },
+    "UCL-S-0030": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UAKOS-CLOSURE-008/assimilation.json"
+    },
+    "UCL-S-0040": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json"
+    },
+    "UCL-S-0050": {
+      "executable": false,
+      "exists": true,
+      "owner": "knowledge/canonical-knowledge.json"
+    },
+    "UCL-S-0060": {
+      "executable": false,
+      "exists": true,
+      "owner": "02-CANONICAL-OWNERSHIP-MATRIX.md"
+    },
+    "UCL-S-0070": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UCOS-RIB-001/02-REPOSITORY-CAPABILITY-GRAPH.md"
+    },
+    "UCL-S-0080": {
+      "executable": false,
+      "exists": true,
+      "owner": "03-DEPENDENCY-GRAPH.md"
+    },
+    "UCL-S-0090": {
+      "executable": false,
+      "exists": true,
+      "owner": "08-QUALITY-GATES.md"
+    },
+    "UCL-S-0100": {
+      "executable": false,
+      "exists": true,
+      "owner": "04-REPOSITORY-GAP-ANALYSIS.md"
+    },
+    "UCL-S-0110": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md"
+    },
+    "UCL-S-0120": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UEI-000001/02-UNIVERSAL-OBSERVATION-SPECIFICATION.md"
+    },
+    "UCL-S-0130": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UAIE-000001/01-FACULTY-BINDING-REGISTER.md"
+    },
+    "UCL-S-0140": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UAIE-000001/02-REGISTER-PLANE.md"
+    },
+    "UCL-S-0150": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UCOS-AEE-001/06-ITERATION-LEDGER.md"
+    },
+    "UCL-S-0160": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UEI-000001/19-VALIDATION-REPORT.md"
+    },
+    "UCL-S-0170": {
+      "executable": false,
+      "exists": true,
+      "owner": "VERIFICATION-RUNBOOK.md"
+    },
+    "UCL-S-0180": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UEI-000001/03-UNIVERSAL-LEARNING-SPECIFICATION.md"
+    },
+    "UCL-S-0190": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UEI-000001/06-UNIVERSAL-IMPACT-ANALYSIS-SPECIFICATION.md"
+    },
+    "UCL-S-0200": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UEI-000001/07-UNIVERSAL-SIMULATION-SPECIFICATION.md"
+    },
+    "UCL-S-0210": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/URRC-000001/05-CONFLICT-MATRIX.md"
+    },
+    "UCL-S-0220": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UER-000001/03-UNIVERSAL-RECOVERY-POLICY.md"
+    },
+    "UCL-S-0230": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UEI-000001/08-UNIVERSAL-IMPROVEMENT-DISCOVERY-SPECIFICATION.md"
+    },
+    "UCL-S-0240": {
+      "executable": false,
+      "exists": true,
+      "owner": "03-ARCHITECTURAL-COMPLETENESS.md"
+    },
+    "UCL-S-0250": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md"
+    },
+    "UCL-S-0260": {
+      "executable": false,
+      "exists": true,
+      "owner": "06-VALIDATION-READINESS.md"
+    },
+    "UCL-S-0270": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md"
+    },
+    "UCL-S-0280": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md"
+    },
+    "UCL-S-0290": {
+      "executable": false,
+      "exists": true,
+      "owner": "05-CANONICAL-INTEGRATION-PLAN.md"
+    },
+    "UCL-S-0300": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md"
+    },
+    "UCL-S-0310": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md"
+    },
+    "UCL-S-0320": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md"
+    },
+    "UCL-S-0330": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-BOOK/DATA/artifacts.json"
+    },
+    "UCL-S-0340": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-BOOK/DATA/id-ledger.json"
+    },
+    "UCL-S-0350": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-BOOK/MASTER-BOOK/UMB-010-LINEAGE-ARCHITECTURE.md"
+    },
+    "UCL-S-0360": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UCCEP-000000/02-REPOSITORY-TRUTH-REGISTER.md"
+    },
+    "UCL-S-0370": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md"
+    },
+    "UCL-S-0380": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UCCEP-000000/19-REPOSITORY-FIXED-POINT-CLOSURE.md"
+    },
+    "UCL-S-0390": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UCOS-EKAP-001/06-KNOWLEDGE-ASSIMILATION-REPORT.md"
+    },
+    "UCL-S-0400": {
+      "executable": false,
+      "exists": true,
+      "owner": "knowledge/decisions.json"
+    },
+    "UCL-S-0410": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UEI-000001/17-EVOLUTION-LIFECYCLE-DETERMINATION.md"
+    },
+    "UCL-S-0420": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UCEF-000001/04-OPEN-WORLD-EXPANSION-REGISTER.md"
+    },
+    "UCL-S-0430": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UEI-000001/16-ARCHITECTURE-EVOLUTION-SPECIFICATION.md"
+    },
+    "UCL-S-0440": {
+      "executable": false,
+      "exists": true,
+      "owner": "00-MASTER/UCOS-AEE-001/09-CONTINUOUS-EVOLUTION-BINDING.md"
+    },
+    "UCL-S-0450": {
+      "executable": false,
+      "exists": true,
+      "owner": "02-EXECUTION-LIFECYCLE.md"
+    }
+  },
+  "ownership_ambiguities": [
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UCOS-AEE-001/01-MANDATE-COVERAGE-REGISTER.md",
+      "stage_id": "UCL-S-0010"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UCOS-AEE-001/04-DISCOVERY-AND-CLASSIFICATION-REGISTER.md",
+      "stage_id": "UCL-S-0020"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UAKOS-CLOSURE-008/assimilation.json",
+      "stage_id": "UCL-S-0030"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UAKOS-CLOSURE-002/closure.json",
+      "stage_id": "UCL-S-0040"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "knowledge/canonical-knowledge.json",
+      "stage_id": "UCL-S-0050"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "02-CANONICAL-OWNERSHIP-MATRIX.md",
+      "stage_id": "UCL-S-0060"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UCOS-RIB-001/02-REPOSITORY-CAPABILITY-GRAPH.md",
+      "stage_id": "UCL-S-0070"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "03-DEPENDENCY-GRAPH.md",
+      "stage_id": "UCL-S-0080"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "08-QUALITY-GATES.md",
+      "stage_id": "UCL-S-0090"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "04-REPOSITORY-GAP-ANALYSIS.md",
+      "stage_id": "UCL-S-0100"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/URRC-000001/03-REUSE-MATRIX.md",
+      "stage_id": "UCL-S-0110"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UEI-000001/02-UNIVERSAL-OBSERVATION-SPECIFICATION.md",
+      "stage_id": "UCL-S-0120"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UAIE-000001/01-FACULTY-BINDING-REGISTER.md",
+      "stage_id": "UCL-S-0130"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UAIE-000001/02-REGISTER-PLANE.md",
+      "stage_id": "UCL-S-0140"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UCOS-AEE-001/06-ITERATION-LEDGER.md",
+      "stage_id": "UCL-S-0150"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UEI-000001/19-VALIDATION-REPORT.md",
+      "stage_id": "UCL-S-0160"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "VERIFICATION-RUNBOOK.md",
+      "stage_id": "UCL-S-0170"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UEI-000001/03-UNIVERSAL-LEARNING-SPECIFICATION.md",
+      "stage_id": "UCL-S-0180"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UEI-000001/06-UNIVERSAL-IMPACT-ANALYSIS-SPECIFICATION.md",
+      "stage_id": "UCL-S-0190"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UEI-000001/07-UNIVERSAL-SIMULATION-SPECIFICATION.md",
+      "stage_id": "UCL-S-0200"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/URRC-000001/05-CONFLICT-MATRIX.md",
+      "stage_id": "UCL-S-0210"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UER-000001/03-UNIVERSAL-RECOVERY-POLICY.md",
+      "stage_id": "UCL-S-0220"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UEI-000001/08-UNIVERSAL-IMPROVEMENT-DISCOVERY-SPECIFICATION.md",
+      "stage_id": "UCL-S-0230"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "03-ARCHITECTURAL-COMPLETENESS.md",
+      "stage_id": "UCL-S-0240"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "stage_id": "UCL-S-0250"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "06-VALIDATION-READINESS.md",
+      "stage_id": "UCL-S-0260"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-CEP/CEP-002-CONSTITUTIONAL-GOVERNANCE-CONSTITUTION.md",
+      "stage_id": "UCL-S-0270"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UCCEP-000000/16-CONSTITUTIONAL-GATE-REGISTER.md",
+      "stage_id": "UCL-S-0280"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "05-CANONICAL-INTEGRATION-PLAN.md",
+      "stage_id": "UCL-S-0290"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-005-REGISTRY-ARCHITECTURE.md",
+      "stage_id": "UCL-S-0300"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-003-IDENTITY-ARCHITECTURE.md",
+      "stage_id": "UCL-S-0310"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-004-NOMENCLATURE-ARCHITECTURE.md",
+      "stage_id": "UCL-S-0320"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-BOOK/DATA/artifacts.json",
+      "stage_id": "UCL-S-0330"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-BOOK/DATA/id-ledger.json",
+      "stage_id": "UCL-S-0340"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-BOOK/MASTER-BOOK/UMB-010-LINEAGE-ARCHITECTURE.md",
+      "stage_id": "UCL-S-0350"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UCCEP-000000/02-REPOSITORY-TRUTH-REGISTER.md",
+      "stage_id": "UCL-S-0360"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UER-000001/08-UNIVERSAL-REPLAY-PROTECTION-SPECIFICATION.md",
+      "stage_id": "UCL-S-0370"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UCCEP-000000/19-REPOSITORY-FIXED-POINT-CLOSURE.md",
+      "stage_id": "UCL-S-0380"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UCOS-EKAP-001/06-KNOWLEDGE-ASSIMILATION-REPORT.md",
+      "stage_id": "UCL-S-0390"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "knowledge/decisions.json",
+      "stage_id": "UCL-S-0400"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UEI-000001/17-EVOLUTION-LIFECYCLE-DETERMINATION.md",
+      "stage_id": "UCL-S-0410"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UCEF-000001/04-OPEN-WORLD-EXPANSION-REGISTER.md",
+      "stage_id": "UCL-S-0420"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UEI-000001/16-ARCHITECTURE-EVOLUTION-SPECIFICATION.md",
+      "stage_id": "UCL-S-0430"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "00-MASTER/UCOS-AEE-001/09-CONTINUOUS-EVOLUTION-BINDING.md",
+      "stage_id": "UCL-S-0440"
+    },
+    {
+      "detail": "declared owner is a document; no executable component owns the behaviour",
+      "owner": "02-EXECUTION-LIFECYCLE.md",
+      "stage_id": "UCL-S-0450"
+    }
+  ],
+  "ownership_collisions": {},
+  "ownership_gaps": [],
+  "phase": 2,
+  "programme": "P0-LIFECYCLE-CLOSURE-001",
+  "title": "Canonical Ownership Determination"
+}

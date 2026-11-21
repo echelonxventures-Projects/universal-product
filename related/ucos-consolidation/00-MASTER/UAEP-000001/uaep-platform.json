@@ -1,0 +1,439 @@
+{
+  "programme": {
+    "id": "UAEP-000001",
+    "name": "Universal Autonomous Engineering Platform — Capability Binding Register",
+    "version": "1.0.0",
+    "authority": "NONE (DERIVED TRUTH)",
+    "governing_instrument": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+    "mission": "Bind every capability named in the Universal Autonomous Engineering Platform agreement to the canonical home that already realises it, so that the agreement lives in Repository Truth rather than in conversation. This programme creates no engine, no registry, no catalogue, no identity and no pipeline. Where a canonical owner already holds a capability it is bound by pointer; where the named capability has no single home it is declared a COMPOSE over homes that already exist; where the home exists under a different canonical name that difference is recorded rather than resolved by renaming.",
+    "disclosure": "AUTHORITY = NONE. Nothing in this programme confers constitutional force, ratifies a determination, or supersedes a canonical owner. Every binding is a pointer to an artifact that exists independently of this programme and remains owned by its own authority. The only facts this programme asserts are measured from Repository Truth at render time and are re-measurable by re-running the engine."
+  },
+  "dispositions": [
+    {
+      "id": "REUSE",
+      "meaning": "the named capability is already realised at a single canonical home and is bound to it as-is; nothing is added"
+    },
+    {
+      "id": "EXTEND",
+      "meaning": "the capability is realised under a different canonical name or at a narrower scope; the existing owner is bound and the naming difference is recorded, never resolved by creating a second home"
+    },
+    {
+      "id": "COMPOSE",
+      "meaning": "no single home bears this name; the capability is a composition over two or more homes that already exist, and is bound to all of them"
+    }
+  ],
+  "vocabularies": [
+    {
+      "id": "VOC-PIPELINE-TYPE",
+      "name": "pipeline types",
+      "open": true,
+      "registrar": "register_pipeline_type",
+      "registrar_home": "platform/universal_pipeline/contracts.py",
+      "seed_symbol": "SEED_PIPELINE_TYPES",
+      "basis": "a pipeline category is admitted by calling the registrar; no function in the package branches on a specific type, so the seed set is a starting vocabulary and not an enumeration"
+    },
+    {
+      "id": "VOC-STAGE-HANDLER",
+      "name": "stage handlers",
+      "open": true,
+      "registrar": "register_stage_handler",
+      "registrar_home": "platform/universal_pipeline/handlers.py",
+      "seed_symbol": null,
+      "basis": "a stage handler is admitted by calling the registrar; a pipeline declaration naming an unresolvable handler is refused by the framework gate rather than silently accepted"
+    },
+    {
+      "id": "VOC-EVENT-CATEGORY",
+      "name": "event categories",
+      "open": true,
+      "registrar": "register_event_category",
+      "registrar_home": "platform/universal_pipeline/events.py",
+      "seed_symbol": null,
+      "basis": "an event category is admitted by calling the registrar"
+    },
+    {
+      "id": "VOC-OBJECT-KIND",
+      "name": "meta object kinds",
+      "open": true,
+      "registrar": "register_object_kind",
+      "registrar_home": "platform/universal_pipeline/identity.py",
+      "seed_symbol": null,
+      "basis": "an object kind is admitted by calling the registrar, which is what makes the meta object engine unbounded"
+    }
+  ],
+  "declared_pipeline_types": [
+    "evolution",
+    "implementation",
+    "validation",
+    "verification",
+    "certification",
+    "governance",
+    "documentation",
+    "knowledge",
+    "research",
+    "optimization",
+    "deployment",
+    "monitoring",
+    "learning",
+    "security",
+    "compliance"
+  ],
+  "capabilities": [
+    {
+      "id": "UAEP-CAP-01",
+      "name": "Universal Autonomous Engineering Meta-System",
+      "disposition": "COMPOSE",
+      "objective": "The meta-system under which engineering capability is declared, registered and evolved without redesign.",
+      "reuse": "No module bears this name, and none is created. The meta-system is the composition of the certified meta-kernel — which represents concept categories as registered meta-types so a new category is admitted by registration alone — with the pipeline platform facade that composes every engine below over one shared event bus. Binding both is what makes the meta-system real; a third module would duplicate them.",
+      "catalogue_ids": ["RC-17", "RC-56"],
+      "homes": [
+        "engine/kernel/__init__.py",
+        "platform/universal_pipeline/service.py"
+      ],
+      "symbols": ["UniversalPipelinePlatform"],
+      "evidence": [
+        "engine/kernel/compliance.py",
+        "00-MASTER/UMK-000001/umk-kernel.json",
+        "platform/universal_pipeline/service.py",
+        "engine/tests/kernel/"
+      ],
+      "gap": "The name has no single home in the repository. Recorded as a genuine naming absence and discharged by composition, not by creating a new engine."
+    },
+    {
+      "id": "UAEP-CAP-02",
+      "name": "Universal Autonomous Engineering Platform",
+      "disposition": "REUSE",
+      "objective": "The single facade through which the engineering platform is used, so no caller hand-assembles the engines.",
+      "reuse": "Already realised. The module docstring names this capability verbatim, and the facade constructs every engine below exactly once over one shared event bus. Its own docstring records that hand-assembling those engines is the defect class the facade exists to remove.",
+      "catalogue_ids": ["RC-56"],
+      "homes": ["platform/universal_pipeline/service.py"],
+      "symbols": ["UniversalPipelinePlatform"],
+      "evidence": [
+        "platform/universal_pipeline/service.py",
+        "platform/tests/test_universal_pipeline_service.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-03",
+      "name": "Universal Autonomous Pipeline Framework",
+      "disposition": "REUSE",
+      "objective": "The framework that discovers, admits, plans and gates pipelines declared as data.",
+      "reuse": "Already realised as UAPF-000001 and registered as a capability whose replacement is prohibited. The package is the framework; the CLI and Makefile targets are its entry points.",
+      "catalogue_ids": ["RC-56"],
+      "homes": [
+        "platform/universal_pipeline/__init__.py",
+        "platform/universal_pipeline/catalog/uapf-pipelines.json"
+      ],
+      "symbols": [],
+      "evidence": [
+        "platform/universal_pipeline/cli.py",
+        "platform/universal_pipeline/catalog/uapf-pipelines.json",
+        "platform/tests/test_universal_pipeline_discovery.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-04",
+      "name": "Universal Work Orchestrator",
+      "disposition": "REUSE",
+      "objective": "Advance declared work by readiness rather than by a caller-supplied order.",
+      "reuse": "Already realised; the module docstring names this capability verbatim.",
+      "catalogue_ids": ["RC-56"],
+      "homes": ["platform/universal_pipeline/orchestrator.py"],
+      "symbols": ["UniversalWorkOrchestrator", "OrchestrationTick"],
+      "evidence": [
+        "platform/universal_pipeline/orchestrator.py",
+        "platform/tests/test_universal_pipeline_orchestrator.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-05",
+      "name": "Universal Integration Gateway",
+      "disposition": "REUSE",
+      "objective": "One admission point for external effect, so integration cannot bypass governance.",
+      "reuse": "Already realised; the module docstring names this capability verbatim and the transaction type is the unit of admission.",
+      "catalogue_ids": ["RC-56"],
+      "homes": ["platform/universal_pipeline/gateway.py"],
+      "symbols": ["UniversalPipelineGateway", "GatewayTransaction"],
+      "evidence": [
+        "platform/universal_pipeline/gateway.py",
+        "platform/tests/test_universal_pipeline_gateway.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-06",
+      "name": "Universal Meta Object Engine",
+      "disposition": "REUSE",
+      "objective": "Represent object kinds as registered meta-types so a new kind needs no code change.",
+      "reuse": "Already realised in the identity module, whose docstring names both the identity engine and the meta object engine. The registrar is what keeps the kind space open.",
+      "catalogue_ids": ["RC-56"],
+      "homes": ["platform/universal_pipeline/identity.py"],
+      "symbols": ["meta_model", "register_object_kind"],
+      "evidence": [
+        "platform/universal_pipeline/identity.py",
+        "platform/tests/test_universal_pipeline_identity.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-07",
+      "name": "Universal Registry Engine",
+      "disposition": "REUSE",
+      "objective": "Admit and hold declared definitions, and derive every view over them.",
+      "reuse": "Already realised at two distinct scopes, both owned: the pipeline registry admits pipeline declarations and derives each plan itself, and the repository registry adapter reads the canonical corpus registers. Neither is replaced and no third registry is created.",
+      "catalogue_ids": ["RC-56", "RC-20"],
+      "homes": [
+        "platform/universal_pipeline/registry.py",
+        "engine/registry/__init__.py"
+      ],
+      "symbols": ["PipelineRegistry", "PipelineRegistryEntry"],
+      "evidence": [
+        "platform/universal_pipeline/registry.py",
+        "engine/registry/adapter.py",
+        "platform/tests/test_universal_pipeline_registry_queue.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-08",
+      "name": "Universal Identity Engine",
+      "disposition": "REUSE",
+      "objective": "Mint deterministic, collision-free identity for every declared object.",
+      "reuse": "Already realised. Pipeline-scope identity is minted in the identity module; platform-wide identity has its own registered owner. The permanent corpus identity ledger is a separate authority and is bound by the Repository Truth capability rather than restated here.",
+      "catalogue_ids": ["RC-56", "RC-44"],
+      "homes": [
+        "platform/universal_pipeline/identity.py",
+        "platform/identity/__init__.py"
+      ],
+      "symbols": ["Identity"],
+      "evidence": [
+        "platform/universal_pipeline/identity.py",
+        "platform/identity/__init__.py",
+        "platform/tests/test_universal_pipeline_identity.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-09",
+      "name": "Universal Relationship Engine",
+      "disposition": "REUSE",
+      "objective": "Hold declared relationships and derive closure over them.",
+      "reuse": "Already realised in the dependencies module, whose docstring names both the dependency engine and the relationship engine, and which derives closure rather than storing it.",
+      "catalogue_ids": ["RC-56"],
+      "homes": ["platform/universal_pipeline/dependencies.py"],
+      "symbols": ["DependencyManager", "DependencyClosure"],
+      "evidence": [
+        "platform/universal_pipeline/dependencies.py",
+        "platform/tests/test_universal_pipeline_dependencies.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-10",
+      "name": "Universal Graph Engine",
+      "disposition": "EXTEND",
+      "objective": "One graph over the corpus, with every projection derived from it.",
+      "reuse": "Realised under a different canonical name: the certified owner is the Universal Knowledge Graph, and the governing architecture is explicit that there are three roots but one graph. The pipeline framework derives its own capability and dependency graphs as views over declarations. The naming difference is recorded; creating a second graph store would violate the single-graph rule.",
+      "catalogue_ids": ["RC-16", "RC-56"],
+      "homes": [
+        "engine/graph/__init__.py",
+        "platform/universal_pipeline/registry.py"
+      ],
+      "symbols": ["PipelineRegistry"],
+      "evidence": [
+        "engine/graph/__init__.py",
+        "00-BOOK/MASTER-BOOK/UMB-006-KNOWLEDGE-GRAPH-ARCHITECTURE.md",
+        "00-BOOK/REGISTRIES/KNOWLEDGE-GRAPH-REGISTRY.md"
+      ],
+      "gap": "The name 'Universal Graph Engine' has no home; the capability does, under the name 'Universal Knowledge Graph'. Recorded as a naming difference, not a missing capability."
+    },
+    {
+      "id": "UAEP-CAP-11",
+      "name": "Universal Event Engine",
+      "disposition": "REUSE",
+      "objective": "One bus over which every engine publishes, with an open category space.",
+      "reuse": "Already realised; the module docstring names this capability verbatim and the platform facade shares a single bus across every engine it composes.",
+      "catalogue_ids": ["RC-56"],
+      "homes": ["platform/universal_pipeline/events.py"],
+      "symbols": ["PipelineEventBus", "register_event_category"],
+      "evidence": [
+        "platform/universal_pipeline/events.py",
+        "platform/tests/test_universal_pipeline_events.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-12",
+      "name": "Universal State Engine",
+      "disposition": "REUSE",
+      "objective": "Admit only legal state transitions, forward-only.",
+      "reuse": "Already realised as a declared state machine with an explicit legal-transition relation, so a transition is admitted by declaration rather than by a caller's assertion.",
+      "catalogue_ids": ["RC-56"],
+      "homes": ["platform/universal_pipeline/state.py"],
+      "symbols": ["state_machine", "legal_transitions"],
+      "evidence": [
+        "platform/universal_pipeline/state.py",
+        "platform/tests/test_universal_pipeline_state.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-13",
+      "name": "Universal Policy Engine",
+      "disposition": "REUSE",
+      "objective": "Evaluate declared obligations and return a verdict that can block.",
+      "reuse": "Already realised in the governance module, which returns an explicit verdict and holds the recovery point; policies and gates are declared per pipeline in the catalogue rather than compiled in.",
+      "catalogue_ids": ["RC-56"],
+      "homes": ["platform/universal_pipeline/governance.py"],
+      "symbols": ["PipelineGovernance", "GovernanceVerdict"],
+      "evidence": [
+        "platform/universal_pipeline/governance.py",
+        "platform/tests/test_universal_pipeline_governance.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-14",
+      "name": "Universal Discovery Engine",
+      "disposition": "REUSE",
+      "objective": "Discover what exists from Repository Truth rather than from a maintained list.",
+      "reuse": "Already realised at two distinct scopes, both owned: repository-wide discovery over the corpus registers, and catalogue discovery that admits pipeline declarations. The catalogue loader deliberately does not read files, so the filesystem boundary stays at the caller.",
+      "catalogue_ids": ["RC-12", "RC-56"],
+      "homes": [
+        "engine/discovery/__init__.py",
+        "platform/universal_pipeline/discovery.py"
+      ],
+      "symbols": ["PipelineDiscovery", "load_catalog"],
+      "evidence": [
+        "engine/discovery/engine.py",
+        "platform/universal_pipeline/discovery.py",
+        "platform/tests/test_universal_pipeline_discovery.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-15",
+      "name": "Universal Execution Engine",
+      "disposition": "REUSE",
+      "objective": "Execute a derived plan, recording each unit's outcome.",
+      "reuse": "Already realised as the pipeline runtime over execution units; the runtime consumes the plan the registry derived rather than an order supplied by a caller.",
+      "catalogue_ids": ["RC-56"],
+      "homes": ["platform/universal_pipeline/execution.py"],
+      "symbols": ["PipelineRuntime", "ExecutionUnit"],
+      "evidence": [
+        "platform/universal_pipeline/execution.py",
+        "platform/tests/test_universal_pipeline_execution.py"
+      ],
+      "gap": ""
+    },
+    {
+      "id": "UAEP-CAP-16",
+      "name": "Universal Repository Truth Engine",
+      "disposition": "EXTEND",
+      "objective": "Answer what exists, what it can do, what depends on it and who owns it, from the repository itself.",
+      "reuse": "Realised under different canonical names by three existing owners: repository intelligence answers the ownership and reuse questions, the repository intelligence engine produces the derived capability model, and the knowledge-book engine holds the one authoritative append-only identity ledger and decides registration eligibility from the version-control boundary. All three are bound; no fourth truth engine is created, because a second authority over Repository Truth is precisely what the No Parallel Authority rule forbids.",
+      "catalogue_ids": ["RC-50", "RC-32"],
+      "homes": [
+        "platform/repository_intelligence/__init__.py",
+        "intelligence/rie/__init__.py",
+        "00-BOOK/tools/ukb.py",
+        "00-BOOK/DATA/id-ledger.json"
+      ],
+      "symbols": [],
+      "evidence": [
+        "intelligence/UCOS-RIE-CAPABILITY-CATALOG.json",
+        "00-BOOK/DATA/id-ledger.json",
+        "00-BOOK/REGISTRIES/UNIVERSAL-ARTIFACT-REGISTRY.md"
+      ],
+      "gap": "The name 'Universal Repository Truth Engine' has no single home. The capability is held by three existing owners and is bound to all of them; the absence of one merged engine is recorded rather than closed by building one."
+    }
+  ],
+  "validations": [
+    {
+      "id": "UAEP-VAL-01",
+      "dimension": "Every declared home resolves in Repository Truth",
+      "obligation": "no capability may be bound to a path that does not exist",
+      "blocking": true
+    },
+    {
+      "id": "UAEP-VAL-02",
+      "dimension": "Every declared catalogue id exists in the canonical capability catalogue",
+      "obligation": "a binding may not cite a capability record that is absent",
+      "blocking": true
+    },
+    {
+      "id": "UAEP-VAL-03",
+      "dimension": "Every declared symbol resolves in one of its capability's homes",
+      "obligation": "a binding may not name a class or function that does not exist",
+      "blocking": true
+    },
+    {
+      "id": "UAEP-VAL-04",
+      "dimension": "Reuse before create",
+      "obligation": "no capability may be bound to a home inside this programme's own directory",
+      "blocking": true
+    },
+    {
+      "id": "UAEP-VAL-05",
+      "dimension": "Exactly one disposition per capability from the declared set",
+      "obligation": "totality and closure over the disposition vocabulary",
+      "blocking": true
+    },
+    {
+      "id": "UAEP-VAL-06",
+      "dimension": "No capability is unbound",
+      "obligation": "every capability names at least one home",
+      "blocking": true
+    },
+    {
+      "id": "UAEP-VAL-07",
+      "dimension": "Every declared vocabulary is open",
+      "obligation": "each vocabulary names a registrar that exists in its declared home",
+      "blocking": true
+    },
+    {
+      "id": "UAEP-VAL-08",
+      "dimension": "Every declared pipeline type is registered in the seed vocabulary",
+      "obligation": "the named pipeline categories must be admitted by the framework, not by this programme",
+      "blocking": true
+    },
+    {
+      "id": "UAEP-VAL-09",
+      "dimension": "No two capabilities claim an identical home set",
+      "obligation": "an identical binding for two capabilities would be duplicate authority over one home",
+      "blocking": true
+    },
+    {
+      "id": "UAEP-VAL-10",
+      "dimension": "No capability declares replacement of a protected owner",
+      "obligation": "a capability whose bound catalogue record prohibits replacement must be bound by REUSE, EXTEND or COMPOSE",
+      "blocking": true
+    },
+    {
+      "id": "UAEP-VAL-11",
+      "dimension": "Every recorded gap names the reason it is not closed",
+      "obligation": "a declared gap must carry a non-empty justification, so an absence is disclosed rather than hidden",
+      "blocking": true
+    }
+  ],
+  "exit_criteria": [
+    {
+      "id": "UAEP-EXIT-01",
+      "criterion": "every named capability of the agreement is bound to a home that exists"
+    },
+    {
+      "id": "UAEP-EXIT-02",
+      "criterion": "no capability is realised by an artifact this programme created"
+    },
+    {
+      "id": "UAEP-EXIT-03",
+      "criterion": "every blocking validation is satisfied and the gate is OPEN"
+    },
+    {
+      "id": "UAEP-EXIT-04",
+      "criterion": "the register is reproducible: two renders of the committed declaration are byte-identical"
+    }
+  ]
+}

@@ -1,0 +1,127 @@
+{
+  "all_units_certified": true,
+  "all_units_frozen": true,
+  "band_completion_certification_id": "UCOS-CERT-BAND-11-b11d3bf97651d7f4",
+  "band_completion_id": "UCOS-BAND11-ucos.service.band11.completion-13ba9a8b6b721448",
+  "baseline_digest": "deb2694f2f9405e843e338e38a6a678c9af6d547b055a8d3d3440a70cef4cd13",
+  "effects": [
+    "FE-1",
+    "FE-2",
+    "FE-3",
+    "FE-4",
+    "FE-5"
+  ],
+  "freeze_id": "UCOS-FREEZE-BAND11-ucos.service.band11.freeze-deb2694f2f9405e8",
+  "unit": "EC3-B11-U13",
+  "unit_count": 12,
+  "units": [
+    {
+      "certification_id": "UCOS-CERT-SMC-01-6d805a1308da2f66",
+      "certified": true,
+      "concern_doc": "SERVICE-001…005 (SOE-01 root)",
+      "frozen": true,
+      "meta_class": "SMC-01",
+      "name": "Service",
+      "unit": "EC3-B11-U01"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-02-466c00507b04a1f9",
+      "certified": true,
+      "concern_doc": "SERVICE-006",
+      "frozen": true,
+      "meta_class": "SMC-02",
+      "name": "Capability",
+      "unit": "EC3-B11-U02"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-03-d3ba585579bf93ef",
+      "certified": true,
+      "concern_doc": "SERVICE-007",
+      "frozen": true,
+      "meta_class": "SMC-03",
+      "name": "Contract",
+      "unit": "EC3-B11-U03"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-04-bcf64d8028ef3d1d",
+      "certified": true,
+      "concern_doc": "SERVICE-008",
+      "frozen": true,
+      "meta_class": "SMC-04",
+      "name": "Interface",
+      "unit": "EC3-B11-U04"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-05-5a06bcad4a3086c8",
+      "certified": true,
+      "concern_doc": "SERVICE-009",
+      "frozen": true,
+      "meta_class": "SMC-05",
+      "name": "Operation",
+      "unit": "EC3-B11-U05"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-06-370163eb1197edb3",
+      "certified": true,
+      "concern_doc": "SERVICE-010",
+      "frozen": true,
+      "meta_class": "SMC-06",
+      "name": "Composition",
+      "unit": "EC3-B11-U06"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-07-99f5148f4f1ba96c",
+      "certified": true,
+      "concern_doc": "SERVICE-011",
+      "frozen": true,
+      "meta_class": "SMC-07",
+      "name": "Orchestration",
+      "unit": "EC3-B11-U07"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-08-96c817b15dca3403",
+      "certified": true,
+      "concern_doc": "SERVICE-012",
+      "frozen": true,
+      "meta_class": "SMC-08",
+      "name": "Execution",
+      "unit": "EC3-B11-U08"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-09-61ee948b80beb04f",
+      "certified": true,
+      "concern_doc": "SERVICE-013",
+      "frozen": true,
+      "meta_class": "SMC-09",
+      "name": "Policy",
+      "unit": "EC3-B11-U09"
+    },
+    {
+      "certification_id": "UCOS-CERT-SMC-10-fb17b391ed14db5d",
+      "certified": true,
+      "concern_doc": "SERVICE-014",
+      "frozen": true,
+      "meta_class": "SMC-10",
+      "name": "Security",
+      "unit": "EC3-B11-U10"
+    },
+    {
+      "certification_id": "UCOS-CERT-USM-312abed8081da1d5",
+      "certified": true,
+      "concern_doc": "SERVICE-005",
+      "frozen": true,
+      "meta_class": "USM",
+      "name": "Universal Service Meta-Model",
+      "unit": "EC3-B11-U11"
+    },
+    {
+      "certification_id": "UCOS-CERT-BAND-11-b11d3bf97651d7f4",
+      "certified": true,
+      "concern_doc": "MCP-003 MEP-02 (certification-of-certifications over U01…U11)",
+      "frozen": true,
+      "meta_class": "BAND-11",
+      "name": "Band-11 Realization Certification & Completion",
+      "unit": "EC3-B11-U12"
+    }
+  ]
+}

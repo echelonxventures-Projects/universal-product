@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "Distribution",
+  "target_id": "UCOS-INFRA-DISTRIBUTION-ucos.infrastructure.distribution.foundation-ff98ab5a824045b2",
+  "verdict": "pass"
+}

@@ -1,0 +1,74 @@
+{
+  "compliance_format": "ucos-service-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "execution-typed",
+        "execution-identified-objectbound"
+      ],
+      "id": "C1",
+      "requirement": "Typed (USL-03), identified and objecthood-bound (USL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (USL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "service-value-fidelity",
+        "execution-data-by-reference"
+      ],
+      "id": "C3",
+      "note": "execution MATERIALLY EXERCISED: read/written data (DF-2) referenced (SMR-13/SEX-07); ENG-003 value explicit — USL-11",
+      "requirement": "Carries ENG-003 value; operation I/O is DF-2 data by reference (USL-08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "execution-operation-bound",
+        "execution-contract-fulfilment"
+      ],
+      "id": "C4",
+      "note": "execution fulfils a contracted operation (operation-bound SEX-04/SEX-05); USL-06",
+      "requirement": "Contract/interface/operation structure is explicit (USL-06/07/08).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "founding-acyclic",
+        "meta-relationships-closed"
+      ],
+      "id": "C5",
+      "note": "composition/orchestration N/A to Execution; the execution's reference-only founding graph is acyclic (SMK-03) with relationships closed to SMR-01…13",
+      "requirement": "Composition/orchestration uses ENG-005 references; founding acyclic (USL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "execution-runtime-reuse",
+        "execution-transactionality-by-reference"
+      ],
+      "id": "C6",
+      "note": "execution MATERIALLY EXERCISED: behaves-as the kind's RUNTIME execution/state/workflow concern by reference (SMR-11/§7/SEX-03; USL-10) — the governing law; transactional atomicity by reference (SEX-06/SEX-C1); RUNTIME redefined 0",
+      "requirement": "Execution binds to RL-F2 by reference (USL-10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "non-constitutive",
+        "technology-independence"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (USL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "SERVICE-001 §12",
+  "target_id": "UCOS-EXECUTION-ucos.service.execution.foundation-067d5836c9f6e3c8"
+}

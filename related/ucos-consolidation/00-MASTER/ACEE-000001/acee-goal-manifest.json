@@ -1,0 +1,143 @@
+{
+  "manifest": {
+    "id": "ACEE-GOAL-MANIFEST-001",
+    "name": "Engineering goal manifest",
+    "authority": "NONE — DERIVED TRUTH. This manifest legislates no goal, admits no capability, mints no identifier and grants no authorization. It RECORDS engineering goals as constitutional metadata so that the located engineering plane can be traversed for each of them. Every goal names a subject the repository already owns; a goal that named an unlocated subject would be a request to CREATE, and Repository Truth decides that, not this manifest.",
+    "open": true,
+    "closed_enumeration": false,
+    "admission": "Append a node record to `nodes`, or add another manifest matching the located manifest pattern. No engine change, no declaration change, no architectural redesign. The engine never reads this file by name: it is discovered by the declared root and suffix, so a second manifest is admitted by dropping it in.",
+    "ordinal_step": 10,
+    "$ordinal_comment": "Ordinals advance in steps so a goal recorded between two others takes an ordinal in the gap and no existing ordinal moves. An ordinal orders the traversal of goals; it confers no priority and no authority.",
+    "$subject_comment": "`subject` names the located artifact the goal is about. It is what makes autonomous disposition determination possible: the engine measures the subject against Repository Truth and derives REUSE, EXTEND, CORRECT or CREATE from what it finds, rather than being told.",
+    "$class_comment": "`class` names a located construct class. It is resolved against the discovered class plane, never interpreted here.",
+    "$reentry_comment": "`reenters` records that engineering does not terminate: a goal re-enters the lifecycle rather than ending it (CR-INF-001). It is a relation, not a dependency edge, so the graph stays orderable and the lifecycle stays non-terminal."
+  },
+  "nodes": [
+    {
+      "id": "ACEE-G-0010",
+      "goal": "Make the constitutional stage graph discoverable, orderable and executable rather than prose",
+      "intent": "An engineering goal whose subject is already located and already satisfies its obligations, so Repository Truth must dispose it as REUSE and no engineering work may be manufactured for it.",
+      "class": "UCEF-CC-01",
+      "ordinal": 10,
+      "subject": "00-MASTER/UCL-000001/ucl_engine.py",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "authority": "the single deterministic lifecycle every capability follows",
+      "authority_owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATE",
+          "ref": "G-25"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCL-000001/ucl-declaration.json"
+      ],
+      "reenters": "ACEE-G-0010"
+    },
+    {
+      "id": "ACEE-G-0020",
+      "goal": "Drive the located engineering owners as one closed loop until the observation vector stops moving",
+      "intent": "An engineering goal whose subject is located and executable but whose scope its own owner declares bounded, so Repository Truth must dispose it as EXTEND rather than REUSE or CREATE.",
+      "class": "UCEF-CC-01",
+      "ordinal": 20,
+      "subject": "00-MASTER/UCOS-AEE-001/aee_engine.py",
+      "owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "authority": "the perpetual, non-terminating evolution cycle",
+      "authority_owner": "00-MASTER/UEI-000001/uei-evolution.json",
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATE",
+          "ref": "G-17"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCOS-AEE-001/aee-declaration.json"
+      ],
+      "reenters": "ACEE-G-0020"
+    },
+    {
+      "id": "ACEE-G-0030",
+      "goal": "Prove the repository reproduces itself byte for byte over a committed state",
+      "intent": "An engineering goal whose subject is located and whose obligations are discharged by a gate outside the goal's own owner, so the plan must bind certification to a located governance gate rather than to the subject itself.",
+      "class": "UCEF-CC-01",
+      "ordinal": 30,
+      "subject": "00-MASTER/UCOS-RFP-001/rfp_engine.py",
+      "owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "authority": "closure only after the repository reproduces itself",
+      "authority_owner": "00-MASTER/UCOS-RFP-001/rfp-declaration.json",
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATE",
+          "ref": "G-15"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCOS-RFP-001/rfp-declaration.json"
+      ],
+      "reenters": "ACEE-G-0030"
+    },
+    {
+      "id": "ACEE-G-0040",
+      "goal": "Admit every constitutional concept to a single canonical home and keep the knowledge closed",
+      "intent": "An engineering goal whose subject is located, executable and already certified by a located gate, exercising the plan over the assimilation lane rather than the lifecycle lane.",
+      "class": "UCEF-CC-01",
+      "ordinal": 40,
+      "subject": "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py",
+      "owner": "00-CEP/CEP-001-CONSTITUTIONAL-ENGINEERING-CONSTITUTION.md",
+      "authority": "Repository Truth is the only authority",
+      "authority_owner": "00-CMG/CMG-000001-CONSTITUTIONAL-META-GOVERNANCE-CONSTITUTION.md",
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATE",
+          "ref": "G-02"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UAKOS-CLOSURE-002/closure.json"
+      ],
+      "reenters": "ACEE-G-0040"
+    },
+    {
+      "id": "ACEE-G-0050",
+      "goal": "Certify every constitutional check, gate and programme in one aggregate determination",
+      "intent": "An engineering goal whose subject is the aggregate certifier itself, exercising the plan against a capability its own owner declares non-reentrant — the plan must therefore bind replay without re-arming the recursion the pipeline forbids.",
+      "class": "UCEF-CC-01",
+      "ordinal": 50,
+      "subject": "00-MASTER/UCCEP-000000/uccep_engine.py",
+      "owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "authority": "the constitutional checks, gates and programmes",
+      "authority_owner": "00-MASTER/UCCEP-000000/uccep-bindings.json",
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATE",
+          "ref": "G-11"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/UCCEP-000000/uccep-bindings.json"
+      ],
+      "reenters": "ACEE-G-0050"
+    },
+    {
+      "id": "ACEE-G-0060",
+      "goal": "Bind an engineering goal to the located constitutional lifecycle and prove the binding is total",
+      "intent": "The self-referential goal. Its subject is this engine, so this programme is engineered through the same constitutional lifecycle as every other subject: measured by the same obligations, disposed by the same rules, planned over the same consumed stage graph. Nothing distinguishes it, which is what makes the absence of a privileged engineering path mechanical rather than documentary. Recording it is also the honest test of the disposition rules — if they were written to flatter this programme, this is the goal that would expose it.",
+      "class": "UCEF-CC-01",
+      "ordinal": 60,
+      "subject": "00-MASTER/ACEE-000001/acee_engine.py",
+      "owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "authority": "the single deterministic lifecycle every capability follows, which this subject consumes and does not redefine",
+      "authority_owner": "00-MASTER/UCIC-001-UNIVERSAL-CAPABILITY-IMPLEMENTATION-CONTRACT.md",
+      "binds": [
+        {
+          "source": "SRC-GOVERNANCE-GATE",
+          "ref": "G-26"
+        }
+      ],
+      "evidence": [
+        "00-MASTER/ACEE-000001/acee-invariant-manifest.json"
+      ],
+      "reenters": "ACEE-G-0060"
+    }
+  ]
+}

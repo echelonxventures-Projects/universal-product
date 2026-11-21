@@ -1,0 +1,8 @@
+{
+  "accepted": true,
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "InfrastructureDependency",
+  "target_id": "UCOS-INFRA-DEPENDENCY-ucos.infrastructure.dependency.compute-reuses-capability-dc0d4c4b66fe141c",
+  "verdict": "pass"
+}

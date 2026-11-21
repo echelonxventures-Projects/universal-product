@@ -1,0 +1,132 @@
+name: UCOS-RIB-001 Repository Integration Gate
+
+# UCOS-RIB-001 — Repository Integration Blueprint (EPIC-001 / WP-001).
+#
+# This workflow adds NO new validator, engine, catalogue, registry, queue or capability. It
+# runs the executable expression of the blueprint declaration in
+# 00-MASTER/UCOS-RIB-001/rib-blueprint.json, which declares how the repository is
+# DISCOVERED, how each discovered unit is MEASURED, which of the sixteen chartered matrices
+# are already owned elsewhere and must be BOUND by pointer rather than restated, and by
+# which ordered, total rule set exactly one disposition is COMPUTED per unit. Adding a
+# discovery source, measure, plane, disposition, rule, matrix, gap class, duplicate class,
+# gate or output is an edit to that DATA file — this workflow never needs to change, and
+# nothing is enumerated here.
+#
+# Exit semantics of the gate:
+#   0  every blocking gate passed (gate OPEN)
+#   1  a blocking gate failed (gate CLOSED)
+#   2  fail-closed abort — the declaration or a required substrate is unusable, so no
+#      verdict may be asserted
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: rib-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  self-guards:
+    name: UCOS-RIB-001 self-guards (eight, each fail-closed)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only — the guards install nothing. Each is fail-closed on its own.
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Declaration integrity (references, metric vocabulary, rule order and totality)
+        run: python3 00-MASTER/UCOS-RIB-001/rib_engine.py --check-declaration
+
+      - name: Zero-enumeration / data-driven proof (no unit or disposition is hardcoded)
+        run: python3 00-MASTER/UCOS-RIB-001/rib_engine.py --check-no-enumeration
+
+      - name: Forbidden-write guard (no corpus, code or owner zone is written)
+        run: python3 00-MASTER/UCOS-RIB-001/rib_engine.py --check-write-scope
+
+      - name: Self-determinism (byte-identical rendering across runs, no timestamps)
+        run: python3 00-MASTER/UCOS-RIB-001/rib_engine.py --check-determinism
+
+      - name: Substrate usability (present, parsing, pointers resolving)
+        run: python3 00-MASTER/UCOS-RIB-001/rib_engine.py --check-substrate
+
+      - name: No fabrication (every row traces to a source, a measure or a counted probe)
+        run: python3 00-MASTER/UCOS-RIB-001/rib_engine.py --check-no-fabrication
+
+      - name: Reuse before create (the zero-duplication invariant, mechanized)
+        run: python3 00-MASTER/UCOS-RIB-001/rib_engine.py --check-reuse-before-create
+
+      - name: Totality (every unit carries exactly one disposition from the closed set)
+        run: python3 00-MASTER/UCOS-RIB-001/rib_engine.py --check-totality
+
+  integration-gate:
+    name: Repository Integration Gate (twelve quality gates, fail-closed)
+    runs-on: ubuntu-latest
+    needs: self-guards
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # GATE-02 REPORTS THE TREE IT IS HANDED, AND DETACHMENT IS ONE OF THE THINGS IT REPORTS.
+      # That is right for a working tree, where a detached HEAD is how commits are lost, and it
+      # is meaningless here — so the gate was answering a question about `actions/checkout`
+      # rather than about this repository. Measured on one commit, ce46709f: the `push` run
+      # landed on a branch and certified 12/12 OPEN; the `pull_request` run checked out the
+      # ephemeral merge ref detached and refused at 11/12 with integrity_findings=1. Same tree,
+      # same engine, two verdicts, decided by the event name. Naming the HEAD restores the
+      # premise the gate is entitled to assume. It does not relax the gate: every other
+      # integrity condition — conflicts, interrupted operations, broken symlinks, git fsck —
+      # is still measured, and still fail-closed.
+      - name: Present a named HEAD (GATE-02 measures the tree it is handed)
+        run: git checkout -B ci/rib-gate-head
+
+      - name: Set up Python 3.12 (canonical toolchain series, DE-04)
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+
+      # The gate below READS artifacts .gitignore excludes as "regenerated each run", and
+      # nothing in this workflow regenerated them: on a fresh clone they do not exist. UCL
+      # failed exactly this way — "PRV-KNOWLEDGE: provider owner does not resolve:
+      # knowledge/canonical-knowledge.json" — while passing locally, where the artifacts
+      # persist from earlier runs. verify.sh:364 already states the ordering rule this obeys:
+      # a prerequisite generated after the gate that consumes it is not a prerequisite.
+      - name: Generate the declared prerequisites (knowledge · determinism · closure 1-3)
+        run: env PYTHON=python3 bash scripts/generate-prerequisites.sh
+      - name: Repository Integration Gate (fail-closed)
+        run: python3 00-MASTER/UCOS-RIB-001/rib_engine.py --gate
+
+      - name: Publish the blueprint
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rib-blueprint
+          path: |
+            00-MASTER/UCOS-RIB-001/*.md
+            00-MASTER/UCOS-RIB-001/rib.json
+            00-MASTER/UCOS-RIB-001/evidence/
+          if-no-files-found: warn

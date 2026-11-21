@@ -1,0 +1,60 @@
+name: UCOS Registration & Enforcement Gate
+
+# REG-AUTO-001 §16.3 / UMB-IMP-001 gate 3 — the authoritative backstop, independent
+# of any local environment. On every push / pull request it runs the Atomic
+# Registration Transaction with its pre/post enforcement gates and the drift gate.
+# A non-zero exit blocks the merge, so no unregistered, unclassified, invalid, or
+# unsynchronized artifact can enter a protected branch. Fully config-driven
+# (register.sh + config.py); no program/volume/family is enumerated here.
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+# CI throughput: supersede in-flight runs for the same ref. Pure run-scheduling —
+# does NOT alter the registration/enforcement gate logic, which remains fully
+# config-driven (register.sh + config.py).
+concurrency:
+  group: ucos-registration-gate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  registration-gate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          # Canonical toolchain series (DE-04 pinned/vetted). Matches ec1-ci.yml,
+          # determinism.yml, and the local doctor/verify environment so the
+          # determinism-sensitive registration + digital-twin transaction runs on
+          # the same interpreter everywhere.
+          python-version: "3.12"
+
+      # IMPLEMENT-001B RB-03 (UCCEP-F-006 · WP-UCCEP-004 · OA-3): `|| true` made the
+      # schema half of `ukb.py validate` silently optional in CI — an install failure
+      # was swallowed, ukb.py:1733-1735 then swallowed the ImportError, and the gate
+      # reported PASS for a weaker proposition than the one claimed. jsonschema is now
+      # a pinned dev dependency (pyproject.toml [project.optional-dependencies].dev),
+      # so it installs with the package and its absence is a real failure.
+      - name: Install validators (schema validation is mandatory, not optional)
+        run: pip install -e ".[dev]"
+
+      # B-01c — publish the CI eligibility universe. Read-only: writes nothing,
+      # allocates nothing, gates nothing. It exists so the universe every
+      # registration decision is a function of is directly observable in the CI log
+      # and comparable, by one digest, with `ukb.py eligibility` run locally. A
+      # matching digest is proof that both environments reach identical decisions.
+      - name: Registration eligibility universe (B-01c local/CI equivalence evidence)
+        run: python3 00-BOOK/tools/ukb.py eligibility --unbound
+
+      - name: Pre-registration enforcement gate (UMB-IMP-001)
+        run: python3 00-BOOK/tools/ukb.py enforce --pre
+
+      - name: Atomic Registration Transaction + drift gate (REG-AUTO-001 / UMB-IMP-001)
+        run: bash 00-BOOK/tools/register.sh --observe

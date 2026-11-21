@@ -1,0 +1,38 @@
+{
+  "backward": [
+    "NetworkResource",
+    "INFRASTRUCTURE-008",
+    "INFRASTRUCTURE-005",
+    "INFRASTRUCTURE-001",
+    "ARCH-INFRASTRUCTURE-001",
+    "13-INFRASTRUCTURE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-INFRA-NETWORK-ucos.infrastructure.network.foundation-7dd7e556add9c97b",
+    "EC3-B13-U03-VALIDATION-EVIDENCE",
+    "EC3-B13-U03-CCE-CERTIFICATION",
+    "EC3-B13-U03-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "42a0c50",
+  "meta_class": "NetworkResource",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005"
+  ],
+  "substrate_reuse": {
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the network resource)",
+    "ENG-003": "engine.certification.contracts.canonical_json (capacity + value fidelity)",
+    "ENG-004": "infrastructure.network type_tag Connectivity Class (typing)",
+    "ENG-005": "reference identifiers (connectivity links / locatedAt / boundary refs; no new connection construct)"
+  },
+  "target_id": "UCOS-INFRA-NETWORK-ucos.infrastructure.network.foundation-7dd7e556add9c97b",
+  "trace_format": "ucos-infrastructure-traceability/1.0.0",
+  "unit": "EC3-B13-U03"
+}

@@ -1,0 +1,171 @@
+{
+  "policy_id": "ucos.repository.truth",
+  "version": "1.0.0",
+  "description": "Declared Repository Truth specialisation for the UCOS consolidation repository. This document is the ONLY place repository directory names appear: the Universal Repository Truth Framework hardcodes no path. Replace this document to specialise the same Foundation for any other project.",
+  "zones": [
+    {
+      "zone_id": "transient.build-residue",
+      "truth_class": "transient",
+      "precedence": 900,
+      "description": "Caches, virtual environments, build residue. Never Truth.",
+      "selectors": [
+        { "kind": "segment", "value": "__pycache__" },
+        { "kind": "suffix", "value": ".egg-info" },
+        { "kind": "segment", "value": ".mypy_cache" },
+        { "kind": "segment", "value": ".ruff_cache" },
+        { "kind": "segment", "value": ".pytest_cache" },
+        { "kind": "root", "value": ".runtime" },
+        { "kind": "root", "value": "dist" },
+        { "kind": "root", "value": ".ec1-venv" },
+        { "kind": "root-file", "value": ".coverage" }
+      ]
+    },
+    {
+      "zone_id": "derived.evidence-outputs",
+      "truth_class": "derived",
+      "precedence": 800,
+      "description": "Regenerable outputs, evidence bundles and checkpoints — pure functions of Truth, therefore never a canonical home.",
+      "selectors": [
+        { "kind": "segment", "value": "_evidence" },
+        { "kind": "segment", "value": "outputs" },
+        { "kind": "segment", "value": "CHECKPOINTS" },
+        { "kind": "root", "value": "determinism-evidence" },
+        { "kind": "root-file", "value": "coverage.xml" }
+      ]
+    },
+    {
+      "zone_id": "historical.freeze",
+      "truth_class": "historical",
+      "precedence": 700,
+      "description": "Frozen prior state. Superseded by definition, therefore never a canonical home.",
+      "selectors": [{ "kind": "root", "value": "99-FREEZE" }]
+    },
+    {
+      "zone_id": "evidence.admitted-sources",
+      "truth_class": "evidence",
+      "precedence": 600,
+      "description": "Admitted raw source material and its hash manifest. Evidence proves ownership; it never holds it.",
+      "selectors": [
+        { "kind": "root", "value": "00-SOURCE" },
+        { "kind": "root", "value": "00-SOURCE-MANIFEST" }
+      ]
+    },
+    {
+      "zone_id": "operational-memory.programmes",
+      "truth_class": "operational-memory",
+      "precedence": 500,
+      "description": "Programme workspaces and derived-truth engines. Auditable operational memory, never a canonical home.",
+      "selectors": [
+        { "kind": "root", "value": "00-MASTER" },
+        { "kind": "root", "value": "01-WORKING" },
+        { "kind": "root", "value": "05-GENERATION" },
+        { "kind": "root", "value": "EVO-USIS-014" },
+        { "kind": "root", "value": "EVO-USIS-015" },
+        { "kind": "root", "value": "EVO-USIS-016" },
+        { "kind": "root", "value": "IAC-001A" },
+        { "kind": "root", "value": "IAC-001B" },
+        { "kind": "root", "value": "IAC-001C" },
+        { "kind": "root", "value": "IAC-001D" },
+        { "kind": "root", "value": "IAC-001E" }
+      ]
+    },
+    {
+      "zone_id": "declaration.constitution",
+      "truth_class": "declaration",
+      "precedence": 400,
+      "authority": "Constitutional Authority (02-MASTER)",
+      "canonical_home_eligible": true,
+      "description": "Constitutional instruments, constitutional execution programmes and architectural decisions.",
+      "selectors": [
+        { "kind": "root", "value": "02-MASTER" },
+        { "kind": "root", "value": "00-CEP" },
+        { "kind": "root", "value": "00-CMG" },
+        { "kind": "root", "value": "adr" }
+      ]
+    },
+    {
+      "zone_id": "generated.canonical-knowledge",
+      "truth_class": "generated",
+      "precedence": 350,
+      "authority": "Universal Knowledge Authority (knowledge)",
+      "canonical_home_eligible": true,
+      "description": "Machine-authored canonical knowledge store. Generated, and declared owning by policy.",
+      "selectors": [{ "kind": "root", "value": "knowledge" }]
+    },
+    {
+      "zone_id": "canonical.corpus",
+      "truth_class": "canonical",
+      "precedence": 300,
+      "authority": "Repository Truth Authority (00-BOOK)",
+      "canonical_home_eligible": true,
+      "description": "The registered canonical corpus, catalogues and reference material.",
+      "selectors": [
+        { "kind": "root", "value": "00-BOOK" },
+        { "kind": "root", "value": "03-CATALOGS" },
+        { "kind": "root", "value": "04-REFERENCE" }
+      ]
+    },
+    {
+      "zone_id": "canonical.specification",
+      "truth_class": "canonical",
+      "precedence": 250,
+      "authority": "Specification Authority (band zones)",
+      "canonical_home_eligible": true,
+      "description": "Band specification zones that canonically own the capabilities they specify.",
+      "selectors": [
+        { "kind": "root", "value": "06-IMPLEMENTATION" },
+        { "kind": "root", "value": "07-ENGINEERING" },
+        { "kind": "root", "value": "08-RUNTIME" },
+        { "kind": "root", "value": "09-PLATFORM" },
+        { "kind": "root", "value": "10-DATA" },
+        { "kind": "root", "value": "11-SERVICE" },
+        { "kind": "root", "value": "12-APPLICATION" },
+        { "kind": "root", "value": "13-INFRASTRUCTURE" },
+        { "kind": "root", "value": "14-SECURITY" },
+        { "kind": "root", "value": "15-UNIVERSAL-SCIENCE-INTELLIGENCE" }
+      ]
+    },
+    {
+      "zone_id": "canonical.implementation",
+      "truth_class": "canonical",
+      "precedence": 200,
+      "authority": "Implementation Authority (packaged trees)",
+      "canonical_home_eligible": true,
+      "description": "Packaged implementation trees. Implementation is a valid canonical home for the capability it realises.",
+      "selectors": [
+        { "kind": "root", "value": "engine" },
+        { "kind": "root", "value": "platform" },
+        { "kind": "root", "value": "data" },
+        { "kind": "root", "value": "service" },
+        { "kind": "root", "value": "application" },
+        { "kind": "root", "value": "infrastructure" },
+        { "kind": "root", "value": "intelligence" },
+        { "kind": "root", "value": "realization" },
+        { "kind": "root", "value": "scripts" }
+      ]
+    },
+    {
+      "zone_id": "declaration.repository-configuration",
+      "truth_class": "declaration",
+      "precedence": 150,
+      "authority": "Repository Operations Authority",
+      "description": "Governance automation and repository configuration. Binding declarations, but they own no capability.",
+      "selectors": [
+        { "kind": "root", "value": ".github" },
+        { "kind": "root", "value": ".kiro" },
+        { "kind": "root-file", "value": "Makefile" },
+        { "kind": "root-file", "value": "pyproject.toml" },
+        { "kind": "root-file", "value": "*.sh" },
+        { "kind": "root-file", "value": "*.json" },
+        { "kind": "root-file", "value": ".gitignore" }
+      ]
+    },
+    {
+      "zone_id": "derived.root-determinations",
+      "truth_class": "derived",
+      "precedence": 100,
+      "description": "Root-level determination, certification and assessment reports — derived outputs of programmes, not canonical homes.",
+      "selectors": [{ "kind": "root-file", "value": "*.md" }]
+    }
+  ]
+}

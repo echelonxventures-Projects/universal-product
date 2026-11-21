@@ -1,0 +1,661 @@
+{
+  "$comment": "DATA ONLY. AUTHORITY = NONE (DERIVED TRUTH). This declaration BINDS every constitutional responsibility of the Universal Meta-Civilization Platform to a located home in Repository Truth. It legislates nothing. Adding a dimension, capability, composition strategy, generation stratum or constitutional operating system is a REGISTRATION against engine/civilization and requires NO change to this file, to the engine, or to the kernel beneath it.",
+  "programme": {
+    "id": "MCOS-000001",
+    "name": "Universal Meta-Civilization Platform",
+    "wave": "WAVE-2",
+    "program": "PROGRAM-004",
+    "mission_class": "Core Platform Foundation",
+    "authority": "NONE (DERIVED TRUTH)",
+    "layer_home": "engine/civilization",
+    "layer_version": "1.0.0",
+    "realizes_over": "engine/kernel (PROGRAM-002, immutable baseline)",
+    "operational_home": "00-MASTER/MCOS-000001",
+    "executable_proof": "engine/civilization/compliance.py",
+    "cli": "engine/civilization/cli.py",
+    "mandate": "Constitutional Architecture Evolution — institutionalize the Universal Meta Kernel, MCOS, the Universal Engineering Platform, the Universal Registry Architecture, Universal Capability Discovery, the Universal Dimension Model, the Universal Open-World Expansion Model, the Constitutional Generation Model, Dynamic Capability Composition and Unlimited Constitutional Evolution.",
+    "reuse_analysis": "Reuse-First was applied to all ten mandated constructs before a single file was authored, and seven of the ten resolved onto an existing canonical owner and were NOT re-implemented. (1) Universal Meta Kernel ALREADY EXISTS at engine/kernel v1.0.0 under UMK-000001 / PROGRAM-002 with ADR-0003 Accepted; this layer registers INTO it and defines no meta-model, identity minting, governance engine, audit journal or registry of its own. (2) Universal Registry Architecture ALREADY EXISTS: the kernel's UniversalRegistry is the single admission authority and DEC-CAEM-07 prohibits a second registry; the no-parallel-constitutional-authority gate proves all three components of this layer admit through one kernel. (3) Universal Capability Discovery ALREADY EXISTS at engine/discovery (8 registry-driven dimensions, zero hard-coded patterns) and is referenced, not duplicated. (4) The Universal Open-World Expansion Model is ALREADY CERTIFIED at 03-CONSTITUTIONAL-UNBOUNDEDNESS-CERTIFICATION.md (16 axes) and 04-HIDDEN-FINITE-ASSUMPTION-CERTIFICATION.md (23 axes); this layer supplies the executed mechanism those determinations describe rather than a second determination. (5) Unlimited Constitutional Evolution is ALREADY OWNED by 00-CEP/CEP-009 and UEI-000001. (6) The Universal Engineering Platform is the CONCEPTUAL/UNNAMED Meta-Platform of 02-CANONICAL-OWNERSHIP-MATRIX.md, owned in substance by 09-PLATFORM/PLATFORM-005 and PLATFORM-010 and 07-ENGINEERING; UCOS-NUCLEUS-001/02 section 6 forbids making it a new nucleus, so it is EXTENDED and named, never authored. (7) 'MCOS' is dispositioned RESOLVE-NAME onto MCS-000 by DEC-CAEM-13, and DEC-CAEM-13R REJECTS vesting authority in it; accordingly MetaCivilizationPlatform.authority is the literal string 'NONE' and a blocking quality gate fails if that ever changes. Only three constructs were genuinely absent as executable mechanism and are supplied here: the Universal Dimension Model as an open, governed, registrable dimension SPACE (engine/context/** owns context frames, values and the twelve CXL laws — what a situation IS; this layer owns which axes exist at all, and neither module imports the other); Dynamic Capability Composition, which 03-ARCHITECTURAL-DECISION-ASSIMILATION-MATRIX.md registers as DEC-ADAM-14 carried by work package WP-UCDA-006 and which engine/factory/orchestrator.py did not provide because its execute() was at that time a fixed six-step sequence (that sequence has since been removed and its order derived, discharging DEC-MCOS-14 / WP-UCDA-018); and the Constitutional Generation Model at the operating-system stratum, one layer ABOVE the six frozen 05-GENERATION families, which generate artefacts WITHIN a single operating system and are untouched here.",
+    "disclosure": "This programme legislates nothing, freezes no architecture, and creates no constitutional authority. It BINDS the Universal Meta-Civilization Platform implemented under engine/civilization/ to its constitutional obligations, runs the executable proof that already lives in that layer, and emits the derived deliverables into its own operational-memory directory. It is a realization layer over the immutable PROGRAM-002 kernel in exactly the sense PROGRAM-003 is."
+  },
+  "$substrate_comment": "Every required path is existence-checked against Repository Truth on every run. A missing required substrate aborts fail-closed with exit 2: no verdict may be asserted on unusable inputs.",
+  "substrate": [
+    {
+      "id": "civilization-init",
+      "path": "engine/civilization/__init__.py",
+      "required": true,
+      "purpose": "Layer public surface + constitutional docstring + reuse analysis."
+    },
+    {
+      "id": "civilization-errors",
+      "path": "engine/civilization/errors.py",
+      "required": true,
+      "purpose": "Layer error surface (extends KernelError)."
+    },
+    {
+      "id": "civilization-metatypes",
+      "path": "engine/civilization/metatypes.py",
+      "required": true,
+      "purpose": "The whole vocabulary as DATA: namespaces, roles, relations, facets."
+    },
+    {
+      "id": "civilization-seeding",
+      "path": "engine/civilization/seeding.py",
+      "required": true,
+      "purpose": "Idempotent, order-independent facet seeding (determinism guarantee)."
+    },
+    {
+      "id": "civilization-dimensions",
+      "path": "engine/civilization/dimensions.py",
+      "required": true,
+      "purpose": "The Universal Dimension Model: open, governed, registrable dimensions."
+    },
+    {
+      "id": "civilization-composition",
+      "path": "engine/civilization/composition.py",
+      "required": true,
+      "purpose": "Dynamic Capability Composition: plans derived from declarations."
+    },
+    {
+      "id": "civilization-generation",
+      "path": "engine/civilization/generation.py",
+      "required": true,
+      "purpose": "The Constitutional Generation Model: the open stratum chain."
+    },
+    {
+      "id": "civilization-mcos",
+      "path": "engine/civilization/mcos.py",
+      "required": true,
+      "purpose": "MCOS facade binding all three components over ONE kernel."
+    },
+    {
+      "id": "civilization-compliance",
+      "path": "engine/civilization/compliance.py",
+      "required": true,
+      "purpose": "The executed constitutional proof (gates + architectural proof)."
+    },
+    {
+      "id": "civilization-cli",
+      "path": "engine/civilization/cli.py",
+      "required": true,
+      "purpose": "The ucos-mcos console surface (describe/prove/certify/evidence)."
+    },
+    {
+      "id": "kernel-home",
+      "path": "engine/kernel",
+      "required": true,
+      "purpose": "The immutable PROGRAM-002 substrate this layer realizes over."
+    },
+    {
+      "id": "civilization-tests",
+      "path": "engine/tests/civilization",
+      "required": true,
+      "purpose": "Executable proof + 100% statement and branch coverage."
+    }
+  ],
+  "$responsibilities_comment": "Every mechanism path must resolve in the repository. A responsibility whose mechanism resolves to engine/kernel or another existing owner is REUSED, and is recorded as such so reuse is auditable rather than asserted.",
+  "civilization_responsibilities": [
+    {
+      "id": "MCOS-R-01",
+      "responsibility": "Universal Meta Kernel — highest constitutional authority",
+      "mechanism": "engine/kernel/kernel.py",
+      "reuse": "REUSED",
+      "note": "PROGRAM-002. Not re-implemented. This layer registers into it and never edits it."
+    },
+    {
+      "id": "MCOS-R-02",
+      "responsibility": "Meta Laws and Meta Principles bound at admission",
+      "mechanism": "engine/kernel/governance.py",
+      "reuse": "REUSED",
+      "note": "The layer's invariants are registered Constraints in the kernel's open admission policy."
+    },
+    {
+      "id": "MCOS-R-03",
+      "responsibility": "Meta Ontology — the single universal thing",
+      "mechanism": "engine/kernel/meta.py",
+      "reuse": "REUSED",
+      "note": "MetaObject and the self-classifying MetaType root; no second ontology is defined."
+    },
+    {
+      "id": "MCOS-R-04",
+      "responsibility": "Meta Taxonomy — open classification by registration",
+      "mechanism": "engine/civilization/metatypes.py",
+      "reuse": "EXTENDED",
+      "note": "The layer's vocabulary is DATA seeded as kernel meta-types; no closed enumeration."
+    },
+    {
+      "id": "MCOS-R-05",
+      "responsibility": "Meta Registry Model — one admission authority",
+      "mechanism": "engine/kernel/registry.py",
+      "reuse": "REUSED",
+      "note": "A second registry is prohibited (DEC-CAEM-07). Gate QG-10 proves there is one."
+    },
+    {
+      "id": "MCOS-R-06",
+      "responsibility": "Meta Capability Model — declared, discoverable, composable",
+      "mechanism": "engine/civilization/composition.py",
+      "reuse": "NEW",
+      "note": "Discharges DEC-ADAM-14 / WP-UCDA-006 declarative composition."
+    },
+    {
+      "id": "MCOS-R-07",
+      "responsibility": "Meta Governance Model — nothing is admitted ungoverned",
+      "mechanism": "engine/kernel/governance.py",
+      "reuse": "REUSED",
+      "note": "Governance decides; the registry mutates. This layer adds constraints, not authority."
+    },
+    {
+      "id": "MCOS-R-08",
+      "responsibility": "Meta Runtime Model — execution composed, not scripted",
+      "mechanism": "engine/civilization/composition.py",
+      "reuse": "NEW",
+      "note": "A plan is derived from declarations, context, policy and evidence at request time."
+    },
+    {
+      "id": "MCOS-R-09",
+      "responsibility": "Meta Engineering Model — the Universal Engineering Platform surface",
+      "mechanism": "engine/civilization/mcos.py",
+      "reuse": "EXTENDED",
+      "note": "Names the CONCEPTUAL/UNNAMED Meta-Platform of PLATFORM-005/010 as a realization layer."
+    },
+    {
+      "id": "MCOS-R-10",
+      "responsibility": "Meta Evolution Model — unlimited constitutional evolution",
+      "mechanism": "engine/civilization/generation.py",
+      "reuse": "EXTENDED",
+      "note": "Strata, operating systems and dimensions all extend by registration. CEP-009 governs."
+    },
+    {
+      "id": "MCOS-R-11",
+      "responsibility": "MCOS generates unlimited constitutional operating systems",
+      "mechanism": "engine/civilization/generation.py",
+      "reuse": "NEW",
+      "note": "An operating system is a registered meta-type, so the catalogue is never finite."
+    },
+    {
+      "id": "MCOS-R-12",
+      "responsibility": "Universal Dimension Model — every dimension registerable",
+      "mechanism": "engine/civilization/dimensions.py",
+      "reuse": "NEW",
+      "note": "Complements engine/context (frames/values/laws); owns which axes exist at all."
+    },
+    {
+      "id": "MCOS-R-13",
+      "responsibility": "Every dimension discoverable",
+      "mechanism": "engine/civilization/dimensions.py",
+      "reuse": "NEW",
+      "note": "DimensionRegistry.discover over context, policy and specialization."
+    },
+    {
+      "id": "MCOS-R-14",
+      "responsibility": "Every dimension governed",
+      "mechanism": "engine/civilization/dimensions.py",
+      "reuse": "EXTENDED",
+      "note": "Two Constraints bound into the kernel: facets complete, and no declared ceiling."
+    },
+    {
+      "id": "MCOS-R-15",
+      "responsibility": "Every dimension composable and extensible without limit",
+      "mechanism": "engine/civilization/dimensions.py",
+      "reuse": "NEW",
+      "note": "COMPOSES has no arity limit; SPECIALIZES has no depth limit."
+    },
+    {
+      "id": "MCOS-R-16",
+      "responsibility": "Every dimension context aware and policy aware",
+      "mechanism": "engine/civilization/dimensions.py",
+      "reuse": "NEW",
+      "note": "Declared contexts and policies bind to a dimension without altering it."
+    },
+    {
+      "id": "MCOS-R-17",
+      "responsibility": "Every dimension implementation independent",
+      "mechanism": "engine/civilization/compliance.py",
+      "reuse": "NEW",
+      "note": "21 prohibited tokens are absent from the vocabulary yet all representable."
+    },
+    {
+      "id": "MCOS-R-18",
+      "responsibility": "Universal Capability Discovery",
+      "mechanism": "engine/discovery/dimensions.py",
+      "reuse": "REUSED",
+      "note": "Present-canonical, registry-driven, zero hard-coded patterns. Referenced only."
+    },
+    {
+      "id": "MCOS-R-19",
+      "responsibility": "Constitutional Generation Model — the ordered stratum chain",
+      "mechanism": "engine/civilization/generation.py",
+      "reuse": "NEW",
+      "note": "Nine ratified strata as DATA; a tenth is a registration, not an edit."
+    },
+    {
+      "id": "MCOS-R-20",
+      "responsibility": "Nothing bypasses the Meta Kernel",
+      "mechanism": "engine/civilization/generation.py",
+      "reuse": "NEW",
+      "note": "Every generated record carries one derivation edge; the lineage roots at the kernel."
+    },
+    {
+      "id": "MCOS-R-21",
+      "responsibility": "Universal Open-World Expansion — no intrinsic limit",
+      "mechanism": "engine/civilization/compliance.py",
+      "reuse": "EXTENDED",
+      "note": "The executed mechanism behind the two existing unboundedness certifications."
+    },
+    {
+      "id": "MCOS-R-22",
+      "responsibility": "Universal identity for everything registered",
+      "mechanism": "engine/kernel/identity.py",
+      "reuse": "REUSED",
+      "note": "Deterministic, version-independent kernel identity. No second identity scheme."
+    },
+    {
+      "id": "MCOS-R-23",
+      "responsibility": "Knowledge Once across every generated artefact",
+      "mechanism": "engine/kernel/governance.py",
+      "reuse": "REUSED",
+      "note": "The content-unique constraint makes generation idempotent by construction."
+    },
+    {
+      "id": "MCOS-R-24",
+      "responsibility": "Complete traceability of every registration",
+      "mechanism": "engine/kernel/registry.py",
+      "reuse": "REUSED",
+      "note": "Hash-chained append-only journal; trace() resolves any identity."
+    },
+    {
+      "id": "MCOS-R-25",
+      "responsibility": "No parallel constitutional authority",
+      "mechanism": "engine/civilization/mcos.py",
+      "reuse": "NEW",
+      "note": "authority == 'NONE' and one shared kernel, both proven by blocking gate QG-10."
+    },
+    {
+      "id": "MCOS-R-26",
+      "responsibility": "Deterministic, reproducible platform state",
+      "mechanism": "engine/civilization/seeding.py",
+      "reuse": "NEW",
+      "note": "Order-independent seeding; two independent platforms are byte-identical."
+    }
+  ],
+  "$gates_comment": "Each 'gate' must exactly match an id emitted by engine/civilization/compliance.py::quality_gates(). A declared gate the proof does not emit is a declaration finding and aborts the run.",
+  "quality_gates": [
+    {
+      "id": "QG-01",
+      "gate": "no-closed-dimension-set",
+      "blocking": true,
+      "criterion": "An arbitrary, never-seen dimension is admitted; the open set grows by exactly one."
+    },
+    {
+      "id": "QG-02",
+      "gate": "no-finite-enumeration",
+      "blocking": true,
+      "criterion": "No enum.Enum/IntEnum/StrEnum/Flag subclass exists anywhere in the layer."
+    },
+    {
+      "id": "QG-03",
+      "gate": "no-hardcoded-dimension-assumptions",
+      "blocking": true,
+      "criterion": "No prohibited token (language, currency, country, calendar, cloud, reality, ...) is built into the shipped vocabulary."
+    },
+    {
+      "id": "QG-04",
+      "gate": "prohibited-tokens-representable-by-registration",
+      "blocking": true,
+      "criterion": "Every prohibited token is nonetheless admitted as a registered dimension, so absence is neutrality and not incapacity."
+    },
+    {
+      "id": "QG-05",
+      "gate": "no-dimension-declares-a-ceiling",
+      "blocking": true,
+      "criterion": "A dimension declaring a closed value set, or a finite bound in either direction (ceiling or floor), is refused at admission."
+    },
+    {
+      "id": "QG-06",
+      "gate": "no-fixed-pipeline",
+      "blocking": true,
+      "criterion": "Registering a capability changes the derived plan with no code change, and the derivation rule is itself a registered, replaceable strategy."
+    },
+    {
+      "id": "QG-07",
+      "gate": "no-finite-operating-system-catalogue",
+      "blocking": true,
+      "criterion": "A never-seen constitutional operating system is registered, generated end to end, and its lineage verified."
+    },
+    {
+      "id": "QG-08",
+      "gate": "no-finite-generation-chain",
+      "blocking": true,
+      "criterion": "A never-seen generation stratum extends the chain by registration alone."
+    },
+    {
+      "id": "QG-09",
+      "gate": "nothing-bypasses-the-meta-kernel",
+      "blocking": true,
+      "criterion": "Every generated record and every composed step is admitted through the kernel registry and roots at the kernel reflective root."
+    },
+    {
+      "id": "QG-10",
+      "gate": "no-parallel-constitutional-authority",
+      "blocking": true,
+      "criterion": "The layer declares authority NONE and all three components admit through one kernel registry."
+    },
+    {
+      "id": "QG-11",
+      "gate": "no-implementation-leakage",
+      "blocking": true,
+      "criterion": "Two independently constructed platforms produce an identical snapshot hash."
+    },
+    {
+      "id": "QG-12",
+      "gate": "unknown-future-compatibility",
+      "blocking": true,
+      "criterion": "The mandatory architectural proof passes and neither the layer nor the kernel source changed."
+    }
+  ],
+  "$proof_comment": "These are the mandate's own success-criterion categories. Each is admitted as a previously unknown dimension, bracketed by source fingerprints of the layer AND the kernel, so a category that could only be admitted by editing code fails its own probe.",
+  "architectural_proof_categories": [
+    {
+      "id": "AP-01",
+      "category": "previously unknown capability domain",
+      "dimension": "Reality-Compilation-Axis"
+    },
+    {
+      "id": "AP-02",
+      "category": "previously unknown dimension",
+      "dimension": "Glyphic-Resonance-Axis"
+    },
+    {
+      "id": "AP-03",
+      "category": "previously unknown universe",
+      "dimension": "Xophar-Collective-Universe"
+    },
+    {
+      "id": "AP-04",
+      "category": "previously unknown reality model",
+      "dimension": "Branching-Retrocausal-Reality"
+    },
+    {
+      "id": "AP-05",
+      "category": "previously unknown existence model",
+      "dimension": "Superpositional-Existence"
+    },
+    {
+      "id": "AP-06",
+      "category": "previously unknown engineering model",
+      "dimension": "Substrate-Weaving-Engineering"
+    },
+    {
+      "id": "AP-07",
+      "category": "previously unknown commercial model",
+      "dimension": "Entropy-Credit-Exchange"
+    },
+    {
+      "id": "AP-08",
+      "category": "previously unknown governance model",
+      "dimension": "Emergent-Quorum-Governance"
+    },
+    {
+      "id": "AP-09",
+      "category": "previously unknown runtime model",
+      "dimension": "Amplitude-Dispatch-Runtime"
+    },
+    {
+      "id": "AP-10",
+      "category": "previously unknown temporal model",
+      "dimension": "Non-Linear-Temporal-Axis"
+    },
+    {
+      "id": "AP-11",
+      "category": "previously unknown value-exchange model",
+      "dimension": "Gradient-Levy-Axis"
+    },
+    {
+      "id": "AP-12",
+      "category": "previously unknown observer model",
+      "dimension": "Lightcone-Witness-Axis"
+    }
+  ],
+  "$operating_systems_comment": "Previously unknown constitutional operating systems, each generated end to end. Deliberately NOT UCOS/GCOS/HCOS/ECOS/ICOS: naming a system the repository already knows would prove nothing about an open catalogue.",
+  "unknown_operating_systems": [
+    {
+      "id": "OS-01",
+      "operating_system": "Zetharic-Constitutional-OS"
+    },
+    {
+      "id": "OS-02",
+      "operating_system": "Lattice-Weave-OS"
+    },
+    {
+      "id": "OS-03",
+      "operating_system": "Retrocausal-Governance-OS"
+    },
+    {
+      "id": "OS-04",
+      "operating_system": "Swarm-Consensus-OS"
+    },
+    {
+      "id": "OS-05",
+      "operating_system": "Non-Euclidean-Commerce-OS"
+    }
+  ],
+  "$generation_strata_comment": "The ratified generation chain. Declared here for traceability; the authority is engine/civilization/generation.py::GENERATION_STRATA, which the engine verifies this list against.",
+  "generation_strata": [
+    {
+      "id": "ST-01",
+      "stratum": "MetaKernelStratum",
+      "name": "Universal Meta Kernel"
+    },
+    {
+      "id": "ST-02",
+      "stratum": "MetaCivilizationStratum",
+      "name": "Meta-Civilization Operating System"
+    },
+    {
+      "id": "ST-03",
+      "stratum": "BlueprintStratum",
+      "name": "Constitutional Blueprint"
+    },
+    {
+      "id": "ST-04",
+      "stratum": "OperatingSystemStratum",
+      "name": "Domain Constitutional Operating System"
+    },
+    {
+      "id": "ST-05",
+      "stratum": "NucleusStratum",
+      "name": "Nucleus"
+    },
+    {
+      "id": "ST-06",
+      "stratum": "UniverseStratum",
+      "name": "Universe"
+    },
+    {
+      "id": "ST-07",
+      "stratum": "CapabilityStratum",
+      "name": "Capability"
+    },
+    {
+      "id": "ST-08",
+      "stratum": "ComponentStratum",
+      "name": "Component"
+    },
+    {
+      "id": "ST-09",
+      "stratum": "SolutionStratum",
+      "name": "Configured Solution"
+    }
+  ],
+  "$outputs_comment": "The nine deliverables emitted into 00-MASTER/MCOS-000001/. Generated — regenerate with `make mcos`, never hand-edit.",
+  "outputs": [
+    {
+      "id": "OUT-00",
+      "file": "00-MCOS-DASHBOARD.md",
+      "title": "Universal Meta-Civilization Platform Dashboard"
+    },
+    {
+      "id": "OUT-01",
+      "file": "01-IMPLEMENTATION-REPORT.md",
+      "title": "Meta-Civilization Implementation Report"
+    },
+    {
+      "id": "OUT-02",
+      "file": "02-CONSTITUTIONAL-COMPLIANCE-REPORT.md",
+      "title": "Constitutional Compliance Report"
+    },
+    {
+      "id": "OUT-03",
+      "file": "03-ARCHITECTURAL-PROOF-REPORT.md",
+      "title": "Mandatory Architectural Proof Report"
+    },
+    {
+      "id": "OUT-04",
+      "file": "04-GAP-ANALYSIS.md",
+      "title": "Gap Analysis"
+    },
+    {
+      "id": "OUT-05",
+      "file": "05-TRACEABILITY.md",
+      "title": "Responsibility-to-Home Traceability"
+    },
+    {
+      "id": "OUT-06",
+      "file": "06-READINESS-REPORT.md",
+      "title": "Meta-Civilization Readiness Report"
+    },
+    {
+      "id": "OUT-07",
+      "file": "07-UNIVERSAL-CERTIFICATION-MATRIX.md",
+      "title": "Universal Certification Matrix"
+    },
+    {
+      "id": "OUT-08",
+      "file": "08-FINAL-CERTIFICATION-REPORT.md",
+      "title": "Final Certification Report"
+    }
+  ],
+  "$certification_comment": "The twenty Universal Certification Matrix dimensions. --certify exits non-zero unless every one reports exactly 100%. The two coverage dimensions are read from coverage.xml, so `make test` must run first.",
+  "certification_dimensions": [
+    {
+      "id": "D01",
+      "dimension": "Constitutional Compliance",
+      "kind": "gates"
+    },
+    {
+      "id": "D02",
+      "dimension": "Repository Compliance",
+      "kind": "declaration"
+    },
+    {
+      "id": "D03",
+      "dimension": "Architectural Compliance",
+      "kind": "arch"
+    },
+    {
+      "id": "D04",
+      "dimension": "Meta-Model Compliance",
+      "kind": "arch"
+    },
+    {
+      "id": "D05",
+      "dimension": "Open-World Compliance",
+      "kind": "gate",
+      "gate": "no-closed-dimension-set"
+    },
+    {
+      "id": "D06",
+      "dimension": "Universality",
+      "kind": "gate",
+      "gate": "no-hardcoded-dimension-assumptions"
+    },
+    {
+      "id": "D07",
+      "dimension": "Knowledge Once",
+      "kind": "arch"
+    },
+    {
+      "id": "D08",
+      "dimension": "Implementation Completeness",
+      "kind": "ratio"
+    },
+    {
+      "id": "D09",
+      "dimension": "Traceability Completeness",
+      "kind": "ratio"
+    },
+    {
+      "id": "D10",
+      "dimension": "Documentation Coverage",
+      "kind": "docstring"
+    },
+    {
+      "id": "D11",
+      "dimension": "Validation Coverage",
+      "kind": "arch"
+    },
+    {
+      "id": "D12",
+      "dimension": "Evidence Coverage",
+      "kind": "ratio"
+    },
+    {
+      "id": "D13",
+      "dimension": "Certification Coverage",
+      "kind": "arch"
+    },
+    {
+      "id": "D14",
+      "dimension": "Statement Coverage",
+      "kind": "coverage",
+      "metric": "line"
+    },
+    {
+      "id": "D15",
+      "dimension": "Branch Coverage",
+      "kind": "coverage",
+      "metric": "branch"
+    },
+    {
+      "id": "D16",
+      "dimension": "Function Coverage",
+      "kind": "coverage",
+      "metric": "line"
+    },
+    {
+      "id": "D17",
+      "dimension": "Determinism",
+      "kind": "arch"
+    },
+    {
+      "id": "D18",
+      "dimension": "Reproducibility",
+      "kind": "arch"
+    },
+    {
+      "id": "D19",
+      "dimension": "Quality Gates",
+      "kind": "ratio"
+    },
+    {
+      "id": "D20",
+      "dimension": "Dependency Closure",
+      "kind": "deps"
+    }
+  ],
+  "$coverage_obligation_comment": "UCOS-CL-005 / UAKOS-CLOSURE-008. The engine used to parse coverage.xml and render the measured line and branch counts into the tracked certification artifacts, which made those artifacts depend on one test execution on one machine — they moved the moment the file was withheld. The OBLIGATION and its recorded VERDICT are authored here, where they are tracked repository truth; the measurement itself is referenced by evidence id and is never read while rendering. Changing the obligation is a declaration edit, which is the ratified way to extend an operational programme.",
+  "coverage_obligation": {
+    "obligation_id": "MCOS-COV-01",
+    "scope": "engine/civilization/",
+    "line_percent_required": 100.0,
+    "branch_percent_required": 100.0,
+    "verified_by": "`./verify.sh` stage `pytest + coverage gate (--cov-fail-under=90)`",
+    "result": "PASS",
+    "evidence_reference": {
+      "evidence_id": "MCOS-000001/EV-COVERAGE-001",
+      "archive_path": "coverage.xml",
+      "classification": "ENVIRONMENTAL_OBSERVATION",
+      "canonical_identity_role": "NON_CANONICAL",
+      "surface_id": "EV-COVERAGE-REPORT"
+    }
+  }
+}

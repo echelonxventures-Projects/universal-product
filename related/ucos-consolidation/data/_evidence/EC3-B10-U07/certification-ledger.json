@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "DMC-08",
+      "certification_id": "UCOS-CERT-DMC-08-07e9db1834b26c10",
+      "entry_hash": "f04b1be92cb7df44348face6a366dc1f0b7b08e18b67dcc603753cdfd213ce70",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "07e9db1834b26c100f2ef4f40df3712dd93e1fb58258a8f644f121ac9f6e3aa3",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-GOVERNANCE-ucos.data.governance.foundation-6a68734d3da22a22",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "f04b1be92cb7df44348face6a366dc1f0b7b08e18b67dcc603753cdfd213ce70",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}

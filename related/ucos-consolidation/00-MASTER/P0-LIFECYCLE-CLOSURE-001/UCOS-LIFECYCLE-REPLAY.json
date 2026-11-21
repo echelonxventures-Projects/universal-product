@@ -1,0 +1,38 @@
+{
+  "authority": "NONE — DERIVED TRUTH",
+  "digest": "1530922c8fe39d4c8bb7f18c445bd77b0a9cf9b96354d9d1fd3562ba5b974e73",
+  "identity": {
+    "bookkeeping_identity": "dcba6e93eb3cebadddcb4de9b673ca06dda6e55a3e9d78582c58355514d43f74",
+    "chain_head": "eff06df2ffe13d352eaa09f49f3a4f311bcf0e997e482d66528917e98d53e1ce",
+    "chain_intact": "True",
+    "dictionary_identity": "16edd63e80122166a5ea456103df6f680eaa078b1c8f735994e748a68077eca2",
+    "knowledge_identity": "c521cb836a8ad8bfae437468c833369ece6087655d8fe611cf1f76fde3604e2b",
+    "lineage_identity": "7dbbe09de29d779b7a5c05c1cccc27f49970dd8a06c99bdf3e30a54644f90f7f",
+    "output_identity": "ef5f018b8552b655ea979ad78c221e80cde44bbcaaea62f7e6338fcd201474f7",
+    "registry_identity": "46506f2287012463801e81a18dd1c377b39fb0828dae9ef2e3d422a108199fd0"
+  },
+  "measurements": {
+    "dimensions_measured": 8,
+    "drift": {
+      "bookkeeping_identity": 0,
+      "chain_head": 0,
+      "chain_intact": 0,
+      "dictionary_identity": 0,
+      "knowledge_identity": 0,
+      "lineage_identity": 0,
+      "output_identity": 0,
+      "registry_identity": 0
+    },
+    "entropy": 0,
+    "mutation": 0,
+    "ordering_instability": 0,
+    "ownership_instability": 0,
+    "rounds_executed": 10,
+    "unstable_dimensions": []
+  },
+  "phase": 5,
+  "programme": "P0-LIFECYCLE-CLOSURE-001",
+  "rounds": 10,
+  "status": "REPLAYABLE",
+  "title": "Deterministic Replay Determination"
+}

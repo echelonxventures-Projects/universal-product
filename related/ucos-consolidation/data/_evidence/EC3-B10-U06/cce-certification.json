@@ -1,0 +1,229 @@
+{
+  "advisory_failures": [],
+  "blocking_failures": [],
+  "blueprint_id": "DMC-07",
+  "certification_class": "engineering-readiness",
+  "certification_id": "UCOS-CERT-DMC-07-10cb52fd186c7693",
+  "certified": true,
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 10,
+    "total": 10
+  },
+  "findings": [
+    {
+      "criterion_id": "CC-1",
+      "details": {
+        "gate": "architecture"
+      },
+      "message": "CC-1 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-10",
+      "details": {
+        "gate": "completeness"
+      },
+      "message": "CC-10 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-2",
+      "details": {
+        "gate": "dependencies"
+      },
+      "message": "CC-2 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-3",
+      "details": {
+        "gate": "coverage"
+      },
+      "message": "CC-3 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-4",
+      "details": {
+        "gate": "validation",
+        "verdict": "pass"
+      },
+      "message": "CC-4 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-5",
+      "details": {
+        "gate": "traceability"
+      },
+      "message": "CC-5 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-6",
+      "details": {
+        "evidence_sha256": "dc5528885ef44a86890a63ec3b7741b1459248763b063e1c0495a6c37e2f2c08",
+        "gate": "evidence"
+      },
+      "message": "CC-6 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-7",
+      "details": {
+        "gate": "certification-ready"
+      },
+      "message": "CC-7 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-8",
+      "details": {
+        "gate": "readiness"
+      },
+      "message": "CC-8 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "criterion_id": "CC-9",
+      "details": {
+        "gate": "gap-zero"
+      },
+      "message": "CC-9 satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "record": {
+    "authority": "ENGINEERING-EXECUTION-ONLY",
+    "blueprint_id": "DMC-07",
+    "certification_class": "engineering-readiness",
+    "certification_id": "UCOS-CERT-DMC-07-10cb52fd186c7693",
+    "certified": true,
+    "content_sha256": "10cb52fd186c76930e45cd0787a0516d64b6ab23c1bb5d90633b66f15ccf825e",
+    "criteria": [
+      {
+        "criterion_id": "CC-1",
+        "details": {
+          "gate": "architecture"
+        },
+        "message": "CC-1 satisfied",
+        "severity": "blocking",
+        "status": "pass"
+      },
+      {
+        "criterion_id": "CC-10",
+        "details": {
+          "gate": "completeness"
+        },
+        "message": "CC-10 satisfied",
+        "severity": "blocking",
+        "status": "pass"
+      },
+      {
+        "criterion_id": "CC-2",
+        "details": {
+          "gate": "dependencies"
+        },
+        "message": "CC-2 satisfied",
+        "severity": "blocking",
+        "status": "pass"
+      },
+      {
+        "criterion_id": "CC-3",
+        "details": {
+          "gate": "coverage"
+        },
+        "message": "CC-3 satisfied",
+        "severity": "blocking",
+        "status": "pass"
+      },
+      {
+        "criterion_id": "CC-4",
+        "details": {
+          "gate": "validation",
+          "verdict": "pass"
+        },
+        "message": "CC-4 satisfied",
+        "severity": "blocking",
+        "status": "pass"
+      },
+      {
+        "criterion_id": "CC-5",
+        "details": {
+          "gate": "traceability"
+        },
+        "message": "CC-5 satisfied",
+        "severity": "blocking",
+        "status": "pass"
+      },
+      {
+        "criterion_id": "CC-6",
+        "details": {
+          "evidence_sha256": "dc5528885ef44a86890a63ec3b7741b1459248763b063e1c0495a6c37e2f2c08",
+          "gate": "evidence"
+        },
+        "message": "CC-6 satisfied",
+        "severity": "blocking",
+        "status": "pass"
+      },
+      {
+        "criterion_id": "CC-7",
+        "details": {
+          "gate": "certification-ready"
+        },
+        "message": "CC-7 satisfied",
+        "severity": "blocking",
+        "status": "pass"
+      },
+      {
+        "criterion_id": "CC-8",
+        "details": {
+          "gate": "readiness"
+        },
+        "message": "CC-8 satisfied",
+        "severity": "blocking",
+        "status": "pass"
+      },
+      {
+        "criterion_id": "CC-9",
+        "details": {
+          "gate": "gap-zero"
+        },
+        "message": "CC-9 satisfied",
+        "severity": "blocking",
+        "status": "pass"
+      }
+    ],
+    "disclosure": {
+      "asserts_constitutional_finality": false,
+      "authority": "ENGINEERING-EXECUTION-ONLY",
+      "disclosure_id": "EC-1-PROVISIONAL-STATE",
+      "gate": "EC-1",
+      "gate_open": true,
+      "standard": "DE-05",
+      "statement": "This runtime is generated engineering execution built on provisional constitutional determinations. The external gates (EC-1) remain open; this artifact asserts no constitutional finality, authority, or ratification and holds engineering-execution authority only."
+    },
+    "evidence_ref": "dc5528885ef44a86890a63ec3b7741b1459248763b063e1c0495a6c37e2f2c08",
+    "standard": "UCOS-EC1-CERTIFICATION-STANDARD",
+    "standard_version": "1.0.0",
+    "status": "certified",
+    "target_id": "UCOS-LIFECYCLE-ucos.data.lifecycle.foundation-805e97651fec0d51",
+    "version": "1.0.0"
+  },
+  "status": "certified",
+  "target_id": "UCOS-LIFECYCLE-ucos.data.lifecycle.foundation-805e97651fec0d51",
+  "version": "1.0.0"
+}

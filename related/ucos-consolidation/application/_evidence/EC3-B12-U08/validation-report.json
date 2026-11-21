@@ -1,0 +1,218 @@
+{
+  "accepted": true,
+  "blueprint_id": "AMC-08",
+  "counts": {
+    "advisory_failed": 0,
+    "blocking_failed": 0,
+    "failed": 0,
+    "passed": 21,
+    "total": 21
+  },
+  "findings": [
+    {
+      "check_id": "composition-assembles-members",
+      "details": {
+        "assembled_member_count": 2
+      },
+      "message": "composition-assembles-members satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "composition-behavior-by-reference",
+      "details": {
+        "behavior_ref": "ENG-005:RL-F2:runtime.composition-emit"
+      },
+      "message": "composition-behavior-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "composition-by-reference",
+      "details": {
+        "assembled_ref": "ENG-005:AMC-01:ucos.application.foundation",
+        "composition_ref": "ENG-005:PL-F2:PLATFORM-009.composition"
+      },
+      "message": "composition-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "composition-classified",
+      "details": {
+        "facet": "module-into-application",
+        "kind": "Module-into-Application"
+      },
+      "message": "composition-classified satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "composition-constituents-typed",
+      "details": {
+        "assembled_member_count": 2
+      },
+      "message": "composition-constituents-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "composition-federation-by-reference",
+      "details": {
+        "is_federation": false
+      },
+      "message": "composition-federation-by-reference satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "composition-identified-objectbound",
+      "details": {
+        "composition_id": "UCOS-COMPOSITION-ucos.application.composition.foundation-ef71e0ec2e86b09e"
+      },
+      "message": "composition-identified-objectbound satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "composition-no-new-connection",
+      "details": {},
+      "message": "composition-no-new-connection satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "composition-preserves-boundaries",
+      "details": {},
+      "message": "composition-preserves-boundaries satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "composition-typed",
+      "details": {
+        "type_tag": "ucos.application.composition.foundation"
+      },
+      "message": "composition-typed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "composition-value-fidelity",
+      "details": {
+        "value_digest": "ef71e0ec2e86b09e9cbce312d76939b0847822552eeddd296dfdce0246d5ddc7"
+      },
+      "message": "composition-value-fidelity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "foundation-reuse-integrity",
+      "details": {
+        "substrate": [
+          "ENG-001",
+          "ENG-002",
+          "ENG-003",
+          "ENG-004",
+          "ENG-005",
+          "RL-F2",
+          "PL-F2"
+        ]
+      },
+      "message": "foundation-reuse-integrity satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "founding-acyclic",
+      "details": {
+        "founding_relationship": "AMR-02"
+      },
+      "message": "founding-acyclic satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "lifecycle-valid",
+      "details": {
+        "state": "DEFINED"
+      },
+      "message": "lifecycle-valid satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-class-single",
+      "details": {
+        "meta_class": "AMC-08"
+      },
+      "message": "meta-class-single satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-constraints",
+      "details": {
+        "constraints": [
+          "AMK-01",
+          "AMK-02",
+          "AMK-03",
+          "AMK-05",
+          "AMK-06"
+        ]
+      },
+      "message": "meta-constraints satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "meta-relationships-closed",
+      "details": {
+        "relationships": [
+          "AMR-02",
+          "AMR-03",
+          "AMR-07",
+          "AMR-10",
+          "AMR-12"
+        ]
+      },
+      "message": "meta-relationships-closed satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "non-constitutive",
+      "details": {},
+      "message": "non-constitutive satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "provisional-state-disclosure",
+      "details": {
+        "disclosure_id": "EC-1-PROVISIONAL-STATE"
+      },
+      "message": "provisional-state-disclosure satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "technology-independence",
+      "details": {},
+      "message": "technology-independence satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    },
+    {
+      "check_id": "traceability-rooted",
+      "details": {
+        "links": 6
+      },
+      "message": "traceability-rooted satisfied",
+      "severity": "blocking",
+      "status": "pass"
+    }
+  ],
+  "target_id": "UCOS-COMPOSITION-ucos.application.composition.foundation-ef71e0ec2e86b09e",
+  "verdict": "pass"
+}

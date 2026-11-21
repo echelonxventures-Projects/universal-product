@@ -1,0 +1,78 @@
+{
+  "register_id": "ucos.generation.targets",
+  "version": "1.0.0",
+  "$comment": "THE declared generation targets. Each entry is one obligation the generator discharges for EVERY Ω Nucleus, the template that renders it, and the destination it lands at. This document — not any module — is the answer to 'what does generating a nucleus produce'. Adding an artifact to every future nucleus is an entry here and requires NO change to generator.py, registry.py or contracts.py; supplying a different renderer for an existing obligation is a template registration and requires no change either.",
+  "$destination_comment": "Destinations are patterns over tokens the DECLARATION can answer — {contracts_path}, {errors_path}, {bootstrap_path}, {cli_path}, {registry_path}, {catalog_path}, {package_path}, {slug}. This is why the generator holds no repository knowledge: the contract artifact lands wherever the nucleus says its contract surface lives, not wherever a convention would have put it. A pattern naming a token the declaration cannot answer is refused at plan time, never guessed. A project whose layout differs supplies its own targets document; the set below is the packaged default, not a law.",
+  "targets": [
+    {
+      "target_id": "GT-01",
+      "kind": "constitutional",
+      "template": "nucleus-declaration",
+      "destination": "{package_path}/nucleus-declaration.json",
+      "rationale": "The register entry through which the nucleus enters constitutional authority. Rendered in the register document's own shape so it is directly registrable — the Repository Truth update the generation produces, offered as a determination rather than applied as a side effect."
+    },
+    {
+      "target_id": "GT-02",
+      "kind": "contract",
+      "template": "contract-surface",
+      "destination": "{contracts_path}",
+      "rationale": "UFC-01 and UFC-08. A consumer binds to a named, semantically versioned contract; a nucleus with no published contract is not a nucleus."
+    },
+    {
+      "target_id": "GT-03",
+      "kind": "errors",
+      "template": "error-taxonomy",
+      "destination": "{errors_path}",
+      "rationale": "UFC-10. Every absence is a typed refusal carrying a distinct stable code, so the nucleus can never substitute an inference for a determination it cannot make."
+    },
+    {
+      "target_id": "GT-04",
+      "kind": "registry",
+      "template": "population-registry",
+      "destination": "{registry_path}",
+      "rationale": "UFC-03 and UFC-05 together: the population is held deterministically and fail-closed, and new authority enters it by registration rather than by editing the nucleus that consumes it."
+    },
+    {
+      "target_id": "GT-05",
+      "kind": "bootstrap",
+      "template": "service-bootstrap",
+      "destination": "{bootstrap_path}",
+      "rationale": "UFC-02 and UFC-07. One declared path into existence, no import-time side effect, and a service descriptor that makes the nucleus resolvable rather than merely importable."
+    },
+    {
+      "target_id": "GT-06",
+      "kind": "runtime",
+      "template": "runtime-cli",
+      "destination": "{cli_path}",
+      "rationale": "UFC-06. A nucleus that can only be exercised from a test or an interactive session cannot be operated."
+    },
+    {
+      "target_id": "GT-07",
+      "kind": "policy",
+      "template": "policy-catalogue",
+      "destination": "{catalog_path}",
+      "rationale": "UFC-04. Behaviour is configured by a declared document that resolves and parses. Configuration that lives in code cannot be changed without a release, which means it is not configuration."
+    },
+    {
+      "target_id": "GT-08",
+      "kind": "documentation",
+      "template": "nucleus-documentation",
+      "destination": "{package_path}/README.md",
+      "rationale": "Documentation derived from the declaration cannot drift from it. This is the only kind of documentation the Foundation is willing to be responsible for."
+    },
+    {
+      "target_id": "GT-09",
+      "kind": "tests",
+      "template": "conformance-tests",
+      "destination": "{package_path}/tests/test_{slug}.py",
+      "rationale": "The executable obligations that arrive with the artifact. A generated artifact with no obligation attached is a claim, not a capability."
+    },
+    {
+      "target_id": "GT-10",
+      "kind": "build",
+      "template": "build-entry-point",
+      "destination": "{package_path}/build-fragment.toml",
+      "rationale": "UFC-06 again, from the build's side: a declared entry point the build does not publish is a runtime surface nobody can reach. Rendered as a fragment because merging it into the build manifest is a constituent act, not a generation side effect."
+    }
+  ]
+}

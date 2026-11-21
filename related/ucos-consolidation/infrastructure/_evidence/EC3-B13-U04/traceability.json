@@ -1,0 +1,40 @@
+{
+  "backward": [
+    "StorageHostingResource",
+    "INFRASTRUCTURE-009",
+    "INFRASTRUCTURE-005",
+    "INFRASTRUCTURE-001",
+    "ARCH-INFRASTRUCTURE-001",
+    "13-INFRASTRUCTURE@b7e7657"
+  ],
+  "closed": true,
+  "constitutional_anchor": "b7e7657",
+  "forward": [
+    "UCOS-INFRA-STORAGE-ucos.infrastructure.storage.foundation-ec6d242bf5014b7c",
+    "EC3-B13-U04-VALIDATION-EVIDENCE",
+    "EC3-B13-U04-CCE-CERTIFICATION",
+    "EC3-B13-U04-COMPLETION-REPORT"
+  ],
+  "implementation_anchor": "7814a8d",
+  "meta_class": "StorageHostingResource",
+  "rooted": true,
+  "substrate": [
+    "ENG-001",
+    "ENG-002",
+    "ENG-003",
+    "ENG-004",
+    "ENG-005",
+    "DF-2"
+  ],
+  "substrate_reuse": {
+    "DF-2": "hosted DATA-010 represented data bound by reference (ISTO-01 / UIL-11); no data concern redefined",
+    "ENG-001": "engine.certification.contracts.content_hash (deterministic identity derivation)",
+    "ENG-002": "python frozen object (immutable objecthood bearing the storage resource)",
+    "ENG-003": "engine.certification.contracts.canonical_json (capacity + value fidelity)",
+    "ENG-004": "infrastructure.storage type_tag Storage Hosting Class (typing)",
+    "ENG-005": "reference identifiers (data placements / locatedAt / boundary refs; no new construct)"
+  },
+  "target_id": "UCOS-INFRA-STORAGE-ucos.infrastructure.storage.foundation-ec6d242bf5014b7c",
+  "trace_format": "ucos-infrastructure-traceability/1.0.0",
+  "unit": "EC3-B13-U04"
+}

@@ -1,0 +1,134 @@
+{
+  "authority": "NONE — DERIVED TRUTH",
+  "digest": "b82908d76a0c322d32941d0241e2c847fdf255ec79a4f7818e03f1c4097bec27",
+  "measurements": {
+    "branch_count": 32608,
+    "branch_coverage_percent": 43.6,
+    "branches_covered": 14217,
+    "capability_coverage_percent": 100.0,
+    "coverage_measured": true,
+    "evolution_coverage_percent": 100.0,
+    "governance_coverage_percent": 100.0,
+    "knowledge_coverage_percent": 100.0,
+    "lifecycle_coverage_percent": 100.0,
+    "path_coverage_note": "not measured: no path-coverage instrument exists in this repository, so the value is withheld rather than approximated by branch coverage",
+    "path_coverage_percent": null,
+    "statement_coverage_percent": 48.99,
+    "statements": 117817,
+    "statements_covered": 59478,
+    "test_referenced_stages": 45,
+    "test_suite_passed": true,
+    "traceability_coverage_percent": 100.0
+  },
+  "per_engine_coverage": {
+    "00-BOOK/tools/ukb.py": {
+      "branches": 0,
+      "covered": 0,
+      "covered_branches": 0,
+      "in_scope": false,
+      "percent": 0.0,
+      "statements": 0
+    },
+    "00-MASTER/UAIE-000001/uaie_engine.py": {
+      "branches": 324,
+      "covered": 465,
+      "covered_branches": 233,
+      "in_scope": true,
+      "percent": 76.62,
+      "statements": 587
+    },
+    "00-MASTER/UAKOS-CLOSURE-002/closure_engine.py": {
+      "branches": 190,
+      "covered": 62,
+      "covered_branches": 0,
+      "in_scope": true,
+      "percent": 10.06,
+      "statements": 426
+    },
+    "00-MASTER/UAKOS-CLOSURE-008/assimilation_engine.py": {
+      "branches": 220,
+      "covered": 141,
+      "covered_branches": 16,
+      "in_scope": true,
+      "percent": 15.62,
+      "statements": 785
+    },
+    "00-MASTER/UCCEP-000000/uccep_engine.py": {
+      "branches": 252,
+      "covered": 53,
+      "covered_branches": 0,
+      "in_scope": true,
+      "percent": 6.69,
+      "statements": 540
+    },
+    "00-MASTER/UCOS-AEE-001/aee_engine.py": {
+      "branches": 270,
+      "covered": 61,
+      "covered_branches": 0,
+      "in_scope": true,
+      "percent": 6.88,
+      "statements": 616
+    },
+    "00-MASTER/UCOS-RFP-001/rfp_engine.py": {
+      "branches": 366,
+      "covered": 89,
+      "covered_branches": 0,
+      "in_scope": true,
+      "percent": 7.9,
+      "statements": 760
+    },
+    "00-MASTER/UKAP-001/corpus_engine.py": {
+      "branches": 188,
+      "covered": 367,
+      "covered_branches": 136,
+      "in_scope": true,
+      "percent": 70.25,
+      "statements": 528
+    },
+    "engine/constitution/stages.py": {
+      "branches": 10,
+      "covered": 283,
+      "covered_branches": 10,
+      "in_scope": true,
+      "percent": 100.0,
+      "statements": 283
+    },
+    "engine/runtime/execution/replay.py": {
+      "branches": 8,
+      "covered": 25,
+      "covered_branches": 8,
+      "in_scope": true,
+      "percent": 100.0,
+      "statements": 25
+    },
+    "engine/tests/conftest.py": {
+      "branches": 0,
+      "covered": 0,
+      "covered_branches": 0,
+      "in_scope": false,
+      "percent": 0.0,
+      "statements": 0
+    },
+    "engine/uckp/intelligence.py": {
+      "branches": 134,
+      "covered": 391,
+      "covered_branches": 134,
+      "in_scope": true,
+      "percent": 100.0,
+      "statements": 391
+    },
+    "engine/uckp/vocabulary.py": {
+      "branches": 24,
+      "covered": 125,
+      "covered_branches": 24,
+      "in_scope": true,
+      "percent": 100.0,
+      "statements": 125
+    }
+  },
+  "phase": 9,
+  "programme": "P0-LIFECYCLE-CLOSURE-001",
+  "title": "Coverage Determination",
+  "uncovered": [],
+  "uncovered_classification": {}
+}

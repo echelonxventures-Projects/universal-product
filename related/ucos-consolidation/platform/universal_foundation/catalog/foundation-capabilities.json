@@ -1,0 +1,965 @@
+{
+  "register_id": "ucos.foundation.capabilities",
+  "$comment": "THE Foundation capability register. This document — not any module — is the population the Universal Foundation Constitution (UCOS-UFC-001) governs. Registering a Foundation capability is an entry here and requires NO change to constitution.py, conformance.py, convergence.py or freeze.py; UFC-09 is measured by proving those governing modules contain none of the identities below. Every field is a declaration a probe resolves live: an entry that names something absent produces a FAULT, never a silent pass.",
+  "governing_modules": [
+    "platform.universal_foundation.constitution",
+    "platform.universal_foundation.conformance",
+    "platform.universal_foundation.convergence",
+    "platform.universal_foundation.freeze",
+    "platform.universal_foundation.nucleus"
+  ],
+  "$nucleus_comment": "UFC-17 Ω Nucleus completeness. Every entry below carries a 'nucleus' profile: the facets of its constitutional universe that no gate already proves. Each leaf states 'present' with the evidence that realises it, or 'not-applicable' with the reason it does not apply. There is deliberately no third value and no default — a facet nobody wrote down is MISSING, and MISSING blocks freeze, because 'it does not apply here' is a determination somebody has to make and sign.",
+  "locator_literal_pattern": "(^|/)[0-9]{2}-[A-Z][A-Z0-9-]*(/|$)",
+  "$locator_note": "A string literal matching this shape is a repository locator and therefore a project fact that UFC-13 requires to live in a declared document rather than in code. Declared catalogue documents are data and are never scanned.",
+  "$replay_comment": "UFC-11 register currency. Every capability SHALL state whether its outputs become Repository Truth. The claim is NOT trusted: probe_certifiable walks the capability's own source for the calls in conformance.ARTIFACT_WRITE_CALLS and fails the article when the declaration and the measurement disagree in either direction. A capability that begins emitting artifacts therefore fails FG-11 until it declares a replay target, which is the executable form of 'a measurer that adds files must re-measure after its own commit'. A declared target is a module:attribute callable that re-renders the committed output so the render can be proven a fixed point at the commit that carries it.",
+  "capabilities": [
+    {
+      "capability_id": "UCOS-URTF-001",
+      "name": "Universal Repository Truth Framework",
+      "domain": "policies",
+      "description": "What counts as Truth, determined by declared zone policy rather than by any hardcoded path. The one Repository Truth model.",
+      "package": "platform.universal_truth",
+      "identity": "platform.universal_truth.contracts:URTF_ID",
+      "contracts": "platform.universal_truth.contracts:TRUTH_CONTRACTS",
+      "version": "platform.universal_truth.contracts:TRUTH_CONTRACT_VERSION",
+      "service_name": "universal.truth",
+      "service_descriptor": "platform.universal_truth.bootstrap:truth_service_descriptor",
+      "service_register": "platform.universal_truth.bootstrap:register_repository_truth",
+      "bootstrap": "platform.universal_truth.bootstrap:bootstrap_repository_truth",
+      "build": "platform.universal_truth.policy:default_truth_policy",
+      "errors_module": "platform.universal_truth.errors",
+      "errors_base": "platform.universal_truth.errors:RepositoryTruthError",
+      "replay": {
+        "writes_tracked_artifacts": false
+      },
+      "nucleus": {
+        "ownership": {
+          "status": "present",
+          "evidence": "Sole canonical owner of MODEL-TRUTH in the convergence register; every other surface that answers 'what counts as Truth' is recorded there as delegating to it."
+        },
+        "truth_binding": {
+          "status": "present",
+          "evidence": "Classifies but never emits. Its determinations are DERIVED and never become canonical Truth, which is why it declares no replay target and why FG-11 finds no artifact write in its source."
+        },
+        "context": {
+          "status": "present",
+          "evidence": "Holds for any repository that declares zones. Assumes no path, no zone name, no population size and no filesystem layout: the zone vocabulary is constitutional, the population is a project declaration."
+        },
+        "composition": {
+          "status": "present",
+          "evidence": "Root of the Foundation dependency order. Every other Foundation nucleus classifies through it and it imports none of them, which is what keeps the composition graph acyclic at its root."
+        },
+        "generation": {
+          "api": {
+            "status": "present",
+            "evidence": "The published surface is a ContractRef tuple derived from one declared name list at one declared version, so the API cannot carry a ref the declaration does not name."
+          },
+          "documentation": {
+            "status": "present",
+            "evidence": "This register entry is the documentation of record: identity, contracts, service, extension points, registries, catalogues and dependencies are read from the declaration rather than restated beside it."
+          },
+          "tests": {
+            "status": "present",
+            "evidence": "Its conformance suite is derived rather than authored: the shipped probes execute every article against this declaration, so a newly legislated obligation reaches it without a test being written for it."
+          }
+        },
+        "observability": {
+          "monitoring": {
+            "status": "present",
+            "evidence": "Watched by the constitutional conformance gate, which executes every article against it on the repository's canonical verification entry point."
+          },
+          "signals": {
+            "status": "present",
+            "evidence": "Emits a content-addressed TruthPartition carrying per-zone counts and an explicit unclassified population — an absence it reports rather than absorbs."
+          }
+        },
+        "measurement": {
+          "status": "present",
+          "evidence": "Measured by UCOS-UMPF-001 through the declared truth-classification coverage policy. It computes no headline number of its own, so no second measurement of its population can exist."
+        },
+        "traceability": {
+          "status": "present",
+          "evidence": "Traceable through this register entry to UCOS-UFC-001, and through the convergence register to MODEL-TRUTH and to every subordinate surface that once answered for it."
+        },
+        "evidence": {
+          "status": "present",
+          "evidence": "Produces the content-addressed TruthPartition, whose identity derives from its inputs alone and holds no wall-clock, so what was classified is recoverable from the classification."
+        },
+        "evolution": {
+          "status": "present",
+          "evidence": "Evolves by registering a zone declaration or an eligibility rule in its declared catalogue. A new zone requires no change to this framework and no amendment to the law."
+        },
+        "security": {
+          "status": "present",
+          "evidence": "Read-only classification over declared locators. Holds no credential, opens no socket, performs no filesystem read at import, and admits no input it was not handed."
+        },
+        "compliance": {
+          "status": "present",
+          "evidence": "Held to UCOS-UFC-001 and to nothing else. Its obligations are the articles of that law, each bound to one executable gate, so compliance is measured rather than attested."
+        },
+        "commercial": {
+          "commercialization": {
+            "status": "not-applicable",
+            "rationale": "Foundation infrastructure consumed only by other Foundation nuclei. It is not offered as a product in its own right and has no standalone value proposition."
+          },
+          "billing": {
+            "status": "not-applicable",
+            "rationale": "Not metered. No classification it performs is priced and no consumer of it is charged, so there is no meter to declare."
+          },
+          "licensing": {
+            "status": "present",
+            "evidence": "Carried under the project licence declared in the build manifest. This nucleus publishes no separate terms and grants none."
+          },
+          "marketplace": {
+            "status": "not-applicable",
+            "rationale": "Not independently listable: outside a Foundation composition that specialises it with a declared zone policy it classifies nothing."
+          }
+        }
+      },
+      "extension_points": [
+        {
+          "symbol": "platform.universal_truth.policy:TruthPolicy",
+          "abstract": false,
+          "methods": [
+            "register",
+            "register_all",
+            "zones",
+            "zone",
+            "classify"
+          ]
+        }
+      ],
+      "registries": [
+        {
+          "symbol": "platform.universal_truth.policy:TruthPolicy",
+          "ordered": "zones",
+          "require": "zone"
+        }
+      ],
+      "entry_point": "ucos-truth",
+      "cli": "platform.universal_truth.cli:main",
+      "catalogs": [
+        "catalog/ucos-repository-truth.json"
+      ],
+      "dependencies": []
+    },
+    {
+      "capability_id": "UCOS-UOF-001",
+      "name": "Universal Ownership Framework",
+      "domain": "governance",
+      "description": "Who owns a subject, determined from constitutional evidence only and never inferred. The one ownership model.",
+      "package": "platform.universal_ownership",
+      "identity": "platform.universal_ownership.contracts:UOF_ID",
+      "contracts": "platform.universal_ownership.contracts:OWNERSHIP_CONTRACTS",
+      "version": "platform.universal_ownership.contracts:OWNERSHIP_CONTRACT_VERSION",
+      "service_name": "universal.ownership",
+      "service_descriptor": "platform.universal_ownership.bootstrap:ownership_service_descriptor",
+      "service_register": "platform.universal_ownership.bootstrap:register_ownership",
+      "bootstrap": "platform.universal_ownership.bootstrap:bootstrap_ownership",
+      "build": "platform.universal_ownership.bootstrap:bootstrap_ownership",
+      "errors_module": "platform.universal_ownership.errors",
+      "errors_base": "platform.universal_ownership.errors:OwnershipError",
+      "replay": {
+        "writes_tracked_artifacts": false
+      },
+      "nucleus": {
+        "ownership": {
+          "status": "present",
+          "evidence": "Sole canonical owner of MODEL-OWNERSHIP; the engine-side resolver that once answered the same question is recorded superseded and must be absent for the model to converge."
+        },
+        "truth_binding": {
+          "status": "present",
+          "evidence": "Determines who owns a subject and emits nothing. Its determination is DERIVED; the declarations it reads are Truth, the conclusion it reaches is not."
+        },
+        "context": {
+          "status": "present",
+          "evidence": "Holds wherever ownership can be evidenced by declaration. Assumes no owner vocabulary, no organisational shape and no realisation rule: an owner is whoever the declared evidence names."
+        },
+        "composition": {
+          "status": "present",
+          "evidence": "Composes Repository Truth by reference to decide which zones may hold ownership at all, and is composed in turn by the Foundation platform. It owns no peer."
+        },
+        "generation": {
+          "api": {
+            "status": "present",
+            "evidence": "The published surface is a ContractRef tuple derived from one declared name list at one declared version, so the API cannot carry a ref the declaration does not name."
+          },
+          "documentation": {
+            "status": "present",
+            "evidence": "This register entry is the documentation of record, including both extension points and both provider registries, so the pluggable surface cannot be documented differently from how it is measured."
+          },
+          "tests": {
+            "status": "present",
+            "evidence": "Its conformance suite is derived rather than authored: the shipped probes execute every article against this declaration, and the retired resolver's measurement is reproduced against the live repository."
+          }
+        },
+        "observability": {
+          "monitoring": {
+            "status": "present",
+            "evidence": "Watched by the constitutional conformance gate and by the convergence gate, which additionally proves the retired second determination is still absent."
+          },
+          "signals": {
+            "status": "present",
+            "evidence": "Emits an OwnershipDetermination carrying per-reason counts, coverage and an explicit unresolved population, so what it could not determine is visible rather than defaulted."
+          }
+        },
+        "measurement": {
+          "status": "present",
+          "evidence": "Measured by UCOS-UMPF-001 through the declared ownership coverage policy. Governance reduction proposes only for subjects this one determination left open."
+        },
+        "traceability": {
+          "status": "present",
+          "evidence": "Traceable through this register entry to UCOS-UFC-001, and through the convergence register to MODEL-OWNERSHIP and to the superseded surface it replaced."
+        },
+        "evidence": {
+          "status": "present",
+          "evidence": "Every determination names the evidence provider and the reason that produced it, so an ownership answer can always be traced to the declaration that justified it."
+        },
+        "evolution": {
+          "status": "present",
+          "evidence": "A new source of ownership evidence is a registered provider. Admitting one requires no change to this framework and no change to any consumer of it."
+        },
+        "security": {
+          "status": "present",
+          "evidence": "Reads declarations, writes nothing, and refuses to infer. Absence of evidence yields an unresolved subject rather than an assigned owner, which is the failure mode that matters here."
+        },
+        "compliance": {
+          "status": "present",
+          "evidence": "Held to UCOS-UFC-001 and to nothing else. Its obligations are the articles of that law, each bound to one executable gate."
+        },
+        "commercial": {
+          "commercialization": {
+            "status": "not-applicable",
+            "rationale": "Foundation infrastructure consumed only by other Foundation nuclei. It is not offered as a product in its own right."
+          },
+          "billing": {
+            "status": "not-applicable",
+            "rationale": "Not metered. No determination it makes is priced and no consumer of it is charged."
+          },
+          "licensing": {
+            "status": "present",
+            "evidence": "Carried under the project licence declared in the build manifest. This nucleus publishes no separate terms and grants none."
+          },
+          "marketplace": {
+            "status": "not-applicable",
+            "rationale": "Not independently listable: without a declared ownership ledger and a Truth policy to bound it, it determines nothing."
+          }
+        }
+      },
+      "extension_points": [
+        {
+          "symbol": "platform.universal_ownership.evidence:OwnershipEvidenceProvider",
+          "abstract": true,
+          "methods": [
+            "descriptor",
+            "provide",
+            "collect"
+          ]
+        },
+        {
+          "symbol": "platform.universal_ownership.recommendation:OwnershipRecommendationProvider",
+          "abstract": true,
+          "methods": [
+            "descriptor",
+            "recommend",
+            "propose"
+          ]
+        }
+      ],
+      "registries": [
+        {
+          "symbol": "platform.universal_ownership.evidence:EvidenceProviderRegistry",
+          "ordered": "ordered",
+          "require": "require"
+        },
+        {
+          "symbol": "platform.universal_ownership.recommendation:RecommendationProviderRegistry",
+          "ordered": "ordered",
+          "require": "require"
+        }
+      ],
+      "entry_point": "ucos-ownership",
+      "cli": "platform.universal_ownership.cli:main",
+      "catalogs": [
+        "catalog/ucos-ownership-declarations.json"
+      ],
+      "dependencies": [
+        "UCOS-URTF-001"
+      ]
+    },
+    {
+      "capability_id": "UCOS-USAF-001",
+      "name": "Universal Source Assimilation Framework",
+      "domain": "providers",
+      "description": "How anything — document, export, record set, API response — becomes admitted content with a declared destination. The one assimilation model.",
+      "package": "platform.universal_assimilation",
+      "identity": "platform.universal_assimilation.contracts:USAF_ID",
+      "contracts": "platform.universal_assimilation.contracts:ASSIMILATION_CONTRACTS",
+      "version": "platform.universal_assimilation.contracts:ASSIMILATION_CONTRACT_VERSION",
+      "service_name": "universal.assimilation",
+      "service_descriptor": "platform.universal_assimilation.bootstrap:assimilation_service_descriptor",
+      "service_register": "platform.universal_assimilation.bootstrap:register_assimilation",
+      "bootstrap": "platform.universal_assimilation.bootstrap:bootstrap_assimilation",
+      "build": "platform.universal_assimilation.bootstrap:bootstrap_assimilation",
+      "errors_module": "platform.universal_assimilation.errors",
+      "errors_base": "platform.universal_assimilation.errors:AssimilationError",
+      "replay": {
+        "writes_tracked_artifacts": false
+      },
+      "nucleus": {
+        "ownership": {
+          "status": "present",
+          "evidence": "Sole canonical owner of MODEL-ASSIMILATION; every adapter implements its one declared contract and is resolved through its one registry rather than answering for itself."
+        },
+        "truth_binding": {
+          "status": "present",
+          "evidence": "Decides whether a declared destination is a legitimate home by asking Repository Truth, and admits content there. What it admits may become Truth; the admission report itself is DERIVED."
+        },
+        "context": {
+          "status": "present",
+          "evidence": "Holds for any source of any shape — document, export, record set, API response — because the source-kind vocabulary is open and the adapter set is registered rather than enumerated."
+        },
+        "composition": {
+          "status": "present",
+          "evidence": "Composes Repository Truth by reference to bound its destinations, and is composed by the Foundation platform. It is never the thing that decides where content may live."
+        },
+        "generation": {
+          "api": {
+            "status": "present",
+            "evidence": "The published surface is a ContractRef tuple derived from one declared name list at one declared version, so the API cannot carry a ref the declaration does not name."
+          },
+          "documentation": {
+            "status": "present",
+            "evidence": "This register entry is the documentation of record, including the declared policy-free posture, so its specialisation story cannot be documented differently from how it is measured."
+          },
+          "tests": {
+            "status": "present",
+            "evidence": "Its conformance suite is derived rather than authored: the shipped probes execute every article against this declaration."
+          }
+        },
+        "observability": {
+          "monitoring": {
+            "status": "present",
+            "evidence": "Watched by the constitutional conformance gate, which executes every article against it on the repository's canonical verification entry point."
+          },
+          "signals": {
+            "status": "present",
+            "evidence": "Emits an AssimilationReport carrying per-state counts, per-reason breakdown, unit totals and coverage, so a refused source is visible as a refusal rather than as a smaller number."
+          }
+        },
+        "measurement": {
+          "status": "present",
+          "evidence": "Measured by UCOS-UMPF-001 through the declared assimilation coverage policy; it publishes counts and computes no verdict about them."
+        },
+        "traceability": {
+          "status": "present",
+          "evidence": "Traceable through this register entry to UCOS-UFC-001, and through the convergence register to MODEL-ASSIMILATION and its declared adapter surface."
+        },
+        "evidence": {
+          "status": "present",
+          "evidence": "Every admitted unit carries its source, its adapter and its declared destination, so admitted content can always be traced back to what admitted it."
+        },
+        "evolution": {
+          "status": "present",
+          "evidence": "A new source format is a registered adapter and a declared source kind. Neither requires a change to the pipeline, which is the whole reason the vocabulary is open."
+        },
+        "security": {
+          "status": "present",
+          "evidence": "Admits only sources it is handed and only to destinations Truth policy permits. It opens no network connection and performs no filesystem read at import."
+        },
+        "compliance": {
+          "status": "present",
+          "evidence": "Held to UCOS-UFC-001 and to nothing else. Its obligations are the articles of that law, each bound to one executable gate."
+        },
+        "commercial": {
+          "commercialization": {
+            "status": "not-applicable",
+            "rationale": "Foundation infrastructure consumed only by other Foundation nuclei. It is not offered as a product in its own right."
+          },
+          "billing": {
+            "status": "not-applicable",
+            "rationale": "Not metered. Assimilation volume is reported but never priced, and no consumer of it is charged."
+          },
+          "licensing": {
+            "status": "present",
+            "evidence": "Carried under the project licence declared in the build manifest. This nucleus publishes no separate terms and grants none."
+          },
+          "marketplace": {
+            "status": "not-applicable",
+            "rationale": "Not independently listable: without a declared source manifest and destination map it has nothing to assimilate."
+          }
+        }
+      },
+      "extension_points": [
+        {
+          "symbol": "platform.universal_assimilation.adapters:SourceAdapter",
+          "abstract": true,
+          "methods": [
+            "descriptor",
+            "extract",
+            "units"
+          ]
+        }
+      ],
+      "registries": [
+        {
+          "symbol": "platform.universal_assimilation.adapters:SourceAdapterRegistry",
+          "ordered": "ordered",
+          "require": "require"
+        },
+        {
+          "symbol": "platform.universal_assimilation.contracts:SourceKindRegistry",
+          "ordered": "declarations",
+          "require": "require"
+        }
+      ],
+      "entry_point": "ucos-assimilate",
+      "cli": "platform.universal_assimilation.cli:main",
+      "policy_free": true,
+      "$policy_note": "The declared source-kind vocabulary and adapter set are the framework's own reusable content, not a project policy: a project specialises assimilation through the Foundation specialisation's source manifest and destination map, never through a document owned here.",
+      "dependencies": [
+        "UCOS-URTF-001"
+      ]
+    },
+    {
+      "capability_id": "UCOS-UMPF-001",
+      "name": "Universal Measurement Policy Framework",
+      "domain": "policies",
+      "description": "How any determination is measured, by registered policy rather than by a branch inside an engine. The one measurement model.",
+      "package": "platform.universal_measurement",
+      "identity": "platform.universal_measurement.contracts:UMPF_ID",
+      "contracts": "platform.universal_measurement.contracts:POLICY_CONTRACTS",
+      "version": "platform.universal_measurement.contracts:POLICY_CONTRACT_VERSION",
+      "service_name": "universal.measurement.policy",
+      "service_descriptor": "platform.universal_measurement.bootstrap:policy_service_descriptor",
+      "service_register": "platform.universal_measurement.bootstrap:register_measurement_policies",
+      "bootstrap": "platform.universal_measurement.bootstrap:bootstrap_measurement_policies",
+      "build": "platform.universal_measurement.bootstrap:bootstrap_measurement_policies",
+      "errors_module": "platform.universal_measurement.errors",
+      "errors_base": "platform.universal_measurement.errors:MeasurementPolicyError",
+      "replay": {
+        "writes_tracked_artifacts": false
+      },
+      "nucleus": {
+        "ownership": {
+          "status": "present",
+          "evidence": "Sole canonical owner of MODEL-MEASUREMENT; the measurements that were once branches inside a closure engine are registered policies here, and the composed Foundation reports its suite rather than a number beside it."
+        },
+        "truth_binding": {
+          "status": "present",
+          "evidence": "Measures what other nuclei determined and emits nothing. Its PolicySuite is DERIVED: recomputable from the same inputs, and therefore never canonical."
+        },
+        "context": {
+          "status": "present",
+          "evidence": "Holds for any determination expressible as a MeasurementContext. Assumes no metric, no threshold and no notion of what 'closed' means: which policies bind, and which of them block, are declarations."
+        },
+        "composition": {
+          "status": "present",
+          "evidence": "Composes Truth, ownership and assimilation by reference so that one population yields one measurement — the structural reason two Foundation surfaces cannot report different numbers for the same subjects."
+        },
+        "generation": {
+          "api": {
+            "status": "present",
+            "evidence": "The published surface is a ContractRef tuple derived from one declared name list at one declared version, so the API cannot carry a ref the declaration does not name."
+          },
+          "documentation": {
+            "status": "present",
+            "evidence": "This register entry is the documentation of record, and the policy catalogue is the documentation of which measurements bind — neither is restated in prose that could drift from it."
+          },
+          "tests": {
+            "status": "present",
+            "evidence": "Its conformance suite is derived rather than authored: the shipped probes execute every article against this declaration."
+          }
+        },
+        "observability": {
+          "monitoring": {
+            "status": "present",
+            "evidence": "Watched by the constitutional conformance gate, and by the platform-scoped one-measurement gate that proves no second surface reports on its population."
+          },
+          "signals": {
+            "status": "present",
+            "evidence": "Emits a PolicySuite carrying every policy outcome, its value, whether it blocks, and the identities of the policies withholding closure — so a blocked determination always names its blockers."
+          }
+        },
+        "measurement": {
+          "status": "present",
+          "evidence": "Measures itself through the same registered policies it applies to everything else; there is no privileged path by which its own numbers are produced differently."
+        },
+        "traceability": {
+          "status": "present",
+          "evidence": "Traceable through this register entry to UCOS-UFC-001, and through the convergence register to MODEL-MEASUREMENT and its declared policy catalogue."
+        },
+        "evidence": {
+          "status": "present",
+          "evidence": "Each policy outcome carries the policy identity, the measured value and the declared threshold that judged it, so a verdict can always be re-derived from what produced it."
+        },
+        "evolution": {
+          "status": "present",
+          "evidence": "A new measurement is a registered policy with declared blocking and precedence. Changing what 'closed' means is a declaration, never an edit to an engine."
+        },
+        "security": {
+          "status": "present",
+          "evidence": "Pure computation over supplied context. Holds no credential, reads no file at import and reaches no ambient state."
+        },
+        "compliance": {
+          "status": "present",
+          "evidence": "Held to UCOS-UFC-001 and to nothing else. Its obligations are the articles of that law, each bound to one executable gate."
+        },
+        "commercial": {
+          "commercialization": {
+            "status": "not-applicable",
+            "rationale": "Foundation infrastructure consumed only by other Foundation nuclei. It is not offered as a product in its own right."
+          },
+          "billing": {
+            "status": "not-applicable",
+            "rationale": "Not metered. It produces the numbers a meter would read but is not itself charged for."
+          },
+          "licensing": {
+            "status": "present",
+            "evidence": "Carried under the project licence declared in the build manifest. This nucleus publishes no separate terms and grants none."
+          },
+          "marketplace": {
+            "status": "not-applicable",
+            "rationale": "Not independently listable: without a declared policy catalogue and a determination to measure it produces an empty suite."
+          }
+        }
+      },
+      "extension_points": [
+        {
+          "symbol": "platform.universal_measurement.policies:MeasurementPolicy",
+          "abstract": true,
+          "methods": [
+            "descriptor",
+            "evaluate",
+            "apply"
+          ]
+        }
+      ],
+      "registries": [
+        {
+          "symbol": "platform.universal_measurement.engine:MeasurementPolicyRegistry",
+          "ordered": "ordered",
+          "require": "require"
+        }
+      ],
+      "entry_point": "ucos-measurement",
+      "cli": "platform.universal_measurement.cli:main",
+      "catalogs": [
+        "catalog/ucos-measurement-policies.json"
+      ],
+      "dependencies": [
+        "UCOS-URTF-001",
+        "UCOS-UOF-001",
+        "UCOS-USAF-001"
+      ]
+    },
+    {
+      "capability_id": "UCOS-UFC-001",
+      "name": "Universal Foundation Constitution",
+      "domain": "certification",
+      "description": "The one law every Foundation capability obeys, with one executable probe per article and a measured convergence and freeze determination.",
+      "package": "platform.universal_foundation",
+      "identity": "platform.universal_foundation.constitution:FOUNDATION_CONSTITUTION_ID",
+      "contracts": "platform.universal_foundation.constitution:CONSTITUTION_CONTRACTS",
+      "version": "platform.universal_foundation.constitution:FOUNDATION_CONSTITUTION_VERSION",
+      "service_name": "universal.foundation.constitution",
+      "service_descriptor": "platform.universal_foundation.bootstrap:constitution_service_descriptor",
+      "service_register": "platform.universal_foundation.bootstrap:register_foundation_constitution",
+      "bootstrap": "platform.universal_foundation.bootstrap:bootstrap_foundation_constitution",
+      "build": "platform.universal_foundation.bootstrap:bootstrap_foundation_constitution",
+      "errors_module": "platform.universal_foundation.errors",
+      "errors_base": "platform.universal_foundation.errors:UniversalFoundationError",
+      "replay": {
+        "writes_tracked_artifacts": false
+      },
+      "nucleus": {
+        "ownership": {
+          "status": "present",
+          "evidence": "Sole canonical owner of MODEL-IMPLEMENTATION: one article set, one probe per article, one capability register. The Provider Constitution is a narrower authority governed under it, not a second copy of it."
+        },
+        "truth_binding": {
+          "status": "present",
+          "evidence": "The law is CANONICAL and the register that carries its population is a DECLARATION; every determination it produces is DERIVED. It writes nothing, which is why it declares no replay target."
+        },
+        "context": {
+          "status": "present",
+          "evidence": "Holds for any Foundation capability in any repository. The domain set is closed so the law is bounded; the population inside each domain is data so the content is unbounded — bounded law, unbounded content, deliberately."
+        },
+        "composition": {
+          "status": "present",
+          "evidence": "Composes nothing and is composed by everything: it declares no dependency so that no capability can be required to exist before the law that governs it."
+        },
+        "generation": {
+          "api": {
+            "status": "present",
+            "evidence": "The published surface is a ContractRef tuple derived from one declared name list at one declared version, so the API cannot carry a ref the declaration does not name."
+          },
+          "documentation": {
+            "status": "present",
+            "evidence": "The articles are the documentation: each carries its own mandate text and the gate that proves it, so the law and the description of the law are the same object and cannot diverge."
+          },
+          "tests": {
+            "status": "present",
+            "evidence": "Every article ships with exactly one executable probe. A gate with no bound probe is reported UNBOUND and a probe that cannot execute FAULTs, so an untested article is visible rather than assumed satisfied."
+          }
+        },
+        "observability": {
+          "monitoring": {
+            "status": "present",
+            "evidence": "Bound into the repository's canonical verification entry point, so conformance is continuously enforced rather than measurable on demand."
+          },
+          "signals": {
+            "status": "present",
+            "evidence": "Emits a ConformanceDetermination carrying every gate result with its findings, the maturity axes reached, and the blockers withholding conformance."
+          }
+        },
+        "measurement": {
+          "status": "present",
+          "evidence": "Measures maturity from executed probes rather than from declared status: an axis is reached only when every gate proving it passed, and an unmeasured axis is an absence rather than a pass."
+        },
+        "traceability": {
+          "status": "present",
+          "evidence": "Every gate result carries the article it proves and the capability it was measured against, and the determination pins the content hash of the law it was measured under — so a certification remains recoverable after the law is amended."
+        },
+        "evidence": {
+          "status": "present",
+          "evidence": "Every gate result is content-addressed over its verdict and its findings, so the evidence for a verdict is carried with the verdict and a re-measurement that reached the same conclusion produces the same identity."
+        },
+        "evolution": {
+          "status": "present",
+          "evidence": "A capability is added by an entry in the register; a stricter probe is added by registration; a new obligation is an amendment with an executable gate. UFC-09 is measured by proving no governing module names any registered identity."
+        },
+        "security": {
+          "status": "present",
+          "evidence": "Read-only and fail-closed. It writes nothing, starts no server, opens no socket, and reports a fault rather than a pass on any input it cannot measure."
+        },
+        "compliance": {
+          "status": "present",
+          "evidence": "Holds itself to its own articles: it is a registered capability in the register it governs, and is measured by the same probes as every other nucleus. No self-exemption exists."
+        },
+        "commercial": {
+          "commercialization": {
+            "status": "not-applicable",
+            "rationale": "A constitution is not a product. It is the law under which products are admitted, and it is consumed only by the Foundation it governs."
+          },
+          "billing": {
+            "status": "not-applicable",
+            "rationale": "Not metered. Governance is not a metered service, and pricing conformance would create an incentive to measure less of it."
+          },
+          "licensing": {
+            "status": "present",
+            "evidence": "Carried under the project licence declared in the build manifest. This nucleus publishes no separate terms and grants none."
+          },
+          "marketplace": {
+            "status": "not-applicable",
+            "rationale": "Not independently listable: the law has no meaning apart from the population it governs."
+          }
+        }
+      },
+      "extension_points": [
+        {
+          "symbol": "platform.universal_foundation.conformance:ConformanceProbe",
+          "abstract": true,
+          "methods": [
+            "gate",
+            "measure",
+            "apply"
+          ]
+        }
+      ],
+      "registries": [
+        {
+          "symbol": "platform.universal_foundation.conformance:ProbeRegistry",
+          "ordered": "ordered",
+          "require": "require"
+        },
+        {
+          "symbol": "platform.universal_foundation.conformance:CapabilityRegister",
+          "ordered": "ordered",
+          "require": "require"
+        }
+      ],
+      "entry_point": "ucos-constitution",
+      "cli": "platform.universal_foundation.constitution_cli:main",
+      "catalogs": [
+        "catalog/foundation-capabilities.json",
+        "catalog/foundation-convergence.json",
+        "catalog/foundation-freeze.json",
+        "catalog/foundation-nucleus.json"
+      ],
+      "dependencies": []
+    },
+    {
+      "capability_id": "UCOS-UFP-001",
+      "name": "Universal Foundation Platform",
+      "domain": "composition",
+      "description": "The composition in which Truth, ownership, assimilation and measurement become one determination, specialised by one declared document per project.",
+      "package": "platform.universal_foundation",
+      "identity": "platform.universal_foundation.bootstrap:UFP_ID",
+      "contracts": "platform.universal_foundation.bootstrap:FOUNDATION_CONTRACTS",
+      "version": "platform.universal_foundation.bootstrap:FOUNDATION_CONTRACT_VERSION",
+      "service_name": "universal.foundation",
+      "service_descriptor": "platform.universal_foundation.bootstrap:foundation_service_descriptor",
+      "service_register": "platform.universal_foundation.bootstrap:register_universal_foundation",
+      "bootstrap": "platform.universal_foundation.bootstrap:bootstrap_universal_foundation",
+      "build": "platform.universal_foundation.bootstrap:bootstrap_universal_foundation",
+      "errors_module": "platform.universal_foundation.errors",
+      "errors_base": "platform.universal_foundation.errors:UniversalFoundationError",
+      "replay": {
+        "writes_tracked_artifacts": false
+      },
+      "nucleus": {
+        "ownership": {
+          "status": "present",
+          "evidence": "Owns the composition, not the models: it holds no Truth, ownership, assimilation or measurement implementation of its own, and the convergence register records its bootstrap as delegating to the one ownership framework."
+        },
+        "truth_binding": {
+          "status": "present",
+          "evidence": "The project specialisation it reads is a DECLARATION; the FoundationDetermination it produces is DERIVED and content-addressed. It writes nothing, which is why it declares no replay target."
+        },
+        "context": {
+          "status": "present",
+          "evidence": "Holds for any project that can supply one specialisation document. Every project-specific fact — zone, path, population, assignment, grain — lives in that document, which is the mechanical reason a repository-specific fix has nowhere to be written."
+        },
+        "composition": {
+          "status": "present",
+          "evidence": "The terminal composition of the Foundation: it depends on all five other nuclei and nothing depends on it, so it is the one place the whole determination becomes a single answer."
+        },
+        "generation": {
+          "api": {
+            "status": "present",
+            "evidence": "The published surface is a ContractRef tuple derived from one declared name list at one declared version, so the API cannot carry a ref the declaration does not name."
+          },
+          "documentation": {
+            "status": "present",
+            "evidence": "This register entry plus the project specialisation are the documentation of record: what the platform composes and how a project specialises it are both read from declarations."
+          },
+          "tests": {
+            "status": "present",
+            "evidence": "Its conformance suite is derived rather than authored: the shipped probes execute every article against this declaration, including the composition article that proves each declared dependency is really imported."
+          }
+        },
+        "observability": {
+          "monitoring": {
+            "status": "present",
+            "evidence": "Watched by the constitutional conformance gate and by the freeze readiness determination, which withholds readiness for an unmeasured criterion exactly as firmly as for a failed one."
+          },
+          "signals": {
+            "status": "present",
+            "evidence": "Emits a FoundationDetermination carrying the headline verdict, the blockers withholding closure, and the per-capability projections beneath it — and reports an input it was not given as not measured rather than as empty."
+          }
+        },
+        "measurement": {
+          "status": "present",
+          "evidence": "Measured by UCOS-UMPF-001: the composed determination is the policy suite the one measurement engine produced, and the platform computes no headline number beside it."
+        },
+        "traceability": {
+          "status": "present",
+          "evidence": "The determination identity is content-addressed over the identities of the partition, ownership, assimilation and measurement it composed, so every headline number traces to the four determinations that produced it."
+        },
+        "evidence": {
+          "status": "present",
+          "evidence": "Produces a content-addressed, wall-clock-free determination fit for certification; its fingerprint pins exactly what was determined."
+        },
+        "evolution": {
+          "status": "present",
+          "evidence": "A project joins by declaring a specialisation; a capability joins by an entry in the register. Neither is a change to this composition, which is why the platform grows without the composer being edited."
+        },
+        "security": {
+          "status": "present",
+          "evidence": "Composes only what it is handed and refuses a malformed specialisation with a typed error. It writes nothing, starts no server and opens no socket."
+        },
+        "compliance": {
+          "status": "present",
+          "evidence": "Held to UCOS-UFC-001 and to nothing else. It is a registered capability in the register that law governs, and is measured by the same probes as every other nucleus."
+        },
+        "commercial": {
+          "commercialization": {
+            "status": "present",
+            "evidence": "The one Foundation surface with standalone value: a project obtains a complete constitutional determination by supplying one specialisation document and composing nothing itself."
+          },
+          "billing": {
+            "status": "not-applicable",
+            "rationale": "Not metered in this repository. It is composed in-process by the repository that carries it; no determination it produces is priced and no consumer is charged."
+          },
+          "licensing": {
+            "status": "present",
+            "evidence": "Carried under the project licence declared in the build manifest. This nucleus publishes no separate terms and grants none."
+          },
+          "marketplace": {
+            "status": "present",
+            "evidence": "Independently listable as the composed Foundation: it is the unit a consuming project would adopt, and its declared specialisation surface is the whole of what such a consumer must supply."
+          }
+        }
+      },
+      "extension_points": [
+        {
+          "symbol": "platform.universal_foundation.specialization:FoundationSpecialization",
+          "abstract": false,
+          "methods": [
+            "create",
+            "from_document",
+            "resolve",
+            "to_dict",
+            "fingerprint"
+          ]
+        }
+      ],
+      "registries": [
+        {
+          "symbol": "platform.universal_foundation.conformance:CapabilityRegister",
+          "ordered": "ordered",
+          "require": "require"
+        }
+      ],
+      "entry_point": "ucos-foundation",
+      "cli": "platform.universal_foundation.cli:main",
+      "catalogs": [
+        "catalog/ucos-consolidation.json"
+      ],
+      "dependencies": [
+        "UCOS-URTF-001",
+        "UCOS-UOF-001",
+        "UCOS-USAF-001",
+        "UCOS-UMPF-001",
+        "UCOS-UFC-001"
+      ]
+    },
+    {
+      "capability_id": "UCOS-UNG-001",
+      "name": "Universal Ω Nucleus Generator",
+      "domain": "composition",
+      "description": "The first production generator: one Ω Nucleus declaration in, the complete constitutional artifact set out. It renders from the declaration alone and writes nothing, because a plan is a determination and materialising it is a constituent act.",
+      "package": "platform.universal_generator",
+      "identity": "platform.universal_generator.contracts:UNG_ID",
+      "contracts": "platform.universal_generator.contracts:GENERATION_CONTRACTS",
+      "version": "platform.universal_generator.contracts:GENERATION_CONTRACT_VERSION",
+      "service_name": "universal.generation.nucleus",
+      "service_descriptor": "platform.universal_generator.bootstrap:generator_service_descriptor",
+      "service_register": "platform.universal_generator.bootstrap:register_nucleus_generator",
+      "bootstrap": "platform.universal_generator.bootstrap:bootstrap_nucleus_generator",
+      "build": "platform.universal_generator.bootstrap:bootstrap_nucleus_generator",
+      "errors_module": "platform.universal_generator.errors",
+      "errors_base": "platform.universal_generator.errors:GeneratorError",
+      "replay": {
+        "writes_tracked_artifacts": false
+      },
+      "$replay_rationale": "A generator that wrote would be the single most dangerous writer in the repository: its output carries the authority of the declaration it derives from. It therefore renders into a content-addressed plan and stops. FG-11 measures this against its own source rather than believing the declaration.",
+      "nucleus": {
+        "ownership": {
+          "status": "present",
+          "evidence": "Sole owner of the question 'what artifacts does one Ω Nucleus declaration require'. It answers no other question: request governance, blueprint compilation and execution dispatch are separate models with separate owners, and this nucleus imports none of them."
+        },
+        "truth_binding": {
+          "status": "present",
+          "evidence": "Reads DECLARATIONS and produces a DERIVED plan. The artifacts it determines would become Truth only when a separate constituent act materialises them under the authority that governs their destination."
+        },
+        "context": {
+          "status": "present",
+          "evidence": "Holds for any nucleus in any repository and any language. Assumes no directory layout — destinations resolve from tokens the declaration itself answers — and no artifact set, because the target register is data."
+        },
+        "composition": {
+          "status": "present",
+          "evidence": "Composes UCOS-UFC-001 by reference to read declarations, and is composed by no one: generation is a terminal act over the register rather than a stage inside it."
+        },
+        "generation": {
+          "api": {
+            "status": "present",
+            "evidence": "The published surface is a ContractRef tuple derived from one declared name list at one declared version, so the API cannot carry a ref the declaration does not name."
+          },
+          "documentation": {
+            "status": "present",
+            "evidence": "This register entry and the declared target document are the documentation of record: what a generation produces is read from the targets, never restated in prose beside them."
+          },
+          "tests": {
+            "status": "present",
+            "evidence": "Its conformance suite is derived rather than authored, and its own rendered output is held to the same standard: every generated Python artifact is parsed as a test, so a template that emits invalid source fails rather than ships."
+          }
+        },
+        "observability": {
+          "monitoring": {
+            "status": "present",
+            "evidence": "Watched by the constitutional conformance gate, and by its own readiness command, which resolves every declared destination for every registered nucleus and reports the ones no declaration can answer."
+          },
+          "signals": {
+            "status": "present",
+            "evidence": "Emits a content-addressed GenerationPlan carrying every artifact's destination, digest and line count, so what would be written is inspectable before anything is."
+          }
+        },
+        "measurement": {
+          "status": "present",
+          "evidence": "Measured by UCOS-UMPF-001 like every other nucleus, and by the readiness determination, which counts how many registered nuclei the Foundation can generate in full."
+        },
+        "traceability": {
+          "status": "present",
+          "evidence": "Every artifact identity covers its target, its kind, its destination and its content, so a generated file traces to the obligation that required it and the declaration that shaped it."
+        },
+        "evidence": {
+          "status": "present",
+          "evidence": "The plan fingerprint pins the whole artifact set. Two runs over one declaration produce the same fingerprint, which is what makes a generated artifact re-derivable rather than merely reproducible in principle."
+        },
+        "evolution": {
+          "status": "present",
+          "evidence": "A new obligation for every future nucleus is an entry in the target register; a new way to render an existing obligation is a template registration. Neither is an edit to the generator."
+        },
+        "security": {
+          "status": "present",
+          "evidence": "Writes nothing, reads no filesystem during rendering, imports no nucleus it generates for, and executes no rendered content. The blast radius of a malicious declaration is a string nobody has yet acted on."
+        },
+        "compliance": {
+          "status": "present",
+          "evidence": "Held to UCOS-UFC-001 and to nothing else. It is a registered nucleus in the register it generates for, and is measured by the same probes and the same facet contract as every other."
+        },
+        "commercial": {
+          "commercialization": {
+            "status": "present",
+            "evidence": "The Foundation's product surface: a consumer supplies one declaration and receives a complete, conformant nucleus. This is the capability that makes the Foundation something one adopts rather than something one reads."
+          },
+          "billing": {
+            "status": "not-applicable",
+            "rationale": "Not metered in this repository. Generation is composed in-process by the repository that carries it; no plan is priced and no consumer is charged per artifact."
+          },
+          "licensing": {
+            "status": "present",
+            "evidence": "Carried under the project licence declared in the build manifest. Generated artifacts inherit the licence of the repository that materialises them; this nucleus grants no separate terms."
+          },
+          "marketplace": {
+            "status": "present",
+            "evidence": "Independently listable: it requires only a declaration conforming to the register's shape, and its declared target document is the whole of what a consumer would specialise."
+          }
+        }
+      },
+      "extension_points": [
+        {
+          "symbol": "platform.universal_generator.templates:ArtifactTemplate",
+          "abstract": true,
+          "methods": [
+            "descriptor",
+            "render",
+            "apply"
+          ]
+        }
+      ],
+      "registries": [
+        {
+          "symbol": "platform.universal_generator.registry:TemplateRegistry",
+          "ordered": "ordered",
+          "require": "require"
+        },
+        {
+          "symbol": "platform.universal_generator.registry:TargetRegister",
+          "ordered": "ordered",
+          "require": "require"
+        }
+      ],
+      "entry_point": "ucos-generate",
+      "cli": "platform.universal_generator.cli:main",
+      "catalogs": [
+        "catalog/ucos-generation-targets.json"
+      ],
+      "dependencies": [
+        "UCOS-UFC-001"
+      ]
+    }
+  ]
+}

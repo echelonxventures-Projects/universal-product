@@ -1,0 +1,74 @@
+{
+  "compliance_format": "ucos-service-compliance/1.0.0",
+  "compliant": true,
+  "conditions": [
+    {
+      "backed_by": [
+        "metamodel-typed",
+        "metamodel-identified"
+      ],
+      "id": "C1",
+      "requirement": "Typed (USL-03), identified and objecthood-bound (USL-04/05).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity"
+      ],
+      "id": "C2",
+      "requirement": "Reuses frozen foundations by reference without redefinition (USL-02).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "service-value-fidelity"
+      ],
+      "id": "C3",
+      "requirement": "Carries ENG-003 value; operation I/O is DF-2 data by reference (USL-08/11).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-class-single",
+        "meta-relationships-closed",
+        "metamodel-totality",
+        "metamodel-map-resolves"
+      ],
+      "id": "C4",
+      "requirement": "Contract/interface/operation structure is explicit (USL-06/07/08).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "meta-relationships-closed",
+        "founding-acyclic",
+        "metamodel-map-resolves"
+      ],
+      "id": "C5",
+      "materially_exercised": true,
+      "note": "the Universal Service Meta-Model closes over exactly the thirteen meta-relationships SMR-01…13 (SMI-02) — including composes(SMR-05) and orchestrates(SMR-06) — keeps the founding meta-graph (SMR-02/03/04/05) acyclic (SMI-04), and resolves every map edge within the closure or the frozen EL-1/RL-F2/PL-F2/DF-2 foundations (§9) — each meta-relationship being an ENG-005 reference introducing no new connection construct (USL-09 at the meta level)",
+      "requirement": "Composition/orchestration uses ENG-005 references; founding acyclic (USL-09).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "foundation-reuse-integrity",
+        "metamodel-map-resolves"
+      ],
+      "id": "C6",
+      "requirement": "Execution binds to RL-F2 by reference (USL-10).",
+      "status": "pass"
+    },
+    {
+      "backed_by": [
+        "technology-independence",
+        "non-constitutive"
+      ],
+      "id": "C7",
+      "requirement": "Selects no technology, confers no authority, embeds no secret (USL-15).",
+      "status": "pass"
+    }
+  ],
+  "standard": "SERVICE-001 §12",
+  "target_id": "UCOS-METAMODEL-ucos.service.metamodel.universal-1f3eb6bc84fb26de"
+}

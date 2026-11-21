@@ -1,0 +1,36 @@
+{
+  "title": "UCOS Ω∞ Digital-Twin Signal",
+  "description": "An append-only observation ingested from an authoritative source by a connector (UKB-001). A signal updates status/metrics for a subject Universal Artifact; it never modifies identity. Rollup takes the latest signal per (subject, dimension, source). Appended by the advancement engine; part of the UKB Advancement Program (UKB-ADV-000). Modifies no existing schema.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["signal_id", "subject_universal_id", "dimension", "state", "source", "as_of"],
+  "properties": {
+    "signal_id": { "type": "string", "pattern": "^USIG-[0-9]{9,}$", "description": "Globally unique, immutable, append-only signal id." },
+    "subject_universal_id": { "type": "string", "pattern": "^UCOS-[A-Z][A-Z0-9]{1,11}-[0-9]{6}$", "description": "Universal Artifact this observation is about." },
+    "subject_native_id": { "type": ["string", "null"], "default": null },
+    "dimension": {
+      "type": "string",
+      "description": "Control-tower / entity dimension this signal informs.",
+      "enum": ["architecture", "implementation", "build", "unit_testing", "integration_testing", "functional_testing", "performance_testing", "security", "certification", "deployment", "production", "operational", "release", "incident", "quality", "portfolio"]
+    },
+    "state": {
+      "type": "string",
+      "description": "Canonical lifecycle/observed state (status.schema.json enum).",
+      "enum": ["NOT_STARTED", "PLANNED", "IN_PROGRESS", "BLOCKED", "UNDER_REVIEW", "APPROVED", "IMPLEMENTED", "TESTED", "CERTIFIED", "DEPLOYED", "PRODUCTION", "FROZEN", "SUPERSEDED", "RETIRED", "ACTIVE", "COMPLETE", "FINAL", "STALE"]
+    },
+    "source": {
+      "type": "string",
+      "enum": ["MANUAL", "GITHUB", "GITHUB_ACTIONS", "JIRA", "SONARQUBE", "OWASP", "TRIVY", "PROMETHEUS", "GRAFANA", "OPENTELEMETRY", "KUBERNETES", "CLOUD"]
+    },
+    "as_of": { "type": "string", "format": "date-time" },
+    "evidence": { "type": ["string", "null"], "description": "Reference/handle to the authoritative evidence (URL, report handle). Never a secret value.", "default": null },
+    "metrics": { "type": "object", "description": "Arbitrary numeric/string metrics (coverage, cve counts, latency, availability).", "additionalProperties": true, "default": {} },
+    "connector": { "type": ["string", "null"], "description": "Connector name that emitted this signal.", "default": null },
+    "ingest_run": { "type": ["string", "null"], "pattern": "^URUN-[0-9]{9,}$", "description": "Ingest run id for reverse traceability.", "default": null },
+    "override": { "type": "boolean", "description": "True only for governed manual overrides (UKB-ADV-OVR).", "default": false },
+    "actor": { "type": ["string", "null"], "default": null },
+    "reason": { "type": ["string", "null"], "default": null },
+    "expires": { "type": ["string", "null"], "format": "date-time", "default": null },
+    "supersedes_signal": { "type": ["string", "null"], "pattern": "^USIG-[0-9]{9,}$", "default": null }
+  }
+}

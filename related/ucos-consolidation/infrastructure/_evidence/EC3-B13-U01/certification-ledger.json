@@ -1,0 +1,18 @@
+{
+  "count": 1,
+  "entries": [
+    {
+      "blueprint_id": "InfrastructureCapability",
+      "certification_id": "UCOS-CERT-InfrastructureCapability-512d34970da1015e",
+      "entry_hash": "afe5f834fc70b09784cfe0192244673d029b8ca1082f579b42bdab0d2f64d83b",
+      "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+      "record_sha256": "512d34970da1015e22ebb7fb2d60e52ee506b162cbfe4efe566be34e00b2675f",
+      "sequence": 0,
+      "status": "certified",
+      "target_id": "UCOS-INFRA-CAPABILITY-ucos.infrastructure.capability.foundation-0ecdd206025821e0",
+      "version": "1.0.0"
+    }
+  ],
+  "head_hash": "afe5f834fc70b09784cfe0192244673d029b8ca1082f579b42bdab0d2f64d83b",
+  "ledger_format": "ucos-certification-ledger/1.0.0"
+}
