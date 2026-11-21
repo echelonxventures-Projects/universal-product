@@ -769,6 +769,12 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     ok(rb0.status === 200 && /Disallow: \/api\//.test(rb0t) && /Disallow: \/checkout\.html/.test(rb0t), "robots.txt keeps crawlers out of the API and the private pages", rb0t);
     ok(!/Sitemap:/.test(rb0t), "…and names no sitemap without SEO Pro");
     ok((await fetch(BASE + "/sitemap.xml", { headers: { Cookie: cookieHeader() } })).status === 404, "/sitemap.xml is not served without SEO Pro");
+    for (const [page, heading] of [["privacy.html", "Privacy Notice"], ["terms.html", "Terms of Use"]]) {
+      const r = await fetch(BASE + "/" + page); const t = await r.text();
+      ok(r.status === 200 && t.includes("<h1>" + heading + "</h1>"), "the " + heading + " page is served", r.status);
+      ok(/not yet reviewed by a lawyer/.test(t), "…and says plainly it is a template awaiting legal review");
+    }
+    ok(/href="privacy\.html"/.test(require("fs").readFileSync(path.join(__dirname, "..", "public/js/app.js"), "utf8")), "the storefront footer links to the Privacy Notice, not to #");
     await f("/api/platform/modules/seo-pro/install", "POST", { tenant_id: tMap.luxora });
     const sm1 = await fetch(BASE + "/api/seo/sitemap.xml", { headers: { Cookie: cookieHeader() } });
     const smtxt = await sm1.text();

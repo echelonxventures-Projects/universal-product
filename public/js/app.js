@@ -188,7 +188,7 @@ function renderFooter(stores) {
         <div><h4>The House</h4><a href="#">About ${esc(CFG.brand.name)}</a><a href="#">Careers</a><a href="#">Journal</a></div>
         <div><h4>Shopping</h4>${CFG.features.deals ? `<a href="deals.html">${esc(T("dealsTitle"))}</a>` : ""}<a href="results.html?sort=new">New Season</a><a href="results.html?sort=best">Favourites</a><a href="results.html">All Departments</a></div>
         <div><h4>Services</h4>${CFG.features.giftCards ? `<a href="gift-cards.html">Gift Cards</a>` : ""}${CFG.features.registry || atoms().wish_lists ? `<a href="registry.html">${atoms().wish_lists ? "Lists" : "Registries"}</a>` : ""}${CFG.features.customerService ? `<a href="customer-service.html">Client Care</a>` : ""}<a href="orders.html">Track an Order</a></div>
-        <div><h4>Legal</h4><a href="#">Conditions</a><a href="#">Privacy</a><a href="#">Accessibility</a>${S.user && S.user.role === "admin" && CFG.features.adminPortal ? `<a href="console.html?scope=store">Admin Console</a>` : ""}</div>
+        <div><h4>Legal</h4><a href="terms.html">Conditions</a><a href="privacy.html">Privacy</a><a href="#">Accessibility</a>${S.user && S.user.role === "admin" && CFG.features.adminPortal ? `<a href="console.html?scope=store">Admin Console</a>` : ""}</div>
       </div>
     </div>
     <div class="f-bottom">
