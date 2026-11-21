@@ -251,13 +251,13 @@ const handler = async (req, res) => {
       return res.end(JSON.stringify({ ok: true, tenant: t && t.slug, products: t ? get("SELECT COUNT(*) c FROM products WHERE tenant_id=?", t.id).c : 0, uptime: Math.floor(process.uptime()), tls: IS_TLS }));
     }
     /* crawlers: robots.txt keeps them out of the API, the consoles and the private shopper
-       pages, and points at the store's sitemap when its SEO tools are on (the sitemap is
-       the SEO module's: the gate decides, as it does for /api/sitemap.xml) */
+       pages, and points at the store's sitemap. Every store has a basic sitemap, free (owner
+       decision, 2026-11-21): search engines must be able to find its products. The SEO
+       module keeps its tools — the sitemap settings, generation and /api/seo/sitemap.xml. */
     if (url.pathname === "/robots.txt" || url.pathname === "/sitemap.xml") {
       const t = resolveTenant(req, url, cookies);
-      const seoOn = !!(t && require("./lib/gates.js").on(t.id, "seo.tools"));
       if (url.pathname === "/sitemap.xml") {
-        if (!seoOn) { res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }); return res.end("Not found"); }
+        if (!t) { res.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" }); return res.end("Not found"); }
         const sm = require("./lib/sitemap.js");
         res.writeHead(200, { "Content-Type": "application/xml; charset=utf-8", "Cache-Control": "public, max-age=3600" });
         return res.end(sm.generateXML(sm.buildSitemapEntries(t.id)));
@@ -265,7 +265,7 @@ const handler = async (req, res) => {
       const host = String(req.headers.host || "").replace(/[^A-Za-z0-9.:[\]-]/g, "");
       const lines = ["User-agent: *", "Allow: /",
         ...["/api/", "/console.html", "/admin.html", "/platform.html", "/registry.html", "/session.html", "/cart.html", "/checkout.html", "/orders.html", "/messages.html", "/reset.html"].map(p => "Disallow: " + p)];
-      if (seoOn && host) lines.push("", "Sitemap: " + (sec.httpsRequest(req) ? "https" : "http") + "://" + host + "/sitemap.xml");
+      if (t && host) lines.push("", "Sitemap: " + (sec.httpsRequest(req) ? "https" : "http") + "://" + host + "/sitemap.xml");
       res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" });
       return res.end(lines.join("\n") + "\n");
     }
