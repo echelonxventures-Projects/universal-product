@@ -62,6 +62,18 @@ ok(d.periods.reduce((s, p) => s + p.years, 0) === 120, "the nine periods make 12
 ok(d.balanceAtBirthYears > 0 && d.balanceAtBirthYears <= SEED.VIMSHOTTARI.years[d.periods[0].lord], "the balance at birth is part of the first period", d.balanceAtBirthYears);
 ok(d.periods[0].start <= "1990-03-15" && d.periods[0].end > "1990-03-15" && d.periods[1].start === d.periods[0].end, "the periods run on from birth without gaps");
 
+console.log("▸ ANTARDASHAS AND KUNDLI MATCHING");
+{
+  const md = c.dasha.periods[1];
+  ok(md.antardashas.length === 9 && md.antardashas[0].lord === md.lord && md.antardashas[0].start === md.start && md.antardashas[8].end === md.end, "each mahadasha's nine antardashas start with its own lord and fill it exactly", md.antardashas.map(x => x.lord));
+  const self = astro.match(birth, birth);
+  const k = Object.fromEntries(self.kootas.map(x => [x.koota, x.points]));
+  ok(self.max === 36 && k.nadi === 0 && k.bhakoot === 7 && k.graha_maitri === 5 && k.tara === 3 && k.varna === 1, "matching a chart with itself: same nadi scores 0, same sign and lord score in full", k);
+  const other = astro.match(birth, { date: "1992-07-08", time: "06:45", timeZone: "Asia/Kolkata", latitude: 19.08, longitude: 72.88 });
+  ok(other.total >= 0 && other.total <= 36 && other.kootas.every(x => x.points >= 0 && x.points <= x.max), "every koota scores within its maximum", other.kootas);
+  ok(other.needsExpertReview && other.unverifiedKootas.join() === "Vashya,Yoni,Gana", "kootas on simplified tables are named for an astrologer to confirm", other.unverifiedKootas);
+}
+
 console.log("▸ THE PANCHANG");
 {
   /* a full moon (2024 Apr 23 23:49 UTC) is Purnima; a new moon (2024 Apr 8 18:21 UTC) Amavasya */

@@ -2190,6 +2190,40 @@ CREATE TRIGGER trg_idempotency_keys_uid AFTER INSERT ON idempotency_keys
                BEGIN UPDATE idempotency_keys SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
 -- ── ai · AI ──────────────────────────────────────────────────────────────────────────────────────
+CREATE TABLE kb_collections (
+  tenant_id INTEGER NOT NULL, key TEXT NOT NULL, label TEXT, mode TEXT NOT NULL, settings TEXT NOT NULL DEFAULT '{}',
+  PRIMARY KEY (tenant_id, key)
+);
+CREATE TABLE kb_entries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, collection TEXT NOT NULL,
+  title TEXT NOT NULL, body TEXT NOT NULL, tags TEXT NOT NULL DEFAULT '[]', lang TEXT NOT NULL DEFAULT 'en',
+  status TEXT NOT NULL, source TEXT NOT NULL, confidence REAL, rating_sum REAL NOT NULL DEFAULT 0, rating_n INTEGER NOT NULL DEFAULT 0,
+  confirmations INTEGER NOT NULL DEFAULT 0, version INTEGER NOT NULL DEFAULT 1, author TEXT, approved_by TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), updated_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX idx_kb_entries_coll ON kb_entries(tenant_id, collection, status);
+CREATE TABLE kb_versions (
+  entry_id INTEGER NOT NULL, version INTEGER NOT NULL, title TEXT, body TEXT, tags TEXT, status TEXT,
+  changed_by TEXT, reason TEXT, at TEXT NOT NULL DEFAULT (datetime('now')), PRIMARY KEY (entry_id, version)
+);
+CREATE TABLE kb_proposals (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, entry_id INTEGER NOT NULL,
+  title TEXT, body TEXT, tags TEXT, source TEXT NOT NULL, confidence REAL, confirmations INTEGER NOT NULL DEFAULT 0,
+  reason TEXT, author TEXT, state TEXT NOT NULL DEFAULT 'open', decided_by TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE kb_feedback (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, entry_id INTEGER, answer_ref TEXT,
+  rating INTEGER NOT NULL, correction TEXT, by_whom TEXT, at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE TABLE mcp_keys (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT, key_hash TEXT NOT NULL UNIQUE, role_key TEXT NOT NULL,
+  created_by TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')), last_used TEXT, revoked INTEGER NOT NULL DEFAULT 0
+);
+CREATE TABLE assistant_turns (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, conversation TEXT NOT NULL, app TEXT NOT NULL,
+  question TEXT, answer TEXT, sources TEXT, tools TEXT, model TEXT, mode TEXT, owner TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
 CREATE TABLE ai_usage (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
   capability TEXT NOT NULL, provider TEXT NOT NULL, model TEXT DEFAULT '',

@@ -1,0 +1,120 @@
+{
+ "$comment": "The knowledge base (lib/rag.js) as declared data: how a collection's knowledge may grow (its mode), and the defaults a collection starts with. A store sets a collection's mode and settings in Store console -> Knowledge. Collections are any app's: astrology, consultancy, legal, product help...",
+ "MODES": [
+  {
+   "key": "expert",
+   "label": "Expert",
+   "description": "Only entries written or approved by the collection's experts are used. The AI does not draft and feedback does not change the knowledge.",
+   "aiDrafts": false,
+   "learnFromFeedback": false,
+   "autoApprove": false
+  },
+  {
+   "key": "ai_assisted",
+   "label": "AI-assisted",
+   "description": "The AI drafts entries; each one waits for an expert's approval before it is used.",
+   "aiDrafts": true,
+   "learnFromFeedback": false,
+   "autoApprove": false
+  },
+  {
+   "key": "self_learning",
+   "label": "Self-learning",
+   "description": "As AI-assisted, and ratings and corrections on answers become proposed improvements that wait for an expert's review.",
+   "aiDrafts": true,
+   "learnFromFeedback": true,
+   "autoApprove": false
+  },
+  {
+   "key": "auto_evolving",
+   "label": "Auto-evolving",
+   "description": "Proposed improvements go live on their own once they pass the collection's thresholds (confidence, rating, confirmations). Every change is versioned and can be rolled back.",
+   "aiDrafts": true,
+   "learnFromFeedback": true,
+   "autoApprove": true
+  }
+ ],
+ "STATUSES": {
+  "$comment": "An entry's life: what each status means is what the engine reads.",
+  "draft": {
+   "label": "Draft",
+   "live": false
+  },
+  "review": {
+   "label": "Awaiting review",
+   "live": false
+  },
+  "approved": {
+   "label": "Approved",
+   "live": true
+  },
+  "rejected": {
+   "label": "Rejected",
+   "live": false
+  },
+  "retired": {
+   "label": "Retired",
+   "live": false
+  }
+ },
+ "SOURCES": [
+  {
+   "key": "expert",
+   "trusted": true,
+   "label": "Written by an expert"
+  },
+  {
+   "key": "staff",
+   "label": "Written by staff"
+  },
+  {
+   "key": "ai",
+   "drafted": true,
+   "label": "Drafted by the AI"
+  },
+  {
+   "key": "learned",
+   "learned": true,
+   "label": "Learned from feedback"
+  },
+  {
+   "key": "import",
+   "trusted": true,
+   "label": "Imported by an expert"
+  }
+ ],
+ "DEFAULTS": {
+  "mode": "ai_assisted",
+  "expertRoles": [
+   "owner"
+  ],
+  "thresholds": {
+   "minConfidence": 0.8,
+   "minRating": 4.2,
+   "minVotes": 5,
+   "minConfirmations": 3
+  },
+  "searchLimit": 8,
+  "lang": "en"
+ },
+ "AUTHORSHIP": {
+  "expert": "expert",
+  "other": "staff"
+ },
+ "STATUS_ON_SAVE": {
+  "trusted": "approved",
+  "otherwise": "review"
+ },
+ "DECISIONS": {
+  "approve": "approved",
+  "reject": "rejected",
+  "retire": "retired"
+ },
+ "PROPOSAL_DECISIONS": {
+  "approve": "applied",
+  "reject": "rejected"
+ },
+ "PROPOSAL_STATES": {
+  "open": "open"
+ }
+}

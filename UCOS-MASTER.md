@@ -64,7 +64,7 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 | [V06](volumes/V06-decision-and-control.md) | C06 Decision and Control | 1 of 1 | 4 | 4 | 30 KB |
 | [V07](volumes/V07-assurance.md) | C07 Assurance | 1 of 1 | 4 | 10 | 70 KB |
 | [V08](volumes/V08-interaction.md) | C08 Interaction | 1 of 1 | 4 | 4 | 30 KB |
-| [V09.1](volumes/V09.1-automation.md) | C09 Automation | 1 of 2 | 2 | 14 | 94 KB |
+| [V09.1](volumes/V09.1-automation.md) | C09 Automation | 1 of 2 | 2 | 14 | 95 KB |
 | [V09.2](volumes/V09.2-automation.md) | C09 Automation | 2 of 2 | 1 | 1 | 8 KB |
 | [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 7 KB |
 | [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 85 KB |
@@ -1281,7 +1281,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 296 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 302 files.
 
 ### C02 · Meaning
 
@@ -1520,6 +1520,12 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/connect.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/idempotency.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/carrier-easypost.js` | [Integration](volumes/V09.2-automation.md#d-int) | the EasyPost carrier adapter (rates, labels, signed tracker webhooks) |
+| `lib/rag.js` | [Agent](volumes/V09.1-automation.md#d-agt) | the knowledge base any app keeps: collections, modes (expert, AI-assisted, self-learning, auto-evolving), versions, proposals, feedback, retrieval |
+| `lib/assistant.js` | [Agent](volumes/V09.1-automation.md#d-agt) | the AI assistant: profiles per app, retrieval from the knowledge base, the platform's tools, Claude through the official SDK |
+| `lib/mcp.js` | [Agent](volumes/V09.1-automation.md#d-agt) | the platform's MCP server: declared tools, role-scoped, JSON-RPC at /api/mcp; MCP access keys |
+| `lib/seed/rag.json` | [Agent](volumes/V09.1-automation.md#d-agt) | the knowledge base's modes, statuses and defaults |
+| `lib/seed/assistant.json` | [Agent](volumes/V09.1-automation.md#d-agt) | the assistant's profile templates, rules and model |
+| `lib/seed/mcp.json` | [Agent](volumes/V09.1-automation.md#d-agt) | the platform's MCP tools as data |
 | `lib/routes/ai.js` | [Agent](volumes/V09.1-automation.md#d-agt) | the AI domain's API routes and handlers |
 | `lib/routes/integration.js` | [Integration](volumes/V09.2-automation.md#d-int) | the Integrations and webhooks domain's API routes and handlers |
 | `lib/routes/payments.js` | [Integration](volumes/V09.2-automation.md#d-int) | the Payment gateways domain's API routes and handlers |

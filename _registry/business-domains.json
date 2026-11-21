@@ -2547,17 +2547,31 @@
    ],
    "owns": {
     "files": [
-     "lib/ai.js"
+     "lib/ai.js",
+     "lib/rag.js",
+     "lib/assistant.js",
+     "lib/mcp.js"
     ],
     "tables": [
      "ai_tasks",
-     "ai_usage"
+     "ai_usage",
+     "kb_collections",
+     "kb_entries",
+     "kb_versions",
+     "kb_proposals",
+     "kb_feedback",
+     "mcp_keys",
+     "assistant_turns"
     ],
     "routes": [
-     "^/api/(ai|admin/ai-gateways|platform/ai)(/|$)"
+     "^/api/(ai|admin/ai-gateways|platform/ai)(/|$)",
+     "^/api/(kb|assistant|mcp)(/|$)",
+     "^/api/admin/mcp-keys(/|$)"
     ],
     "machines": [],
-    "capabilities": [],
+    "capabilities": [
+     "ai_assistant"
+    ],
     "registries": [],
     "screens": [
      "ai"

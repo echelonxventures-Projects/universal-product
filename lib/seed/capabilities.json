@@ -1835,6 +1835,15 @@
    }
   },
   {
+   "key": "ai_assistant",
+   "label": "AI assistant",
+   "domain": "shopper",
+   "icon": "💬",
+   "shopper": true,
+   "description": "The store's AI assistants (astrology guide, consultancy helper, store help…): each answers from the store's approved knowledge and calls the platform's tools, and hands a person to a human. Profiles are set in Store console -> AI; Claude credentials in AI gateways. Without credentials an assistant answers from approved knowledge only.",
+   "params": {}
+  },
+  {
    "key": "try_and_buy",
    "label": "Try and buy",
    "domain": "shopper",

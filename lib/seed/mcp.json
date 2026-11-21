@@ -1,0 +1,198 @@
+{
+ "$comment": "The platform's MCP tools (lib/mcp.js), declared as data: what each tool is called, what it takes, which engine answers it, the capability a store must have on, and who may call it (audience: shopper = anyone the store serves, staff = a store role with the right grant). The same tools are what the platform's own AI assistant calls, so one definition serves every app and every MCP client.",
+ "PROTOCOL_VERSIONS": [
+  "2025-11-25",
+  "2025-06-18",
+  "2025-03-26"
+ ],
+ "SERVER": {
+  "name": "luxora-platform",
+  "title": "LUXORA platform tools"
+ },
+ "TOOLS": [
+  {
+   "name": "knowledge_search",
+   "title": "Search the knowledge base",
+   "engine": "knowledge_search",
+   "audience": "shopper",
+   "description": "Search a knowledge collection of this store for approved entries that answer a question, optionally narrowed by tags (e.g. planet:mars, house:7). Returns the entries with their titles, text and tags.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "collection"
+    ],
+    "properties": {
+     "collection": {
+      "type": "string",
+      "description": "The collection key, e.g. astro"
+     },
+     "q": {
+      "type": "string",
+      "description": "The question or words to search for"
+     },
+     "tags": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      },
+      "description": "Tags that the entries must carry at least one of"
+     },
+     "limit": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 20
+     }
+    }
+   }
+  },
+  {
+   "name": "knowledge_collections",
+   "title": "List knowledge collections",
+   "engine": "knowledge_collections",
+   "audience": "shopper",
+   "description": "List this store's knowledge collections with their labels.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {}
+   }
+  },
+  {
+   "name": "astro_chart",
+   "title": "Compute a birth chart",
+   "engine": "astro_chart",
+   "capability": "astro_engine",
+   "audience": "shopper",
+   "description": "Compute a birth chart from a birth date, time, time zone and place: each body's sign, degree, nakshatra, pada and house, the ascendant, the houses, and the Vimshottari dasha periods, with this store's astrology settings.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "date",
+     "time",
+     "latitude",
+     "longitude"
+    ],
+    "properties": {
+     "date": {
+      "type": "string",
+      "description": "Birth date, YYYY-MM-DD"
+     },
+     "time": {
+      "type": "string",
+      "description": "Birth time, HH:MM (24h, local)"
+     },
+     "timeZone": {
+      "type": "string",
+      "description": "IANA zone, e.g. Asia/Kolkata"
+     },
+     "utcOffsetMinutes": {
+      "type": "number"
+     },
+     "latitude": {
+      "type": "number"
+     },
+     "longitude": {
+      "type": "number"
+     }
+    }
+   }
+  },
+  {
+   "name": "astro_panchang",
+   "title": "The panchang for a day",
+   "engine": "astro_panchang",
+   "capability": "astro_engine",
+   "audience": "shopper",
+   "description": "The panchang (tithi, paksha, vara, nakshatra, yoga, karana) at a date, time and place.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "date",
+     "time"
+    ],
+    "properties": {
+     "date": {
+      "type": "string"
+     },
+     "time": {
+      "type": "string"
+     },
+     "timeZone": {
+      "type": "string"
+     },
+     "utcOffsetMinutes": {
+      "type": "number"
+     },
+     "latitude": {
+      "type": "number"
+     },
+     "longitude": {
+      "type": "number"
+     }
+    }
+   }
+  },
+  {
+   "name": "astro_match",
+   "title": "Kundli matching",
+   "engine": "astro_match",
+   "capability": "astro_engine",
+   "audience": "shopper",
+   "description": "Ashtakoota (guna milan) matching of two births: each koota's points out of its maximum and the total out of 36.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "first",
+     "second"
+    ],
+    "properties": {
+     "first": {
+      "type": "object",
+      "description": "A birth: date, time, timeZone or utcOffsetMinutes, latitude, longitude"
+     },
+     "second": {
+      "type": "object",
+      "description": "A birth: date, time, timeZone or utcOffsetMinutes, latitude, longitude"
+     }
+    }
+   }
+  },
+  {
+   "name": "records_list",
+   "title": "List records of a type",
+   "engine": "records_list",
+   "audience": "staff",
+   "description": "List records of one of this store's data types (any type defined in Data Studio, or a built-in one), as the calling role is allowed to see them.",
+   "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "type"
+    ],
+    "properties": {
+     "type": {
+      "type": "string",
+      "description": "The data type key, e.g. supplier"
+     },
+     "q": {
+      "type": "string"
+     }
+    }
+   }
+  }
+ ],
+ "AUDIENCES": {
+  "shopper": {
+   "anyone": true,
+   "label": "Anyone the store serves"
+  },
+  "staff": {
+   "anyone": false,
+   "label": "A store role with the grant"
+  }
+ }
+}

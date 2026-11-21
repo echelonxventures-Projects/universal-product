@@ -144,6 +144,9 @@
    "couponApply": "Apply",
    "couponApplied": "✓ Promo applied to your bag",
    "couponInvalid": "That code did not work"
+  },
+  "assistant": {
+   "profiles": {}
   }
  }
 }
