@@ -1,0 +1,172 @@
+{
+ "project_id": "PRJ-000004",
+ "project_name": "Universal Composable Super-Platform (Platform Factory)",
+ "slug": "universal-composable-super-platform-platform-fac",
+ "domain": "Composable Platform Architecture / Configuration-Driven Product Factory",
+ "description": "Universal composable super-platform / platform factory: a configuration-driven master platform intended to instantiate any vertical (commerce, mobility, NGO, data science) from pluggable units (login, payment, logistics, geo, billing, multi-currency/region/language) with zero hardcoding. Documented as a layered doc set (vision, platform constitution, architecture blueprint, capability catalog, unit specs, data/API/event/UI standards, agent build instructions).",
+ "status": "ACTIVE",
+ "conversation_count_primary": 1,
+ "conversation_count_secondary": 4,
+ "conversation_count_total": 5,
+ "segment_count": 11,
+ "knowledge_mass_chars": 450781,
+ "knowledge_mass_pct_of_corpus": 0.221,
+ "approx_tokens": 112695,
+ "attributed_turns": 130,
+ "code_chars": 80440,
+ "code_blocks": 1095,
+ "code_ratio": 0.1784,
+ "knowledge_density_index": 52.72,
+ "knowledge_density_band": "HIGH",
+ "knowledge_density_components": {
+  "volume": 0.7745,
+  "breadth": 0.3383,
+  "artefact_ratio": 0.5353,
+  "marker_saturation": 0.537,
+  "temporal_continuity": 0.0833
+ },
+ "first_activity": "2026-01-06",
+ "last_activity": "2026-06-28",
+ "activity_basis": "conversation create_time (export update_time is bulk-clustered and unreliable)",
+ "last_record_touch": "2026-07-07",
+ "repositories": [
+  "github.com/echelonxventures-Projects/Universal(.git)"
+ ],
+ "top_code_languages": [
+  "plain",
+  "text",
+  "bash",
+  "sql",
+  "js",
+  "ts",
+  "yaml",
+  "json"
+ ],
+ "top_markers": [
+  {
+   "marker": "super[- ]platform",
+   "hits": 98
+  },
+  {
+   "marker": "platform constitution",
+   "hits": 39
+  },
+  {
+   "marker": "0000-Foundation",
+   "hits": 28
+  },
+  {
+   "marker": "multi[- ]currenc",
+   "hits": 23
+  },
+  {
+   "marker": "multi[- ]region",
+   "hits": 20
+  },
+  {
+   "marker": "multi[- ]languag",
+   "hits": 13
+  },
+  {
+   "marker": "echelonxventures-Projects/Universal",
+   "hits": 13
+  },
+  {
+   "marker": "platform factory",
+   "hits": 6
+  },
+  {
+   "marker": "capability catalog",
+   "hits": 6
+  },
+  {
+   "marker": "zero hard ?coding",
+   "hits": 5
+  },
+  {
+   "marker": "unit specification",
+   "hits": 3
+  },
+  {
+   "marker": "any types? (?:of )?platform",
+   "hits": 2
+  },
+  {
+   "marker": "master platform.*configur",
+   "hits": 1
+  },
+  {
+   "marker": "build any solution",
+   "hits": 1
+  },
+  {
+   "marker": "superplatform",
+   "hits": 1
+  }
+ ],
+ "identifier_scheme": "permanent; assigned PHASE-001; never reused",
+ "phase": "PHASE-001",
+ "generated": "2026-07-29T14:11:34+00:00",
+ "source_export": "46244e1f09989bb95cd3e4415961d3e48dbe841d2f72c46166e91c44cbb2ec95-2026-07-08-02-36-04",
+ "collection_root": "output/projects/PRJ-000004-universal-composable-super-platform-platform-fac",
+ "files": {
+  "conversations": "CONVERSATIONS.jsonl",
+  "segments": "SEGMENTS.jsonl",
+  "knowledge_streams": "knowledge/",
+  "inventory": "KNOWLEDGE_INVENTORY.md"
+ },
+ "related_projects": [
+  {
+   "project_id": "PRJ-000002",
+   "project_name": "MCOS Ω∞ Civilization Operating System",
+   "shared_conversations": 3
+  },
+  {
+   "project_id": "PRJ-000001",
+   "project_name": "QuikShop Commerce Platform",
+   "shared_conversations": 2
+  },
+  {
+   "project_id": "PRJ-000016",
+   "project_name": "Education & Learning Content Engineering",
+   "shared_conversations": 2
+  },
+  {
+   "project_id": "PRJ-000005",
+   "project_name": "Compliance OS (India GST & Multi-Country Compliance)",
+   "shared_conversations": 2
+  },
+  {
+   "project_id": "PRJ-000003",
+   "project_name": "UCOS — Unified Commerce Operating System",
+   "shared_conversations": 2
+  },
+  {
+   "project_id": "PRJ-000008",
+   "project_name": "macOS Workstation Engineering & Digital Hygiene",
+   "shared_conversations": 1
+  },
+  {
+   "project_id": "PRJ-000009",
+   "project_name": "Oracle Cloud Infrastructure & Deployment Operations",
+   "shared_conversations": 1
+  },
+  {
+   "project_id": "PRJ-000020",
+   "project_name": "AI Industry & Technology Research",
+   "shared_conversations": 1
+  },
+  {
+   "project_id": "PRJ-000007",
+   "project_name": "Local LLM & Agentic Developer Toolchain",
+   "shared_conversations": 1
+  }
+ ],
+ "extraction_provenance": {
+  "export_is_read_only": true,
+  "segments_are_derived_copies": true,
+  "block_size_chars": 30000,
+  "min_block_score": 4.0,
+  "secondary_mass_fraction": 0.08
+ }
+}

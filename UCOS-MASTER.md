@@ -1576,7 +1576,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/seed/capabilities.json` | [Offering](volumes/V11.2-platform.md#d-ofg) |  |
 | `lib/seed/modules.json` | [Offering](volumes/V11.2-platform.md#d-ofg) |  |
 | `scripts/audit-hardcoding.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
-| `scripts/white-label.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | the white-label guard: no other platform's name anywhere |
+| `scripts/white-label.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | the white-label guard: no other platform's name anywhere in the platform (related/ is the owner's other projects, kept as reference) |
 | `scripts/audit-baseline.json` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
 | `scripts/browser-check.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
 | `scripts/pg-check.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | the platform on Postgres end to end: migrate, boot, kernel checks and the browser check |

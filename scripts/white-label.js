@@ -35,6 +35,9 @@ function scan(root) {
   const files = execFileSync("git", ["ls-files", "--cached", "--others", "--exclude-standard", "-z"], { cwd: root, encoding: "utf8", maxBuffer: 64 << 20 }).split("\0").filter(Boolean);
   const out = [];
   for (const f of files) {
+    /* related/ holds the owner's other projects, merged with their own history as reference
+       material; the guard covers the LUXORA platform itself (owner decision, 2026-11-21) */
+    if (f.startsWith("related/")) continue;
     for (const h of hits(f)) out.push({ file: f, line: 0, word: h.word, where: "file name" });
     let buf; try { buf = fs.readFileSync(path.join(root, f)); } catch (e) { continue; }
     if (buf.includes(0)) continue;   /* binary */

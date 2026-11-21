@@ -1,0 +1,157 @@
+{
+ "project_id": "PRJ-000003",
+ "project_name": "UCOS — Unified Commerce Operating System",
+ "slug": "ucos-unified-commerce-operating-system",
+ "domain": "Unified Commerce Platform / Certification-Governed Build System",
+ "description": "UCOS — Unified Commerce Operating System. Successor programme in a dedicated repository, driven by a certification-governed build orchestration system (UCOS-BUILD masters, ADRs, PCAMG runtime certification, REAL-C predicates, REM remediation programmes, dual-witness ratification).",
+ "status": "ACTIVE",
+ "conversation_count_primary": 2,
+ "conversation_count_secondary": 2,
+ "conversation_count_total": 4,
+ "segment_count": 16,
+ "knowledge_mass_chars": 12104310,
+ "knowledge_mass_pct_of_corpus": 5.932,
+ "approx_tokens": 3026077,
+ "attributed_turns": 2988,
+ "code_chars": 4739670,
+ "code_blocks": 27044,
+ "code_ratio": 0.3916,
+ "knowledge_density_index": 75.21,
+ "knowledge_density_band": "CRITICAL",
+ "knowledge_density_components": {
+  "volume": 0.9703,
+  "breadth": 0.3039,
+  "artefact_ratio": 1.0,
+  "marker_saturation": 0.9968,
+  "temporal_continuity": 0.0667
+ },
+ "first_activity": "2026-06-27",
+ "last_activity": "2026-07-07",
+ "activity_basis": "conversation create_time (export update_time is bulk-clustered and unreliable)",
+ "last_record_touch": "2026-07-07",
+ "repositories": [
+  "github.com/echelonxventures-Projects/UCOS(.git)"
+ ],
+ "top_code_languages": [
+  "plain",
+  "text",
+  "bash",
+  "yaml",
+  "json",
+  "sql",
+  "ts",
+  "typescript"
+ ],
+ "top_markers": [
+  {
+   "marker": "\\bUCOS\\b",
+   "hits": 12965
+  },
+  {
+   "marker": "certification",
+   "hits": 4028
+  },
+  {
+   "marker": "pcamg",
+   "hits": 3511
+  },
+  {
+   "marker": "ratification",
+   "hits": 3447
+  },
+  {
+   "marker": "REAL-C-0[0-9]",
+   "hits": 1302
+  },
+  {
+   "marker": "\\bPI-1[0-9]\\b",
+   "hits": 1272
+  },
+  {
+   "marker": "attestation",
+   "hits": 1088
+  },
+  {
+   "marker": "Projects/Active/UCOS",
+   "hits": 1048
+  },
+  {
+   "marker": "\\bADR-00[0-9]",
+   "hits": 566
+  },
+  {
+   "marker": "implementation-readiness",
+   "hits": 449
+  },
+  {
+   "marker": "\\bREM-[0-9]{2}\\b",
+   "hits": 312
+  },
+  {
+   "marker": "runtime-certification",
+   "hits": 232
+  },
+  {
+   "marker": "MetadataPort",
+   "hits": 177
+  },
+  {
+   "marker": "echelonxventures-Projects/UCOS",
+   "hits": 41
+  },
+  {
+   "marker": "conformance",
+   "hits": 40
+  }
+ ],
+ "identifier_scheme": "permanent; assigned PHASE-001; never reused",
+ "phase": "PHASE-001",
+ "generated": "2026-07-29T14:11:34+00:00",
+ "source_export": "46244e1f09989bb95cd3e4415961d3e48dbe841d2f72c46166e91c44cbb2ec95-2026-07-08-02-36-04",
+ "collection_root": "output/projects/PRJ-000003-ucos-unified-commerce-operating-system",
+ "files": {
+  "conversations": "CONVERSATIONS.jsonl",
+  "segments": "SEGMENTS.jsonl",
+  "knowledge_streams": "knowledge/",
+  "inventory": "KNOWLEDGE_INVENTORY.md"
+ },
+ "related_projects": [
+  {
+   "project_id": "PRJ-000002",
+   "project_name": "MCOS Ω∞ Civilization Operating System",
+   "shared_conversations": 3
+  },
+  {
+   "project_id": "PRJ-000004",
+   "project_name": "Universal Composable Super-Platform (Platform Factory)",
+   "shared_conversations": 2
+  },
+  {
+   "project_id": "PRJ-000005",
+   "project_name": "Compliance OS (India GST & Multi-Country Compliance)",
+   "shared_conversations": 2
+  },
+  {
+   "project_id": "PRJ-000016",
+   "project_name": "Education & Learning Content Engineering",
+   "shared_conversations": 1
+  },
+  {
+   "project_id": "PRJ-000020",
+   "project_name": "AI Industry & Technology Research",
+   "shared_conversations": 1
+  },
+  {
+   "project_id": "PRJ-000007",
+   "project_name": "Local LLM & Agentic Developer Toolchain",
+   "shared_conversations": 1
+  }
+ ],
+ "extraction_provenance": {
+  "export_is_read_only": true,
+  "segments_are_derived_copies": true,
+  "block_size_chars": 30000,
+  "min_block_score": 4.0,
+  "secondary_mass_fraction": 0.08
+ }
+}
