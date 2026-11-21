@@ -1281,7 +1281,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 293 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 294 files.
 
 ### C02 · Meaning
 
@@ -1583,6 +1583,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `scripts/backup.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `scripts/restore.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `scripts/schema-dump.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | dumps the storage schema |
+| `scripts/size-guard.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | no file of 50 MB or more is tracked or committed (npm test, the pre-commit hook in .githooks) |
 
 ### C12 · Business
 

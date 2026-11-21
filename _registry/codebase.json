@@ -300,6 +300,7 @@
     {"path": "scripts/pg-check.js", "owner": "Quality", "note": "the platform on Postgres end to end: migrate, boot, kernel checks and the browser check"},
     {"path": "scripts/backup.js", "owner": "Operations"},
     {"path": "scripts/restore.js", "owner": "Operations"},
-    {"path": "scripts/schema-dump.js", "owner": "Persistence", "note": "dumps the storage schema"}
+    {"path": "scripts/schema-dump.js", "owner": "Persistence", "note": "dumps the storage schema"},
+    {"path": "scripts/size-guard.js", "owner": "Quality", "note": "no file of 50 MB or more is tracked or committed (npm test, the pre-commit hook in .githooks)"}
   ]
 }
