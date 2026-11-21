@@ -31,7 +31,7 @@ Behind a reverse proxy or load balancer, set `LX_TRUST_PROXY=1` so per-client ra
 
 **Email and SMS.** Sign-in codes, magic links, password resets, order confirmations and shipping notices go to the person's own email/phone. Senders are set in the admin portal, never in the environment: *Store console → Payments → Email & SMS senders* lists every provider the platform declares (SMTP, SendGrid, Resend, Twilio…), each with its own fields; set one to `live`, enter its credentials (stored encrypted), save, and press *Send test email to me*. The senders configured on the platform's own store are the default for every store that has none of its own. An SMTP port of 465 uses implicit TLS; any other port requires STARTTLS.
 
-`LX_PUBLIC_URL` is the address emailed links point at, e.g. `https://shop.example` (else the store's own domain). Links are never built from the request's `Host` header in production.
+Emailed links and payment returns point at the store's **domain**, set in *Platform console → Stores → Edit*; a store without one uses the platform's own store's domain with `?store=<slug>`. Links are never built from the request's `Host` header in production.
 
 A production boot with no email sender on the platform's own store logs a warning: password resets then only work for stores that configured their own.
 

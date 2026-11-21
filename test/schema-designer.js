@@ -109,6 +109,16 @@ const clean = () => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(DB
     ok((await S("/api/meta/entity/site_visit/" + vid, "DELETE")).status === 403, "support may not delete it (delete is the owner's)");
     ok((await A("/api/meta/entity/site_visit/" + vid, "DELETE")).status === 200, "the owner deletes it");
 
+    console.log("▸ A STORE'S PUBLIC ADDRESS IS SET IN THE PORTAL, NOT THE ENVIRONMENT");
+    {
+      const lux = (await P("/api/platform/tenants")).body.tenants.find(t => t.slug === "luxora");
+      const badDom = await P("/api/platform/tenants/" + lux.id, "PUT", { domain: "https://evil.example/path?x=1 <script>" });
+      ok(badDom.status === 400, "a domain that is not a host name is refused", badDom.body);
+      const goodDom = await P("/api/platform/tenants/" + lux.id, "PUT", { domain: "https://Shop.Example.com/" });
+      const saved = (await P("/api/platform/tenants")).body.tenants.find(t => t.slug === "luxora");
+      ok(goodDom.status === 200 && saved.domain === "shop.example.com", "a domain is stored as a bare host name", saved.domain);
+    }
+
     console.log("▸ DELETING A RECORD REMOVES ITS ADDED VALUES");
     const db = require("../lib/db.js");
     ok(!!db.get("SELECT 1 x FROM entity_ext WHERE entity='supplier' AND record_id=?", String(row.id)), "the added values are stored beside the record");

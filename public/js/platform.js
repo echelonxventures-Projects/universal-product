@@ -871,6 +871,7 @@ async function tenantModal(id) {
       <label><span>Owner name</span><input id="tnOwnerName" value="${t && t.profile ? esc(t.profile.ownerName || "") : ""}" placeholder="Ava One"></label>
       <label><span>Owner email</span><input id="tnOwner" value="${t && t.profile ? esc(t.profile.ownerEmail || "") : ""}" placeholder="owner@acme.com"></label>
       ${isEdit ? "" : '<label><span>Owner password</span><input id="tnPass" type="password" placeholder="meets the platform password policy"></label>'}
+      <label><span>Domain</span><input id="tnDomain" value="${t ? esc(t.domain || "") : ""}" placeholder="shop.example.com"></label>
       <label><span>Mode</span><select id="tnMode">${modes.map(x => `<option ${t && t.mode === x ? "selected" : ""}>${esc(x)}</option>`).join("")}</select></label>
       <button class="p-btn primary" id="tnSave">${isEdit ? "Save changes" : "Create tenant"}</button>
     </div>`);
@@ -881,7 +882,8 @@ async function tenantModal(id) {
       country: m.querySelector("#tnCountry").value.trim().toUpperCase(),
       ownerName: m.querySelector("#tnOwnerName").value.trim(),
       ownerEmail: m.querySelector("#tnOwner").value.trim(),
-      mode: m.querySelector("#tnMode").value
+      mode: m.querySelector("#tnMode").value,
+      domain: m.querySelector("#tnDomain").value.trim()
     };
     const pass = m.querySelector("#tnPass");
     if (pass) body.ownerPassword = pass.value;
