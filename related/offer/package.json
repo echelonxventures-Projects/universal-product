@@ -1,0 +1,54 @@
+{
+  "name": "goip",
+  "version": "1.0.0",
+  "description": "GOIP - Global Offer Infrastructure Platform. Universal value-exchange kernel.",
+  "type": "module",
+  "engines": {
+    "node": ">=22.6"
+  },
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "test": "node --test \"test/**/*.test.ts\"",
+    "test:concurrency": "node --test test/concurrency.test.ts test/adapter-conformance.test.ts test/reaper.test.ts",
+    "typecheck": "tsc --noEmit",
+    "conformance": "npm run vectors:check && cd conformance/go && go run .",
+    "verify": "npm run typecheck && npm test && npm run docs:check && npm run vectors:check && npm run demo > /dev/null && echo 'verify: all checks passed'",
+    "demo": "node examples/run-all.ts",
+    "example:coupon": "node examples/01-coupon.ts",
+    "example:cashback": "node examples/02-cashback.ts",
+    "example:subsidy": "node examples/03-government-subsidy.ts",
+    "example:affiliate": "node examples/04-affiliate-settlement.ts",
+    "example:offworld": "node examples/05-off-world.ts",
+    "example:stacking": "node examples/06-stacking-conflict.ts",
+    "example:durability": "node examples/07-durability.ts",
+    "example:operations": "node examples/08-operations.ts",
+    "example:api": "node examples/09-api.ts",
+    "example:authoring": "node examples/10-authoring.ts",
+    "example:scale": "node examples/11-scale.ts",
+    "example:intelligence": "node examples/12-intelligence.ts",
+    "example:sql": "node examples/13-postgres.ts",
+    "demo:server": "node examples/14-demo-server.ts",
+    "test:postgres": "node --test test/adapter-conformance.test.ts test/concurrency.test.ts",
+    "vectors:generate": "node tools/generate-vectors.ts",
+    "vectors:check": "node tools/generate-vectors.ts --check",
+    "docs:registries": "node tools/generate-registry-reference.ts",
+    "docs:links": "node tools/check-docs.ts",
+    "docs:check": "node tools/generate-registry-reference.ts --check && node tools/check-docs.ts"
+  },
+  "keywords": [
+    "offers",
+    "incentives",
+    "promotions",
+    "value-exchange",
+    "rules-engine",
+    "settlement"
+  ],
+  "license": "UNLICENSED",
+  "private": true,
+  "devDependencies": {
+    "@types/node": "^22.20.3",
+    "typescript": "^7.0.2"
+  }
+}

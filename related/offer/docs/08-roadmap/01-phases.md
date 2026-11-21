@@ -1,0 +1,369 @@
+# Phases
+
+A sequenced path from this reference implementation to something you could run.
+
+The ordering is deliberate: each phase removes the reason the next one would be
+unsafe. Skipping ahead means running a production platform with a known way to
+lose money.
+
+---
+
+## Phase 0 — Where this repository is
+
+**Complete and verified.**
+
+- The full pipeline: context → conditions → eligibility → benefit → execution →
+  settlement → audit
+- 23 registries, 183 entries, 22 capabilities
+- 8 benefit types, 8 effects, 6 rule operator families, 5 attribution models
+- Exact integer money with remainder-preserving allocation
+- Double-entry ledger with balance enforcement
+- Hash-chained audit with tamper detection
+- Two-phase execution with idempotency
+- Governance with policies, lifecycle and separation of duties
+- 200 tests, strict typecheck clean, 6 runnable examples
+- In-memory persistence only
+
+```bash
+npm run verify
+```
+
+---
+
+## Phase 1 — Make it durable ✅ **COMPLETE**
+
+**Goal: survive a restart. Nothing else changes.**
+
+| Work | Status |
+| --- | --- |
+| Async port variants | ✅ Every port returns a promise; engines thread `await` |
+| Durable adapter | ✅ SQLite, via built-in `node:sqlite` — see [ADR 0012](../06-adr/0012-sqlite-as-the-reference-durable-adapter.md) |
+| **Atomic counters** | ✅ `tryConsume` / `tryIssue`; the check moved inside the port |
+| **Atomic funding** | ✅ `tryReserve` uses a conditional `UPDATE ... WHERE headroom >= ?` |
+| Transaction boundaries | ✅ Reserve, capture, release, reverse and issue each run in one transaction |
+| Durable attribution | ✅ `TouchpointStore`; the in-memory `Map` is gone |
+| Adapter conformance tests | ✅ 22 tests × 2 adapters, plus 12 concurrency tests |
+| Tenant-scoped funding | ✅ Closed a listed gap: sources are keyed `(tenant, id)` |
+| Bounded `recentBySubject` | ✅ Pruned by window and by a hard row cap |
+| Reservation reaper | ✅ Pulled forward from Phase 2; it was the top critical gap |
+
+**Exit criterion: met.** `test/concurrency.test.ts` fires 25 concurrent
+reservations against a limit of one, through the full capability layer, against
+**both** adapters — exactly one is admitted, every run. A negative control in
+the same file reproduces the old read-check-write shape and demonstrates it
+over-admits under identical load, so the test is not vacuous.
+
+Two design decisions came out of this phase and are written up:
+[ADR 0011](../06-adr/0011-no-read-check-write-in-the-port.md) (the port shape)
+and [ADR 0012](../06-adr/0012-sqlite-as-the-reference-durable-adapter.md) (the
+adapter choice).
+
+**What Phase 1 did *not* do:** a PostgreSQL adapter. The conformance suite now
+exists to hold one to account, which is the right order.
+
+## Phase 1b — Make it language-agnostic ✅ **COMPLETE**
+
+**Goal: the contract is portable, not just the storage.**
+
+| Work | Status |
+| --- | --- |
+| Conformance vectors | ✅ 11 suites, **289 cases**, committed and drift-checked |
+| JSON Schema for the data model | ✅ `spec/schema/value-exchange.schema.json`, `rule.schema.json` |
+| Canonical encoding spec | ✅ `spec/encoding.md`, including the number-formatting trap |
+| Rule language spec | ✅ `spec/rule-language.md` — normative parts only |
+| Error vocabulary as data | ✅ `spec/errors.json`, with the normative limit-check order |
+| Storage contract | ✅ `spec/storage-contract.md` — the L5 obligations vectors cannot express |
+| **Second implementation** | ✅ **Go, L1–L4, passing all 289 cases** |
+
+**Exit criterion: met.** `npm run conformance` runs an independent Go
+implementation — no shared code, standard library only — against the same vector
+files. It reproduces every case exactly: SHA-256 hashes, all seven rounding
+modes over both signs, the allocator's remainder ordering, proleptic Gregorian
+and Martian calendars, the full rule evaluator with traces, all eight benefit
+handlers, and all five attribution models.
+
+Writing it found two real defects that re-reading the TypeScript would not have:
+an operator that was not a pure function of the context, and a vector that could
+not survive JSON. Both are written up in
+[ADR 0013](../06-adr/0013-conformance-vectors-as-the-portability-contract.md).
+
+**Still open from this phase:** an OpenAPI contract generated from the capability
+descriptors. Deferred to Phase 3, where the HTTP layer is built.
+
+What remains TypeScript-specific: L5. Storage and concurrency are specified as
+obligations rather than vectors, because no input/output pair can express "and
+no other caller observed an intermediate state".
+
+## Phase 2 — Make it operable ✅ **COMPLETE**
+
+**Goal: run it without watching it.**
+
+| Work | Status |
+| --- | --- |
+| Reservation reaper | ✅ Done in Phase 1 |
+| Telemetry | ✅ A four-method port, no vendor SDK, 29 catalogued metrics |
+| Instrumentation | ✅ Decision, context (per resolver), eligibility (per check), execution, funding, limits |
+| Health | ✅ Four integrity checks: ledger, audit, funding, reservations |
+| Audit checkpointing | ✅ `verify(tenant, fromSeq)` resumes from a stored checkpoint |
+| External anchoring | ✅ `AuditAnchor` port + memory and append-only-file implementations |
+| Alerting | ✅ Seven rules, each with a mandatory runbook link |
+| Maintenance | ✅ Five jobs, scheduler-agnostic runner |
+
+**Exit criterion: met.** `examples/08-operations.ts` runs a simulated day —
+traffic, abandoned baskets, an exhausted budget, a broken condition — then a
+maintenance pass that sweeps, checkpoints, anchors, reconciles and reports. Every
+problem surfaces as a metric, a health check or an alert with a runbook link;
+none needs a human to notice it.
+
+Writing that example found three bugs the unit tests had happily asserted
+around: alerts latching on cumulative counters, an alert paging with a *healthy*
+message, and jobs running in alphabetical order so health reported state the
+sweep was about to fix. All three are written up in
+[ADR 0014](../06-adr/0014-observability-as-ports-not-vendors.md) and pinned by
+tests.
+
+**Still open from this phase:** maintenance last-run times are held in process,
+so a multi-process deployment runs every job on every instance. The jobs are
+idempotent, so this is wasteful rather than dangerous;
+[maintenance](../07-operations/07-maintenance.md) sets out the three ways to fix
+it. No distributed tracing — `correlationId` is the substitute.
+
+## Phase 3 prelude — The hardcoding audit ✅ **COMPLETE**
+
+Before building the HTTP and identity layer, the codebase was audited for the
+shape Law 2 forbids: a comparison against a literal that is really a registry
+key.
+
+It found three violations that had survived since Phase 0 — posting rules
+branching on `effect.key`, lifecycle routing as a hardcoded `switch`, and
+acquisition modes as a closed union — plus four magic numbers. All are fixed,
+and a guard in `test/extensibility.test.ts` greps the engines and ledger so the
+next one is caught by a test rather than by an audit three phases later.
+
+No behaviour changed: all 303 pre-existing tests passed throughout, which is the
+evidence that it was refactoring and not redesign.
+
+The boundary — what genuinely cannot be configuration, and why — is written up
+in [what is fixed](../01-architecture/08-what-is-fixed.md) and
+[ADR 0015](../06-adr/0015-the-hardcoding-audit.md).
+
+## Phase 3 — Make it reachable ✅ **COMPLETE**
+
+**Goal: other systems can use it, safely.**
+
+| Work | Status |
+| --- | --- |
+| HTTP API | ✅ `node:http` only — no Express, no Fastify |
+| **Authentication** | ✅ API keys (hashed, constant-time) and HMAC tokens. Not JWT, deliberately |
+| **Authorisation** | ✅ Roles as a registry, with a separation-of-duties audit |
+| **Rate limiting** | ✅ Two layers: per source pre-auth, per principal post-auth |
+| Bigint serialisation | ✅ The wire codec, already specified and vector-covered |
+| OpenAPI | ✅ Generated from the capability descriptors |
+| Client SDK | Deferred — the generated OpenAPI is the input for one |
+
+**Exit criterion: met.** `examples/09-api.ts` runs a real server and shows the
+four things a caller can no longer get away with: calling unauthenticated,
+committing value from a quote-only key, naming itself as somebody else, and
+hammering a value-committing capability.
+
+The security property that matters: **the request body cannot name the actor.**
+`actor` and `tenant` are overwritten from the authenticated principal before a
+capability sees them. A claimed `ceo@acme.example` is recorded as
+`checkout-service`.
+
+Two findings, both from building the example rather than from the unit tests:
+
+- The shipped `finance` role held both `fund` and `pay` — fund a budget, pay
+  yourself from it. The platform's own separation check flagged it, and it was
+  split into `finance.funding` and `finance.treasury`.
+- Audit records had the **wrong actor**: they recorded the shopper rather than
+  the caller, conflating "who did this" with "who benefited". Fixed, with the
+  subject moved into the payload.
+
+Both are in [ADR 0016](../06-adr/0016-identity-at-the-gateway.md).
+
+**Still open:** no TLS in the adapter (terminate in front), no row-level
+authorisation, no key rotation workflow, and the rate limiter is per-instance.
+
+## Phase 4 — Make authoring safe ✅ **COMPLETE** (backend)
+
+**Goal: a broken offer cannot reach production.**
+
+| Work | Status |
+| --- | --- |
+| **Rule preview** | ✅ Offers run against sample contexts before publication |
+| Publish gate | ✅ `rules.evaluable` policy: an unevaluable condition blocks publish |
+| Draft validation | ✅ `validate` checks a draft that was never saved |
+| Sample contexts | ✅ A registry; replace the generic ones with your own traffic |
+| Explanations | ✅ Pure renderers for decisions, rejections and previews |
+| Behavioural diff | ✅ `compareVersions` classifies changes by effect on exposure |
+| Authoring console | ❌ **Deliberately not built** |
+| Visual rule builder | ❌ **Deliberately not built** |
+| Simulation UI | ❌ **Deliberately not built** |
+| Budget dashboard | ❌ **Deliberately not built** |
+
+**Exit criterion: met** for the part that carries the risk. The highest-value
+item was rule preview, and it closes the worst failure mode this platform has:
+an offer published with an unevaluable condition applies to nobody and *nothing
+errors visibly*. It is now a refused publish.
+
+**On the four UI items.** They are a client, and bundling one would mean
+choosing a framework, a build step and a design system — contradicting the
+agnosticism the rest of the system pays for, and producing something most
+deployments would replace. What a console needs now exists: `validate` with
+preview on an unsaved draft, `compareVersions`, the explanation renderers, and a
+generated OpenAPI document. The UI is downstream work, and it is listed as not
+done rather than claimed.
+
+Two changes this phase forced, both improvements beyond authoring:
+
+- **An absent operand is no longer an error.** Preview caught that a single
+  offer with a cart-based condition failed the *entire discovery response*,
+  because `cart.subtotal` is undefined before a basket exists. A missing path is
+  now false; a wrong-typed value is still an error. A specification change: six
+  vectors added, Go updated, and the conformance suite caught the divergence.
+- **Failed conditions name the predicate that decided.** "4 node(s) evaluated"
+  became `'gte' was not satisfied: 0 vs 1`.
+
+Both are in [ADR 0017](../06-adr/0017-preview-as-a-publish-gate.md).
+
+## Phase 5 — Make it scale ✅ **COMPLETE** (the parts that were defects)
+
+**Goal: survive volume.**
+
+| Work | Status |
+| --- | --- |
+| **Bounded reconciliation** | ✅ Snapshot-backed; `settle`, `pay` and health no longer rescan the ledger |
+| **Registry bundle versioning** | ✅ Decisions record the bundle that produced them |
+| **Decision replay** | ✅ `replayDecision` — four conclusions, not a boolean |
+| Bundle comparison | ✅ `compareBundles` names which registries moved |
+| Edge decisioning | ❌ Not built |
+| Sharded counters | ❌ Not built |
+| Read replicas | ❌ Not built — an adapter concern, not a platform one |
+| Ledger partitioning | ❌ Not built |
+| Multi-region | ❌ Not built |
+
+**Exit criterion: met for the defects, not for the capacity work.** The audit
+that opened this phase found that the two highest-risk items were not really
+about volume.
+
+- **Three unbounded scans.** `settle()`, `pay()` and the `ledger` health check
+  each folded the entire ledger from genesis. The ledger is append-only and the
+  fastest-growing table in the system, so this got slower every day and never
+  faster — and health runs every minute, so the check designed to catch problems
+  was becoming one. Fixed with `LedgerSnapshot` and a bounded fold, mirroring the
+  audit-checkpoint pattern that already existed one layer over.
+- **Decisions did not record their rules.** A decision is a pure function of its
+  context *and* the loaded registries. Only the context was recorded, so a replay
+  could legitimately differ with nothing saying why — the exact moment an
+  investigation draws a wrong conclusion from a true observation.
+
+One bug this phase produced is worth keeping: `bundle` was first part of the
+hashed decision body, which made every decision fail to reproduce whenever *any*
+registry changed. That collapsed two different questions into one. It is now
+recorded but not hashed — provenance, not content.
+
+The remaining rows are genuine capacity work and none of them is a design flaw.
+Read replicas and partitioning are adapter concerns the ports already allow;
+sharded counters and edge decisioning are new features. They are listed as not
+done rather than claimed. See
+[ADR 0018](../06-adr/0018-snapshots-and-bundle-versions.md) and
+[reconciliation and replay](../07-operations/10-reconciliation-and-replay.md).
+
+## Phase 6 — Make it clever ✅ **COMPLETE**
+
+**Deliberately last.**
+
+| Work | Status |
+| --- | --- |
+| **Graph projection** | ✅ `GraphProjector`, bounded, plus the six named queries |
+| **Anomaly detection** | ✅ Integer statistics over closed buckets, detectors as a registry |
+| **Learned risk model** | ✅ Scorecards: fitted elsewhere, executed here, explaining every contribution |
+| **Offer recommendation** | ✅ `discovery-ranking` and `ranking-feature` registries |
+| **Budget optimisation** | ✅ `planAllocation`, advisory, exact to the minor unit |
+
+The prediction held: every one of these was a registry entry or a downstream
+consumer, and no engine changed to accommodate any of them. What the phase
+actually needed was a boundary rather than an algorithm.
+
+The risk in this phase was never that the features are hard. It was that each
+has an obvious implementation that would quietly undo something the earlier
+phases paid for — a recommender reading history on the decision path, a model
+that scores without reasons, an optimiser with write access. So the work went
+into `src/intelligence/`, a layer that may not be imported by any engine, rule,
+context resolver or ledger module, and that may not write. Both rules are guard
+tests rather than intentions.
+
+Two things changed outside it, because the queries could not be honest
+otherwise: `execution.reserved` now records which exchanges applied, and
+`AuditStore` gained `range` for bounded forward scans.
+
+The phase also turned up a determinism defect that had nothing to do with
+intelligence and everything to do with the platform's central claim.
+`localeCompare` was used in twenty places, several on the decision path, and the
+two storage adapters were already disagreeing about ordering for mixed-case ids.
+A conformance test now proves they agree; it failed on the memory adapter before
+the fix. See [ADR 0019](../06-adr/0019-analysis-is-a-downstream-layer.md) and
+[ADR 0020](../06-adr/0020-codepoint-ordering.md).
+
+**What is deliberately still not built:** training. No gradient descent, no
+inference over a neural network, nothing that should be called learning. The
+platform executes a model somebody else fitted, and says so rather than
+describing that as machine learning.
+
+---
+
+## Phase 7 — Make it deployable ✅ **COMPLETE** (for the database half)
+
+**Goal: close the critical list.**
+
+The roadmap ended at Phase 6, but the gap list did not. Two entries sat under
+"Critical — do not run in production without these", and the larger of them was
+the storage layer.
+
+| Work | Status |
+| --- | --- |
+| **PostgreSQL adapter** | ✅ Verified against a real server: 13 conformance and 5 concurrency tests |
+| **The driver as a port** | ✅ Bring `pg`, `postgres.js` or anything else; zero dependencies preserved |
+| **One store, many dialects** | ✅ `SqlPlatformStore` + `SqlDialect`; one schema, four substituted type names |
+| Money without a 64-bit ceiling | ✅ `NUMERIC(38,0)` on Postgres, without giving up atomic reservation |
+| Nothing triggers maintenance | ❌ Still open |
+| Migrations | ❌ `CREATE TABLE IF NOT EXISTS` only; no versioning |
+
+**Exit criterion: met for the adapter, not for the whole critical list.** The
+platform can now run multi-writer. Nothing still schedules maintenance, and that
+entry stays where it is.
+
+Postgres forced four portability defects into the open that SQLite had been
+quietly accepting, and all four were found by running the suite rather than
+reading the code:
+
+- `ON CONFLICT ... DO UPDATE SET redemptions = redemptions + 1` is ambiguous in
+  Postgres. SQLite guesses. This one broke every transactional path.
+- `rowid` has no portable equivalent, so `counter_recent` gained an explicit
+  `seq` — which also fixed a latent point: undoing "the most recent redemption"
+  by timestamp cannot choose between two in the same second.
+- `MAX(a, b)` is a scalar in SQLite and an aggregate in Postgres.
+- A bare `ORDER BY` on a text column is codepoint order in SQLite (its only
+  collation is BINARY) and locale order in Postgres (`LC_COLLATE`), so the two
+  adapters disagreed on any mixed-case id — and ids here embed unit codes like
+  `USD`, so mixed-case is the normal case. The dialect now renders text sorts
+  (`COLLATE "C"`), and a guard in `test/extensibility.test.ts` flags a bare
+  text-column sort the moment it is written. This is the SQL-layer half of
+  [ADR 0020](../06-adr/0020-codepoint-ordering.md), whose JavaScript half the
+  conformance test had already caught.
+
+See [ADR 0021](../06-adr/0021-the-driver-is-a-port.md),
+[ADR 0020](../06-adr/0020-codepoint-ordering.md) and
+[SQL adapters](../07-operations/11-sql-adapters.md).
+
+## What is not on this roadmap
+
+**Distribution.** Email, SMS, push, partner feeds. The platform decides what a
+channel should show; delivering it is a different product.
+
+**Payments.** Moving money. The platform records obligations and stops at the
+clearing account. Card rails inside an incentive engine make both unmaintainable.
+
+**A general search engine.** Substring matching over names covers a catalogue of
+hundreds. Beyond that, put a real index in front and pass `candidateIds`.

@@ -1,0 +1,198 @@
+# GOIP — Global Offer Infrastructure Platform
+
+A universal value-exchange kernel. One record, one decision pipeline, and a
+registry-driven extension model that lets a coupon, a cashback scheme, a
+government subsidy, an affiliate commission and a loyalty accrual run through
+identical code.
+
+```
+CONTEXT → CONDITIONS → ELIGIBILITY → BENEFIT → EXECUTION → SETTLEMENT → AUDIT
+```
+
+- **Zero dependencies at runtime.** Pure TypeScript, executed natively by Node.
+- **Zero build step.** `node examples/01-coupon.ts` runs the real platform.
+- **Durable and atomic.** SQLite adapter on Node's built-in driver; limits and
+  budgets are enforced inside the write, proven by concurrency tests.
+- **Language-agnostic contract.** 297 conformance vectors, with an independent
+  **Go** implementation that reproduces every assertion.
+- **Operable.** Vendor-neutral telemetry, integrity health checks, alert rules
+  that each carry a runbook link, and a scheduler-agnostic maintenance runner.
+- **Authenticated.** A transport-neutral gateway with API keys or HMAC tokens,
+  role-based authorisation, and two layers of rate limiting. The request body
+  cannot name the actor.
+- **Nothing that varies is compiled in.** 32 registries plus configuration, with
+  a test that greps the engines for hardcoded dispatch. What genuinely *cannot*
+  be configuration is written down rather than glossed over:
+  [what is fixed](docs/01-architecture/08-what-is-fixed.md).
+- **Exact money.** Integer minor units and `bigint` throughout. No floats, ever.
+- **Explainable.** Every decision carries the full trace of why it went that way.
+- **Auditable.** Hash-chained records; tampering is detectable and located.
+
+---
+
+## Quick start
+
+```bash
+node --version          # needs >= 22.6 (tested on 26)
+npm test                # 517 tests, no install required
+npm run demo            # all thirteen worked examples
+npm run demo:server     # a live API on http://127.0.0.1:9119, with keys printed
+npm run example:coupon  # one of them
+```
+
+There is nothing to install to run the platform. `npm install` only fetches
+TypeScript, which is needed for `npm run typecheck` and for nothing else.
+
+## The shortest possible example
+
+```ts
+import { GoipPlatform } from "./src/platform/platform.ts";
+
+const platform = new GoipPlatform();
+const caps = platform.capabilities;
+
+caps.fund({
+  tenant: "acme", actor: "ops", sourceId: "merchant-1", label: "Promo budget",
+  party: { kind: "merchant", id: "m1" }, unit: "USD", budgetDecimal: "10000.00",
+});
+
+const offer = caps.create({
+  tenant: "acme", actor: "ops",
+  draft: {
+    profile: "promotion",
+    name: "10% off",
+    benefits: [{ id: "d", type: "percentage", params: { rate: "10" }, effect: "price_reduction" }],
+    funding: { model: "single", splits: [{ sourceId: "merchant-1" }] },
+    governance: { owner: "ops@acme.example" },
+  },
+});
+
+caps.publish({ tenant: "acme", actor: "ops", valueExchangeId: offer.value.id, approvedBy: "finance@acme.example" });
+
+const quote = caps.apply({
+  context: {
+    tenant: "acme", unit: "USD",
+    cart: { lines: [{ id: "l1", sku: "WIDGET", quantity: 1, unitPrice: { unit: "USD", minor: 5000n, scale: 2 }, categories: [] }] },
+  },
+});
+// quote.value.decision.payableReduction -> 5.00 USD
+```
+
+## What is actually here
+
+| Area | What it does | Where |
+| --- | --- | --- |
+| Kernel | Results, errors, canonical hashing, wire codec, ids | `src/kernel` |
+| Registry | The single extension mechanism | `src/registry` |
+| Universal domains | Economic, temporal, spatial, reality | `src/universal` |
+| Context | Assembling and freezing a decision context | `src/context` |
+| Rules | Serialisable condition AST and evaluator | `src/rules` |
+| Model | The `ValueExchange` record and its parts | `src/model` |
+| Engines | Eligibility, benefit, stacking, decision, execution, governance, risk, discovery | `src/engines` |
+| Ledger | Double-entry, funding allocation, settlement, payout | `src/ledger` |
+| Attribution | Touchpoints and credit models | `src/attribution` |
+| Audit | Hash-chained record of everything | `src/audit` |
+| Capabilities | The 22-verb public surface | `src/capabilities` |
+| Platform | Composition root | `src/platform` |
+| Adapters | Storage ports, memory and SQLite implementations | `src/adapters` |
+| Observability | Telemetry, metrics catalogue, health, alerts | `src/observability` |
+| API | Gateway, authentication, authorisation, rate limits, HTTP | `src/api` |
+| Authoring | Preview, explanations, behavioural diff | `src/authoring` |
+| Operations | Scheduler-agnostic maintenance jobs | `src/operations` |
+
+## Worked examples
+
+Each is a runnable file that prints what it did and why.
+
+| Example | What it demonstrates |
+| --- | --- |
+| `01-coupon.ts` | The full path: author → govern → quote → redeem → settle → audit |
+| `02-cashback.ts` | Sequential vs parallel stacking, and why it matters to a customer |
+| `03-government-subsidy.ts` | Issued grants, jurisdiction scoping, waterfall multi-party funding |
+| `04-affiliate-settlement.ts` | Touchpoints, five attribution models, commission, payout |
+| `05-off-world.ts` | A Martian calendar, Mars credits, and no engine changes |
+| `06-stacking-conflict.ts` | Conflict groups, exclusivity, and objectives that disagree |
+| `07-durability.ts` | Restart with nothing lost; 20 concurrent claims, 1 admitted |
+| `08-operations.ts` | A day's traffic, then the maintenance pass that catches what broke |
+| `09-api.ts` | A real HTTP server, and the four things it refuses |
+| `10-authoring.ts` | Catching a broken offer before it silently delivers nothing |
+| `11-scale.ts` | Reconciling 100 entries without reading them, and replaying a dispute |
+| `12-intelligence.ts` | The graph, anomalies, a fitted model and a budget plan |
+| `13-postgres.ts` | The same platform on SQLite or PostgreSQL, unchanged |
+
+The one above is a server rather than a narrative: it stays up, so a client can
+point at it. `npm run demo:server` seeds a tenant, funds a budget, publishes an
+offer, prints four API keys (quote-only, checkout, finance, admin), proves the
+paths work first, and then waits. It is in-memory and clears on restart.
+
+## Two halves
+
+| | |
+| --- | --- |
+| [`spec/`](spec/README.md) | The **specification** — vectors, schemas, encoding, storage contract. No TypeScript. |
+| `src/` | The **reference implementation**, which happens to be TypeScript. |
+| [`conformance/go/`](conformance/go) | An **independent Go implementation**, proving the spec is re-implementable. |
+
+The split matters: an implementation has to be written in *some* language, so
+what is portable is the contract. `spec/vectors/` freezes behaviour as input and
+exact expected output, and the Go implementation reproduces all 295 assertions
+with no shared code.
+
+```bash
+npm run conformance     # reference + Go, against the same vectors
+```
+
+## Documentation
+
+Start at **[docs/README.md](docs/README.md)**.
+
+The three documents worth reading before anything else:
+
+1. **[The constitution](docs/00-mission/02-constitution.md)** — the nine laws the
+   code is held to, and the test that enforces each one.
+2. **[Honest scope](docs/00-mission/03-honest-scope.md)** — what "no redesign,
+   ever" can and cannot mean, stated plainly.
+3. **[The decision pipeline](docs/01-architecture/03-decision-pipeline.md)** —
+   how a request becomes a decision becomes money.
+
+## Commands
+
+| Command | Does |
+| --- | --- |
+| `npm test` | Run the test suite |
+| `npm run demo` | Run all examples |
+| `npm run demo:server` | Serve a live demo API on port 9119 (keys printed) |
+| `npm run typecheck` | Strict TypeScript check (needs `npm install`) |
+| `npm run conformance` | Run the vectors against the reference and the Go implementation |
+| `npm run vectors:generate` | Regenerate the conformance vectors |
+| `npm run docs:registries` | Regenerate the registry reference from the code |
+| `npm run docs:links` | Check every internal link and alert runbook anchor |
+| `npm run docs:check` | Fail if the generated reference is stale |
+| `npm run verify` | Typecheck, test, docs check, and examples together |
+
+## Status
+
+A complete, working reference implementation. **Phases 1–7 are done:** storage
+is durable and atomic with two adapters held to a shared conformance suite;
+callers authenticate and cannot name themselves as somebody else; an offer with
+an unevaluable condition cannot be published; reconciliation folds forward from
+a snapshot rather than rescanning a table that only grows; and the analysis
+layer — graph projection, anomaly detection, scorecards, budget planning — is
+structurally unable to reach a decision.
+
+The SQL adapter runs on SQLite with no setup and on PostgreSQL with a ten-line
+driver wrapper, and both are held to the same conformance and concurrency suite.
+
+It has never carried production traffic. What is still missing is written down
+rather than glossed over in
+[docs/08-roadmap/02-known-gaps.md](docs/08-roadmap/02-known-gaps.md) — the
+headline items now being nothing triggering the maintenance runner, no TLS in
+the HTTP adapter, and no migration framework.
+
+| | |
+| --- | --- |
+| Tests | 517 across 3 adapters, 554 with PostgreSQL |
+| Conformance vectors | 295 assertions + 2 fixtures, across 2 language implementations |
+| Registries | 32, holding 227 entries |
+| Typecheck | strict, clean |
+| Runtime dependencies | 0 |
