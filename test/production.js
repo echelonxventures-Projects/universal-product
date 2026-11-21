@@ -225,6 +225,22 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
       const none = await mailer.send({ tenantId: 0, channel: "sms", to: "+15551234567", subject: "s", text: "t" });
       ok(!none.sent && /no sms transport/.test(none.error), "with no transport the send reports that, rather than claiming success", none);
     }
+    console.log("\n▸ NO INVENTED SOCIAL PROOF — a production boot seeds no made-up ratings or reviews");
+    {
+      const dev = await fetch(BASE + "/api/products?limit=5").then(r => r.json());
+      ok((dev.items || []).some(p => p.r != null && p.c > 0), "outside production the seed catalogue keeps its illustrative ratings (development, tests)");
+      const prodDb = path.join(__dirname, "production-seed.db");
+      const clean = () => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(prodDb + s, { force: true }); } catch (e) { } } };
+      clean();
+      try {
+        const out = require("child_process").execFileSync(process.execPath, ["-e",
+          "const d=require('./lib/db.js');console.log(JSON.stringify({products:d.get('SELECT COUNT(*) c FROM products').c,rated:d.get('SELECT COUNT(*) c FROM products WHERE rating>0 OR ratings_count>0').c,reviews:d.get('SELECT COUNT(*) c FROM reviews').c}))"],
+          { cwd: path.join(__dirname, ".."), env: { ...process.env, NODE_ENV: "production", LX_DB: prodDb, LUXORA_DEMO_REVIEWS: "" }, encoding: "utf8", timeout: 240000 });
+        const n = JSON.parse(out.trim().split("\n").pop());
+        ok(n.products > 0 && n.rated === 0, "a production catalogue starts with no product rated", n);
+        ok(n.reviews === 0, "…and with no review no customer wrote", n);
+      } finally { clean(); }
+    }
   } catch (e) {
     failed++; console.error("  ✗ harness error:", e && e.stack || e);
   } finally {

@@ -33,6 +33,9 @@ function computeDisp() {
   if (!store || !disp || disp.code === store.code) return;
   S.disp = { code: disp.code, symbol: disp.symbol, decimals: disp.decimals, fx: (store.usd || 1) / (disp.usd || 1) };
 }
+/* a product nobody has rated yet shows that plainly — no empty stars, no "null / 5", no "0 ratings" */
+const rated = p => p && p.r != null && Number(p.c) > 0;
+function rateHtml(p, cls, suffix) { return rated(p) ? `${starsHtml(p.r)}<a class="${cls}">${p.c.toLocaleString(CFG.commerce.locale)}${suffix || ""}</a>` : `<span class="${cls} no-ratings">No ratings yet</span>`; }
 function starsHtml(r) { return `<span class="stars" title="${r} / 5"><span class="stars-fill" style="width:${(r / 5) * 100}%">★★★★★</span><span class="stars-bg">★★★★★</span></span>`; }
 function prioBadge() { return `<span class="prio-badge">✦ ${esc(T("priorityBadge"))}</span>`; }
 function linkify(m) {
@@ -263,7 +266,7 @@ function card(p) {
     <div class="pc-body">
       ${!isPlain(p.type) ? `<span class="pc-type">${esc(typeIcon(p.type))}</span>` : ""}
       <a class="pc-title" href="${prodLink(p)}">${esc(p.t)}</a>
-      <div class="pc-rate">${starsHtml(p.r)}<a class="pc-count">${p.c.toLocaleString(CFG.commerce.locale)}</a></div>
+      <div class="pc-rate">${rateHtml(p, "pc-count")}</div>
       <div class="pc-price">${priceHtml(p.p)}${tm.isSub ? '<span class="pc-cycle">/mo</span>' : tm.isRental ? '<span class="pc-cycle">/period</span>' : ""}${p.l > p.p ? `<span class="pc-list">${money(p.l)}</span>` : ""}</div>
       ${p.pricing_rules && p.pricing_rules.tiers ? `<div class="pc-tier">Volume pricing available</div>` : ""}
       <div class="pc-del">${tm.isDigital ? `<span class="pc-now">⚡ Instant access</span>` : tm.isService ? `<span class="pc-now">📅 Bookable</span>` : (p.pr ? `${prioBadge()} <b>${dShort(daysP())}</b>` : `<b>${dShort(daysS())}</b>`)}</div>
@@ -276,7 +279,7 @@ function carousel(title, items) {
   if (!items || !items.length) return "";
   return `<section class="h-carousel"><h2>${esc(title)}</h2>
     <div class="hc-outer"><button class="hc-arrow" data-dir="-1">‹</button>
-      <div class="hc-track">${items.map(p => `<a class="hc-item" href="${prodLink(p)}">${img(p, "big")}<div class="hc-name">${esc(p.t)}</div><div class="hc-rate">${starsHtml(p.r)}<b>${p.r}</b></div><div class="hc-price">${priceHtml(p.p)}</div>${p.pr ? `<div class="hc-prio">${prioBadge()}</div>` : ""}</a>`).join("")}</div>
+      <div class="hc-track">${items.map(p => `<a class="hc-item" href="${prodLink(p)}">${img(p, "big")}<div class="hc-name">${esc(p.t)}</div>${rated(p) ? `<div class="hc-rate">${starsHtml(p.r)}<b>${p.r}</b></div>` : ""}<div class="hc-price">${priceHtml(p.p)}</div>${p.pr ? `<div class="hc-prio">${prioBadge()}</div>` : ""}</a>`).join("")}</div>
       <button class="hc-arrow" data-dir="1">›</button></div></section>`;
 }
 
@@ -573,7 +576,7 @@ async function pageProduct() {
       <div class="pp-info">
         <h1>${esc(p.t)}</h1>
         <a class="pp-brand" href="results.html?brand=${encodeURIComponent(p.b)}">${esc(brandLabel(p.b))} · ${esc(deptLabel(p.d))}</a>${data.brand_registry ? ` <span class="pp-regbrand" title="The brand's owner is registered with ${esc(CFG.brand.name)}">✔ Registered brand</span>` : ""}
-        <div class="pp-rate">${starsHtml(p.r)}<a class="pp-rcount">${p.c.toLocaleString(CFG.commerce.locale)} ratings</a>${p.fl.includes("bs") ? `<span class="pp-bestsell">House Favourite</span>` : ""}${p.fl.includes("new") ? `<span class="pp-new">New Season</span>` : ""}</div>
+        <div class="pp-rate">${rateHtml(p, "pp-rcount", " ratings")}${p.fl.includes("bs") ? `<span class="pp-bestsell">House Favourite</span>` : ""}${p.fl.includes("new") ? `<span class="pp-new">New Season</span>` : ""}</div>
         <hr><div class="pp-price-row">${priceHtml(p.p)}${p.l > p.p ? `<span class="pp-off">−${discount(p)}%</span> <s class="pp-list">${money(p.l)}</s>` : ""}${isRental ? '<span class="pp-cycle">/ rental period</span>' : ""}${isSub ? '<span class="pp-cycle">/ month</span>' : ""}</div>
         ${tiers.length ? `<table class="pp-tiers"><tr><th>Qty</th><th>Unit Price</th></tr>${tiers.map(t => `<tr><td>${t.qty}+</td><td>${money(t.price)}</td></tr>`).join("")}</table><p class="pp-b2b">B2B volume pricing — <a href="#" data-act="rfq-open" data-id="${p.id}">submit an RFQ</a> for larger lots.</p>` : ""}
         <div class="pp-feat"><div>${esc(T("deliverEstimate"))} <b>${p.pr ? dLong(daysP()) : dLong(daysS())}</b> · ${esc(T("deliverTo"))} <a id="ppZip" href="#">${esc(S.zip)}</a></div>
@@ -624,9 +627,9 @@ async function pageProduct() {
         <tr><th>SKU</th><td>${esc((p.identity || {}).sku || p.id)}</td></tr>
         ${data.localized ? `<tr><th>Language</th><td>${esc(data.locale)} · localized content</td></tr>` : ""}
         ${skus && skus.length > 1 ? `<tr><th>Variants</th><td>${skus.map(k => `${esc(k.name || k.code)} · ${money(k.price)} · ${k.stock} in stock`).join("<br>")}</td></tr>` : ""}
-        <tr><th>Rating</th><td>${starsHtml(p.r)} ${p.r} / 5</td></tr></table></div>
+        <tr><th>Rating</th><td>${rated(p) ? `${starsHtml(p.r)} ${p.r} / 5` : "No ratings yet"}</td></tr></table></div>
       ${f.reviews ? `<div class="pp-rev-col" id="reviews"><div class="rev-head"><h3>${esc(T("reviewsTitle"))}</h3></div>
-        <div class="rev-sum"><span class="rev-big">${p.r} / 5</span>${starsHtml(p.r)}<div class="rev-rc">${p.c.toLocaleString(CFG.commerce.locale)} global ratings</div></div>
+        <div class="rev-sum">${rated(p) ? `<span class="rev-big">${p.r} / 5</span>${starsHtml(p.r)}<div class="rev-rc">${p.c.toLocaleString(CFG.commerce.locale)} global ratings</div>` : `<div class="rev-rc no-ratings">No ratings yet</div>`}</div>
         <div class="rev-hist">${[5, 4, 3, 2, 1].map(n => `<div class="rh-row"><span>${n}★</span><div class="rh-bar"><i style="width:${histogram[n]}%"></i></div><b>${histogram[n]}%</b></div>`).join("")}</div>
         <button class="btn-white w100" data-act="open-review">${esc(T("writeReview"))}</button>
         ${reviews.map(rv => `<div class="rev"><div class="rev-user">${esc(rv.name[0] || "A")} <b>${esc(rv.name)}</b></div>
