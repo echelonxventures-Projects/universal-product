@@ -121,8 +121,9 @@
    }
   },
   "payment:razorpay": {
+   "$comment": "Payment Links: the shopper pays on Razorpay's hosted page (short_url) and returns to callback_url; no Razorpay script runs in the storefront. An Orders-API order has no payment page, so a shopper could never pay it.",
    "method": "POST",
-   "url": "https://api.razorpay.com/v1/orders",
+   "url": "https://api.razorpay.com/v1/payment_links",
    "auth": {
     "type": "basic",
     "user": "{{cfg.keyId}}",
@@ -131,16 +132,43 @@
    "body": {
     "amount": "{{amountCents}}",
     "currency": "{{currency}}",
-    "receipt": "{{idempotency}}"
+    "reference_id": "{{idempotency}}",
+    "description": "Order {{idempotency}}",
+    "callback_url": "{{returnUrl}}",
+    "callback_method": "get"
    },
    "idPath": "id",
    "statusPath": "status",
    "statusMap": {
     "paid": "captured",
     "created": "pending",
-    "attempted": "pending"
+    "partially_paid": "pending",
+    "expired": "failed",
+    "cancelled": "failed"
    },
+   "redirectPath": "short_url",
    "errorPath": "error.description",
+   "refund": {
+    "method": "POST",
+    "url": "https://api.razorpay.com/v1/payments/{{paymentId}}/refund",
+    "auth": {
+     "type": "basic",
+     "user": "{{cfg.keyId}}",
+     "pass": "{{cfg.keySecret}}"
+    },
+    "body": {
+     "amount": "{{amountCents}}",
+     "receipt": "{{idempotency}}"
+    },
+    "idPath": "id",
+    "statusPath": "status",
+    "statusMap": {
+     "processed": "refunded",
+     "pending": "refund_pending",
+     "failed": "failed"
+    },
+    "errorPath": "error.description"
+   },
    "webhook": {
     "signature": {
      "header": "x-razorpay-signature",
@@ -149,23 +177,25 @@
     },
     "typePath": "event",
     "events": {
-     "order.paid": {
+     "payment_link.paid": {
       "status": "captured",
-      "refPath": "payload.order.entity.id",
+      "refPath": "payload.payment_link.entity.id",
       "paymentIdPath": "payload.payment.entity.id",
-      "amountPath": "payload.order.entity.amount_paid"
+      "amountPath": "payload.payment_link.entity.amount_paid"
      },
-     "payment.captured": {
-      "status": "captured",
-      "refPath": "payload.payment.entity.order_id",
-      "paymentIdPath": "payload.payment.entity.id",
-      "amountPath": "payload.payment.entity.amount"
+     "payment_link.expired": {
+      "status": "failed",
+      "refPath": "payload.payment_link.entity.id"
+     },
+     "payment_link.cancelled": {
+      "status": "failed",
+      "refPath": "payload.payment_link.entity.id"
      }
     }
    },
    "lookup": {
     "method": "GET",
-    "url": "https://api.razorpay.com/v1/orders/{{ref}}",
+    "url": "https://api.razorpay.com/v1/payment_links/{{ref}}",
     "auth": {
      "type": "basic",
      "user": "{{cfg.keyId}}",
@@ -175,9 +205,12 @@
     "statusMap": {
      "paid": "captured",
      "created": "pending",
-     "attempted": "pending"
+     "partially_paid": "pending",
+     "expired": "failed",
+     "cancelled": "failed"
     },
     "amountPath": "amount_paid",
+    "paymentIdPath": "payments[0].payment_id",
     "errorPath": "error.description"
    }
   },
@@ -826,7 +859,7 @@
    "name": "Indonesian Rupiah",
    "symbol": "Rp",
    "decimals": 2,
-   "usd": 6.2e-05
+   "usd": 0.000062
   },
   {
    "code": "MYR",
@@ -854,7 +887,7 @@
    "name": "Vietnamese Đồng",
    "symbol": "₫",
    "decimals": 0,
-   "usd": 3.9e-05
+   "usd": 0.000039
   },
   {
    "code": "HKD",
