@@ -242,7 +242,7 @@ Actions:
 
 ```mermaid
 flowchart LR
-  U([Shopper / Store administrator / Platform administrator]) --> UI[store console, platform console]
+  U([Shopper / Store administrator / Platform administrator]) --> UI[privacy.html, terms.html, store console, platform console]
   UI --> API[12 API routes]
   API --> ENG[compliance.js, compliance.js]
   ENG --> DB[(compliance_records, compliance_controls, compliance_evidence, consents, privacy_requests, privacy_request_events, …)]
@@ -250,6 +250,8 @@ flowchart LR
 ```
 
 ## User interface
+
+**Pages:** `privacy.html`, `terms.html`
 
 **Store console:** ✅ Compliance & Certs
 

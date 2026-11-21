@@ -2463,7 +2463,10 @@
     "platformGroups": [
      "Compliance"
     ],
-    "pages": []
+    "pages": [
+     "privacy",
+     "terms"
+    ]
    }
   },
   {
