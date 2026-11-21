@@ -22,7 +22,9 @@ ENV PORT=3000
 
 EXPOSE 3000
 
-HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
-  CMD wget -qO- http://localhost:3000/healthz || exit 1
+# a first boot seeds the master deployment before it listens, which can take well over
+# 20 s on a small host: the start period covers it. /readyz answers 503 while draining.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=180s --retries=3 \
+  CMD wget -qO- http://localhost:3000/readyz || exit 1
 
 CMD ["node", "server.js"]

@@ -552,6 +552,13 @@ const raw = (text) => new Promise((resolve) => {
       const azs = (r.headers.getSetCookie ? r.headers.getSetCookie() : []).find(c => c.startsWith("azs="));
       ok(azs && !/;\s*Secure/i.test(azs), "an untrusted proxy header cannot make the server claim HTTPS", azs);
     }
+    console.log("\n▸ READINESS — /readyz answers only while the process can serve");
+    {
+      const r = await fetch(BASE + "/readyz");
+      const j = await r.json().catch(() => ({}));
+      ok(r.status === 200 && j.ready === true, "a booted server is ready", { status: r.status, j });
+      ok(r.headers.get("cache-control") === "no-store", "readiness is never cached");
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e) + (e && e.cause ? "\n    cause: " + (e.cause.stack || e.cause) : ""));
     /* what the server said before it went away */

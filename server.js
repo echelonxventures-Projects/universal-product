@@ -250,6 +250,15 @@ const handler = async (req, res) => {
       res.writeHead(200, { "Content-Type": "application/json" });
       return res.end(JSON.stringify({ ok: true, tenant: t && t.slug, products: t ? get("SELECT COUNT(*) c FROM products WHERE tenant_id=?", t.id).c : 0, uptime: Math.floor(process.uptime()), tls: IS_TLS }));
     }
+    /* readiness, for a load balancer or orchestrator: 200 only while this process can serve —
+       the database answers, the master deployment exists and no shutdown has begun (a draining
+       instance answers 503 so traffic moves away before it closes). /healthz is liveness only. */
+    if (url.pathname === "/readyz") {
+      let ready = !shuttingDown, why = shuttingDown ? "shutting down" : null;
+      if (ready) { try { get("SELECT 1 x"); if (!masterTenant()) { ready = false; why = "no master deployment"; } } catch (e) { ready = false; why = "database unavailable"; } }
+      res.writeHead(ready ? 200 : 503, { "Content-Type": "application/json", "Cache-Control": "no-store" });
+      return res.end(JSON.stringify(ready ? { ready: true } : { ready: false, reason: why }));
+    }
     if (url.pathname === "/metrics") {
       /* S11: this exposed platform-wide business metrics (24h orders, revenue,
          per-endpoint volumes) to anyone. Two ways in: a bearer token the
@@ -346,7 +355,8 @@ prodCredentialGuard();
 if (process.env.NODE_ENV === "production" && !require("./lib/mailer.js").transportFor(0, "email"))
   console.warn("  ⚠️  No platform email transport (LX_MAIL_PROVIDER / LX_SMTP_URL / LX_MAIL_FROM) — password resets and sign-in codes are only delivered for stores with their own live email gateway.");
 
-function shutdown(sig) { console.log(`\n${sig} — closing`); sec.persistState(); listenServer.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000); }
+let shuttingDown = false;
+function shutdown(sig) { shuttingDown = true; console.log(`\n${sig} — closing`); sec.persistState(); listenServer.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000); }
 /* a stray rejected promise in an async handler must not take the process down (Node
    >= 15 exits on unhandled rejections); log it with enough context to fix the source */
 /* expired idempotency keys are swept hourly (they were only ever deleted lazily on lookup) */
