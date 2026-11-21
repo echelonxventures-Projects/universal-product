@@ -1,0 +1,33 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: messaging.whatsapp
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: WhatsApp Business Platform adapter via BSP (templates, sessions).
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - messaging.provider
+  requires:
+  - capability: integration.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - '*'
+    methods:
+    - whatsapp
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

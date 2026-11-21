@@ -1,0 +1,38 @@
+name: UCOS toolchain
+description: Pinned Python, Node and buf for tools/ci.sh (ADR-036). No secrets, no AI services.
+runs:
+  using: composite
+  steps:
+    - name: Python (version from .python-version)
+      uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+      with:
+        python-version-file: .python-version
+        cache: pip
+        cache-dependency-path: tools/requirements.txt
+    - name: Node (version from .nvmrc)
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      with:
+        node-version-file: .nvmrc
+        cache: npm
+        cache-dependency-path: tools/site/package-lock.json
+    - name: Go (toolchain from kernel/go.mod)
+      uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+      with:
+        go-version-file: kernel/go.mod
+        cache-dependency-path: kernel/go.sum
+    - name: buf v1.72.0 (checksum-verified)
+      shell: bash
+      env:
+        BUF_VERSION: "1.72.0"
+        BUF_SHA256: "8720830e26a733da55bb89bcd3cb44849c0965fc0c44fb5d691cccdc64dca5af"
+      run: |
+        set -euo pipefail
+        bin="$RUNNER_TOOL_CACHE/buf-$BUF_VERSION"
+        mkdir -p "$bin"
+        if [[ ! -x "$bin/buf" ]]; then
+          curl --fail --silent --show-error --location --retry 5 --retry-all-errors \
+            -o "$bin/buf" "https://github.com/bufbuild/buf/releases/download/v$BUF_VERSION/buf-Linux-x86_64"
+          echo "$BUF_SHA256  $bin/buf" | sha256sum --check --strict
+          chmod +x "$bin/buf"
+        fi
+        echo "$bin" >> "$GITHUB_PATH"

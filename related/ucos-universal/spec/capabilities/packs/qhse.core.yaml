@@ -1,0 +1,84 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: qhse.core
+  version: 1.0.0
+  universe: U101-quality-ehs
+  steward: ucos:org:steward-quality-ehs
+  purpose: QHSE owns quality management and occupational health, safety & environment management.
+  capabilityKind: core
+  maturity: experimental
+  phase: 5
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.qhse.Nonconformance
+    - ucos.qhse.CAPA
+    - ucos.qhse.Audit
+    - ucos.qhse.ControlledDocument
+    - ucos.qhse.Inspection
+    - ucos.qhse.Incident
+    - ucos.qhse.RiskAssessment
+    - ucos.qhse.PermitToWork
+    - ucos.qhse.EnvironmentalPermit
+    commands:
+    - RaiseNonconformance
+    - OpenCAPA
+    - CompleteAction
+    - VerifyEffectiveness
+    - ScheduleAudit
+    - RecordFinding
+    - PublishControlledDocument
+    - Acknowledge
+    - RunInspection
+    - ReportIncident
+    - Investigate
+    - IssuePermit
+    - ClosePermit
+    - RecordMonitoring
+    events:
+    - qhse.nc.raised
+    - qhse.nc.closed
+    - qhse.capa.overdue
+    - qhse.incident.reported
+    - qhse.incident.reportable
+    - qhse.permit.issued
+    - qhse.permit.expired
+    - qhse.limit.exceeded
+  requires:
+  - capability: document.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: installed-base.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: workforce.core
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  - capability: audit.core
+    version: '>=1 <2'
+  - capability: iot.core
+    version: '>=1 <2'
+  optional:
+  - capability: esg.core
+  temporal:
+    kind: S
+    uses:
+    - R
+    - TR
+    - SLA
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

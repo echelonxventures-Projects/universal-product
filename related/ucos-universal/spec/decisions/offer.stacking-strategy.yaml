@@ -1,0 +1,9 @@
+kind: DecisionTable
+id: offer.stacking-strategy
+owner: offer.engine
+hitPolicy: FIRST
+inputs:  [ { name: groupsCount, type: Integer } ]
+outputs: [ { name: strategy, type: Enumeration } ]
+rules:
+  - [ "<=8", "max-buyer-benefit-exhaustive" ]
+  - [ "*",   "priority-first-greedy" ]

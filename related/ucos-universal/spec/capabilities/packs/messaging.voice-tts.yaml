@@ -1,0 +1,33 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: messaging.voice-tts
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: Voice notification adapter (text-to-speech calls, OTP by voice) via CPaaS.
+  capabilityKind: adapter
+  maturity: beta
+  phase: 3
+  scope: tenant
+spec:
+  implements:
+  - messaging.provider
+  requires:
+  - capability: integration.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - '*'
+    methods:
+    - voice
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

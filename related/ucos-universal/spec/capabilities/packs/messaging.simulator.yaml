@@ -1,0 +1,33 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: messaging.simulator
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: Messaging simulator capturing messages for tests and simulation realities.
+  capabilityKind: simulator
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  implements:
+  - messaging.provider
+  selection:
+    jurisdictions:
+    - '*'
+    methods:
+    - '*'
+    realities:
+    - simulated
+    - hypothetical
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

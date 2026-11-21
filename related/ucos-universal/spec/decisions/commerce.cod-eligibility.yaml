@@ -1,0 +1,13 @@
+kind: DecisionTable
+id: commerce.cod-eligibility
+owner: commerce.checkout
+hitPolicy: FIRST
+inputs:  [ { name: amount, type: Money }, { name: zoneServiceable, type: Boolean }, { name: priorRtoCount, type: Integer }, { name: category, type: TaxonomyPath } ]
+outputs: [ { name: allowed, type: Boolean }, { name: reasonKey, type: MessageKey } ]
+rules:
+  - [ "*",                  "false", "*",  "*",              "false", "cod.reason.zone" ]
+  - [ "*",                  "*",     ">=3","*",              "false", "cod.reason.history" ]
+  - [ "*",                  "*",     "*",  "gift-cards/*",   "false", "cod.reason.category" ]
+  - [ "> {50000.00 INR}",   "*",     "*",  "*",              "false", "cod.reason.amount" ]
+  - [ "> {2000.00 AED}",    "*",     "*",  "*",              "false", "cod.reason.amount" ]
+  - [ "*",                  "*",     "*",  "*",              "true",  "" ]

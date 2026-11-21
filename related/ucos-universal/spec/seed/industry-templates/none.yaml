@@ -1,0 +1,10 @@
+kind: IndustryTemplate
+id: ucos:industry-template:none
+version: 1.0.0
+name: No industry (internal and test platforms)
+businessModel:
+- Internal
+capabilities:
+  include: []
+notes: Used by the Phase 0 exit test (golden sample-p0).
+status: published

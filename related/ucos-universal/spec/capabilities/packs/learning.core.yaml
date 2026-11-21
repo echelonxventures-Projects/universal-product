@@ -1,0 +1,69 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: learning.core
+  version: 1.0.0
+  universe: U56-learning
+  steward: ucos:org:steward-learning
+  purpose: Learning owns structured learning.
+  capabilityKind: core
+  maturity: experimental
+  phase: 5
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.learning.Course
+    - ucos.learning.Cohort
+    - ucos.learning.Enrolment
+    - ucos.learning.Assessment
+    - ucos.learning.Attempt
+    - ucos.learning.Certificate
+    commands:
+    - PublishCourse
+    - Enrol
+    - RecordProgress
+    - StartAttempt
+    - SubmitAttempt
+    - Grade
+    - IssueCertificate
+    - RevokeCertificate
+    events:
+    - learning.enrolment.created
+    - learning.enrolment.completed
+    - learning.certificate.issued
+    - learning.certificate.revoked
+  requires:
+  - capability: content.core
+    version: '>=1 <2'
+  - capability: entitlement.core
+    version: '>=1 <2'
+  - capability: subscription.core
+    version: '>=1 <2'
+  - capability: order.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: contactcenter.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: ai.core
+    version: '>=1 <2'
+  - capability: agent.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: workforce.core
+    version: '>=1 <2'
+  temporal:
+    kind: E
+    uses:
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

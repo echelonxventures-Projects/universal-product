@@ -1,0 +1,53 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: generation.core
+  version: 1.0.0
+  universe: U59-generation
+  steward: ucos:org:steward-generation
+  purpose: Deterministic generators for SDKs, API and event docs, migrations, dashboards, tests and diagrams; AI-assisted drafts as proposals
+    only.
+  capabilityKind: core
+  maturity: beta
+  phase: 2
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.generation.GeneratorDefinition
+    - ucos.generation.GenerationRun
+    commands:
+    - RegisterGenerator
+    - RunGenerator
+    - PublishArtifacts
+    - VerifyReproducibility
+    events:
+    - generation.run.completed
+    - generation.run.failed
+    - generation.artifact.published
+  requires:
+  - capability: composition.core
+    version: '>=1 <2'
+  - capability: capability.registry
+    version: '>=1 <2'
+  - capability: meta.core
+    version: '>=1 <2'
+  - capability: api.core
+    version: '>=1 <2'
+  - capability: event.core
+    version: '>=1 <2'
+  - capability: certification.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - R
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

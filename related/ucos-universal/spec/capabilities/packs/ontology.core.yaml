@@ -1,0 +1,43 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: ontology.core
+  version: 1.0.0
+  universe: U05-ontology
+  steward: ucos:org:steward-ontology
+  purpose: Concepts, relations, external mappings and duplicate-concept detection.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.ontology.Concept
+    - ucos.ontology.ExternalMapping
+    - ucos.ontology.DuplicateCase
+    commands:
+    - ProposeConcept
+    - RelateConcepts
+    - MapExternal
+    - ResolveDuplicate
+    queries:
+    - FindSimilar
+    - ResolveTerm
+    events:
+    - ontology.concept.proposed
+    - ontology.concept.merged
+  requires:
+  - capability: meta.core
+    version: '>=1 <2'
+  temporal:
+    kind: V
+    uses:
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

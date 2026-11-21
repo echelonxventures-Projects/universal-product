@@ -1,0 +1,56 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: asset.core
+  version: 1.0.0
+  universe: U43-asset
+  steward: ucos:org:steward-asset
+  purpose: Binary assets with scanning, renditions, rights and signed delivery.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.asset.BinaryAsset
+    - ucos.asset.Rendition
+    - ucos.asset.AssetRights
+    commands:
+    - InitiateUpload
+    - FinalizeUpload
+    - RequestRendition
+    - SetRights
+    - DeleteAsset
+    - ShredAsset
+    queries:
+    - GetAsset
+    - SignedUrl
+    - UsagesOf
+    events:
+    - asset.asset.available
+    - asset.asset.quarantined
+    - asset.asset.deleted
+    - asset.rights.expiring
+    - asset.rights.expired
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - TRG
+    - D
+  ui:
+    views:
+    - asset.library
+    - asset.uploader
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

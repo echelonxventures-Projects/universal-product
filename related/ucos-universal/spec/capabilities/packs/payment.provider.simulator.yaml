@@ -1,0 +1,33 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: payment.provider.simulator
+  version: 1.0.0
+  universe: U29-payment
+  steward: ucos:org:steward-payment
+  purpose: Contract-faithful payment simulator for simulation/test realities.
+  capabilityKind: simulator
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  implements:
+  - payment.provider
+  selection:
+    jurisdictions:
+    - '*'
+    methods:
+    - '*'
+    realities:
+    - simulated
+    - hypothetical
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

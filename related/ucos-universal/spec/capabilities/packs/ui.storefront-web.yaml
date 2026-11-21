@@ -1,0 +1,58 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: ui.storefront-web
+  version: 1.0.0
+  universe: U64-ui-app-channel
+  steward: ucos:org:steward-ui-app-channel
+  purpose: Storefront web views (home, listing, product, search, cart, checkout, account, orders, returns, pages).
+  capabilityKind: ui-pack
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  requires:
+  - capability: ui.core
+    version: '>=1 <2'
+  - capability: catalog.listing
+    version: '>=1 <2'
+  - capability: commerce.cart
+    version: '>=1 <2'
+  - capability: commerce.checkout
+    version: '>=1 <2'
+  - capability: order.core
+    version: '>=1 <2'
+  - capability: search.core
+    version: '>=1 <2'
+  - capability: seo.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - AV
+    - POL
+  compliance:
+    controls:
+    - ucos.ctrl.in-ecom-disclosures
+    - ucos.ctrl.honest-design
+  ui:
+    views:
+    - storefront.home
+    - storefront.plp
+    - storefront.pdp
+    - storefront.search
+    - storefront.cart
+    - storefront.checkout
+    - storefront.account
+    - storefront.orders
+    - storefront.order-tracking
+    - storefront.returns
+    - storefront.page
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

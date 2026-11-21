@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/order.order.confirmed/1.json",
+  "title": "order.order.confirmed",
+  "description": "Payment captured or COD accepted; the order is committed for fulfilment.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true
+  },
+  "type": "object",
+  "required": [
+    "orderId",
+    "confirmedAt",
+    "basis"
+  ],
+  "properties": {
+    "orderId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "basis": {
+      "enum": [
+        "payment-captured",
+        "payment-authorized",
+        "cod-accepted",
+        "credit-terms"
+      ]
+    },
+    "paymentIntent": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "confirmedAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

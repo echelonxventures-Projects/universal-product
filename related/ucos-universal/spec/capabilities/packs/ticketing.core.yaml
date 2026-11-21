@@ -1,0 +1,84 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: ticketing.core
+  version: 1.0.0
+  universe: U81-ticketing-events
+  steward: ucos:org:steward-ticketing-events
+  purpose: Ticketing owns admission rights to time-and-place-bound experiences.
+  capabilityKind: core
+  maturity: experimental
+  phase: 6
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.ticketing.Venue
+    - ucos.ticketing.SeatMap
+    - ucos.ticketing.Event
+    - ucos.ticketing.Session
+    - ucos.ticketing.TicketType
+    - ucos.ticketing.TicketHold
+    - ucos.ticketing.Ticket
+    - ucos.ticketing.Scan
+    commands:
+    - DefineVenue
+    - SeatMap
+    - CreateEvent
+    - Session
+    - DefineTicketTypes
+    - HoldSeats
+    - IssueTickets
+    - TransferTicket
+    - ListForResale
+    - ValidateScan
+    - CancelSession
+    queries:
+    - SeatAvailability
+    - BestAvailable
+    - MyTickets
+    events:
+    - ticketing.seats.held
+    - ticketing.seats.released
+    - ticketing.ticket.issued
+    - ticketing.ticket.transferred
+    - ticketing.ticket.scanned
+    - ticketing.session.cancelled
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  - capability: catalog.listing
+    version: '>=1 <2'
+  - capability: pricing.engine
+    version: '>=1 <2'
+  - capability: offer.engine
+    version: '>=1 <2'
+  - capability: commerce.cart
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: content.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - POL
+    - WL
+    - REM
+    - FEED
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

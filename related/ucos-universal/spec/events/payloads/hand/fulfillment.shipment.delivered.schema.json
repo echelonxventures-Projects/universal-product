@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/fulfillment.shipment.delivered/1.json",
+  "title": "fulfillment.shipment.delivered",
+  "description": "Carrier or own fleet confirmed delivery, with proof for high-value items.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true
+  },
+  "type": "object",
+  "required": [
+    "shipmentId",
+    "orderId",
+    "deliveredAt"
+  ],
+  "properties": {
+    "shipmentId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "orderId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "proof": {
+      "type": "object",
+      "properties": {
+        "kind": {
+          "enum": [
+            "otp",
+            "signature",
+            "photo",
+            "none"
+          ]
+        },
+        "evidence": {
+          "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+        }
+      },
+      "additionalProperties": false
+    },
+    "deliveredAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

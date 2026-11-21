@@ -1,0 +1,49 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: capability.registry
+  version: 1.0.0
+  universe: U57-capability
+  steward: ucos:org:steward-capability
+  purpose: Capability definitions, packs, adapters, extension points, marketplace and revocation.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.capability.CapabilityDefinition
+    - ucos.capability.CapabilityPack
+    - ucos.capability.CapabilityBundle
+    - ucos.capability.MarketplaceListing
+    commands:
+    - RegisterCapability
+    - PublishPack
+    - RevokePackVersion
+    - DeprecateCapability
+    queries:
+    - GetCapability
+    - Implementations
+    - Dependents
+    events:
+    - capability.pack.published
+    - capability.pack.revoked
+  requires:
+  - capability: meta.core
+    version: '>=1 <2'
+  - capability: certification.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TRG
+    - SLA
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

@@ -1,0 +1,32 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: carrier.aramex
+  version: 1.0.0
+  universe: U35-fulfillment
+  steward: ucos:org:steward-fulfillment
+  purpose: UAE/GCC carrier adapter.
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - logistics.carrier
+  requires:
+  - capability: integration.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - ucos:jur:AE
+  temporal:
+    kind: V
+    uses:
+    - TP
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

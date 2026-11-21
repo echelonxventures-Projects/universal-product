@@ -1,0 +1,90 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: social.core
+  version: 1.0.0
+  universe: U88-social-community
+  steward: ucos:org:steward-social-community
+  purpose: Social owns relationships and user-generated interaction between people (and agents) on tenant platforms, and integration with external
+    social networks.
+  capabilityKind: core
+  maturity: experimental
+  phase: 5
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.social.SocialProfile
+    - ucos.social.Edge
+    - ucos.social.Post
+    - ucos.social.Group
+    - ucos.social.ModerationCase
+    - ucos.social.ConnectedSocialAccount
+    commands:
+    - Follow
+    - Unfollow
+    - Block
+    - Mute
+    - CreatePost
+    - Comment
+    - React
+    - AskQuestion
+    - Answer
+    - Report
+    - Moderate
+    - Appeal
+    - CreateGroup
+    - Join
+    - ConnectSocialAccount
+    - SchedulePublish
+    - IngestMentions
+    queries:
+    - Feed
+    - Thread
+    - QandA
+    - GraphNeighbours
+    events:
+    - social.post.created
+    - social.post.removed
+    - social.edge.created
+    - social.moderation.decided
+    - social.question.answered
+  requires:
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: asset.core
+    version: '>=1 <2'
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: trust.core
+    version: '>=1 <2'
+  - capability: risk.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: policy.core
+    version: '>=1 <2'
+  - capability: search.core
+    version: '>=1 <2'
+  - capability: recommendation.core
+    version: '>=1 <2'
+  - capability: integration.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TRG
+    - D
+    - SLA
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

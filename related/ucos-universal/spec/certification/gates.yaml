@@ -1,0 +1,486 @@
+# UCOS certification gate catalogue (master §28.2, U74 Certification).
+# Every gate id referenced anywhere in the repository must be defined here; tools/ucos_check.py enforces it.
+#
+# Fields
+#   id          <FAMILY>-<SLUG>-<nn>  (family = ARCH|SEC|CMP|TEST|PERF|A11Y|DOC|OBS|DR|AI|GAP)
+#   title       one line
+#   criteria    pass condition, testable
+#   appliesTo   subject kinds: pack | blueprint | ui-view | agent | ai-feature | cell | definition | adapter
+#   method      checker | static-scan | test | property-test | review | evidence
+#   blocking    true = failing blocks certification; false = raises a RECOMMENDED gap
+#   source      the law or section that motivates the gate
+#   phase       first phase in which the gate is enforced
+apiVersion: ucos.io/v1
+kind: GateCatalogue
+families:
+  ARCH: Architecture conformance (manifest, layering, ownership, naming, traceability)
+  SEC:  Security (threat model, vulnerabilities, secrets, supply chain, policy tests)
+  CMP:  Compliance (controls mapped and evidenced, residency, privacy obligations)
+  TEST: Test coverage and green suites
+  PERF: Performance against SLOs at declared scale + 30% headroom
+  A11Y: Accessibility (WCAG 2.2 AA)
+  DOC:  Documentation and runbooks
+  OBS:  Observability (signals, dashboards, alerts, SLOs)
+  DR:   Backup and restore
+  AI:   AI use cases, evaluations, model cards, prompts, agents
+  GAP:  Composition gap state
+gates:
+  # ------------------------------------------------------------------ ARCH
+  - id: ARCH-CAP-01
+    title: Manifest completeness and runtime parity
+    criteria: Manifest validates against capability-manifest.schema.json; Describe() at runtime lists exactly the declared commands, queries, events and object types; conformance suite for implemented abstracts passes.
+    appliesTo: [pack, adapter]
+    method: test
+    blocking: true
+    source: U57 CAP laws; master §8
+    phase: 0
+  - id: ARCH-CAP-02
+    title: Layering, ownership and dependency rules
+    criteria: tools/ucos_check.py reports 0 errors for the pack (sole ownership L4, resolvable requires/implements, phase ordering, no forbidden layer edges).
+    appliesTo: [pack, blueprint]
+    method: checker
+    blocking: true
+    source: Laws L3, L4; spec/rules/core/closure.dl
+    phase: 0
+  - id: ARCH-META-01
+    title: Meta-model lint rules
+    criteria: All U04 META-LINT rules pass for every object type the subject publishes or changes.
+    appliesTo: [pack, definition]
+    method: checker
+    blocking: true
+    source: U04 Meta
+    phase: 0
+  - id: ARCH-META-02
+    title: Schema migration rehearsed
+    criteria: Expand/contract migration plan executed on a production-size snapshot within the latency and lock budgets of KERNEL-DESIGN §4.1.
+    appliesTo: [pack, definition]
+    method: test
+    blocking: true
+    source: U04 Meta; KERNEL-DESIGN §4.1
+    phase: 0
+  - id: ARCH-ONT-01
+    title: Ontology linkage
+    criteria: Every published object type, capability, event type, decision and attribute links to exactly one primary Concept (META-LINT-005).
+    appliesTo: [pack, definition]
+    method: checker
+    blocking: true
+    source: U07 ONT-L1
+    phase: 1
+  - id: ARCH-AUTH-01
+    title: Decision record before approval
+    criteria: No definition, policy or blueprint reaches Approved without a DecisionRecord signed by an authority of sufficient level.
+    appliesTo: [definition, blueprint]
+    method: checker
+    blocking: true
+    source: U01 Authority
+    phase: 0
+  - id: ARCH-CTX-01
+    title: Context comes only from the envelope
+    criteria: Static scan finds no parsing of Accept-Language, client IP, geo headers or clocks for business context outside the U16 resolver.
+    appliesTo: [pack]
+    method: static-scan
+    blocking: true
+    source: U16 CTX laws
+    phase: 0
+  - id: ARCH-CTX-02
+    title: Simulation has no side effects
+    criteria: With context simulation=true, scenario tests observe zero calls to real adapters and zero outbound messages or payments; simulators answer instead.
+    appliesTo: [pack, adapter, blueprint]
+    method: test
+    blocking: true
+    source: U16 CTX-L4; U77 P-004
+    phase: 1
+  - id: ARCH-CUR-01
+    title: Money and rounding hygiene
+    criteria: Static scan finds no float/double types for money and no round() calls outside the U14 SDK rounding rules.
+    appliesTo: [pack]
+    method: static-scan
+    blocking: true
+    source: U14 CUR laws
+    phase: 0
+  - id: ARCH-CUR-02
+    title: Allocation conservation
+    criteria: Property tests over 1,000,000 random cases show Allocate() always conserves the total exactly and is deterministic.
+    appliesTo: [pack]
+    method: property-test
+    blocking: true
+    source: U14 CUR laws
+    phase: 0
+  - id: ARCH-ENT-01
+    title: No hard-coded plans or limits
+    criteria: Lint finds no plan-name literals or numeric quota literals in business code; access checks go through Entitlement Check(feature|quota).
+    appliesTo: [pack]
+    method: static-scan
+    blocking: true
+    source: U28 ENT-L1
+    phase: 0
+  - id: ARCH-FRM-01
+    title: Frames extended by registry only
+    criteria: New realities, bodies, frames, time scales, monetary/unit/language systems or authorities are added as U77 registry entries plus certified conversion packs; the diff touches no consuming universe.
+    appliesTo: [pack, definition]
+    method: review
+    blocking: true
+    source: U77 FRM-L2
+    phase: 1
+  - id: ARCH-FRM-02
+    title: Frame-agnostic proof
+    criteria: Foundation SDK golden tests pass under earth-physical and a synthetic non-Earth frame (different day length and units).
+    appliesTo: [pack]
+    method: test
+    blocking: true
+    source: U77; master §7.7
+    phase: 1
+  - id: ARCH-INF-01
+    title: Portable infrastructure
+    criteria: Every cloud-specific service is used behind an infrastructure port that has a documented portable alternative.
+    appliesTo: [pack, cell]
+    method: review
+    blocking: true
+    source: U73 INF-L5
+    phase: 0
+  - id: ARCH-TMP-01
+    title: No private schedulers
+    criteria: Static scan finds no cron libraries, sleep loops or timer wheels; all timers go through the U13 Trigger Engine.
+    appliesTo: [pack]
+    method: static-scan
+    blocking: true
+    source: U13 TMP-L4
+    phase: 0
+  - id: ARCH-TMP-02
+    title: Temporal value types and naming
+    criteria: Time fields use U13 value types and obey the U13 App. E.3 canonical naming table and reserved names (TMP-LINT-002); no ad-hoc date arithmetic outside the SDK.
+    appliesTo: [pack, definition]
+    method: static-scan
+    blocking: true
+    source: U13 TMP-L1, TMP-L3, App. E.3
+    phase: 0
+  - id: ARCH-TMP-03
+    title: SDK and service evaluation parity
+    criteria: 1,000,000 randomized recurrence, availability and business-duration cases give identical results in the SDK and the Temporal service.
+    appliesTo: [pack]
+    method: property-test
+    blocking: true
+    source: U13
+    phase: 0
+  - id: ARCH-TMP-04
+    title: No Earth assumptions in time
+    criteria: The Temporal golden suite passes under a synthetic calendar system (25-hour day, 10-day week).
+    appliesTo: [pack]
+    method: test
+    blocking: true
+    source: U13; U77
+    phase: 1
+  - id: ARCH-TMP-05
+    title: Temporal dependency declared
+    criteria: Every capability whose universe is kind S in TEMPORAL-BINDING-MATRIX.md requires temporal.core and lists U13 in Depends on.
+    appliesTo: [pack]
+    method: checker
+    blocking: true
+    source: U13 App. E.4; A-46
+    phase: 0
+  - id: ARCH-WF-01
+    title: Long-running work is a workflow
+    criteria: Every process spanning more than one transaction, waiting on time/humans/external events or needing compensation runs on the durable workflow engine.
+    appliesTo: [pack]
+    method: review
+    blocking: true
+    source: U60 WF-L1
+    phase: 0
+  - id: ARCH-GEN-01
+    title: Generator reproducibility
+    criteria: Deterministic generators produce byte-identical output for identical inputs on two independent runs.
+    appliesTo: [pack]
+    method: test
+    blocking: true
+    source: U59 GEN-L1
+    phase: 2
+  # ------------------------------------------------------------------ SEC
+  - id: SEC-TM-001
+    title: Threat model reviewed
+    criteria: A STRIDE threat model exists at the manifest's security.threatModel path, was reviewed in the last 12 months or since the last material change, and has no untreated high risks.
+    appliesTo: [pack, blueprint]
+    method: review
+    blocking: true
+    source: master §20; docs/threat-models/
+    phase: 0
+  - id: SEC-VULN-01
+    title: No open critical or high vulnerabilities
+    criteria: SCA and container scans show 0 critical and 0 high findings without an approved, unexpired waiver.
+    appliesTo: [pack, cell]
+    method: evidence
+    blocking: true
+    source: master §20
+    phase: 0
+  - id: SEC-007
+    title: Static analysis clean
+    criteria: SAST run on the release commit has no high-severity findings open.
+    appliesTo: [pack]
+    method: evidence
+    blocking: true
+    source: master §28.3 example
+    phase: 0
+  - id: SEC-SECRETS-01
+    title: Secrets scan clean
+    criteria: No secrets in source, images or build logs; all credentials come from the secrets manager.
+    appliesTo: [pack, cell]
+    method: static-scan
+    blocking: true
+    source: U65 Security
+    phase: 0
+  - id: SEC-SUPPLY-01
+    title: SBOM, signature and provenance
+    criteria: Artifacts carry an SBOM, a Sigstore signature and SLSA level 3 provenance, all verified at admission.
+    appliesTo: [pack, adapter]
+    method: evidence
+    blocking: true
+    source: U95; master §20
+    phase: 0
+  - id: SEC-POLICY-01
+    title: Policy tests pass
+    criteria: Cedar/OPA policy unit tests and the cross-tenant isolation suite pass; P-001…P-007 baseline policies are unmodified.
+    appliesTo: [pack, blueprint]
+    method: test
+    blocking: true
+    source: U03 Policy; spec/policies/
+    phase: 0
+  - id: SEC-PENTEST-01
+    title: Penetration test
+    criteria: T0/T1 packs and public surfaces had an external penetration test within 12 months with no unresolved high findings.
+    appliesTo: [pack, blueprint]
+    method: evidence
+    blocking: true
+    source: master §28.2
+    phase: 1
+  - id: SEC-ID-01
+    title: Phishing-resistant MFA for business users
+    criteria: Every non-customer role must use passkey/FIDO2 or TOTP as the policy tier requires; login tests show that password-only access is rejected.
+    appliesTo: [pack, blueprint]
+    method: test
+    blocking: true
+    source: U09 ID-L3
+    phase: 0
+  - id: SEC-META-01
+    title: Restricted data-class review
+    criteria: Any field classified restricted has a data-class review signed off by the security steward.
+    appliesTo: [definition]
+    method: review
+    blocking: true
+    source: U04 Meta
+    phase: 0
+  - id: SEC-PAY-01
+    title: No raw card data
+    criteria: DLP and traffic inspection show UCOS never receives, stores or logs PAN/CVV; card entry uses provider-hosted fields or SDKs; the PCI scope review is current.
+    appliesTo: [pack, adapter, blueprint]
+    method: evidence
+    blocking: true
+    source: U29 PAY-L1
+    phase: 1
+  - id: SEC-TENANT-01
+    title: Tenant isolation
+    criteria: The cross-tenant test suite (RLS, caches, search indexes, events, files) finds zero leaks.
+    appliesTo: [pack, blueprint]
+    method: test
+    blocking: true
+    source: Law L8; KERNEL-DESIGN §4
+    phase: 0
+  # ------------------------------------------------------------------ CMP
+  - id: CMP-MAP-01
+    title: Required controls mapped and implemented
+    criteria: Every control derived for the blueprint's jurisdictions and industries maps to an implementation and passes its control test.
+    appliesTo: [blueprint, pack]
+    method: checker
+    blocking: true
+    source: U67 Compliance; spec/rules/facts/controls.yaml
+    phase: 1
+  - id: CMP-EVID-01
+    title: Evidence collectors present
+    criteria: Every compliance control names an EvidenceCollector, and that collector has produced evidence within its cadence.
+    appliesTo: [blueprint, pack]
+    method: evidence
+    blocking: true
+    source: U67; U68
+    phase: 1
+  - id: CMP-021
+    title: Erasure control test
+    criteria: The scheduled DSR-erasure control test passes end to end, covering primary stores, search indexes, caches, analytics and backups (tombstones).
+    appliesTo: [blueprint]
+    method: evidence
+    blocking: true
+    source: U66 Privacy; master §28.3 example
+    phase: 1
+  - id: CMP-PRV-01
+    title: Privacy DSR handler
+    criteria: Every universe holding personal data implements the privacy.dsr-handler extension point (export, rectify, erase), and the DSR suite passes.
+    appliesTo: [pack]
+    method: test
+    blocking: true
+    source: U66; A-21
+    phase: 1
+  - id: CMP-RES-01
+    title: Data residency satisfied
+    criteria: Placement shows every data class stored and processed only in cells allowed by the residency rules for the tenant's jurisdictions.
+    appliesTo: [blueprint, cell]
+    method: checker
+    blocking: true
+    source: U73; U67
+    phase: 1
+  # ------------------------------------------------------------------ TEST
+  - id: TEST-UNIT-01
+    title: Unit coverage
+    criteria: At least 80% of command/query handlers and 100% of decision tables are covered.
+    appliesTo: [pack]
+    method: evidence
+    blocking: true
+    source: master §28.2
+    phase: 0
+  - id: TEST-CONTRACT-01
+    title: Contract tests green
+    criteria: API (OpenAPI/gRPC) and event (AsyncAPI) contract tests pass against all declared consumers and providers.
+    appliesTo: [pack, adapter]
+    method: test
+    blocking: true
+    source: master §28.1
+    phase: 0
+  - id: TEST-SCEN-01
+    title: Scenario tests green
+    criteria: All Gherkin scenarios for the blueprint's journeys pass in a sandbox cell with simulators.
+    appliesTo: [blueprint, pack]
+    method: test
+    blocking: true
+    source: master §28.1
+    phase: 1
+  - id: TEST-COMP-01
+    title: Composition determinism
+    criteria: Composing the same PlatformDefinition twice yields the same blueprint hash, and the gap-rule regression set is unchanged.
+    appliesTo: [blueprint]
+    method: checker
+    blocking: true
+    source: U58; spec/composition/golden/
+    phase: 0
+  # ------------------------------------------------------------------ PERF
+  - id: PERF-SLO-01
+    title: SLOs met with headroom
+    criteria: Load tests at the declared scale plus 30% meet every p95/p99 latency and error-rate SLO of the subject's tier.
+    appliesTo: [pack, blueprint]
+    method: test
+    blocking: true
+    source: master §28.2; §21
+    phase: 1
+  # ------------------------------------------------------------------ A11Y
+  - id: A11Y-AUTO-01
+    title: Automated accessibility
+    criteria: axe finds 0 critical and 0 serious violations on every view (WCAG 2.2 AA).
+    appliesTo: [ui-view]
+    method: test
+    blocking: true
+    source: master §25
+    phase: 1
+  - id: A11Y-L10N-01
+    title: Localisation layout
+    criteria: A pseudo-locale run shows no clipped or concatenated text, and RTL snapshots of the top journeys pass review.
+    appliesTo: [ui-view]
+    method: test
+    blocking: true
+    source: U15 Localization
+    phase: 1
+  - id: A11Y-MANUAL-01
+    title: Manual journey audit
+    criteria: Top journeys pass a manual audit with keyboard and screen reader (NVDA, VoiceOver), including RTL locales.
+    appliesTo: [ui-view, blueprint]
+    method: review
+    blocking: false
+    source: master §25
+    phase: 1
+  # ------------------------------------------------------------------ DOC / OBS / DR
+  - id: DOC-01
+    title: Documentation current
+    criteria: User, admin and API docs plus runbooks exist for every declared view, command and alert, and were regenerated or reviewed for this version.
+    appliesTo: [pack, blueprint]
+    method: evidence
+    blocking: false
+    source: master §28.2
+    phase: 1
+  - id: OBS-01
+    title: Observability defined
+    criteria: Every declared signal has a metric; dashboards, alerts with routes, and SLOs exist for the tier; traces propagate the context envelope.
+    appliesTo: [pack, blueprint]
+    method: checker
+    blocking: true
+    source: U72
+    phase: 0
+  - id: DR-01
+    title: Restore tested
+    criteria: A backup policy is defined, and for T0/T1 subjects the last restore test passed within 30 days and met RPO/RTO.
+    appliesTo: [blueprint, cell]
+    method: evidence
+    blocking: true
+    source: U73
+    phase: 1
+  # ------------------------------------------------------------------ AI
+  - id: AI-UC-01
+    title: AI use case registered
+    criteria: Every AI feature resolves to an AIUseCase with purpose, risk class, allowed data classes, human-oversight design and owner.
+    appliesTo: [ai-feature, agent]
+    method: checker
+    blocking: true
+    source: U49 AI-L2
+    phase: 3
+  - id: AI-EVAL-01
+    title: Evaluation threshold
+    criteria: The model, prompt or agent version meets or exceeds every threshold in the use case's eval suite (quality, safety, groundedness, bias slices), with no regression beyond tolerance.
+    appliesTo: [ai-feature, agent]
+    method: test
+    blocking: true
+    source: U49 AI-L5
+    phase: 3
+  - id: AI-CARD-01
+    title: Model card present
+    criteria: Every servable model version has a model card covering intended use, limits, training data summary, evaluation and licence.
+    appliesTo: [ai-feature]
+    method: evidence
+    blocking: true
+    source: U49 AI-L5
+    phase: 3
+  - id: AI-PROMPT-01
+    title: Prompt tests and evals
+    criteria: Each prompt version ships with golden tests and passes its use case eval suite before release.
+    appliesTo: [ai-feature, agent]
+    method: test
+    blocking: true
+    source: U50 PR-L2
+    phase: 3
+  - id: AI-AGENT-01
+    title: Agent authority bounded
+    criteria: Agent identity exists, authority ≤ level 2, tools are allow-listed with an autonomy level, delegation narrows authority, and the kill-switch test passes.
+    appliesTo: [agent]
+    method: test
+    blocking: true
+    source: U51 AG-laws
+    phase: 3
+  - id: AI-REDTEAM-01
+    title: Red-team suite
+    criteria: The prompt-injection, data-exfiltration and jailbreak suites pass at the use case's risk class threshold.
+    appliesTo: [ai-feature, agent]
+    method: test
+    blocking: true
+    source: U49 guardrails
+    phase: 3
+  # ------------------------------------------------------------------ GAP
+  - id: GAP-000
+    title: No mandatory gaps
+    criteria: mandatory_gap_count = 0; recommended gaps are either resolved or waived with an unexpired waiver.
+    appliesTo: [blueprint]
+    method: checker
+    blocking: true
+    source: master §11; spec/rules/core/closure.dl
+    phase: 0
+# Wildcards used in manifests (e.g. "SEC-*") select every gate of that family.
+# Profiles (U74) pick gate sets by subject kind × tier × security profile.
+profiles:
+  pack-default:      [ARCH-*, SEC-*, TEST-*, DOC-*, OBS-*]
+  pack-with-ui:      [ARCH-*, SEC-*, TEST-*, DOC-*, OBS-*, A11Y-*]
+  adapter:           [ARCH-CAP-01, ARCH-CAP-02, SEC-SUPPLY-01, SEC-SECRETS-01, TEST-CONTRACT-01, ARCH-CTX-02]
+  blueprint:         [ARCH-CAP-02, CMP-*, TEST-SCEN-01, TEST-COMP-01, PERF-SLO-01, OBS-01, DR-01, GAP-000, SEC-TENANT-01]
+  ai-feature:        [AI-UC-01, AI-EVAL-01, AI-CARD-01, AI-PROMPT-01, AI-REDTEAM-01]
+  agent:             [AI-UC-01, AI-EVAL-01, AI-PROMPT-01, AI-AGENT-01, AI-REDTEAM-01]
+  industry-pack:     [ARCH-*, CMP-MAP-01, TEST-SCEN-01, GAP-000]

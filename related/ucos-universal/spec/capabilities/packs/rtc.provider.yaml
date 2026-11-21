@@ -1,0 +1,26 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: rtc.provider
+  version: 1.0.0
+  universe: U109-realtime-comms-contact-center
+  steward: ucos:org:steward-realtime-comms-contact-center
+  purpose: Port for voice (PSTN/SIP/WebRTC, IVR, masked calling) and video (rooms, tokens, recording) providers.
+  capabilityKind: abstract
+  maturity: beta
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    ports:
+    - rtc.provider@1
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

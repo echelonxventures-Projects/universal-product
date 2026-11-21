@@ -1,0 +1,68 @@
+# Local development stack: the external services the kernel uses, pinned by digest. Run `make -C deploy/local up`
+# or `docker compose -f deploy/local/compose.yaml up -d`. Development only: trust auth, no TLS, no persistence guarantees.
+# Host ports can be moved when they clash with something else on the machine: UCOS_PG_PORT (5433),
+# UCOS_KAFKA_PORT (19092), UCOS_KEYCLOAK_PORT (8180), UCOS_TEMPORAL_PORT (7233), UCOS_TEMPORAL_UI_PORT (8233).
+name: ucos-dev
+services:
+  postgres:
+    image: postgres:16.15-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: ucos
+    ports: ["${UCOS_PG_PORT:-5433}:5432"] # 5433 avoids clashing with a Postgres already running on the host
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ucos"]
+      interval: 5s
+      retries: 20
+  migrate:                               # kernel schema via the kernel's own migrator, as in every cell: `make up`
+    profiles: [tools]
+    build: { context: ../.., dockerfile: kernel/Dockerfile.kernel }
+    image: ucos-kernel:local
+    command: [migrate]
+    environment:
+      UCOS_DATABASE_URL: postgres://postgres:postgres@postgres:5432/ucos?sslmode=disable
+    depends_on:
+      postgres: { condition: service_healthy }
+  redpanda:                              # Kafka API (ADR-012)
+    image: redpandadata/redpanda:v25.3.17@sha256:c96a71811ec85eee436b7471e4d2777b70ceb4d6a0bc5447094854b3150511c1
+    command: [redpanda, start, --mode, dev-container, --smp, "1", --overprovisioned,
+              --kafka-addr, "internal://0.0.0.0:9092,external://0.0.0.0:19092",
+              --advertise-kafka-addr, "internal://redpanda:9092,external://localhost:${UCOS_KAFKA_PORT:-19092}"]
+    ports: ["${UCOS_KAFKA_PORT:-19092}:19092"]
+    healthcheck:
+      test: ["CMD-SHELL", "rpk cluster health | grep -q 'Healthy:.*true'"]
+      interval: 5s
+      retries: 30
+  keycloak:                              # identity provider (ADR-021)
+    image: quay.io/keycloak/keycloak:26.8.0@sha256:b0f60d489d51c5d113390bdf5461d4c06e6051be026c05549f2e1e10ec352bcc
+    command: [start-dev, --import-realm, --health-enabled=true]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    volumes:
+      - ./keycloak:/opt/keycloak/data/import:ro
+    ports: ["${UCOS_KEYCLOAK_PORT:-8180}:8080"]
+  temporal:                              # durable workflows (ADR-032); dev image with auto schema setup
+    image: temporalio/auto-setup:1.29.7@sha256:f14912b699cf73015ad5c4fc18d522d4b014db90e794039214dfb7c022c2644f
+    environment:
+      DB: postgres12
+      DB_PORT: "5432"
+      POSTGRES_USER: postgres
+      POSTGRES_PWD: postgres
+      POSTGRES_SEEDS: postgres
+    depends_on:
+      postgres: { condition: service_healthy }
+    ports: ["${UCOS_TEMPORAL_PORT:-7233}:7233"]
+  temporal-ui:
+    image: temporalio/ui:2.55.0@sha256:3899d5cf749b5555c9f798d46f2423b1d6190ea391ca713db5d1bba961759e58
+    environment:
+      TEMPORAL_ADDRESS: temporal:7233
+    depends_on: [temporal]
+    ports: ["${UCOS_TEMPORAL_UI_PORT:-8233}:8080"]
+# Object storage: the local kernel uses the filesystem implementation of the object-storage port
+# (UCOS_OBJECT_STORE=file://./generated/objects); cells use any S3-API store (ADR-037: provider-agnostic).
+volumes:
+  pgdata: {}

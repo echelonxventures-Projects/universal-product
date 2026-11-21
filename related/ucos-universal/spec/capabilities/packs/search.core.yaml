@@ -1,0 +1,68 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: search.core
+  version: 1.0.0
+  universe: U44-search
+  steward: ucos:org:steward-search
+  purpose: Search indexes, query understanding, ranking profiles, merchandising and search analytics.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.search.IndexDefinition
+    - ucos.search.Synonym
+    - ucos.search.QueryRule
+    - ucos.search.RankingProfile
+    commands:
+    - DefineIndex
+    - Reindex
+    - UpsertSynonyms
+    - DefineQueryRule
+    - DefineRankingProfile
+    - PinResult
+    queries:
+    - Search
+    - Suggest
+    - AdminSearch
+    - ExplainResult
+    events:
+    - search.index.rebuilt
+  consumes:
+    events:
+    - catalog.listing.published
+    - catalog.listing.unpublished
+    - catalog.listing.updated
+    - pricing.price.changed
+    - inventory.stock.depleted
+    - inventory.stock.restocked
+  requires:
+  - capability: taxonomy.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: catalog.listing
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - TR
+    - D
+    - R
+  ui:
+    views:
+    - search.results
+    - search.autocomplete
+    - search.merchandising.console
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ucos-deps
+  labels: { pod-security.kubernetes.io/enforce: baseline }
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: { name: postgres }
+spec:
+  serviceName: postgres
+  replicas: 1
+  selector: { matchLabels: { app: postgres } }
+  template:
+    metadata: { labels: { app: postgres } }
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16.15-alpine@sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea
+          env:
+            - { name: POSTGRES_USER, value: postgres }
+            - { name: POSTGRES_PASSWORD, value: postgres }
+            - { name: POSTGRES_DB, value: ucos }
+            - { name: PGDATA, value: /var/lib/postgresql/data/pgdata }
+          ports: [ { containerPort: 5432 } ]
+          readinessProbe: { exec: { command: [pg_isready, -U, postgres, -d, ucos] }, periodSeconds: 3 }
+          volumeMounts: [ { name: data, mountPath: /var/lib/postgresql/data } ]
+      volumes: [ { name: data, emptyDir: {} } ]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: postgres }
+spec: { selector: { app: postgres }, ports: [ { port: 5432 } ] }
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata: { name: redpanda }
+spec:
+  serviceName: redpanda
+  replicas: 1
+  selector: { matchLabels: { app: redpanda } }
+  template:
+    metadata: { labels: { app: redpanda } }
+    spec:
+      containers:
+        - name: redpanda
+          image: redpandadata/redpanda:v25.3.17@sha256:c96a71811ec85eee436b7471e4d2777b70ceb4d6a0bc5447094854b3150511c1
+          args: [redpanda, start, --mode, dev-container, --smp, "1", --overprovisioned,
+                 --kafka-addr, "0.0.0.0:9092", --advertise-kafka-addr, "redpanda.ucos-deps.svc.cluster.local:9092"]
+          ports: [ { containerPort: 9092 } ]
+          readinessProbe: { tcpSocket: { port: 9092 }, periodSeconds: 3 }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: redpanda }
+spec: { selector: { app: redpanda }, ports: [ { port: 9092 } ] }
+---
+# The realm comes from deploy/local/keycloak (ConfigMap keycloak-realm, created by tools/cell_smoke.sh).
+# A fixed hostname makes the token issuer the in-cluster URL, whichever address the token was requested on.
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: keycloak }
+spec:
+  replicas: 1
+  selector: { matchLabels: { app: keycloak } }
+  template:
+    metadata: { labels: { app: keycloak } }
+    spec:
+      containers:
+        - name: keycloak
+          image: quay.io/keycloak/keycloak:26.8.0@sha256:b0f60d489d51c5d113390bdf5461d4c06e6051be026c05549f2e1e10ec352bcc
+          args: [start-dev, --import-realm, --health-enabled=true]
+          env:
+            - { name: KC_BOOTSTRAP_ADMIN_USERNAME, value: admin }
+            - { name: KC_BOOTSTRAP_ADMIN_PASSWORD, value: admin }
+            - { name: KC_HOSTNAME, value: "http://keycloak.ucos-deps.svc.cluster.local:8080" }
+          ports: [ { containerPort: 8080 } ]
+          readinessProbe: { httpGet: { path: /health/ready, port: 9000 }, periodSeconds: 5, failureThreshold: 60 }
+          volumeMounts: [ { name: realm, mountPath: /opt/keycloak/data/import, readOnly: true } ]
+      volumes: [ { name: realm, configMap: { name: keycloak-realm, optional: true } } ]
+---
+apiVersion: v1
+kind: Service
+metadata: { name: keycloak }
+spec: { selector: { app: keycloak }, ports: [ { port: 8080 } ] }

@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/cloudevent-envelope.schema.json",
+  "title": "UCOS event envelope (CloudEvents 1.0 + UCOS extensions; master §15.4, U61)",
+  "type": "object",
+  "required": ["specversion", "id", "source", "type", "time", "subject", "dataschema", "datacontenttype", "ucostenant", "ucosblueprint", "ucoscontext", "ucosclassification", "data"],
+  "properties": {
+    "specversion": { "const": "1.0" },
+    "id": { "type": "string", "pattern": "^[0-9A-HJKMNP-TV-Z]{26}$" },
+    "source": { "type": "string", "pattern": "^ucos://" },
+    "type": { "type": "string", "pattern": "^[a-z0-9-]+\\.[a-z0-9-]+\\.[a-z0-9-]+$" },
+    "time": { "type": "string", "format": "date-time" },
+    "subject": { "type": "string" },
+    "dataschema": { "type": "string", "pattern": "^ucos://schemas/" },
+    "datacontenttype": { "const": "application/json" },
+    "ucostenant": { "type": "string" },
+    "ucosblueprint": { "type": "string" },
+    "ucoscontext": { "type": "string" },
+    "ucoscausation": { "type": "string" },
+    "ucoscorrelation": { "type": "string" },
+    "ucosclassification": { "enum": ["public", "internal", "confidential", "restricted"] },
+    "ucosschemaversion": { "type": "string" },
+    "ucosreplay": { "type": "boolean" },
+    "traceparent": { "type": "string" },
+    "data": { "type": "object" }
+  },
+  "additionalProperties": false
+}

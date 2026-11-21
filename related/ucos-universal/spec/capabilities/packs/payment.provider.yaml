@@ -1,0 +1,26 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: payment.provider
+  version: 1.0.0
+  universe: U29-payment
+  steward: ucos:org:steward-payment
+  purpose: Port for payment service providers (create/authorize/capture/void/refund/status/webhooks/methods).
+  capabilityKind: abstract
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    ports:
+    - payment.provider@2
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

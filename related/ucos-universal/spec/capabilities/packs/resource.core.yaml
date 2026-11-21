@@ -1,0 +1,68 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: resource.core
+  version: 1.0.0
+  universe: U17-resource
+  steward: ucos:org:steward-resource
+  purpose: Resources that provide capacity over time (people, vehicles, rooms, machines), skills and credentials, pools and capacity plans.
+  capabilityKind: core
+  maturity: beta
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.resource.ResourceType
+    - ucos.resource.Resource
+    - ucos.resource.ResourcePool
+    - ucos.resource.CapacityPlan
+    commands:
+    - DefineResourceType
+    - RegisterResource
+    - AssignSkill
+    - AttachCredential
+    - SetResourceCalendar
+    - DefinePool
+    - RetireResource
+    queries:
+    - EligibleResources
+    - PoolCapacity
+    - Utilisation
+    events:
+    - resource.resource.registered
+    - resource.resource.retired
+    - resource.skill.expiring
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  optional:
+  - capability: service.intelligence
+  temporal:
+    kind: S
+    uses:
+    - CAL
+    - AV
+    - R
+  security:
+    dataClasses:
+    - PII
+    threatModel: docs/threat-models/kernel-and-tenancy.md
+  ui:
+    views:
+    - resource.directory
+    - resource.pool-editor
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

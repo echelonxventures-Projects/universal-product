@@ -1,0 +1,64 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: observability.core
+  version: 1.0.0
+  universe: U72-observability-analytics
+  steward: ucos:org:steward-observability-analytics
+  purpose: Signals, SLOs, alerts, dashboards, certified metrics, reports, feature flags and experiments.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.obs.SignalDefinition
+    - ucos.obs.SLO
+    - ucos.obs.AlertRule
+    - ucos.obs.Dashboard
+    - ucos.obs.MetricDefinition
+    - ucos.obs.Report
+    - ucos.obs.FeatureFlag
+    - ucos.obs.Experiment
+    commands:
+    - DefineSLO
+    - DefineAlertRule
+    - PublishDashboard
+    - DefineMetric
+    - ScheduleReport
+    - CreateFlag
+    - StartExperiment
+    - StopExperiment
+    queries:
+    - SLOStatus
+    - QueryMetric
+    - EvaluateFlag
+    - ExperimentResults
+    events:
+    - observability.slo.burning
+    - observability.slo.breached
+    - observability.alert.fired
+    - analytics.report.delivered
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - D
+    - POL
+    - R
+    - TP
+    - TRG
+  ui:
+    views:
+    - analytics.dashboard
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

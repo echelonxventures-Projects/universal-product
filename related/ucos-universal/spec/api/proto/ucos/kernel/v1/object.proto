@@ -1,0 +1,66 @@
+// Object service (KERNEL-DESIGN §4). Canonical objects follow spec/meta/canonical-object.schema.json.
+syntax = "proto3";
+package ucos.kernel.v1;
+option go_package = "ucos.io/kernel/gen/ucos/kernel/v1;kernelv1";
+
+import "google/protobuf/struct.proto";
+import "ucos/kernel/v1/common.proto";
+
+message Object {
+  string id = 1;                         // UGID
+  string type = 2;                       // TypeRef, e.g. "ucos.order.Order"
+  string tenant = 3;
+  int64 version = 4;
+  string status = 5;
+  google.protobuf.Struct attributes = 6;
+  google.protobuf.Struct custom_attributes = 7;   // tenant extensions (JSONB, ADR-003)
+  google.protobuf.Struct envelope = 8;   // remaining canonical-envelope fields (classification, temporal, provenance, ...)
+}
+service ObjectService {
+  rpc Get(GetRequest) returns (Object);
+  rpc Query(QueryRequest) returns (QueryResult);
+  rpc Create(WriteRequest) returns (Object);
+  rpc Patch(WriteRequest) returns (Object);              // JSON Merge Patch + expected_version
+  rpc Transition(TransitionRequest) returns (Object);    // workflow identities only (WF-L5)
+  rpc History(HistoryRequest) returns (QueryResult);     // bitemporal versions
+}
+message GetRequest {
+  string context_token = 1;
+  string type = 2;
+  string id = 3;
+  AsOf as_of = 4;
+  repeated string expand = 5;
+}
+message QueryRequest {
+  string context_token = 1;
+  string type = 2;
+  string where = 3;                      // CEL subset; the PDP residual is ANDed in
+  repeated string sort = 4;
+  PageRequest page = 5;
+  AsOf as_of = 6;
+}
+message QueryResult {
+  repeated Object items = 1;
+  PageInfo page = 2;
+}
+message WriteRequest {
+  string context_token = 1;
+  string type = 2;
+  string id = 3;
+  google.protobuf.Struct attributes = 4;
+  int64 expected_version = 5;
+}
+message TransitionRequest {
+  string context_token = 1;
+  string type = 2;
+  string id = 3;
+  string to_state = 4;
+  string workflow_instance = 5;
+  int64 expected_version = 6;
+}
+message HistoryRequest {
+  string context_token = 1;
+  string type = 2;
+  string id = 3;
+  PageRequest page = 4;
+}

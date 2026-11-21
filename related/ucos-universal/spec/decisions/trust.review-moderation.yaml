@@ -1,0 +1,27 @@
+kind: DecisionTable
+id: trust.review-moderation
+owner: trust.core
+hitPolicy: FIRST
+description: 'TRU-L2: moderation removes policy violations only; negative sentiment is never a reason.'
+inputs:
+- {name: fakeScore, type: Integer}
+- {name: containsPersonalData, type: Boolean}
+- {name: reports, type: Integer}
+outputs:
+- {name: action, type: Enumeration}
+- {name: reason, type: MessageKey}
+rules:
+- ['>=90', '*', '*', reject, trust.reason.inauthentic]
+- ['*', 'true', '*', hold-for-review, trust.reason.personal-data]
+- ['>=60', '*', '*', hold-for-review, trust.reason.suspected-inauthentic]
+- ['*', '*', '>=3', hold-for-review, trust.reason.reported]
+- ['*', '*', '*', publish, '']
+tests:
+- input: ['95', 'false', '0']
+  expect: [reject, trust.reason.inauthentic]
+- input: ['10', 'true', '0']
+  expect: [hold-for-review, trust.reason.personal-data]
+- input: ['10', 'false', '5']
+  expect: [hold-for-review, trust.reason.reported]
+- input: ['10', 'false', '0']
+  expect: [publish, '']

@@ -1,0 +1,63 @@
+kind: TaxonomyRelease
+id: ucos.product-category
+version: 1.0.0-top
+owner: U06 Taxonomy steward
+note: Top level of the ~6k-node product taxonomy (S6). Lower levels, GS1 GPC / Google / CPC mappings and attribute templates are produced by the taxonomy workstream; GS1 GPC mapping follows ADR-027 (licence
+  recorded per release).
+nodes:
+- path: apparel-accessories
+  name: Apparel & Accessories
+- path: footwear
+  name: Footwear
+- path: beauty-personal-care
+  name: Beauty & Personal Care
+- path: health-wellness
+  name: Health & Wellness
+- path: home-kitchen
+  name: Home & Kitchen
+- path: furniture
+  name: Furniture
+- path: electronics
+  name: Electronics
+- path: computers-accessories
+  name: Computers & Accessories
+- path: mobile-phones-accessories
+  name: Mobile Phones & Accessories
+- path: appliances
+  name: Appliances
+- path: grocery-gourmet-food
+  name: Grocery & Gourmet Food
+- path: beverages
+  name: Beverages
+- path: baby-kids
+  name: Baby & Kids
+- path: toys-games
+  name: Toys & Games
+- path: sports-outdoors
+  name: Sports & Outdoors
+- path: books
+  name: Books
+- path: stationery-office
+  name: Stationery & Office
+- path: jewellery
+  name: Jewellery
+- path: watches
+  name: Watches
+- path: automotive
+  name: Automotive
+- path: tools-hardware
+  name: Tools & Hardware
+- path: garden-outdoor
+  name: Garden & Outdoor
+- path: pet-supplies
+  name: Pet Supplies
+- path: musical-instruments
+  name: Musical Instruments
+- path: industrial-scientific
+  name: Industrial & Scientific
+- path: gift-cards
+  name: Gift Cards
+- path: services
+  name: Services
+- path: digital-goods
+  name: Digital Goods

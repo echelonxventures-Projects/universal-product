@@ -1,0 +1,66 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: cdp.core
+  version: 1.0.0
+  universe: U85-customer-data-segmentation
+  steward: ucos:org:steward-customer-data-segmentation
+  purpose: CDP owns unified customer understanding for activation.
+  capabilityKind: core
+  maturity: experimental
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.cdp.TrackingPlan
+    - ucos.cdp.IdentityGraph
+    - ucos.cdp.Trait
+    - ucos.cdp.Segment
+    - ucos.cdp.Audience
+    commands:
+    - PublishTrackingPlan
+    - DefineTrait
+    - DefineSegment
+    - ActivateAudience
+    - DeactivateAudience
+    - MergeIdentities
+    queries:
+    - ProfileTraits
+    - IsInSegment
+    - SegmentSize
+    - Explain
+    events:
+    - cdp.segment.entered
+    - cdp.segment.exited
+    - cdp.trait.changed
+  requires:
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: event.core
+    version: '>=1 <2'
+  - capability: observability.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: ai.core
+    version: '>=1 <2'
+  - capability: ml.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - R
+    - D
+    - TRG
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

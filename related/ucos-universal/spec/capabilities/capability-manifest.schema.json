@@ -1,0 +1,331 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/capabilities/capability-manifest.schema.json",
+  "title": "Capability manifest (master \u00a78.2, U57)",
+  "type": "object",
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "ucos.io/v1"
+    },
+    "kind": {
+      "const": "Capability"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "id",
+        "version",
+        "universe",
+        "steward",
+        "purpose",
+        "capabilityKind",
+        "maturity",
+        "phase",
+        "scope"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]*(\\.[a-z0-9-]+)+$"
+        },
+        "version": {
+          "type": "string",
+          "pattern": "^\\d+\\.\\d+\\.\\d+$"
+        },
+        "universe": {
+          "type": "string",
+          "pattern": "^U\\d{2,3}-[a-z0-9-]+$"
+        },
+        "steward": {
+          "type": "string"
+        },
+        "purpose": {
+          "type": "string",
+          "minLength": 10
+        },
+        "capabilityKind": {
+          "enum": [
+            "abstract",
+            "core",
+            "adapter",
+            "extension",
+            "ui-pack",
+            "data-pack",
+            "industry-pack",
+            "simulator"
+          ]
+        },
+        "maturity": {
+          "enum": [
+            "experimental",
+            "beta",
+            "certified",
+            "deprecated",
+            "revoked"
+          ]
+        },
+        "phase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7
+        },
+        "scope": {
+          "enum": [
+            "tenant",
+            "platform"
+          ],
+          "description": "platform = control-plane/global service always present; tenant = composed into blueprints"
+        }
+      },
+      "additionalProperties": false
+    },
+    "spec": {
+      "type": "object",
+      "properties": {
+        "implements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "provides": {
+          "type": "object",
+          "properties": {
+            "objectTypes": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "commands": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "queries": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "uniqueItems": true
+            },
+            "events": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[a-z0-9-]+\\.[a-z0-9-]+\\.[a-z0-9-]+$"
+              },
+              "uniqueItems": true
+            },
+            "decisions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "ports": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "consumes": {
+          "type": "object",
+          "properties": {
+            "events": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "requires": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "capability",
+              "version"
+            ],
+            "properties": {
+              "capability": {
+                "type": "string"
+              },
+              "version": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "optional": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "capability"
+            ],
+            "properties": {
+              "capability": {
+                "type": "string"
+              },
+              "enables": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "conflicts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "selection": {
+          "type": "object",
+          "description": "Adapter selection facts: which abstract capability, for which jurisdictions/methods",
+          "properties": {
+            "jurisdictions": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "methods": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "realities": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "physical",
+                  "simulated",
+                  "hypothetical",
+                  "virtual-world"
+                ]
+              }
+            }
+          }
+        },
+        "temporal": {
+          "type": "object",
+          "description": "Temporal bindings (TEMPORAL-BINDING-MATRIX)",
+          "properties": {
+            "uses": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "TP",
+                  "TR",
+                  "D",
+                  "BD",
+                  "R",
+                  "POL",
+                  "CAL",
+                  "AV",
+                  "FCA",
+                  "SLA",
+                  "TRG",
+                  "REM",
+                  "WL",
+                  "FEED",
+                  "ASOF",
+                  "TS"
+                ]
+              }
+            },
+            "kind": {
+              "enum": [
+                "V",
+                "E",
+                "S"
+              ]
+            }
+          }
+        },
+        "security": {
+          "type": "object",
+          "properties": {
+            "dataClasses": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "threatModel": {
+              "type": "string"
+            }
+          }
+        },
+        "compliance": {
+          "type": "object",
+          "properties": {
+            "controls": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "signals": {
+          "type": "object",
+          "properties": {
+            "metrics": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "slos": {
+              "type": "array"
+            }
+          }
+        },
+        "ui": {
+          "type": "object",
+          "properties": {
+            "views": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "certification": {
+          "type": "object",
+          "properties": {
+            "gates": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "additionalProperties": true
+    }
+  },
+  "additionalProperties": false
+}

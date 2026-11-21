@@ -1,0 +1,27 @@
+kind: DecisionTable
+id: marketplace.payout-hold
+owner: marketplace.core
+hitPolicy: FIRST
+description: Holds in addition to the return-window hold applied by the payout schedule (MKP-L3).
+inputs:
+- {name: sellerStanding, type: Enumeration}
+- {name: openDisputes, type: Integer}
+- {name: riskBand, type: Enumeration}
+outputs:
+- {name: hold, type: Boolean}
+- {name: holdFor, type: Duration}
+rules:
+- [restricted, '*', '*', 'true', P30D]
+- ['*', '>=1', '*', 'true', P14D]
+- ['*', '*', high, 'true', P7D]
+- ['*', '*', unknown, 'false', PT0S]
+- ['*', '*', '*', 'false', PT0S]
+tests:
+- input: [restricted, '0', low]
+  expect: ['true', P30D]
+- input: [good, '2', low]
+  expect: ['true', P14D]
+- input: [good, '0', high]
+  expect: ['true', P7D]
+- input: [good, '0', low]
+  expect: ['false', PT0S]

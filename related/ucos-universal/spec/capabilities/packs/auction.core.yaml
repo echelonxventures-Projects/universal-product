@@ -1,0 +1,75 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: auction.core
+  version: 1.0.0
+  universe: U91-auction-bidding-negotiation
+  steward: ucos:org:steward-auction-bidding-negotiation
+  purpose: Auction owns price discovery by competition or negotiation.
+  capabilityKind: core
+  maturity: experimental
+  phase: 5
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.auction.Auction
+    - ucos.auction.Bid
+    - ucos.auction.Proposal
+    - ucos.auction.Negotiation
+    - ucos.auction.Mandate
+    - ucos.auction.Award
+    commands:
+    - CreateAuction
+    - OpenAuction
+    - PlaceBid
+    - RetractBid
+    - CloseAuction
+    - Award
+    - IssueRFQ
+    - SubmitProposal
+    - EvaluateProposals
+    - StartNegotiation
+    - MakeOffer
+    - AcceptOffer
+    events:
+    - auction.bid.placed
+    - auction.bid.outbid
+    - tender.proposal.submitted
+    - tender.proposal.awarded
+    - negotiation.offer.made
+    - negotiation.offer.agreed
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: catalog.listing
+    version: '>=1 <2'
+  - capability: pricing.engine
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: risk.core
+    version: '>=1 <2'
+  - capability: agent.core
+    version: '>=1 <2'
+  - capability: contract.core
+    version: '>=1 <2'
+  - capability: procurement.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - D
+    - TRG
+    - TR
+    - TP
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

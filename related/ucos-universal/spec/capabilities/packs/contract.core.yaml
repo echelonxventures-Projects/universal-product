@@ -1,0 +1,71 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: contract.core
+  version: 1.0.0
+  universe: U89-contract-agreement
+  steward: ucos:org:steward-contract-agreement
+  purpose: Contract owns legally binding agreements and their lifecycle.
+  capabilityKind: core
+  maturity: experimental
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.contract.ClauseLibrary
+    - ucos.contract.AgreementTemplate
+    - ucos.contract.Agreement
+    - ucos.contract.Obligation
+    - ucos.contract.Acceptance
+    commands:
+    - DraftAgreement
+    - ProposeRedline
+    - ApproveAgreement
+    - SendForSignature
+    - RecordSignature
+    - Activate
+    - Amend
+    - Renew
+    - Terminate
+    - RecordAcceptance
+    queries:
+    - ActiveAgreements
+    - ObligationsDue
+    - CurrentTermsVersion
+    - AcceptanceOf
+    events:
+    - contract.agreement.executed
+    - contract.agreement.renewal-due
+    - contract.agreement.expired
+    - contract.agreement.terminated
+    - contract.obligation.due
+    - contract.obligation.breached
+    - contract.terms.accepted
+  requires:
+  - capability: document.core
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: authority.core
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - TRG
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

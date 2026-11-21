@@ -1,0 +1,70 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: iot.core
+  version: 1.0.0
+  universe: U92-iot-devices
+  steward: ucos:org:steward-iot-devices
+  purpose: IoT owns connected physical devices and their data/command channels.
+  capabilityKind: core
+  maturity: experimental
+  phase: 5
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.iot.DeviceType
+    - ucos.iot.Device
+    - ucos.iot.TelemetrySchema
+    - ucos.iot.Command
+    - ucos.iot.FirmwareRelease
+    - ucos.iot.EdgeNode
+    commands:
+    - ProvisionDevice
+    - AssignGroup
+    - SetDesiredState
+    - SendCommand
+    - RolloutFirmware
+    - QuarantineDevice
+    - RetireDevice
+    - DeployToEdge
+    events:
+    - iot.device.online
+    - iot.device.offline
+    - iot.command.acked
+    - iot.command.failed
+    - iot.firmware.updated
+    - iot.alarm.raised
+  requires:
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: installed-base.core
+    version: '>=1 <2'
+  - capability: infra.core
+    version: '>=1 <2'
+  - capability: event.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  - capability: digital-twin.core
+    version: '>=1 <2'
+  - capability: security.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - D
+    - POL
+    - TRG
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

@@ -1,0 +1,33 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: rtc.simulator
+  version: 1.0.0
+  universe: U109-realtime-comms-contact-center
+  steward: ucos:org:steward-realtime-comms-contact-center
+  purpose: Voice/video simulator with scripted call flows for tests and simulation realities.
+  capabilityKind: simulator
+  maturity: beta
+  phase: 3
+  scope: tenant
+spec:
+  implements:
+  - rtc.provider
+  selection:
+    jurisdictions:
+    - '*'
+    methods:
+    - '*'
+    realities:
+    - simulated
+    - hypothetical
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

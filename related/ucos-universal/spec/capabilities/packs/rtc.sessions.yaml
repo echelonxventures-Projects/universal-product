@@ -1,0 +1,62 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: rtc.sessions
+  version: 1.0.0
+  universe: U109-realtime-comms-contact-center
+  steward: ucos:org:steward-realtime-comms-contact-center
+  purpose: Video sessions (consults, meetings, classes, video-KYC, support) with scheduling, lobby, recording consent and captions.
+  capabilityKind: core
+  maturity: beta
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.rtc.VideoSession
+    commands:
+    - CreateVideoSession
+    - JoinVideoSession
+    - IssueSessionToken
+    - EndVideoSession
+    queries:
+    - SessionStatus
+    events:
+    - rtc.session.started
+    - rtc.session.ended
+  requires:
+  - capability: rtc.provider
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: asset.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - AV
+    - TP
+    - TR
+  security:
+    dataClasses:
+    - PII
+    - BIOMETRIC
+    threatModel: docs/threat-models/communication.md
+  compliance:
+    controls:
+    - ucos.ctrl.recording-consent
+  ui:
+    views:
+    - video.room
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

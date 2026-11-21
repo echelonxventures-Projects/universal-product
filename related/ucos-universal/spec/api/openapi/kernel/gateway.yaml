@@ -1,0 +1,85 @@
+openapi: 3.1.0
+info:
+  title: UCOS gateway system API
+  version: 1.0.0
+  description: |
+    Kernel endpoints present in every tenant platform (API-L1 allows only these to be hand-written).
+    Universe endpoints are generated per capability into spec/api/openapi/capabilities/.
+servers:
+  - url: https://{tenantDomain}/api/v1
+    variables:
+      tenantDomain: { default: example.ucos.app }
+security:
+  - bearer: []
+paths:
+  /objects/{type}:
+    get:
+      operationId: kernel:QueryObjects
+      summary: Query any registered object type (policy-checked)
+      parameters:
+        - { name: type, in: path, required: true, schema: { type: string } }
+        - $ref: 'common.yaml#/components/parameters/Filter'
+        - $ref: 'common.yaml#/components/parameters/Sort'
+        - $ref: 'common.yaml#/components/parameters/PageSize'
+        - $ref: 'common.yaml#/components/parameters/PageCursor'
+        - $ref: 'common.yaml#/components/parameters/AsOf'
+      responses:
+        '200':
+          description: Page of objects
+          content: { application/json: { schema: { $ref: 'common.yaml#/components/schemas/Page' } } }
+        default: { $ref: 'common.yaml#/components/responses/Problem' }
+  /objects/{type}/{id}:
+    get:
+      operationId: kernel:GetObject
+      summary: Get one object by id
+      parameters:
+        - { name: type, in: path, required: true, schema: { type: string } }
+        - $ref: 'common.yaml#/components/parameters/Id'
+        - $ref: 'common.yaml#/components/parameters/AsOf'
+      responses:
+        '200':
+          description: The object
+          headers: { ETag: { $ref: 'common.yaml#/components/headers/ETag' } }
+          content: { application/json: { schema: { $ref: 'common.yaml#/components/schemas/Object' } } }
+        default: { $ref: 'common.yaml#/components/responses/Problem' }
+  /objects/{type}/{id}/history:
+    get:
+      operationId: kernel:ObjectHistory
+      summary: Bitemporal version history (ADR-011)
+      parameters:
+        - { name: type, in: path, required: true, schema: { type: string } }
+        - $ref: 'common.yaml#/components/parameters/Id'
+        - $ref: 'common.yaml#/components/parameters/PageCursor'
+      responses:
+        '200':
+          description: Versions
+          content: { application/json: { schema: { $ref: 'common.yaml#/components/schemas/Page' } } }
+        default: { $ref: 'common.yaml#/components/responses/Problem' }
+  /context:
+    get:
+      operationId: kernel:WhoAmI
+      summary: The resolved context envelope for the caller (U16)
+      responses:
+        '200':
+          description: Context envelope (spec/context/context-envelope.schema.json)
+          content: { application/json: { schema: { type: object, additionalProperties: true } } }
+        default: { $ref: 'common.yaml#/components/responses/Problem' }
+  /api/openapi.json:
+    get:
+      operationId: kernel:GetOpenAPI
+      summary: Merged OpenAPI for the tenant's active blueprint
+      parameters:
+        - { name: audience, in: query, required: false, schema: { type: string, enum: [public, partner, internal] } }
+      responses:
+        '200': { description: OpenAPI 3.1 document, content: { application/json: { schema: { type: object } } } }
+        default: { $ref: 'common.yaml#/components/responses/Problem' }
+  /health:
+    get:
+      operationId: kernel:Health
+      security: []
+      summary: Liveness of the tenant's gateway route
+      responses:
+        '200': { description: Healthy, content: { application/json: { schema: { type: object, properties: { status: { type: string, enum: [ok, degraded] } } } } } }
+components:
+  securitySchemes:
+    bearer: { type: http, scheme: bearer, bearerFormat: JWT }

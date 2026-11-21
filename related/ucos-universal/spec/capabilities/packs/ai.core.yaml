@@ -1,0 +1,74 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: ai.core
+  version: 1.0.0
+  universe: U49-ai-model
+  steward: ucos:org:steward-ai-model
+  purpose: AI owns access to and governance of AI models.
+  capabilityKind: core
+  maturity: experimental
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    commands:
+    - RegisterProvider
+    - RegisterModel
+    - CertifyModelForUseCase
+    - DeprecateModel
+    - DefineRoute
+    - DefineGuardrail
+    - RegisterUseCase
+    - DefineEvalSuite
+    - RunEval
+    - SetBudget
+    - ReportAIIncident
+    queries:
+    - ModelsFor
+    - UseCaseStatus
+    - EvalHistory
+    - CostReport
+    events:
+    - ai.model.certified
+    - ai.model.deprecated
+    - ai.eval.completed
+    - ai.eval.regressed
+    - ai.guardrail.triggered
+    - ai.budget.exceeded
+    - ai.incident.reported
+  requires:
+  - capability: policy.core
+    version: '>=1 <2'
+  - capability: security.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  - capability: integration.core
+    version: '>=1 <2'
+  - capability: entitlement.core
+    version: '>=1 <2'
+  - capability: observability.core
+    version: '>=1 <2'
+  - capability: certification.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: ml.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - R
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

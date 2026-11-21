@@ -1,0 +1,190 @@
+kind: JurisdictionSet
+id: launch-jurisdictions
+release: 2026-10
+owner: U12 Geography steward
+jurisdictions:
+- id: ucos:jur:IN
+  name: India
+  level: national
+  currency: INR
+  timezones:
+  - Asia/Kolkata
+  taxRegime: in-gst
+  dataProtection: in-dpdp-2023
+  children:
+  - id: ucos:jur:IN-AN
+    name: Andaman and Nicobar Islands
+    level: union-territory
+    gstStateCode: null
+  - id: ucos:jur:IN-AP
+    name: Andhra Pradesh
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-AR
+    name: Arunāchal Pradesh
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-AS
+    name: Assam
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-BR
+    name: Bihār
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-CG
+    name: Chhattīsgarh
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-CH
+    name: Chandīgarh
+    level: union-territory
+    gstStateCode: null
+  - id: ucos:jur:IN-DH
+    name: Dādra and Nagar Haveli and Damān and Diu
+    level: union-territory
+    gstStateCode: null
+  - id: ucos:jur:IN-DL
+    name: Delhi
+    level: union-territory
+    gstStateCode: '07'
+  - id: ucos:jur:IN-GA
+    name: Goa
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-GJ
+    name: Gujarāt
+    level: state
+    gstStateCode: '24'
+  - id: ucos:jur:IN-HP
+    name: Himāchal Pradesh
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-HR
+    name: Haryāna
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-JH
+    name: Jhārkhand
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-JK
+    name: Jammu and Kashmīr
+    level: union-territory
+    gstStateCode: null
+  - id: ucos:jur:IN-KA
+    name: Karnātaka
+    level: state
+    gstStateCode: '29'
+  - id: ucos:jur:IN-KL
+    name: Kerala
+    level: state
+    gstStateCode: '32'
+  - id: ucos:jur:IN-LA
+    name: Ladākh
+    level: union-territory
+    gstStateCode: null
+  - id: ucos:jur:IN-LD
+    name: Lakshadweep
+    level: union-territory
+    gstStateCode: null
+  - id: ucos:jur:IN-MH
+    name: Mahārāshtra
+    level: state
+    gstStateCode: '27'
+  - id: ucos:jur:IN-ML
+    name: Meghālaya
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-MN
+    name: Manipur
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-MP
+    name: Madhya Pradesh
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-MZ
+    name: Mizoram
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-NL
+    name: Nāgāland
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-OD
+    name: Odisha
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-PB
+    name: Punjab
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-PY
+    name: Puducherry
+    level: union-territory
+    gstStateCode: null
+  - id: ucos:jur:IN-RJ
+    name: Rājasthān
+    level: state
+    gstStateCode: 08
+  - id: ucos:jur:IN-SK
+    name: Sikkim
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-TN
+    name: Tamil Nādu
+    level: state
+    gstStateCode: '33'
+  - id: ucos:jur:IN-TR
+    name: Tripura
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-TS
+    name: Telangāna
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-UK
+    name: Uttarākhand
+    level: state
+    gstStateCode: null
+  - id: ucos:jur:IN-UP
+    name: Uttar Pradesh
+    level: state
+    gstStateCode: 09
+  - id: ucos:jur:IN-WB
+    name: West Bengal
+    level: state
+    gstStateCode: '19'
+  note: gstStateCode is filled for the ten states used in reference platforms and tests; the remaining codes come from the GSTN state-code table imported by the U31 tax steward (S7).
+- id: ucos:jur:AE
+  name: United Arab Emirates
+  level: federal
+  currency: AED
+  timezones:
+  - Asia/Dubai
+  taxRegime: ae-vat
+  dataProtection: ae-pdpl
+  children:
+  - id: ucos:jur:AE-AJ
+    name: Ajman
+    level: emirate
+  - id: ucos:jur:AE-AZ
+    name: Abu Dhabi
+    level: emirate
+  - id: ucos:jur:AE-DU
+    name: Dubai
+    level: emirate
+  - id: ucos:jur:AE-FU
+    name: Fujairah
+    level: emirate
+  - id: ucos:jur:AE-RK
+    name: Ras Al Khaimah
+    level: emirate
+  - id: ucos:jur:AE-SH
+    name: Sharjah
+    level: emirate
+  - id: ucos:jur:AE-UQ
+    name: Umm Al Quwain
+    level: emirate
+  note: Free zones (for example DIFC and ADGM, which have their own data-protection laws) are added as child jurisdictions by the U12 steward with their governing authority.

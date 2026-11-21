@@ -1,0 +1,69 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: legal.core
+  version: 1.0.0
+  universe: U104-legal-ethics-ip
+  steward: ucos:org:steward-legal-ethics-ip
+  purpose: Legal owns legal matters, ethics cases and intellectual property.
+  capabilityKind: core
+  maturity: experimental
+  phase: 6
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.legal.Matter
+    - ucos.legal.LegalHold
+    - ucos.legal.EthicsReport
+    - ucos.legal.IPAsset
+    - ucos.legal.InfringementCase
+    commands:
+    - OpenMatter
+    - AddKeyDate
+    - IssueLegalHold
+    - ReleaseLegalHold
+    - SubmitEthicsReport
+    - AssignInvestigation
+    - RegisterIPAsset
+    - RenewIP
+    - FileInfringementNotice
+    events:
+    - legal.hold.issued
+    - legal.hold.released
+    - legal.deadline.approaching
+    - legal.ip.renewal-due
+    - legal.ethics.report-received
+    - legal.takedown.completed
+  requires:
+  - capability: contract.core
+    version: '>=1 <2'
+  - capability: document.core
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: audit.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  - capability: product.intelligence
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - SLA
+    - FEED
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

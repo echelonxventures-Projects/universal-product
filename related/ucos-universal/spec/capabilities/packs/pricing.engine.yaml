@@ -1,0 +1,76 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: pricing.engine
+  version: 1.0.0
+  universe: U23-pricing
+  steward: ucos:org:steward-pricing
+  purpose: Price lists, price rules, fees, waterfall quotes, price history and B2B quotes.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.pricing.PriceList
+    - ucos.pricing.PriceEntry
+    - ucos.pricing.PriceRule
+    - ucos.pricing.Fee
+    - ucos.pricing.PriceQuote
+    - ucos.pricing.B2BQuote
+    commands:
+    - UpsertPriceEntries
+    - SchedulePriceChange
+    - DefinePriceList
+    - DefinePriceRule
+    - DefineFee
+    - CreateB2BQuote
+    - SendB2BQuote
+    - AcceptB2BQuote
+    queries:
+    - Quote
+    - DisplayPrice
+    - PriceHistory
+    - LowestPrice
+    - ResolvePriceList
+    events:
+    - pricing.price.changed
+    - pricing.pricelist.changed
+    - pricing.b2b-quote.accepted
+  requires:
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: catalog.listing
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: tax.core
+    version: '>=1 <2'
+  optional:
+  - capability: offer.engine
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - POL
+    - TRG
+    - TP
+    - ASOF
+  compliance:
+    controls:
+    - ucos.ctrl.fee-transparency
+    - ucos.ctrl.reference-price
+  ui:
+    views:
+    - pricing.pricelist.grid
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

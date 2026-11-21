@@ -1,0 +1,60 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: governance.core
+  version: 1.0.0
+  universe: U02-governance
+  steward: ucos:org:steward-governance
+  purpose: Change proposals, classification, impact analysis, waivers and progressive release plans.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.governance.ChangeProposal
+    - ucos.governance.Waiver
+    - ucos.governance.ReleasePlan
+    - ucos.governance.ChangeWindow
+    - ucos.governance.ChangeTemplate
+    commands:
+    - CreateProposal
+    - SubmitProposal
+    - ScheduleProposal
+    - ActivateProposal
+    - WithdrawProposal
+    - RequestWaiver
+    - GrantWaiver
+    - RevokeWaiver
+    queries:
+    - ChangeCalendar
+    - ProposalTimeline
+    events:
+    - governance.proposal.submitted
+    - governance.proposal.approved
+    - governance.proposal.completed
+    - governance.proposal.rolled-back
+    - governance.waiver.granted
+    - governance.waiver.expired
+  requires:
+  - capability: authority.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: policy.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - TRG
+    - TR
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

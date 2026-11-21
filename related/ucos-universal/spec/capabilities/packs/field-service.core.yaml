@@ -1,0 +1,83 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: field-service.core
+  version: 1.0.0
+  universe: U82-field-service-work
+  steward: ucos:org:steward-field-service-work
+  purpose: Field Service owns performing services and work.
+  capabilityKind: core
+  maturity: experimental
+  phase: 5
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.field-service.ServiceCatalogItem
+    - ucos.field-service.ServiceRequest
+    - ucos.field-service.WorkOrder
+    - ucos.field-service.DispatchPlan
+    - ucos.field-service.TimeLog
+    commands:
+    - SubmitServiceRequest
+    - CreateWorkOrder
+    - ScheduleWorkOrder
+    - Dispatch
+    - StartTravel
+    - Arrive
+    - CompleteTask
+    - ConsumePart
+    - CaptureSignature
+    - CompleteWorkOrder
+    - MarkIncomplete
+    queries:
+    - AvailableWindows
+    - TechnicianDay
+    - OpenWorkOrders
+    events:
+    - field-service.request.submitted
+    - field-service.work-order.scheduled
+    - field-service.work-order.dispatched
+    - field-service.work-order.arrived
+    - field-service.work-order.completed
+    - field-service.part.consumed
+  requires:
+  - capability: service.intelligence
+    version: '>=1 <2'
+  - capability: resource.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: logistics.core
+    version: '>=1 <2'
+  - capability: installed-base.core
+    version: '>=1 <2'
+  - capability: warranty.core
+    version: '>=1 <2'
+  - capability: inventory.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: communication.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - AV
+    - FCA
+    - CAL
+    - SLA
+    - REM
+    - TR
+    - FEED
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

@@ -1,0 +1,26 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: logistics.carrier
+  version: 1.0.0
+  universe: U35-fulfillment
+  steward: ucos:org:steward-fulfillment
+  purpose: Port for carriers (rates, shipments, labels, tracking, pickups, webhooks).
+  capabilityKind: abstract
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    ports:
+    - logistics.carrier@1
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

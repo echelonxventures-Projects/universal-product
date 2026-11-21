@@ -1,0 +1,26 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: tax.einvoice
+  version: 1.0.0
+  universe: U31-tax
+  steward: ucos:org:steward-tax
+  purpose: Port for government e-invoicing portals.
+  capabilityKind: abstract
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    ports:
+    - tax.einvoice@1
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

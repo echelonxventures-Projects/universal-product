@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: temporal-triggers
+universe: U13
+tier: T0
+owner: ucos:org:foundation-temporal
+phase: 0
+slos:
+- id: availability
+  description: Share of temporal-triggers requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: temporal_triggers_requests_good_ratio
+  objective: 0.9995
+  rollingWindow: P28D
+- id: latency
+  description: p99 latency of the critical temporal-triggers operation.
+  sli:
+    kind: latency
+    metric: trigger_fire_delay_ms
+    thresholdMs: 60000
+    percentile: p99
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: temporal-triggers.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/temporal-triggers.md#availability-fast-burn
+- id: temporal-triggers.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/temporal-triggers.md#availability-slow-burn
+- id: temporal-triggers.latency.breach
+  slo: latency
+  condition: p99 > 60000 ms for 15m
+  severity: page
+  runbook: docs/runbooks/temporal-triggers.md#latency-breach

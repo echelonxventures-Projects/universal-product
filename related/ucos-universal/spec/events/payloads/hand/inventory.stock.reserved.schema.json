@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/inventory.stock.reserved/1.json",
+  "title": "inventory.stock.reserved",
+  "description": "Stock reserved for a checkout or order with a TTL (U13 reservation).",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true
+  },
+  "type": "object",
+  "required": [
+    "reservationId",
+    "unit",
+    "location",
+    "quantity",
+    "expiresAt"
+  ],
+  "properties": {
+    "reservationId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "unit": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "location": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "quantity": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/Quantity"
+    },
+    "holder": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "expiresAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

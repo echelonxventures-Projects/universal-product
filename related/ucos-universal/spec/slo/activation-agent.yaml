@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: activation-agent
+universe: U73
+tier: T1
+owner: ucos:org:platform-infra
+phase: 0
+slos:
+- id: availability
+  description: Share of activation-agent requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: activation_agent_requests_good_ratio
+  objective: 0.999
+  rollingWindow: P28D
+- id: latency
+  description: p95 latency of the critical activation-agent operation.
+  sli:
+    kind: latency
+    metric: activation_duration_ms
+    thresholdMs: 600000
+    percentile: p95
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: activation-agent.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/activation-agent.md#availability-fast-burn
+- id: activation-agent.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/activation-agent.md#availability-slow-burn
+- id: activation-agent.latency.breach
+  slo: latency
+  condition: p95 > 600000 ms for 15m
+  severity: ticket
+  runbook: docs/runbooks/activation-agent.md#latency-breach

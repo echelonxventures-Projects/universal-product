@@ -1,0 +1,26 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: maps.provider
+  version: 1.0.0
+  universe: U12-geography
+  steward: ucos:org:steward-geography
+  purpose: Port for geocoding, reverse geocoding, autocomplete and static maps.
+  capabilityKind: abstract
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  provides:
+    ports:
+    - maps.provider@1
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

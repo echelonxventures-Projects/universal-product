@@ -1,0 +1,79 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: financial-products.core
+  version: 1.0.0
+  universe: U100-financial-products
+  steward: ucos:org:steward-financial-products
+  purpose: Financial Products owns regulated financial products as composable definitions.
+  capabilityKind: core
+  maturity: experimental
+  phase: 6
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.financial-products.FinancialProduct
+    - ucos.financial-products.Application
+    - ucos.financial-products.Policy
+    - ucos.financial-products.Instrument
+    - ucos.financial-products.TradingOrder
+    commands:
+    - DefineFinancialProduct
+    - Apply
+    - Decide
+    - Accept
+    - Disburse
+    - PostRepayment
+    - Restructure
+    - Close
+    - Bind
+    - Endorse
+    - FileClaim
+    - PlaceTradingOrder
+    - Cancel
+    - Modify
+    - Settle
+    events:
+    - financial.application.decided
+    - financial.contract.activated
+    - financial.repayment.due
+    - financial.repayment.missed
+    - financial.repayment.received
+    - financial.policy.bound
+    - financial.order.filled
+  requires:
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: risk.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: document.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - R
+    - D
+    - BD
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

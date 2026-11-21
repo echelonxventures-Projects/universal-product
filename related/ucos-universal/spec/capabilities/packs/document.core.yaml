@@ -1,0 +1,60 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: document.core
+  version: 1.0.0
+  universe: U42-document
+  steward: ucos:org:steward-document
+  purpose: Document templates, deterministic rendering, immutable issued documents and signatures.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.document.DocumentTemplate
+    - ucos.document.Document
+    - ucos.document.RenderRecord
+    commands:
+    - PublishTemplate
+    - RenderDocument
+    - IssueDocument
+    - SupersedeDocument
+    - VoidDocument
+    - DeliverDocument
+    queries:
+    - DocumentsFor
+    - Download
+    - VerifyDocument
+    events:
+    - document.document.issued
+    - document.document.superseded
+    - document.document.voided
+    - document.document.delivered
+  requires:
+  - capability: asset.core
+    version: '>=1 <2'
+  - capability: l10n.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TR
+  ui:
+    views:
+    - document.template.editor
+    - document.viewer
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

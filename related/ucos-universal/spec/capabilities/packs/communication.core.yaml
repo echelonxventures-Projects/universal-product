@@ -1,0 +1,79 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: communication.core
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: Templates, notification rules, consent-aware sending, delivery tracking and conversations (P3).
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.comm.Channel
+    - ucos.comm.Template
+    - ucos.comm.NotificationRule
+    - ucos.comm.Message
+    - ucos.comm.ProxyContact
+    commands:
+    - DefineTemplate
+    - PublishTemplate
+    - DefineNotificationRule
+    - SendDirect
+    - CreateProxyContact
+    - Unsubscribe
+    queries:
+    - MessagesFor
+    - DeliveryStats
+    - PreviewTemplate
+    events:
+    - communication.message.sent
+    - communication.message.delivered
+    - communication.message.failed
+    - communication.message.bounced
+    - communication.unsubscribed.recorded
+  consumes:
+    events:
+    - order.order.confirmed
+    - fulfillment.shipment.dispatched
+    - fulfillment.shipment.delivered
+    - payment.refund.issued
+    - identity.identity.registered
+  requires:
+  - capability: messaging.provider
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: l10n.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: integration.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - TRG
+    - D
+  compliance:
+    controls:
+    - ucos.ctrl.marketing-consent
+    - ucos.ctrl.unsubscribe
+  ui:
+    views:
+    - comm.template.editor
+    - comm.preference.center
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

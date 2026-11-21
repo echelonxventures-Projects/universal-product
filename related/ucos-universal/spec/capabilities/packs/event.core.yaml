@@ -1,0 +1,46 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: event.core
+  version: 1.0.0
+  universe: U61-event
+  steward: ucos:org:steward-event
+  purpose: Event types, schemas, topics, subscriptions, replay and dead letters.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.event.EventType
+    - ucos.event.EventSchema
+    - ucos.event.Subscription
+    commands:
+    - RegisterEventType
+    - PublishSchema
+    - CreateSubscription
+    - Replay
+    - RedriveDeadLetters
+    queries:
+    - EventCatalog
+    events:
+    - event.schema.published
+  requires:
+  - capability: meta.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - D
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

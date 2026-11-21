@@ -1,0 +1,46 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: policy.core
+  version: 1.0.0
+  universe: U03-policy
+  steward: ucos:org:steward-policy
+  purpose: Cedar policy sets, layered PDP, policy analysis and tests.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.policy.Policy
+    - ucos.policy.PolicySet
+    - ucos.policy.PolicyTest
+    commands:
+    - ProposePolicy
+    - ActivatePolicySet
+    - AddPolicyTest
+    queries:
+    - IsAuthorized
+    - PartialEvaluate
+    - AnalysePolicySet
+    events:
+    - policy.policyset.activated
+  requires:
+  - capability: meta.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - POL
+    - ASOF
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

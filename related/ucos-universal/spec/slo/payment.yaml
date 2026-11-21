@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: payment
+universe: U29
+tier: T0
+owner: ucos:org:commerce-payment
+phase: 1
+slos:
+- id: availability
+  description: Share of payment requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: payment_requests_good_ratio
+  objective: 0.999
+  rollingWindow: P28D
+- id: latency
+  description: p95 latency of the critical payment operation.
+  sli:
+    kind: latency
+    metric: payment_authorize_duration_ms
+    thresholdMs: 3000
+    percentile: p95
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: payment.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/payment.md#availability-fast-burn
+- id: payment.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/payment.md#availability-slow-burn
+- id: payment.latency.breach
+  slo: latency
+  condition: p95 > 3000 ms for 15m
+  severity: page
+  runbook: docs/runbooks/payment.md#latency-breach

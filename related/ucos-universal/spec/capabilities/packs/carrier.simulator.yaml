@@ -1,0 +1,31 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: carrier.simulator
+  version: 1.0.0
+  universe: U35-fulfillment
+  steward: ucos:org:steward-fulfillment
+  purpose: Carrier simulator with deterministic tracking timelines.
+  capabilityKind: simulator
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  implements:
+  - logistics.carrier
+  selection:
+    jurisdictions:
+    - '*'
+    realities:
+    - simulated
+    - hypothetical
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

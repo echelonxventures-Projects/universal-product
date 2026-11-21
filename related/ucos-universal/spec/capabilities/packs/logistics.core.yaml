@@ -1,0 +1,100 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: logistics.core
+  version: 1.0.0
+  universe: U36-logistics
+  steward: ucos:org:steward-logistics
+  purpose: Multi-carrier rating and selection, manifests and pickups, normalised tracking, NDR and RTO handling, transport documents.
+  capabilityKind: core
+  maturity: beta
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.logistics.Carrier
+    - ucos.logistics.RateQuote
+    - ucos.logistics.CarrierSelection
+    - ucos.logistics.Manifest
+    - ucos.logistics.TrackingEvent
+    - ucos.logistics.DeliveryException
+    - ucos.logistics.Route
+    - ucos.logistics.TransportDocument
+    commands:
+    - RegisterCarrier
+    - RateShop
+    - SelectCarrier
+    - CreateManifest
+    - SchedulePickup
+    - IngestTracking
+    - RaiseNDR
+    - ResolveNDR
+    - PlanRoutes
+    - GenerateTransportDocument
+    queries:
+    - Rates
+    - TransitTime
+    - CarrierScorecard
+    - RouteStatus
+    events:
+    - logistics.tracking.updated
+    - logistics.ndr.raised
+    - logistics.ndr.resolved
+    - logistics.pickup.completed
+    - logistics.pickup.missed
+    - logistics.route.planned
+    decisions:
+    - logistics.carrier-selection
+  consumes:
+    events:
+    - fulfillment.shipment.created
+  requires:
+  - capability: fulfillment.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: integration.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: pricing.engine
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: tax.core
+    version: '>=1 <2'
+  optional:
+  - capability: resource.core
+  temporal:
+    kind: S
+    uses:
+    - R
+    - D
+    - AV
+    - CAL
+  security:
+    dataClasses:
+    - PII
+    - LOCATION
+    threatModel: docs/threat-models/geo-and-fulfillment.md
+  compliance:
+    controls:
+    - ucos.ctrl.in-eway-bill
+  ui:
+    views:
+    - logistics.rate-shop
+    - logistics.ndr-queue
+    - logistics.carrier-scorecard
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

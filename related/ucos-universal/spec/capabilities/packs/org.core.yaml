@@ -1,0 +1,74 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: org.core
+  version: 1.0.0
+  universe: U10-organization-tenant
+  steward: ucos:org:steward-organization-tenant
+  purpose: Tenants, organisations, org units, workspaces, brands, stores and tenant links.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.org.Tenant
+    - ucos.org.Organization
+    - ucos.org.OrgUnit
+    - ucos.org.Workspace
+    - ucos.org.Brand
+    - ucos.org.Store
+    - ucos.org.TenantLink
+    commands:
+    - ProvisionTenant
+    - ChangeIsolationTier
+    - SuspendTenant
+    - OffboardTenant
+    - CreateOrganization
+    - SetOrganizationStanding
+    - CreateStore
+    - ChangeStoreStatus
+    - CreateBrand
+    - VerifyDomain
+    - CreateWorkspace
+    - CreateTenantLink
+    queries:
+    - ResolveTenantByHost
+    - OrgTree
+    - StoresNear
+    events:
+    - org.tenant.provisioned
+    - org.tenant.suspended
+    - org.organization.created
+    - org.organization.standing-changed
+    - org.store.status-changed
+    - org.domain.verified
+  requires:
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: entitlement.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - TP
+    - TRG
+    - CAL
+  ui:
+    views:
+    - org.store.editor
+    - org.domain.setup
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

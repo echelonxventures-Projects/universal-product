@@ -1,0 +1,75 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: mobility.core
+  version: 1.0.0
+  universe: U37-mobility-dispatch
+  steward: ucos:org:steward-mobility-dispatch
+  purpose: Mobility owns real-time matching of moving supply to demand.
+  capabilityKind: core
+  maturity: experimental
+  phase: 5
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.mobility.TripRequest
+    - ucos.mobility.SupplyState
+    - ucos.mobility.Dispatch
+    - ucos.mobility.Trip
+    - ucos.mobility.EarningsStatement
+    commands:
+    - RequestTrip
+    - CancelTrip
+    - GoOnline
+    - GoOffline
+    - UpdateLocation
+    - Dispatch
+    - AcceptOffer
+    - DeclineOffer
+    - Arrive
+    - StartTrip
+    - CompleteTrip
+    - TriggerSOS
+    events:
+    - mobility.trip.requested
+    - mobility.trip.assigned
+    - mobility.trip.started
+    - mobility.trip.completed
+    - mobility.trip.canceled
+    - mobility.sos.triggered
+  requires:
+  - capability: resource.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: pricing.engine
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: risk.core
+    version: '>=1 <2'
+  - capability: trust.core
+    version: '>=1 <2'
+  - capability: iot.core
+    version: '>=1 <2'
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: logistics.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - AV
+    - D
+    - TP
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: inventory
+universe: U34
+tier: T0
+owner: ucos:org:ops-inventory
+phase: 1
+slos:
+- id: availability
+  description: Share of inventory requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: inventory_requests_good_ratio
+  objective: 0.9995
+  rollingWindow: P28D
+- id: latency
+  description: p99 latency of the critical inventory operation.
+  sli:
+    kind: latency
+    metric: inventory_reserve_duration_ms
+    thresholdMs: 100
+    percentile: p99
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: inventory.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/inventory.md#availability-fast-burn
+- id: inventory.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/inventory.md#availability-slow-burn
+- id: inventory.latency.breach
+  slo: latency
+  condition: p99 > 100 ms for 15m
+  severity: page
+  runbook: docs/runbooks/inventory.md#latency-breach

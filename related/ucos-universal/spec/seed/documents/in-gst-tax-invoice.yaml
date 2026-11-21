@@ -1,0 +1,53 @@
+kind: DocumentTemplate
+id: doc.in.gst-tax-invoice
+version: 1.0.0
+jurisdiction: ucos:jur:IN
+owner: U42 Document + U31 Tax stewards
+legalBasis: CGST Rules 2017, Rule 46 (tax invoice); Rule 48 and e-invoicing notifications for IRN and QR (B2B above the threshold)
+title: Tax Invoice
+numbering:
+  series: per GSTIN per financial year
+  maxLength: 16
+  allowed: letters, digits, hyphen, slash
+  unique: within the financial year
+requiredFields:
+- field: supplier.name
+- field: supplier.address
+- field: supplier.gstin
+- field: invoice.number
+- field: invoice.date
+- field: recipient.name
+- field: recipient.address
+- field: recipient.gstin
+  when: recipient is registered
+- field: placeOfSupply
+  note: state name and state code
+- field: deliveryAddress
+  when: different from the place of supply
+- field: lines[].description
+- field: lines[].hsnOrSac
+- field: lines[].quantity
+- field: lines[].unit
+- field: lines[].value
+- field: lines[].discount
+- field: lines[].taxableValue
+- field: lines[].taxRate
+  note: CGST + SGST/UTGST, or IGST
+- field: lines[].taxAmount
+  note: per tax component, plus cess where applicable
+- field: reverseCharge
+  note: whether tax is payable on reverse charge
+- field: irn
+  when: e-invoicing applies (B2B above the threshold)
+- field: signedQrCode
+  when: e-invoicing applies
+- field: signature
+  note: signature or digital signature of the supplier or authorised representative
+renderer:
+  engine: U42
+  formats:
+  - pdf
+  - html
+  locales:
+  - en
+  - hi

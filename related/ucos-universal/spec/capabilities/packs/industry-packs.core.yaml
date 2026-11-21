@@ -1,0 +1,45 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: industry-packs.core
+  version: 1.0.0
+  universe: U48-industry-packs
+  steward: ucos:org:steward-industry-packs
+  purpose: Industry Packs owns the curation of industry compositions, not industry logic. An industry pack is a capability of kind industry-pack
+    that bundles.
+  capabilityKind: core
+  maturity: experimental
+  phase: 6
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.industry-packs.IndustryTaxonomyNode
+    - ucos.industry-packs.PackCertification
+    - ucos.industry-packs.IndustryPack
+    commands:
+    - RegisterIndustryPack
+    - CertifyIndustryPack
+    - MapIndustryCode
+    - DeprecatePack
+  requires:
+  - capability: capability.registry
+    version: '>=1 <2'
+  - capability: composition.core
+    version: '>=1 <2'
+  - capability: certification.core
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  - capability: refdata.core
+    version: '>=1 <2'
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

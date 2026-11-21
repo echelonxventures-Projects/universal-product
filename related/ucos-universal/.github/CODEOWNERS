@@ -1,0 +1,124 @@
+# CODEOWNERS — every path has an owner; GitHub requests their review automatically.
+# Each universe folder lists its steward (from the constitution header). Until steward teams exist
+# on GitHub, the repository owner @echelonxventures-Projects reviews everything. Replace with @org/team per steward.
+
+*                                   @echelonxventures-Projects
+/UCOS-MASTER-ARCHITECTURE.md       @echelonxventures-Projects   # Architecture Board (U01)
+/docs/adr/                         @echelonxventures-Projects   # Architecture Board (U01)
+/docs/threat-models/               @echelonxventures-Projects   # ucos:org:security
+/spec/policies/                    @echelonxventures-Projects   # U03 Policy steward + security
+/spec/certification/               @echelonxventures-Projects   # U74 Certification steward
+/spec/rules/                       @echelonxventures-Projects   # U58 Composition steward
+/tools/                            @echelonxventures-Projects   # platform engineering
+/.github/                          @echelonxventures-Projects   # platform engineering
+/business/                         @echelonxventures-Projects   # founders / finance
+
+/constitutions/U01-authority/                       @echelonxventures-Projects   # steward ucos:org:architecture-board
+/constitutions/U02-governance/                      @echelonxventures-Projects   # steward ucos:org:governance-office
+/constitutions/U03-policy/                          @echelonxventures-Projects   # steward ucos:org:security-policy-engineering
+/constitutions/U04-meta/                            @echelonxventures-Projects   # steward ucos:org:platform-kernel-registry
+/constitutions/U05-ontology/                        @echelonxventures-Projects   # steward ucos:org:knowledge-ontology
+/constitutions/U06-taxonomy/                        @echelonxventures-Projects   # steward ucos:org:knowledge-taxonomy
+/constitutions/U07-knowledge-graph/                 @echelonxventures-Projects   # steward ucos:org:knowledge-graph
+/constitutions/U08-reference-data/                  @echelonxventures-Projects   # steward ucos:org:knowledge-reference-data
+/constitutions/U09-identity/                        @echelonxventures-Projects   # steward ucos:org:foundation-identity
+/constitutions/U10-organization-tenant/             @echelonxventures-Projects   # steward ucos:org:foundation-org
+/constitutions/U11-person-party/                    @echelonxventures-Projects   # steward ucos:org:foundation-party
+/constitutions/U12-geography/                       @echelonxventures-Projects   # steward ucos:org:foundation-geo
+/constitutions/U13-temporal/                        @echelonxventures-Projects   # steward ucos:org:foundation-temporal
+/constitutions/U14-currency-unit/                   @echelonxventures-Projects   # steward ucos:org:foundation-money
+/constitutions/U15-localization/                    @echelonxventures-Projects   # steward ucos:org:foundation-l10n
+/constitutions/U16-context/                         @echelonxventures-Projects   # steward ucos:org:platform-kernel-runtime
+/constitutions/U17-resource/                        @echelonxventures-Projects   # steward ucos:org:foundation-resources
+/constitutions/U18-product-intelligence/            @echelonxventures-Projects   # steward ucos:org:knowledge-products
+/constitutions/U19-service-intelligence/            @echelonxventures-Projects   # steward ucos:org:knowledge-services
+/constitutions/U20-industry/                        @echelonxventures-Projects   # steward ucos:org:solutions-architecture
+/constitutions/U21-catalog/                         @echelonxventures-Projects   # steward ucos:org:commerce-catalog
+/constitutions/U22-offer/                           @echelonxventures-Projects   # steward ucos:org:commerce-promotions
+/constitutions/U23-pricing/                         @echelonxventures-Projects   # steward ucos:org:commerce-pricing
+/constitutions/U24-commerce-cart-checkout/          @echelonxventures-Projects   # steward ucos:org:commerce-core
+/constitutions/U25-marketplace/                     @echelonxventures-Projects   # steward ucos:org:commerce-marketplace
+/constitutions/U26-order/                           @echelonxventures-Projects   # steward ucos:org:commerce-order
+/constitutions/U27-subscription/                    @echelonxventures-Projects   # steward ucos:org:commerce-subscriptions
+/constitutions/U28-entitlement/                     @echelonxventures-Projects   # steward ucos:org:commerce-entitlements
+/constitutions/U29-payment/                         @echelonxventures-Projects   # steward ucos:org:payments
+/constitutions/U30-ledger-finance/                  @echelonxventures-Projects   # steward ucos:org:finance-ledger
+/constitutions/U31-tax/                             @echelonxventures-Projects   # steward ucos:org:finance-tax
+/constitutions/U32-loyalty-incentive/               @echelonxventures-Projects   # steward ucos:org:engagement-loyalty
+/constitutions/U33-advertising/                     @echelonxventures-Projects   # steward ucos:org:engagement-ads
+/constitutions/U34-inventory/                       @echelonxventures-Projects   # steward ucos:org:ops-inventory
+/constitutions/U35-fulfillment/                     @echelonxventures-Projects   # steward ucos:org:ops-fulfillment
+/constitutions/U36-logistics/                       @echelonxventures-Projects   # steward ucos:org:ops-logistics
+/constitutions/U37-mobility-dispatch/               @echelonxventures-Projects   # steward ucos:org:ops-mobility
+/constitutions/U38-crm/                             @echelonxventures-Projects   # steward ucos:org:engagement-crm
+/constitutions/U39-support-case/                    @echelonxventures-Projects   # steward ucos:org:engagement-support
+/constitutions/U40-communication/                   @echelonxventures-Projects   # steward ucos:org:experience-messaging
+/constitutions/U41-content-media/                   @echelonxventures-Projects   # steward ucos:org:engagement-content
+/constitutions/U42-document/                        @echelonxventures-Projects   # steward ucos:org:experience-documents
+/constitutions/U43-asset/                           @echelonxventures-Projects   # steward ucos:org:experience-assets
+/constitutions/U44-search/                          @echelonxventures-Projects   # steward ucos:org:discovery-search
+/constitutions/U45-erp-procurement/                 @echelonxventures-Projects   # steward ucos:org:ops-procurement
+/constitutions/U46-workforce-hrms/                  @echelonxventures-Projects   # steward ucos:org:ops-workforce
+/constitutions/U47-manufacturing/                   @echelonxventures-Projects   # steward ucos:org:ops-manufacturing
+/constitutions/U48-industry-packs/                  @echelonxventures-Projects   # steward ucos:org:platform-industries
+/constitutions/U49-ai-model/                        @echelonxventures-Projects   # steward ucos:org:intelligence-ai-platform
+/constitutions/U50-prompt/                          @echelonxventures-Projects   # steward ucos:org:intelligence-ai-platform
+/constitutions/U51-agent/                           @echelonxventures-Projects   # steward ucos:org:intelligence-agents
+/constitutions/U52-recommendation/                  @echelonxventures-Projects   # steward ucos:org:intelligence-recs
+/constitutions/U53-decision/                        @echelonxventures-Projects   # steward ucos:org:platform-kernel-decisions
+/constitutions/U54-simulation/                      @echelonxventures-Projects   # steward ucos:org:intelligence-simulation
+/constitutions/U55-digital-twin/                    @echelonxventures-Projects   # steward ucos:org:intelligence-twins
+/constitutions/U56-learning/                        @echelonxventures-Projects   # steward ucos:org:engagement-learning
+/constitutions/U57-capability/                      @echelonxventures-Projects   # steward ucos:org:platform-kernel-registry
+/constitutions/U58-composition/                     @echelonxventures-Projects   # steward ucos:org:platform-kernel-composer
+/constitutions/U59-generation/                      @echelonxventures-Projects   # steward ucos:org:platform-generators
+/constitutions/U60-workflow/                        @echelonxventures-Projects   # steward ucos:org:platform-kernel-workflow
+/constitutions/U61-event/                           @echelonxventures-Projects   # steward ucos:org:platform-kernel-eventing
+/constitutions/U62-integration/                     @echelonxventures-Projects   # steward ucos:org:platform-integration
+/constitutions/U63-api/                             @echelonxventures-Projects   # steward ucos:org:platform-api
+/constitutions/U64-ui-app-channel/                  @echelonxventures-Projects   # steward ucos:org:experience-platform
+/constitutions/U65-security/                        @echelonxventures-Projects   # steward ucos:org:ciso-office
+/constitutions/U66-privacy-consent/                 @echelonxventures-Projects   # steward ucos:org:dpo-office
+/constitutions/U67-compliance/                      @echelonxventures-Projects   # steward ucos:org:grc-office
+/constitutions/U68-audit-evidence/                  @echelonxventures-Projects   # steward ucos:org:internal-audit-platform
+/constitutions/U69-risk/                            @echelonxventures-Projects   # steward ucos:org:risk-fraud
+/constitutions/U70-trust-reputation/                @echelonxventures-Projects   # steward ucos:org:trust-reviews
+/constitutions/U71-dispute-resolution/              @echelonxventures-Projects   # steward ucos:org:trust-disputes
+/constitutions/U72-observability-analytics/         @echelonxventures-Projects   # steward ucos:org:platform-sre
+/constitutions/U73-infrastructure-deployment/       @echelonxventures-Projects   # steward ucos:org:platform-sre
+/constitutions/U74-certification/                   @echelonxventures-Projects   # steward ucos:org:quality-certification
+/constitutions/U75-discovery-gap/                   @echelonxventures-Projects   # steward ucos:org:platform-kernel-composer
+/constitutions/U76-evolution/                       @echelonxventures-Projects   # steward ucos:org:platform-evolution
+/constitutions/U77-existence-reality-frame/         @echelonxventures-Projects   # steward ucos:org:architecture-board
+/constitutions/U78-product-configuration/           @echelonxventures-Projects   # steward ucos:org:commerce-configuration
+/constitutions/U79-physical-asset-installed-base/   @echelonxventures-Projects   # steward ucos:org:ops-assets
+/constitutions/U80-warranty-after-sales/            @echelonxventures-Projects   # steward ucos:org:ops-aftersales
+/constitutions/U81-ticketing-events/                @echelonxventures-Projects   # steward ucos:org:commerce-ticketing
+/constitutions/U82-field-service-work/              @echelonxventures-Projects   # steward ucos:org:ops-service-delivery
+/constitutions/U83-rental-leasing/                  @echelonxventures-Projects   # steward ucos:org:commerce-rental
+/constitutions/U84-stored-value-wallet/             @echelonxventures-Projects   # steward ucos:org:payments-stored-value
+/constitutions/U85-customer-data-segmentation/      @echelonxventures-Projects   # steward ucos:org:growth-data
+/constitutions/U86-marketing-automation/            @echelonxventures-Projects   # steward ucos:org:growth-marketing
+/constitutions/U87-web-presence-seo/                @echelonxventures-Projects   # steward ucos:org:experience-web-presence
+/constitutions/U88-social-community/                @echelonxventures-Projects   # steward ucos:org:experience-social
+/constitutions/U89-contract-agreement/              @echelonxventures-Projects   # steward ucos:org:legal-ops
+/constitutions/U90-global-trade-customs/            @echelonxventures-Projects   # steward ucos:org:ops-global-trade
+/constitutions/U91-auction-bidding-negotiation/     @echelonxventures-Projects   # steward ucos:org:commerce-price-discovery
+/constitutions/U92-iot-devices/                     @echelonxventures-Projects   # steward ucos:org:iot-edge
+/constitutions/U93-data-governance-products/        @echelonxventures-Projects   # steward ucos:org:data-governance
+/constitutions/U94-ml-platform/                     @echelonxventures-Projects   # steward ucos:org:intelligence-ml
+/constitutions/U95-software-delivery-source-control/@echelonxventures-Projects   # steward ucos:org:developer-experience
+/constitutions/U96-work-collaboration/              @echelonxventures-Projects   # steward ucos:org:productivity
+/constitutions/U97-forms-surveys-feedback/          @echelonxventures-Projects   # steward ucos:org:experience-forms
+/constitutions/U98-sustainability-esg/              @echelonxventures-Projects   # steward ucos:org:sustainability
+/constitutions/U99-digital-assets-ledger-tech/      @echelonxventures-Projects   # steward ucos:org:fintech-digital-assets
+/constitutions/U100-financial-products/             @echelonxventures-Projects   # steward ucos:org:fintech
+/constitutions/U101-quality-ehs/                    @echelonxventures-Projects   # steward ucos:org:qhse
+/constitutions/U102-strategy-performance/           @echelonxventures-Projects   # steward ucos:org:strategy-office
+/constitutions/U103-corporate-governance-equity/    @echelonxventures-Projects   # steward ucos:org:company-secretarial
+/constitutions/U104-legal-ethics-ip/                @echelonxventures-Projects   # steward ucos:org:legal
+/constitutions/U105-workplace-facilities/           @echelonxventures-Projects   # steward ucos:org:workplace
+/constitutions/U106-travel-expense/                 @echelonxventures-Projects   # steward ucos:org:finance-spend
+/constitutions/U107-partner-channel-franchise/      @echelonxventures-Projects   # steward ucos:org:partnerships
+/constitutions/U108-product-development-rnd/        @echelonxventures-Projects   # steward ucos:org:product-engineering
+/constitutions/U109-realtime-comms-contact-center/  @echelonxventures-Projects   # steward ucos:org:experience-rtc

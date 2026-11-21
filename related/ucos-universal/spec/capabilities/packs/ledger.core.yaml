@@ -1,0 +1,107 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: ledger.core
+  version: 1.0.0
+  universe: U30-ledger-finance
+  steward: ucos:org:steward-ledger-finance
+  purpose: 'Double-entry ledger: charts of accounts, posting rules from events, settlements, revenue schedules, period close, reconciliation.'
+  capabilityKind: core
+  maturity: beta
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.ledger.LedgerEntity
+    - ucos.ledger.Account
+    - ucos.ledger.JournalEntry
+    - ucos.ledger.PostingRule
+    - ucos.ledger.Settlement
+    - ucos.ledger.RevenueSchedule
+    - ucos.ledger.Period
+    - ucos.ledger.Reconciliation
+    - ucos.ledger.Invoice
+    commands:
+    - CreateLedgerEntity
+    - DefineAccount
+    - PublishPostingRule
+    - PostManualJournal
+    - ReverseEntry
+    - ClosePeriod
+    - ReopenPeriod
+    - ImportStatement
+    - Reconcile
+    - ScheduleRevenue
+    - RunReplay
+    queries:
+    - TrialBalance
+    - AccountActivity
+    - Balance
+    - FinancialStatements
+    - Aging
+    events:
+    - ledger.journal.posted
+    - ledger.period.closed
+    - ledger.period.reopened
+    - ledger.settlement.completed
+    - ledger.reconciliation.break
+    decisions:
+    - ledger.account-resolution
+    - ledger.revenue-recognition
+  consumes:
+    events:
+    - payment.payment-intent.captured
+    - payment.refund.issued
+    - order.order.confirmed
+    - fulfillment.shipment.delivered
+    - marketplace.commission.accrued
+    - marketplace.payout.paid
+    - stored-value.instrument.issued
+    - stored-value.instrument.redeemed
+  requires:
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: tax.core
+    version: '>=1 <2'
+  - capability: event.core
+    version: '>=1 <2'
+  - capability: audit.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - CAL
+    - R
+    - D
+    - BD
+  security:
+    dataClasses:
+    - FINANCIAL
+    threatModel: docs/threat-models/kernel-and-tenancy.md
+  compliance:
+    controls:
+    - ucos.ctrl.books-retention
+    - ucos.ctrl.manual-journal-sod
+  ui:
+    views:
+    - ledger.journal-explorer
+    - ledger.period-close
+    - ledger.reconciliation
+    - ledger.statements
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

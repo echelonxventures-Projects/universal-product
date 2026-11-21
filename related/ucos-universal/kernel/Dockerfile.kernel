@@ -1,0 +1,27 @@
+# ucos-kernel image: the runnable kernel plus the spec it reads (OpenAPI routes, registry, rules, gates) and the
+# migrations. Build context: the repository root. Static, non-root, from scratch; runs on any Kubernetes or Docker.
+FROM golang:1.26.6-alpine@sha256:3889b425f035be855a72fb4755265311293b6d414521f0a519d819df32222d83 AS build
+RUN apk add --no-cache ca-certificates
+WORKDIR /src/kernel
+COPY kernel/go.mod kernel/go.sum ./
+RUN go mod download
+COPY kernel/ ./
+ARG VERSION=dev
+RUN CGO_ENABLED=0 GOFLAGS=-mod=readonly go build -trimpath -buildvcs=false -ldflags "-s -w" -o /out/ucos-kernel ./cmd/ucos-kernel \
+ && CGO_ENABLED=0 GOFLAGS=-mod=readonly go build -trimpath -buildvcs=false -ldflags "-s -w -X main.version=${VERSION}" -o /out/ucos ./cmd/ucos
+
+FROM scratch
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=build /out/ucos-kernel /out/ucos /
+COPY spec/api/openapi /srv/ucos/spec/api/openapi
+COPY spec/capabilities /srv/ucos/spec/capabilities
+COPY spec/rules /srv/ucos/spec/rules
+COPY spec/policies /srv/ucos/spec/policies
+COPY spec/decisions /srv/ucos/spec/decisions
+COPY spec/certification /srv/ucos/spec/certification
+COPY spec/composition /srv/ucos/spec/composition
+COPY db/migrations /srv/ucos/db/migrations
+ENV UCOS_REPO_ROOT=/srv/ucos
+USER 65532:65532
+EXPOSE 8080 8081
+ENTRYPOINT ["/ucos-kernel"]

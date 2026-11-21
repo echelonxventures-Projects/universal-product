@@ -1,0 +1,29 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: tax.vat-uae
+  version: 1.0.0
+  universe: U31-tax
+  steward: ucos:org:steward-tax
+  purpose: UAE VAT regime pack (standard/zero/exempt, designated zones, TRN).
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - tax.determination
+  selection:
+    jurisdictions:
+    - ucos:jur:AE
+  temporal:
+    kind: E
+    uses:
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

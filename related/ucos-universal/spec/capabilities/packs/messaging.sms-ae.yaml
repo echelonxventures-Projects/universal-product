@@ -1,0 +1,33 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: messaging.sms-ae
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: UAE SMS adapter with sender-ID registration (TDRA).
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - messaging.provider
+  requires:
+  - capability: integration.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - ucos:jur:AE
+    methods:
+    - sms
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

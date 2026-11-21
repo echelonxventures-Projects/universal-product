@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/order.return.approved/1.json",
+  "title": "order.return.approved",
+  "description": "A return request was approved; refund or exchange follows on receipt or immediately per policy.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true,
+    "producer": "order.core"
+  },
+  "type": "object",
+  "required": [
+    "returnId",
+    "orderId",
+    "lines",
+    "resolution",
+    "approvedAt"
+  ],
+  "properties": {
+    "returnId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "orderId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "line",
+          "quantity"
+        ],
+        "properties": {
+          "line": {
+            "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+          },
+          "quantity": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "reason": {
+            "type": "string"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "resolution": {
+      "enum": [
+        "refund",
+        "exchange",
+        "store-credit",
+        "repair"
+      ]
+    },
+    "method": {
+      "enum": [
+        "pickup",
+        "drop-off",
+        "keep-it"
+      ]
+    },
+    "refundAmount": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/Money"
+    },
+    "approvedAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

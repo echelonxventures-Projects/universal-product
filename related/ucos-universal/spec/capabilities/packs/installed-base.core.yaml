@@ -1,0 +1,71 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: installed-base.core
+  version: 1.0.0
+  universe: U79-physical-asset-installed-base
+  steward: ucos:org:steward-physical-asset-installed-base
+  purpose: Installed Base owns individual physical things over their life.
+  capabilityKind: core
+  maturity: experimental
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.installed-base.AssetUnit
+    - ucos.installed-base.CustodyEvent
+    - ucos.installed-base.MaintenancePlan
+    - ucos.installed-base.MaintenanceRecord
+    - ucos.installed-base.Disposal
+    commands:
+    - RegisterUnit
+    - RecordCustodyEvent
+    - RecordMeterReading
+    - AssignMaintenancePlan
+    - RecordMaintenance
+    - ReportTheft
+    - RetireUnit
+    - RecordDisposal
+    queries:
+    - UnitsOwnedBy
+    - UnitBySerial
+    - ServiceHistory
+    - DueMaintenance
+    - InstalledBase
+    events:
+    - installed-base.unit.registered
+    - installed-base.unit.transferred
+    - installed-base.unit.maintenance-due
+    - installed-base.unit.retired
+    - installed-base.meter.recorded
+  requires:
+  - capability: product.intelligence
+    version: '>=1 <2'
+  - capability: inventory.core
+    version: '>=1 <2'
+  - capability: order.core
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  optional:
+  - capability: iot.core
+  - capability: warranty.core
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - R
+    - TRG
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

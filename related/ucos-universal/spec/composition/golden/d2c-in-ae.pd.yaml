@@ -1,0 +1,13 @@
+apiVersion: ucos.io/v1
+kind: PlatformDefinition
+metadata: { id: "ucos:pd:golden-d2c-in-ae", tenant: "ucos:tenant:golden-d2c", version: "1.0.0" }
+spec:
+  template: ucos:industry-template:single-brand-d2c@1
+  industry: [ucos:industry:retail/general-merchandise]
+  businessModel: [B2C, D2C]
+  geography: { countries: [IN, AE], primaryCurrency: { IN: INR, AE: AED }, languages: [en, hi, ar], dataResidency: strict }
+  channels: [web]
+  capabilities: { include: [catalog.listing, commerce.checkout, offer.engine, search.core], exclude: [] }
+  portals: [storefront, admin]
+  compliance: { frameworks: [PCI-DSS] }
+  security: { profile: high }

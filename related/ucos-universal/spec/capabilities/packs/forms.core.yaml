@@ -1,0 +1,57 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: forms.core
+  version: 1.0.0
+  universe: U97-forms-surveys-feedback
+  steward: ucos:org:steward-forms-surveys-feedback
+  purpose: Forms owns structured data collection from people.
+  capabilityKind: core
+  maturity: experimental
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.forms.FormDefinition
+    - ucos.forms.Distribution
+    - ucos.forms.Response
+    - ucos.forms.Insight
+    commands:
+    - PublishForm
+    - Distribute
+    - SubmitResponse
+    - CloseForm
+    events:
+    - forms.response.submitted
+    - forms.nps.detractor
+  requires:
+  - capability: ui.core
+    version: '>=1 <2'
+  - capability: meta.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: cdp.core
+    version: '>=1 <2'
+  - capability: observability.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - R
+    - TRG
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

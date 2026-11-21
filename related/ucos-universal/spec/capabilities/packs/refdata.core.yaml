@@ -1,0 +1,45 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: refdata.core
+  version: 1.0.0
+  universe: U08-reference-data
+  steward: ucos:org:steward-reference-data
+  purpose: "Authoritative standard code lists (ISO, IANA, UN, ISIC, CPC, HS, APQC\u2026) and crosswalks."
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.refdata.CodeList
+    - ucos.refdata.CodeValue
+    - ucos.refdata.CodeMapping
+    - ucos.refdata.CodeListRelease
+    commands:
+    - StageRelease
+    - PublishRelease
+    - CreateCodeList
+    - SetTenantAlias
+    queries:
+    - GetCode
+    - ListCodes
+    - MapCode
+    events:
+    - refdata.release.published
+    - refdata.code.deprecated
+  requires:
+  - capability: meta.core
+    version: '>=1 <2'
+  temporal:
+    kind: V
+    uses:
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

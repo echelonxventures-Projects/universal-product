@@ -1,0 +1,29 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: tax.gst-india
+  version: 1.0.0
+  universe: U31-tax
+  steward: ucos:org:steward-tax
+  purpose: India GST regime pack (CGST/SGST/IGST/cess, HSN/SAC, place of supply, TCS).
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - tax.determination
+  selection:
+    jurisdictions:
+    - ucos:jur:IN
+  temporal:
+    kind: E
+    uses:
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

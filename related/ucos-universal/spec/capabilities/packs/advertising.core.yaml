@@ -1,0 +1,70 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: advertising.core
+  version: 1.0.0
+  universe: U33-advertising
+  steward: ucos:org:steward-advertising
+  purpose: Advertising owns the platform's own ad business (retail/on-platform media).
+  capabilityKind: core
+  maturity: experimental
+  phase: 4
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.advertising.AdvertiserAccount
+    - ucos.advertising.Campaign
+    - ucos.advertising.AdGroup
+    - ucos.advertising.Creative
+    - ucos.advertising.AuctionLog
+    - ucos.advertising.AttributionResult
+    commands:
+    - CreateCampaign
+    - CreateAdGroup
+    - SubmitCreative
+    - ReviewCreative
+    - ServeAd
+    - RecordImpression
+    - RecordClick
+    - Attribute
+    - PauseCampaign
+    - BillSpend
+    events:
+    - advertising.campaign.started
+    - advertising.campaign.paused
+    - advertising.campaign.ended
+    - advertising.budget.exhausted
+    - advertising.creative.rejected
+  requires:
+  - capability: search.core
+    version: '>=1 <2'
+  - capability: marketplace.core
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: stored-value.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: risk.core
+    version: '>=1 <2'
+  - capability: observability.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+  optional:
+  - capability: recommendation.core
+  - capability: marketing.core

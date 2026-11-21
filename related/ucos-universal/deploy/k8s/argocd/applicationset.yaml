@@ -1,0 +1,23 @@
+# Argo CD deploys each cell from this repository (ADR-024). One Application per cell, on any Kubernetes
+# (ADR-037: provider-agnostic); a cell is listed here once it is provisioned and has passed tools/cell_smoke.sh.
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata: { name: ucos-cells, namespace: argocd }
+spec:
+  goTemplate: true
+  generators:
+    - list:
+        elements:
+          - { cell: dev-1, environment: dev, server: "https://kubernetes.default.svc" }
+  template:
+    metadata: { name: "ucos-{{ .cell }}" }
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/echelonxventures-Projects/UCOS-UNIVERSAL.git
+        targetRevision: main
+        path: "deploy/k8s/overlays/{{ .environment }}"
+      destination: { server: "{{ .server }}" }
+      syncPolicy:
+        automated: { prune: true, selfHeal: true }
+        syncOptions: [ServerSideApply=true]

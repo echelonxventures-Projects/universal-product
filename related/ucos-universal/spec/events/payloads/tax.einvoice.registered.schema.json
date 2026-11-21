@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/tax.einvoice.registered/1.json",
+  "title": "tax.einvoice.registered",
+  "description": "The tax authority registered an e-invoice (for example IRN and signed QR from the Indian IRP).",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true,
+    "producer": "tax.core"
+  },
+  "type": "object",
+  "required": [
+    "taxDocumentId",
+    "regime",
+    "authorityReference",
+    "registeredAt"
+  ],
+  "properties": {
+    "taxDocumentId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "regime": {
+      "type": "string"
+    },
+    "authorityReference": {
+      "type": "string",
+      "description": "IRN or equivalent"
+    },
+    "acknowledgementNumber": {
+      "type": "string"
+    },
+    "signedQr": {
+      "type": "string"
+    },
+    "registeredAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

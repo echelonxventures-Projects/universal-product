@@ -1,0 +1,13 @@
+apiVersion: ucos.io/v1
+kind: PlatformDefinition
+metadata: { id: "ucos:pd:golden-omnichannel-in", tenant: "ucos:tenant:golden-omni", version: "1.0.0" }
+spec:
+  template: ucos:industry-template:single-brand-d2c@1
+  targetPhase: 4
+  industry: [ucos:industry:retail/electronics]
+  businessModel: [B2C, D2C]
+  geography: { countries: [IN], primaryCurrency: { IN: INR }, languages: [en, hi], dataResidency: strict }
+  channels: [web, web-push, ios, android, whatsapp, live-chat, voice, video, telegram, rcs]
+  capabilities: { include: [catalog.listing, commerce.checkout, offer.engine, search.core, communication.broadcast, communication.agent-protocol] }
+  compliance: { frameworks: [PCI-DSS] }
+  security: { profile: high }

@@ -1,0 +1,100 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: fulfillment.core
+  version: 1.0.0
+  universe: U35-fulfillment
+  steward: ucos:org:steward-fulfillment
+  purpose: Fulfilment profiles, options and promises, sourcing, fulfilment orders, shipments, pickup and digital delivery.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.fulfillment.FulfilmentProfile
+    - ucos.fulfillment.FulfillmentOrder
+    - ucos.fulfillment.Shipment
+    - ucos.fulfillment.PickupOrder
+    - ucos.fulfillment.DigitalDelivery
+    - ucos.fulfillment.ReturnShipment
+    commands:
+    - PlanFulfilment
+    - CreateFulfillmentOrders
+    - StartPick
+    - ConfirmPack
+    - CreateLabel
+    - Dispatch
+    - RecordTrackingEvent
+    - RecordDelivery
+    - RecordDeliveryFailure
+    - ScheduleReattempt
+    - InitiateRTO
+    - CreatePickupOrder
+    - ConfirmPickup
+    - CreateReturnShipment
+    - ReceiveReturnShipment
+    queries:
+    - FulfilmentOptions
+    - Tracking
+    events:
+    - fulfillment.order.created
+    - fulfillment.order.allocated
+    - fulfillment.order.packed
+    - fulfillment.shipment.created
+    - fulfillment.shipment.dispatched
+    - fulfillment.shipment.in-transit
+    - fulfillment.shipment.out-for-delivery
+    - fulfillment.shipment.delivered
+    - fulfillment.shipment.failed
+    - fulfillment.shipment.rto
+    - fulfillment.pickup.ready
+    - fulfillment.pickup.completed
+    - fulfillment.pickup.expired
+    - fulfillment.digital.delivered
+  consumes:
+    events:
+    - order.order.confirmed
+    - order.return.approved
+  requires:
+  - capability: inventory.core
+    version: '>=1 <2'
+  - capability: logistics.carrier
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: document.core
+    version: '>=1 <2'
+  - capability: integration.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - CAL
+    - BD
+    - D
+    - AV
+    - TRG
+    - SLA
+    - TR
+  security:
+    dataClasses:
+    - PII
+    - LOCATION
+    threatModel: docs/threat-models/geo-and-fulfillment.md
+  ui:
+    views:
+    - delivery.promise
+    - order.tracking
+    - fulfillment.queue
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

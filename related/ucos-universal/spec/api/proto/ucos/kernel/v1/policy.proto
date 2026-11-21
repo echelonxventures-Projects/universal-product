@@ -1,0 +1,32 @@
+// Policy decision point (U03, ADR-005). Cedar evaluation; layered platform -> universe -> tenant.
+syntax = "proto3";
+package ucos.kernel.v1;
+option go_package = "ucos.io/kernel/gen/ucos/kernel/v1;kernelv1";
+
+import "google/protobuf/struct.proto";
+import "ucos/kernel/v1/common.proto";
+
+service PolicyDecisionPoint {
+  rpc IsAuthorized(AuthorizeRequest) returns (AuthorizeResponse);
+  // Returns a residual expression for query filtering (Cedar partial evaluation).
+  rpc PartialEvaluate(AuthorizeRequest) returns (PartialResponse);
+}
+message AuthorizeRequest {
+  string context_token = 1;
+  string principal = 2;                  // Cedar entity uid
+  string action = 3;                     // e.g. "marketplace:ApprovePayout"
+  string resource = 4;
+  google.protobuf.Struct context = 5;
+  repeated google.protobuf.Struct entities = 6;
+}
+message AuthorizeResponse {
+  enum Decision { DECISION_UNSPECIFIED = 0; ALLOW = 1; DENY = 2; }
+  Decision decision = 1;
+  repeated string determining_policies = 2;
+  repeated Obligation obligations = 3;
+  repeated string errors = 4;
+}
+message PartialResponse {
+  string residual_cel = 1;               // ANDed into object queries
+  repeated Obligation obligations = 2;
+}

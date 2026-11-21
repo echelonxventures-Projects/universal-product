@@ -1,0 +1,65 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: party.core
+  version: 1.0.0
+  universe: U11-person-party
+  steward: ucos:org:steward-person-party
+  purpose: Persons, organisations as parties, roles, contact points, preferences, merge and erasure.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.party.Party
+    - ucos.party.Person
+    - ucos.party.PartyRole
+    - ucos.party.ContactPoint
+    - ucos.party.Preference
+    - ucos.party.PartyRelationship
+    commands:
+    - CreatePerson
+    - UpdatePerson
+    - AssignRole
+    - EndRole
+    - AddContactPoint
+    - VerifyContactPoint
+    - MergeParties
+    - ErasePerson
+    queries:
+    - GetPerson
+    - FindCandidates
+    - ListReferences
+    - ContactFor
+    events:
+    - party.person.created
+    - party.person.merged
+    - party.person.erased
+    - party.role.assigned
+    - party.contact.verified
+  requires:
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: l10n.core
+    version: '>=1 <2'
+  - capability: meta.core
+    version: '>=1 <2'
+  temporal:
+    kind: E
+    uses:
+    - TR
+    - TP
+  security:
+    dataClasses:
+    - PII
+    - SPI
+    threatModel: docs/threat-models/party-and-privacy.md
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

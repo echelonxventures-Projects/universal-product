@@ -1,0 +1,83 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: trust.core
+  version: 1.0.0
+  universe: U70-trust-reputation
+  steward: ucos:org:steward-trust-reputation
+  purpose: Reviews and ratings with verified-experience badges, moderation, published aggregation method and trust badges.
+  capabilityKind: core
+  maturity: beta
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.trust.Review
+    - ucos.trust.ReviewResponse
+    - ucos.trust.Aggregate
+    - ucos.trust.TrustScore
+    - ucos.trust.Badge
+    commands:
+    - RequestReview
+    - SubmitReview
+    - ModerateReview
+    - RespondToReview
+    - ReportReview
+    - RecomputeAggregates
+    - AwardBadge
+    - RevokeBadge
+    events:
+    - trust.review.published
+    - trust.review.removed
+    - trust.aggregate.updated
+    - trust.badge.awarded
+    - trust.badge.revoked
+    decisions:
+    - trust.review-moderation
+  consumes:
+    events:
+    - fulfillment.shipment.delivered
+  requires:
+  - capability: order.core
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: risk.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  - capability: asset.core
+    version: '>=1 <2'
+  optional:
+  - capability: marketplace.core
+  - capability: product.intelligence
+  temporal:
+    kind: S
+    uses:
+    - TRG
+    - D
+  security:
+    dataClasses:
+    - PII
+    threatModel: docs/threat-models/kernel-and-tenancy.md
+  compliance:
+    controls:
+    - ucos.ctrl.authentic-reviews
+  ui:
+    views:
+    - trust.pdp-reviews
+    - trust.write-review
+    - trust.moderation-queue
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

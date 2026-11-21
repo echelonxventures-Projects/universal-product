@@ -1,0 +1,25 @@
+kind: DecisionTable
+id: subscription.renewal-notice
+owner: subscription.core
+hitPolicy: FIRST
+description: 'SUB-L2/L3. India: pre-debit notification at least 24 hours before each recurring debit (RBI e-mandate). Reminders are configurable upwards only.'
+inputs:
+- {name: jurisdiction, type: JurisdictionRef}
+- {name: mandate, type: Enumeration}
+- {name: cycle, type: Enumeration}
+outputs:
+- {name: preDebitNotice, type: Duration}
+- {name: renewalReminder, type: Duration}
+configurableBounds: ['preDebitNotice >= statutoryPreDebitNotice(jurisdiction, mandate)']
+rules:
+- ['ucos:jur:IN', upi-autopay, '*', PT24H, P7D]
+- ['ucos:jur:IN', card, '*', PT24H, P7D]
+- ['*', '*', annual, PT0S, P30D]
+- ['*', '*', '*', PT0S, P3D]
+tests:
+- input: ['ucos:jur:IN', upi-autopay, monthly]
+  expect: [PT24H, P7D]
+- input: ['ucos:jur:AE', card, annual]
+  expect: [PT0S, P30D]
+- input: ['ucos:jur:AE', card, monthly]
+  expect: [PT0S, P3D]

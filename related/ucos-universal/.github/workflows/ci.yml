@@ -1,0 +1,97 @@
+# Checks every pull request, every push to main, nightly, and on demand. Runs only tools/ci.sh.
+name: CI
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "17 2 * * *"      # nightly: catches toolchain and dependency drift
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+jobs:
+  check:
+    name: tools/ci.sh
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      CI: "true"
+      PIP_DISABLE_PIP_VERSION_CHECK: "1"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: ./.github/actions/setup-toolchain
+      - name: Base ref for proto breaking-change detection
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "BUF_BASE_REF=${{ github.event.pull_request.base.sha }}" >> "$GITHUB_ENV"
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]]; then
+            echo "BUF_BASE_REF=${{ github.event.before }}" >> "$GITHUB_ENV"
+          fi
+      - name: Run CI
+        run: tools/ci.sh
+      - name: Upload rendered site
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site-${{ github.sha }}
+          path: generated/site
+          retention-days: 7
+          if-no-files-found: ignore
+
+  container:
+    name: Container image builds
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: docker/setup-buildx-action@f87e5991a6d7451dcb8d9637bfbc97413f497069 # v4.4.1
+      - name: Build (no push)
+        uses: docker/build-push-action@c3c9e263c25d99ce0380d002d59b67737d91b0dc # v7.4.0
+        with:
+          context: kernel
+          push: false
+          load: true
+          tags: ucos:ci
+      - name: Smoke test the image
+        run: |
+          docker run --rm ucos:ci version
+          test "$(docker run --rm ucos:ci business-add 2027-01-25T10:00:00+05:30 16 Asia/Kolkata 2027-01-26)" = "2027-01-27T17:00:00+05:30"
+          test "$(docker run --rm --entrypoint /ucos ucos:ci allocate 100.00 INR 1,1,1 | head -1)" = "33.34"
+
+  devstack:
+    name: Local dev stack starts and works
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: kernel/go.mod
+          cache-dependency-path: kernel/go.sum
+      - name: Start the stack, smoke-test every service, run the Phase 0 flow through ucos-kernel
+        run: tools/devstack_smoke.sh
+
+  cell:
+    name: Cell on Kubernetes (kind) runs the Phase 0 flow
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7.0.0
+        with:
+          go-version-file: kernel/go.mod
+          cache-dependency-path: kernel/go.sum
+      - name: Create a kind cluster, deploy deploy/k8s/overlays/local, run the Phase 0 flow through it
+        run: tools/cell_smoke.sh

@@ -1,0 +1,80 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: workforce.core
+  version: 1.0.0
+  universe: U46-workforce-hrms
+  steward: ucos:org:steward-workforce-hrms
+  purpose: Workforce owns people employed or engaged by an organisation.
+  capabilityKind: core
+  maturity: experimental
+  phase: 4
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.workforce.Employee
+    - ucos.workforce.Position
+    - ucos.workforce.Shift
+    - ucos.workforce.AttendanceRecord
+    - ucos.workforce.LeaveRequest
+    - ucos.workforce.PayrollRun
+    commands:
+    - Hire
+    - Onboard
+    - Transfer
+    - Terminate
+    - PublishRoster
+    - ClockIn
+    - ClockOut
+    - RequestLeave
+    - ApproveLeave
+    - RunPayroll
+    - ApprovePayroll
+    - IssuePayslips
+    - SetGoals
+    - SubmitReview
+    events:
+    - workforce.employee.hired
+    - workforce.employee.transferred
+    - workforce.employee.terminated
+    - workforce.leave.approved
+    - workforce.payroll.approved
+  requires:
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: resource.core
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: tax.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: contract.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  optional:
+  - capability: learning.core
+  temporal:
+    kind: S
+    uses:
+    - AV
+    - TP
+    - R
+    - D
+    - CAL
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

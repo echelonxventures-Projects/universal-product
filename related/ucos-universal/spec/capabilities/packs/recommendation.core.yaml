@@ -1,0 +1,54 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: recommendation.core
+  version: 1.0.0
+  universe: U52-recommendation
+  steward: ucos:org:steward-recommendation
+  purpose: Recommendation owns ranked suggestions for slots.
+  capabilityKind: core
+  maturity: experimental
+  phase: 4
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.recommendation.Slot
+    - ucos.recommendation.Strategy
+    - ucos.recommendation.RecommendationResponse
+    queries:
+    - Recommend
+    - DefineSlot
+    - PinItems
+    - StartExperiment
+  requires:
+  - capability: ml.core
+    version: '>=1 <2'
+  - capability: event.core
+    version: '>=1 <2'
+  - capability: catalog.listing
+    version: '>=1 <2'
+  - capability: industry.registry
+    version: '>=1 <2'
+  - capability: context.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: search.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: advertising.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - D
+    - POL
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

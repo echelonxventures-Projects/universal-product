@@ -1,0 +1,37 @@
+# gVisor sandbox for third-party packs (ADR-025). Nodes in the sandbox pool run runsc.
+apiVersion: node.k8s.io/v1
+kind: RuntimeClass
+metadata: { name: gvisor }
+handler: runsc
+scheduling:
+  nodeSelector: { ucos.io/pool: sandbox }
+---
+# Service tiers (master §26): T0 is never preempted by lower tiers.
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: { name: ucos-t0 }
+value: 1000000
+globalDefault: false
+description: "T0: request path and safety (gateway, command bus, object service, PDP, audit, triggers)"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: { name: ucos-t1 }
+value: 100000
+globalDefault: false
+description: "T1: business services (checkout, order, payment, inventory)"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: { name: ucos-t2 }
+value: 10000
+globalDefault: true
+description: "T2: default"
+---
+apiVersion: scheduling.k8s.io/v1
+kind: PriorityClass
+metadata: { name: ucos-t3 }
+value: 1000
+globalDefault: false
+preemptionPolicy: Never
+description: "T3: batch and analytics; never preempts"

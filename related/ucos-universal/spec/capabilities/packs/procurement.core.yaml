@@ -1,0 +1,77 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: procurement.core
+  version: 1.0.0
+  universe: U45-erp-procurement
+  steward: ucos:org:steward-erp-procurement
+  purpose: Procurement owns buying from suppliers.
+  capabilityKind: core
+  maturity: experimental
+  phase: 4
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.procurement.Supplier
+    - ucos.procurement.Requisition
+    - ucos.procurement.SourcingEvent
+    - ucos.procurement.PurchaseOrder
+    - ucos.procurement.Receipt
+    - ucos.procurement.SupplierInvoice
+    - ucos.procurement.SupplierScorecard
+    commands:
+    - OnboardSupplier
+    - CreateRequisition
+    - ApproveRequisition
+    - RunSourcingEvent
+    - AwardSourcing
+    - IssuePO
+    - ChangePO
+    - ReceiveGoods
+    - CaptureSupplierInvoice
+    - MatchInvoice
+    - ApproveForPayment
+    events:
+    - procurement.po.issued
+    - procurement.po.changed
+    - procurement.po.closed
+    - procurement.receipt.posted
+    - procurement.invoice.matched
+    - procurement.invoice.exception
+  requires:
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: contract.core
+    version: '>=1 <2'
+  - capability: industry.registry
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: tax.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: trade.core
+    version: '>=1 <2'
+  optional:
+  - capability: strategy.core
+  - capability: esg.core
+  temporal:
+    kind: S
+    uses:
+    - TRG
+    - TP
+    - BD
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

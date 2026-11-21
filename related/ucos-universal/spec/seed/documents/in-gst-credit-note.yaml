@@ -1,0 +1,23 @@
+kind: DocumentTemplate
+id: doc.in.gst-credit-note
+version: 1.0.0
+jurisdiction: ucos:jur:IN
+owner: U42 + U31
+legalBasis: CGST Act 2017, section 34; CGST Rules 2017, Rule 53
+title: Credit Note
+requiredFields:
+- field: supplier.name
+- field: supplier.address
+- field: supplier.gstin
+- field: creditNote.number
+- field: creditNote.date
+- field: originalInvoice.number
+- field: originalInvoice.date
+- field: recipient.name
+- field: recipient.address
+- field: recipient.gstin (if registered)
+- field: lines[].taxableValue
+- field: lines[].taxRate
+- field: lines[].taxAmount
+- field: reason
+- field: signature

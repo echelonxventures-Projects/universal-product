@@ -1,0 +1,17 @@
+# Bots propose tool updates; they pass the same tools/ci.sh before anyone merges them.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule: { interval: weekly }
+    groups: { actions: { patterns: ["*"] } }
+  - package-ecosystem: pip
+    directory: /tools
+    schedule: { interval: weekly }
+    groups: { python-tools: { patterns: ["*"] } }
+  - package-ecosystem: npm
+    directory: /tools/site
+    schedule: { interval: weekly }
+  - package-ecosystem: gomod
+    directory: /kernel
+    schedule: { interval: weekly }

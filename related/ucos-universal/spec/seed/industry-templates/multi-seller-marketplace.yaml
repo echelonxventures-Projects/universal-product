@@ -1,0 +1,20 @@
+kind: IndustryTemplate
+id: ucos:industry-template:multi-seller-marketplace
+version: 1.0.0
+name: Multi-seller marketplace
+businessModel:
+- B2C
+- Marketplace
+capabilities:
+  include:
+  - catalog.listing
+  - commerce.checkout
+  - offer.engine
+  - search.core
+  - marketplace.core
+  - ledger.core
+  - logistics.core
+  - risk.core
+  - trust.core
+notes: Phase 2 reference template (golden marketplace-in-ae).
+status: published

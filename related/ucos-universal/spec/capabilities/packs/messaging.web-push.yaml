@@ -1,0 +1,33 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: messaging.web-push
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: Web Push (VAPID) adapter for browser notifications.
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - messaging.provider
+  requires:
+  - capability: integration.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - '*'
+    methods:
+    - web-push
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

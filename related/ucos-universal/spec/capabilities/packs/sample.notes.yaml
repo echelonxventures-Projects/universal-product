@@ -1,0 +1,68 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: sample.notes
+  version: 1.0.0
+  universe: U57-capability
+  steward: ucos:org:steward-capability
+  purpose: 'Sample pack for the Phase 0 exit test: an object type defined only in spec/, composed, certified, activated and exercised end to end.'
+  capabilityKind: core
+  maturity: experimental
+  phase: 0
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.sample.Note
+    commands:
+    - CreateNote
+    - EditNote
+    - PublishNote
+    - ArchiveNote
+    - ScheduleNoteReminder
+    - RemindNote
+    queries:
+    - GetNote
+    - ListNotes
+    events:
+    - sample.note.created
+    - sample.note.published
+    - sample.note.archived
+    - sample.note.reminded
+  consumes:
+    events:
+    - temporal.trigger.fired
+  requires:
+  - capability: meta.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: policy.core
+    version: '>=1 <2'
+  - capability: audit.core
+    version: '>=1 <2'
+  - capability: event.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TRG
+  security:
+    dataClasses:
+    - PII
+    threatModel: docs/threat-models/kernel-and-tenancy.md
+  ui:
+    views:
+    - sample.note.list
+    - sample.note.editor
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

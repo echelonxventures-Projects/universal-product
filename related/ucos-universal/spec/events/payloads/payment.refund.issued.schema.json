@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/payment.refund.issued/1.json",
+  "title": "payment.refund.issued",
+  "description": "A refund was accepted by the PSP (or recorded for COD). Sum of refunds never exceeds the captured amount.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true,
+    "producer": "payment.core"
+  },
+  "type": "object",
+  "required": [
+    "refundId",
+    "paymentIntentId",
+    "amount",
+    "reason",
+    "issuedAt"
+  ],
+  "properties": {
+    "refundId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "paymentIntentId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "orderId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "returnId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "amount": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/Money"
+    },
+    "reason": {
+      "type": "string"
+    },
+    "destination": {
+      "enum": [
+        "original-method",
+        "store-credit",
+        "bank-transfer"
+      ]
+    },
+    "issuedAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

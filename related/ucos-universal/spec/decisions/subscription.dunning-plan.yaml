@@ -1,0 +1,17 @@
+kind: DecisionTable
+id: subscription.dunning-plan
+owner: subscription.core
+hitPolicy: FIRST
+inputs:
+- {name: planTier, type: Enumeration}
+outputs:
+- {name: retrySchedule, type: String}
+- {name: finalAction, type: Enumeration}
+rules:
+- [enterprise, 'P1D,P3D,P7D,P14D', notify-account-manager]
+- ['*', 'P1D,P3D,P7D', cancel]
+tests:
+- input: [enterprise]
+  expect: ['P1D,P3D,P7D,P14D', notify-account-manager]
+- input: [starter]
+  expect: ['P1D,P3D,P7D', cancel]

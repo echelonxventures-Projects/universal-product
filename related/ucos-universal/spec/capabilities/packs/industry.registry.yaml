@@ -1,0 +1,42 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: industry.registry
+  version: 1.0.0
+  universe: U20-industry
+  steward: ucos:org:steward-industry
+  purpose: Industry classification and certified industry templates that pre-fill platform definitions.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.industry.IndustryTemplate
+    - ucos.industry.Standard
+    - ucos.industry.Benchmark
+    commands:
+    - PublishTemplate
+    - DeprecateTemplate
+    queries:
+    - TemplatesFor
+    - ExpandTemplate
+    events:
+    - industry.template.published
+  requires:
+  - capability: taxonomy.core
+    version: '>=1 <2'
+  - capability: refdata.core
+    version: '>=1 <2'
+  temporal:
+    kind: V
+    uses:
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

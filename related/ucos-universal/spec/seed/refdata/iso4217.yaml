@@ -1,0 +1,725 @@
+kind: CodeListRelease
+id: iso4217
+release: pycountry-26.2.16
+source: Debian iso-codes via pycountry 26.2.16; minor units from Unicode CLDR via babel 2.18.0
+licence:
+  id: LGPL-2.1-or-later
+  redistribution: allowed
+  attribution: Debian iso-codes project
+  cldr: Unicode-3.0 (minor units)
+bundled: true
+note: minorUnit is the CLDR default precision; it matches ISO 4217 minor units for INR, AED, USD, EUR, GBP, SAR, JPY, KWD and BHD. U14 RoundingRules may override per currency.
+count: 178
+entries:
+- alpha3: AED
+  numeric: '784'
+  name: UAE Dirham
+  minorUnit: 2
+- alpha3: AFN
+  numeric: '971'
+  name: Afghani
+  minorUnit: 0
+- alpha3: ALL
+  numeric: 008
+  name: Lek
+  minorUnit: 0
+- alpha3: AMD
+  numeric: '051'
+  name: Armenian Dram
+  minorUnit: 2
+- alpha3: AOA
+  numeric: '973'
+  name: Kwanza
+  minorUnit: 2
+- alpha3: ARS
+  numeric: '032'
+  name: Argentine Peso
+  minorUnit: 2
+- alpha3: AUD
+  numeric: '036'
+  name: Australian Dollar
+  minorUnit: 2
+- alpha3: AWG
+  numeric: '533'
+  name: Aruban Florin
+  minorUnit: 2
+- alpha3: AZN
+  numeric: '944'
+  name: Azerbaijan Manat
+  minorUnit: 2
+- alpha3: BAM
+  numeric: '977'
+  name: Convertible Mark
+  minorUnit: 2
+- alpha3: BBD
+  numeric: '052'
+  name: Barbados Dollar
+  minorUnit: 2
+- alpha3: BDT
+  numeric: '050'
+  name: Taka
+  minorUnit: 2
+- alpha3: BHD
+  numeric: 048
+  name: Bahraini Dinar
+  minorUnit: 3
+- alpha3: BIF
+  numeric: '108'
+  name: Burundi Franc
+  minorUnit: 0
+- alpha3: BMD
+  numeric: '060'
+  name: Bermudian Dollar
+  minorUnit: 2
+- alpha3: BND
+  numeric: 096
+  name: Brunei Dollar
+  minorUnit: 2
+- alpha3: BOB
+  numeric: 068
+  name: Boliviano
+  minorUnit: 2
+- alpha3: BOV
+  numeric: '984'
+  name: Mvdol
+  minorUnit: 2
+- alpha3: BRL
+  numeric: '986'
+  name: Brazilian Real
+  minorUnit: 2
+- alpha3: BSD
+  numeric: '044'
+  name: Bahamian Dollar
+  minorUnit: 2
+- alpha3: BTN
+  numeric: '064'
+  name: Ngultrum
+  minorUnit: 2
+- alpha3: BWP
+  numeric: '072'
+  name: Pula
+  minorUnit: 2
+- alpha3: BYN
+  numeric: '933'
+  name: Belarusian Ruble
+  minorUnit: 2
+- alpha3: BZD
+  numeric: 084
+  name: Belize Dollar
+  minorUnit: 2
+- alpha3: CAD
+  numeric: '124'
+  name: Canadian Dollar
+  minorUnit: 2
+- alpha3: CDF
+  numeric: '976'
+  name: Congolese Franc
+  minorUnit: 2
+- alpha3: CHE
+  numeric: '947'
+  name: WIR Euro
+  minorUnit: 2
+- alpha3: CHF
+  numeric: '756'
+  name: Swiss Franc
+  minorUnit: 2
+- alpha3: CHW
+  numeric: '948'
+  name: WIR Franc
+  minorUnit: 2
+- alpha3: CLF
+  numeric: '990'
+  name: Unidad de Fomento
+  minorUnit: 4
+- alpha3: CLP
+  numeric: '152'
+  name: Chilean Peso
+  minorUnit: 0
+- alpha3: CNY
+  numeric: '156'
+  name: Yuan Renminbi
+  minorUnit: 2
+- alpha3: COP
+  numeric: '170'
+  name: Colombian Peso
+  minorUnit: 2
+- alpha3: COU
+  numeric: '970'
+  name: Unidad de Valor Real
+  minorUnit: 2
+- alpha3: CRC
+  numeric: '188'
+  name: Costa Rican Colon
+  minorUnit: 2
+- alpha3: CUP
+  numeric: '192'
+  name: Cuban Peso
+  minorUnit: 2
+- alpha3: CVE
+  numeric: '132'
+  name: Cabo Verde Escudo
+  minorUnit: 2
+- alpha3: CZK
+  numeric: '203'
+  name: Czech Koruna
+  minorUnit: 2
+- alpha3: DJF
+  numeric: '262'
+  name: Djibouti Franc
+  minorUnit: 0
+- alpha3: DKK
+  numeric: '208'
+  name: Danish Krone
+  minorUnit: 2
+- alpha3: DOP
+  numeric: '214'
+  name: Dominican Peso
+  minorUnit: 2
+- alpha3: DZD
+  numeric: '012'
+  name: Algerian Dinar
+  minorUnit: 2
+- alpha3: EGP
+  numeric: '818'
+  name: Egyptian Pound
+  minorUnit: 2
+- alpha3: ERN
+  numeric: '232'
+  name: Nakfa
+  minorUnit: 2
+- alpha3: ETB
+  numeric: '230'
+  name: Ethiopian Birr
+  minorUnit: 2
+- alpha3: EUR
+  numeric: '978'
+  name: Euro
+  minorUnit: 2
+- alpha3: FJD
+  numeric: '242'
+  name: Fiji Dollar
+  minorUnit: 2
+- alpha3: FKP
+  numeric: '238'
+  name: Falkland Islands Pound
+  minorUnit: 2
+- alpha3: GBP
+  numeric: '826'
+  name: Pound Sterling
+  minorUnit: 2
+- alpha3: GEL
+  numeric: '981'
+  name: Lari
+  minorUnit: 2
+- alpha3: GHS
+  numeric: '936'
+  name: Ghana Cedi
+  minorUnit: 2
+- alpha3: GIP
+  numeric: '292'
+  name: Gibraltar Pound
+  minorUnit: 2
+- alpha3: GMD
+  numeric: '270'
+  name: Dalasi
+  minorUnit: 2
+- alpha3: GNF
+  numeric: '324'
+  name: Guinean Franc
+  minorUnit: 0
+- alpha3: GTQ
+  numeric: '320'
+  name: Quetzal
+  minorUnit: 2
+- alpha3: GYD
+  numeric: '328'
+  name: Guyana Dollar
+  minorUnit: 2
+- alpha3: HKD
+  numeric: '344'
+  name: Hong Kong Dollar
+  minorUnit: 2
+- alpha3: HNL
+  numeric: '340'
+  name: Lempira
+  minorUnit: 2
+- alpha3: HTG
+  numeric: '332'
+  name: Gourde
+  minorUnit: 2
+- alpha3: HUF
+  numeric: '348'
+  name: Forint
+  minorUnit: 2
+- alpha3: IDR
+  numeric: '360'
+  name: Rupiah
+  minorUnit: 2
+- alpha3: ILS
+  numeric: '376'
+  name: New Israeli Sheqel
+  minorUnit: 2
+- alpha3: INR
+  numeric: '356'
+  name: Indian Rupee
+  minorUnit: 2
+- alpha3: IQD
+  numeric: '368'
+  name: Iraqi Dinar
+  minorUnit: 0
+- alpha3: IRR
+  numeric: '364'
+  name: Iranian Rial
+  minorUnit: 0
+- alpha3: ISK
+  numeric: '352'
+  name: Iceland Krona
+  minorUnit: 0
+- alpha3: JMD
+  numeric: '388'
+  name: Jamaican Dollar
+  minorUnit: 2
+- alpha3: JOD
+  numeric: '400'
+  name: Jordanian Dinar
+  minorUnit: 3
+- alpha3: JPY
+  numeric: '392'
+  name: Yen
+  minorUnit: 0
+- alpha3: KES
+  numeric: '404'
+  name: Kenyan Shilling
+  minorUnit: 2
+- alpha3: KGS
+  numeric: '417'
+  name: Som
+  minorUnit: 2
+- alpha3: KHR
+  numeric: '116'
+  name: Riel
+  minorUnit: 2
+- alpha3: KMF
+  numeric: '174'
+  name: Comorian Franc
+  minorUnit: 0
+- alpha3: KPW
+  numeric: '408'
+  name: North Korean Won
+  minorUnit: 0
+- alpha3: KRW
+  numeric: '410'
+  name: Won
+  minorUnit: 0
+- alpha3: KWD
+  numeric: '414'
+  name: Kuwaiti Dinar
+  minorUnit: 3
+- alpha3: KYD
+  numeric: '136'
+  name: Cayman Islands Dollar
+  minorUnit: 2
+- alpha3: KZT
+  numeric: '398'
+  name: Tenge
+  minorUnit: 2
+- alpha3: LAK
+  numeric: '418'
+  name: Lao Kip
+  minorUnit: 0
+- alpha3: LBP
+  numeric: '422'
+  name: Lebanese Pound
+  minorUnit: 0
+- alpha3: LKR
+  numeric: '144'
+  name: Sri Lanka Rupee
+  minorUnit: 2
+- alpha3: LRD
+  numeric: '430'
+  name: Liberian Dollar
+  minorUnit: 2
+- alpha3: LSL
+  numeric: '426'
+  name: Loti
+  minorUnit: 2
+- alpha3: LYD
+  numeric: '434'
+  name: Libyan Dinar
+  minorUnit: 3
+- alpha3: MAD
+  numeric: '504'
+  name: Moroccan Dirham
+  minorUnit: 2
+- alpha3: MDL
+  numeric: '498'
+  name: Moldovan Leu
+  minorUnit: 2
+- alpha3: MGA
+  numeric: '969'
+  name: Malagasy Ariary
+  minorUnit: 0
+- alpha3: MKD
+  numeric: '807'
+  name: Denar
+  minorUnit: 2
+- alpha3: MMK
+  numeric: '104'
+  name: Kyat
+  minorUnit: 0
+- alpha3: MNT
+  numeric: '496'
+  name: Tugrik
+  minorUnit: 2
+- alpha3: MOP
+  numeric: '446'
+  name: Pataca
+  minorUnit: 2
+- alpha3: MRU
+  numeric: '929'
+  name: Ouguiya
+  minorUnit: 2
+- alpha3: MUR
+  numeric: '480'
+  name: Mauritius Rupee
+  minorUnit: 2
+- alpha3: MVR
+  numeric: '462'
+  name: Rufiyaa
+  minorUnit: 2
+- alpha3: MWK
+  numeric: '454'
+  name: Malawi Kwacha
+  minorUnit: 2
+- alpha3: MXN
+  numeric: '484'
+  name: Mexican Peso
+  minorUnit: 2
+- alpha3: MXV
+  numeric: '979'
+  name: Mexican Unidad de Inversion (UDI)
+  minorUnit: 2
+- alpha3: MYR
+  numeric: '458'
+  name: Malaysian Ringgit
+  minorUnit: 2
+- alpha3: MZN
+  numeric: '943'
+  name: Mozambique Metical
+  minorUnit: 2
+- alpha3: NAD
+  numeric: '516'
+  name: Namibia Dollar
+  minorUnit: 2
+- alpha3: NGN
+  numeric: '566'
+  name: Naira
+  minorUnit: 2
+- alpha3: NIO
+  numeric: '558'
+  name: Cordoba Oro
+  minorUnit: 2
+- alpha3: NOK
+  numeric: '578'
+  name: Norwegian Krone
+  minorUnit: 2
+- alpha3: NPR
+  numeric: '524'
+  name: Nepalese Rupee
+  minorUnit: 2
+- alpha3: NZD
+  numeric: '554'
+  name: New Zealand Dollar
+  minorUnit: 2
+- alpha3: OMR
+  numeric: '512'
+  name: Rial Omani
+  minorUnit: 3
+- alpha3: PAB
+  numeric: '590'
+  name: Balboa
+  minorUnit: 2
+- alpha3: PEN
+  numeric: '604'
+  name: Sol
+  minorUnit: 2
+- alpha3: PGK
+  numeric: '598'
+  name: Kina
+  minorUnit: 2
+- alpha3: PHP
+  numeric: '608'
+  name: Philippine Peso
+  minorUnit: 2
+- alpha3: PKR
+  numeric: '586'
+  name: Pakistan Rupee
+  minorUnit: 2
+- alpha3: PLN
+  numeric: '985'
+  name: Zloty
+  minorUnit: 2
+- alpha3: PYG
+  numeric: '600'
+  name: Guarani
+  minorUnit: 0
+- alpha3: QAR
+  numeric: '634'
+  name: Qatari Rial
+  minorUnit: 2
+- alpha3: RON
+  numeric: '946'
+  name: Romanian Leu
+  minorUnit: 2
+- alpha3: RSD
+  numeric: '941'
+  name: Serbian Dinar
+  minorUnit: 0
+- alpha3: RUB
+  numeric: '643'
+  name: Russian Ruble
+  minorUnit: 2
+- alpha3: RWF
+  numeric: '646'
+  name: Rwanda Franc
+  minorUnit: 0
+- alpha3: SAR
+  numeric: '682'
+  name: Saudi Riyal
+  minorUnit: 2
+- alpha3: SBD
+  numeric: 090
+  name: Solomon Islands Dollar
+  minorUnit: 2
+- alpha3: SCR
+  numeric: '690'
+  name: Seychelles Rupee
+  minorUnit: 2
+- alpha3: SDG
+  numeric: '938'
+  name: Sudanese Pound
+  minorUnit: 2
+- alpha3: SEK
+  numeric: '752'
+  name: Swedish Krona
+  minorUnit: 2
+- alpha3: SGD
+  numeric: '702'
+  name: Singapore Dollar
+  minorUnit: 2
+- alpha3: SHP
+  numeric: '654'
+  name: Saint Helena Pound
+  minorUnit: 2
+- alpha3: SLE
+  numeric: '925'
+  name: Leone
+  minorUnit: 2
+- alpha3: SOS
+  numeric: '706'
+  name: Somali Shilling
+  minorUnit: 0
+- alpha3: SRD
+  numeric: '968'
+  name: Surinam Dollar
+  minorUnit: 2
+- alpha3: SSP
+  numeric: '728'
+  name: South Sudanese Pound
+  minorUnit: 2
+- alpha3: STN
+  numeric: '930'
+  name: Dobra
+  minorUnit: 2
+- alpha3: SVC
+  numeric: '222'
+  name: El Salvador Colon
+  minorUnit: 2
+- alpha3: SYP
+  numeric: '760'
+  name: Syrian Pound
+  minorUnit: 0
+- alpha3: SZL
+  numeric: '748'
+  name: Lilangeni
+  minorUnit: 2
+- alpha3: THB
+  numeric: '764'
+  name: Baht
+  minorUnit: 2
+- alpha3: TJS
+  numeric: '972'
+  name: Somoni
+  minorUnit: 2
+- alpha3: TMT
+  numeric: '934'
+  name: Turkmenistan New Manat
+  minorUnit: 2
+- alpha3: TND
+  numeric: '788'
+  name: Tunisian Dinar
+  minorUnit: 3
+- alpha3: TOP
+  numeric: '776'
+  name: Pa’anga
+  minorUnit: 2
+- alpha3: TRY
+  numeric: '949'
+  name: Turkish Lira
+  minorUnit: 2
+- alpha3: TTD
+  numeric: '780'
+  name: Trinidad and Tobago Dollar
+  minorUnit: 2
+- alpha3: TWD
+  numeric: '901'
+  name: New Taiwan Dollar
+  minorUnit: 2
+- alpha3: TZS
+  numeric: '834'
+  name: Tanzanian Shilling
+  minorUnit: 2
+- alpha3: UAH
+  numeric: '980'
+  name: Hryvnia
+  minorUnit: 2
+- alpha3: UGX
+  numeric: '800'
+  name: Uganda Shilling
+  minorUnit: 0
+- alpha3: USD
+  numeric: '840'
+  name: US Dollar
+  minorUnit: 2
+- alpha3: USN
+  numeric: '997'
+  name: US Dollar (Next day)
+  minorUnit: 2
+- alpha3: UYI
+  numeric: '940'
+  name: Uruguay Peso en Unidades Indexadas (UI)
+  minorUnit: 0
+- alpha3: UYU
+  numeric: '858'
+  name: Peso Uruguayo
+  minorUnit: 2
+- alpha3: UYW
+  numeric: '927'
+  name: Unidad Previsional
+  minorUnit: 4
+- alpha3: UZS
+  numeric: '860'
+  name: Uzbekistan Sum
+  minorUnit: 2
+- alpha3: VED
+  numeric: '926'
+  name: Bolívar Soberano
+  minorUnit: 2
+- alpha3: VES
+  numeric: '928'
+  name: Bolívar Soberano
+  minorUnit: 2
+- alpha3: VND
+  numeric: '704'
+  name: Dong
+  minorUnit: 0
+- alpha3: VUV
+  numeric: '548'
+  name: Vatu
+  minorUnit: 0
+- alpha3: WST
+  numeric: '882'
+  name: Tala
+  minorUnit: 2
+- alpha3: XAD
+  numeric: '396'
+  name: Arab Accounting Dinar
+  minorUnit: 2
+- alpha3: XAF
+  numeric: '950'
+  name: CFA Franc BEAC
+  minorUnit: 0
+- alpha3: XAG
+  numeric: '961'
+  name: Silver
+  minorUnit: 2
+- alpha3: XAU
+  numeric: '959'
+  name: Gold
+  minorUnit: 2
+- alpha3: XBA
+  numeric: '955'
+  name: Bond Markets Unit European Composite Unit (EURCO)
+  minorUnit: 2
+- alpha3: XBB
+  numeric: '956'
+  name: Bond Markets Unit European Monetary Unit (E.M.U.-6)
+  minorUnit: 2
+- alpha3: XBC
+  numeric: '957'
+  name: Bond Markets Unit European Unit of Account 9 (E.U.A.-9)
+  minorUnit: 2
+- alpha3: XBD
+  numeric: '958'
+  name: Bond Markets Unit European Unit of Account 17 (E.U.A.-17)
+  minorUnit: 2
+- alpha3: XCD
+  numeric: '951'
+  name: East Caribbean Dollar
+  minorUnit: 2
+- alpha3: XCG
+  numeric: '532'
+  name: Caribbean Guilder
+  minorUnit: 2
+- alpha3: XDR
+  numeric: '960'
+  name: SDR (Special Drawing Right)
+  minorUnit: 2
+- alpha3: XOF
+  numeric: '952'
+  name: CFA Franc BCEAO
+  minorUnit: 0
+- alpha3: XPD
+  numeric: '964'
+  name: Palladium
+  minorUnit: 2
+- alpha3: XPF
+  numeric: '953'
+  name: CFP Franc
+  minorUnit: 0
+- alpha3: XPT
+  numeric: '962'
+  name: Platinum
+  minorUnit: 2
+- alpha3: XSU
+  numeric: '994'
+  name: Sucre
+  minorUnit: 2
+- alpha3: XTS
+  numeric: '963'
+  name: Codes specifically reserved for testing purposes
+  minorUnit: 2
+- alpha3: XUA
+  numeric: '965'
+  name: ADB Unit of Account
+  minorUnit: 2
+- alpha3: XXX
+  numeric: '999'
+  name: The codes assigned for transactions where no currency is involved
+  minorUnit: 2
+- alpha3: YER
+  numeric: '886'
+  name: Yemeni Rial
+  minorUnit: 0
+- alpha3: ZAR
+  numeric: '710'
+  name: Rand
+  minorUnit: 2
+- alpha3: ZMW
+  numeric: '967'
+  name: Zambian Kwacha
+  minorUnit: 2
+- alpha3: ZWG
+  numeric: '924'
+  name: Zimbabwe Gold
+  minorUnit: 2

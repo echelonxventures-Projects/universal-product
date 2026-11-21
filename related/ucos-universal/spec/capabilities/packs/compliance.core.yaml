@@ -1,0 +1,65 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: compliance.core
+  version: 1.0.0
+  universe: U67-compliance
+  steward: ucos:org:steward-compliance
+  purpose: Regulations, clauses, obligations, controls, mappings, posture and regulatory change.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.compliance.Regulation
+    - ucos.compliance.Clause
+    - ucos.compliance.Obligation
+    - ucos.compliance.Control
+    - ucos.compliance.Interpretation
+    - ucos.compliance.ControlStatus
+    - ucos.compliance.ComplianceAssessment
+    - ucos.compliance.RegulatoryChange
+    commands:
+    - PublishRegulationVersion
+    - DefineControl
+    - MapControl
+    - RecordInterpretation
+    - StartAssessment
+    - RecordRegulatoryChange
+    - ComputeStatus
+    queries:
+    - ApplicableRegulations
+    - ControlsFor
+    - Posture
+    - TraceClause
+    events:
+    - compliance.control.failed
+    - compliance.control.recovered
+    - compliance.regulation.published
+    - compliance.change.effective-soon
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: audit.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TRG
+    - R
+    - D
+    - TR
+  ui:
+    views:
+    - compliance.posture
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

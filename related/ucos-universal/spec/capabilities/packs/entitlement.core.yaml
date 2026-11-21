@@ -1,0 +1,62 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: entitlement.core
+  version: 1.0.0
+  universe: U28-entitlement
+  steward: ucos:org:steward-entitlement
+  purpose: Plans, features, quotas, entitlements and metering with real-time check/consume.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.entitlement.Feature
+    - ucos.entitlement.Quota
+    - ucos.entitlement.Plan
+    - ucos.entitlement.Entitlement
+    - ucos.entitlement.UsageCounter
+    commands:
+    - DefinePlan
+    - DefineFeature
+    - DefineQuota
+    - Grant
+    - Revoke
+    - ChangePlan
+    - Consume
+    - ResetCounters
+    queries:
+    - Check
+    - Remaining
+    - EffectiveEntitlements
+    - Usage
+    events:
+    - entitlement.entitlement.granted
+    - entitlement.entitlement.revoked
+    - entitlement.entitlement.expired
+    - entitlement.quota.threshold
+    - entitlement.quota.exceeded
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - R
+    - D
+  ui:
+    views:
+    - billing.plan-and-usage
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

@@ -1,0 +1,43 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: ui.tenant-admin
+  version: 1.0.0
+  universe: U64-ui-app-channel
+  steward: ucos:org:steward-ui-app-channel
+  purpose: Tenant admin portal views (catalog, pricing, offers, orders, inventory, settings, users, compliance).
+  capabilityKind: ui-pack
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  requires:
+  - capability: ui.core
+    version: '>=1 <2'
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - ASOF
+  ui:
+    views:
+    - admin.dashboard
+    - admin.catalog
+    - admin.pricing
+    - admin.offers
+    - admin.orders
+    - admin.inventory
+    - admin.settings
+    - admin.users
+    - admin.compliance
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

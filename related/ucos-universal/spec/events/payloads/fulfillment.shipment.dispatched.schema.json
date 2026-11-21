@@ -1,0 +1,46 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/fulfillment.shipment.dispatched/1.json",
+  "title": "fulfillment.shipment.dispatched",
+  "description": "Shipment handed to the carrier.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true,
+    "producer": "fulfillment.core"
+  },
+  "type": "object",
+  "required": [
+    "shipmentId",
+    "orderId",
+    "carrier",
+    "trackingNumber",
+    "dispatchedAt"
+  ],
+  "properties": {
+    "shipmentId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "orderId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "sellerOrder": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "carrier": {
+      "type": "string"
+    },
+    "service": {
+      "type": "string"
+    },
+    "trackingNumber": {
+      "type": "string"
+    },
+    "promisedBy": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    },
+    "dispatchedAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

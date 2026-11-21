@@ -1,0 +1,36 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: messaging.sms-in-dlt
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: India SMS adapter with TRAI DLT template and header registration.
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - messaging.provider
+  requires:
+  - capability: integration.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - ucos:jur:IN
+    methods:
+    - sms
+  temporal:
+    kind: V
+    uses: []
+  compliance:
+    controls:
+    - ucos.ctrl.in-trai-dlt
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

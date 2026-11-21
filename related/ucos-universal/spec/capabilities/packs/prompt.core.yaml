@@ -1,0 +1,60 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: prompt.core
+  version: 1.0.0
+  universe: U50-prompt
+  steward: ucos:org:steward-prompt
+  purpose: Prompt owns prompts as versioned, tested, governed definitions.
+  capabilityKind: core
+  maturity: experimental
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.prompt.PromptTemplate
+    - ucos.prompt.PromptVersion
+    - ucos.prompt.PromptOverride
+    - ucos.prompt.PromptTest
+    - ucos.prompt.PromptExperiment
+    commands:
+    - CreatePromptTemplate
+    - ProposePromptVersion
+    - RunPromptTests
+    - ReleasePromptVersion
+    - RollbackPromptVersion
+    - CreateOverride
+    - StartPromptExperiment
+    queries:
+    - Render
+    - Diff
+    - ActiveVersion
+    events:
+    - prompt.version.released
+    - prompt.version.rolled-back
+    - prompt.test.failed
+  requires:
+  - capability: ai.core
+    version: '>=1 <2'
+  - capability: l10n.core
+    version: '>=1 <2'
+  - capability: governance.core
+    version: '>=1 <2'
+  - capability: certification.core
+    version: '>=1 <2'
+  - capability: sdlc.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: V
+    uses:
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

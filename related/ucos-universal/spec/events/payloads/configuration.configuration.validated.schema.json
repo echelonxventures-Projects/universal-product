@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/configuration.configuration.validated/1.json",
+  "title": "configuration.configuration.validated",
+  "description": "Generated skeleton for configuration.configuration.validated. Replace by adding spec/events/payloads/hand/configuration.configuration.validated.schema.json.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": false,
+    "producer": "configuration.core"
+  },
+  "type": "object",
+  "required": [
+    "subject",
+    "occurredAt"
+  ],
+  "properties": {
+    "subject": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "objectVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "occurredAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    },
+    "changes": {
+      "type": "object",
+      "description": "Changed attributes (JSON Merge Patch semantics).",
+      "additionalProperties": true
+    },
+    "data": {
+      "type": "object",
+      "description": "Event-specific facts; see the producing universe constitution.",
+      "additionalProperties": true
+    },
+    "objectType": {
+      "const": "ucos.configuration.Configuration"
+    }
+  },
+  "additionalProperties": false
+}

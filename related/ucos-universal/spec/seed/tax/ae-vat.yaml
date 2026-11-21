@@ -1,0 +1,28 @@
+kind: TaxRegimePack
+id: tax.regime.ae-vat
+version: '2026.10'
+jurisdiction: ucos:jur:AE
+owner: U31 Tax steward
+verification: Verify against the current Federal Tax Authority guidance before activation; status stays proposed until then.
+standardRate: '5'
+categories:
+- id: apparel-low
+  description: Standard-rated goods
+  rate: '5'
+  priceBasis: tax-inclusive
+  status: proposed
+- id: household-standard
+  description: Standard-rated goods
+  rate: '5'
+  status: proposed
+- id: zero-rated
+  description: Zero-rated supplies (for example exports of goods, certain education and healthcare services)
+  rate: '0'
+  zeroRated: true
+  status: proposed
+- id: exempt
+  description: Exempt supplies (for example certain financial services, residential property, local passenger transport)
+  rate: '0'
+  exempt: true
+  status: proposed
+pricesInclusive: B2C prices are displayed including VAT

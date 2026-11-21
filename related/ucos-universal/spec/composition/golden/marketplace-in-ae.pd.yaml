@@ -1,0 +1,18 @@
+apiVersion: ucos.io/v1
+kind: PlatformDefinition
+metadata: { id: "ucos:pd:golden-marketplace-in-ae", tenant: "ucos:tenant:golden-marketplace", version: "1.0.0" }
+spec:
+  # Phase 2 exit (master §32.1): Amazon-like reference composition live in 2 countries.
+  targetPhase: 2
+  template: ucos:industry-template:multi-seller-marketplace@1
+  industry: [ucos:industry:retail/general-merchandise]
+  businessModel: [B2C, Marketplace]
+  geography: { countries: [IN, AE], primaryCurrency: { IN: INR, AE: AED }, languages: [en, hi, ar], dataResidency: strict }
+  channels: [web]
+  capabilities:
+    include: [catalog.listing, commerce.checkout, offer.engine, search.core, marketplace.core, ledger.core, logistics.core,
+              risk.core, trust.core, subscription.core, stored-value.core]
+    exclude: []
+  portals: [storefront, admin, seller]
+  compliance: { frameworks: [PCI-DSS] }
+  security: { profile: high }

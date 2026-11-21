@@ -1,0 +1,14 @@
+kind: IndustryTemplate
+id: ucos:industry-template:b2b-distribution
+version: 1.0.0
+name: B2B distribution
+businessModel:
+- B2B
+capabilities:
+  include:
+  - catalog.listing
+  - commerce.checkout
+  - pricing.engine
+  - search.core
+notes: 'Phase 1 test template (golden b2b-in): price lists, credit terms, e-invoicing.'
+status: published

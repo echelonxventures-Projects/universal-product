@@ -1,0 +1,78 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: warranty.core
+  version: 1.0.0
+  universe: U80-warranty-after-sales
+  steward: ucos:org:steward-warranty-after-sales
+  purpose: After-sales owns what happens after the sale to keep products working.
+  capabilityKind: core
+  maturity: experimental
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.warranty.WarrantyDefinition
+    - ucos.warranty.Coverage
+    - ucos.warranty.Claim
+    - ucos.warranty.RepairOrder
+    - ucos.warranty.RMA
+    - ucos.warranty.ServiceContract
+    commands:
+    - DefineWarranty
+    - RegisterProduct
+    - SellProtectionPlan
+    - FileClaim
+    - TriageClaim
+    - DecideClaim
+    - CreateRepairOrder
+    - IssueRMA
+    - CloseClaim
+    - CreateServiceContract
+    queries:
+    - CoverageFor
+    - ClaimStatus
+    - SparePartsFor
+    - RepairQuote
+    events:
+    - warranty.coverage.started
+    - warranty.coverage.expiring
+    - warranty.coverage.expired
+    - warranty.claim.filed
+    - warranty.claim.decided
+    - warranty.claim.closed
+    - warranty.repair.completed
+  requires:
+  - capability: installed-base.core
+    version: '>=1 <2'
+  - capability: order.core
+    version: '>=1 <2'
+  - capability: product.intelligence
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: fulfillment.core
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: support.core
+    version: '>=1 <2'
+  optional:
+  - capability: field-service.core
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - REM
+    - SLA
+    - R
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

@@ -1,0 +1,26 @@
+# The sample pack's permit together with the platform baseline, as the kernel evaluates them (no permit-all
+# fixture): tenant members are allowed, everything else is denied by default or by a platform forbid.
+policies: [spec/policies/platform-baseline.cedar, spec/policies/sample-notes.cedar]
+entities:
+  - { uid: 'User::"asha"', attrs: { tenant: "t1", status: "active" } }
+  - { uid: 'User::"old"',  attrs: { tenant: "t1", status: "suspended" } }
+  - { uid: 'Tenant::"t1"', attrs: { tenant: "t1" } }
+  - { uid: 'Object::"n-t2"', attrs: { tenant: "t2" } }
+  - { uid: 'Action::"sample:CreateNote"', parents: ['Action::"group:write"', 'Action::"group:capability:sample.notes"'] }
+  - { uid: 'Action::"sample:GetNote"', parents: ['Action::"group:read"', 'Action::"group:capability:sample.notes"'] }
+  - { uid: 'Action::"other:DoThing"', parents: ['Action::"group:write"', 'Action::"group:capability:other.thing"'] }
+  - { uid: 'Action::"group:write"' }
+  - { uid: 'Action::"group:read"' }
+defaultContext: { risk: { band: "low" }, time: { now: "2027-01-10T09:00:00Z" }, simulation: false, frame: { reality: "simulated", sideEffectPolicy: "none" } }
+cases:
+  - { name: "tenant member creates a note", principal: 'User::"asha"', action: 'Action::"sample:CreateNote"', resource: 'Tenant::"t1"', expect: Allow }
+  - { name: "tenant member reads", principal: 'User::"asha"', action: 'Action::"sample:GetNote"', resource: 'Tenant::"t1"', expect: Allow }
+  - { name: "another tenant's note is denied (P-001)", principal: 'User::"asha"', action: 'Action::"sample:GetNote"', resource: 'Object::"n-t2"', expect: Deny }
+  - { name: "suspended member is denied (P-002)", principal: 'User::"old"', action: 'Action::"sample:CreateNote"', resource: 'Tenant::"t1"', expect: Deny }
+  - { name: "a capability with no permit is denied by default", principal: 'User::"asha"', action: 'Action::"other:DoThing"', resource: 'Tenant::"t1"', expect: Deny }
+  - name: "writes with asOf outside simulation are denied (P-005)"
+    principal: 'User::"asha"'
+    action: 'Action::"sample:CreateNote"'
+    resource: 'Tenant::"t1"'
+    context: { time: { now: "2027-01-10T09:00:00Z", asOf: "2027-01-01T00:00:00Z" } }
+    expect: Deny

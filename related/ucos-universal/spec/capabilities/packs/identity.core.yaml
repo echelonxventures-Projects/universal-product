@@ -1,0 +1,87 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: identity.core
+  version: 1.0.0
+  universe: U09-identity
+  steward: ucos:org:steward-identity
+  purpose: Identities, credentials, sessions, roles, grants, delegations, federation and verification records.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.identity.Identity
+    - ucos.identity.Credential
+    - ucos.identity.Session
+    - ucos.identity.Role
+    - ucos.identity.RoleGrant
+    - ucos.identity.Delegation
+    - ucos.identity.FederatedProvider
+    - ucos.identity.VerificationRecord
+    commands:
+    - RegisterIdentity
+    - VerifyIdentifier
+    - EnrollCredential
+    - RevokeCredential
+    - EndSession
+    - DefineRole
+    - GrantRole
+    - RevokeRole
+    - ElevateJIT
+    - CreateDelegation
+    - ConfigureFederation
+    - SuspendIdentity
+    queries:
+    - WhoAmI
+    - GetEffectiveRoles
+    events:
+    - identity.identity.registered
+    - identity.identity.suspended
+    - identity.session.started
+    - identity.session.ended
+    - identity.role.granted
+    - identity.role.revoked
+    - identity.delegation.created
+  requires:
+  - capability: authority.core
+    version: '>=1 <2'
+  - capability: policy.core
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  optional:
+  - capability: identity.social-login
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - D
+    - TR
+    - TRG
+    - R
+  security:
+    dataClasses:
+    - PII
+    - CREDENTIAL
+    threatModel: docs/threat-models/identity.md
+  compliance:
+    controls:
+    - ucos.ctrl.mfa-business-users
+    - ucos.ctrl.access-review
+  ui:
+    views:
+    - identity.login
+    - identity.account.security
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

@@ -1,0 +1,233 @@
+<title>UCOS Master Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@75..100,500..800&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: spec-sheet — fixed contents rail on the left, one reading column on the right; tables, diagrams and wireframes scroll inside their own frames. */
+:root {
+  --bg: #F5F7FA;
+  --surface: #FFFFFF;
+  --fg: #17212C;
+  --muted: #5B6777;
+  --line: #DADFE6;
+  --accent: #1D58B5;
+  --accent-soft: #E6EEFA;
+  --code-bg: #EDF1F6;
+  --font-display: "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --rail: 272px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F141A; --surface: #151C25; --fg: #E2E7ED; --muted: #94A1B0; --line: #27313D;
+    --accent: #84B3FF; --accent-soft: #1A2840; --code-bg: #111821; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F141A; --surface: #151C25; --fg: #E2E7ED; --muted: #94A1B0; --line: #27313D;
+  --accent: #84B3FF; --accent-soft: #1A2840; --code-bg: #111821; color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 16px); }
+body {
+  margin: 0; background: var(--bg); color: var(--fg);
+  font: 400 16.5px/1.6 var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+/* ── Rail ───────────────────────────── */
+.rail {
+  position: fixed; inset: 0 auto 0 0; width: var(--rail);
+  padding: calc(env(safe-area-inset-top, 0px) + 24px) 0 24px;
+  border-right: 1px solid var(--line); background: var(--surface);
+  display: flex; flex-direction: column; gap: 14px;
+}
+.brand { padding: 0 20px; font: 700 15px/1.2 var(--font-display); font-stretch: 85%; letter-spacing: .02em; }
+.brand small { display: block; margin-top: 4px; font: 400 12px/1.3 var(--font-body); color: var(--muted); letter-spacing: 0; }
+.filter { margin: 0 20px; }
+.filter input {
+  width: 100%; padding: 8px 10px; font: 400 14px var(--font-body); color: var(--fg);
+  background: var(--bg); border: 1px solid var(--line); border-radius: 6px;
+}
+.toc { list-style: none; margin: 0; padding: 0 10px 0 12px; overflow-y: auto; flex: 1; font-size: 14px; line-height: 1.35; }
+.toc li { margin: 0; }
+.toc a { display: flex; gap: 10px; padding: 5px 8px; border-radius: 5px; color: var(--fg); text-decoration: none; }
+.toc a:hover { background: var(--bg); }
+.toc a.active { background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.toc .n { flex: 0 0 1.6em; text-align: right; color: var(--muted); font-variant-numeric: tabular-nums; font-family: var(--font-mono); font-size: 12px; padding-top: 2px; }
+.toc a.active .n { color: var(--accent); }
+.nav-part { margin: 16px 8px 4px; font: 600 11px/1.3 var(--font-body); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.nav-part span { color: var(--accent); margin-right: 4px; }
+.nav-part:first-child { margin-top: 2px; }
+
+/* ── Main ───────────────────────────── */
+main { margin-left: var(--rail); padding-inline: clamp(16px, 4vw, 56px); padding-block: 0 96px; min-width: 0; }
+.doc { max-width: 980px; }
+.doc > p, .doc > ul, .doc > ol, .doc > blockquote { max-width: 72ch; }
+
+.hero { padding-block: 56px 36px; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+.eyebrow { font: 600 12px/1 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.hero h1 { margin: 14px 0 12px; font: 800 clamp(34px, 5vw, 54px)/1.02 var(--font-display); font-stretch: 80%; letter-spacing: -.01em; text-wrap: balance; }
+.hero .lede { max-width: 64ch; margin: 0 0 22px; font-size: 18.5px; color: var(--muted); }
+.meta { display: flex; flex-wrap: wrap; gap: 8px 28px; margin: 0 0 28px; padding: 0; list-style: none; font-size: 14px; }
+.meta dt { font: 600 11px/1.4 var(--font-body); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.meta dd { margin: 0; font-variant-numeric: tabular-nums; }
+.stack { display: grid; grid-template-columns: repeat(13, minmax(0, 1fr)); gap: 3px; max-width: 760px; }
+.stack a {
+  display: flex; flex-direction: column; justify-content: flex-end; min-height: 64px; padding: 6px;
+  background: var(--accent-soft); color: var(--fg); text-decoration: none; border-radius: 3px;
+  font: 600 10.5px/1.15 var(--font-body);
+}
+.stack a b { font: 700 12px var(--font-mono); color: var(--accent); margin-bottom: 4px; }
+.stack a:hover { background: var(--accent); color: var(--surface); }
+.stack a:hover b { color: var(--surface); }
+.stack-caption { margin: 8px 0 0; font-size: 13px; color: var(--muted); }
+
+/* Headings */
+.part { margin: 72px 0 8px; padding-top: 24px; border-top: 3px solid var(--fg); }
+.part-no { font: 600 12px var(--font-mono); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.part h1 { margin: 6px 0 0; font: 800 34px/1.1 var(--font-display); font-stretch: 78%; text-wrap: balance; }
+.doc h2 { margin: 56px 0 14px; padding-top: 18px; border-top: 1px solid var(--line); font: 700 27px/1.2 var(--font-display); font-stretch: 85%; text-wrap: balance; }
+.doc h3 { margin: 36px 0 10px; font: 700 19px/1.3 var(--font-display); font-stretch: 92%; text-wrap: balance; }
+.doc h4 { margin: 24px 0 8px; font: 600 16px/1.4 var(--font-body); }
+.doc hr { display: none; }
+
+blockquote { margin: 20px 0; padding: 12px 18px; border-left: 3px solid var(--accent); background: var(--accent-soft); border-radius: 0 6px 6px 0; }
+blockquote p { margin: 0; }
+ul, ol { padding-left: 1.4em; }
+li + li { margin-top: 4px; }
+code { font-family: var(--font-mono); font-size: .86em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+
+/* Blocks */
+.block { position: relative; margin: 18px 0; background: var(--code-bg); border: 1px solid var(--line); border-radius: 6px; overflow-x: auto; }
+.block pre { margin: 0; padding: 14px 16px; }
+.block code { background: none; padding: 0; font-size: 13px; line-height: 1.55; overflow-wrap: normal; white-space: pre; }
+.block .lang { position: sticky; float: right; left: 100%; top: 0; margin: 6px 8px 0 0; font: 600 10.5px var(--font-mono); letter-spacing: .05em; text-transform: uppercase; color: var(--muted); }
+.block.wire { background: var(--surface); }
+.block.wire code { font-size: 12px; line-height: 1.3; }
+.diagram { margin: 20px 0; padding: 16px; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; overflow-x: auto; }
+.diagram pre { margin: 0; font-family: var(--font-mono); font-size: 12px; }
+
+.table-wrap { margin: 18px 0; overflow-x: auto; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; font-size: 14px; line-height: 1.45; }
+th, td { padding: 8px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--line); }
+th { background: var(--code-bg); font-weight: 600; white-space: nowrap; }
+tbody tr:last-child td { border-bottom: 0; }
+td code { font-size: 12.5px; }
+
+.foot { margin-top: 64px; padding-top: 16px; border-top: 1px solid var(--line); font-size: 13px; color: var(--muted); }
+
+/* ── Narrow screens ───────────────────── */
+.mobile-toc { display: none; }
+@media (max-width: 960px) {
+  .rail { display: none; }
+  main { margin-left: 0; }
+  .mobile-toc {
+    display: block; position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5;
+    margin-inline: calc(-1 * clamp(16px, 4vw, 56px)); padding: 10px clamp(16px, 4vw, 56px);
+    background: var(--surface); border-bottom: 1px solid var(--line);
+  }
+  .mobile-toc summary { cursor: pointer; font: 600 14px var(--font-body); }
+  .mobile-toc .toc { max-height: 60vh; padding: 8px 0 0; }
+  .stack { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+}
+@media (max-width: 480px) {
+  body { font-size: 16px; }
+  .stack { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .doc h2 { font-size: 23px; }
+}
+@media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+</style>
+
+<aside class="rail" aria-label="Contents">
+  <div class="brand">UCOS Ω∞<small>Master Architecture &amp; Build Specification</small></div>
+  <div class="filter"><input id="toc-filter" type="search" placeholder="Filter sections" aria-label="Filter sections"></div>
+  <ol class="toc" id="toc">
+%%NAV%%
+  </ol>
+</aside>
+
+<main>
+  <details class="mobile-toc" id="mobile-toc">
+    <summary>Contents</summary>
+    <ol class="toc">
+%%NAV%%
+    </ol>
+  </details>
+
+  <article class="doc">
+    <section class="hero">
+      <div class="eyebrow">UCOS-MASTER-ARCH · Canonical</div>
+      <h1>UCOS Ω∞ Master Architecture &amp; Build Specification</h1>
+      <p class="lede">The single context document for building the Universal Capability Operating System: a platform factory that composes marketplaces, commerce, mobility, media, fintech, ERP, CRM and future platforms from certified capabilities, context, policies and metadata.</p>
+      <dl class="meta">
+        <div><dt>Version</dt><dd>1.1.0 · 66 amendments applied</dd></div>
+        <div><dt>Date</dt><dd>3 Oct 2026</dd></div>
+        <div><dt>Status</dt><dd>Canonical — supersedes all earlier fragments</dd></div>
+        <div><dt>Keywords</dt><dd>MUST / SHOULD / MAY per RFC 2119</dd></div>
+        <div><dt>Contents</dt><dd>35 sections · 109 universes · 26 diagrams · 16 wireframes</dd></div>
+      </dl>
+      <nav class="stack" aria-label="Layer stack">
+        <a href="#5-canonical-layer-architecture"><b>L0</b>Constitution</a>
+        <a href="#7-universal-meta-model"><b>L1</b>Meta-model</a>
+        <a href="#14-data-architecture"><b>L2</b>Data</a>
+        <a href="#10-global-product--service-intelligence-network"><b>L3</b>Knowledge</a>
+        <a href="#9-universal-temporal-universe"><b>L4</b>Foundation</a>
+        <a href="#6-universe-catalog--canonical-ownership"><b>L5</b>Business</a>
+        <a href="#21-ai--agent-universe"><b>L6</b>Intelligence</a>
+        <a href="#11-universal-composition-substrate"><b>L7</b>Composition</a>
+        <a href="#13-runtime-fabric"><b>L8</b>Runtime</a>
+        <a href="#17-integration-universe"><b>L9</b>Integration</a>
+        <a href="#22-experience-architecture"><b>L10</b>Experience</a>
+        <a href="#26-observability-operations--resilience"><b>L11</b>Operations</a>
+        <a href="#28-testing-certification--release"><b>L12</b>Certify &amp; evolve</a>
+      </nav>
+      <p class="stack-caption">The 13 canonical layers, foundation first. Select a layer to jump to its section.</p>
+    </section>
+
+%%BODY%%
+
+    <p class="foot">UCOS-MASTER-ARCH v1.1.0 · Source: UCOS-MASTER-ARCHITECTURE.md · Companion specs in constitutions/, engineering/ and spec/</p>
+  </article>
+</main>
+
+<script>
+(function () {
+  var links = Array.prototype.slice.call(document.querySelectorAll('#toc a'));
+  var byId = {};
+  links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+  var current = null;
+  function setActive(id) {
+    if (current) current.classList.remove('active');
+    current = byId[id] || null;
+    if (current) {
+      current.classList.add('active');
+      var r = current.getBoundingClientRect(), box = document.getElementById('toc').getBoundingClientRect();
+      if (r.top < box.top || r.bottom > box.bottom) current.scrollIntoView({ block: 'nearest' });
+    }
+  }
+  var heads = Object.keys(byId).map(function (id) { return document.getElementById(id); }).filter(Boolean);
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { if (e.isIntersecting) setActive(e.target.id); });
+    }, { rootMargin: '0px 0px -70% 0px' });
+    heads.forEach(function (h) { io.observe(h); });
+  }
+
+  var input = document.getElementById('toc-filter');
+  input.addEventListener('input', function () {
+    var q = input.value.trim().toLowerCase();
+    document.querySelectorAll('#toc li').forEach(function (li) {
+      if (li.classList.contains('nav-part')) { li.hidden = q !== ''; return; }
+      li.hidden = q !== '' && li.textContent.toLowerCase().indexOf(q) === -1;
+    });
+  });
+
+  var mt = document.getElementById('mobile-toc');
+  mt.addEventListener('click', function (e) { if (e.target.closest('a')) mt.open = false; });
+})();
+</script>

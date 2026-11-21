@@ -1,0 +1,80 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: crm.core
+  version: 1.0.0
+  universe: U38-crm
+  steward: ucos:org:steward-crm
+  purpose: CRM owns relationships and revenue pipeline.
+  capabilityKind: core
+  maturity: experimental
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.crm.Lead
+    - ucos.crm.Account
+    - ucos.crm.Contact
+    - ucos.crm.Pipeline
+    - ucos.crm.Opportunity
+    - ucos.crm.Quote
+    - ucos.crm.Activity
+    - ucos.crm.Task
+    - ucos.crm.Territory
+    - ucos.crm.Forecast
+    commands:
+    - CaptureLead
+    - QualifyLead
+    - MoveStage
+    - CreateQuote
+    - RequestDiscountApproval
+    - WinOpportunity
+    - LoseOpportunity
+    - LogActivity
+    - AssignTerritory
+    - SubmitForecast
+    events:
+    - crm.lead.captured
+    - crm.lead.qualified
+    - crm.opportunity.stage-changed
+    - crm.opportunity.won
+    - crm.opportunity.lost
+    - crm.quote.sent
+    - crm.quote.accepted
+  requires:
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: pricing.engine
+    version: '>=1 <2'
+  - capability: catalog.listing
+    version: '>=1 <2'
+  - capability: contract.core
+    version: '>=1 <2'
+  - capability: order.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  optional:
+  - capability: marketing.core
+  temporal:
+    kind: S
+    uses:
+    - REM
+    - AV
+    - D
+    - FCA
+    - FEED
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

@@ -1,0 +1,41 @@
+# Composition defaults (data). Every tenant platform includes the base capabilities whose phase is at or below the
+# platform's targetPhase (A-74); channels and countries add requirements.
+baseCapabilities: [identity.core, org.core, party.core, geo.core, temporal.core, currency.core, l10n.core, context.core,
+                   entitlement.core, decision.core, workflow.core, integration.core, api.core, ui.core, ui.tenant-admin,
+                   observability.core, privacy.consent, privacy.dsr, privacy.retention, compliance.core,
+                   communication.core, communication.inapp, communication.inbound]   # transactional messages (OTP, order confirmation), in-app inbox and opt-out handling are mandatory for every platform
+channels:
+  web:       { capabilities: [ui.storefront-web, seo.core], messagingMethods: [] }
+  web-push:  { capabilities: [], messagingMethods: [web-push] }
+  whatsapp:  { capabilities: [communication.core], messagingMethods: [whatsapp] }
+  ios:       { capabilities: [communication.inapp], messagingMethods: [push-ios], phase: 3 }
+  android:   { capabilities: [communication.inapp], messagingMethods: [push-android], phase: 3 }
+  live-chat: { capabilities: [contactcenter.core, communication.realtime], messagingMethods: [], phase: 3 }
+  voice:     { capabilities: [contactcenter.core], messagingMethods: [voice], rtcMethods: [voice], phase: 3 }
+  video:     { capabilities: [rtc.sessions], messagingMethods: [], rtcMethods: [video], phase: 3 }
+  rcs:       { capabilities: [communication.inbound], messagingMethods: [rcs], phase: 4 }
+  telegram:  { capabilities: [communication.inbound], messagingMethods: [telegram], phase: 4 }
+  line:      { capabilities: [communication.inbound], messagingMethods: [line], phase: 4 }
+  wechat:    { capabilities: [communication.inbound], messagingMethods: [wechat], phase: 4 }
+  viber:     { capabilities: [communication.inbound], messagingMethods: [viber], phase: 4 }
+  messenger: { capabilities: [communication.inbound], messagingMethods: [messenger], phase: 4 }
+  instagram: { capabilities: [communication.inbound], messagingMethods: [instagram], phase: 4 }
+  postal:    { capabilities: [], messagingMethods: [postal], phase: 4 }
+alwaysMessagingMethods: [email, sms, in-app]  # transactional email, OTP SMS, in-app notification centre
+defaultPaymentMethods:
+  IN: [upi, card, netbanking, cod]
+  AE: [card, apple-pay, cod]
+countryCurrency: { IN: INR, AE: AED }
+# Abstract capability → how required "methods" are derived
+abstractMethodSource:
+  payment.provider:   paymentMethods
+  messaging.provider: messagingMethods
+  logistics.carrier:  none
+  tax.determination:  none
+  tax.einvoice:       none
+  maps.provider:      none
+  fx.provider:        none
+  identity.federation-provider: none
+  rtc.provider:       rtcMethods
+# Abstracts that perform external I/O must have a simulator (CTX-L4 / INT-L5)
+ioAbstracts: [payment.provider, messaging.provider, logistics.carrier, tax.einvoice, maps.provider, fx.provider, rtc.provider]

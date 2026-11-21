@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: outbox-relay
+universe: U61
+tier: T0
+owner: ucos:org:platform-kernel
+phase: 0
+slos:
+- id: availability
+  description: Share of outbox-relay requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: outbox_relay_requests_good_ratio
+  objective: 0.999
+  rollingWindow: P28D
+- id: latency
+  description: p99 latency of the critical outbox-relay operation.
+  sli:
+    kind: latency
+    metric: outbox_publish_lag_ms
+    thresholdMs: 5000
+    percentile: p99
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: outbox-relay.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/outbox-relay.md#availability-fast-burn
+- id: outbox-relay.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/outbox-relay.md#availability-slow-burn
+- id: outbox-relay.latency.breach
+  slo: latency
+  condition: p99 > 5000 ms for 15m
+  severity: page
+  runbook: docs/runbooks/outbox-relay.md#latency-breach

@@ -1,0 +1,62 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: privacy.consent
+  version: 1.0.0
+  universe: U66-privacy-consent
+  steward: ucos:org:steward-privacy-consent
+  purpose: Purposes, notices, consent records and cookie consent.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.privacy.Purpose
+    - ucos.privacy.Notice
+    - ucos.privacy.Consent
+    - ucos.privacy.CookieConsent
+    commands:
+    - DefinePurpose
+    - PublishNotice
+    - RecordConsent
+    - WithdrawConsent
+    queries:
+    - ConsentSnapshot
+    - HasConsent
+    events:
+    - privacy.consent.granted
+    - privacy.consent.withdrawn
+    - privacy.notice.published
+  requires:
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: l10n.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - TP
+  security:
+    dataClasses:
+    - PII
+    threatModel: docs/threat-models/party-and-privacy.md
+  compliance:
+    controls:
+    - ucos.ctrl.consent-notice
+  ui:
+    views:
+    - privacy.center
+    - cookie.banner
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

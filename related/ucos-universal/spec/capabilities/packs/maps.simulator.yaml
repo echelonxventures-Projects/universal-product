@@ -1,0 +1,31 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: maps.simulator
+  version: 1.0.0
+  universe: U12-geography
+  steward: ucos:org:steward-geography
+  purpose: Deterministic maps simulator for simulation and test realities.
+  capabilityKind: simulator
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  implements:
+  - maps.provider
+  selection:
+    jurisdictions:
+    - '*'
+    realities:
+    - simulated
+    - hypothetical
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

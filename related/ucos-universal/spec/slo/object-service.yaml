@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: object-service
+universe: U04
+tier: T0
+owner: ucos:org:platform-kernel
+phase: 0
+slos:
+- id: availability
+  description: Share of object-service requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: object_service_requests_good_ratio
+  objective: 0.9995
+  rollingWindow: P28D
+- id: latency
+  description: p95 latency of the critical object-service operation.
+  sli:
+    kind: latency
+    metric: object_query_duration_ms
+    thresholdMs: 50
+    percentile: p95
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: object-service.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/object-service.md#availability-fast-burn
+- id: object-service.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/object-service.md#availability-slow-burn
+- id: object-service.latency.breach
+  slo: latency
+  condition: p95 > 50 ms for 15m
+  severity: page
+  runbook: docs/runbooks/object-service.md#latency-breach

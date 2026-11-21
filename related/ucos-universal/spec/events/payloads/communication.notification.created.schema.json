@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/communication.notification.created/1.json",
+  "title": "communication.notification.created",
+  "description": "Generated skeleton for communication.notification.created. Replace by adding spec/events/payloads/hand/communication.notification.created.schema.json.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": false,
+    "producer": "communication.inapp"
+  },
+  "type": "object",
+  "required": [
+    "subject",
+    "occurredAt"
+  ],
+  "properties": {
+    "subject": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "objectVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "occurredAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    },
+    "changes": {
+      "type": "object",
+      "description": "Changed attributes (JSON Merge Patch semantics).",
+      "additionalProperties": true
+    },
+    "data": {
+      "type": "object",
+      "description": "Event-specific facts; see the producing universe constitution.",
+      "additionalProperties": true
+    },
+    "objectType": {
+      "const": "ucos.comm.Notification"
+    }
+  },
+  "additionalProperties": false
+}

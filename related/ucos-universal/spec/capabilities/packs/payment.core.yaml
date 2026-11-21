@@ -1,0 +1,83 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: payment.core
+  version: 1.0.0
+  universe: U29-payment
+  steward: ucos:org:steward-payment
+  purpose: Payment intents, attempts, tokenised methods, refunds, COD and reconciliation.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.payment.PaymentIntent
+    - ucos.payment.PaymentAttempt
+    - ucos.payment.PaymentMethod
+    - ucos.payment.Refund
+    commands:
+    - CreateIntent
+    - ConfirmIntent
+    - HandleAction
+    - Capture
+    - Void
+    - Refund
+    - SaveMethod
+    - RemoveMethod
+    - CreateMandate
+    - RecordCodCollection
+    - Reconcile
+    queries:
+    - GetIntent
+    - ReconciliationReport
+    events:
+    - payment.payment-intent.created
+    - payment.payment-intent.requires-action
+    - payment.payment-intent.authorized
+    - payment.payment-intent.captured
+    - payment.payment-intent.failed
+    - payment.payment-intent.canceled
+    - payment.refund.issued
+    - payment.refund.failed
+    - payment.reconciliation.mismatch
+  requires:
+  - capability: payment.provider
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: integration.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TRG
+    - CAL
+    - R
+    - TR
+    - SLA
+  security:
+    dataClasses:
+    - FINANCIAL
+    threatModel: docs/threat-models/payment.md
+  compliance:
+    controls:
+    - ucos.ctrl.pci-hosted-fields
+    - ucos.ctrl.card-tokenization
+  ui:
+    views:
+    - checkout.payment
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

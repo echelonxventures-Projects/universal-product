@@ -1,0 +1,73 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: tax.core
+  version: 1.0.0
+  universe: U31-tax
+  steward: ucos:org:steward-tax
+  purpose: Tax regimes, categories, rules, registrations, determinations and tax documents with numbering.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.tax.TaxRegime
+    - ucos.tax.TaxCategory
+    - ucos.tax.TaxRule
+    - ucos.tax.TaxRegistration
+    - ucos.tax.Exemption
+    - ucos.tax.TaxDetermination
+    - ucos.tax.TaxDocument
+    - ucos.tax.Withholding
+    commands:
+    - Determine
+    - CommitDetermination
+    - IssueTaxDocument
+    - CancelTaxDocument
+    - RegisterEInvoice
+    - RecordRegistration
+    - RecordExemption
+    - ImportRegimePack
+    queries:
+    - TaxCategories
+    - DocumentsForOrder
+    events:
+    - tax.determination.committed
+    - tax.document.issued
+    - tax.document.cancelled
+    - tax.einvoice.registered
+    - tax.einvoice.failed
+  requires:
+  - capability: tax.determination
+    version: '>=1 <2'
+  - capability: document.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - CAL
+    - D
+    - TRG
+  security:
+    dataClasses:
+    - FINANCIAL
+    threatModel: docs/threat-models/tax-and-documents.md
+  compliance:
+    controls:
+    - ucos.ctrl.tax-invoice
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

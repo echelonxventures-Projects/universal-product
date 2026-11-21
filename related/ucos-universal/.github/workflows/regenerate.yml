@@ -1,0 +1,38 @@
+# Keeps generated files in sync on main without anyone running generators (ADR-036).
+# Regenerates, verifies the full suite, and commits only if something changed.
+# Pushes made with GITHUB_TOKEN do not start new workflow runs, so this cannot loop.
+name: Regenerate
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: regenerate-main
+  cancel-in-progress: false
+jobs:
+  regenerate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      CI: "true"
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: ./.github/actions/setup-toolchain
+      - name: Regenerate and verify
+        run: tools/ci.sh --fix
+      - name: Commit regenerated files
+        run: |
+          set -euo pipefail
+          git add -A spec/capabilities/packs spec/registries spec/object-types spec/api/openapi/capabilities spec/api/asyncapi spec/events/payloads kernel/gen
+          if git diff --cached --quiet; then echo "generated files already in sync"; exit 0; fi
+          git -c user.name="github-actions[bot]" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" \
+            commit -m "Regenerate generated specification files" -m "Automated by .github/workflows/regenerate.yml (tools/ci.sh --fix)."
+          for i in 1 2 3; do
+            git pull --rebase origin main && git push origin HEAD:main && exit 0
+            sleep $((i * 10))
+          done
+          echo "push failed after retries" >&2; exit 1

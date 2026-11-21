@@ -1,0 +1,28 @@
+# Master §16.1 (normative example), U26 Order. Spike S-05 runs this definition on the candidate engine.
+apiVersion: ucos.io/v1
+kind: WorkflowDefinition
+id: order.lifecycle
+version: 3.0.0
+object: ucos.order.Order
+initial: placed
+states:
+  placed:      { "on": { PaymentAuthorized: confirmed, PaymentFailed: payment_failed, Cancel: cancelled } }
+  confirmed:   { entry: [ reserveStock, createFulfillmentOrders, postLedger ],
+                 "on": { AllShipmentsDispatched: shipped, Cancel: cancelling } }
+  shipped:     { "on": { AllShipmentsDelivered: delivered, DeliveryFailed: exception } }
+  delivered:   { entry: [ startTimer ],
+                 timers: { returnWindow: { decision: order.return-eligibility, output: returnWindow, then: completed } },
+                 "on": { ReturnRequested: return_in_progress } }
+  completed:   { final: true, entry: [ releaseSellerPayoutHold ] }
+  cancelling:  { saga: [ { do: releaseStock, compensate: none },
+                         { do: voidOrRefundPayment, compensate: alertFinance },
+                         { do: notifyOrderCancelled, compensate: none } ],
+                 then: cancelled }
+  cancelled:   { final: true }
+  payment_failed: { timers: { retry: { duration: PT15M, then: cancelled } }, "on": { PaymentAuthorized: confirmed } }
+  exception:   { humanTask: { queue: support.logistics-exceptions, sla: SLA-4H-BUSINESS },
+                 "on": { Resolved: shipped, Refund: cancelling } }
+  return_in_progress: { subworkflow: return.flow@2, then: completed }
+guards:
+  Cancel: "state in ['placed', 'confirmed'] && !anyShipmentDispatched"
+observability: { slo: { "placed->confirmed": "p95 < PT60S" } }

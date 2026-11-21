@@ -1,0 +1,81 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: offer.engine
+  version: 1.0.0
+  universe: U22-offer
+  steward: ucos:org:steward-offer
+  purpose: Offers, promotions, coupons, campaigns, stacking, funding, budgets and redemptions.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.offer.Offer
+    - ucos.offer.Campaign
+    - ucos.offer.Coupon
+    - ucos.offer.CouponBatch
+    - ucos.offer.Redemption
+    commands:
+    - CreateOffer
+    - UpdateOffer
+    - PublishOffer
+    - PauseOffer
+    - CancelOffer
+    - CreateCampaign
+    - GenerateCoupons
+    - ReserveRedemption
+    - ConfirmRedemption
+    - ReverseRedemption
+    - SimulateOffer
+    queries:
+    - EvaluateOffers
+    - ActiveOffersFor
+    - CouponStatus
+    - CampaignPerformance
+    events:
+    - offer.offer.created
+    - offer.offer.published
+    - offer.offer.paused
+    - offer.offer.cancelled
+    - offer.offer.activated
+    - offer.offer.expired
+    - offer.coupons.generated
+    - offer.redemption.reserved
+    - offer.redemption.confirmed
+    - offer.redemption.reversed
+  consumes:
+    events:
+    - temporal.policy.activated
+    - temporal.policy.deactivated
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: catalog.listing
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - TRG
+    - D
+  ui:
+    views:
+    - offer.builder
+    - offer.badge
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

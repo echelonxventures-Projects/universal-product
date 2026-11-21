@@ -1,0 +1,30 @@
+# Regulation applicability facts (data, owned by U67 stewards). Generic rules in rules/core/closure.dl consume these.
+# when.capability: regulation applies only if that capability is in the blueprint; when.always: applies in jurisdiction;
+# when.businessModel / when.channel: applies if PD declares it; when.framework: applies if PD declares the framework.
+regulations:
+  - { id: in-dpdp-2023,            jurisdiction: "ucos:jur:IN", when: { always: true },                       controls: [ucos.ctrl.consent-notice, ucos.ctrl.dsr-access, ucos.ctrl.dsr-erasure, ucos.ctrl.retention, ucos.ctrl.ropa, ucos.ctrl.breach-notification] }
+  - { id: in-certin-2022,          jurisdiction: "ucos:jur:IN", when: { always: true },                       controls: [ucos.ctrl.breach-notification] }
+  - { id: in-ecommerce-rules-2020, jurisdiction: "ucos:jur:IN", when: { capability: commerce.checkout },     controls: [ucos.ctrl.in-ecom-disclosures, ucos.ctrl.grievance-officer, ucos.ctrl.honest-design] }
+  - { id: in-ccpa-dark-patterns-2023, jurisdiction: "ucos:jur:IN", when: { capability: pricing.engine },     controls: [ucos.ctrl.fee-transparency, ucos.ctrl.reference-price, ucos.ctrl.honest-design] }
+  - { id: in-legal-metrology,      jurisdiction: "ucos:jur:IN", when: { capability: catalog.listing },       controls: [ucos.ctrl.in-legal-metrology-attributes] }
+  - { id: in-gst,                  jurisdiction: "ucos:jur:IN", when: { capability: order.core },            controls: [ucos.ctrl.tax-invoice] }
+  - { id: in-gst-einvoicing,       jurisdiction: "ucos:jur:IN", when: { businessModel: B2B },                controls: [ucos.ctrl.in-einvoice] }
+  - { id: rbi-pa-guidelines,       jurisdiction: "ucos:jur:IN", when: { capability: payment.core },          controls: [ucos.ctrl.card-tokenization] }
+  - { id: in-trai-tcccpr,          jurisdiction: "ucos:jur:IN", when: { channel: sms },                      controls: [ucos.ctrl.in-trai-dlt] }
+  - { id: ae-pdpl,                 jurisdiction: "ucos:jur:AE", when: { always: true },                       controls: [ucos.ctrl.consent-notice, ucos.ctrl.dsr-access, ucos.ctrl.dsr-erasure, ucos.ctrl.retention, ucos.ctrl.ropa, ucos.ctrl.breach-notification] }
+  - { id: ae-vat,                  jurisdiction: "ucos:jur:AE", when: { capability: order.core },            controls: [ucos.ctrl.tax-invoice] }
+  - { id: ae-consumer-protection,  jurisdiction: "ucos:jur:AE", when: { capability: commerce.checkout },     controls: [ucos.ctrl.honest-design, ucos.ctrl.terms-acceptance, ucos.ctrl.fee-transparency] }
+  - { id: pci-dss-4,               jurisdiction: "*",           when: { framework: PCI-DSS },                controls: [ucos.ctrl.pci-hosted-fields] }
+  - { id: wcag-2.2,                jurisdiction: "*",           when: { capability: ui.storefront-web },     controls: [ucos.ctrl.wcag-2.2-aa] }
+  - { id: marketing-consent-laws,  jurisdiction: "*",           when: { capability: communication.core },    controls: [ucos.ctrl.marketing-consent, ucos.ctrl.unsubscribe] }
+  - { id: ucos-security-baseline,  jurisdiction: "*",           when: { always: true },                       controls: [ucos.ctrl.mfa-business-users, ucos.ctrl.access-review] }
+  - { id: call-recording-consent-laws, jurisdiction: "*",       when: { capability: contactcenter.core },   controls: [ucos.ctrl.recording-consent, ucos.ctrl.bot-disclosure] }
+  - { id: in-companies-act-books,   jurisdiction: "ucos:jur:IN", when: { capability: ledger.core },         controls: [ucos.ctrl.books-retention, ucos.ctrl.manual-journal-sod] }
+  - { id: ae-commercial-books,      jurisdiction: "ucos:jur:AE", when: { capability: ledger.core },         controls: [ucos.ctrl.books-retention] }
+  - { id: in-ecommerce-marketplace, jurisdiction: "ucos:jur:IN", when: { capability: marketplace.core },    controls: [ucos.ctrl.seller-kyb, ucos.ctrl.in-ecom-seller-disclosure, ucos.ctrl.grievance-officer] }
+  - { id: ae-ecommerce-traders,     jurisdiction: "ucos:jur:AE", when: { capability: marketplace.core },    controls: [ucos.ctrl.seller-kyb] }
+  - { id: rbi-emandate,             jurisdiction: "ucos:jur:IN", when: { capability: subscription.core },   controls: [ucos.ctrl.in-emandate, ucos.ctrl.renewal-notice] }
+  - { id: subscription-consumer-laws, jurisdiction: "*",         when: { capability: subscription.core },   controls: [ucos.ctrl.renewal-notice, ucos.ctrl.easy-cancellation] }
+  - { id: in-gst-eway-bill,         jurisdiction: "ucos:jur:IN", when: { capability: logistics.core },      controls: [ucos.ctrl.in-eway-bill] }
+  - { id: automated-decision-laws,  jurisdiction: "*",           when: { capability: risk.core },           controls: [ucos.ctrl.automated-decision-contest] }
+  - { id: consumer-review-rules,    jurisdiction: "*",           when: { capability: trust.core },          controls: [ucos.ctrl.authentic-reviews] }

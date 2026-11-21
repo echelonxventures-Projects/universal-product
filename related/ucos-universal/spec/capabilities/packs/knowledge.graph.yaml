@@ -1,0 +1,51 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: knowledge.graph
+  version: 1.0.0
+  universe: U07-knowledge-graph
+  steward: ucos:org:steward-knowledge-graph
+  purpose: Knowledge graph projections, assertions with trust, traceability and grounding.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.knowledge.KnowledgeObject
+    - ucos.knowledge.Assertion
+    - ucos.knowledge.Contradiction
+    commands:
+    - ProposeAssertion
+    - AcceptAssertion
+    - RetractAssertion
+    - ResolveContradiction
+    - RebuildProjection
+    queries:
+    - Trace
+    - ImpactOf
+    - Ground
+    events:
+    - knowledge.assertion.accepted
+    - knowledge.contradiction.opened
+  requires:
+  - capability: ontology.core
+    version: '>=1 <2'
+  - capability: event.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - D
+    - R
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/l10n.locale.enabled/1.json",
+  "title": "l10n.locale.enabled",
+  "description": "Generated skeleton for l10n.locale.enabled. Replace by adding spec/events/payloads/hand/l10n.locale.enabled.schema.json.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": false,
+    "producer": "l10n.core"
+  },
+  "type": "object",
+  "required": [
+    "subject",
+    "occurredAt"
+  ],
+  "properties": {
+    "subject": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "objectVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "occurredAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    },
+    "changes": {
+      "type": "object",
+      "description": "Changed attributes (JSON Merge Patch semantics).",
+      "additionalProperties": true
+    },
+    "data": {
+      "type": "object",
+      "description": "Event-specific facts; see the producing universe constitution.",
+      "additionalProperties": true
+    },
+    "objectType": {
+      "const": "ucos.l10n.Locale"
+    }
+  },
+  "additionalProperties": false
+}

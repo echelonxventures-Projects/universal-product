@@ -1,0 +1,59 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: l10n.core
+  version: 1.0.0
+  universe: U15-localization
+  steward: ucos:org:steward-localization
+  purpose: Locales, message bundles, translations, glossaries and format profiles.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.l10n.Locale
+    - ucos.l10n.MessageKey
+    - ucos.l10n.MessageBundle
+    - ucos.l10n.Translation
+    - ucos.l10n.FormatProfile
+    - ucos.l10n.Glossary
+    commands:
+    - RegisterBundle
+    - RequestTranslation
+    - SubmitTranslation
+    - ApproveTranslation
+    - SetTenantOverride
+    - EnableLocale
+    queries:
+    - Resolve
+    - GetBundle
+    - Coverage
+    - Format
+    events:
+    - l10n.bundle.registered
+    - l10n.translation.approved
+    - l10n.translation.stale
+    - l10n.locale.enabled
+  requires:
+  - capability: refdata.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  temporal:
+    kind: E
+    uses:
+    - D
+  ui:
+    views:
+    - l10n.translation.editor
+    - l10n.locale.switcher
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

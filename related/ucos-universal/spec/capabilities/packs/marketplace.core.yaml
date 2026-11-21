@@ -1,0 +1,117 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: marketplace.core
+  version: 1.0.0
+  universe: U25-marketplace
+  steward: ucos:org:steward-marketplace
+  purpose: 'Multi-sided marketplace: seller onboarding and standing, commission plans, payouts with holds, statements, seller performance.'
+  capabilityKind: core
+  maturity: beta
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.marketplace.SellerAccount
+    - ucos.marketplace.CommissionPlan
+    - ucos.marketplace.PayoutSchedule
+    - ucos.marketplace.SellerStatement
+    - ucos.marketplace.SellerPerformance
+    - ucos.marketplace.MarketplacePolicy
+    commands:
+    - ApplyAsSeller
+    - CompleteKYB
+    - ApproveSeller
+    - RejectSeller
+    - SignSellerAgreement
+    - ApproveCategory
+    - SetSellerStanding
+    - DefineCommissionPlan
+    - AccrueCommission
+    - ComputePayout
+    - ReleasePayout
+    - HoldPayout
+    - IssueStatement
+    queries:
+    - SellerDashboard
+    - PayableBalance
+    - PerformanceScorecard
+    - NextPayout
+    events:
+    - marketplace.seller.approved
+    - marketplace.seller.suspended
+    - marketplace.seller.reinstated
+    - marketplace.commission.accrued
+    - marketplace.payout.scheduled
+    - marketplace.payout.paid
+    - marketplace.payout.held
+    - marketplace.statement.issued
+    decisions:
+    - marketplace.commission-plan
+    - marketplace.payout-hold
+  consumes:
+    events:
+    - order.order.confirmed
+    - order.return.completed
+    - fulfillment.shipment.delivered
+    - payment.refund.issued
+  requires:
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: catalog.listing
+    version: '>=1 <2'
+  - capability: order.core
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: tax.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: entitlement.core
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: risk.core
+    version: '>=1 <2'
+  - capability: document.core
+    version: '>=1 <2'
+  optional:
+  - capability: trust.core
+  - capability: contract.core
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - CAL
+    - R
+    - TR
+    - SLA
+  security:
+    dataClasses:
+    - PII
+    - FINANCIAL
+    threatModel: docs/threat-models/kernel-and-tenancy.md
+  compliance:
+    controls:
+    - ucos.ctrl.seller-kyb
+    - ucos.ctrl.in-ecom-seller-disclosure
+  ui:
+    views:
+    - marketplace.seller-onboarding
+    - marketplace.seller-hub
+    - marketplace.payout-run
+    - marketplace.commission-plans
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

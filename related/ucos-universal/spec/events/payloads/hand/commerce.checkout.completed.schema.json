@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/commerce.checkout.completed/1.json",
+  "title": "commerce.checkout.completed",
+  "description": "Checkout handed off to Order; the cart is converted.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true
+  },
+  "type": "object",
+  "required": [
+    "checkoutId",
+    "cartId",
+    "orderId",
+    "total",
+    "completedAt"
+  ],
+  "properties": {
+    "checkoutId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "cartId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "orderId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "total": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/Money"
+    },
+    "completedAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

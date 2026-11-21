@@ -1,0 +1,32 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: carrier.shiprocket
+  version: 1.0.0
+  universe: U35-fulfillment
+  steward: ucos:org:steward-fulfillment
+  purpose: India carrier aggregator adapter.
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - logistics.carrier
+  requires:
+  - capability: integration.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - ucos:jur:IN
+  temporal:
+    kind: V
+    uses:
+    - TP
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

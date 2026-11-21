@@ -1,0 +1,57 @@
+// Pack runtime contract (KERNEL-DESIGN §7; A-13). Implemented by every out-of-process pack.
+syntax = "proto3";
+package ucos.kernel.v1;
+option go_package = "ucos.io/kernel/gen/ucos/kernel/v1;kernelv1";
+
+import "ucos/kernel/v1/common.proto";
+
+service PackRuntime {
+  // ARCH-CAP-01: must list exactly what the manifest declares.
+  rpc Describe(DescribeRequest) returns (DescribeResponse);
+  rpc HandleCommand(HandleRequest) returns (HandleResponse);
+  rpc HandleQuery(HandleRequest) returns (HandleResponse);
+  rpc HandleEvent(EventDelivery) returns (EventAck);
+  rpc InvokeExtension(HandleRequest) returns (HandleResponse);
+  rpc Health(HealthRequest) returns (HealthResponse);
+}
+message DescribeRequest {}
+message DescribeResponse {
+  string capability_id = 1;
+  string version = 2;
+  repeated string commands = 3;
+  repeated string queries = 4;
+  repeated string consumed_events = 5;
+  repeated string produced_events = 6;
+  repeated string object_types = 7;
+  repeated string extension_points = 8;
+}
+message HandleRequest {
+  string operation = 1;                  // command, query or extension name
+  string target_id = 2;
+  bytes payload = 3;                     // JSON
+  string context_token = 4;
+  repeated Obligation obligations = 5;
+  int64 deadline_unix_ms = 6;
+}
+message HandleResponse {
+  int32 status = 1;
+  bytes body = 2;
+  string version = 3;
+  Problem problem = 4;
+}
+message EventDelivery {
+  bytes cloudevent = 1;                  // JSON CloudEvent (spec/events/cloudevent-envelope.schema.json)
+  string context_token = 2;
+  int32 attempt = 3;
+}
+message EventAck {
+  enum Outcome { OUTCOME_UNSPECIFIED = 0; ACK = 1; RETRY = 2; DEAD_LETTER = 3; }
+  Outcome outcome = 1;
+  Problem problem = 2;
+}
+message HealthRequest {}
+message HealthResponse {
+  enum Status { STATUS_UNSPECIFIED = 0; SERVING = 1; DEGRADED = 2; NOT_SERVING = 3; }
+  Status status = 1;
+  map<string, string> checks = 2;
+}

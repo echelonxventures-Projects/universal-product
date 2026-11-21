@@ -1,0 +1,55 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: ui.core
+  version: 1.0.0
+  universe: U64-ui-app-channel
+  steward: ucos:org:steward-ui-app-channel
+  purpose: 'UI meta-model: views, components, journeys, portals, themes and channel profiles; web renderer.'
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.ui.ViewDefinition
+    - ucos.ui.Component
+    - ucos.ui.Journey
+    - ucos.ui.Portal
+    - ucos.ui.Theme
+    - ucos.ui.ChannelProfile
+    commands:
+    - ProposeView
+    - PublishView
+    - DefineJourney
+    - DefinePortal
+    - PublishTheme
+    - RegisterComponent
+    queries:
+    - CompiledView
+    - PortalManifest
+    - PreviewAs
+    events:
+    - ui.view.published
+    - ui.theme.published
+  requires:
+  - capability: l10n.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - ASOF
+    - D
+  compliance:
+    controls:
+    - ucos.ctrl.wcag-2.2-aa
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

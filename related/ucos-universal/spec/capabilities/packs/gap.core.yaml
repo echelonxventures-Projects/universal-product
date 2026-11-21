@@ -1,0 +1,48 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: gap.core
+  version: 1.0.0
+  universe: U75-discovery-gap
+  steward: ucos:org:steward-discovery-gap
+  purpose: Gap model, rule library, scans, fix catalogue and discovery questions.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.gap.Gap
+    - ucos.gap.GapRule
+    - ucos.gap.Fix
+    - ucos.gap.GapReport
+    - ucos.gap.DiscoveryFinding
+    commands:
+    - Scan
+    - ApplyFix
+    - AssignGap
+    - RequestWaiver
+    queries:
+    - OpenGaps
+    - Why
+    events:
+    - gap.scan.completed
+  requires:
+  - capability: meta.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TRG
+    - R
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

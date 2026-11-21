@@ -1,0 +1,9 @@
+kind: DecisionTable
+id: commerce.checkout.hold
+owner: commerce.checkout
+hitPolicy: FIRST
+inputs:  [ { name: channel, type: ChannelRef }, { name: hasSlot, type: Boolean } ]
+outputs: [ { name: hold, type: Duration } ]
+rules:
+  - [ "*", "true",  "PT10M" ]
+  - [ "*", "*",     "PT15M" ]

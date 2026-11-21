@@ -1,0 +1,73 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: commerce.cart
+  version: 1.0.0
+  universe: U24-commerce-cart-checkout
+  steward: ucos:org:steward-commerce-cart-checkout
+  purpose: Carts with lines, coupons, estimates, merge and abandonment.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.commerce.Cart
+    - ucos.commerce.CartLine
+    commands:
+    - CreateCart
+    - AddLine
+    - UpdateLineQuantity
+    - RemoveLine
+    - ApplyCoupon
+    - RemoveCoupon
+    - MergeCarts
+    - SaveForLater
+    - EstimateCart
+    queries:
+    - GetCart
+    - GetCartByBuyer
+    events:
+    - commerce.cart.created
+    - commerce.cart.line-added
+    - commerce.cart.line-removed
+    - commerce.cart.coupon-applied
+    - commerce.cart.abandoned
+    - commerce.cart.converted
+    - commerce.cart.merged
+  consumes:
+    events:
+    - catalog.listing.unpublished
+    - pricing.price.changed
+    - inventory.stock.depleted
+  requires:
+  - capability: catalog.listing
+    version: '>=1 <2'
+  - capability: pricing.engine
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  optional:
+  - capability: offer.engine
+  - capability: inventory.core
+  - capability: tax.core
+  temporal:
+    kind: S
+    uses:
+    - D
+    - TRG
+  ui:
+    views:
+    - cart.mini
+    - cart.page
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

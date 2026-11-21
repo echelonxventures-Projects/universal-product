@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/meta/canonical-object.schema.json",
+  "title": "CanonicalObject envelope (master §7.1, U04)",
+  "type": "object",
+  "required": ["id", "type", "tenant", "status", "version", "owner", "classification", "temporal", "audit"],
+  "properties": {
+    "id": { "$ref": "value-types.schema.json#/$defs/UGID" },
+    "type": { "$ref": "value-types.schema.json#/$defs/TypeRef" },
+    "subtype": { "type": "string" },
+    "tenant": { "oneOf": [ { "$ref": "value-types.schema.json#/$defs/UGID" }, { "const": "global" } ] },
+    "name": { "$ref": "value-types.schema.json#/$defs/LocalizedText" },
+    "description": { "$ref": "value-types.schema.json#/$defs/LocalizedText" },
+    "status": { "type": "string", "minLength": 1 },
+    "version": { "type": "integer", "minimum": 1 },
+    "defVersion": { "type": "string", "pattern": "^\\d+\\.\\d+\\.\\d+(-[0-9A-Za-z.-]+)?$" },
+    "owner": { "$ref": "value-types.schema.json#/$defs/UGID" },
+    "steward": { "$ref": "value-types.schema.json#/$defs/UGID" },
+    "context": { "type": "string", "description": "ContextEnvelope hash or ref" },
+    "frame": { "$ref": "value-types.schema.json#/$defs/FrameRef" },
+    "attributes": { "type": "object" },
+    "customAttributes": { "type": "object" },
+    "relationships": { "type": "array", "items": { "type": "object", "required": ["type", "target"], "properties": { "type": { "type": "string" }, "target": { "$ref": "value-types.schema.json#/$defs/UGID" } } } },
+    "policies": { "type": "array", "items": { "type": "string" } },
+    "classification": { "$ref": "value-types.schema.json#/$defs/Classification" },
+    "compliance": { "type": "object", "properties": { "jurisdictions": { "type": "array", "items": { "type": "string" } }, "controls": { "type": "array", "items": { "type": "string" } } } },
+    "temporal": {
+      "type": "object", "required": ["validFrom", "recordedAt"],
+      "properties": {
+        "validFrom": { "$ref": "value-types.schema.json#/$defs/TimePoint" },
+        "validTo": { "$ref": "value-types.schema.json#/$defs/TimePoint" },
+        "recordedAt": { "$ref": "value-types.schema.json#/$defs/TimePoint" },
+        "supersededAt": { "$ref": "value-types.schema.json#/$defs/TimePoint" }
+      }
+    },
+    "provenance": { "type": "object", "properties": { "source": { "type": "string" }, "method": { "enum": ["manual", "import", "generated", "ai", "feed", "crawl", "tenant"] }, "confidence": { "type": "number", "minimum": 0, "maximum": 1 } } },
+    "audit": {
+      "type": "object", "required": ["createdBy", "createdAt", "updatedBy", "updatedAt"],
+      "properties": {
+        "createdBy": { "type": "string" }, "createdAt": { "$ref": "value-types.schema.json#/$defs/TimePoint" },
+        "updatedBy": { "type": "string" }, "updatedAt": { "$ref": "value-types.schema.json#/$defs/TimePoint" },
+        "lastAuditRecord": { "type": "string" }
+      }
+    },
+    "evidence": { "type": "array", "items": { "type": "string" } },
+    "metadata": { "type": "object" }
+  },
+  "additionalProperties": false
+}

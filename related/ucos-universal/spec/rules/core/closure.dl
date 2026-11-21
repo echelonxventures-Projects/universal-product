@@ -1,0 +1,77 @@
+// UCOS composition core rules (Datalog, Soufflé-style). Generic: no country, industry or vendor names (CMP-L3).
+// Facts (EDB) are generated from spec/capabilities/packs/*.yaml and spec/rules/facts/*.yaml.
+.decl requested(c: symbol)                    // PD include + channel capabilities (facts) + base capabilities (rule below)
+.decl base_capability(c: symbol)              // defaults.yaml baseCapabilities
+.decl phase_of(c: symbol, p: number)          // manifest metadata.phase
+.decl target_phase(p: number)                 // PD spec.targetPhase (default 1)
+.decl pd_reality(x: symbol)                   // PD spec.reality: physical (default) | simulated | hypothetical
+.decl adapter_reality(a: symbol, x: symbol)   // manifest selection.realities (default physical)
+.decl requires(c: symbol, d: symbol)
+.decl excluded(c: symbol)
+.decl in_scope(j: symbol)                     // ucos:jur:XX from PD countries
+.decl pd_business_model(m: symbol)
+.decl pd_channel(ch: symbol)
+.decl pd_framework(f: symbol)
+.decl regulation(r: symbol, j: symbol)        // j may be "*"
+.decl reg_when_always(r: symbol)
+.decl reg_when_capability(r: symbol, c: symbol)
+.decl reg_when_business_model(r: symbol, m: symbol)
+.decl reg_when_channel(r: symbol, ch: symbol)
+.decl reg_when_framework(r: symbol, f: symbol)
+.decl requires_control(r: symbol, k: symbol)
+.decl control_implemented_by(k: symbol, c: symbol)
+.decl abstract(c: symbol)
+.decl implements(a: symbol, abs: symbol)
+.decl adapter_kind(a: symbol)                 // capabilityKind adapter or simulator
+.decl adapter_jur(a: symbol, j: symbol)       // j may be "*"
+.decl adapter_method(a: symbol, m: symbol)    // m may be "*"; no fact = method-agnostic
+.decl needed_method(abs: symbol, j: symbol, m: symbol)
+.decl provider_capability(c: symbol)          // exists in registry
+.decl io_abstract(abs: symbol)
+.decl simulator_for(s: symbol, abs: symbol)
+.decl provides_event(c: symbol, e: symbol)    // manifest provides.events
+.decl consumes_event(c: symbol, e: symbol)    // manifest consumes.events
+.decl chosen_adapter(abs: symbol, j: symbol, m: symbol, a: symbol)  // engine choice() over selected_adapter (see below)
+
+.decl required(c: symbol)
+.decl applies(r: symbol)
+.decl required_control(k: symbol)
+.decl selected_adapter(abs: symbol, j: symbol, m: symbol, a: symbol)
+.decl produced(e: symbol)
+.decl gap(kind: symbol, a: symbol, b: symbol)
+
+// The base set grows with the phases: a base capability applies once its phase is reached (A-74).
+requested(c) :- base_capability(c), phase_of(c, p), target_phase(t), p <= t.
+required(c) :- requested(c).
+required(d) :- required(c), requires(c, d).
+
+// Regulations protect real people and real transactions: they apply in the physical reality only (P-004).
+applies(r) :- pd_reality("physical"), regulation(r, j), in_scope(j), reg_when_always(r).
+applies(r) :- pd_reality("physical"), regulation(r, "*"), reg_when_always(r).
+applies(r) :- pd_reality("physical"), regulation(r, j), (in_scope(j) ; j = "*"), reg_when_capability(r, c), required(c).
+applies(r) :- pd_reality("physical"), regulation(r, j), (in_scope(j) ; j = "*"), reg_when_business_model(r, m), pd_business_model(m).
+applies(r) :- pd_reality("physical"), regulation(r, j), (in_scope(j) ; j = "*"), reg_when_channel(r, ch), pd_channel(ch).
+applies(r) :- pd_reality("physical"), regulation(r, j), (in_scope(j) ; j = "*"), reg_when_framework(r, f), pd_framework(f).
+required_control(k) :- applies(r), requires_control(r, k).
+required(c) :- required_control(k), control_implemented_by(k, c).
+// An adapter required directly (by a control or a PD include) brings its port with it.
+required(abs) :- required(a), adapter_kind(a), implements(a, abs).
+
+// Adapter selection: specific jurisdiction beats "*"; method must match or be "*" or adapter is method-agnostic.
+selected_adapter(abs, j, m, a) :- required(abs), abstract(abs), needed_method(abs, j, m),
+                                  implements(a, abs), pd_reality(x), adapter_reality(a, x),
+                                  (adapter_jur(a, j) ; adapter_jur(a, "*")),
+                                  (adapter_method(a, m) ; adapter_method(a, "*") ; m = "-").
+// One adapter per (port, jurisdiction, method) joins the platform. The engine provides chosen_adapter by choice() over
+// selected_adapter: an adapter listing the jurisdiction beats a "*" adapter, then the lexically smallest id wins.
+// Engines evaluate to a fixpoint, choose, add chosen_adapter facts and evaluate again until nothing changes.
+required(a) :- chosen_adapter(_, _, _, a).
+
+gap("MISSING_CAPABILITY", c, "-")        :- required(c), !provider_capability(c).
+gap("MISSING_ADAPTER", abs, j)           :- required(abs), abstract(abs), needed_method(abs, j, m), !selected_adapter(abs, j, m, _).
+gap("CONFLICT_EXCLUDED", c, "-")         :- required(c), excluded(c).
+gap("MISSING_SIMULATOR", abs, "-")       :- required(abs), io_abstract(abs), !simulator_for(_, abs).
+gap("PHASE_NOT_AVAILABLE", c, "-")       :- required(c), phase_of(c, p), target_phase(t), p > t.
+produced(e) :- required(c), provides_event(c, e).
+gap("EVENT_WITHOUT_PRODUCER_IN_BLUEPRINT", c, e) :- required(c), consumes_event(c, e), !produced(e).
+gap("CONTROL_NOT_IMPLEMENTED", k, c)     :- required_control(k), control_implemented_by(k, c), !required(c).

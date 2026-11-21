@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: messaging
+universe: U40
+tier: T1
+owner: ucos:org:engagement-comm
+phase: 1
+slos:
+- id: availability
+  description: Share of messaging requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: messaging_requests_good_ratio
+  objective: 0.999
+  rollingWindow: P28D
+- id: latency
+  description: p95 latency of the critical messaging operation.
+  sli:
+    kind: latency
+    metric: message_send_lag_ms
+    thresholdMs: 60000
+    percentile: p95
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: messaging.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/messaging.md#availability-fast-burn
+- id: messaging.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/messaging.md#availability-slow-burn
+- id: messaging.latency.breach
+  slo: latency
+  condition: p95 > 60000 ms for 15m
+  severity: ticket
+  runbook: docs/runbooks/messaging.md#latency-breach

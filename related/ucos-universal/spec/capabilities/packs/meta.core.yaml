@@ -1,0 +1,49 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: meta.core
+  version: 1.0.0
+  universe: U04-meta
+  steward: ucos:org:steward-meta
+  purpose: Registry of object types, field types, value types, relationship types and lifecycles.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.meta.ObjectType
+    - ucos.meta.FieldType
+    - ucos.meta.ValueType
+    - ucos.meta.RelationshipType
+    - ucos.meta.LifecycleModel
+    - ucos.meta.ExtensionSchema
+    commands:
+    - ProposeObjectType
+    - ValidateObjectType
+    - ApproveObjectType
+    - PublishObjectType
+    - DeprecateObjectType
+    - CreateExtensionSchema
+    queries:
+    - GetObjectType
+    - ResolveSchema
+    - CheckCompatibility
+    events:
+    - meta.object-type.published
+    - meta.object-type.deprecated
+    - meta.extension.created
+  temporal:
+    kind: V
+    uses:
+    - TP
+    - TR
+    - ASOF
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

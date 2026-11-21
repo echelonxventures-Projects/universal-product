@@ -1,0 +1,26 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: identity.federation-provider
+  version: 1.0.0
+  universe: U09-identity
+  steward: ucos:org:steward-identity
+  purpose: Port for external identity providers (OIDC/SAML/social).
+  capabilityKind: abstract
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    ports:
+    - identity.federation-provider@1
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

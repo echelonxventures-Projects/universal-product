@@ -1,0 +1,50 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: taxonomy.core
+  version: 1.0.0
+  universe: U06-taxonomy
+  steward: ucos:org:steward-taxonomy
+  purpose: Classification schemes, nodes, attribute templates, mappings and classifications.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.taxonomy.Taxonomy
+    - ucos.taxonomy.TaxonomyNode
+    - ucos.taxonomy.TaxonomyMapping
+    - ucos.taxonomy.Classification
+    commands:
+    - CreateTaxonomy
+    - AddNode
+    - MoveNode
+    - DeprecateNode
+    - MapNodes
+    - Classify
+    - BulkReclassify
+    queries:
+    - Tree
+    - EffectiveAttributes
+    - Suggest
+    events:
+    - taxonomy.node.changed
+    - taxonomy.classification.changed
+  requires:
+  - capability: ontology.core
+    version: '>=1 <2'
+  - capability: refdata.core
+    version: '>=1 <2'
+  temporal:
+    kind: V
+    uses:
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

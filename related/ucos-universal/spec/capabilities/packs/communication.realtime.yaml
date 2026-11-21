@@ -1,0 +1,62 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: communication.realtime
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: 'Real-time conversations: WebSocket gateway, presence, typing, delivery/read receipts, rich message types, masked parties.'
+  capabilityKind: core
+  maturity: beta
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.comm.Conversation
+    - ucos.comm.ConversationMessage
+    - ucos.comm.Presence
+    commands:
+    - StartConversation
+    - PostMessage
+    - MarkDelivered
+    - MarkSeen
+    - SetTyping
+    - CloseConversation
+    queries:
+    - ConversationHistory
+    - ActiveConversations
+    events:
+    - communication.conversation.started
+    - communication.conversation.message-posted
+    - communication.conversation.closed
+  requires:
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: asset.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: privacy.retention
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - D
+  security:
+    dataClasses:
+    - PII
+    threatModel: docs/threat-models/communication.md
+  ui:
+    views:
+    - chat.thread
+    - chat.widget
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

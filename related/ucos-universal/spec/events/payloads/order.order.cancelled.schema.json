@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/order.order.cancelled/1.json",
+  "title": "order.order.cancelled",
+  "description": "Whole order cancelled; line-level cancellations use order.line.cancelled.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true,
+    "producer": "order.core"
+  },
+  "type": "object",
+  "required": [
+    "orderId",
+    "reason",
+    "cancelledAt",
+    "initiatedBy"
+  ],
+  "properties": {
+    "orderId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "reason": {
+      "type": "string",
+      "description": "taxonomy:cancel-reason code"
+    },
+    "initiatedBy": {
+      "enum": [
+        "buyer",
+        "seller",
+        "operator",
+        "system"
+      ]
+    },
+    "refundDue": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/Money"
+    },
+    "cancelledAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

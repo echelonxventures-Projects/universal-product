@@ -1,0 +1,26 @@
+// Command bus (KERNEL-DESIGN §3). Every state change enters UCOS through Execute.
+syntax = "proto3";
+package ucos.kernel.v1;
+option go_package = "ucos.io/kernel/gen/ucos/kernel/v1;kernelv1";
+
+import "ucos/kernel/v1/common.proto";
+
+service CommandBus {
+  rpc Execute(CommandRequest) returns (CommandResponse);
+}
+message CommandRequest {
+  string operation_id = 1;               // "<slug>:<Command>", e.g. "commerce:AddLine"
+  string target_id = 2;                  // aggregate UGID; empty for create
+  bytes payload = 3;                     // JSON, validated against the operation's input schema
+  string idempotency_key = 4;            // required for every command (409 IDEMPOTENCY_KEY_REUSED on hash mismatch)
+  string expected_version = 5;           // from If-Match
+  string context_token = 6;              // signed ContextEnvelope
+  repeated Obligation obligations = 7;   // from the PEP
+}
+message CommandResponse {
+  int32 status = 1;                      // HTTP-equivalent status
+  bytes body = 2;                        // JSON result
+  string version = 3;                    // aggregate version (ETag)
+  Problem problem = 4;
+  int32 retry_after_seconds = 5;         // set with 409 IN_PROGRESS
+}

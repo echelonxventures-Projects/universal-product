@@ -1,0 +1,46 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: privacy.retention
+  version: 1.0.0
+  universe: U66-privacy-consent
+  steward: ucos:org:steward-privacy-consent
+  purpose: Retention rules, legal-hold-aware deletion, anonymisation and crypto-shredding.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.privacy.RetentionRule
+    - ucos.privacy.TransferRecord
+    - ucos.privacy.ProcessingActivity
+    commands:
+    - DefineRetentionRule
+    - RunRetention
+    - RecordTransfer
+    queries:
+    - RetentionDue
+    - RoPA
+    events:
+    - privacy.retention.executed
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - D
+    - R
+  compliance:
+    controls:
+    - ucos.ctrl.retention
+    - ucos.ctrl.ropa
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

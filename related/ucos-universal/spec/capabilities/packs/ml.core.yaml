@@ -1,0 +1,75 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: ml.core
+  version: 1.0.0
+  universe: U94-ml-platform
+  steward: ucos:org:steward-ml-platform
+  purpose: "ML Platform owns predictive and statistical machine learning lifecycle (as distinct from LLM/agent usage owned by U49\u2013U51)."
+  capabilityKind: core
+  maturity: experimental
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.ml.FeatureDefinition
+    - ucos.ml.TrainingDataset
+    - ucos.ml.LabelTask
+    - ucos.ml.TrainingPipeline
+    - ucos.ml.Deployment
+    - ucos.ml.MonitorPolicy
+    commands:
+    - DefineFeature
+    - MaterializeFeatures
+    - CreateTrainingDataset
+    - RunTraining
+    - EvaluateModel
+    - RegisterModelVersion
+    - RequestCertification
+    - Deploy
+    - Rollback
+    - ScheduleRetraining
+    queries:
+    - OnlineFeatures
+    - Predict
+    - ModelLineage
+    - DriftStatus
+    events:
+    - ml.training.completed
+    - ml.model.deployed
+    - ml.model.rolled-back
+    - ml.drift.detected
+  requires:
+  - capability: data.core
+    version: '>=1 <2'
+  - capability: observability.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: security.core
+    version: '>=1 <2'
+  - capability: certification.core
+    version: '>=1 <2'
+  - capability: infra.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  optional:
+  - capability: ai.core
+  temporal:
+    kind: S
+    uses:
+    - R
+    - ASOF
+    - D
+    - TRG
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

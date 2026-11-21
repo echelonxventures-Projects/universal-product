@@ -1,0 +1,52 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: decision.core
+  version: 1.0.0
+  universe: U53-decision
+  steward: ucos:org:steward-decision
+  purpose: Decision tables and models with tenant versions, bounds, tests and decision logs.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.decision.DecisionDefinition
+    - ucos.decision.TenantDecisionVersion
+    - ucos.decision.DecisionLog
+    commands:
+    - RegisterDecision
+    - ProposeTenantVersion
+    - PublishTenantVersion
+    - AddDecisionTest
+    - RollbackTenantVersion
+    queries:
+    - Evaluate
+    - Explain
+    - Simulate
+    - Coverage
+    events:
+    - decision.version.published
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - TR
+    - TRG
+    - ASOF
+  ui:
+    views:
+    - decision.table.editor
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

@@ -1,0 +1,61 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: esg.core
+  version: 1.0.0
+  universe: U98-sustainability-esg
+  steward: ucos:org:steward-sustainability-esg
+  purpose: ESG owns measuring and reporting environmental, social and governance impact.
+  capabilityKind: core
+  maturity: experimental
+  phase: 6
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.esg.EmissionFactor
+    - ucos.esg.ActivityRecord
+    - ucos.esg.FootprintResult
+    - ucos.esg.EnvironmentalClaim
+    - ucos.esg.EPRObligation
+    - ucos.esg.ESGReport
+    commands:
+    - ImportEmissionFactors
+    - RecordActivity
+    - ComputeFootprint
+    - PublishClaim
+    - RecordEPRQuantities
+    - GenerateReport
+    queries:
+    - ProductFootprint
+    - OrderFootprint
+    - ScopeTotals
+  requires:
+  - capability: product.intelligence
+    version: '>=1 <2'
+  - capability: logistics.core
+    version: '>=1 <2'
+  - capability: infra.core
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: installed-base.core
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - TRG
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

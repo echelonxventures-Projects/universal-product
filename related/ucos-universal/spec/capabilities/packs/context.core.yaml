@@ -1,0 +1,52 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: context.core
+  version: 1.0.0
+  universe: U16-context
+  steward: ucos:org:steward-context
+  purpose: Context profiles and rules; resolver configuration for the gateway.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.context.ContextProfile
+    - ucos.context.ContextRule
+    commands:
+    - DefineContextProfile
+    - DefineContextRule
+    queries:
+    - ResolveContext
+    events:
+    - context.profile.changed
+  requires:
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: l10n.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  temporal:
+    kind: E
+    uses:
+    - TP
+    - ASOF
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

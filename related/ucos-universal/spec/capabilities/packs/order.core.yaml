@@ -1,0 +1,96 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: order.core
+  version: 1.0.0
+  universe: U26-order
+  steward: ucos:org:steward-order
+  purpose: Orders, seller orders, lines, adjustments, cancellations and returns with immutable commercial terms.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.order.Order
+    - ucos.order.SellerOrder
+    - ucos.order.OrderLine
+    - ucos.order.OrderAdjustment
+    - ucos.order.ReturnRequest
+    commands:
+    - PlaceOrder
+    - ConfirmOrder
+    - CancelOrder
+    - CancelSellerOrder
+    - AmendOrder
+    - AdjustOrder
+    - RequestReturn
+    - ApproveReturn
+    - RejectReturn
+    - ReceiveReturn
+    - CompleteReturn
+    - CompleteOrder
+    queries:
+    - GetOrder
+    - OrdersForBuyer
+    - OrdersForSeller
+    - OrderTimeline
+    - CancellationOptions
+    - ReturnOptions
+    events:
+    - order.order.placed
+    - order.order.confirmed
+    - order.order.cancelled
+    - order.order.amended
+    - order.order.completed
+    - order.line.cancelled
+    - order.return.requested
+    - order.return.approved
+    - order.return.completed
+    - order.adjustment.created
+  consumes:
+    events:
+    - payment.payment-intent.captured
+    - fulfillment.shipment.delivered
+    - fulfillment.shipment.dispatched
+    - temporal.trigger.fired
+  requires:
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: fulfillment.core
+    version: '>=1 <2'
+  - capability: tax.core
+    version: '>=1 <2'
+  - capability: document.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - D
+    - TRG
+  security:
+    dataClasses:
+    - PII
+    - FINANCIAL
+    threatModel: docs/threat-models/commerce-checkout-order.md
+  ui:
+    views:
+    - order.list
+    - order.detail
+    - return.request
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

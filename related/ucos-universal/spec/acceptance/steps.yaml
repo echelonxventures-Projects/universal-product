@@ -1,0 +1,181 @@
+apiVersion: ucos.io/v1
+kind: StepVocabulary
+description: Allowed Gherkin steps for spec/acceptance. Each pattern is matched against the full step text (anchored). The test harness (ucostest) implements exactly one step definition per id; CI rejects
+  any step that matches none.
+steps:
+- id: tenant.runs-platform
+  pattern: ^the tenant "([^"]*)" runs the golden platform "([^"]*)"$
+- id: tenants.share-cell
+  pattern: ^the tenants "([^"]*)" and "([^"]*)" run the golden platform "([^"]*)" in the same cell$
+- id: cell.reality
+  pattern: ^the cell runs in reality "([^"]*)"$
+- id: listing.published
+  pattern: ^the listing "([^"]*)" is published at "([^"]*)" "([^"]*)" with tax category "([^"]*)"$
+- id: stock.at-location
+  pattern: ^the location "([^"]*)" has (\d+) units of "([^"]*)"$
+- id: buyer.verified
+  pattern: ^a verified buyer "([^"]*)" with delivery address in "([^"]*)"$
+- id: buyer.business
+  pattern: ^a business buyer "([^"]*)" with GSTIN "([^"]*)" in "([^"]*)"$
+- id: order.delivered-fixture
+  pattern: ^a delivered order "([^"]*)" for buyer "([^"]*)" of (\d+) units of "([^"]*)" paid by "([^"]*)"$
+- id: order.exists-for-tenant
+  pattern: ^an order exists for tenant "([^"]*)"$
+- id: payment.pending-intent
+  pattern: ^a pending payment intent "([^"]*)" for "([^"]*)" "([^"]*)"$
+- id: clock.after-delivery
+  pattern: ^the clock is "([^"]*)" after delivery of "([^"]*)"$
+- id: consent.absent
+  pattern: ^"([^"]*)" has not consented to purpose "([^"]*)"$
+- id: einvoice.simulator-down
+  pattern: ^the e-invoice simulator is unavailable$
+- id: cart.add
+  pattern: ^"([^"]*)" adds (\d+) units of "([^"]*)" to the cart$
+- id: checkout.pay
+  pattern: ^"([^"]*)" checks out with payment method "([^"]*)"$
+- id: b2b.purchase-order
+  pattern: ^"([^"]*)" places a purchase order for (\d+) units of "([^"]*)" on credit terms "([^"]*)"$
+- id: psp.capture
+  pattern: ^the payment simulator captures the payment$
+- id: psp.decline
+  pattern: ^the payment simulator declines the payment with reason "([^"]*)"$
+- id: psp.true-amount
+  pattern: ^the payment simulator reports the true amount "([^"]*)" "([^"]*)" as captured$
+- id: return.request
+  pattern: ^"([^"]*)" requests a return of (\d+) units from order "([^"]*)" with reason "([^"]*)"$
+- id: return.approve
+  pattern: ^the operator approves the return for order "([^"]*)"$
+- id: return.receive
+  pattern: ^the return for order "([^"]*)" is received in condition "([^"]*)"$
+- id: message.send
+  pattern: ^a message of purpose "([^"]*)" is sent to "([^"]*)" on channel "([^"]*)"$
+- id: message.campaign
+  pattern: ^a campaign message of purpose "([^"]*)" is sent to "([^"]*)"$
+- id: webhook.invalid-signature
+  pattern: ^a payment webhook for "([^"]*)" arrives with an invalid signature$
+- id: webhook.valid-other-amount
+  pattern: ^a payment webhook for "([^"]*)" arrives with a valid signature and amount "([^"]*)" "([^"]*)"$
+- id: tenant.cross-access
+  pattern: ^a user of tenant "([^"]*)" requests that order through "([^"]*)"$
+- id: tenant.token-wrong-host
+  pattern: ^a token issued for tenant "([^"]*)" is used on the host of tenant "([^"]*)"$
+- id: command.replay-same
+  pattern: ^the command "([^"]*)" is sent twice with the same idempotency key and the same body$
+- id: command.replay-different
+  pattern: ^the command "([^"]*)" is sent twice with the same idempotency key and a different body$
+- id: compose.twice
+  pattern: ^the platform definition "([^"]*)" is composed twice against the same snapshot$
+- id: order.status
+  pattern: ^the order status is "([^"]*)"$
+- id: order.total
+  pattern: ^the order total is "([^"]*)" "([^"]*)" including tax "([^"]*)" "([^"]*)"$
+- id: event.once
+  pattern: ^the event "([^"]*)" is emitted exactly once$
+- id: event.none
+  pattern: ^no event "([^"]*)" is emitted$
+- id: taxdoc.issued
+  pattern: ^a tax document of kind "([^"]*)" is issued for the order$
+- id: stock.reserved
+  pattern: ^(\d+) units of "([^"]*)" are reserved at "([^"]*)"$
+- id: reservation.released
+  pattern: ^the reservation for "([^"]*)" is released within "([^"]*)"$
+- id: decision.result
+  pattern: ^the decision "([^"]*)" returned "([^"]*)"$
+- id: decision.result-reason
+  pattern: ^the decision "([^"]*)" returned "([^"]*)" with reason "([^"]*)"$
+- id: pci.no-pan
+  pattern: ^no card number is present in any stored record or log$
+- id: refund.issued
+  pattern: ^a refund of "([^"]*)" "([^"]*)" is issued to the original payment method$
+- id: error.request
+  pattern: ^the request fails with error "([^"]*)"$
+- id: error.send
+  pattern: ^the send fails with error "([^"]*)"$
+- id: einvoice.irn
+  pattern: ^the e-invoice simulator registers the document and returns an IRN$
+- id: einvoice.qr
+  pattern: ^the invoice document carries the signed QR code$
+- id: einvoice.queued
+  pattern: ^the e-invoice registration is queued for retry before the legal deadline$
+- id: alert.raised
+  pattern: ^an alert "([^"]*)" is raised$
+- id: http.status
+  pattern: ^the response has status (\d+)$
+- id: http.second-status-error
+  pattern: ^the second response has status (\d+) and error "([^"]*)"$
+- id: responses.identical
+  pattern: ^both responses are identical$
+- id: audit.denied-access
+  pattern: ^an audit record of the denied access exists for tenant "([^"]*)"$
+- id: simulation.no-external
+  pattern: ^no request reached a real external provider$
+- id: simulation.messages-captured
+  pattern: ^every message was captured by the messaging simulator$
+- id: sms.dlt-ids
+  pattern: ^the messaging simulator received a DLT template id and header id$
+- id: payment.intent-status
+  pattern: ^the payment intent "([^"]*)" status is "([^"]*)"$
+- id: payment.captured-amount
+  pattern: ^the captured amount is "([^"]*)" "([^"]*)"$
+- id: compose.same-id
+  pattern: ^both blueprint ids are identical$
+- id: compose.equals-expected
+  pattern: ^the blueprint equals the checked-in expected blueprint for "([^"]*)"$
+- id: compose.no-mandatory-gaps
+  pattern: ^the gap report has 0 mandatory gaps$
+- id: cell.empty
+  pattern: ^an empty cell "([^"]*)" in reality "([^"]*)"$
+- id: registry.snapshot-from-repo
+  pattern: ^the registry snapshot is built from the repository at the current commit$
+- id: cert.run
+  pattern: ^the blueprint for "([^"]*)" is certified with profile "([^"]*)"$
+- id: cert.profile-passes
+  pattern: ^every gate in profile "([^"]*)" passes or is waived$
+- id: cert.attestation
+  pattern: ^a signed attestation exists for the blueprint$
+- id: activation.approve
+  pattern: ^the Architecture Board approves activation of the blueprint for tenant "([^"]*)"$
+- id: activation.run
+  pattern: ^the activation agent activates the blueprint in cell "([^"]*)"$
+- id: activation.phase
+  pattern: ^the activation reaches phase "([^"]*)"$
+- id: pack.describe-matches
+  pattern: ^the pack "([^"]*)" describes exactly the operations in its manifest$
+- id: blueprint.active
+  pattern: ^the blueprint for "([^"]*)" is active for tenant "([^"]*)" in cell "([^"]*)"$
+- id: user.with-role
+  pattern: ^a user "([^"]*)" of tenant "([^"]*)" with role "([^"]*)"$
+- id: command.create-note
+  pattern: ^"([^"]*)" sends command "([^"]*)" with title "([^"]*)"$
+- id: command.on-note
+  pattern: ^"([^"]*)" sends command "([^"]*)" for the note$
+- id: object.status
+  pattern: ^the object of type "([^"]*)" exists with status "([^"]*)"$
+- id: audit.record-exists
+  pattern: ^an audit record for "([^"]*)" exists for tenant "([^"]*)"$
+- id: audit.seal
+  pattern: ^the audit appender seals the chain for tenant "([^"]*)" for today$
+- id: audit.verifies
+  pattern: ^the audit chain for tenant "([^"]*)" for today verifies$
+- id: audit.anchored
+  pattern: ^the daily Merkle root is anchored to write-once storage$
+- id: audit.tamper
+  pattern: ^an operator with database access alters an audit record for tenant "([^"]*)"$
+- id: audit.verify-fails
+  pattern: ^the audit chain for tenant "([^"]*)" for today fails verification at that record$
+- id: clock.set
+  pattern: ^the clock is "([^"]*)"$
+- id: clock.advance
+  pattern: ^the clock advances by "([^"]*)"$
+- id: note.reminder
+  pattern: ^"([^"]*)" schedules a reminder on a note for "([^"]*)"$
+- id: trigger.recurring
+  pattern: ^a recurring trigger "([^"]*)" is scheduled in time zone "([^"]*)"$
+- id: trigger.fired-local
+  pattern: ^the trigger fired (\d+) times, each at 09:00 local time in "([^"]*)"$
+- id: calendar.business
+  pattern: ^the business calendar "([^"]*)" has business hours "([^"]*)" on weekdays and holiday "([^"]*)"$
+- id: deadline.business
+  pattern: ^a deadline of "([^"]*)" business time is scheduled on calendar "([^"]*)"$
+- id: deadline.is
+  pattern: ^the deadline is "([^"]*)"$

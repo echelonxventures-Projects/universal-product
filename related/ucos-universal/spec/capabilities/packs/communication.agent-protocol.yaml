@@ -1,0 +1,43 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: communication.agent-protocol
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: Signed agent-to-agent message exchange (internal bus and external A2A/MCP transports) with mandates and audit.
+  capabilityKind: core
+  maturity: beta
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.comm.AgentMessage
+    commands:
+    - SendAgentMessage
+    - AcknowledgeAgentMessage
+    queries:
+    - AgentMessageLog
+    events:
+    - communication.agent-message.sent
+    - communication.agent-message.acknowledged
+  requires:
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: integration.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

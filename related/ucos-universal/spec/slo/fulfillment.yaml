@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: fulfillment
+universe: U35
+tier: T1
+owner: ucos:org:ops-fulfilment
+phase: 1
+slos:
+- id: availability
+  description: Share of fulfillment requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: fulfillment_requests_good_ratio
+  objective: 0.999
+  rollingWindow: P28D
+- id: latency
+  description: p99 latency of the critical fulfillment operation.
+  sli:
+    kind: latency
+    metric: tracking_ingest_lag_ms
+    thresholdMs: 900000
+    percentile: p99
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: fulfillment.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/fulfillment.md#availability-fast-burn
+- id: fulfillment.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/fulfillment.md#availability-slow-burn
+- id: fulfillment.latency.breach
+  slo: latency
+  condition: p99 > 900000 ms for 15m
+  severity: ticket
+  runbook: docs/runbooks/fulfillment.md#latency-breach

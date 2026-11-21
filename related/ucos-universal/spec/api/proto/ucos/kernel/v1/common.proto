@@ -1,0 +1,40 @@
+// Shared kernel messages. Wire contracts for KERNEL-DESIGN.md; JSON payloads follow spec/ schemas.
+syntax = "proto3";
+package ucos.kernel.v1;
+option go_package = "ucos.io/kernel/gen/ucos/kernel/v1;kernelv1";
+
+import "google/protobuf/struct.proto";
+
+// RFC 9457 problem details; `code` is an entry of spec/registries/errors.yaml.
+message Problem {
+  string type = 1;
+  string title = 2;
+  int32 status = 3;
+  string detail = 4;
+  string instance = 5;
+  string code = 6;
+  string trace_id = 7;
+  google.protobuf.Struct extensions = 8;
+}
+
+// Obligation returned by the PDP and enforced by the caller (masking, audit level, step-up).
+message Obligation {
+  string kind = 1;                       // "mask", "audit", "step-up", "watermark", ...
+  google.protobuf.Struct params = 2;
+}
+
+message PageRequest {
+  int32 size = 1;                        // default 50, max 500
+  string cursor = 2;                     // opaque keyset cursor
+}
+message PageInfo {
+  string next_cursor = 1;
+  bool has_more = 2;
+  int64 total = 3;                       // only when requested (counts are opt-in)
+}
+
+// Bitemporal coordinates (ADR-011). Empty means "now" on both axes.
+message AsOf {
+  string valid_time = 1;                 // RFC 3339 TimePoint
+  string transaction_time = 2;           // RFC 3339 TimePoint
+}

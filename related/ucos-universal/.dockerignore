@@ -1,0 +1,6 @@
+# Only what kernel/Dockerfile.kernel copies; keeps the build context small and free of local files.
+*
+!kernel
+!spec
+!db/migrations
+kernel/**/*_test.go

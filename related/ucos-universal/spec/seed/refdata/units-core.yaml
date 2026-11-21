@@ -1,0 +1,47 @@
+kind: CodeListRelease
+id: units-core
+release: 2026-10
+source: UN/ECE Recommendation 20 and UCUM (subset used by Phase 1 catalogues)
+licence:
+  id: UNECE-Rec20 public; UCUM licence (free with attribution)
+  redistribution: allowed
+bundled: true
+note: Core subset. Full Rec 20 and UCUM tables are imported by the U14 steward before P2.
+count: 9
+entries:
+- rec20: KGM
+  ucum: kg
+  name: kilogram
+  dimension: mass
+- rec20: GRM
+  ucum: g
+  name: gram
+  dimension: mass
+- rec20: LTR
+  ucum: L
+  name: litre
+  dimension: volume
+- rec20: MLT
+  ucum: mL
+  name: millilitre
+  dimension: volume
+- rec20: MTR
+  ucum: m
+  name: metre
+  dimension: length
+- rec20: CMT
+  ucum: cm
+  name: centimetre
+  dimension: length
+- rec20: H87
+  ucum: '{piece}'
+  name: piece
+  dimension: count
+- rec20: DZN
+  ucum: '{dozen}'
+  name: dozen
+  dimension: count
+- rec20: C62
+  ucum: '1'
+  name: one (unit)
+  dimension: count

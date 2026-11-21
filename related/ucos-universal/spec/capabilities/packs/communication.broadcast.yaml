@@ -1,0 +1,54 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: communication.broadcast
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: Broadcast and emergency alerts with severity-based approvals, acknowledgement tracking and escalation.
+  capabilityKind: core
+  maturity: beta
+  phase: 4
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.comm.Broadcast
+    - ucos.comm.BroadcastAcknowledgement
+    commands:
+    - CreateBroadcast
+    - ApproveBroadcast
+    - SendBroadcast
+    - Acknowledge
+    queries:
+    - BroadcastStatus
+    events:
+    - communication.broadcast.sent
+    - communication.broadcast.escalated
+    - communication.broadcast.acknowledged
+  requires:
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: authority.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - TRG
+    - D
+  ui:
+    views:
+    - broadcast.console
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

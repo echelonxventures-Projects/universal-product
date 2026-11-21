@@ -1,0 +1,13 @@
+apiVersion: ucos.io/v1
+kind: PlatformDefinition
+metadata: { id: "ucos:pd:golden-b2b-in", tenant: "ucos:tenant:golden-b2b", version: "1.0.0" }
+spec:
+  template: ucos:industry-template:b2b-distribution@1
+  industry: [ucos:industry:retail/b2b-distribution]
+  businessModel: [B2B]
+  geography: { countries: [IN], primaryCurrency: { IN: INR }, languages: [en, hi], dataResidency: strict }
+  channels: [web, whatsapp]
+  capabilities: { include: [catalog.listing, commerce.checkout, pricing.engine], exclude: [offer.engine] }
+  paymentMethods: { IN: [netbanking, upi] }
+  compliance: { frameworks: [] }
+  security: { profile: high }

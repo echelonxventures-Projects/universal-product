@@ -1,0 +1,35 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: payment.provider.cod
+  version: 1.0.0
+  universe: U29-payment
+  steward: ucos:org:steward-payment
+  purpose: Cash-on-delivery internal provider with remittance reconciliation.
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - payment.provider
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - ucos:jur:IN
+    - ucos:jur:AE
+    methods:
+    - cod
+  temporal:
+    kind: S
+    uses:
+    - TRG
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

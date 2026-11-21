@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/payment.payment-intent.captured/1.json",
+  "title": "payment.payment-intent.captured",
+  "description": "Funds captured by the PSP; the amount is confirmed against the PSP API, never taken from a webhook body (PY-S1).",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true,
+    "producer": "payment.core"
+  },
+  "type": "object",
+  "required": [
+    "paymentIntentId",
+    "orderId",
+    "amount",
+    "provider",
+    "providerReference",
+    "capturedAt"
+  ],
+  "properties": {
+    "paymentIntentId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "orderId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "amount": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/Money"
+    },
+    "method": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "providerReference": {
+      "type": "string"
+    },
+    "fees": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/Money"
+    },
+    "capturedAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

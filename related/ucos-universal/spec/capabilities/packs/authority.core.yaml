@@ -1,0 +1,52 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: authority.core
+  version: 1.0.0
+  universe: U01-authority
+  steward: ucos:org:steward-authority
+  purpose: Authorities, delegations and immutable decision records for every governed decision.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.authority.Authority
+    - ucos.authority.DecisionRecord
+    commands:
+    - CreateAuthority
+    - DelegateAuthority
+    - RevokeAuthority
+    - RecordDecision
+    - AddApproval
+    - Ratify
+    - Annul
+    - BreakGlass
+    queries:
+    - WhoCanDecide
+    - CheckAuthority
+    - DecisionHistory
+    events:
+    - authority.decision.recorded
+    - authority.decision.ratified
+    - authority.authority.revoked
+  requires:
+  - capability: meta.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - TRG
+    - REM
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

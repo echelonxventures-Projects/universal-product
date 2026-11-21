@@ -1,0 +1,76 @@
+# Policy tests for the platform baseline P-001…P-007 (gate SEC-POLICY-01). Run by tools/validate_contracts.py.
+# The fixture permits everything, standing in for any tenant grant: each case proves a platform forbid wins (POL-L3).
+policies: [spec/policies/platform-baseline.cedar]
+fixtures: |
+  permit (principal, action, resource);
+entities:
+  - { uid: 'User::"asha"',   attrs: { tenant: "t1", status: "active" } }
+  - { uid: 'User::"ravi"',   attrs: { tenant: "t1", status: "active" } }
+  - { uid: 'User::"old"',    attrs: { tenant: "t1", status: "suspended" } }
+  - { uid: 'Agent::"enrich"', attrs: { tenant: "t1", status: "active", authority: { actions: ['Action::"catalog:ProposeAttributeValues"'] } } }
+  - { uid: 'Order::"o-t1"',  attrs: { tenant: "t1" } }
+  - { uid: 'Order::"o-t2"',  attrs: { tenant: "t2" } }
+  - { uid: 'Payout::"p1"',   attrs: { tenant: "t1", createdBy: 'User::"asha"' } }
+  - { uid: 'Action::"payment:Capture"', parents: ['Action::"group:external-side-effect"'] }
+  - { uid: 'Action::"order:PlaceOrder"', parents: ['Action::"group:write"'] }
+  - { uid: 'Action::"marketplace:ApprovePayout"', parents: ['Action::"group:approve"'] }
+  - { uid: 'Action::"payment:Refund"', parents: ['Action::"group:sensitive"'] }
+  - { uid: 'Action::"group:external-side-effect"' }
+  - { uid: 'Action::"group:write"' }
+  - { uid: 'Action::"group:approve"' }
+  - { uid: 'Action::"group:sensitive"' }
+defaultContext: { risk: { band: "low" }, time: { now: "2027-01-10T09:00:00Z" }, simulation: false, frame: { sideEffectPolicy: "full" } }
+cases:
+  - { name: "P-001 same tenant read is allowed", principal: 'User::"asha"', action: 'Action::"order:GetOrder"', resource: 'Order::"o-t1"', expect: Allow }
+  - { name: "P-001 cross-tenant read is denied", principal: 'User::"asha"', action: 'Action::"order:GetOrder"', resource: 'Order::"o-t2"', expect: Deny }
+  - name: "P-001 cross-tenant read with a TenantLink covering the action is allowed"
+    principal: 'User::"asha"'
+    action: 'Action::"order:GetOrder"'
+    resource: 'Order::"o-t2"'
+    context: { tenantLink: { actions: ['Action::"order:GetOrder"'] } }
+    expect: Allow
+  - { name: "P-002 suspended principal is denied", principal: 'User::"old"', action: 'Action::"order:GetOrder"', resource: 'Order::"o-t1"', expect: Deny }
+  - name: "P-003 agent outside its authority is denied"
+    principal: 'Agent::"enrich"'
+    action: 'Action::"order:GetOrder"'
+    resource: 'Order::"o-t1"'
+    context: { agent: { budgetRemaining: 10 } }
+    expect: Deny
+  - name: "P-003 agent within authority and budget is allowed"
+    principal: 'Agent::"enrich"'
+    action: 'Action::"catalog:ProposeAttributeValues"'
+    resource: 'Order::"o-t1"'
+    context: { agent: { budgetRemaining: 10 } }
+    expect: Allow
+  - name: "P-003 agent with exhausted budget is denied"
+    principal: 'Agent::"enrich"'
+    action: 'Action::"catalog:ProposeAttributeValues"'
+    resource: 'Order::"o-t1"'
+    context: { agent: { budgetRemaining: 0 } }
+    expect: Deny
+  - name: "P-004 external side effect in a simulated frame is denied"
+    principal: 'User::"asha"'
+    action: 'Action::"payment:Capture"'
+    resource: 'Order::"o-t1"'
+    context: { frame: { sideEffectPolicy: "none" } }
+    expect: Deny
+  - name: "P-004 external side effect with an allowing reality bridge is allowed"
+    principal: 'User::"asha"'
+    action: 'Action::"payment:Capture"'
+    resource: 'Order::"o-t1"'
+    context: { frame: { sideEffectPolicy: "bridged" }, realityBridge: { allows: ['Action::"payment:Capture"'] } }
+    expect: Allow
+  - name: "P-005 write with asOf outside simulation is denied"
+    principal: 'User::"asha"'
+    action: 'Action::"order:PlaceOrder"'
+    resource: 'Order::"o-t1"'
+    context: { time: { now: "2027-01-10T09:00:00Z", asOf: "2026-12-31T00:00:00Z" } }
+    expect: Deny
+  - name: "P-005 write with asOf inside simulation is allowed"
+    principal: 'User::"asha"'
+    action: 'Action::"order:PlaceOrder"'
+    resource: 'Order::"o-t1"'
+    context: { time: { now: "2027-01-10T09:00:00Z", asOf: "2026-12-31T00:00:00Z" }, simulation: true }
+    expect: Allow
+  - { name: "P-006 approving your own payout is denied", principal: 'User::"asha"', action: 'Action::"marketplace:ApprovePayout"', resource: 'Payout::"p1"', expect: Deny }
+  - { name: "P-006 approving someone else's payout is allowed", principal: 'User::"ravi"', action: 'Action::"marketplace:ApprovePayout"', resource: 'Payout::"p1"', expect: Allow }

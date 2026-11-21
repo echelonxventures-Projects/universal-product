@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/document.document.issued/1.json",
+  "title": "document.document.issued",
+  "description": "A document (invoice, credit note, label, contract) was rendered, numbered and stored immutably.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true,
+    "producer": "document.core"
+  },
+  "type": "object",
+  "required": [
+    "documentId",
+    "kind",
+    "number",
+    "contentHash",
+    "issuedAt"
+  ],
+  "properties": {
+    "documentId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "number": {
+      "type": "string"
+    },
+    "subject": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "contentHash": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "issuedAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

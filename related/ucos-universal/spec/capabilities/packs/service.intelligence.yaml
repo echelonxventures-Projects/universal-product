@@ -1,0 +1,46 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: service.intelligence
+  version: 1.0.0
+  universe: U19-service-intelligence
+  steward: ucos:org:steward-service-intelligence
+  purpose: Global service master (GSID), service plans, SLA templates and credential requirements.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.service.GlobalService
+    - ucos.service.ServicePlan
+    - ucos.service.SLADefinitionTemplate
+    - ucos.service.CredentialType
+    commands:
+    - ProposeGlobalService
+    - PublishGlobalService
+    - RegisterCredentialType
+    queries:
+    - GetGlobalService
+    - RequirementsFor
+    events:
+    - service.global.published
+  requires:
+  - capability: taxonomy.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - D
+    - SLA
+    - AV
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

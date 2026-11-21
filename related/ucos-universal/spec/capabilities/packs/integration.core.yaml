@@ -1,0 +1,61 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: integration.core
+  version: 1.0.0
+  universe: U62-integration
+  steward: ucos:org:steward-integration
+  purpose: Connector runtime, webhook ingress, resilient outbound calls, sandboxes, tenant webhooks.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.integration.ConnectorInstance
+    - ucos.integration.InboundWebhook
+    - ucos.integration.SyncJob
+    - ucos.integration.TenantWebhookSubscription
+    - ucos.integration.TenantWebhookDelivery
+    commands:
+    - CreateConnectorInstance
+    - VerifyConnectorInstance
+    - RotateCredentials
+    - DisableInstance
+    - ReplayInboundWebhook
+    - RunSyncJob
+    - SubscribeTenantWebhook
+    - RedeliverWebhook
+    queries:
+    - InstanceHealth
+    - CallLog
+    - WebhookLog
+    events:
+    - integration.instance.activated
+    - integration.instance.degraded
+    - integration.instance.disabled
+    - integration.webhook.received
+    - integration.webhook.failed
+    - integration.tenant-webhook.disabled
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - R
+    - D
+    - TP
+  ui:
+    views:
+    - integration.instances
+    - integration.webhooks
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

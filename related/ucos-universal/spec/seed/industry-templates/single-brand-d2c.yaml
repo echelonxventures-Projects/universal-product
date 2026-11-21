@@ -1,0 +1,15 @@
+kind: IndustryTemplate
+id: ucos:industry-template:single-brand-d2c
+version: 1.0.0
+name: Single-brand D2C store
+businessModel:
+- B2C
+- D2C
+capabilities:
+  include:
+  - catalog.listing
+  - commerce.checkout
+  - offer.engine
+  - search.core
+notes: Phase 1 reference template (golden d2c-in-ae).
+status: published

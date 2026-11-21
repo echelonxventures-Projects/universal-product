@@ -1,0 +1,9 @@
+# Direct CI dependencies. tools/requirements.txt pins the full closure with sha256 hashes
+# Regenerate the lock with: python3 tools/lock_requirements.py
+# CI installs with --require-hashes on the Python version pinned in .python-version.
+PyYAML==6.0.3
+jsonschema==4.26.0
+openapi-spec-validator==0.9.0
+grpcio-tools==1.84.0
+gherkin-official==42.0.1
+cedarpy==4.12.1

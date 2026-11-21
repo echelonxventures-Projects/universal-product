@@ -1,0 +1,99 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata: { name: ucos-kernel }
+automountServiceAccountToken: false
+---
+# Schema migrations run before every rollout (Argo CD PreSync hook; `kubectl apply` runs it alongside, and the
+# kernel waits for the schema through its readiness probe). Append-only and safe to re-run.
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: ucos-kernel-migrate
+  annotations:
+    argocd.argoproj.io/hook: PreSync
+    argocd.argoproj.io/hook-delete-policy: BeforeHookCreation
+spec:
+  backoffLimit: 10
+  ttlSecondsAfterFinished: 3600
+  template:
+    metadata: { labels: { app.kubernetes.io/name: ucos-kernel-migrate } }
+    spec:
+      serviceAccountName: ucos-kernel
+      restartPolicy: OnFailure
+      securityContext: { runAsNonRoot: true, runAsUser: 65532, seccompProfile: { type: RuntimeDefault } }
+      containers:
+        - name: migrate
+          image: ucos-kernel
+          args: [migrate]
+          envFrom: [ { secretRef: { name: ucos-kernel-env } } ]
+          securityContext: { allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: { drop: [ALL] } }
+          resources: { requests: { cpu: 50m, memory: 64Mi }, limits: { cpu: 500m, memory: 256Mi } }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata: { name: ucos-kernel }
+spec:
+  replicas: 2
+  selector: { matchLabels: { app.kubernetes.io/name: ucos-kernel } }
+  strategy: { type: RollingUpdate, rollingUpdate: { maxUnavailable: 0, maxSurge: 1 } }
+  template:
+    metadata:
+      labels: { app.kubernetes.io/name: ucos-kernel }
+      annotations: { prometheus.io/scrape: "true", prometheus.io/port: "9090", prometheus.io/path: /metrics }
+    spec:
+      serviceAccountName: ucos-kernel
+      priorityClassName: ucos-t0
+      securityContext: { runAsNonRoot: true, runAsUser: 65532, seccompProfile: { type: RuntimeDefault } }
+      topologySpreadConstraints:
+        - { maxSkew: 1, topologyKey: kubernetes.io/hostname, whenUnsatisfiable: ScheduleAnyway,
+            labelSelector: { matchLabels: { app.kubernetes.io/name: ucos-kernel } } }
+      containers:
+        - name: kernel
+          image: ucos-kernel
+          ports:
+            - { name: http, containerPort: 8080 }
+            - { name: metrics, containerPort: 9090 }
+          env:
+            - { name: UCOS_HTTP_ADDR, value: ":8080" }
+            - { name: UCOS_ADMIN_ADDR, value: "127.0.0.1:8081" }   # operators reach it only via kubectl port-forward
+          envFrom:
+            - configMapRef: { name: ucos-kernel-config }
+            - secretRef: { name: ucos-kernel-env }
+          readinessProbe: { httpGet: { path: /api/v1/ready, port: http }, periodSeconds: 5, failureThreshold: 3 }
+          livenessProbe: { httpGet: { path: /api/v1/health, port: http }, periodSeconds: 10, failureThreshold: 6 }
+          securityContext: { allowPrivilegeEscalation: false, readOnlyRootFilesystem: true, capabilities: { drop: [ALL] } }
+          resources: { requests: { cpu: 100m, memory: 128Mi }, limits: { cpu: "2", memory: 1Gi } }
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata: { name: ucos-kernel }
+spec:
+  minAvailable: 1
+  selector: { matchLabels: { app.kubernetes.io/name: ucos-kernel } }
+---
+apiVersion: v1
+kind: Service
+metadata: { name: ucos-kernel }
+spec:
+  selector: { app.kubernetes.io/name: ucos-kernel }
+  ports:
+    - { name: http, port: 80, targetPort: http }
+    - { name: metrics, port: 9090, targetPort: metrics }
+---
+# Ingress to the API from anywhere in the cluster (an ingress controller or mesh gateway fronts it).
+# Egress: Postgres, the Kafka API, and HTTPS/HTTP for the identity provider's JWKS. Destinations are
+# environment-specific (managed or in-cluster), so only the ports are pinned here.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata: { name: ucos-kernel }
+spec:
+  podSelector: { matchExpressions: [ { key: app.kubernetes.io/name, operator: In, values: [ucos-kernel, ucos-kernel-migrate] } ] }
+  policyTypes: [Ingress, Egress]
+  ingress:
+    - ports: [ { protocol: TCP, port: 8080 }, { protocol: TCP, port: 9090 } ]
+  egress:
+    - ports:
+        - { protocol: TCP, port: 5432 }
+        - { protocol: TCP, port: 9092 }
+        - { protocol: TCP, port: 443 }
+        - { protocol: TCP, port: 8080 }

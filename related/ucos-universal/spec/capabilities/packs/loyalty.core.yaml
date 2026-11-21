@@ -1,0 +1,70 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: loyalty.core
+  version: 1.0.0
+  universe: U32-loyalty-incentive
+  steward: ucos:org:steward-loyalty-incentive
+  purpose: Loyalty owns programmes that reward behaviour.
+  capabilityKind: core
+  maturity: experimental
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.loyalty.Programme
+    - ucos.loyalty.Membership
+    - ucos.loyalty.Tier
+    - ucos.loyalty.EarnRule
+    - ucos.loyalty.BurnRule
+    - ucos.loyalty.Referral
+    - ucos.loyalty.Challenge
+    - ucos.loyalty.IncentiveScheme
+    commands:
+    - Enrol
+    - Earn
+    - Burn
+    - ReverseEarn
+    - Expire
+    - EvaluateTier
+    - IssueReferral
+    - CompleteReferral
+    - EnrolChallenge
+    - ComputeIncentive
+    events:
+    - loyalty.points.earned
+    - loyalty.points.burned
+    - loyalty.points.expired
+    - loyalty.points.reversed
+    - loyalty.tier.changed
+    - loyalty.referral.completed
+  requires:
+  - capability: stored-value.core
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: offer.engine
+    version: '>=1 <2'
+  - capability: order.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: risk.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - POL
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

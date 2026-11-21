@@ -1,0 +1,24 @@
+kind: DecisionTable
+id: marketplace.commission-plan
+owner: marketplace.core
+hitPolicy: FIRST
+description: Seed commission plan (MKP-L2). Operators publish their own plans; changes are versioned and announced to sellers.
+inputs:
+- {name: category, type: TaxonomyPath}
+- {name: sellerTier, type: Enumeration}
+outputs:
+- {name: referralRate, type: Percentage}
+- {name: closingFee, type: Money}
+rules:
+- [electronics/*, '*', '6', '{10.00 INR}']
+- [fashion/*, top-rated, '12', '{10.00 INR}']
+- [fashion/*, '*', '15', '{10.00 INR}']
+- [grocery/*, '*', '5', '{5.00 INR}']
+- ['*', '*', '10', '{10.00 INR}']
+tests:
+- input: [electronics/phones, standard]
+  expect: ['6', '{10.00 INR}']
+- input: [fashion/shoes, top-rated]
+  expect: ['12', '{10.00 INR}']
+- input: [home/kitchen, standard]
+  expect: ['10', '{10.00 INR}']

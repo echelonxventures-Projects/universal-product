@@ -1,0 +1,10 @@
+# The kernel on any conformant Kubernetes (ADR-037: provider-agnostic). Needs, per environment:
+#   Secret ucos-kernel-env:  UCOS_DATABASE_URL, UCOS_SIGNING_SEED, UCOS_ADMIN_TOKEN (from any secret manager)
+#   ConfigMap ucos-kernel-config: UCOS_CELL, UCOS_TENANTS, UCOS_KAFKA_BROKERS
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ucos-kernel
+resources: [kernel.yaml]
+images:
+  - name: ucos-kernel
+    newName: ghcr.io/echelonxventures-projects/ucos-kernel

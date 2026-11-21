@@ -1,0 +1,26 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: messaging.provider
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: Port for messaging providers (email, SMS, WhatsApp, push, voice).
+  capabilityKind: abstract
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    ports:
+    - messaging.provider@1
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

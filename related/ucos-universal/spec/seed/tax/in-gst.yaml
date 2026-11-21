@@ -1,0 +1,59 @@
+kind: TaxRegimePack
+id: tax.regime.in-gst
+version: '2026.10'
+jurisdiction: ucos:jur:IN
+owner: U31 Tax steward
+verification: Rates follow the GST rate rationalisation effective 22 September 2025 (slabs 0%, 5%, 18% and 40%, with special rates for precious metals and stones). Every rate line must be verified against
+  the current CBIC notifications by the tax steward before activation; status stays proposed until then.
+components:
+- CGST
+- SGST
+- UTGST
+- IGST
+- Cess
+placeOfSupply:
+  intraState:
+  - CGST
+  - SGST
+  intraUnionTerritory:
+  - CGST
+  - UTGST
+  interState:
+  - IGST
+slabs:
+- '0'
+- '5'
+- '18'
+- '40'
+categories:
+- id: apparel-low
+  description: Apparel and clothing accessories, sale value up to INR 2,500 per piece
+  rate: '5'
+  priceBasis: tax-inclusive
+  status: proposed
+- id: apparel-high
+  description: Apparel, sale value above INR 2,500 per piece
+  rate: '18'
+  status: proposed
+- id: household-standard
+  description: General household goods (standard rate)
+  rate: '18'
+  status: proposed
+- id: food-5
+  description: Pre-packaged and labelled food staples (for example rice)
+  rate: '5'
+  status: proposed
+- id: exempt
+  description: Exempt supplies (for example fresh unpackaged produce)
+  rate: '0'
+  exempt: true
+  status: proposed
+tcs:
+  section: 52 (e-commerce operators)
+  rate: '0.5'
+  components: 0.25 CGST + 0.25 SGST, or 0.5 IGST
+  status: proposed
+einvoicing:
+  appliesTo: B2B supplies by taxpayers above the aggregate turnover threshold
+  threshold: set by notification (INR 5 crore at the time of writing)
+  status: proposed

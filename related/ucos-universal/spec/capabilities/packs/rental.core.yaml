@@ -1,0 +1,74 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: rental.core
+  version: 1.0.0
+  universe: U83-rental-leasing
+  steward: ucos:org:steward-rental-leasing
+  purpose: Rental owns temporary use of physical (or digital) things for a fee.
+  capabilityKind: core
+  maturity: experimental
+  phase: 5
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.rental.RentalProduct
+    - ucos.rental.RentalAgreement
+    - ucos.rental.ConditionReport
+    - ucos.rental.DamageAssessment
+    - ucos.rental.Lease
+    commands:
+    - ReserveRental
+    - CheckOut
+    - ExtendRental
+    - CheckIn
+    - AssessDamage
+    - SettleAgreement
+    - CancelRental
+    - CreateLease
+    queries:
+    - AvailabilityForRental
+    - AgreementStatement
+    - FleetUtilisation
+    events:
+    - rental.agreement.reserved
+    - rental.agreement.checked-out
+    - rental.agreement.overdue
+    - rental.agreement.checked-in
+    - rental.agreement.settled
+    - rental.damage.assessed
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: installed-base.core
+    version: '>=1 <2'
+  - capability: resource.core
+    version: '>=1 <2'
+  - capability: pricing.engine
+    version: '>=1 <2'
+  - capability: stored-value.core
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: document.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: warranty.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - AV
+    - TRG
+    - D
+    - WL
+    - R
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

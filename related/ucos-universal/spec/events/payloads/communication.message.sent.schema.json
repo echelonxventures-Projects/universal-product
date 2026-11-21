@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/communication.message.sent/1.json",
+  "title": "communication.message.sent",
+  "description": "A message was handed to a channel provider. Content is not included (retention and redaction rules).",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true,
+    "producer": "communication.core"
+  },
+  "type": "object",
+  "required": [
+    "messageId",
+    "channel",
+    "purpose",
+    "template",
+    "recipient",
+    "sentAt"
+  ],
+  "properties": {
+    "messageId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "channel": {
+      "type": "string"
+    },
+    "purpose": {
+      "type": "string"
+    },
+    "template": {
+      "type": "string"
+    },
+    "recipient": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "provider": {
+      "type": "string"
+    },
+    "consentRef": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "sentAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,33 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: rtc.video-sfu
+  version: 1.0.0
+  universe: U109-realtime-comms-contact-center
+  steward: ucos:org:steward-realtime-comms-contact-center
+  purpose: 'WebRTC SFU adapter: rooms, participant tokens, recording/egress, screen share.'
+  capabilityKind: adapter
+  maturity: beta
+  phase: 3
+  scope: tenant
+spec:
+  implements:
+  - rtc.provider
+  requires:
+  - capability: integration.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - '*'
+    methods:
+    - video
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

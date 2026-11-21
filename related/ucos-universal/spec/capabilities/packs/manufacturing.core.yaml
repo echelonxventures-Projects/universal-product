@@ -1,0 +1,74 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: manufacturing.core
+  version: 1.0.0
+  universe: U47-manufacturing
+  steward: ucos:org:steward-manufacturing
+  purpose: Manufacturing owns making things.
+  capabilityKind: core
+  maturity: experimental
+  phase: 6
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.manufacturing.BOM
+    - ucos.manufacturing.Routing
+    - ucos.manufacturing.ProductionOrder
+    - ucos.manufacturing.MRPRun
+    - ucos.manufacturing.BatchRecord
+    commands:
+    - PublishBOM
+    - PublishRouting
+    - RunMRP
+    - ReleaseOrder
+    - StartOperation
+    - ReportConsumption
+    - ReportOutput
+    - ReportScrap
+    - CloseOrder
+    - SignBatchStep
+    events:
+    - manufacturing.order.released
+    - manufacturing.order.completed
+    - manufacturing.operation.started
+    - manufacturing.operation.completed
+    - manufacturing.mrp.completed
+  requires:
+  - capability: product.intelligence
+    version: '>=1 <2'
+  - capability: industry.registry
+    version: '>=1 <2'
+  - capability: procurement.core
+    version: '>=1 <2'
+  - capability: resource.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: iot.core
+    version: '>=1 <2'
+  - capability: digital-twin.core
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: digital-assets.core
+    version: '>=1 <2'
+  - capability: installed-base.core
+    version: '>=1 <2'
+  - capability: esg.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - AV
+    - CAL
+    - D
+    - R
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

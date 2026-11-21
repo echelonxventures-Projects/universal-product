@@ -1,0 +1,1210 @@
+{
+  "adapters": [
+    {
+      "abstract": "logistics.carrier",
+      "implementation": "carrier.shiprocket",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "-"
+    },
+    {
+      "abstract": "maps.provider",
+      "implementation": "maps.google",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "-"
+    },
+    {
+      "abstract": "messaging.provider",
+      "implementation": "messaging.email",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "email"
+    },
+    {
+      "abstract": "messaging.provider",
+      "implementation": "communication.inapp",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "in-app"
+    },
+    {
+      "abstract": "messaging.provider",
+      "implementation": "messaging.push-fcm",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "push-android"
+    },
+    {
+      "abstract": "messaging.provider",
+      "implementation": "messaging.push-apns",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "push-ios"
+    },
+    {
+      "abstract": "messaging.provider",
+      "implementation": "messaging.rcs",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "rcs"
+    },
+    {
+      "abstract": "messaging.provider",
+      "implementation": "messaging.sms-in-dlt",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "sms"
+    },
+    {
+      "abstract": "messaging.provider",
+      "implementation": "messaging.telegram",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "telegram"
+    },
+    {
+      "abstract": "messaging.provider",
+      "implementation": "messaging.voice-tts",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "voice"
+    },
+    {
+      "abstract": "messaging.provider",
+      "implementation": "messaging.web-push",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "web-push"
+    },
+    {
+      "abstract": "messaging.provider",
+      "implementation": "messaging.whatsapp",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "whatsapp"
+    },
+    {
+      "abstract": "payment.provider",
+      "implementation": "payment.provider.razorpay",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "card"
+    },
+    {
+      "abstract": "payment.provider",
+      "implementation": "payment.provider.cod",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "cod"
+    },
+    {
+      "abstract": "payment.provider",
+      "implementation": "payment.provider.razorpay",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "netbanking"
+    },
+    {
+      "abstract": "payment.provider",
+      "implementation": "payment.provider.razorpay",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "upi"
+    },
+    {
+      "abstract": "rtc.provider",
+      "implementation": "rtc.video-sfu",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "video"
+    },
+    {
+      "abstract": "rtc.provider",
+      "implementation": "rtc.voice-cpaas",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "voice"
+    },
+    {
+      "abstract": "tax.determination",
+      "implementation": "tax.gst-india",
+      "jurisdiction": "ucos:jur:IN",
+      "method": "-"
+    }
+  ],
+  "capabilities": [
+    {
+      "id": "api.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "asset.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "audit.core",
+      "scope": "platform",
+      "version": "1.0.0"
+    },
+    {
+      "id": "authority.core",
+      "scope": "platform",
+      "version": "1.0.0"
+    },
+    {
+      "id": "carrier.shiprocket",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "catalog.listing",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "commerce.cart",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "commerce.checkout",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "communication.agent-protocol",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "communication.broadcast",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "communication.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "communication.inapp",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "communication.inbound",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "communication.realtime",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "compliance.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "contactcenter.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "context.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "currency.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "decision.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "document.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "entitlement.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "frame.core",
+      "scope": "platform",
+      "version": "1.0.0"
+    },
+    {
+      "id": "fulfillment.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "geo.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "identity.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "integration.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "inventory.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "l10n.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "logistics.carrier",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "maps.google",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "maps.provider",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "messaging.email",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "messaging.provider",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "messaging.push-apns",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "messaging.push-fcm",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "messaging.rcs",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "messaging.sms-in-dlt",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "messaging.telegram",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "messaging.voice-tts",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "messaging.web-push",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "messaging.whatsapp",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "meta.core",
+      "scope": "platform",
+      "version": "1.0.0"
+    },
+    {
+      "id": "observability.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "offer.engine",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "ontology.core",
+      "scope": "platform",
+      "version": "1.0.0"
+    },
+    {
+      "id": "order.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "org.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "party.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "payment.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "payment.provider",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "payment.provider.cod",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "payment.provider.razorpay",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "policy.core",
+      "scope": "platform",
+      "version": "1.0.0"
+    },
+    {
+      "id": "pricing.engine",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "privacy.consent",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "privacy.dsr",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "privacy.retention",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "product.intelligence",
+      "scope": "platform",
+      "version": "1.0.0"
+    },
+    {
+      "id": "refdata.core",
+      "scope": "platform",
+      "version": "1.0.0"
+    },
+    {
+      "id": "rtc.provider",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "rtc.sessions",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "rtc.video-sfu",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "rtc.voice-cpaas",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "search.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "security.core",
+      "scope": "platform",
+      "version": "1.0.0"
+    },
+    {
+      "id": "seo.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "tax.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "tax.determination",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "tax.gst-india",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "taxonomy.core",
+      "scope": "platform",
+      "version": "1.0.0"
+    },
+    {
+      "id": "temporal.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "ui.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "ui.storefront-web",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "ui.tenant-admin",
+      "scope": "tenant",
+      "version": "1.0.0"
+    },
+    {
+      "id": "workflow.core",
+      "scope": "tenant",
+      "version": "1.0.0"
+    }
+  ],
+  "controls": [
+    {
+      "control": "ucos.ctrl.access-review",
+      "implementedBy": [
+        "identity.core"
+      ],
+      "regulations": [
+        "ucos-security-baseline"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.bot-disclosure",
+      "implementedBy": [
+        "contactcenter.core"
+      ],
+      "regulations": [
+        "call-recording-consent-laws"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.breach-notification",
+      "implementedBy": [
+        "security.core",
+        "compliance.core"
+      ],
+      "regulations": [
+        "in-certin-2022",
+        "in-dpdp-2023"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.card-tokenization",
+      "implementedBy": [
+        "payment.core"
+      ],
+      "regulations": [
+        "rbi-pa-guidelines"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.consent-notice",
+      "implementedBy": [
+        "privacy.consent"
+      ],
+      "regulations": [
+        "in-dpdp-2023"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.dsr-access",
+      "implementedBy": [
+        "privacy.dsr"
+      ],
+      "regulations": [
+        "in-dpdp-2023"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.dsr-erasure",
+      "implementedBy": [
+        "privacy.dsr",
+        "privacy.retention"
+      ],
+      "regulations": [
+        "in-dpdp-2023"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.fee-transparency",
+      "implementedBy": [
+        "pricing.engine"
+      ],
+      "regulations": [
+        "in-ccpa-dark-patterns-2023"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.grievance-officer",
+      "implementedBy": [
+        "ui.storefront-web",
+        "compliance.core"
+      ],
+      "regulations": [
+        "in-ecommerce-rules-2020"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.honest-design",
+      "implementedBy": [
+        "ui.storefront-web",
+        "commerce.checkout"
+      ],
+      "regulations": [
+        "in-ccpa-dark-patterns-2023",
+        "in-ecommerce-rules-2020"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.in-ecom-disclosures",
+      "implementedBy": [
+        "ui.storefront-web"
+      ],
+      "regulations": [
+        "in-ecommerce-rules-2020"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.in-legal-metrology-attributes",
+      "implementedBy": [
+        "catalog.listing"
+      ],
+      "regulations": [
+        "in-legal-metrology"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.in-trai-dlt",
+      "implementedBy": [
+        "messaging.sms-in-dlt"
+      ],
+      "regulations": [
+        "in-trai-tcccpr"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.marketing-consent",
+      "implementedBy": [
+        "communication.core",
+        "privacy.consent"
+      ],
+      "regulations": [
+        "marketing-consent-laws"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.mfa-business-users",
+      "implementedBy": [
+        "identity.core"
+      ],
+      "regulations": [
+        "ucos-security-baseline"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.pci-hosted-fields",
+      "implementedBy": [
+        "payment.core"
+      ],
+      "regulations": [
+        "pci-dss-4"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.recording-consent",
+      "implementedBy": [
+        "contactcenter.core"
+      ],
+      "regulations": [
+        "call-recording-consent-laws"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.reference-price",
+      "implementedBy": [
+        "pricing.engine"
+      ],
+      "regulations": [
+        "in-ccpa-dark-patterns-2023"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.retention",
+      "implementedBy": [
+        "privacy.retention"
+      ],
+      "regulations": [
+        "in-dpdp-2023"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.ropa",
+      "implementedBy": [
+        "privacy.retention"
+      ],
+      "regulations": [
+        "in-dpdp-2023"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.tax-invoice",
+      "implementedBy": [
+        "tax.core",
+        "document.core"
+      ],
+      "regulations": [
+        "in-gst"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.unsubscribe",
+      "implementedBy": [
+        "communication.core"
+      ],
+      "regulations": [
+        "marketing-consent-laws"
+      ]
+    },
+    {
+      "control": "ucos.ctrl.wcag-2.2-aa",
+      "implementedBy": [
+        "ui.core"
+      ],
+      "regulations": [
+        "wcag-2.2"
+      ]
+    }
+  ],
+  "events": [
+    "analytics.report.delivered",
+    "api.client.registered",
+    "api.definition.generated",
+    "api.quota.exceeded",
+    "asset.asset.available",
+    "asset.asset.deleted",
+    "asset.asset.quarantined",
+    "asset.rights.expired",
+    "asset.rights.expiring",
+    "audit.chain.anchored",
+    "audit.evidence.collected",
+    "authority.authority.revoked",
+    "authority.decision.ratified",
+    "authority.decision.recorded",
+    "catalog.import.completed",
+    "catalog.listing.approved",
+    "catalog.listing.created",
+    "catalog.listing.published",
+    "catalog.listing.rejected",
+    "catalog.listing.suppressed",
+    "catalog.listing.unpublished",
+    "catalog.listing.updated",
+    "catalog.unit.changed",
+    "commerce.cart.abandoned",
+    "commerce.cart.converted",
+    "commerce.cart.coupon-applied",
+    "commerce.cart.created",
+    "commerce.cart.line-added",
+    "commerce.cart.line-removed",
+    "commerce.cart.merged",
+    "commerce.checkout.completed",
+    "commerce.checkout.expired",
+    "commerce.checkout.failed",
+    "commerce.checkout.payment-pending",
+    "commerce.checkout.priced",
+    "commerce.checkout.started",
+    "communication.agent-message.acknowledged",
+    "communication.agent-message.sent",
+    "communication.broadcast.acknowledged",
+    "communication.broadcast.escalated",
+    "communication.broadcast.sent",
+    "communication.conversation.closed",
+    "communication.conversation.message-posted",
+    "communication.conversation.started",
+    "communication.inbound.received",
+    "communication.inbound.routed",
+    "communication.message.bounced",
+    "communication.message.delivered",
+    "communication.message.failed",
+    "communication.message.sent",
+    "communication.notification.created",
+    "communication.notification.read",
+    "communication.unsubscribed.recorded",
+    "compliance.change.effective-soon",
+    "compliance.control.failed",
+    "compliance.control.recovered",
+    "compliance.regulation.published",
+    "context.profile.changed",
+    "currency.policy.changed",
+    "currency.rates.updated",
+    "decision.version.published",
+    "document.document.delivered",
+    "document.document.issued",
+    "document.document.superseded",
+    "document.document.voided",
+    "entitlement.entitlement.expired",
+    "entitlement.entitlement.granted",
+    "entitlement.entitlement.revoked",
+    "entitlement.quota.exceeded",
+    "entitlement.quota.threshold",
+    "frame.frame.defined",
+    "frame.reality.registered",
+    "fulfillment.digital.delivered",
+    "fulfillment.order.allocated",
+    "fulfillment.order.created",
+    "fulfillment.order.packed",
+    "fulfillment.pickup.completed",
+    "fulfillment.pickup.expired",
+    "fulfillment.pickup.ready",
+    "fulfillment.shipment.created",
+    "fulfillment.shipment.delivered",
+    "fulfillment.shipment.dispatched",
+    "fulfillment.shipment.failed",
+    "fulfillment.shipment.in-transit",
+    "fulfillment.shipment.out-for-delivery",
+    "fulfillment.shipment.rto",
+    "geo.address.created",
+    "geo.address.updated",
+    "geo.address.verified",
+    "geo.jurisdiction.changed",
+    "geo.zone.changed",
+    "identity.delegation.created",
+    "identity.identity.registered",
+    "identity.identity.suspended",
+    "identity.role.granted",
+    "identity.role.revoked",
+    "identity.session.ended",
+    "identity.session.started",
+    "integration.instance.activated",
+    "integration.instance.degraded",
+    "integration.instance.disabled",
+    "integration.tenant-webhook.disabled",
+    "integration.webhook.failed",
+    "integration.webhook.received",
+    "inventory.balance.low",
+    "inventory.lot.expired",
+    "inventory.lot.recalled",
+    "inventory.stock.adjusted",
+    "inventory.stock.allocated",
+    "inventory.stock.depleted",
+    "inventory.stock.received",
+    "inventory.stock.released",
+    "inventory.stock.reserved",
+    "inventory.stock.restocked",
+    "inventory.stock.shipped",
+    "l10n.bundle.registered",
+    "l10n.locale.enabled",
+    "l10n.translation.approved",
+    "l10n.translation.stale",
+    "meta.extension.created",
+    "meta.object-type.deprecated",
+    "meta.object-type.published",
+    "observability.alert.fired",
+    "observability.slo.breached",
+    "observability.slo.burning",
+    "offer.coupons.generated",
+    "offer.offer.activated",
+    "offer.offer.cancelled",
+    "offer.offer.created",
+    "offer.offer.expired",
+    "offer.offer.paused",
+    "offer.offer.published",
+    "offer.redemption.confirmed",
+    "offer.redemption.reserved",
+    "offer.redemption.reversed",
+    "ontology.concept.merged",
+    "ontology.concept.proposed",
+    "order.adjustment.created",
+    "order.line.cancelled",
+    "order.order.amended",
+    "order.order.cancelled",
+    "order.order.completed",
+    "order.order.confirmed",
+    "order.order.placed",
+    "order.return.approved",
+    "order.return.completed",
+    "order.return.requested",
+    "org.domain.verified",
+    "org.organization.created",
+    "org.organization.standing-changed",
+    "org.store.status-changed",
+    "org.tenant.provisioned",
+    "org.tenant.suspended",
+    "party.contact.verified",
+    "party.person.created",
+    "party.person.erased",
+    "party.person.merged",
+    "party.role.assigned",
+    "payment.payment-intent.authorized",
+    "payment.payment-intent.canceled",
+    "payment.payment-intent.captured",
+    "payment.payment-intent.created",
+    "payment.payment-intent.failed",
+    "payment.payment-intent.requires-action",
+    "payment.reconciliation.mismatch",
+    "payment.refund.failed",
+    "payment.refund.issued",
+    "policy.policyset.activated",
+    "pricing.b2b-quote.accepted",
+    "pricing.price.changed",
+    "pricing.pricelist.changed",
+    "privacy.consent.granted",
+    "privacy.consent.withdrawn",
+    "privacy.dsr.completed",
+    "privacy.dsr.overdue",
+    "privacy.dsr.received",
+    "privacy.notice.published",
+    "privacy.retention.executed",
+    "product.global.merged",
+    "product.global.published",
+    "product.global.updated",
+    "product.recall.published",
+    "refdata.code.deprecated",
+    "refdata.release.published",
+    "rtc.callback.completed",
+    "rtc.callback.requested",
+    "rtc.interaction.answered",
+    "rtc.interaction.ended",
+    "rtc.interaction.started",
+    "rtc.interaction.transferred",
+    "rtc.queue.sla-breached",
+    "rtc.recording.available",
+    "rtc.session.ended",
+    "rtc.session.started",
+    "search.index.rebuilt",
+    "security.incident.declared",
+    "security.key.rotated",
+    "seo.redirect.created",
+    "seo.sitemap.regenerated",
+    "seo.slug.changed",
+    "tax.determination.committed",
+    "tax.document.cancelled",
+    "tax.document.issued",
+    "tax.einvoice.failed",
+    "tax.einvoice.registered",
+    "taxonomy.classification.changed",
+    "taxonomy.node.changed",
+    "temporal.calendar.changed",
+    "temporal.policy.activated",
+    "temporal.policy.changed",
+    "temporal.policy.deactivated",
+    "temporal.queue.called",
+    "temporal.reservation.confirmed",
+    "temporal.reservation.expired",
+    "temporal.reservation.held",
+    "temporal.reservation.released",
+    "temporal.reservation.rescheduled",
+    "temporal.sla.breached",
+    "temporal.sla.met",
+    "temporal.sla.paused",
+    "temporal.sla.started",
+    "temporal.sla.warning",
+    "temporal.trigger.fired",
+    "temporal.trigger.misfired",
+    "temporal.tz.upgraded",
+    "temporal.waitlist.promoted",
+    "ui.theme.published",
+    "ui.view.published",
+    "workflow.instance.compensated",
+    "workflow.instance.completed",
+    "workflow.instance.failed",
+    "workflow.instance.started",
+    "workflow.instance.transitioned",
+    "workflow.task.completed",
+    "workflow.task.created",
+    "workflow.task.escalated"
+  ],
+  "id": "ucos:blueprint:sha256:62ae4751d4578568981582eca26160f0bd842a4aa04d9575d27c6a095774ff44",
+  "kind": "Blueprint",
+  "objectTypes": [
+    "ucos.api.APIClient",
+    "ucos.api.APIDefinition",
+    "ucos.api.APIProduct",
+    "ucos.api.RateLimitPolicy",
+    "ucos.asset.AssetRights",
+    "ucos.asset.BinaryAsset",
+    "ucos.asset.Rendition",
+    "ucos.audit.AuditRecord",
+    "ucos.audit.AuditorAccessGrant",
+    "ucos.audit.ChainAnchor",
+    "ucos.audit.Evidence",
+    "ucos.audit.EvidenceCollector",
+    "ucos.audit.EvidencePack",
+    "ucos.authority.Authority",
+    "ucos.authority.DecisionRecord",
+    "ucos.catalog.Catalog",
+    "ucos.catalog.Collection",
+    "ucos.catalog.Listing",
+    "ucos.catalog.SellableUnit",
+    "ucos.comm.AgentMessage",
+    "ucos.comm.Broadcast",
+    "ucos.comm.BroadcastAcknowledgement",
+    "ucos.comm.Channel",
+    "ucos.comm.Conversation",
+    "ucos.comm.ConversationMessage",
+    "ucos.comm.InboundMessage",
+    "ucos.comm.Message",
+    "ucos.comm.Notification",
+    "ucos.comm.NotificationRule",
+    "ucos.comm.Presence",
+    "ucos.comm.ProxyContact",
+    "ucos.comm.Template",
+    "ucos.commerce.Cart",
+    "ucos.commerce.CartLine",
+    "ucos.commerce.Checkout",
+    "ucos.compliance.Clause",
+    "ucos.compliance.ComplianceAssessment",
+    "ucos.compliance.Control",
+    "ucos.compliance.ControlStatus",
+    "ucos.compliance.Interpretation",
+    "ucos.compliance.Obligation",
+    "ucos.compliance.Regulation",
+    "ucos.compliance.RegulatoryChange",
+    "ucos.context.ContextProfile",
+    "ucos.context.ContextRule",
+    "ucos.currency.Currency",
+    "ucos.currency.ExchangeRate",
+    "ucos.currency.PackagingUnit",
+    "ucos.currency.RatePolicy",
+    "ucos.currency.RateSource",
+    "ucos.currency.RoundingRule",
+    "ucos.currency.Unit",
+    "ucos.currency.UnitConversion",
+    "ucos.decision.DecisionDefinition",
+    "ucos.decision.DecisionLog",
+    "ucos.decision.TenantDecisionVersion",
+    "ucos.document.Document",
+    "ucos.document.DocumentTemplate",
+    "ucos.document.RenderRecord",
+    "ucos.entitlement.Entitlement",
+    "ucos.entitlement.Feature",
+    "ucos.entitlement.Plan",
+    "ucos.entitlement.Quota",
+    "ucos.entitlement.UsageCounter",
+    "ucos.frame.Body",
+    "ucos.frame.CalendarSystem",
+    "ucos.frame.Frame",
+    "ucos.frame.FrameConversion",
+    "ucos.frame.GoverningAuthority",
+    "ucos.frame.LanguageSystem",
+    "ucos.frame.MonetarySystem",
+    "ucos.frame.Reality",
+    "ucos.frame.RealityLink",
+    "ucos.frame.SpatialReferenceFrame",
+    "ucos.frame.TimeScale",
+    "ucos.frame.UnitSystem",
+    "ucos.fulfillment.DigitalDelivery",
+    "ucos.fulfillment.FulfillmentOrder",
+    "ucos.fulfillment.FulfilmentProfile",
+    "ucos.fulfillment.PickupOrder",
+    "ucos.fulfillment.ReturnShipment",
+    "ucos.fulfillment.Shipment",
+    "ucos.geo.Address",
+    "ucos.geo.AddressFormat",
+    "ucos.geo.Geofence",
+    "ucos.geo.Jurisdiction",
+    "ucos.geo.Place",
+    "ucos.geo.ServiceArea",
+    "ucos.geo.Zone",
+    "ucos.identity.Credential",
+    "ucos.identity.Delegation",
+    "ucos.identity.FederatedProvider",
+    "ucos.identity.Identity",
+    "ucos.identity.Role",
+    "ucos.identity.RoleGrant",
+    "ucos.identity.Session",
+    "ucos.identity.VerificationRecord",
+    "ucos.integration.ConnectorInstance",
+    "ucos.integration.InboundWebhook",
+    "ucos.integration.SyncJob",
+    "ucos.integration.TenantWebhookDelivery",
+    "ucos.integration.TenantWebhookSubscription",
+    "ucos.inventory.Allocation",
+    "ucos.inventory.Lot",
+    "ucos.inventory.StockBalance",
+    "ucos.inventory.StockItem",
+    "ucos.inventory.StockLocation",
+    "ucos.inventory.StockMovement",
+    "ucos.inventory.StockReservation",
+    "ucos.l10n.FormatProfile",
+    "ucos.l10n.Glossary",
+    "ucos.l10n.Locale",
+    "ucos.l10n.MessageBundle",
+    "ucos.l10n.MessageKey",
+    "ucos.l10n.Translation",
+    "ucos.meta.ExtensionSchema",
+    "ucos.meta.FieldType",
+    "ucos.meta.LifecycleModel",
+    "ucos.meta.ObjectType",
+    "ucos.meta.RelationshipType",
+    "ucos.meta.ValueType",
+    "ucos.obs.AlertRule",
+    "ucos.obs.Dashboard",
+    "ucos.obs.Experiment",
+    "ucos.obs.FeatureFlag",
+    "ucos.obs.MetricDefinition",
+    "ucos.obs.Report",
+    "ucos.obs.SLO",
+    "ucos.obs.SignalDefinition",
+    "ucos.offer.Campaign",
+    "ucos.offer.Coupon",
+    "ucos.offer.CouponBatch",
+    "ucos.offer.Offer",
+    "ucos.offer.Redemption",
+    "ucos.ontology.Concept",
+    "ucos.ontology.DuplicateCase",
+    "ucos.ontology.ExternalMapping",
+    "ucos.order.Order",
+    "ucos.order.OrderAdjustment",
+    "ucos.order.OrderLine",
+    "ucos.order.ReturnRequest",
+    "ucos.order.SellerOrder",
+    "ucos.org.Brand",
+    "ucos.org.OrgUnit",
+    "ucos.org.Organization",
+    "ucos.org.Store",
+    "ucos.org.Tenant",
+    "ucos.org.TenantLink",
+    "ucos.org.Workspace",
+    "ucos.party.ContactPoint",
+    "ucos.party.Party",
+    "ucos.party.PartyRelationship",
+    "ucos.party.PartyRole",
+    "ucos.party.Person",
+    "ucos.party.Preference",
+    "ucos.payment.PaymentAttempt",
+    "ucos.payment.PaymentIntent",
+    "ucos.payment.PaymentMethod",
+    "ucos.payment.Refund",
+    "ucos.policy.Policy",
+    "ucos.policy.PolicySet",
+    "ucos.policy.PolicyTest",
+    "ucos.pricing.B2BQuote",
+    "ucos.pricing.Fee",
+    "ucos.pricing.PriceEntry",
+    "ucos.pricing.PriceList",
+    "ucos.pricing.PriceQuote",
+    "ucos.pricing.PriceRule",
+    "ucos.privacy.Consent",
+    "ucos.privacy.CookieConsent",
+    "ucos.privacy.DataSubjectRequest",
+    "ucos.privacy.Notice",
+    "ucos.privacy.ProcessingActivity",
+    "ucos.privacy.Purpose",
+    "ucos.privacy.RetentionRule",
+    "ucos.privacy.TransferRecord",
+    "ucos.product.Attribute",
+    "ucos.product.Brand",
+    "ucos.product.GlobalProduct",
+    "ucos.product.MatchCase",
+    "ucos.product.ProductDocument",
+    "ucos.product.ProductFact",
+    "ucos.product.ProductModel",
+    "ucos.product.Recall",
+    "ucos.product.RegulatedGoodsProfile",
+    "ucos.refdata.CodeList",
+    "ucos.refdata.CodeListRelease",
+    "ucos.refdata.CodeMapping",
+    "ucos.refdata.CodeValue",
+    "ucos.rtc.AgentProfile",
+    "ucos.rtc.BotFlow",
+    "ucos.rtc.Callback",
+    "ucos.rtc.Interaction",
+    "ucos.rtc.IvrFlow",
+    "ucos.rtc.Queue",
+    "ucos.rtc.Recording",
+    "ucos.rtc.VideoSession",
+    "ucos.search.IndexDefinition",
+    "ucos.search.QueryRule",
+    "ucos.search.RankingProfile",
+    "ucos.search.Synonym",
+    "ucos.security.Finding",
+    "ucos.security.Key",
+    "ucos.security.SecretRef",
+    "ucos.security.SecurityControl",
+    "ucos.security.SecurityIncident",
+    "ucos.security.ThreatModel",
+    "ucos.seo.MetaTemplate",
+    "ucos.seo.Redirect",
+    "ucos.seo.Route",
+    "ucos.seo.SiteSettings",
+    "ucos.seo.Sitemap",
+    "ucos.seo.Slug",
+    "ucos.seo.StructuredDataMapping",
+    "ucos.tax.Exemption",
+    "ucos.tax.TaxCategory",
+    "ucos.tax.TaxDetermination",
+    "ucos.tax.TaxDocument",
+    "ucos.tax.TaxRegime",
+    "ucos.tax.TaxRegistration",
+    "ucos.tax.TaxRule",
+    "ucos.tax.Withholding",
+    "ucos.taxonomy.Classification",
+    "ucos.taxonomy.Taxonomy",
+    "ucos.taxonomy.TaxonomyMapping",
+    "ucos.taxonomy.TaxonomyNode",
+    "ucos.temporal.AvailabilityWindow",
+    "ucos.temporal.Calendar",
+    "ucos.temporal.CalendarEntry",
+    "ucos.temporal.CalendarFeed",
+    "ucos.temporal.ExternalCalendarLink",
+    "ucos.temporal.Invitation",
+    "ucos.temporal.QueueToken",
+    "ucos.temporal.Reminder",
+    "ucos.temporal.Reservation",
+    "ucos.temporal.SLAClock",
+    "ucos.temporal.SLADefinition",
+    "ucos.temporal.Schedule",
+    "ucos.temporal.Slot",
+    "ucos.temporal.TemporalPolicy",
+    "ucos.temporal.TimezoneRelease",
+    "ucos.temporal.Trigger",
+    "ucos.temporal.Waitlist",
+    "ucos.ui.ChannelProfile",
+    "ucos.ui.Component",
+    "ucos.ui.Journey",
+    "ucos.ui.Portal",
+    "ucos.ui.Theme",
+    "ucos.ui.ViewDefinition",
+    "ucos.workflow.EscalationPolicy",
+    "ucos.workflow.HumanTask",
+    "ucos.workflow.Migration",
+    "ucos.workflow.WorkflowDefinition",
+    "ucos.workflow.WorkflowInstance"
+  ],
+  "platformDefinition": "ucos:pd:golden-omnichannel-in@1.0.0",
+  "targetPhase": 4
+}

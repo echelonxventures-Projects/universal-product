@@ -1,0 +1,18 @@
+kind: DecisionTable
+id: order.return-eligibility
+owner: order.core
+hitPolicy: FIRST
+inputs:  [ { name: category, type: TaxonomyPath }, { name: buyerTier, type: Enumeration }, { name: jurisdiction, type: JurisdictionRef } ]
+outputs: [ { name: returnWindow, type: Duration }, { name: restockingFee, type: Percentage } ]
+configurableBounds:
+  - "returnWindow >= statutoryMinimum(jurisdiction, category)"     # U26 ORD-L4, consumer law
+rules:
+  - [ "electronics/*", "*",       "ucos:jur:IN", "P7D",  "0" ]
+  - [ "fashion/*",     "premium", "*",           "P30D", "0" ]
+  - [ "fashion/*",     "*",       "*",           "P15D", "0" ]
+  - [ "grocery/*",     "*",       "*",           "PT0S", "0" ]
+  - [ "*",             "*",       "ucos:jur:AE", "P14D", "10" ]
+  - [ "*",             "*",       "*",           "P10D", "0" ]
+tests:
+  - { input: [ "electronics/phones", "standard", "ucos:jur:IN" ], expect: [ "P7D", "0" ] }
+  - { input: [ "home/kitchen", "standard", "ucos:jur:AE" ], expect: [ "P14D", "10" ] }

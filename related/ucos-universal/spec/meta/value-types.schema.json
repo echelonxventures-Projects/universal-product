@@ -1,0 +1,125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/meta/value-types.schema.json",
+  "title": "UCOS canonical value types",
+  "description": "Value types owned by foundation universes (U12 Geography, U13 Temporal, U14 Currency & Unit, U15 Localization, U65 Security, U77 Frame). Every object type MUST use these instead of primitive date/money/location/text fields (META-L3, TMP-L1).",
+  "$defs": {
+    "UGID": {
+      "type": "string",
+      "pattern": "^ucos:[a-z][a-z0-9-]{0,31}:([0-9A-HJKMNP-TV-Z]{26}|[A-Za-z0-9._~-]+(/[A-Za-z0-9._~-]+)*)$"
+    },
+    "TypeRef": { "type": "string", "pattern": "^[a-z][a-z0-9-]*(\\.[a-z][a-z0-9-]*)+\\.[A-Z][A-Za-z0-9]*(@[0-9]+)?$" },
+    "FrameRef": { "type": "string", "pattern": "^ucos:frame:[a-z0-9-]+$" },
+
+    "TimePoint": {
+      "type": "object",
+      "required": ["utc"],
+      "properties": {
+        "utc": { "type": "string", "format": "date-time", "pattern": "Z$" },
+        "tz": { "type": "string", "description": "IANA timezone id" },
+        "scale": { "type": "string", "default": "UTC", "description": "U77 time scale id (A-24)" }
+      },
+      "additionalProperties": false
+    },
+    "LocalDate": { "type": "string", "format": "date" },
+    "LocalTime": { "type": "string", "pattern": "^([01][0-9]|2[0-3]):[0-5][0-9](:[0-5][0-9])?$" },
+    "LocalDateTime": {
+      "type": "object", "required": ["local", "tz"],
+      "properties": { "local": { "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}(:\\d{2})?$" }, "tz": { "type": "string" }, "fold": { "enum": [0, 1] } },
+      "additionalProperties": false
+    },
+    "LocalTimeWindow": {
+      "type": "object", "required": ["start", "end"],
+      "properties": { "start": { "$ref": "#/$defs/LocalTime" }, "end": { "$ref": "#/$defs/LocalTime" } },
+      "additionalProperties": false
+    },
+    "TimeRange": {
+      "type": "object", "required": ["start"],
+      "properties": { "start": { "$ref": "#/$defs/TimePoint" }, "end": { "oneOf": [ { "$ref": "#/$defs/TimePoint" }, { "type": "null" } ] } },
+      "additionalProperties": false
+    },
+    "Duration": { "type": "string", "pattern": "^-?P(?!$)(\\d+Y)?(\\d+M)?(\\d+W)?(\\d+D)?(T(?=\\d)(\\d+H)?(\\d+M)?(\\d+(\\.\\d+)?S)?)?$" },
+    "BusinessDuration": {
+      "type": "object", "required": ["value", "calendar"],
+      "properties": { "value": { "$ref": "#/$defs/Duration" }, "calendar": { "$ref": "#/$defs/UGID" } },
+      "additionalProperties": false
+    },
+    "Recurrence": {
+      "type": "object", "required": ["rrule"],
+      "properties": {
+        "rrule": { "type": "string", "pattern": "^FREQ=(YEARLY|MONTHLY|WEEKLY|DAILY|HOURLY|MINUTELY)(;[A-Z-]+=[^;]+)*$" },
+        "dtstart": { "$ref": "#/$defs/LocalDateTime" },
+        "until": { "$ref": "#/$defs/LocalDateTime" },
+        "count": { "type": "integer", "minimum": 1 },
+        "exdates": { "type": "array", "items": { "$ref": "#/$defs/LocalDateTime" } },
+        "rdates": { "type": "array", "items": { "$ref": "#/$defs/LocalDateTime" } }
+      },
+      "additionalProperties": false
+    },
+    "TemporalRef": {
+      "oneOf": [
+        { "type": "object", "required": ["policy"], "properties": { "policy": { "$ref": "#/$defs/UGID" } }, "additionalProperties": false },
+        { "type": "object", "required": ["range"], "properties": { "range": { "$ref": "#/$defs/TimeRange" } }, "additionalProperties": false },
+        { "type": "object", "required": ["point"], "properties": { "point": { "$ref": "#/$defs/TimePoint" } }, "additionalProperties": false },
+        { "type": "object", "required": ["duration"], "properties": { "duration": { "$ref": "#/$defs/Duration" } }, "additionalProperties": false }
+      ]
+    },
+
+    "CurrencyCode": { "type": "string", "pattern": "^([A-Z]{3}|X-[a-z0-9-]+-[A-Z0-9]{1,12})$", "description": "ISO 4217 or namespaced non-ISO currency (A-25)" },
+    "DecimalString": { "type": "string", "pattern": "^-?\\d{1,20}(\\.\\d{1,18})?$" },
+    "Money": {
+      "type": "object", "required": ["amount", "currency"],
+      "properties": { "amount": { "$ref": "#/$defs/DecimalString" }, "currency": { "$ref": "#/$defs/CurrencyCode" } },
+      "additionalProperties": false
+    },
+    "Quantity": {
+      "type": "object", "required": ["value", "unit"],
+      "properties": { "value": { "$ref": "#/$defs/DecimalString" }, "unit": { "type": "string", "minLength": 1 } },
+      "additionalProperties": false
+    },
+    "Percentage": {
+      "type": "object", "required": ["value"],
+      "properties": { "value": { "$ref": "#/$defs/DecimalString" } },
+      "additionalProperties": false
+    },
+
+    "Coordinate": {
+      "type": "object", "required": ["lat", "lng"],
+      "properties": {
+        "lat": { "type": "number", "minimum": -90, "maximum": 90 },
+        "lng": { "type": "number", "minimum": -180, "maximum": 180 },
+        "accuracyM": { "type": "number", "minimum": 0 },
+        "frame": { "$ref": "#/$defs/FrameRef" }
+      },
+      "additionalProperties": false
+    },
+    "GeoRef": {
+      "oneOf": [
+        { "type": "object", "required": ["place"], "properties": { "place": { "$ref": "#/$defs/UGID" } }, "additionalProperties": false },
+        { "type": "object", "required": ["address"], "properties": { "address": { "$ref": "#/$defs/UGID" } }, "additionalProperties": false },
+        { "type": "object", "required": ["coordinate"], "properties": { "coordinate": { "$ref": "#/$defs/Coordinate" } }, "additionalProperties": false }
+      ]
+    },
+
+    "LocaleTag": { "type": "string", "pattern": "^[a-zA-Z]{2,3}(-[A-Za-z0-9]{2,8})*$" },
+    "LocalizedText": {
+      "type": "object", "required": ["default", "values"],
+      "properties": {
+        "default": { "$ref": "#/$defs/LocaleTag" },
+        "values": { "type": "object", "minProperties": 1, "additionalProperties": { "type": "string" } },
+        "status": { "type": "object", "additionalProperties": { "enum": ["missing", "machine", "in-review", "approved", "stale"] } }
+      },
+      "additionalProperties": false
+    },
+
+    "Classification": {
+      "type": "object", "required": ["confidentiality"],
+      "properties": {
+        "confidentiality": { "enum": ["public", "internal", "confidential", "restricted"] },
+        "dataClasses": { "type": "array", "items": { "enum": ["PII", "SPI", "PCI", "PHI", "FINANCIAL", "CREDENTIAL", "CHILD", "BIOMETRIC", "LOCATION", "TRADE_SECRET", "SECURITY_SENSITIVE", "NEURAL"] }, "uniqueItems": true },
+        "handling": { "type": "array", "items": { "enum": ["no-export", "no-ai-training", "no-log", "watermark"] } }
+      },
+      "additionalProperties": false
+    }
+  }
+}

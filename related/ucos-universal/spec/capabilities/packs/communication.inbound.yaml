@@ -1,0 +1,58 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: communication.inbound
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: Inbound message intake (email/SMS/WhatsApp/social replies), opt-out keywords first, intent routing to conversations, cases, orders
+    or bots.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.comm.InboundMessage
+    commands:
+    - RouteInbound
+    - ReprocessInbound
+    queries:
+    - InboundLog
+    events:
+    - communication.inbound.received
+    - communication.inbound.routed
+    decisions:
+    - communication.inbound-routing
+  consumes:
+    events:
+    - integration.webhook.received
+  requires:
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: integration.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - CAL
+  security:
+    dataClasses:
+    - PII
+    threatModel: docs/threat-models/communication.md
+  compliance:
+    controls:
+    - ucos.ctrl.unsubscribe
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

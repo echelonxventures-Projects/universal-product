@@ -1,0 +1,10 @@
+# Go code for the kernel contracts. Plugins are pinned and installed locally by tools/ci.sh into .tools/bin:
+#   protoc-gen-go v1.36.12, protoc-gen-go-grpc v1.6.2
+version: v2
+plugins:
+  - local: protoc-gen-go
+    out: ../../../kernel/gen
+    opt: paths=source_relative
+  - local: protoc-gen-go-grpc
+    out: ../../../kernel/gen
+    opt: paths=source_relative

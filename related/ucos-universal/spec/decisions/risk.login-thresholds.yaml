@@ -1,0 +1,23 @@
+kind: DecisionTable
+id: risk.login-thresholds
+owner: risk.core
+hitPolicy: FIRST
+inputs:
+- {name: band, type: Enumeration}
+- {name: score, type: Integer}
+outputs:
+- {name: action, type: Enumeration}
+rules:
+- [unknown, '*', step-up]
+- ['*', '>=95', block]
+- ['*', '>=60', step-up]
+- ['*', '*', allow]
+tests:
+- input: [unknown, '0']
+  expect: [step-up]
+- input: [high, '97']
+  expect: [block]
+- input: [medium, '65']
+  expect: [step-up]
+- input: [low, '5']
+  expect: [allow]

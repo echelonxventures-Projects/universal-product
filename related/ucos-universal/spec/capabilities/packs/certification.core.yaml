@@ -1,0 +1,49 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: certification.core
+  version: 1.0.0
+  universe: U74-certification
+  steward: ucos:org:steward-certification
+  purpose: Certification gates, profiles, runs and signed attestations.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.certification.CertificationGate
+    - ucos.certification.CertificationProfile
+    - ucos.certification.CertificationRun
+    - ucos.certification.Certification
+    commands:
+    - DefineGate
+    - StartRun
+    - IssueCertification
+    - Invalidate
+    - Revoke
+    queries:
+    - StatusOf
+    events:
+    - certification.run.completed
+    - certification.certification.issued
+    - certification.certification.invalidated
+  requires:
+  - capability: audit.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TRG
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

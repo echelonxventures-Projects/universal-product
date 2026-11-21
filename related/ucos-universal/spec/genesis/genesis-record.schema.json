@@ -1,0 +1,85 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/genesis/genesis-record.schema.json",
+  "title": "GenesisRecord (U01 bootstrap)",
+  "description": "The signed record that creates the root authority and the platform's trust anchors. See docs/runbooks/genesis.md.",
+  "type": "object",
+  "required": ["kind", "id", "platformRelease", "rootAuthority", "trustAnchors", "adoptedDefinitions", "signatures", "performedAt"],
+  "additionalProperties": false,
+  "properties": {
+    "kind": { "const": "GenesisRecord" },
+    "id": { "type": "string", "pattern": "^ucos:genesis:[0-9A-HJKMNP-TV-Z]{26}$" },
+    "platformRelease": {
+      "type": "object", "required": ["gitCommit", "gitTag", "ciRun"], "additionalProperties": false,
+      "properties": {
+        "gitCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+        "gitTag": { "type": "string", "pattern": "^v\\d+\\.\\d+\\.\\d+$" },
+        "ciRun": { "type": "string", "description": "URL of the green CI run for the commit" }
+      }
+    },
+    "rootAuthority": {
+      "type": "object", "required": ["id", "level", "members", "quorum"], "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string" },
+        "level": { "const": 5 },
+        "members": {
+          "type": "array", "minItems": 3,
+          "items": {
+            "type": "object", "required": ["name", "seat", "identity", "hardwareKeyId"], "additionalProperties": false,
+            "properties": {
+              "name": { "type": "string" },
+              "seat": { "enum": ["chair", "chief-architect", "ciso", "member"] },
+              "identity": { "type": "string" },
+              "hardwareKeyId": { "type": "string", "description": "FIDO2 credential id (AAL3)" }
+            }
+          }
+        },
+        "quorum": { "type": "integer", "minimum": 2 }
+      }
+    },
+    "trustAnchors": {
+      "type": "object", "required": ["registrySnapshotKey", "auditAnchorKey", "attestationKey", "contextSigningKey"], "additionalProperties": false,
+      "properties": {
+        "registrySnapshotKey": { "$ref": "#/$defs/keyRef" },
+        "auditAnchorKey": { "$ref": "#/$defs/keyRef" },
+        "attestationKey": { "$ref": "#/$defs/keyRef" },
+        "contextSigningKey": { "$ref": "#/$defs/keyRef" }
+      }
+    },
+    "adoptedDefinitions": {
+      "type": "object", "required": ["masterVersion", "registrySnapshot", "gateCatalogueDigest", "baselinePoliciesDigest"], "additionalProperties": false,
+      "properties": {
+        "masterVersion": { "type": "string" },
+        "registrySnapshot": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "gateCatalogueDigest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "baselinePoliciesDigest": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" },
+        "adrs": { "type": "array", "items": { "type": "string", "pattern": "^ADR-\\d{3}$" } }
+      }
+    },
+    "signatures": {
+      "type": "array", "minItems": 2,
+      "items": {
+        "type": "object", "required": ["member", "algorithm", "signature", "signedAt"], "additionalProperties": false,
+        "properties": {
+          "member": { "type": "string" },
+          "algorithm": { "enum": ["ES256", "EdDSA"] },
+          "signature": { "type": "string" },
+          "signedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "performedAt": { "type": "string", "format": "date-time" },
+    "witnesses": { "type": "array", "items": { "type": "string" } }
+  },
+  "$defs": {
+    "keyRef": {
+      "type": "object", "required": ["kms", "keyId", "algorithm", "publicKeyFingerprint"], "additionalProperties": false,
+      "properties": {
+        "kms": { "type": "string", "description": "KMS/HSM provider and region" },
+        "keyId": { "type": "string" },
+        "algorithm": { "enum": ["ES256", "EdDSA", "RS256"] },
+        "publicKeyFingerprint": { "type": "string", "pattern": "^sha256:[0-9a-f]{64}$" }
+      }
+    }
+  }
+}

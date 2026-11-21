@@ -1,0 +1,65 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: product.intelligence
+  version: 1.0.0
+  universe: U18-product-intelligence
+  steward: ucos:org:steward-product-intelligence
+  purpose: Global product master (GPID), attributes, variants, brands, provenance, matching and recalls.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.product.GlobalProduct
+    - ucos.product.ProductModel
+    - ucos.product.Attribute
+    - ucos.product.Brand
+    - ucos.product.ProductFact
+    - ucos.product.MatchCase
+    - ucos.product.Recall
+    - ucos.product.ProductDocument
+    - ucos.product.RegulatedGoodsProfile
+    commands:
+    - IngestBatch
+    - ContributeFromTenant
+    - Match
+    - ResolveMatch
+    - MergeProducts
+    - PublishProduct
+    - RegisterAttribute
+    - RecordRecall
+    queries:
+    - GetGlobalProduct
+    - SearchGlobal
+    - ByIdentifier
+    - Compatible
+    events:
+    - product.global.published
+    - product.global.updated
+    - product.global.merged
+    - product.recall.published
+  requires:
+  - capability: taxonomy.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: asset.core
+    version: '>=1 <2'
+  - capability: l10n.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TR
+    - TRG
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

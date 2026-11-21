@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/context/context-envelope.schema.json",
+  "title": "ContextEnvelope (U16, amendments A-08, A-27)",
+  "type": "object",
+  "required": ["v", "tenant", "actor", "jurisdiction", "locale", "currency", "tz", "time", "frame", "channel", "risk", "exp"],
+  "properties": {
+    "v": { "const": 1 },
+    "tenant": { "type": "string" },
+    "blueprint": { "type": "string" },
+    "actor": {
+      "type": "object", "required": ["identity", "kind"],
+      "properties": { "identity": { "type": "string" }, "kind": { "enum": ["human", "service", "agent", "device", "anonymous"] }, "onBehalfOf": { "type": "string" } }
+    },
+    "roles": { "type": "array", "items": { "type": "string" } },
+    "org": { "type": "string" },
+    "jurisdiction": {
+      "type": "object",
+      "description": "Role-keyed jurisdictions (A-08)",
+      "propertyNames": { "enum": ["actor", "buyer-delivery", "seller", "data-storage", "store", "payment-acquirer"] },
+      "additionalProperties": { "type": "array", "items": { "type": "string", "pattern": "^ucos:jur:" } }
+    },
+    "locale": { "type": "string" },
+    "currency": { "type": "string" },
+    "tz": { "type": "string" },
+    "time": {
+      "type": "object", "required": ["now"],
+      "properties": { "now": { "type": "string", "format": "date-time" }, "asOf": { "type": "string", "format": "date-time" } }
+    },
+    "frame": {
+      "type": "object", "required": ["reality"],
+      "properties": {
+        "reality": { "type": "string" }, "body": { "type": "string" }, "spatialFrame": { "type": "string" },
+        "timeScale": { "type": "string" }, "calendarSystem": { "type": "string" },
+        "sideEffectPolicy": { "enum": ["none", "bridged", "full"] }
+      }
+    },
+    "channel": { "type": "string" },
+    "device": { "type": "object" },
+    "geo": { "type": "object" },
+    "risk": { "type": "object", "required": ["band"], "properties": { "score": { "type": ["number", "null"] }, "band": { "enum": ["low", "medium", "high", "unknown"] } } },
+    "consentRef": { "type": "string" },
+    "purpose": { "type": "string" },
+    "simulation": { "type": "boolean" },
+    "trace": { "type": "object" },
+    "exp": { "type": "integer" },
+    "parent": { "type": "string" }
+  },
+  "additionalProperties": false
+}

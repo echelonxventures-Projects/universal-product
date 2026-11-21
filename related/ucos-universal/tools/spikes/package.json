@@ -1,0 +1,1 @@
+{ "private": true, "type": "module", "description": "k6 load scripts (syntax-checked by tools/ci.sh with node --check)" }

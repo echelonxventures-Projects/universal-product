@@ -1,0 +1,24 @@
+kind: DecisionTable
+id: ledger.revenue-recognition
+owner: ledger.core
+hitPolicy: FIRST
+description: IFRS 15 / Ind AS 115 patterns; gift cards are stored-value liabilities until redeemed (breakage per U30 policy).
+inputs:
+- {name: productNature, type: Enumeration}
+- {name: fulfilment, type: Enumeration}
+outputs:
+- {name: pattern, type: Enumeration}
+rules:
+- [gift-card, '*', on-redemption]
+- [subscription, '*', ratably]
+- [service, scheduled, point-in-time-completion]
+- [digital, '*', point-in-time-delivery]
+- [goods, '*', point-in-time-delivery]
+- ['*', '*', point-in-time-delivery]
+tests:
+- input: [gift-card, digital]
+  expect: [on-redemption]
+- input: [subscription, digital]
+  expect: [ratably]
+- input: [goods, ship]
+  expect: [point-in-time-delivery]

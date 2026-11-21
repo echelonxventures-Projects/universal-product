@@ -1,0 +1,65 @@
+kind: AddressFormatSet
+release: 2026-10
+owner: U12 Geography steward
+formats:
+- country: IN
+  fields:
+  - name
+  - line1
+  - line2
+  - landmark
+  - city
+  - district
+  - state
+  - postalCode
+  - phone
+  required:
+  - name
+  - line1
+  - city
+  - state
+  - postalCode
+  - phone
+  postalCode:
+    label: PIN code
+    pattern: ^[1-9][0-9]{5}$
+  order: '{name}
+
+    {line1}
+
+    {line2}
+
+    {landmark}
+
+    {city} {postalCode}
+
+    {state}'
+  note: The full PIN directory (India Post open data, GODL-India licence) is imported as a data pack; validation uses the pattern until then.
+- country: AE
+  fields:
+  - name
+  - building
+  - street
+  - area
+  - city
+  - emirate
+  - poBox
+  - makaniNumber
+  - phone
+  required:
+  - name
+  - building
+  - area
+  - emirate
+  - phone
+  postalCode: null
+  order: '{name}
+
+    {building}, {street}
+
+    {area}
+
+    {city}, {emirate}
+
+    PO Box {poBox}'
+  note: The UAE has no postal codes; Makani numbers (Dubai) are optional geolocation identifiers.

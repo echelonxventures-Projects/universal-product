@@ -1,0 +1,64 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: seo.core
+  version: 1.0.0
+  universe: U87-web-presence-seo
+  steward: ucos:org:steward-web-presence-seo
+  purpose: Routes, slugs, redirects, metadata, structured data, sitemaps and robots/AI-crawler policy.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.seo.Route
+    - ucos.seo.Slug
+    - ucos.seo.Redirect
+    - ucos.seo.MetaTemplate
+    - ucos.seo.StructuredDataMapping
+    - ucos.seo.Sitemap
+    - ucos.seo.SiteSettings
+    commands:
+    - DefineRoute
+    - SetSlug
+    - CreateRedirect
+    - DefineMetaTemplate
+    - MapStructuredData
+    - RegenerateSitemaps
+    - UpdateSiteSettings
+    queries:
+    - ResolveUrl
+    - SeoAudit
+    - PreviewSnippet
+    events:
+    - seo.slug.changed
+    - seo.redirect.created
+    - seo.sitemap.regenerated
+  consumes:
+    events:
+    - catalog.listing.published
+    - catalog.listing.unpublished
+  requires:
+  - capability: ui.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - R
+    - TP
+    - TRG
+  ui:
+    views:
+    - seo.audit.dashboard
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

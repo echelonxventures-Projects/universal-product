@@ -1,0 +1,65 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: strategy.core
+  version: 1.0.0
+  universe: U102-strategy-performance
+  steward: ucos:org:steward-strategy-performance
+  purpose: Strategy owns direction-setting and performance management.
+  capabilityKind: core
+  maturity: experimental
+  phase: 5
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.strategy.StrategyStatement
+    - ucos.strategy.Objective
+    - ucos.strategy.KeyResult
+    - ucos.strategy.Scorecard
+    - ucos.strategy.Initiative
+    - ucos.strategy.PlanningCycle
+    - ucos.strategy.Scenario
+    commands:
+    - PublishStrategy
+    - CreateObjective
+    - AddKeyResult
+    - CheckIn
+    - DefineScorecard
+    - LinkInitiative
+    - StartPlanningCycle
+    - CloseCycle
+    events:
+    - strategy.kr.at-risk
+    - strategy.cycle.started
+    - strategy.cycle.closed
+  requires:
+  - capability: observability.core
+    version: '>=1 <2'
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: collaboration.core
+    version: '>=1 <2'
+  - capability: simulation.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - R
+    - TR
+    - REM
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

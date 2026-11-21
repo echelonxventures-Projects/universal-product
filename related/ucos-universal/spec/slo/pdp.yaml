@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: pdp
+universe: U03
+tier: T0
+owner: ucos:org:security
+phase: 0
+slos:
+- id: availability
+  description: Share of pdp requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: pdp_requests_good_ratio
+  objective: 0.9999
+  rollingWindow: P28D
+- id: latency
+  description: p99 latency of the critical pdp operation.
+  sli:
+    kind: latency
+    metric: pdp_decision_duration_ms
+    thresholdMs: 10
+    percentile: p99
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: pdp.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/pdp.md#availability-fast-burn
+- id: pdp.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/pdp.md#availability-slow-burn
+- id: pdp.latency.breach
+  slo: latency
+  condition: p99 > 10 ms for 15m
+  severity: page
+  runbook: docs/runbooks/pdp.md#latency-breach

@@ -1,0 +1,26 @@
+kind: DecisionTable
+id: rtc.routing
+owner: contactcenter.core
+hitPolicy: FIRST
+inputs:
+- {name: queue, type: Enumeration}
+- {name: customerTier, type: Enumeration}
+- {name: language, type: LocaleTag}
+outputs:
+- {name: skill, type: String}
+- {name: priority, type: Integer}
+rules:
+- [payments, '*', '*', payments, 1]
+- ['*', gold, '*', tier-gold, 2]
+- ['*', '*', hi-IN, lang-hi, 3]
+- ['*', '*', ar, lang-ar, 3]
+- ['*', '*', '*', general, 5]
+tests:
+- input: [payments, standard, en-IN]
+  expect: [payments, '1']
+- input: [orders, gold, en-IN]
+  expect: [tier-gold, '2']
+- input: [orders, standard, hi-IN]
+  expect: [lang-hi, '3']
+- input: [orders, standard, en-IN]
+  expect: [general, '5']

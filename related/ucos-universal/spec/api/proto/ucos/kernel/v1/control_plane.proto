@@ -1,0 +1,101 @@
+// Control plane: registry snapshots, composition, certification, activation, audit (KERNEL-DESIGN §8–§12).
+syntax = "proto3";
+package ucos.kernel.v1;
+option go_package = "ucos.io/kernel/gen/ucos/kernel/v1;kernelv1";
+
+import "ucos/kernel/v1/common.proto";
+
+service RegistryService {
+  rpc GetSnapshot(GetSnapshotRequest) returns (Snapshot);
+}
+message GetSnapshotRequest { string snapshot_id = 1; }        // empty = latest
+message Snapshot {
+  string snapshot_id = 1;
+  string merkle_root = 2;
+  string signature = 3;                  // DSSE over the manifest
+  bytes archive = 4;                     // tar of JSON registries
+}
+
+service Composer {
+  rpc Compose(ComposeRequest) returns (ComposeResponse);
+}
+message ComposeRequest {
+  bytes platform_definition = 1;         // YAML, spec/composition/platform-definition.schema.json
+  string snapshot_id = 2;
+}
+message ComposeResponse {
+  string blueprint_id = 1;               // "ucos:blueprint:sha256:<hex>"
+  bytes blueprint = 2;                   // canonical JSON (JCS)
+  bytes gap_report = 3;                  // JSON
+  bytes resolution_trace = 4;            // derivation provenance
+  Problem problem = 5;
+}
+
+service CertificationService {
+  rpc StartRun(StartRunRequest) returns (CertificationRun);
+  rpc GetRun(GetRunRequest) returns (CertificationRun);
+}
+message StartRunRequest {
+  string subject_digest = 1;
+  string profile = 2;                    // spec/certification/gates.yaml profiles
+  repeated string gates = 3;             // optional explicit gate ids
+}
+message GetRunRequest { string run_id = 1; }
+message GateResult {
+  string gate_id = 1;
+  enum Result { RESULT_UNSPECIFIED = 0; PASS = 1; FAIL = 2; WAIVED = 3; ERROR = 4; }
+  Result result = 2;
+  repeated string evidence = 3;
+}
+message CertificationRun {
+  string run_id = 1;
+  string subject_digest = 2;
+  repeated GateResult results = 3;
+  string attestation = 4;                // DSSE/in-toto when complete
+  bool complete = 5;
+}
+
+service ActivationAgent {
+  rpc Activate(ActivationRequest) returns (ActivationStatus);
+  rpc Rollback(ActivationRequest) returns (ActivationStatus);
+  rpc Status(ActivationRequest) returns (ActivationStatus);
+}
+message ActivationRequest {
+  string tenant = 1;
+  string blueprint_id = 2;
+  string decision_record = 3;            // U01 approval (ARCH-AUTH-01)
+  string certification_attestation = 4;
+}
+message ActivationStatus {
+  string tenant = 1;
+  string blueprint_id = 2;
+  enum Phase { PHASE_UNSPECIFIED = 0; DEPLOYING = 1; MIGRATING_EXPAND = 2; ROUTED = 3; HOLDING = 4; COMPLETE = 5; ROLLED_BACK = 6; FAILED = 7; }
+  Phase phase = 3;
+  Problem problem = 4;
+}
+
+service AuditService {
+  rpc Query(AuditQuery) returns (AuditPage);
+  rpc VerifyChain(VerifyChainRequest) returns (VerifyChainResponse);
+}
+message AuditQuery {
+  string context_token = 1;
+  string actor = 2;
+  string action_prefix = 3;
+  string from = 4;
+  string to = 5;
+  PageRequest page = 6;
+}
+message AuditRecord {
+  string id = 1;
+  int64 seq = 2;
+  bytes record = 3;                      // JSON
+  string prev_hash = 4;
+  string hash = 5;
+}
+message AuditPage {
+  repeated AuditRecord records = 1;
+  PageInfo page = 2;
+}
+message VerifyChainRequest { string tenant = 1; string day = 2; }
+message VerifyChainResponse { bool valid = 1; int64 records = 2; string merkle_root = 3; Problem problem = 4; }

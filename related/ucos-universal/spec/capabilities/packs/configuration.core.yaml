@@ -1,0 +1,63 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: configuration.core
+  version: 1.0.0
+  universe: U78-product-configuration
+  steward: ucos:org:steward-product-configuration
+  purpose: Configuration owns products whose final form is chosen by the buyer.
+  capabilityKind: core
+  maturity: experimental
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.configuration.ConfigurableProduct
+    - ucos.configuration.Option
+    - ucos.configuration.Constraint
+    - ucos.configuration.Configuration
+    - ucos.configuration.KitDefinition
+    commands:
+    - DefineConfigurableProduct
+    - DefineKit
+    - Configure
+    - SaveConfiguration
+    - ConvertToQuote
+    - ReleaseToProduction
+    queries:
+    - ValidOptions
+    - ConfigurationPrice
+    - KitAvailability
+    events:
+    - configuration.configuration.validated
+    - configuration.production.released
+  requires:
+  - capability: catalog.listing
+    version: '>=1 <2'
+  - capability: product.intelligence
+    version: '>=1 <2'
+  - capability: pricing.engine
+    version: '>=1 <2'
+  - capability: inventory.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: asset.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  optional:
+  - capability: manufacturing.core
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

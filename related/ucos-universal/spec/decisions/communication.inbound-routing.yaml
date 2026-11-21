@@ -1,0 +1,26 @@
+kind: DecisionTable
+id: communication.inbound-routing
+owner: communication.inbound
+hitPolicy: FIRST
+description: Opt-out keywords are evaluated first on every channel (COMM-L1); an open conversation keeps the thread together.
+inputs:
+- {name: channel, type: Enumeration}
+- {name: intent, type: Enumeration}
+- {name: hasOpenConversation, type: Boolean}
+outputs:
+- {name: route, type: Enumeration}
+rules:
+- ['*', opt-out, '*', unsubscribe]
+- ['*', '*', 'true', conversation]
+- ['*', order-status, '*', order-bot]
+- ['*', support, '*', support-case]
+- ['*', '*', '*', inbox]
+tests:
+- input: [sms, opt-out, 'true']
+  expect: [unsubscribe]
+- input: [whatsapp, unknown, 'true']
+  expect: [conversation]
+- input: [email, order-status, 'false']
+  expect: [order-bot]
+- input: [email, unknown, 'false']
+  expect: [inbox]

@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: audit-appender
+universe: U68
+tier: T0
+owner: ucos:org:governance-audit
+phase: 0
+slos:
+- id: availability
+  description: Share of audit-appender requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: audit_appender_requests_good_ratio
+  objective: 0.9999
+  rollingWindow: P28D
+- id: latency
+  description: p99 latency of the critical audit-appender operation.
+  sli:
+    kind: latency
+    metric: audit_seal_lag_ms
+    thresholdMs: 1000
+    percentile: p99
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: audit-appender.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/audit-appender.md#availability-fast-burn
+- id: audit-appender.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/audit-appender.md#availability-slow-burn
+- id: audit-appender.latency.breach
+  slo: latency
+  condition: p99 > 1000 ms for 15m
+  severity: page
+  runbook: docs/runbooks/audit-appender.md#latency-breach

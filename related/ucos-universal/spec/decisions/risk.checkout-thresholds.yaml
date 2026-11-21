@@ -1,0 +1,25 @@
+kind: DecisionTable
+id: risk.checkout-thresholds
+owner: risk.core
+hitPolicy: FIRST
+description: 'RSK-L3: scores feed this table; RSK-L4: an unavailable score (band unknown) is treated as medium, never low.'
+inputs:
+- {name: band, type: Enumeration}
+- {name: score, type: Integer}
+outputs:
+- {name: action, type: Enumeration}
+rules:
+- [unknown, '*', step-up]
+- ['*', '>=90', decline]
+- ['*', '>=70', review]
+- ['*', '>=50', step-up]
+- ['*', '*', allow]
+tests:
+- input: [unknown, '0']
+  expect: [step-up]
+- input: [high, '95']
+  expect: [decline]
+- input: [medium, '75']
+  expect: [review]
+- input: [low, '10']
+  expect: [allow]

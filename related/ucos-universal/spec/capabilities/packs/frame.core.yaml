@@ -1,0 +1,56 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: frame.core
+  version: 1.0.0
+  universe: U77-existence-reality-frame
+  steward: ucos:org:steward-existence-reality-frame
+  purpose: 'Frames of reference: realities, bodies, spatial frames, time scales, calendar/monetary/unit/language systems, authorities.'
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.frame.Reality
+    - ucos.frame.Body
+    - ucos.frame.SpatialReferenceFrame
+    - ucos.frame.TimeScale
+    - ucos.frame.CalendarSystem
+    - ucos.frame.MonetarySystem
+    - ucos.frame.UnitSystem
+    - ucos.frame.LanguageSystem
+    - ucos.frame.GoverningAuthority
+    - ucos.frame.Frame
+    - ucos.frame.RealityLink
+    - ucos.frame.FrameConversion
+    commands:
+    - RegisterReality
+    - RegisterBody
+    - DefineFrame
+    - RegisterConversion
+    - LinkRealities
+    - SetTenantDefaultFrame
+    queries:
+    - ResolveFrame
+    - Convert
+    events:
+    - frame.frame.defined
+    - frame.reality.registered
+  requires:
+  - capability: meta.core
+    version: '>=1 <2'
+  - capability: refdata.core
+    version: '>=1 <2'
+  temporal:
+    kind: V
+    uses:
+    - TS
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

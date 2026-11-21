@@ -1,0 +1,331 @@
+kind: MessageBundleSet
+release: 2026-10
+owner: U15 Localization steward
+sourceLocale: en
+reviewPolicy: 'hi and ar values are drafts (status machine-draft). Every key in the legal category needs a qualified human reviewer before publication (U15: requiresHumanReview for legal and regulated categories).'
+messages:
+- key: commerce.cart.add-button
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Add to cart
+      status: approved
+    hi:
+      text: कार्ट में डालें
+      status: machine-draft
+    ar:
+      text: أضف إلى السلة
+      status: machine-draft
+- key: commerce.cart.title
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Your cart
+      status: approved
+    hi:
+      text: आपका कार्ट
+      status: machine-draft
+    ar:
+      text: سلة التسوق
+      status: machine-draft
+- key: commerce.cart.empty
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Your cart is empty
+      status: approved
+    hi:
+      text: आपका कार्ट खाली है
+      status: machine-draft
+    ar:
+      text: سلة التسوق فارغة
+      status: machine-draft
+- key: commerce.checkout.button
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Checkout
+      status: approved
+    hi:
+      text: चेकआउट करें
+      status: machine-draft
+    ar:
+      text: إتمام الشراء
+      status: machine-draft
+- key: commerce.checkout.place-order
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Place order
+      status: approved
+    hi:
+      text: ऑर्डर करें
+      status: machine-draft
+    ar:
+      text: تأكيد الطلب
+      status: machine-draft
+- key: commerce.checkout.total
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Total
+      status: approved
+    hi:
+      text: कुल
+      status: machine-draft
+    ar:
+      text: الإجمالي
+      status: machine-draft
+- key: commerce.checkout.tax-included
+  category: legal
+  requiresHumanReview: true
+  values:
+    en:
+      text: Price includes all taxes
+      status: approved
+    hi:
+      text: कीमत में सभी कर शामिल हैं
+      status: machine-draft
+    ar:
+      text: السعر يشمل جميع الضرائب
+      status: machine-draft
+- key: commerce.checkout.delivery-by
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Delivery by {date}
+      status: approved
+    hi:
+      text: '{date} तक डिलीवरी'
+      status: machine-draft
+    ar:
+      text: التوصيل بحلول {date}
+      status: machine-draft
+- key: commerce.payment.upi
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: UPI
+      status: approved
+    hi:
+      text: यूपीआई
+      status: machine-draft
+    ar:
+      text: UPI
+      status: machine-draft
+- key: commerce.payment.card
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Credit or debit card
+      status: approved
+    hi:
+      text: क्रेडिट या डेबिट कार्ड
+      status: machine-draft
+    ar:
+      text: بطاقة ائتمان أو خصم
+      status: machine-draft
+- key: commerce.payment.cod
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Cash on delivery
+      status: approved
+    hi:
+      text: डिलीवरी पर नकद भुगतान
+      status: machine-draft
+    ar:
+      text: الدفع عند الاستلام
+      status: machine-draft
+- key: order.status.confirmed
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Order confirmed
+      status: approved
+    hi:
+      text: ऑर्डर की पुष्टि हो गई
+      status: machine-draft
+    ar:
+      text: تم تأكيد الطلب
+      status: machine-draft
+- key: order.status.shipped
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Shipped
+      status: approved
+    hi:
+      text: भेज दिया गया
+      status: machine-draft
+    ar:
+      text: تم الشحن
+      status: machine-draft
+- key: order.status.delivered
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Delivered
+      status: approved
+    hi:
+      text: डिलीवर हो गया
+      status: machine-draft
+    ar:
+      text: تم التوصيل
+      status: machine-draft
+- key: order.action.cancel
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Cancel order
+      status: approved
+    hi:
+      text: ऑर्डर रद्द करें
+      status: machine-draft
+    ar:
+      text: إلغاء الطلب
+      status: machine-draft
+- key: order.action.return
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Return item
+      status: approved
+    hi:
+      text: सामान वापस करें
+      status: machine-draft
+    ar:
+      text: إرجاع المنتج
+      status: machine-draft
+- key: order.return.window-closed
+  category: error
+  requiresHumanReview: false
+  values:
+    en:
+      text: The return window for this item has closed
+      status: approved
+    hi:
+      text: इस सामान की वापसी की अवधि समाप्त हो गई है
+      status: machine-draft
+    ar:
+      text: انتهت فترة الإرجاع لهذا المنتج
+      status: machine-draft
+- key: identity.login.title
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Sign in
+      status: approved
+    hi:
+      text: साइन इन करें
+      status: machine-draft
+    ar:
+      text: تسجيل الدخول
+      status: machine-draft
+- key: identity.otp.prompt
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Enter the {count}-digit code sent to {phone}
+      status: approved
+    hi:
+      text: '{phone} पर भेजा गया {count} अंकों का कोड डालें'
+      status: machine-draft
+    ar:
+      text: أدخل الرمز المكوّن من {count} أرقام المرسل إلى {phone}
+      status: machine-draft
+- key: privacy.consent.marketing
+  category: legal
+  requiresHumanReview: true
+  values:
+    en:
+      text: Send me offers on WhatsApp. I can opt out at any time.
+      status: approved
+    hi:
+      text: मुझे व्हाट्सऐप पर ऑफ़र भेजें। मैं कभी भी ऑप्ट-आउट कर सकता/सकती हूँ।
+      status: machine-draft
+    ar:
+      text: أرسلوا لي العروض عبر واتساب. يمكنني إلغاء الاشتراك في أي وقت.
+      status: machine-draft
+- key: privacy.grievance.officer
+  category: legal
+  requiresHumanReview: true
+  values:
+    en:
+      text: 'Grievance officer: {name}, {email}'
+      status: approved
+    hi:
+      text: 'शिकायत अधिकारी: {name}, {email}'
+      status: machine-draft
+    ar:
+      text: 'مسؤول الشكاوى: {name}، {email}'
+      status: machine-draft
+- key: comm.unsubscribe.confirmed
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: You will no longer receive these messages
+      status: approved
+    hi:
+      text: अब आपको ये संदेश नहीं मिलेंगे
+      status: machine-draft
+    ar:
+      text: لن تتلقى هذه الرسائل بعد الآن
+      status: machine-draft
+- key: common.error.try-again
+  category: error
+  requiresHumanReview: false
+  values:
+    en:
+      text: Something went wrong. Please try again.
+      status: approved
+    hi:
+      text: कुछ गलत हो गया। कृपया फिर से कोशिश करें।
+      status: machine-draft
+    ar:
+      text: حدث خطأ ما. يرجى المحاولة مرة أخرى.
+      status: machine-draft
+- key: common.action.save
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Save
+      status: approved
+    hi:
+      text: सहेजें
+      status: machine-draft
+    ar:
+      text: حفظ
+      status: machine-draft
+- key: common.action.cancel
+  category: ui
+  requiresHumanReview: false
+  values:
+    en:
+      text: Cancel
+      status: approved
+    hi:
+      text: रद्द करें
+      status: machine-draft
+    ar:
+      text: إلغاء
+      status: machine-draft

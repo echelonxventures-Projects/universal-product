@@ -1,0 +1,72 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: digital-assets.core
+  version: 1.0.0
+  universe: U99-digital-assets-ledger-tech
+  steward: ucos:org:steward-digital-assets-ledger-tech
+  purpose: Digital Assets owns interaction with blockchains and tokenised value.
+  capabilityKind: core
+  maturity: experimental
+  phase: 6
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.digital-assets.Network
+    - ucos.digital-assets.TokenDefinition
+    - ucos.digital-assets.Wallet
+    - ucos.digital-assets.ChainTransaction
+    - ucos.digital-assets.ProductPassport
+    - ucos.digital-assets.TokenGate
+    commands:
+    - RegisterNetwork
+    - Token
+    - CreateWallet
+    - ConnectExternalWallet
+    - Mint
+    - Transfer
+    - Burn
+    - RedeemTokenForGoods
+    - AnchorPassport
+    - Reconcile
+    events:
+    - digital-asset.transaction.confirmed
+    - digital-asset.transaction.finalized
+    - digital-asset.transaction.failed
+    - digital-asset.passport.anchored
+  requires:
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: stored-value.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: security.core
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  - capability: asset.core
+    version: '>=1 <2'
+  - capability: product.intelligence
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TS
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

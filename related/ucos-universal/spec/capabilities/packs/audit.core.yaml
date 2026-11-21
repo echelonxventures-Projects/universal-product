@@ -1,0 +1,50 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: audit.core
+  version: 1.0.0
+  universe: U68-audit-evidence
+  steward: ucos:org:steward-audit-evidence
+  purpose: Hash-chained audit records, evidence, collectors, evidence packs and legal holds.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.audit.AuditRecord
+    - ucos.audit.ChainAnchor
+    - ucos.audit.Evidence
+    - ucos.audit.EvidenceCollector
+    - ucos.audit.EvidencePack
+    - ucos.audit.AuditorAccessGrant
+    commands:
+    - AnchorChains
+    - VerifyChain
+    - CollectEvidence
+    - AssembleEvidencePack
+    - PlaceLegalHold
+    queries:
+    - SearchAudit
+    - EvidenceFor
+    events:
+    - audit.chain.anchored
+    - audit.evidence.collected
+  requires:
+  - capability: security.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - R
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

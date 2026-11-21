@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: order
+universe: U26
+tier: T0
+owner: ucos:org:commerce-order
+phase: 1
+slos:
+- id: availability
+  description: Share of order requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: order_requests_good_ratio
+  objective: 0.9995
+  rollingWindow: P28D
+- id: latency
+  description: p99 latency of the critical order operation.
+  sli:
+    kind: latency
+    metric: order_place_duration_ms
+    thresholdMs: 300
+    percentile: p99
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: order.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/order.md#availability-fast-burn
+- id: order.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/order.md#availability-slow-burn
+- id: order.latency.breach
+  slo: latency
+  condition: p99 > 300 ms for 15m
+  severity: page
+  runbook: docs/runbooks/order.md#latency-breach

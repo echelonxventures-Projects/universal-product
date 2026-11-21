@@ -1,0 +1,96 @@
+kind: EntitlementPlanSet
+release: 2026-10
+owner: U28 Entitlement steward
+source: business/COMMERCIAL-MODEL.md §2
+plans:
+- id: plan.starter
+  name: Starter
+  price:
+    platformFee:
+      INR: '2999.00'
+      AED: '139.00'
+      USD: '39.00'
+    gmvTakeRate: '0.50'
+  quotas:
+    stores: 1
+    brands: 1
+    jurisdictions: 1
+    aiCreditsUsd: '2.00'
+    emailsPerMonth: 50000
+  features:
+  - storefront-web
+  - whatsapp
+  - email
+  - sms
+  - in-app
+  sla: '0.995'
+  support: email
+- id: plan.growth
+  name: Growth
+  price:
+    platformFee:
+      INR: '14999.00'
+      AED: '699.00'
+      USD: '179.00'
+    gmvTakeRate: '0.25'
+  quotas:
+    stores: 3
+    brands: 2
+    jurisdictions: 2
+    aiCreditsUsd: '15.00'
+    emailsPerMonth: 50000
+  features:
+  - storefront-web
+  - whatsapp
+  - email
+  - sms
+  - in-app
+  - b2b-portal
+  - web-push
+  sla: '0.999'
+  support: chat-business-hours
+- id: plan.scale
+  name: Scale
+  price:
+    platformFee:
+      INR: '59999.00'
+      AED: '2799.00'
+      USD: '719.00'
+    gmvTakeRate: '0.15'
+  quotas:
+    stores: 10
+    brands: 5
+    jurisdictions: 5
+    aiCreditsUsd: '120.00'
+    emailsPerMonth: 50000
+  features:
+  - storefront-web
+  - whatsapp
+  - email
+  - sms
+  - in-app
+  - b2b-portal
+  - web-push
+  - mobile-apps
+  - live-chat
+  sla: '0.999'
+  support: 24x7-named-csm
+- id: plan.enterprise
+  name: Enterprise
+  price:
+    platformFee:
+      INR: from 400000.00
+    gmvTakeRate: '0.10'
+  quotas:
+    stores: null
+    brands: null
+    jurisdictions: null
+    aiCreditsUsd: contract
+    emailsPerMonth: contract
+  features:
+  - all-channels
+  - contact-centre
+  - dedicated-cell-option
+  sla: '0.9995'
+  support: 24x7-tam
+note: AED and USD list prices are set per currency (U23), not converted. Quotas are enforced by Check(feature|quota) (ENT-L1).

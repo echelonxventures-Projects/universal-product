@@ -1,0 +1,81 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: inventory.core
+  version: 1.0.0
+  universe: U34-inventory
+  steward: ucos:org:steward-inventory
+  purpose: Stock locations, items, balances, movements, reservations, allocations and lots.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.inventory.StockLocation
+    - ucos.inventory.StockItem
+    - ucos.inventory.StockBalance
+    - ucos.inventory.StockMovement
+    - ucos.inventory.StockReservation
+    - ucos.inventory.Allocation
+    - ucos.inventory.Lot
+    commands:
+    - ReceiveStock
+    - AdjustStock
+    - Reserve
+    - ReleaseReservation
+    - ConvertReservation
+    - Allocate
+    - Deallocate
+    - RecordPick
+    - RecordShip
+    - RecordReturn
+    - TransferStock
+    - SetSafetyStock
+    - QuarantineLot
+    - RecallLot
+    queries:
+    - Availability
+    - Balances
+    - MovementHistory
+    events:
+    - inventory.stock.adjusted
+    - inventory.stock.received
+    - inventory.stock.reserved
+    - inventory.stock.released
+    - inventory.stock.allocated
+    - inventory.stock.shipped
+    - inventory.stock.depleted
+    - inventory.stock.restocked
+    - inventory.lot.expired
+    - inventory.lot.recalled
+    - inventory.balance.low
+  requires:
+  - capability: catalog.listing
+    version: '>=1 <2'
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - D
+    - TRG
+    - TP
+    - R
+    - POL
+  ui:
+    views:
+    - inventory.balances.grid
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

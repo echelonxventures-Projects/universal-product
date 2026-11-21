@@ -1,0 +1,70 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: marketing.core
+  version: 1.0.0
+  universe: U86-marketing-automation
+  steward: ucos:org:steward-marketing-automation
+  purpose: Marketing Automation owns orchestrating marketing across channels.
+  capabilityKind: core
+  maturity: experimental
+  phase: 4
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.marketing.Campaign
+    - ucos.marketing.Journey
+    - ucos.marketing.AttributionModel
+    commands:
+    - CreateCampaign
+    - LaunchCampaign
+    - PauseCampaign
+    - DefineJourney
+    - PublishJourney
+    - EnrollParty
+    - ExitParty
+    queries:
+    - CampaignPerformance
+    - JourneyFunnel
+    - Attribution
+    events:
+    - marketing.campaign.launched
+    - marketing.campaign.completed
+    - marketing.journey.entered
+    - marketing.journey.step
+    - marketing.journey.converted
+    - marketing.journey.exited
+  requires:
+  - capability: cdp.core
+    version: '>=1 <2'
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: offer.engine
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: observability.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: advertising.core
+    version: '>=1 <2'
+  - capability: seo.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - D
+    - TRG
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

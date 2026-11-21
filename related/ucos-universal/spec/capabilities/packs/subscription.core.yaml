@@ -1,0 +1,108 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: subscription.core
+  version: 1.0.0
+  universe: U27-subscription
+  steward: ucos:org:steward-subscription
+  purpose: Recurring plans, subscriptions, proration, usage rating, billing runs, dunning and recurring payment mandates.
+  capabilityKind: core
+  maturity: beta
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.subscription.SubscriptionPlan
+    - ucos.subscription.Subscription
+    - ucos.subscription.UsageRecord
+    - ucos.subscription.RatedCharge
+    - ucos.subscription.BillingRun
+    - ucos.subscription.DunningPlan
+    commands:
+    - CreatePlan
+    - Subscribe
+    - StartTrial
+    - ChangePlan
+    - UpdateQuantity
+    - Pause
+    - Resume
+    - Cancel
+    - ReportUsage
+    - RunBilling
+    - RetryPayment
+    - ApplyCredit
+    queries:
+    - PreviewChange
+    - UpcomingInvoice
+    - UsageSummary
+    events:
+    - subscription.subscription.created
+    - subscription.subscription.activated
+    - subscription.subscription.renewed
+    - subscription.subscription.past-due
+    - subscription.subscription.paused
+    - subscription.subscription.canceled
+    - subscription.subscription.plan-changed
+    - subscription.usage.rated
+    - subscription.invoice.issued
+    - subscription.dunning.step
+    decisions:
+    - subscription.renewal-notice
+    - subscription.dunning-plan
+  consumes:
+    events:
+    - payment.payment-intent.captured
+    - payment.payment-intent.failed
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: pricing.engine
+    version: '>=1 <2'
+  - capability: entitlement.core
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: tax.core
+    version: '>=1 <2'
+  - capability: document.core
+    version: '>=1 <2'
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - R
+    - TRG
+    - D
+    - BD
+  security:
+    dataClasses:
+    - PII
+    - FINANCIAL
+    threatModel: docs/threat-models/kernel-and-tenancy.md
+  compliance:
+    controls:
+    - ucos.ctrl.renewal-notice
+    - ucos.ctrl.easy-cancellation
+    - ucos.ctrl.in-emandate
+  ui:
+    views:
+    - subscription.manage
+    - subscription.plan-builder
+    - subscription.billing-run
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

@@ -1,0 +1,31 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: tax.einvoice-simulator
+  version: 1.0.0
+  universe: U31-tax
+  steward: ucos:org:steward-tax
+  purpose: E-invoice portal simulator (IRN/QR generation, cancellation window) for tests.
+  capabilityKind: simulator
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - tax.einvoice
+  selection:
+    jurisdictions:
+    - '*'
+    realities:
+    - simulated
+    - hypothetical
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

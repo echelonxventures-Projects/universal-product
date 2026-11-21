@@ -1,0 +1,53 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: security.core
+  version: 1.0.0
+  universe: U65-security
+  steward: ucos:org:steward-security
+  purpose: Classification, keys, secrets, security controls, findings and incidents.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.security.Key
+    - ucos.security.SecretRef
+    - ucos.security.SecurityControl
+    - ucos.security.ThreatModel
+    - ucos.security.Finding
+    - ucos.security.SecurityIncident
+    commands:
+    - CreateKey
+    - RotateKey
+    - DestroyKey
+    - RecordFinding
+    - TriageFinding
+    - AcceptRisk
+    - DeclareIncident
+    - SetSecurityProfile
+    queries:
+    - Posture
+    events:
+    - security.key.rotated
+    - security.incident.declared
+  requires:
+  - capability: authority.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - R
+    - TRG
+    - SLA
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

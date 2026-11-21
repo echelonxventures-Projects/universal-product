@@ -1,0 +1,199 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/composition/platform-definition.schema.json",
+  "title": "PlatformDefinition (master \u00a711.2, U58)",
+  "type": "object",
+  "required": [
+    "apiVersion",
+    "kind",
+    "metadata",
+    "spec"
+  ],
+  "properties": {
+    "apiVersion": {
+      "const": "ucos.io/v1"
+    },
+    "kind": {
+      "const": "PlatformDefinition"
+    },
+    "metadata": {
+      "type": "object",
+      "required": [
+        "id",
+        "tenant",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "tenant": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      }
+    },
+    "spec": {
+      "type": "object",
+      "required": [
+        "industry",
+        "businessModel",
+        "geography",
+        "channels",
+        "capabilities"
+      ],
+      "properties": {
+        "template": {
+          "type": "string"
+        },
+        "industry": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1
+        },
+        "businessModel": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "frame": {
+          "type": "string",
+          "default": "ucos:frame:earth-physical"
+        },
+        "geography": {
+          "type": "object",
+          "required": [
+            "countries"
+          ],
+          "properties": {
+            "countries": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "pattern": "^[A-Z]{2}$"
+              },
+              "minItems": 1
+            },
+            "primaryCurrency": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "languages": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "dataResidency": {
+              "enum": [
+                "strict",
+                "flexible"
+              ]
+            }
+          }
+        },
+        "channels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "capabilities": {
+          "type": "object",
+          "properties": {
+            "include": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "exclude": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "paymentMethods": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "portals": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "compliance": {
+          "type": "object",
+          "properties": {
+            "frameworks": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "security": {
+          "type": "object",
+          "properties": {
+            "profile": {
+              "enum": [
+                "standard",
+                "high",
+                "regulated",
+                "sovereign"
+              ]
+            }
+          }
+        },
+        "overrides": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "scale": {
+          "type": "object"
+        },
+        "operatingModel": {
+          "type": "object"
+        },
+        "brand": {
+          "type": "object"
+        },
+        "targetPhase": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7,
+          "default": 1,
+          "description": "Delivery phase the blueprint must be achievable in (capabilities of later phases become PHASE_NOT_AVAILABLE gaps)"
+        },
+        "reality": {
+          "enum": [
+            "physical",
+            "simulated",
+            "hypothetical"
+          ],
+          "default": "physical",
+          "description": "U77 reality kind (P-004). In simulated or hypothetical realities no real personal data exists, so regulations do not apply, and every external port selects its simulator (CTX-L4)."
+        }
+      }
+    }
+  },
+  "additionalProperties": false
+}

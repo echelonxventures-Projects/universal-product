@@ -1,0 +1,58 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: api.core
+  version: 1.0.0
+  universe: U63-api
+  steward: ucos:org:steward-api
+  purpose: Generated REST/GraphQL/MCP surfaces, API products, clients, rate limits and deprecations.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.api.APIDefinition
+    - ucos.api.APIProduct
+    - ucos.api.APIClient
+    - ucos.api.RateLimitPolicy
+    commands:
+    - GenerateAPI
+    - PublishAPIProduct
+    - RegisterClient
+    - RotateClientSecret
+    - DeprecateOperation
+    queries:
+    - GetOpenAPI
+    - GetGraphQLSchema
+    - UsageFor
+    events:
+    - api.definition.generated
+    - api.client.registered
+    - api.quota.exceeded
+  requires:
+  - capability: entitlement.core
+    version: '>=1 <2'
+  - capability: integration.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TRG
+    - D
+    - R
+  ui:
+    views:
+    - developer.portal
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/marketing.campaign.launched/1.json",
+  "title": "marketing.campaign.launched",
+  "description": "Generated skeleton for marketing.campaign.launched. Replace by adding spec/events/payloads/hand/marketing.campaign.launched.schema.json.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": false,
+    "producer": "marketing.core"
+  },
+  "type": "object",
+  "required": [
+    "subject",
+    "occurredAt"
+  ],
+  "properties": {
+    "subject": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "objectVersion": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "occurredAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    },
+    "changes": {
+      "type": "object",
+      "description": "Changed attributes (JSON Merge Patch semantics).",
+      "additionalProperties": true
+    },
+    "data": {
+      "type": "object",
+      "description": "Event-specific facts; see the producing universe constitution.",
+      "additionalProperties": true
+    },
+    "objectType": {
+      "const": "ucos.marketing.Campaign"
+    }
+  },
+  "additionalProperties": false
+}

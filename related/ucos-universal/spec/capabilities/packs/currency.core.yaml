@@ -1,0 +1,63 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: currency.core
+  version: 1.0.0
+  universe: U14-currency-unit
+  steward: ucos:org:steward-currency-unit
+  purpose: Money, currencies, FX rates and rate policies, rounding, allocation, units and conversions.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.currency.Currency
+    - ucos.currency.ExchangeRate
+    - ucos.currency.RateSource
+    - ucos.currency.RatePolicy
+    - ucos.currency.RoundingRule
+    - ucos.currency.Unit
+    - ucos.currency.UnitConversion
+    - ucos.currency.PackagingUnit
+    commands:
+    - IngestRates
+    - PublishRate
+    - DefineRatePolicy
+    - DefineRoundingRule
+    - RegisterUnit
+    - RegisterConversion
+    queries:
+    - Convert
+    - GetRate
+    - Round
+    - Allocate
+    - ConvertQuantity
+    - FormatMoney
+    events:
+    - currency.rates.updated
+    - currency.policy.changed
+  requires:
+  - capability: refdata.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  optional:
+  - capability: fx.provider
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - R
+    - D
+    - CAL
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

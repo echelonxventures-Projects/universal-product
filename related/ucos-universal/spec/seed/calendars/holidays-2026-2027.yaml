@@ -1,0 +1,88 @@
+kind: HolidayCalendarSet
+release: 2026-10
+owner: U13 Temporal steward
+note: Fixed-date national holidays only. Festival and Islamic holidays move every year (lunar calendars and moon sighting), and Indian state holidays differ by state; they are imported each year from the
+  official gazette or government announcement through a calendar feed (U13 CalendarFeed) and approved by the steward. They are listed here as rules without dates.
+calendars:
+- id: IN-national
+  jurisdiction: ucos:jur:IN
+  fixed:
+  - date: '2026-01-26'
+    name: Republic Day
+  - date: '2026-08-15'
+    name: Independence Day
+  - date: '2026-10-02'
+    name: Gandhi Jayanti
+  - date: '2026-12-25'
+    name: Christmas Day
+  - date: '2027-01-26'
+    name: Republic Day
+  - date: '2027-08-15'
+    name: Independence Day
+  - date: '2027-10-02'
+    name: Gandhi Jayanti
+  - date: '2027-12-25'
+    name: Christmas Day
+  variable:
+  - name: Holi
+    source: Government of India central holidays list (published annually)
+  - name: Eid ul-Fitr
+    source: Government of India central holidays list (published annually)
+  - name: Eid ul-Adha
+    source: Government of India central holidays list (published annually)
+  - name: Dussehra
+    source: Government of India central holidays list (published annually)
+  - name: Diwali (Deepavali)
+    source: Government of India central holidays list (published annually)
+  - name: Guru Nanak Jayanti
+    source: Government of India central holidays list (published annually)
+  stateHolidays:
+    source: state government gazette per ucos:jur:IN-* jurisdiction
+- id: AE-federal
+  jurisdiction: ucos:jur:AE
+  fixed:
+  - date: '2026-01-01'
+    name: New Year's Day
+  - date: '2026-12-01'
+    name: Commemoration Day
+  - date: '2026-12-02'
+    name: National Day
+  - date: '2026-12-03'
+    name: National Day holiday
+  - date: '2027-01-01'
+    name: New Year's Day
+  - date: '2027-12-01'
+    name: Commemoration Day
+  - date: '2027-12-02'
+    name: National Day
+  - date: '2027-12-03'
+    name: National Day holiday
+  variable:
+  - name: Eid al-Fitr
+    source: UAE Cabinet announcement (moon sighting)
+  - name: Arafat Day
+    source: UAE Cabinet announcement (moon sighting)
+  - name: Eid al-Adha
+    source: UAE Cabinet announcement (moon sighting)
+  - name: Islamic New Year
+    source: UAE Cabinet announcement (moon sighting)
+  - name: Prophet Muhammad's Birthday
+    source: UAE Cabinet announcement (moon sighting)
+businessHours:
+- id: IN-default
+  jurisdiction: ucos:jur:IN
+  timezone: Asia/Kolkata
+  week:
+    mon-fri: 09:00-18:00
+    sat: 10:00-14:00
+    sun: closed
+  holidays: IN-national
+- id: AE-default
+  jurisdiction: ucos:jur:AE
+  timezone: Asia/Dubai
+  week:
+    mon-thu: 08:00-17:00
+    fri: 08:00-12:00
+    sat-sun: closed
+  holidays: AE-federal
+  note: Matches the federal government working week adopted in 2022; private-sector tenants override per store.

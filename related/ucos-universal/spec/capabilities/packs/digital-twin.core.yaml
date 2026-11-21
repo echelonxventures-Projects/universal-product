@@ -1,0 +1,55 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: digital-twin.core
+  version: 1.0.0
+  universe: U55-digital-twin
+  steward: ucos:org:steward-digital-twin
+  purpose: Digital Twin owns live models of physical systems.
+  capabilityKind: core
+  maturity: experimental
+  phase: 5
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.digital-twin.TwinType
+    - ucos.digital-twin.Twin
+    - ucos.digital-twin.TwinSnapshot
+    commands:
+    - DefineTwinType
+    - CreateTwin
+    - BindProperty
+    - QueryState
+    - RunWhatIf
+  requires:
+  - capability: installed-base.core
+    version: '>=1 <2'
+  - capability: resource.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  - capability: gap.core
+    version: '>=1 <2'
+  - capability: simulation.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: ml.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - ASOF
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+  optional:
+  - capability: iot.core

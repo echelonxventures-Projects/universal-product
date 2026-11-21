@@ -1,0 +1,31 @@
+kind: DecisionTable
+id: ledger.account-resolution
+owner: ledger.core
+hitPolicy: FIRST
+description: "Seed posting map (U30 \xA72.1). UNMAPPED raises gap event_without_posting_rule; tenants map accounts to their own chart within these account roles."
+inputs:
+- {name: eventType, type: EventType}
+- {name: lineKind, type: Enumeration}
+- {name: sellerModel, type: Enumeration}
+outputs:
+- {name: debitAccount, type: AccountCode}
+- {name: creditAccount, type: AccountCode}
+rules:
+- [payment.payment-intent.captured, gross, '*', 1210-psp-clearing, 1300-customer-receivable]
+- [order.order.confirmed, gross, first-party, 1300-customer-receivable, 4000-revenue]
+- [order.order.confirmed, gross, marketplace, 1300-customer-receivable, 2100-seller-payable]
+- [order.order.confirmed, tax, '*', 1300-customer-receivable, 2300-gst-vat-payable]
+- [payment.refund.issued, gross, '*', 4900-sales-returns, 1210-psp-clearing]
+- [payment.refund.issued, tax, '*', 2300-gst-vat-payable, 1210-psp-clearing]
+- [marketplace.commission.accrued, commission, '*', 2100-seller-payable, 4100-commission-revenue]
+- [marketplace.payout.paid, payout, '*', 2100-seller-payable, 1100-bank]
+- [stored-value.instrument.issued, gross, '*', 1210-psp-clearing, 2400-stored-value-liability]
+- [stored-value.instrument.redeemed, gross, '*', 2400-stored-value-liability, 1300-customer-receivable]
+- ['*', '*', '*', UNMAPPED, UNMAPPED]
+tests:
+- input: [order.order.confirmed, gross, marketplace]
+  expect: [1300-customer-receivable, 2100-seller-payable]
+- input: [payment.refund.issued, tax, first-party]
+  expect: [2300-gst-vat-payable, 1210-psp-clearing]
+- input: [logistics.ndr.raised, gross, '*']
+  expect: [UNMAPPED, UNMAPPED]

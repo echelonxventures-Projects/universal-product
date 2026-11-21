@@ -1,0 +1,39 @@
+kind: CodeListRelease
+id: iso3166-2-AE
+release: pycountry-26.2.16
+source: Debian iso-codes via pycountry 26.2.16
+licence:
+  id: LGPL-2.1-or-later
+  redistribution: allowed
+  attribution: Debian iso-codes project
+bundled: true
+count: 7
+entries:
+- code: AE-AJ
+  name: ‘Ajmān
+  type: emirate
+  nameEn: Ajman
+- code: AE-AZ
+  name: Abū Z̧aby
+  type: emirate
+  nameEn: Abu Dhabi
+- code: AE-DU
+  name: Dubayy
+  type: emirate
+  nameEn: Dubai
+- code: AE-FU
+  name: Al Fujayrah
+  type: emirate
+  nameEn: Fujairah
+- code: AE-RK
+  name: Ra’s al Khaymah
+  type: emirate
+  nameEn: Ras Al Khaimah
+- code: AE-SH
+  name: Ash Shāriqah
+  type: emirate
+  nameEn: Sharjah
+- code: AE-UQ
+  name: Umm al Qaywayn
+  type: emirate
+  nameEn: Umm Al Quwain

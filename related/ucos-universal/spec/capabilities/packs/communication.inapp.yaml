@@ -1,0 +1,58 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: communication.inapp
+  version: 1.0.0
+  universe: U40-communication
+  steward: ucos:org:steward-communication
+  purpose: 'In-app notification centre: notifications with categories, actions, read state and live unread counts.'
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - messaging.provider
+  provides:
+    objectTypes:
+    - ucos.comm.Notification
+    commands:
+    - MarkRead
+    - MarkAllRead
+    - ArchiveNotification
+    - PerformNotificationAction
+    queries:
+    - Inbox
+    - UnreadCounts
+    events:
+    - communication.notification.created
+    - communication.notification.read
+  requires:
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: privacy.retention
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - '*'
+    methods:
+    - in-app
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TRG
+  ui:
+    views:
+    - notification.center
+    - notification.bell
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

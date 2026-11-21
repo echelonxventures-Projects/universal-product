@@ -1,0 +1,65 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: workplace.core
+  version: 1.0.0
+  universe: U105-workplace-facilities
+  steward: ucos:org:steward-workplace-facilities
+  purpose: Workplace owns the physical workplace experience and facility operations.
+  capabilityKind: core
+  maturity: experimental
+  phase: 6
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.workplace.Building
+    - ucos.workplace.Space
+    - ucos.workplace.Visit
+    - ucos.workplace.OccupancyReading
+    commands:
+    - DefineSpace
+    - BookSpace
+    - CheckIn
+    - ReleaseNoShow
+    - PreRegisterVisitor
+    - CheckInVisitor
+    - RequestFacilityService
+    events:
+    - workplace.booking.checked-in
+    - workplace.booking.released
+    - workplace.visitor.arrived
+  requires:
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: resource.core
+    version: '>=1 <2'
+  - capability: installed-base.core
+    version: '>=1 <2'
+  - capability: field-service.core
+    version: '>=1 <2'
+  - capability: iot.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: esg.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - AV
+    - TRG
+    - FCA
+    - FEED
+    - CAL
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

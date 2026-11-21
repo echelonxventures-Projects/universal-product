@@ -1,0 +1,26 @@
+{
+  "blueprint": "ucos:blueprint:sha256:7efd104c95a7d2736c96aaa89439ec5fc43e2a8b424a1126a71a58c9ae1e85b9",
+  "kind": "ResolutionTrace",
+  "why": {
+    "audit.core": "required-by:sample.notes",
+    "authority.core": "required-by:identity.core",
+    "context.core": "base-capability",
+    "currency.core": "base-capability",
+    "entitlement.core": "base-capability",
+    "event.core": "required-by:sample.notes",
+    "frame.core": "required-by:geo.core",
+    "geo.core": "base-capability",
+    "identity.core": "base-capability",
+    "l10n.core": "base-capability",
+    "maps.provider": "required-by:geo.core",
+    "maps.simulator": "adapter:maps.provider[ucos:jur:IN,-]",
+    "meta.core": "required-by:party.core",
+    "org.core": "base-capability",
+    "party.core": "base-capability",
+    "policy.core": "required-by:identity.core",
+    "refdata.core": "required-by:geo.core",
+    "sample.notes": "requested",
+    "security.core": "required-by:audit.core",
+    "temporal.core": "base-capability"
+  }
+}

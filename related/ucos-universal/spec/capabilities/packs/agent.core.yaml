@@ -1,0 +1,83 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: agent.core
+  version: 1.0.0
+  universe: U51-agent
+  steward: ucos:org:steward-agent
+  purpose: Agent owns AI agents as accountable actors.
+  capabilityKind: core
+  maturity: experimental
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.agent.Tool
+    - ucos.agent.Memory
+    - ucos.agent.AgentTeam
+    - ucos.agent.AgentRun
+    commands:
+    - RegisterAgent
+    - PublishAgentVersion
+    - GrantAgentAuthority
+    - AttachTools
+    - StartRun
+    - ApproveStep
+    - RejectStep
+    - PauseAgent
+    - RevokeAgent
+    - ClearMemory
+    - DefineTeam
+    queries:
+    - RunTrace
+    - AgentsFor
+    - AgentScorecard
+    events:
+    - ai.agent-run.started
+    - ai.agent-run.tool-called
+    - ai.agent-run.awaiting-approval
+    - ai.agent-run.completed
+    - ai.agent-run.escalated
+    - ai.agent-run.halted
+    - ai.agent.revoked
+  requires:
+  - capability: ai.core
+    version: '>=1 <2'
+  - capability: prompt.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: authority.core
+    version: '>=1 <2'
+  - capability: policy.core
+    version: '>=1 <2'
+  - capability: api.core
+    version: '>=1 <2'
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: knowledge.graph
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: entitlement.core
+    version: '>=1 <2'
+  - capability: audit.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - D
+    - R
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

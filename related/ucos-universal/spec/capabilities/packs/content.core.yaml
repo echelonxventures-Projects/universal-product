@@ -1,0 +1,70 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: content.core
+  version: 1.0.0
+  universe: U41-content-media
+  steward: ucos:org:steward-content-media
+  purpose: Content owns structured editorial content and media programmes.
+  capabilityKind: core
+  maturity: experimental
+  phase: 4
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.content.ContentType
+    - ucos.content.Entry
+    - ucos.content.MediaProgramme
+    - ucos.content.LiveEvent
+    commands:
+    - DefineContentType
+    - CreateEntry
+    - SubmitForReview
+    - Approve
+    - SchedulePublish
+    - Unpublish
+    - Localise
+    - PackageMedia
+    - GrantRights
+    - StartLiveEvent
+    events:
+    - content.entry.published
+    - content.entry.unpublished
+    - content.rights.expiring
+    - content.live.started
+    - content.live.ended
+  requires:
+  - capability: asset.core
+    version: '>=1 <2'
+  - capability: l10n.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: ui.core
+    version: '>=1 <2'
+  - capability: search.core
+    version: '>=1 <2'
+  - capability: entitlement.core
+    version: '>=1 <2'
+  - capability: ai.core
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  optional:
+  - capability: social.core
+  temporal:
+    kind: S
+    uses:
+    - TRG
+    - POL
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

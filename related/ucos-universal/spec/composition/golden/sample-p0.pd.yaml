@@ -1,0 +1,17 @@
+apiVersion: ucos.io/v1
+kind: PlatformDefinition
+metadata: { id: "ucos:pd:golden-sample-p0", tenant: "ucos:tenant:golden-sample", version: "1.0.0" }
+spec:
+  # Phase 0 exit test (master §32.1): a sample pack whose object type exists only in spec/ is composed,
+  # certified and activated in one cell. Only Phase 0 capabilities may appear in the blueprint.
+  targetPhase: 0
+  reality: simulated          # sandbox cell, synthetic data only; external ports use simulators
+  template: ucos:industry-template:none@1
+  industry: [ucos:industry:none]
+  businessModel: [Internal]
+  geography: { countries: [IN], primaryCurrency: { IN: INR }, languages: [en], dataResidency: strict }
+  channels: []
+  capabilities: { include: [sample.notes], exclude: [] }
+  portals: [admin]
+  compliance: { frameworks: [] }
+  security: { profile: high }

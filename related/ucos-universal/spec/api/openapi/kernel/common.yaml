@@ -1,0 +1,124 @@
+openapi: 3.1.0
+info:
+  title: UCOS shared API components
+  version: 1.0.0
+  description: Parameters, headers, security and problem types shared by every UCOS REST API (master §15.2).
+paths: {}
+components:
+  securitySchemes:
+    bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: OIDC access token issued by the tenant's U09 issuer.
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: true
+      description: Required on every command. Reusing a key with a different body returns 409 IDEMPOTENCY_KEY_REUSED.
+      schema: { type: string, minLength: 8, maxLength: 128 }
+    IfMatch:
+      name: If-Match
+      in: header
+      required: false
+      description: Expected aggregate version (ETag) for optimistic concurrency.
+      schema: { type: string }
+    AcceptLanguage:
+      name: Accept-Language
+      in: header
+      required: false
+      schema: { type: string }
+    AsOf:
+      name: X-UCOS-Context-AsOf
+      in: header
+      required: false
+      description: Time travel / simulation read point (privileged). RFC 3339 TimePoint.
+      schema: { type: string, format: date-time }
+    Traceparent:
+      name: traceparent
+      in: header
+      required: false
+      schema: { type: string }
+    Id:
+      name: id
+      in: path
+      required: true
+      description: UGID of the aggregate, e.g. ucos:order:01J...
+      schema: { type: string, pattern: '^ucos:[a-z][a-z0-9-]*:[0-9A-HJKMNP-TV-Z]{26}$' }
+    PageSize:
+      name: page[size]
+      in: query
+      required: false
+      schema: { type: integer, minimum: 1, maximum: 500, default: 50 }
+    PageCursor:
+      name: page[cursor]
+      in: query
+      required: false
+      schema: { type: string }
+    Filter:
+      name: filter
+      in: query
+      required: false
+      description: CEL subset over the object's attributes; the PDP residual is ANDed in.
+      schema: { type: string }
+    Sort:
+      name: sort
+      in: query
+      required: false
+      schema: { type: string }
+  headers:
+    ETag:
+      description: Aggregate version after the operation.
+      schema: { type: string }
+    RateLimit:
+      description: IETF RateLimit header (per tenant × API product × principal).
+      schema: { type: string }
+    RetryAfter:
+      schema: { type: integer }
+  schemas:
+    Problem:
+      type: object
+      description: RFC 9457 problem details. `ucos.code` is an entry of spec/registries/errors.yaml.
+      required: [type, title, status]
+      properties:
+        type: { type: string, format: uri }
+        title: { type: string }
+        status: { type: integer }
+        detail: { type: string }
+        instance: { type: string }
+        ucos:
+          type: object
+          properties:
+            code: { type: string }
+            policy: { type: string }
+            traceId: { type: string }
+    Object:
+      type: object
+      description: Canonical object envelope (spec/meta/canonical-object.schema.json).
+      required: [id, type, version]
+      properties:
+        id: { type: string }
+        type: { type: string }
+        version: { type: integer }
+        status: { type: string }
+        attributes: { type: object, additionalProperties: true }
+        customAttributes: { type: object, additionalProperties: true }
+      additionalProperties: true
+    Page:
+      type: object
+      required: [items]
+      properties:
+        items: { type: array, items: { $ref: '#/components/schemas/Object' } }
+        page:
+          type: object
+          properties:
+            nextCursor: { type: string }
+            hasMore: { type: boolean }
+            total: { type: integer }
+  responses:
+    Problem:
+      description: Error (application/problem+json)
+      content:
+        application/problem+json:
+          schema: { $ref: '#/components/schemas/Problem' }

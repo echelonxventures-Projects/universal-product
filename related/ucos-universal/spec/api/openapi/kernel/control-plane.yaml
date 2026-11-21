@@ -1,0 +1,111 @@
+openapi: 3.1.0
+info:
+  title: UCOS control plane API
+  version: 1.0.0
+  description: Composition, certification and activation (U57, U58, U74, U73). Platform operators and CI only.
+servers:
+  - url: https://control.ucos.io/api/v1
+security:
+  - bearer: []
+paths:
+  /platform-definitions:compose:
+    post:
+      operationId: controlplane:Compose
+      summary: Compose a platform definition into a blueprint and gap report (deterministic)
+      parameters:
+        - $ref: 'common.yaml#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/yaml: { schema: { type: string, description: 'PlatformDefinition (spec/composition/platform-definition.schema.json)' } }
+      responses:
+        '200':
+          description: Blueprint id, blueprint, gap report and trace
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [blueprintId, blueprint, gapReport]
+                properties:
+                  blueprintId: { type: string, pattern: '^ucos:blueprint:sha256:[0-9a-f]{64}$' }
+                  blueprint: { type: object }
+                  gapReport: { type: object }
+                  trace: { type: object }
+        default: { $ref: 'common.yaml#/components/responses/Problem' }
+  /blueprints/{blueprintId}:
+    get:
+      operationId: controlplane:GetBlueprint
+      parameters:
+        - { name: blueprintId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { description: Blueprint, content: { application/json: { schema: { type: object } } } }
+        default: { $ref: 'common.yaml#/components/responses/Problem' }
+  /certification/runs:
+    post:
+      operationId: controlplane:StartCertificationRun
+      parameters:
+        - $ref: 'common.yaml#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [subjectDigest]
+              properties:
+                subjectDigest: { type: string }
+                profile: { type: string, description: 'Profile from spec/certification/gates.yaml' }
+                gates: { type: array, items: { type: string } }
+      responses:
+        '202': { description: Run accepted, content: { application/json: { schema: { $ref: '#/components/schemas/CertificationRun' } } } }
+        default: { $ref: 'common.yaml#/components/responses/Problem' }
+  /certification/runs/{runId}:
+    get:
+      operationId: controlplane:GetCertificationRun
+      parameters:
+        - { name: runId, in: path, required: true, schema: { type: string } }
+      responses:
+        '200': { description: Run status, content: { application/json: { schema: { $ref: '#/components/schemas/CertificationRun' } } } }
+        default: { $ref: 'common.yaml#/components/responses/Problem' }
+  /tenants/{tenantId}/activations:
+    post:
+      operationId: controlplane:Activate
+      summary: Activate a certified blueprint for a tenant (requires a U01 DecisionRecord)
+      parameters:
+        - { name: tenantId, in: path, required: true, schema: { type: string } }
+        - $ref: 'common.yaml#/components/parameters/IdempotencyKey'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [blueprintId, decisionRecord, attestation]
+              properties:
+                blueprintId: { type: string }
+                decisionRecord: { type: string }
+                attestation: { type: string }
+      responses:
+        '202': { description: Activation started, content: { application/json: { schema: { type: object } } } }
+        default: { $ref: 'common.yaml#/components/responses/Problem' }
+components:
+  securitySchemes:
+    bearer: { type: http, scheme: bearer, bearerFormat: JWT }
+  schemas:
+    CertificationRun:
+      type: object
+      required: [runId, subjectDigest, results, complete]
+      properties:
+        runId: { type: string }
+        subjectDigest: { type: string }
+        complete: { type: boolean }
+        attestation: { type: string }
+        results:
+          type: array
+          items:
+            type: object
+            required: [gateId, result]
+            properties:
+              gateId: { type: string }
+              result: { type: string, enum: [pass, fail, waived, error] }
+              evidence: { type: array, items: { type: string } }

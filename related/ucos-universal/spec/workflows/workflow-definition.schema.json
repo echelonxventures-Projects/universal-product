@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/workflows/workflow-definition.schema.json",
+  "title": "WorkflowDefinition (master \u00a716.1, U60)",
+  "type": "object",
+  "required": [
+    "apiVersion",
+    "kind",
+    "id",
+    "version",
+    "object",
+    "initial",
+    "states"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "apiVersion": {
+      "const": "ucos.io/v1"
+    },
+    "kind": {
+      "const": "WorkflowDefinition"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*(\\.[a-z0-9-]+)+$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "object": {
+      "type": "string"
+    },
+    "initial": {
+      "type": "string"
+    },
+    "states": {
+      "type": "object",
+      "minProperties": 2,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "on": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "entry": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "exit": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "final": {
+            "type": "boolean"
+          },
+          "then": {
+            "type": "string"
+          },
+          "subworkflow": {
+            "type": "string"
+          },
+          "timers": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "object",
+              "required": [
+                "then"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "duration": {
+                  "type": "string",
+                  "pattern": "^P(?!$)(\\d+Y)?(\\d+M)?(\\d+W)?(\\d+D)?(T(?=\\d)(\\d+H)?(\\d+M)?(\\d+S)?)?$"
+                },
+                "decision": {
+                  "type": "string"
+                },
+                "output": {
+                  "type": "string"
+                },
+                "then": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "saga": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "do",
+                "compensate"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "do": {
+                  "type": "string"
+                },
+                "compensate": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "humanTask": {
+            "type": "object",
+            "required": [
+              "queue",
+              "sla"
+            ],
+            "properties": {
+              "queue": {
+                "type": "string"
+              },
+              "sla": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "guards": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "observability": {
+      "type": "object"
+    }
+  }
+}

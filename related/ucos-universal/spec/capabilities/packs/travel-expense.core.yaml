@@ -1,0 +1,70 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: travel-expense.core
+  version: 1.0.0
+  universe: U106-travel-expense
+  steward: ucos:org:steward-travel-expense
+  purpose: Travel & Expense owns employee business spend.
+  capabilityKind: core
+  maturity: experimental
+  phase: 6
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.travel-expense.TravelRequest
+    - ucos.travel-expense.ExpenseClaim
+    - ucos.travel-expense.MileageEntry
+    - ucos.travel-expense.PerDiem
+    - ucos.travel-expense.CardTransaction
+    - ucos.travel-expense.Reimbursement
+    commands:
+    - SubmitTravelRequest
+    - Approve
+    - SubmitClaim
+    - ScanReceipt
+    - MatchCardTransaction
+    - ApproveClaim
+    - Reimburse
+    - AuditClaim
+    events:
+    - expense.claim.submitted
+    - expense.claim.approved
+    - expense.claim.reimbursed
+    - expense.policy.violation
+  requires:
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: tax.core
+    version: '>=1 <2'
+  - capability: asset.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: workforce.core
+    version: '>=1 <2'
+  - capability: ticketing.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - TRG
+    - D
+    - R
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

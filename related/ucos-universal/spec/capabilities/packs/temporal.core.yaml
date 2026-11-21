@@ -1,0 +1,123 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: temporal.core
+  version: 1.0.0
+  universe: U13-temporal
+  steward: ucos:org:steward-temporal
+  purpose: Calendars, temporal policies, availability, slots, reservations, SLA clocks, triggers, schedules, waitlists, queues, feeds and reminders.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.temporal.Calendar
+    - ucos.temporal.CalendarEntry
+    - ucos.temporal.TemporalPolicy
+    - ucos.temporal.AvailabilityWindow
+    - ucos.temporal.Slot
+    - ucos.temporal.Reservation
+    - ucos.temporal.SLADefinition
+    - ucos.temporal.SLAClock
+    - ucos.temporal.Trigger
+    - ucos.temporal.Schedule
+    - ucos.temporal.Waitlist
+    - ucos.temporal.QueueToken
+    - ucos.temporal.CalendarFeed
+    - ucos.temporal.ExternalCalendarLink
+    - ucos.temporal.Invitation
+    - ucos.temporal.Reminder
+    - ucos.temporal.TimezoneRelease
+    commands:
+    - CreateCalendar
+    - UpsertCalendarEntries
+    - CreateTemporalPolicy
+    - DefineAvailability
+    - HoldReservation
+    - ConfirmReservation
+    - ReleaseReservation
+    - RescheduleReservation
+    - StartSLAClock
+    - PauseSLAClock
+    - ResumeSLAClock
+    - StopSLAClock
+    - CreateTrigger
+    - CancelTrigger
+    - JoinWaitlist
+    - IssueQueueToken
+    - PublishFeed
+    - LinkExternalCalendar
+    - SendInvitation
+    - UpgradeTimezoneRelease
+    queries:
+    - EvaluatePolicy
+    - ExpandPolicy
+    - IsWorkingTime
+    - AddBusinessDuration
+    - QueryAvailability
+    - FindCommonAvailability
+    - NextOccurrences
+    - FiscalPeriodOf
+    - SettlementDate
+    - Timeline
+    events:
+    - temporal.trigger.fired
+    - temporal.trigger.misfired
+    - temporal.policy.changed
+    - temporal.policy.activated
+    - temporal.policy.deactivated
+    - temporal.calendar.changed
+    - temporal.reservation.held
+    - temporal.reservation.confirmed
+    - temporal.reservation.released
+    - temporal.reservation.expired
+    - temporal.reservation.rescheduled
+    - temporal.sla.started
+    - temporal.sla.paused
+    - temporal.sla.warning
+    - temporal.sla.breached
+    - temporal.sla.met
+    - temporal.waitlist.promoted
+    - temporal.queue.called
+    - temporal.tz.upgraded
+  requires:
+  - capability: refdata.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TR
+    - D
+    - BD
+    - R
+    - POL
+    - CAL
+    - AV
+    - FCA
+    - SLA
+    - TRG
+    - REM
+    - WL
+    - FEED
+    - ASOF
+    - TS
+  ui:
+    views:
+    - temporal.policy.editor
+    - temporal.calendar.month
+    - temporal.slot-picker
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

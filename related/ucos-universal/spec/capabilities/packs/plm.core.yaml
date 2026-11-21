@@ -1,0 +1,75 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: plm.core
+  version: 1.0.0
+  universe: U108-product-development-rnd
+  steward: ucos:org:steward-product-development-rnd
+  purpose: Product Development owns creating and changing products and services before and during their life.
+  capabilityKind: core
+  maturity: experimental
+  phase: 6
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.plm.Idea
+    - ucos.plm.DevelopmentProject
+    - ucos.plm.Requirement
+    - ucos.plm.DesignItem
+    - ucos.plm.EngineeringBOM
+    - ucos.plm.TestResult
+    - ucos.plm.ChangeOrder
+    - ucos.plm.LabRecord
+    - ucos.plm.LaunchPlan
+    commands:
+    - SubmitIdea
+    - AdvanceGate
+    - CreateDesignItem
+    - ReleaseRevision
+    - RaiseECR
+    - ApproveECO
+    - ReleaseToManufacturing
+    - RecordTestResult
+    - RecordExperiment
+    - Launch
+    events:
+    - plm.revision.released
+    - plm.eco.approved
+    - plm.product.launched
+  requires:
+  - capability: product.intelligence
+    version: '>=1 <2'
+  - capability: manufacturing.core
+    version: '>=1 <2'
+  - capability: document.core
+    version: '>=1 <2'
+  - capability: asset.core
+    version: '>=1 <2'
+  - capability: collaboration.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: qhse.core
+    version: '>=1 <2'
+  - capability: legal.core
+    version: '>=1 <2'
+  - capability: data.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: simulation.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TRG
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

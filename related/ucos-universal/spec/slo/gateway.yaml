@@ -1,0 +1,40 @@
+apiVersion: ucos.io/v1
+kind: ServiceLevel
+service: gateway
+universe: U63
+tier: T0
+owner: ucos:org:platform-kernel
+phase: 0
+slos:
+- id: availability
+  description: Share of gateway requests that succeed (non-5xx, within deadline).
+  sli:
+    kind: availability
+    metric: gateway_requests_good_ratio
+  objective: 0.9995
+  rollingWindow: P28D
+- id: latency
+  description: p99 latency of the critical gateway operation.
+  sli:
+    kind: latency
+    metric: gateway_request_duration_ms
+    thresholdMs: 150
+    percentile: p99
+  objective: 0.99
+  rollingWindow: P28D
+alerts:
+- id: gateway.availability.fast-burn
+  slo: availability
+  condition: burn rate > 14.4 over 1h and > 14.4 over 5m
+  severity: page
+  runbook: docs/runbooks/gateway.md#availability-fast-burn
+- id: gateway.availability.slow-burn
+  slo: availability
+  condition: burn rate > 1 over 3d
+  severity: ticket
+  runbook: docs/runbooks/gateway.md#availability-slow-burn
+- id: gateway.latency.breach
+  slo: latency
+  condition: p99 > 150 ms for 15m
+  severity: page
+  runbook: docs/runbooks/gateway.md#latency-breach

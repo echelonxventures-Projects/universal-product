@@ -1,0 +1,73 @@
+// U16 Context: mirrors spec/context/context-envelope.schema.json (v = 1).
+syntax = "proto3";
+package ucos.kernel.v1;
+option go_package = "ucos.io/kernel/gen/ucos/kernel/v1;kernelv1";
+
+import "ucos/kernel/v1/common.proto";
+
+message Actor {
+  string identity = 1;
+  enum Kind { KIND_UNSPECIFIED = 0; HUMAN = 1; SERVICE = 2; AGENT = 3; DEVICE = 4; ANONYMOUS = 5; }
+  Kind kind = 2;
+  string on_behalf_of = 3;
+}
+message JurisdictionList { repeated string jurisdictions = 1; }   // "ucos:jur:IN", ...
+message Frame {
+  string reality = 1;
+  string body = 2;
+  string spatial_frame = 3;
+  string time_scale = 4;
+  string calendar_system = 5;
+  enum SideEffectPolicy { SIDE_EFFECT_POLICY_UNSPECIFIED = 0; NONE = 1; BRIDGED = 2; FULL = 3; }
+  SideEffectPolicy side_effect_policy = 6;
+}
+message Risk {
+  optional double score = 1;
+  enum Band { BAND_UNSPECIFIED = 0; LOW = 1; MEDIUM = 2; HIGH = 3; UNKNOWN = 4; }
+  Band band = 2;                         // RSK-L4: unavailable risk is UNKNOWN, never LOW
+}
+message ContextEnvelope {
+  int32 v = 1;
+  string tenant = 2;
+  string blueprint = 3;
+  Actor actor = 4;
+  repeated string roles = 5;
+  string org = 6;
+  // Role-keyed jurisdictions (A-08): actor, buyer-delivery, seller, data-storage, store, payment-acquirer.
+  map<string, JurisdictionList> jurisdiction = 7;
+  string locale = 8;
+  string currency = 9;
+  string tz = 10;
+  string now = 11;                       // TimePoint
+  AsOf as_of = 12;
+  Frame frame = 13;
+  string channel = 14;
+  Risk risk = 15;
+  string consent_ref = 16;
+  string purpose = 17;
+  bool simulation = 18;
+  int64 exp = 19;                        // unix seconds
+  string parent = 20;                    // parent envelope id when narrowed
+}
+
+service ContextResolver {
+  // Builds and signs the envelope from the verified token and request facts (gateway only).
+  rpc Resolve(ResolveRequest) returns (ResolveResponse);
+  // CTX-L2: returns a child envelope that can only narrow fields (purpose, roles, jurisdiction).
+  rpc Narrow(NarrowRequest) returns (ResolveResponse);
+}
+message ResolveRequest {
+  string access_token = 1;
+  string host = 2;
+  map<string, string> request_facts = 3; // advisory: accept-language, client hints, geo
+}
+message NarrowRequest {
+  string context_token = 1;
+  string purpose = 2;
+  repeated string drop_roles = 3;
+}
+message ResolveResponse {
+  ContextEnvelope envelope = 1;
+  string context_token = 2;              // signed (JWS) envelope passed to every downstream call
+  Problem problem = 3;
+}

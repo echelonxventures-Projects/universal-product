@@ -1,0 +1,77 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: corp-gov.core
+  version: 1.0.0
+  universe: U103-corporate-governance-equity
+  steward: ucos:org:steward-corporate-governance-equity
+  purpose: Corporate Governance owns how legal entities are governed and owned.
+  capabilityKind: core
+  maturity: experimental
+  phase: 6
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.corp-gov.LegalEntityRecord
+    - ucos.corp-gov.Officer
+    - ucos.corp-gov.Meeting
+    - ucos.corp-gov.Resolution
+    - ucos.corp-gov.ShareClass
+    - ucos.corp-gov.EquityEvent
+    - ucos.corp-gov.OptionPlan
+    - ucos.corp-gov.Grant
+    - ucos.corp-gov.Dividend
+    - ucos.corp-gov.StatutoryFiling
+    - ucos.corp-gov.BeneficialOwner
+    commands:
+    - AppointOfficer
+    - ScheduleMeeting
+    - RecordMinutes
+    - PassResolution
+    - RecordEquityEvent
+    - CreateOptionPlan
+    - Grant
+    - Exercise
+    - DeclareDividend
+    - FileStatutory
+    events:
+    - corpgov.resolution.passed
+    - corpgov.filing.due
+    - corpgov.filing.filed
+    - corpgov.equity.changed
+    - corpgov.vesting.occurred
+  requires:
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: party.core
+    version: '>=1 <2'
+  - capability: contract.core
+    version: '>=1 <2'
+  - capability: document.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  - capability: authority.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - FEED
+    - TRG
+    - R
+    - TP
+    - ASOF
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

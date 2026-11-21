@@ -1,0 +1,14 @@
+name: Specification gap
+description: Something the platform needs that no universe owns or specifies
+labels: [spec-gap]
+body:
+  - type: input
+    id: universe
+    attributes: { label: Closest universe, placeholder: "U26 Order" }
+  - type: textarea
+    id: gap
+    attributes: { label: What is missing, description: "The behaviour, object or rule, and who needs it." }
+    validations: { required: true }
+  - type: textarea
+    id: evidence
+    attributes: { label: Evidence, description: "Regulation, customer scenario, or checker output." }

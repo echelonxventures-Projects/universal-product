@@ -1,0 +1,49 @@
+kind: RatePolicySet
+release: 2026-10
+owner: U14 Currency steward
+sources:
+- id: fx.source.fbil
+  name: FBIL reference rates (India)
+  publishes:
+  - USD/INR
+  - EUR/INR
+  - GBP/INR
+  - JPY/INR
+  - AED/INR
+  schedule: business days, around 13:30 IST
+  adapter: fx.reference-rates
+- id: fx.source.cbuae
+  name: Central Bank of the UAE exchange rates
+  publishes:
+  - AED crosses
+  schedule: business days
+  adapter: fx.reference-rates
+- id: fx.source.ecb
+  name: ECB euro reference rates
+  publishes:
+  - EUR crosses
+  schedule: business days, around 16:00 CET
+  adapter: fx.reference-rates
+pegs:
+- pair: USD/AED
+  rate: '3.6725'
+  note: AED is pegged to the US dollar; used as a sanity bound on AED crosses
+policies:
+- id: ucos:fxpol:display
+  purpose: display
+  source: fx.source.fbil
+  markup: '0'
+  maxAge: P1D
+  rounding: currency-minor-unit
+- id: ucos:fxpol:settlement
+  purpose: settlement
+  source: psp-provided
+  markup: '0'
+  maxAge: PT1H
+  note: PSP rate at capture is binding for settlement
+- id: ucos:fxpol:accounting
+  purpose: accounting
+  source: fx.source.fbil
+  markup: '0'
+  maxAge: P1D
+  note: 'Ind AS 21: transaction-date rate; month-end revaluation uses the closing rate of the last business day'

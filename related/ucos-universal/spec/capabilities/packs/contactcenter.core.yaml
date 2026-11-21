@@ -1,0 +1,111 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: contactcenter.core
+  version: 1.0.0
+  universe: U109-realtime-comms-contact-center
+  steward: ucos:org:steward-realtime-comms-contact-center
+  purpose: 'Contact centre: queues, skills routing, agent states, IVR and bot flows with human hand-off, call-backs, recordings with consent,
+    supervision.'
+  capabilityKind: core
+  maturity: beta
+  phase: 3
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.rtc.Queue
+    - ucos.rtc.AgentProfile
+    - ucos.rtc.Interaction
+    - ucos.rtc.IvrFlow
+    - ucos.rtc.BotFlow
+    - ucos.rtc.Callback
+    - ucos.rtc.Recording
+    commands:
+    - DefineQueue
+    - SetAgentState
+    - StartInteraction
+    - RouteInteraction
+    - AcceptInteraction
+    - TransferInteraction
+    - ConferenceIn
+    - EndInteraction
+    - WrapUp
+    - RequestCallback
+    - StartRecording
+    - PauseRecording
+    - PublishIvrFlow
+    - PublishBotFlow
+    - Monitor
+    - Whisper
+    - Barge
+    queries:
+    - QueueStats
+    - AgentBoard
+    - InteractionHistory
+    - EstimatedWait
+    events:
+    - rtc.interaction.started
+    - rtc.interaction.answered
+    - rtc.interaction.transferred
+    - rtc.interaction.ended
+    - rtc.queue.sla-breached
+    - rtc.callback.requested
+    - rtc.callback.completed
+    - rtc.recording.available
+    decisions:
+    - rtc.routing
+  consumes:
+    events:
+    - communication.inbound.routed
+  requires:
+  - capability: rtc.provider
+    version: '>=1 <2'
+  - capability: communication.core
+    version: '>=1 <2'
+  - capability: communication.realtime
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: privacy.retention
+    version: '>=1 <2'
+  - capability: asset.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - CAL
+    - SLA
+    - D
+    - TRG
+    - POL
+  security:
+    dataClasses:
+    - PII
+    threatModel: docs/threat-models/communication.md
+  compliance:
+    controls:
+    - ucos.ctrl.recording-consent
+    - ucos.ctrl.bot-disclosure
+    - ucos.ctrl.pci-hosted-fields
+  ui:
+    views:
+    - agent.desktop
+    - supervisor.wallboard
+    - ivr.flow.designer
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

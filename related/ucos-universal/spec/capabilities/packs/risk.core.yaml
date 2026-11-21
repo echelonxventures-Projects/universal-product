@@ -1,0 +1,86 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: risk.core
+  version: 1.0.0
+  universe: U69-risk
+  steward: ucos:org:steward-risk
+  purpose: Real-time risk scoring with explainable reasons, velocity checks, review queues and block/allow lists; unknown band on failure.
+  capabilityKind: core
+  maturity: beta
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.risk.RiskModel
+    - ucos.risk.RiskAssessment
+    - ucos.risk.VelocityCounter
+    - ucos.risk.ReviewCase
+    - ucos.risk.ListEntry
+    - ucos.risk.AMLAlert
+    - ucos.risk.RiskRegisterItem
+    commands:
+    - Score
+    - RecordOutcome
+    - OpenReview
+    - DecideReview
+    - AddListEntry
+    - PublishRiskModel
+    - RaiseAMLAlert
+    - FileReport
+    events:
+    - risk.assessment.high
+    - risk.review.decided
+    - risk.label.recorded
+    - risk.aml.alert-raised
+    decisions:
+    - risk.checkout-thresholds
+    - risk.login-thresholds
+  consumes:
+    events:
+    - order.order.placed
+    - commerce.checkout.started
+    - identity.session.started
+    - payment.refund.issued
+  requires:
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: context.core
+    version: '>=1 <2'
+  - capability: event.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: workflow.core
+    version: '>=1 <2'
+  - capability: observability.core
+    version: '>=1 <2'
+  optional:
+  - capability: ml.core
+  temporal:
+    kind: S
+    uses:
+    - D
+  security:
+    dataClasses:
+    - PII
+    threatModel: docs/threat-models/kernel-and-tenancy.md
+  compliance:
+    controls:
+    - ucos.ctrl.automated-decision-contest
+  ui:
+    views:
+    - risk.cockpit
+    - risk.review-queue
+    - risk.rule-editor
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

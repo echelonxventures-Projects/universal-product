@@ -1,0 +1,26 @@
+# A complete cell on a local cluster (kind, k3d, Docker Desktop, any Kubernetes): the cell baseline, the kernel
+# and in-cluster stand-ins for its dependencies. Dev-only credentials. `tools/cell_smoke.sh` deploys and tests it.
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources: [../../base, ../../apps/kernel, ../../deps/local]
+labels:
+  - pairs: { ucos.io/environment: local }
+    includeSelectors: false
+images:
+  - name: ghcr.io/echelonxventures-projects/ucos-kernel
+    newName: ucos-kernel
+    newTag: local
+configMapGenerator:
+  - name: ucos-kernel-config
+    namespace: ucos-kernel
+    literals:
+      - UCOS_CELL=local-1
+      - UCOS_KAFKA_BROKERS=redpanda.ucos-deps.svc.cluster.local:9092
+      - 'UCOS_TENANTS=[{"issuer":"http://keycloak.ucos-deps.svc.cluster.local:8080/realms/ucos-dev-sample","jwksUrl":"http://keycloak.ucos-deps.svc.cluster.local:8080/realms/ucos-dev-sample/protocol/openid-connect/certs","tenant":"ucos:tenant:sample","locale":"en","currency":"INR","tz":"Asia/Kolkata","reality":"simulated","jurisdiction":"ucos:jur:IN"}]'
+secretGenerator:
+  - name: ucos-kernel-env
+    namespace: ucos-kernel
+    literals:
+      - UCOS_DATABASE_URL=postgres://postgres:postgres@postgres.ucos-deps.svc.cluster.local:5432/ucos?sslmode=disable
+      - UCOS_SIGNING_SEED=0000000000000000000000000000000000000000000000000000000000000000
+      - UCOS_ADMIN_TOKEN=dev-only-operator-token

@@ -1,0 +1,36 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: payment.provider.network-intl
+  version: 1.0.0
+  universe: U29-payment
+  steward: ucos:org:steward-payment
+  purpose: 'Network International (N-Genius) adapter: cards, Apple Pay, Google Pay (UAE).'
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - payment.provider
+  requires:
+  - capability: integration.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - ucos:jur:AE
+    methods:
+    - card
+    - apple-pay
+    - google-pay
+  temporal:
+    kind: V
+    uses:
+    - TP
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

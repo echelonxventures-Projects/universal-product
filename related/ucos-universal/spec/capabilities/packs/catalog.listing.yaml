@@ -1,0 +1,89 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: catalog.listing
+  version: 1.0.0
+  universe: U21-catalog
+  steward: ucos:org:steward-catalog
+  purpose: Tenant listings referencing global products/services, sellable units, catalogues and collections.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.catalog.Listing
+    - ucos.catalog.SellableUnit
+    - ucos.catalog.Catalog
+    - ucos.catalog.Collection
+    commands:
+    - CreateListing
+    - UpdateListing
+    - SubmitForReview
+    - ApproveListing
+    - RejectListing
+    - PublishListing
+    - PauseListing
+    - SuppressListing
+    - ArchiveListing
+    - AddSellableUnit
+    - UpdateSellableUnit
+    - BulkImport
+    - DefineCatalog
+    - DefineCollection
+    queries:
+    - GetListing
+    - ResolveCatalog
+    - ListingsInCatalog
+    - QualityReport
+    events:
+    - catalog.listing.created
+    - catalog.listing.published
+    - catalog.listing.unpublished
+    - catalog.listing.updated
+    - catalog.listing.approved
+    - catalog.listing.rejected
+    - catalog.listing.suppressed
+    - catalog.unit.changed
+    - catalog.import.completed
+  consumes:
+    events:
+    - product.global.updated
+    - product.recall.published
+  requires:
+  - capability: product.intelligence
+    version: '>=1 <2'
+  - capability: taxonomy.core
+    version: '>=1 <2'
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: asset.core
+    version: '>=1 <2'
+  - capability: l10n.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - TRG
+    - AV
+  compliance:
+    controls:
+    - ucos.ctrl.in-legal-metrology-attributes
+  ui:
+    views:
+    - catalog.listing.edit
+    - catalog.import.wizard
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

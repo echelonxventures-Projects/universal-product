@@ -1,0 +1,48 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.ucos.io/events/identity.identity.registered/1.json",
+  "title": "identity.identity.registered",
+  "description": "A new identity exists in the tenant. Carries no credentials and only the verified contact kinds.",
+  "x-ucos": {
+    "category": "domain",
+    "handAuthored": true
+  },
+  "type": "object",
+  "required": [
+    "identityId",
+    "party",
+    "method",
+    "registeredAt"
+  ],
+  "properties": {
+    "identityId": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "party": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/UGID"
+    },
+    "method": {
+      "enum": [
+        "password",
+        "otp",
+        "passkey",
+        "social",
+        "federated",
+        "invited"
+      ]
+    },
+    "verifiedContactKinds": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "email",
+          "phone"
+        ]
+      }
+    },
+    "registeredAt": {
+      "$ref": "https://schemas.ucos.io/meta/value-types.schema.json#/$defs/TimePoint"
+    }
+  },
+  "additionalProperties": false
+}

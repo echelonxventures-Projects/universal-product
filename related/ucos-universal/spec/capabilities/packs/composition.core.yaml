@@ -1,0 +1,53 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: composition.core
+  version: 1.0.0
+  universe: U58-composition
+  steward: ucos:org:steward-composition
+  purpose: Deterministic composition of platform definitions into blueprints with traces and gap reports.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.composition.PlatformDefinition
+    - ucos.composition.Blueprint
+    - ucos.composition.ResolutionTrace
+    - ucos.composition.RuleModule
+    - ucos.composition.RegistrySnapshot
+    commands:
+    - Compose
+    - Recompose
+    - PromoteCandidate
+    - ApplyFix
+    - CreateSnapshot
+    queries:
+    - Why
+    - WhyNot
+    - Diff
+    - EstimateCost
+    events:
+    - composition.run.completed
+    - composition.recompose.required
+  requires:
+  - capability: capability.registry
+    version: '>=1 <2'
+  - capability: gap.core
+    version: '>=1 <2'
+  - capability: governance.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - R
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

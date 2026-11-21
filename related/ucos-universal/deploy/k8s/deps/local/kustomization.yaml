@@ -1,0 +1,7 @@
+# In-cluster stand-ins for a cell's external dependencies, for local and CI clusters only (kind, k3d, any
+# Kubernetes). Real cells point the kernel at managed or self-operated services through ucos-kernel-env and
+# ucos-kernel-config instead; nothing in the kernel depends on which (ADR-037).
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+namespace: ucos-deps
+resources: [deps.yaml]

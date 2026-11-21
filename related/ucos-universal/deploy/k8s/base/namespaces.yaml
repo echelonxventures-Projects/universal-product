@@ -1,0 +1,31 @@
+# One namespace per plane in a cell. Restricted Pod Security is enforced everywhere (U65).
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ucos-kernel
+  labels:
+    ucos.io/plane: data
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ucos-packs
+  labels:
+    ucos.io/plane: data
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ucos-packs-third-party      # ADR-025: third-party packs only, gVisor runtime class required
+  labels:
+    ucos.io/plane: data
+    ucos.io/sandbox: gvisor
+    pod-security.kubernetes.io/enforce: restricted
+    pod-security.kubernetes.io/audit: restricted
+    pod-security.kubernetes.io/warn: restricted

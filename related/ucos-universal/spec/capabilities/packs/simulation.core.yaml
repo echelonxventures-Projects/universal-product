@@ -1,0 +1,52 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: simulation.core
+  version: 1.0.0
+  universe: U54-simulation
+  steward: ucos:org:steward-simulation
+  purpose: Simulation owns what-if analysis on business behaviour.
+  capabilityKind: core
+  maturity: experimental
+  phase: 5
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.simulation.Scenario
+    - ucos.simulation.SimulationRun
+    - ucos.simulation.Comparison
+    commands:
+    - DefineScenario
+    - RunSimulation
+    - CompareRuns
+    - PromoteToProposal
+  requires:
+  - capability: composition.core
+    version: '>=1 <2'
+  - capability: event.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  - capability: ml.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: observability.core
+    version: '>=1 <2'
+  - capability: infra.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TS
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+  optional:
+  - capability: digital-twin.core

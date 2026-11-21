@@ -1,0 +1,67 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: workflow.core
+  version: 1.0.0
+  universe: U60-workflow
+  steward: ucos:org:steward-workflow
+  purpose: Durable workflow definitions, instances, human tasks, escalations and sagas.
+  capabilityKind: core
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.workflow.WorkflowDefinition
+    - ucos.workflow.WorkflowInstance
+    - ucos.workflow.HumanTask
+    - ucos.workflow.EscalationPolicy
+    - ucos.workflow.Migration
+    commands:
+    - StartWorkflow
+    - Signal
+    - CancelWorkflow
+    - SuspendWorkflow
+    - ResumeWorkflow
+    - MigrateInstances
+    - ClaimTask
+    - CompleteTask
+    - ReassignTask
+    - DelegateTask
+    queries:
+    - GetInstance
+    - InstancesFor
+    - TaskInbox
+    - StuckInstances
+    events:
+    - workflow.instance.started
+    - workflow.instance.transitioned
+    - workflow.instance.completed
+    - workflow.instance.failed
+    - workflow.instance.compensated
+    - workflow.task.created
+    - workflow.task.completed
+    - workflow.task.escalated
+  requires:
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: decision.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TRG
+    - SLA
+    - BD
+  ui:
+    views:
+    - task.inbox
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

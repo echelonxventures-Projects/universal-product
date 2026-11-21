@@ -1,0 +1,73 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: partner.core
+  version: 1.0.0
+  universe: U107-partner-channel-franchise
+  steward: ucos:org:steward-partner-channel-franchise
+  purpose: Partner owns indirect go-to-market and networked operations.
+  capabilityKind: core
+  maturity: experimental
+  phase: 4
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.partner.PartnerProgram
+    - ucos.partner.PartnerMembership
+    - ucos.partner.DealRegistration
+    - ucos.partner.MDFRequest
+    - ucos.partner.Rebate
+    - ucos.partner.SellThroughReport
+    - ucos.partner.Franchisee
+    - ucos.partner.RoyaltyStatement
+    commands:
+    - CreateProgram
+    - EnrollPartner
+    - RegisterDeal
+    - ResolveConflict
+    - SubmitMDF
+    - ApproveMDF
+    - ReportSellThrough
+    - ComputeRebates
+    - OnboardFranchisee
+    - PublishNetworkCatalogue
+    - ComputeRoyalties
+    - AuditOutlet
+    events:
+    - partner.deal.registered
+    - partner.deal.approved
+    - partner.deal.expired
+    - partner.tier.changed
+    - franchise.royalty.statement-issued
+  requires:
+  - capability: org.core
+    version: '>=1 <2'
+  - capability: contract.core
+    version: '>=1 <2'
+  - capability: pricing.engine
+    version: '>=1 <2'
+  - capability: loyalty.core
+    version: '>=1 <2'
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: crm.core
+    version: '>=1 <2'
+  - capability: entitlement.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  optional:
+  - capability: qhse.core
+  temporal:
+    kind: S
+    uses:
+    - TR
+    - R
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

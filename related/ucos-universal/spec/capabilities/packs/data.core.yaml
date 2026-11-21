@@ -1,0 +1,71 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: data.core
+  version: 1.0.0
+  universe: U93-data-governance-products
+  steward: ucos:org:steward-data-governance-products
+  purpose: Data Governance owns data as a managed product.
+  capabilityKind: core
+  maturity: experimental
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.data.Dataset
+    - ucos.data.DataProduct
+    - ucos.data.QualityRule
+    - ucos.data.QualityResult
+    - ucos.data.LineageEdge
+    - ucos.data.MasterEntity
+    - ucos.data.ShareAgreement
+    commands:
+    - RegisterDataset
+    - PublishDataContract
+    - PublishDataProduct
+    - DefineQualityRule
+    - RunQualityChecks
+    - ApproveShare
+    - ResolveMasterRecord
+    queries:
+    - Catalog
+    - Lineage
+    - Impact
+    - QualityScore
+    - WhoUses
+    events:
+    - data.quality.failed
+    - data.contract.breaking-change-proposed
+    - data.share.approved
+    - data.share.revoked
+  requires:
+  - capability: meta.core
+    version: '>=1 <2'
+  - capability: event.core
+    version: '>=1 <2'
+  - capability: observability.core
+    version: '>=1 <2'
+  - capability: security.core
+    version: '>=1 <2'
+  - capability: privacy.consent
+    version: '>=1 <2'
+  - capability: knowledge.graph
+    version: '>=1 <2'
+  - capability: audit.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - D
+    - R
+    - TR
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

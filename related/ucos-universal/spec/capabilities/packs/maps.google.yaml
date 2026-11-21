@@ -1,0 +1,31 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: maps.google
+  version: 1.0.0
+  universe: U12-geography
+  steward: ucos:org:steward-geography
+  purpose: Google Maps Platform adapter for maps.provider.
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - maps.provider
+  requires:
+  - capability: integration.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - '*'
+  temporal:
+    kind: V
+    uses: []
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

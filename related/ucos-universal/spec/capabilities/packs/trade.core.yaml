@@ -1,0 +1,70 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: trade.core
+  version: 1.0.0
+  universe: U90-global-trade-customs
+  steward: ucos:org:steward-global-trade-customs
+  purpose: Global Trade owns moving goods across customs borders lawfully.
+  capabilityKind: core
+  maturity: experimental
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.trade.CustomsTerritory
+    - ucos.trade.TariffClassification
+    - ucos.trade.OriginDetermination
+    - ucos.trade.LandedCostQuote
+    - ucos.trade.TradeRestriction
+    - ucos.trade.ScreeningResult
+    - ucos.trade.CustomsDeclaration
+    commands:
+    - Classify
+    - DetermineOrigin
+    - QuoteLandedCost
+    - Screen
+    - ResolveScreeningMatch
+    - PrepareDeclaration
+    - FileDeclaration
+    - RecordClearance
+    events:
+    - trade.screening.hit
+    - trade.screening.cleared
+    - trade.declaration.filed
+    - trade.declaration.cleared
+    - trade.declaration.held
+  requires:
+  - capability: product.intelligence
+    version: '>=1 <2'
+  - capability: tax.core
+    version: '>=1 <2'
+  - capability: logistics.core
+    version: '>=1 <2'
+  - capability: geo.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - TP
+    - TR
+    - TRG
+    - R
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

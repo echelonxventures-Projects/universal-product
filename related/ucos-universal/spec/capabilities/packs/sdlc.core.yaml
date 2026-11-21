@@ -1,0 +1,47 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: sdlc.core
+  version: 1.0.0
+  universe: U95-software-delivery-source-control
+  steward: ucos:org:steward-software-delivery-source-control
+  purpose: Repositories, change requests, pipelines, artifacts with provenance, definitions-as-code sync.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: platform
+spec:
+  provides:
+    objectTypes:
+    - ucos.sdlc.Repository
+    - ucos.sdlc.ChangeRequest
+    - ucos.sdlc.PipelineRun
+    - ucos.sdlc.Artifact
+    - ucos.sdlc.DefinitionsRepoMapping
+    commands:
+    - RegisterRepository
+    - OpenChangeRequest
+    - SyncDefinitions
+    - RunPipeline
+    queries:
+    - ProvenanceOf
+    events:
+    - sdlc.pr.merged
+    - sdlc.artifact.published
+  requires:
+  - capability: governance.core
+    version: '>=1 <2'
+  - capability: certification.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - R
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

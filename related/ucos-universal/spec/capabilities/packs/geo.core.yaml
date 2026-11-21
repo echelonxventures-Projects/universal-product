@@ -1,0 +1,72 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: geo.core
+  version: 1.0.0
+  universe: U12-geography
+  steward: ucos:org:steward-geography
+  purpose: Places, addresses, jurisdictions, zones, geofences, service areas and address formats.
+  capabilityKind: core
+  maturity: beta
+  phase: 0
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.geo.Place
+    - ucos.geo.Address
+    - ucos.geo.Jurisdiction
+    - ucos.geo.Zone
+    - ucos.geo.Geofence
+    - ucos.geo.ServiceArea
+    - ucos.geo.AddressFormat
+    commands:
+    - CreateAddress
+    - UpdateAddress
+    - VerifyAddress
+    - UpsertPlace
+    - UpsertJurisdiction
+    - DefineZone
+    - DefineGeofence
+    - DefineServiceArea
+    queries:
+    - ResolveJurisdictions
+    - PointInZones
+    - IsServiceable
+    - Geocode
+    - ValidateAddress
+    - FormatAddress
+    events:
+    - geo.address.created
+    - geo.address.updated
+    - geo.address.verified
+    - geo.zone.changed
+    - geo.jurisdiction.changed
+  requires:
+  - capability: refdata.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  - capability: maps.provider
+    version: '>=1 <2'
+  temporal:
+    kind: E
+    uses:
+    - TR
+    - POL
+  security:
+    dataClasses:
+    - PII
+    - LOCATION
+    threatModel: docs/threat-models/geo-and-fulfillment.md
+  ui:
+    views:
+    - geo.address.form
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*
+    - A11Y-*

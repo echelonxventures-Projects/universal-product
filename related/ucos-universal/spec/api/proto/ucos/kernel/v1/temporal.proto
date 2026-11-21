@@ -1,0 +1,34 @@
+// Temporal trigger engine (U13, TMP-L4): the only way to schedule work.
+syntax = "proto3";
+package ucos.kernel.v1;
+option go_package = "ucos.io/kernel/gen/ucos/kernel/v1;kernelv1";
+
+import "google/protobuf/struct.proto";
+import "ucos/kernel/v1/common.proto";
+
+service TriggerService {
+  rpc Schedule(ScheduleRequest) returns (TriggerRef);
+  rpc Cancel(CancelRequest) returns (TriggerRef);
+}
+message ScheduleRequest {
+  string context_token = 1;
+  string idempotency_key = 2;
+  oneof when {
+    string at = 3;                       // TimePoint
+    string recurrence = 4;               // RFC 5545 RRULE evaluated by U13 only
+    string after = 5;                    // ISO 8601 Duration from now
+  }
+  string calendar = 6;                   // business calendar for business-time durations
+  string target_operation = 7;           // command fired, e.g. "order:ExpireCheckout"
+  string target_id = 8;
+  google.protobuf.Struct payload = 9;
+}
+message CancelRequest {
+  string context_token = 1;
+  string trigger_id = 2;
+}
+message TriggerRef {
+  string trigger_id = 1;
+  string next_fire_at = 2;
+  Problem problem = 3;
+}

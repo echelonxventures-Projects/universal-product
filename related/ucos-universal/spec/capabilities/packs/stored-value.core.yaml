@@ -1,0 +1,66 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: stored-value.core
+  version: 1.0.0
+  universe: U84-stored-value-wallet
+  steward: ucos:org:steward-stored-value-wallet
+  purpose: Stored Value owns prepaid and credited value held for customers.
+  capabilityKind: core
+  maturity: experimental
+  phase: 2
+  scope: tenant
+spec:
+  provides:
+    objectTypes:
+    - ucos.stored-value.StoredValueProgram
+    - ucos.stored-value.Instrument
+    - ucos.stored-value.Transaction
+    commands:
+    - IssueInstruments
+    - Activate
+    - Load
+    - Redeem
+    - ReverseRedemption
+    - RefundToStoredValue
+    - Transfer
+    - Freeze
+    - ExpireDue
+    - RecordBreakage
+    queries:
+    - Balance
+    - History
+    - HolderInstruments
+    events:
+    - stored-value.instrument.issued
+    - stored-value.instrument.activated
+    - stored-value.instrument.redeemed
+    - stored-value.instrument.expired
+  requires:
+  - capability: ledger.core
+    version: '>=1 <2'
+  - capability: currency.core
+    version: '>=1 <2'
+  - capability: frame.core
+    version: '>=1 <2'
+  - capability: payment.core
+    version: '>=1 <2'
+  - capability: temporal.core
+    version: '>=1 <2'
+  - capability: identity.core
+    version: '>=1 <2'
+  - capability: compliance.core
+    version: '>=1 <2'
+  temporal:
+    kind: S
+    uses:
+    - POL
+    - R
+    - TRG
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

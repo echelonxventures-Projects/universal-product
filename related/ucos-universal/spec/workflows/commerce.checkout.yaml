@@ -1,0 +1,28 @@
+# U24 §3 checkout state machine. Spike S-05 runs this definition on the candidate engine.
+apiVersion: ucos.io/v1
+kind: WorkflowDefinition
+id: commerce.checkout
+version: 1.0.0
+object: ucos.commerce.Checkout
+initial: started
+states:
+  started:           { entry: [ snapshotCart, validateSellable ],
+                       timers: { hold: { decision: commerce.checkout.hold, output: hold, then: expired } },
+                       "on": { DetailsProvided: details_collected } }
+  details_collected: { entry: [ validateAddress, checkServiceability ],
+                       timers: { hold: { decision: commerce.checkout.hold, output: hold, then: expired } },
+                       "on": { OptionsChosen: options_selected } }
+  options_selected:  { entry: [ planFulfilment, reserveStock, holdSlots ],
+                       timers: { hold: { decision: commerce.checkout.hold, output: hold, then: expired } },
+                       "on": { Quote: priced } }
+  priced:            { entry: [ quotePrice, reserveRedemptions ],
+                       timers: { hold: { decision: commerce.checkout.hold, output: hold, then: expired } },
+                       "on": { CreatePaymentIntent: payment_pending } }
+  payment_pending:   { timers: { payment: { duration: PT15M, then: expired } },
+                       "on": { PaymentAuthorized: authorized, CodAccepted: authorized, PaymentFailed: payment_failed } }
+  payment_failed:    { "on": { RetryPayment: payment_pending } }
+  authorized:        { saga: [ { do: placeOrder, compensate: voidPayment } ], then: completed }
+  completed:         { final: true, entry: [ convertCart ] }
+  expired:           { final: true, entry: [ releaseStock, releaseSlots, releaseRedemptions ] }
+guards:
+  RetryPayment: "attempts < 3"

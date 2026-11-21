@@ -1,0 +1,35 @@
+apiVersion: ucos.io/v1
+kind: Capability
+metadata:
+  id: tax.einvoice-india
+  version: 1.0.0
+  universe: U31-tax
+  steward: ucos:org:steward-tax
+  purpose: 'India e-invoicing (IRP via GSP): IRN, signed QR, cancellation window.'
+  capabilityKind: adapter
+  maturity: beta
+  phase: 1
+  scope: tenant
+spec:
+  implements:
+  - tax.einvoice
+  requires:
+  - capability: integration.core
+    version: '>=1 <2'
+  - capability: tax.core
+    version: '>=1 <2'
+  selection:
+    jurisdictions:
+    - ucos:jur:IN
+  temporal:
+    kind: S
+    uses:
+    - TRG
+    - D
+  certification:
+    gates:
+    - ARCH-*
+    - SEC-*
+    - TEST-*
+    - DOC-*
+    - OBS-*

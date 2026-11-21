@@ -1,0 +1,19 @@
+# Spike S-03 (ADR-013): CEL parity. The Go (cel-go) and TypeScript evaluators must give identical results for every
+# vector, plus 1,000,000 randomised expressions from the same generator with < 50 µs per evaluation.
+# expect: the result value; error: true when evaluation must fail (overflow, division by zero, no overload).
+vectors:
+  - { id: arith-precedence,   expr: "1 + 2 * 3",                                    expect: 7 }
+  - { id: string-prefix,      expr: "'abc'.startsWith('ab')",                       expect: true }
+  - { id: exists-macro,       expr: "[1, 2, 3].exists(x, x > 2)",                   expect: true }
+  - { id: unicode-size,       expr: "size('héllo')",                                expect: 5 }
+  - { id: int-conversion,     expr: "int('42') + 1",                                expect: 43 }
+  - { id: double-division,    expr: "double(1) / 2.0",                              expect: 0.5 }
+  - { id: list-membership,    expr: "'a' in ['a', 'b']",                            expect: true }
+  - { id: has-field,          expr: "has(m.x)",               input: { m: { x: 1 } }, expect: true }
+  - { id: money-guard,        expr: "m.amount > 100 && m.currency == 'INR'", input: { m: { amount: 150, currency: "INR" } }, expect: true }
+  - { id: timestamp-math,     expr: "timestamp('2027-01-10T09:00:00Z') + duration('1h') == timestamp('2027-01-10T10:00:00Z')", expect: true }
+  - { id: map-macro,          expr: "[1, 2, 3].map(x, x * 2)",                      expect: [2, 4, 6] }
+  - { id: filter-macro,       expr: "[1, 2, 3, 4].filter(x, x % 2 == 0)",           expect: [2, 4] }
+  - { id: int-overflow,       expr: "9223372036854775807 + 1",                      error: true }
+  - { id: divide-by-zero,     expr: "1 / 0",                                        error: true }
+  - { id: no-overload,        expr: "'x' + 1",                                      error: true }

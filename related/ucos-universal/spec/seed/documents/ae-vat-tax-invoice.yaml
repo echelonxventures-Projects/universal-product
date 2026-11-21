@@ -1,0 +1,36 @@
+kind: DocumentTemplate
+id: doc.ae.vat-tax-invoice
+version: 1.0.0
+jurisdiction: ucos:jur:AE
+owner: U42 + U31
+legalBasis: Federal Decree-Law No. 8 of 2017 on VAT and its Executive Regulation (tax invoice requirements); simplified tax invoice rules for B2C supplies
+title: Tax Invoice
+titleAr: فاتورة ضريبية
+requiredFields:
+- field: title "Tax Invoice"
+- field: supplier.name
+- field: supplier.address
+- field: supplier.trn
+- field: recipient.name
+- field: recipient.address
+- field: recipient.trn (if registered)
+- field: invoice.number (sequential)
+- field: invoice.date
+- field: supplyDate (if different)
+- field: lines[].description
+- field: lines[].quantity
+- field: lines[].unitPrice
+- field: lines[].taxRate
+- field: lines[].taxAmount
+- field: discount
+- field: grossAmountPayable
+- field: taxPayableInAED
+- field: exchangeRate (if not invoiced in AED)
+renderer:
+  engine: U42
+  formats:
+  - pdf
+  - html
+  locales:
+  - en
+  - ar
