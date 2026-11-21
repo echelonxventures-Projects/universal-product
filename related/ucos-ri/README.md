@@ -1,0 +1,105 @@
+# UCOS-RI: Reference Implementation
+
+This is the executable reference implementation of the UCOS-COM corpus. The corpus is vendored at
+`corpus/` and pinned in `corpus.lock` (CIC-030-001).
+
+The RI is **contract-first, polyglot, and container-only** (AMD-0001, CIC-001-001 §1.1):
+- **Contract-first:** contracts and black-box conformance suites are the normative executable artifacts.
+- **Polyglot:** each module picks its language.
+- **Container-only:** the only host prerequisite is an OCI runtime with the Compose spec (Docker, Podman or nerdctl).
+
+## Quick start
+
+```sh
+./ucos verify        # corpus lock + corpus validation + contract drift + contract lint + module manifests
+./ucos test          # every module's unit + architecture tests (in its build container)
+./ucos conformance   # ucos-lite + all black-box suites, once per event-platform-service implementation
+./ucos ctx-conformance [N]   # context-runtime suites across every runtime implementation (default N = 20000)
+./ucos ci            # all of the above, then tear down
+```
+
+`./ucos up` starts the lite profile. Then `echo-service` answers on `http://127.0.0.1:18080`:
+
+```sh
+curl -s -X POST localhost:18080/v1/echo/messages -H 'UCOS-Tenant: acme' -H 'Idempotency-Key: demo-0001' \
+     -H 'Content-Type: application/json' -d '{"text":"hello"}'
+```
+
+## Layout
+
+```
+ucos                    POSIX sh entry point (drives the OCI runtime only)
+corpus/  corpus.lock    vendored UCOS-COM corpus at cic-1.4.0 (content-hash verified)
+contracts/              language-neutral contracts
+  kernel/               shared JSON Schemas: Urn, Ulid, Money, Decimal, Quantity, Interval, LocalizedText,
+                        ProblemDetails, CloudEvent envelope, CommandResult, Page; tenancy rules
+  <context>/DOM-*.yaml  OpenAPI 3.1 + AsyncAPI 3.0 generated from every specified DOM spec (do not edit)
+  echo/                 hand-authored S0 echo contracts
+  persistence/          standard tables + tenancy contract (CIC-003-001 §4–5)
+  context-runtime/      executable semantics of CIC-011-001 + runner protocol (semantics.md)
+  authority/            executable semantics of DOM-AUTH (semantics.md)
+  governance/           remote owner protocol for governed definitions owned outside metadata-service
+conformance/            black-box suites (HTTP, CloudEvents, SQL only; never import implementation code)
+  context-resolution/   golden vectors + fixture hierarchies for the context runtime
+platform/context-runtime/{go,typescript}   two independent ucos-context-runtime implementations
+services/eventing/{go,typescript}   event-platform-service (DOM-EVT), two swappable implementations
+services/identity/      identity-service (Go): token service, identities, agents, parties, role assignments
+services/commerce/      commerce-service (Go): commercial core (S3) — COB, REL, PRC, CAT, OFR
+platform/svckit/go      shared service kit; platform/lifecycle/go  lifecycle-instance runtime
+platform/authn/{go,typescript}  token validation (JWT/JWKS/DPoP), Go and TypeScript
+platform/pdp/go         the embeddable PDP
+kernel/                 S1 metadata-service (Go): ontology, lifecycle, contextreg, policy, governance, evidence,
+                        registry contexts + governed ports + platform; one schema per context
+domains/echo/           S0 echo context (Go): api / domain / application / infrastructure / service / cmd
+deploy/lite/            ucos-lite database roles
+tools/                  containerized toolchain: contract generator + linter, migrator, corpus lock, manifest checks
+docs/adr/               architecture decisions; docs/amendment-requests.md — deviations raised to the corpus
+compose.yaml            ucos-lite composition
+```
+
+## Status: slice S0 (Platform)
+
+S0 exit demonstration (CIC-030-001 §3): **echo context with event round-trip, plus RLS isolation test green.**
+
+| Area | State |
+|------|-------|
+| Contract toolchain | 99 DOM specs → 198 generated contracts (OpenAPI 3.1 + AsyncAPI 3.0), linted against the `ucos-api-rules` subset, VR-006-001-01/02 and CR-006-001-02 |
+| Eventing | Transactional outbox, relay (`FOR UPDATE SKIP LOCKED`, ordered, at-least-once), idempotent consumer (`processed_messages`), event replay API |
+| Persistence | Standard tables per context schema, forced RLS on every tenant table, least-privilege roles, checksum-verified migrator |
+| API | `UCOS-Tenant`, `Idempotency-Key` (24 h replay, mismatch → 422), ETag, `UCOS-Correlation-Id`, RFC 9457 problems |
+| Conformance | 13 black-box tests: round-trip, idempotency, redelivery, problems, API tenant hiding, RLS catalog/data/write/fail-closed/grants, standard tables |
+| Interim adapters | HTTP bus, static tenant directory (ADR 0003). Dev-header security was replaced by real tokens in S2 (ADR 0007/0008) |
+
+## Status: slice S1 (metadata kernel), in progress
+
+| Batch | State |
+|-------|-------|
+| S1a context runtime | Done. CIC-011-001 is specified as executable semantics (AR-0002 lists the 13 clarifications). There are two implementations, Go and TypeScript. Results: 328/328 golden and fallback-order vectors, a byte-identical 10⁶-case differential, metamorphic twins, and p99 < 0.6 ms with 1,000 candidates (limit 2 ms). The suite catches injected bugs. |
+| S1b metadata service | Done. `kernel/` composes ONT, LFC, CTX, POL (PDP with cel-go), GOV, EVD and META (ADR 0005). **`ucos.std` installs through one governed ChangeSet:** 519 items, risk `critical`, a 2-stage plan from the pack's own policies, SoD and AAL2 approvals with evidence in an RFC 6962 ledger, 24 h cool-off, and a compensating apply saga. 16 black-box tests cover it, and effective schemas are checked against the corpus's own pack checker. |
+| S1c event registry | Done. DOM-EVT `event-platform-service` has **two implementations (Go and TypeScript) swapped in `ucos-lite`**: the full 54-test suite passes on each (CR-030-001-05, ADR 0006). FULL_TRANSITIVE compatibility is specified as decidable semantics with golden vectors (AR-0003). All 823 declared event types are seeded (VR-EVT-01/02). |
+
+**S1 is complete.** `ucos.std` installs via ChangeSet, the context-resolution conformance suite is green, and a
+second-language module swaps in with identical results. The lifecycle *instance* runtime arrives with the first
+lifecycle-bearing aggregates in S3. Next is **S2, identity and party**.
+
+## Status: slice S2 (identity and party), in progress
+
+| Batch | State |
+|-------|-------|
+| S2a identity-service | Done (ADR 0007). Federated login through dex: authorization code with PKCE, plus id_token verification. ES256 `at+jwt` tokens are DPoP-bound, and bearer tokens cannot write. Agents get API access only through RFC 8693 exchange, which always carries the act chain and only ever narrows. Party creation is PDP-guarded and ontology-validated, with personal attributes encrypted under a per-party key. The embedded PDP evaluates the tenant policy bundle. **All four S2 exit criteria are demonstrated by 11 black-box tests.** |
+| S2b tokens everywhere | Done (ADR 0008). echo, metadata and eventing (Go and TypeScript) validate DPoP-bound tokens and enforce the PEP: scope, then permission from a route table that refuses to start with an uncovered route, checked against the role catalog. Service-to-service reads use platform service tokens. Corpus 1.3.0 (AMD-0003) grants every declared permission through some role. **70 conformance tests run on real tokens**, including the deny-all PEP coverage test. |
+| S2c authority | Done (ADR 0009, AR-0004). DOM-AUTH is specified as executable semantics. Role assignments carry scope and validity and are checked for SoD under a per-party lock: 25 concurrent conflicting pairs give exactly one winner each (CR-AUTH-01). Delegations only narrow, are re-validated at use, are depth- and cycle-bounded, and revoke in cascade; a property test runs random grant/revoke sequences (CR-AUTH-02). Revocation reaches every service within 10 s through per-party cut-offs in the revocation feed (CR-AUTH-03). SoD sets and authority limits change only through governed ChangeSets via a remote owner protocol. Mandates are backed by signed evidence (INV-AUTH-6). CheckSigningAuthority decides over limits, delegations and mandates. Agents act for non-owners only within a delegation. **14 black-box tests.** |
+| S2d lifecycle | Done (ADR 0010, corpus 1.4.0 / AMD-0004). Tenant role definitions are governed through ChangeSets, with includes flattened into every service's catalog. Roles that require approval go through an approval workflow with distinct AAL2 approvers, and SoD is re-checked at approval. Access reviews certify or revoke assignments; uncertified assignments are suspended per `authority.review-interval` (CR-AUTH-04). Mandate usage is idempotent, limited and exhausts the mandate under concurrency (CR-AUTH-05). Idempotency-Key replay covers identity-service commands, with sealed responses. Revocation cut-offs are exact to the millisecond: a token issued right after a change is never rejected, and agent actor tokens are unaffected. **7 more black-box tests (91 per eventing implementation).** |
+
+## Status: slice S3 (commercial core), done
+
+| Batch | State |
+|-------|-------|
+| S3a commercial objects | Done (ADR 0011, AR-0005). New shared modules: `platform/svckit/go` (route-table PEP, metadata client, relay, Idempotency-Key replay) and `platform/lifecycle/go` (lifecycle-instance runtime per CIC-007-001 §2.1). `commerce-service` composes the commercial core for ucos-lite, with DOM-COB first. Every concrete ucos.std commercial type instantiates from metadata alone, and the full lifecycle runs with SoD, approval evidence and policy (CR-COB-01). Resolution is checked against an independent oracle on 1,000 random contexts (CR-COB-02), and concurrent overlapping writes never overlap (mutation-checked). Composition, variants, find with CEL filter, and idempotent create are implemented. **13 black-box tests.** |
+| S3b relationships | Done (ADR 0011 §9). DOM-REL adds typed, time-bounded, scoped edges with subtype-aware endpoint types, resolved in their owning contexts (COB in-process, parties through identity-service). Cardinality over time, acyclicity and closure tables for hierarchical types (DOM-HIER) are enforced. Concurrent cycle-forming edges never both commit (CR-REL-01, mutation-checked), and the closure table equals a recomputed closure after random operations (CR-REL-02). Also: RUL-REL-1 required components, bounded traversal with context and CEL filters, atomic and non-atomic bulk operations, and VARIANT_OF edges for generated variants. **10 more black-box tests (23 in S3).** |
+| S3c pricing | Done (ADR 0011 §10, AR-0005 G5/G6). DOM-PRC covers price lists with their lifecycle: tiered approval plans from `pricing.approval`, author ≠ approver (CR-PRC-02), scheduled publication and supersession. Entries are stored as MVCC rows with snapshot ranges. The Pricing Resolution Algorithm resolves base prices through the context runtime (object beats type; ambiguity is an error), evaluates all six built-in price models in exact rationals (no floats, architecture-tested), and rounds per `pricing.rounding` with explicit rounding components. Σ components = total on random requests (CR-011-004-02); replay of a recorded `pricingSnapshotId` is exact after later changes (CR-011-004-03, mutation-checked). Recurring and usage charges and bulk price changes are included. Adjustment phases wait for DOM-RUL. **9 more black-box tests (32 in S3).** |
+| S3d catalogs and offers | Done (ADR 0012, AR-0005 G7–G12). DOM-CAT: catalogs composed from explicit objects, compiled CEL selectors (dependency sets from the AST, INV-CAT-2) and other catalogs (acyclic, INV-CAT-1). Membership is materialized by generation swap on publish and kept current from object and relationship events delivered by the outbox relay; incremental equals full on 10⁵ random changes and black-box (CR-011-005-01). Page sequences stay on their generation across swaps (CR-CAT-02). ResolveCatalog applies scope, eligibility, visible states (CR-011-005-02) and price enrichment, with no global fallback. Navigation, preview with diff, and IsMember are included. DOM-OFR: versioned offers on the interpreted `offer` lifecycle; a Configurator equal to brute force on 10⁴ random offers (CR-OFR-01); a price coverage scan that finds every seeded gap (CR-OFR-02) and measures the discount that picks the `offer.publish-approval` tier; eligibility with reason codes; FindOffers; transition matrices. Rules wait for DOM-RUL. **S3 exit demonstration green**: a Product and a Subscription from ucos.std types, one catalog, prices in 3 markets × 2 channels. **18 more black-box tests (50 in S3).** |
+
+**S3 is complete.** Its exit demonstration (`conformance/s3/test_s3_exit.py`) creates a Product and a Subscription
+from ucos.std types and resolves one catalog with prices in 3 markets × 2 channels without code changes. Next is
+**S4, transaction** (QTE, ORD, AVL, INV, PAY with a simulated provider).

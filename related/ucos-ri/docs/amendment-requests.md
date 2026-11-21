@@ -1,0 +1,171 @@
+# Corpus amendment requests raised by the RI
+
+Per CIC-030-001 §4.2, a deviation is recorded here and is never made silently. Each request is submitted
+to the corpus repository as an amendment.
+
+## AR-0001 — Tenant column on platform bookkeeping tables (CIC-003-001 §4 vs §5)
+
+- **Status: adopted** in corpus 1.2.0 (AMD-0002, CIC-003-001 1.1.0 §5).
+
+- Raised: 2026-10-05, slice S0
+- Conflict:
+  - CIC-003-001 §5 says "Every table has `tenant_id` as the first PK column", and CR-003-001-01 applies RLS
+    "on every table".
+  - The standard DDL in §4 defines `outbox` and `processed_messages` without `tenant_id`.
+- RI behaviour (S0):
+  - Both tables are treated as non-tenant platform bookkeeping. The service role may only `INSERT` into
+    `outbox` and cannot read it.
+  - Only the dedicated relay role may `SELECT` and `UPDATE` it. §5 allows dedicated roles for platform-wide jobs.
+  - `processed_messages` holds only consumer names and event ids.
+  - The conformance suite verifies these grants (`test_bookkeeping_tables_not_readable_by_service_role`).
+- Proposed amendment: in CIC-003-001 §5, state that the rule applies to tables holding tenant data. Name
+  `outbox` and `processed_messages` as platform bookkeeping governed by role grants. Alternatively, add
+  `tenant_id` to both tables.
+
+## AR-0002: Executable precision for context resolution (CIC-011-001 §1.2, §3, §6)
+
+- **Status: adopted** in corpus 1.4.0 (AMD-0004, annex CIC-011-007, CIC-011-001 1.2.0).
+
+- Raised: 2026-10-05, slice S1 (context runtime)
+- Problem: CR-011-001-01 requires byte-identical Resolutions across implementations in any language.
+  CIC-011-001 leaves several details open that change the bytes. `contracts/context-runtime/semantics.md`
+  pins each one, and every clarification below is labelled there:
+  - **C1–C3:** canonical JSON (JCS), integer-only numbers, and fixed-width instants compared as strings.
+  - **C4–C5:** hierarchy cycle handling and value normalization rules.
+  - **C6:** fallback relaxations are **not cumulative**. The corpus wording "yield ctx[d := a]" / "yield ctx \ {d}"
+    allows either reading.
+  - **C7:** the precedence order used for the reverse-precedence drop is `dimensionPrecedence`, followed by the other
+    dimensions by `defaultPrecedence` and then code.
+  - **C8:** specificity is computed with binary64 terms summed in scope order, truncated once, and no FMA.
+    (The corpus says "multiplying by 10⁶ and truncating" without fixing an evaluation order.)
+  - **C9:** for `descendant-of` with several matching values, the deepest match determines DepthFactor.
+  - **C10:** the tie-break is by ascending id (−Ordinal).
+  - **C11:** `policy:` strategies need the PDP and return `E-CTX-POLICY-DELEGATION-UNAVAILABLE` standalone.
+  - **C12:** contextDigest is formatted as `hex:bucket`, with 60 s default granularity.
+  - **C13:** table-driven derivations stand in until the rule engine lands.
+- Proposed amendment: adopt the semantics document as a normative annex of CIC-011-001 (version 1.2.0), and
+  publish the golden vectors (`conformance/context-resolution/`) as the CR-011-001-01 reference.
+
+## AR-0003: Decidable FULL_TRANSITIVE compatibility and event-registry scope (CIC-006-001 §3, DOM-EVT)
+
+- **Status: adopted** in corpus 1.4.0 (AMD-0004, annex CIC-006-002, CIC-006-001 1.1.0 §3.1; per-event
+  `classification`, default `internal`).
+
+- Raised: 2026-10-05, slice S1 (event registry)
+- Problem: CIC-006-001 requires FULL_TRANSITIVE schema compatibility within a MAJOR (INV-EVT-2) but does not define
+  it for JSON Schema. Full JSON Schema containment is undecidable in general, and implementations would disagree.
+- RI behaviour (`contracts/eventing-registry/semantics.md`):
+  - **E4:** a restricted event-schema profile. `$ref`, combinators and conditionals are refused.
+  - **E5:** a structural `accepts(reader, writer)` relation, made exact for the profile and identical in Go and
+    TypeScript (golden vectors in `conformance/event-registry/compat.yaml`).
+  - FULL is defined as accepting in both directions.
+  - **E6:** a fixed order of checks, so every implementation returns the same error.
+  - **E1:** event types are platform metadata, outside tenancy.
+  - **E2:** versions only increase.
+  - **E3:** digests are taken over the JCS text.
+- **Consequence the corpus should state.** Strict FULL means adding a typed field is a breaking change: in an open
+  model old writers may already have sent the name; in a closed model old readers reject it. RUL-EVT-1 (a new
+  `.vN+1` type) therefore applies more often than its wording suggests. Section §4.1 of the semantics lists what
+  stays compatible.
+- **Open point.** DOM specs do not give a classification per event (INV-EVT-4). The seed registers `internal`
+  until each event's classification is specified.
+- Proposed amendment: annex the semantics to CIC-006-001 (1.1.0). Add per-event `classification` to the DOM
+  `events` entries, so that VR-EVT-01 can check INV-EVT-4.
+
+## AR-0004: Decidable DOM-AUTH semantics and governed authority definitions (DOM-AUTH 1.1.0)
+
+- **Status: adopted** in corpus 1.4.0 (AMD-0004: annex CIC-002-003, DOM-AUTH 1.2.0 with ApproveRoleAssignment,
+  RejectRoleAssignment and RecordMandateUsage, CIC-015-001 1.1.0 remote owner protocol). The "not yet covered" items
+  below were implemented in slice S2d (ADR 0010), except per-period delegation limits, which still need a consuming
+  context.
+
+- Raised: 2026-10-06, slice S2c
+- Problem: DOM-AUTH states the rules but leaves choices open that change outcomes. Two implementations could
+  disagree on who may act, or on whether an assignment violates segregation of duties.
+- RI behaviour (`contracts/authority/semantics.md`):
+  - **A1, delegation base.** A root delegation passes on only the delegator's own role authority. Delegated authority
+    is passed on only by an explicit re-delegation (`parentDelegation`). This makes depth exact (INV-AUTH-5) and
+    keeps cycles harmless.
+  - **A2, coarse tokens.** Access tokens carry roles and delegated permissions without scope (DOM-IDN says roles are
+    "coarse"). Scoped decisions go through GetEffectiveAuthority and CheckSigningAuthority with a context. Tokens never
+    outlive the earliest `validTo` of the authority they carry.
+  - **A3, SoD scope overlap.** Overlap is conservative: scopes are disjoint only when finite value sets (`eq`/`in`,
+    or `not-in`) exclude each other. SoD members of kind `action` are permission strings; a role "holds" an action
+    when it grants that permission.
+  - **A4, action → permission.** AuthorityLimit actions map to the permissions that perform them (semantics §6).
+    The spec names actions but not permissions.
+  - **A5, CheckSigningAuthority.** Defined with three bases (limit, delegation, mandate). The context gains
+    `organization = representedParty`. Money never compares across currencies. Percent measures are facts only.
+  - **A6, mandates.** Terms are the content of `attestation` evidence, signed by the grantor with the key its token
+    was bound to. "Holds authority at signing" is evaluated at the evidence's `capturedAt`.
+  - **A7, propagation.** Narrowing changes publish per-party cut-offs in the revocation feed; the party's own tokens
+    and those of its downstream delegates are rejected when `iat ≤ cutoff`. This meets CR-AUTH-03 (10 s) with 5 s
+    polling.
+  - **A8, governed definitions across services.** "Via ChangeSet" for SoD sets and limits is implemented with a
+    remote owner protocol (`contracts/governance/remote-owner.openapi.yaml`). DOM-GOV stays the only publisher; drafts
+    reference the author's own draft ChangeSet.
+- **Not yet covered:**
+  - Mandate consumption (`used`, `exhausted`) needs a consuming context (S4).
+  - Access reviews and RUL-AUTH-3 auto-suspension are S2d.
+  - DefineRole: roles come from packs; tenant roles arrive with tenant packs.
+  - Per-period delegation limits are stored and served but not enforced until consumption exists.
+- Proposed amendment: annex the semantics to DOM-AUTH (1.2.0). Add the action → permission mapping to the
+  AuthorityLimit definition. State in CIC-015-001 §1 that governed definitions may be owned by any context through
+  the remote owner protocol.
+
+## AR-0005: DOM-COB and ucos.std gaps found by S3a
+
+- Raised: 2026-10-06, slice S3a (ADR 0011)
+- **G1, `launchAt`.** The `commercial-object` lifecycle guard of `activate` is
+  `!has(aggregate.launchAt) || now >= aggregate.launchAt`, and DOM-COB's state machine names the same guard. No
+  ucos.std attribute `launchAt` exists, so the guard can never fail and scheduled launches cannot be expressed.
+  Proposal: add attribute `launchAt` (datetime, optional) to facet `Identifiable`, or to a `Launchable` facet.
+- **G2, `reject`.** Policy `cob.transition` lists no role for transition `reject`, so `in-review → draft` is denied
+  for every principal. Proposal: allow `reject` for `product-approver`, with the same author ≠ approver condition as
+  `approve`.
+- **G3, missing API paths.** GenerateVariants and RetypeCommercialObject are commands without `apis` entries. RI
+  behaviour: `POST /v1/commercial-objects/{id}:generate-variants` and `…:retype`. Proposal: add both paths to
+  DOM-COB `apis`.
+- **G5, approver roles without approval permission (S3c).** Policy `pricing.approval` names `commercial-director` and
+  `cfo-office` as approval stages. AMD-0003 gave those roles only `governance.read`, so they cannot call
+  ApprovePriceList (`pricing.list.approve`). Proposal: grant `pricing.list.approve` to the approver roles that
+  `pricing.approval` names, and extend VR-AUTH-04 to check that every approver role holds the permission of the
+  command it approves.
+- **G6, price adjustments need DOM-RUL (S3c).** Adjustment phases CONTRACT to FEES are Rules of fact kind
+  `price-adjustment` (DOM-RUL), which the RI has not built yet. Slice S3 prices the LIST phase only; contract and
+  segment list prices still apply through context resolution (`contract`, `party-segment`).
+- **G7, DOM-RUL rules in catalogs and offers (S3d).** Catalog inclusion/exclusion rules and ordering, offer
+  `constraints`, `eligibilityRules` and transition eligibility rules are RuleUrns of DOM-RUL fact kinds. The RI refuses
+  them (`E-CAT-RULES-UNAVAILABLE`, `E-OFR-RULES-UNAVAILABLE`) until DOM-RUL exists; CIC-030-001 schedules DOM-RUL in no
+  slice before S7 although S3 contexts depend on it. Proposal: move DOM-RUL (fact kinds of the commercial core) into S3
+  or name it as an S3 prerequisite.
+- **G8, approval trigger of catalogs and offers (S3d).** DOM-CAT and DOM-OFR (and the ucos.std `offer` lifecycle) fire
+  `in-review → approved` on `ucos.governance.changeset.approved.v1`, but no governed kind exists for catalogs or offers,
+  and governance plans approvals by risk class (`governance.approval`) while `offer.publish-approval` plans by
+  `maxDiscountVsListPercent`. RI behaviour: a domain command `POST …:approve` `{decision, comment}` (as ApprovePriceList)
+  following `offer.publish-approval` stages, author and submitter excluded; RI events
+  `ucos.catalog.catalog.{approved,rejected,materialization-requested}.v1` and
+  `ucos.offer.offer.{approved,rejected,approval-recorded}.v1`. Proposal: either add ApproveCatalog/ApproveOffer
+  commands and events, or define catalog and offer as governed kinds and let ChangeSet approval plans take a
+  domain approval policy.
+- **G9, roles without the permissions their duties need (S3d).** `catalog-manager` (catalog.author) lacks
+  `catalog.read`; `pricing-manager` and `commercial-director`, which `offer.publish-approval` names as approvers, lack
+  `offer.read`. Proposal: grant `catalog.read` to `catalog-manager` and `offer.read` to the approver roles of
+  `offer.publish-approval` (extends G5's VR-AUTH-04 check).
+- **G10, catalog eligibility inputs (S3d).** `catalog.eligibility` reads `resource.audience` and
+  `resource.contractParty`, which are not Catalog fields. RI behaviour: Catalog carries `audience`
+  (`any|business|contract`, default `any`) and `contractParty`. Proposal: add both fields to DOM-CAT.
+- **G11, editing a published catalog (S3d).** INV-CAT-3 says edits of a published catalog create a new version
+  published by generation swap, but CatalogLifecycle has no edge out of `published` except `materializing` and
+  `retired`. RI behaviour: an edit opens a draft of the next version while the serving version keeps serving.
+  Proposal: model the working version's state separately from the serving version, or add `published → draft`
+  (ReviseCatalog).
+- **G12, under-specified selector and coverage inputs (S3d).** The Selector value object names `object`,
+  `classifications` and `relations` but not their shape; RI: `object = {id, typeRef, lineage, values}`, `relations =
+  {relType: [target URN]}`. INV-OFR-4's scan over "the scope's context lattice" does not say how currency is chosen
+  when the scope does not fix it; RI: the referenced price lists' currencies (all published lists when none). DOM-CAT's
+  CatalogSource has `ref` but no field for the selector expression; RI: `selector`. Proposal: specify these in DOM-CAT
+  and DOM-OFR.
+- **G4, transition permissions.** DOM-COB declares `cob.approve` but does not say which transitions need it. RI
+  behaviour: `approve` and `reject` need `cob.approve`; every other transition needs `cob.transition`. Proposal:
+  state it in DOM-COB `security`.
