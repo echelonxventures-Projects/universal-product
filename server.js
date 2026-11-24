@@ -233,7 +233,8 @@ const handler = async (req, res) => {
     if (url.pathname.startsWith("/api/")) {
       if (!apiLimiter(clientIp)) { res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "5" }); return res.end(JSON.stringify({ error: "Rate limit exceeded" })); }
       if (req.method === "POST" && url.pathname === "/api/auth/register" && !registerLimiter(clientIp + ":reg")) { res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "60" }); return res.end(JSON.stringify({ error: "Too many new accounts from this network — try again later" })); }
-      if (req.method === "POST" && /^\/api\/(auth\/(login|password|mfa|email|sso)|platform\/(login|mfa))/.test(url.pathname) && !authLimiter(clientIp + ":auth")) { res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "30" }); return res.end(JSON.stringify({ error: "Too many authentication attempts — slow down" })); }
+      if (/^\/api\/(auth|platform)\/login/.test(url.pathname) && !authLimiter(clientIp + ":auth")) { res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "30" }); return res.end(JSON.stringify({ error: "Too many authentication attempts — slow down" })); }
+      if (req.method === "POST" && /^\/api\/(auth\/(password|mfa|email|sso)|platform\/mfa)/.test(url.pathname) && !authLimiter(clientIp + ":prove")) { res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "30" }); return res.end(JSON.stringify({ error: "Too many authentication attempts — slow down" })); }
       const origin = req.headers.origin || req.headers.referer;
       if (["POST", "PUT", "DELETE"].includes(req.method) && origin) {
         let oh; try { oh = new URL(origin).host; } catch (e) { oh = ""; }

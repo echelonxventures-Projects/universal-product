@@ -1,5 +1,9 @@
 # LUXORA — the complete remaining todo list
 
+> Measured on 2026-10-21. Since then: routes and console screens moved into their domains (21 November), and the
+> go-live work of AMD-0051 (24 November). For what still stands in the way of real customers on an install, run
+> `npm run preflight`.
+
 Everything below is read out of the project's own registers, not invented: `_registry/roadmap.json`
 (the build path, the decisions and the gap register), `_registry/domains.json` (the 26 laws, the 12
 kernel parts, the 47 domains and their build status), `_registry/business-domains.json` (the 57 business

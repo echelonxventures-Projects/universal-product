@@ -6,6 +6,17 @@
 
 **Nothing is a bundle.** There is no "marketplace" or "commerce" entity — those are *compositions*. The only thing that exists is a **capability atom**: one individually switchable, individually tunable function (`buy_box`, `escrow`, `reviews`, `gift_cards`, `rfq_bidding`…) declared as a row in `platform_capabilities` with typed params and the console sections it governs. A store *is* the set of atoms it switched on (`GET /api/capabilities` → `composition`). Named blends (`blend_marketplace`, `blend_quick_commerce`…) and purchasable archetypes are convenience references to atoms — never the gate. The grant engine derives the console surface from the live composition (`lib/authz.js`), so nothing is ever granted as a package. **This holds platform-wide**: the 18 former `settings.features.*` booleans (reviews, Q&A, deals, coupons, gift cards, memberships, risk screening…) are atoms in the same catalog, switched and tuned exactly the way `buy_box` is — one switch, one vocabulary, shopper-facing *and* commerce-facing alike.
 
+## Going live
+
+1. `cp .env.example .env` and fill it in (strong passwords, `LUXORA_PEPPER`, `ACME_EMAIL`).
+2. Point your domain at the machine and run `docker compose up -d`: the platform, a TLS proxy (Caddy), Redis and a nightly backup.
+3. Sign in at `/console.html`. Platform and store admins set up two-step sign-in the first time.
+4. Set the email sender, a live payment gateway, the legal details and your catalogue in the consoles.
+5. `docker compose exec luxora node scripts/preflight.js` says what is left. Nothing required may be left before real customers.
+
+A store uses its own domain from Store console → Settings → Addresses (proven by a DNS TXT record). Point an outside
+monitor at `/readyz`. Restore a backup with `node scripts/restore.js <backup> --yes`.
+
 ## Documentation
 
 End‑to‑end guides for every role — **Customers, Store Admins, Support, Marketplace Sellers, and Platform (Super) Admins** — live in **[USER_MANUAL.md](USER_MANUAL.md)** (roles & capability matrix, per‑surface walkthroughs, security, glossary, troubleshooting).
