@@ -64,7 +64,8 @@
    "owns": {
     "files": [
      "lib/identity.js",
-     "lib/webauthn.js"
+     "lib/webauthn.js",
+     "lib/mfa.js"
     ],
     "tables": [
      "users",
@@ -82,12 +83,14 @@
      "platform_sessions",
      "platform_admins",
      "platform_identity_templates",
-     "tokens"
+     "tokens",
+     "mfa_factors",
+     "email_verifications"
     ],
     "routes": [
      "^/api/(auth|session|user|scim)(/|$)",
      "^/api/admin/(sso|scim|identity-provider-types|identity-providers|identity-settings|users|account)(/|$)",
-     "^/api/platform/(login|logout|me|identity-templates|admins|users)(/|$)"
+     "^/api/platform/(login|logout|me|mfa|identity-templates|admins|users)(/|$)"
     ],
     "machines": [],
     "capabilities": [],

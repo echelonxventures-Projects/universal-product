@@ -5018,6 +5018,7 @@ async function vPAdmins() {
       <td class="p-tag">${esc(String(a.created_at || "").slice(0, 19))}</td>
       <td style="white-space:nowrap">
         <button class="p-btn sm" data-paedit="${a.id}">Edit</button>
+        <button class="p-btn sm" data-pamfa="${a.id}" ${a.id === me ? "disabled" : ""} title="For someone who lost their phone and recovery codes">Reset two-step</button>
         <button class="p-btn sm danger" data-padel="${a.id}" ${a.id === me ? "disabled title='You cannot delete your own account'" : ""}>✕</button>
       </td>
     </tr>`).join("") || '<tr><td colspan="5" class="p-empty">No platform admins.</td></tr>';
@@ -5063,6 +5064,7 @@ function wirePAdmins() {
     catch (e) { toast(e.message); render(); }
   });
   document.querySelectorAll("[data-paedit]").forEach(b => b.onclick = () => editPAdmin(b.dataset.paedit));
+  document.querySelectorAll("[data-pamfa]").forEach(b => b.onclick = async () => { if (!confirm("Reset this admin's two-step sign-in? They are signed out and set it up again.")) return; try { await api("/platform/admins/" + b.dataset.pamfa + "/mfa-reset", "POST", {}); toast("Two-step sign-in reset"); } catch (e) { toast(e.message, "error"); } });
   document.querySelectorAll("[data-padel]").forEach(b => b.onclick = () => deletePAdmin(b.dataset.padel));
 }
 async function editPAdmin(id) {

@@ -60,13 +60,14 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `DELETE /api/platform/roles/:key` | `apiPlatformRoleDelete` | — |
 | `POST /api/platform/roles/staff` | `apiStaffRoleSave` | the store-staff surface. Each store may carry its OWN role set (rbac 'staffRoles:t<id>'), so the platform console edits the set the selected store actually enforces: name a store in the body to fork/edit that store's set, or omit it to edit the shared default every un-forked store inherits. rbac.upsertRole takes (tenantId, role) — the store first, the role second — and the first save to a store forks the full inherited set, so a store never starts empty. |
 | `DELETE /api/platform/roles/staff/:key` | `apiStaffRoleDelete` | — |
+| `POST /api/admin/staff/:id/mfa-reset` | `apiStaffMfaReset` | resets a staff member's second factor when they have lost it; an owner's only by an owner |
 
 ## Data flow
 
 ```mermaid
 flowchart LR
   U([Store staff / Store administrator / Platform administrator]) --> UI[store console, platform console]
-  UI --> API[19 API routes]
+  UI --> API[20 API routes]
   API --> ENG[authz.js, prbac.js, rbac.js, access.js]
   ENG --> DB[(policies)]
 

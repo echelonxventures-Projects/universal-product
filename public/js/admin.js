@@ -898,20 +898,21 @@ async function loadPayLedger() {
   const box = $("#payLedger"); if (!box) return;
   let d; try { d = await api("/admin/payments"); } catch (e) { box.innerHTML = `<p class="p-tag">${esc(e.message)}</p>`; return; }
   const rows = d.payments || [];
+  const owed = (d.owed || []).length ? `<div class="p-note"><b>Refunds owed to customers</b> — these could not be sent; refund the payment below once the reason is dealt with.<ul>${d.owed.map(r => `<li>${esc(r.order_num || "")}: ${esc(r.amount + " " + (r.currency || ""))} via ${esc(r.gateway)} — ${esc(r.error || "not sent")}</li>`).join("")}</ul></div>` : "";
   if (!rows.length) { box.innerHTML = '<p class="p-empty">No payments yet</p>'; return; }
   await loadSM();
   const act = p => smIs("payment", p.status, "awaiting") && p.live ? `<button class="p-btn sm" data-payrec="${p.id}">Check with gateway</button>`
     : smIs("payment", p.status, "awaiting") && p.offline ? `<button class="p-btn sm primary" data-payrcv="${p.id}">Record received</button>`
     : smIs("payment", p.status, "refundable") ? `<button class="p-btn sm" data-payref="${p.id}">Refund</button>` : "";
-  box.innerHTML = `<div class="p-scroll-x"><table class="p-table"><thead><tr><th>When</th><th>Order</th><th>Gateway</th><th>Method</th><th class="num">Amount</th><th>Status</th><th>Reference</th><th></th></tr></thead><tbody>${rows.map(p => `<tr>
+  box.innerHTML = owed + `<div class="p-scroll-x"><table class="p-table"><thead><tr><th>When</th><th>Order</th><th>Gateway</th><th>Method</th><th class="num">Amount</th><th>Status</th><th>Reference</th><th></th></tr></thead><tbody>${rows.map(p => `<tr>
     <td class="p-tag">${esc(String(p.created_at || "").slice(0, 16))}</td><td>${p.order_num ? esc(p.order_num) : (p.kind ? esc(p.kind) : "—")}</td>
     <td>${esc(p.gateway)}${p.live ? ' <span class="badge published">live</span>' : ""}</td><td class="p-tag">${esc(p.method || "")}</td>
-    <td class="num">${esc(String(p.amount))} ${esc(p.currency || "")}</td><td><span class="badge ${esc(p.status)}">${esc(p.status)}</span></td>
+    <td class="num">${esc(String(p.amount))} ${esc(p.currency || "")}${p.refunded > 0 ? `<br><span class="p-tag">${esc(String(p.refunded))} refunded</span>` : ""}</td><td><span class="badge ${esc(p.status)}">${esc(p.status)}</span></td>
     <td><code style="font-size:11px">${esc(p.txn_ref || "")}</code></td><td style="white-space:nowrap">${act(p)}</td></tr>`).join("")}</tbody></table></div>`;
   const go = async (path, body, done) => { try { const r = await api(path, "POST", body || {}); toast(done(r)); loadPayLedger(); } catch (e) { toast(e.message); } };
   box.querySelectorAll("[data-payrec]").forEach(b => b.onclick = () => go(`/admin/payments/${b.dataset.payrec}/reconcile`, {}, r => "Gateway says: " + ((r.result && (r.result.provider_status || r.result.status)) || r.payment.status)));
   box.querySelectorAll("[data-payrcv]").forEach(b => b.onclick = () => { if (confirm("Record this payment as received? The order is released to fulfilment.")) go(`/admin/payments/${b.dataset.payrcv}/received`, {}, () => "Payment recorded as received"); });
-  box.querySelectorAll("[data-payref]").forEach(b => b.onclick = () => { if (confirm("Refund this payment in full?")) go(`/admin/payments/${b.dataset.payref}/refund`, {}, () => "Payment refunded"); });
+  box.querySelectorAll("[data-payref]").forEach(b => b.onclick = () => { const p = rows.find(x => String(x.id) === b.dataset.payref) || {}; const left = +(p.amount - (p.refunded || 0)).toFixed(2); const a = prompt("How much to refund, in " + (p.currency || "") + "? (up to " + left + ")", String(left)); if (a) go(`/admin/payments/${b.dataset.payref}/refund`, { amount: Number(a) }, r => r.amount + " " + (p.currency || "") + " refunded"); });
 }
 
 /* ---------- boot ---------- */

@@ -13,6 +13,7 @@ Who someone is: accounts, sign-in by every method (password, one-time code, magi
 | Module | What it is |
 |---|---|
 | `lib/identity.js` |  |
+| `lib/mfa.js` | the second factor for people who run a platform or a store. |
 | `lib/webauthn.js` | UCOS Ω∞ · WebAuthn — real assertion math, zero dependencies (node:crypto only). -------------------------------------------------------------------------- The identity engine advertises a biometric flow (WebAuthn / passkey). For a long time that was a documented stub: the "verification" checked only that an assertion HAD the two fields a real one has, and accepted anything that did — so a login method was advertised that no cryptography backed. This module is the math. |
 | `lib/routes/identity.js` | identity domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the identity domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
@@ -41,6 +42,7 @@ Who someone is: accounts, sign-in by every method (password, one-time code, magi
 | `admin_id` | INTEGER REFERENCES platform_admins(id) |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 | `expires_at` | TEXT NOT NULL |
+| `mfa_at` | TEXT |
 | `uid` | TEXT |
 
 ### `tokens`
@@ -75,6 +77,7 @@ Who someone is: accounts, sign-in by every method (password, one-time code, magi
 | `perms` | TEXT DEFAULT '{}' |
 | `last_login` | TEXT |
 | `disabled` | INTEGER DEFAULT 0 |
+| `email_verified_at` | TEXT |
 | `uid` | TEXT |
 
 ### `sessions`
@@ -87,6 +90,7 @@ Who someone is: accounts, sign-in by every method (password, one-time code, magi
 | `expires_at` | TEXT NOT NULL |
 | `csrf` | TEXT |
 | `auth_at` | TEXT |
+| `mfa_at` | TEXT |
 | `uid` | TEXT |
 
 ### `sso_connections`
@@ -229,6 +233,34 @@ Who someone is: accounts, sign-in by every method (password, one-time code, magi
 | `ip` | TEXT |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 
+### `mfa_factors`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `scope` | TEXT NOT NULL |
+| `subject_id` | INTEGER NOT NULL |
+| `secret` | TEXT |
+| `pending` | TEXT |
+| `active` | INTEGER NOT NULL DEFAULT 0 |
+| `last_step` | INTEGER NOT NULL DEFAULT 0 |
+| `recovery` | TEXT NOT NULL DEFAULT '[]' |
+| `confirmed_at` | TEXT |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
+### `email_verifications`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `user_id` | INTEGER NOT NULL |
+| `email` | TEXT NOT NULL |
+| `token_hash` | TEXT NOT NULL UNIQUE |
+| `expires_at` | INTEGER NOT NULL |
+| `used_at` | TEXT |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
 ## API reference
 
 Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the session; mutating calls accept an `Idempotency-Key` header where noted.
@@ -260,6 +292,19 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `POST /api/admin/identity-provider-types` | `apiIdentityProviderTypeCreate` | a new authentication KIND is platform vocabulary — authoring it is a platform action, and the console's provider-type form is the only writer. Idempotent by key. |
 | `GET /api/admin/identity-settings` | `apiIdentitySettingsGet` | — |
 | `PUT /api/admin/identity-settings` | `apiIdentitySettingsPut` | — |
+| `GET /api/auth/mfa` | `apiMfaStatus` | whether the signed-in person has a second factor, must have one, and has confirmed it on this sign-in |
+| `POST /api/auth/mfa/verify` | `apiMfaVerify` | confirms this sign-in with a code from the authenticator app, or a recovery code |
+| `POST /api/auth/mfa/start` | `apiMfaStart` | starts setting up an authenticator app: a new key, not active until a code from it is confirmed |
+| `POST /api/auth/mfa/confirm` | `apiMfaConfirm` | turns the new key on with a code from it, and gives the recovery codes once |
+| `POST /api/auth/mfa/remove` | `apiMfaRemove` | turns the second factor off, only with a working code |
+| `GET /api/platform/mfa` | `apiMfaStatus` | whether the signed-in person has a second factor, must have one, and has confirmed it on this sign-in |
+| `POST /api/platform/mfa/verify` | `apiMfaVerify` | confirms this sign-in with a code from the authenticator app, or a recovery code |
+| `POST /api/platform/mfa/start` | `apiMfaStart` | starts setting up an authenticator app: a new key, not active until a code from it is confirmed |
+| `POST /api/platform/mfa/confirm` | `apiMfaConfirm` | turns the new key on with a code from it, and gives the recovery codes once |
+| `POST /api/platform/mfa/remove` | `apiMfaRemove` | turns the second factor off, only with a working code |
+| `POST /api/platform/admins/:id/mfa-reset` | `apiPlatformAdminMfaReset` | someone who lost their phone and codes: a platform admin who may manage admins resets another's |
+| `POST /api/auth/email/verify` | `apiEmailVerify` | confirms an email address with the link sent to it |
+| `POST /api/auth/email/send` | `apiEmailVerifySend` | sends the signed-in shopper another confirmation link |
 | `POST /api/auth/password/forgot` | `apiPasswordForgot` | "forgot password" answers the same whether or not the account exists, so it cannot be used to discover who shops here. At most three links per account per 15 minutes; a new link retires the older ones. |
 | `POST /api/auth/password/reset` | `apiPasswordReset` | a reset proves control of the mailbox, so it ends every session the account holds (the reason for a reset is often that someone else is signed in) and clears the lockout |
 | `POST /api/auth/login-init` | `apiLoginInit` | — |
@@ -291,8 +336,8 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 ```mermaid
 flowchart LR
   U([Guest / Shopper / Seller / Store staff / Store administrator / Platform administrator / Developer]) --> UI[reset.html, store console, platform console]
-  UI --> API[50 API routes]
-  API --> ENG[identity.js, webauthn.js, identity.js]
+  UI --> API[63 API routes]
+  API --> ENG[identity.js, mfa.js, webauthn.js, identity.js]
   ENG --> DB[(platform_admins, platform_sessions, tokens, users, sessions, sso_connections, …)]
 
 ```

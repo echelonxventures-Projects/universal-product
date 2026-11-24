@@ -749,7 +749,7 @@ async function pageCheckout() {
     <div class="co-sec"><h3><span class="co-num">1</span> Shipping address</h3>
       ${atoms().pickup_points ? `<div class="co-mode"><label><input type="radio" name="coMode" value="" checked> Deliver to an address</label><label><input type="radio" name="coMode" value="1"> Collect from a pickup point</label></div>
       <div id="coPickup" hidden><input id="coPkQ" placeholder="Find a point near… (postcode or town)" value="${esc(S.zip)}"><div id="coPkList" class="co-pk-list"></div></div>` : ""}
-      <form id="shipForm" class="co-form"><input id="coName" placeholder="Full name" required value="${esc(S.user ? S.user.name : "")}">
+      <form id="shipForm" class="co-form"><input id="coName" placeholder="Full name" required value="${esc(S.user ? S.user.name : "")}">${S.user ? "" : `<input id="coEmail" type="email" placeholder="Email (for your order confirmation)" required autocomplete="email">`}
         <input id="coAddr" placeholder="Address" required>
         <div class="co-row3"><input id="coCity" placeholder="City" required><input id="coState" placeholder="State"><input id="coZip" placeholder="ZIP" value="${esc(S.zip)}"></div>
         <input id="coPhone" placeholder="Phone (optional)"></form></div>
@@ -844,7 +844,7 @@ async function pageCheckout() {
     const btn = $("#placeOrder"); btn.disabled = true; btn.textContent = "Processing…";
     try {
       const r = await api("/checkout", "POST", {
-        name: $("#coName").value, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value,
+        name: $("#coName").value, email: $("#coEmail") ? $("#coEmail").value : undefined, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value,
         gateway: (document.querySelector('input[name=pay]:checked') || {}).value || (gws[0] || {}).id,
         method: ((gws.find(g => g.id === (document.querySelector('input[name=pay]:checked') || {}).value) || {}).methods || ["card"])[0],
         carrier: pickedCarrier(), rate_id: rateId, pickup_point: pickupPoint || undefined,
@@ -966,10 +966,16 @@ async function activityHtml() {
 async function pageOrders() {
   const main = $("#page");
   main.innerHTML = `<div class="loading">Loading…</div>`;
+  const vt = new URLSearchParams(location.search).get("verify");
+  if (vt) {
+    history.replaceState(null, "", "orders.html");
+    try { await api("/auth/email/verify", "POST", { token: vt }); await refreshSession(); toast("Your email is confirmed"); } catch (e) { toast("⚠️ " + esc(e.message)); }
+  }
   const [{ orders }, subs, mem] = await Promise.all([api("/orders"), CFG.features.subscribeSave ? api("/subscriptions") : Promise.resolve({ schedules: [] }), CFG.features.membership ? api("/membership") : Promise.resolve({ membership: null })]);
   document.title = `${T("yourOrders")} — ${CFG.brand.name}`;
   if (!orders.length && !(subs.schedules || []).length) { main.innerHTML = `<div class="ord-empty"><h2>${esc(T("yourOrders"))}</h2><p>No orders yet.</p><a class="btn-yellow" href="index.html">Start exploring</a></div>` + await activityHtml(); return; }
-  main.innerHTML = `<h1 class="ord-h1">${esc(T("yourOrders"))}</h1>` + await activityHtml();
+  const unconfirmed = S.user && !S.user.email_verified_at ? `<div class="ord"><div class="ord-h"><div><em>EMAIL</em><b>Please confirm ${esc(S.user.email)}</b></div><div class="ord-h-r"><button class="btn-white" data-act="email-verify">Send the link again</button></div></div></div>` : "";
+  main.innerHTML = `<h1 class="ord-h1">${esc(T("yourOrders"))}</h1>` + unconfirmed + await activityHtml();
   if (CFG.features.membership && mem.membership && Number((mem.membership.tier_detail || {}).price) > 0) {
     const m = mem.membership;
     main.innerHTML += `<div class="ord mem-card"><div class="mem-h"><span class="mem-badge">🎟️ ${esc(m.tier_detail.name)}</span><div><em>MEMBERSHIP</em><b>Active${m.renews_at ? " · renews " + String(m.renews_at).slice(0, 10) : ""}</b></div>
@@ -995,11 +1001,11 @@ async function pageOrders() {
       <div><em>PLACED</em><b>${created.toLocaleDateString(CFG.commerce.locale)}</b></div>
       <div><em>TOTAL</em><b>${money(o.total)}</b></div>
       <div><em>PAYMENT</em><b>${esc(o.payment ? o.payment.gateway : o.pay_method)} · ${esc(o.payment ? o.payment.status : "")}</b></div>
-      <div class="ord-h-r"><em>ORDER #${esc(o.num)}</em><button class="btn-white" data-act="buy-again" data-num="${esc(o.num)}">Buy it again</button><button class="btn-white" data-act="return-open" data-num="${esc(o.num)}">Return</button></div></div>
-      <div class="ord-body">${items.map(({ product: p, qty }) => `<div class="ord-i">${img(p, "big")}<div class="ord-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><span>${esc(p.b)}</span></div><span class="ord-i-qty">Qty: ${qty}</span></div>`).join("")}
+      <div class="ord-h-r"><em>ORDER #${esc(o.num)}</em><button class="btn-white" data-act="buy-again" data-num="${esc(o.num)}">Buy it again</button>${(o.can || {}).cancel ? `<button class="btn-white" data-act="order-cancel" data-id="${o.id}" data-num="${esc(o.num)}">Cancel order</button>` : ""}${(o.can || {}).return ? `<button class="btn-white" data-act="return-open" data-num="${esc(o.num)}">Return all</button>` : ""}</div></div>
+      <div class="ord-body">${items.map(({ product: p, qty }) => `<div class="ord-i">${img(p, "big")}<div class="ord-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><span>${esc(p.b)}</span></div><span class="ord-i-qty">Qty: ${qty}</span>${(o.can || {}).return ? `<button class="btn-white sm" data-act="return-open" data-num="${esc(o.num)}" data-id="${p.id}" data-qty="${qty}">Return</button>` : ""}</div>`).join("")}
         <div class="ord-buy">${items.map(({ product: p }) => `<a href="${prodLink(p)}">${img(p, "tile")}</a>`).join("")}</div>
         ${o.pickup ? `<div class="ord-pk">📍 ${esc(o.pickup.point ? o.pickup.point.name : "")} · ${esc((o.pickup.state.icon ? o.pickup.state.icon + " " : "") + o.pickup.state.label)}${o.pickup.code ? ` · pickup code <b class="pk-code">${esc(o.pickup.code)}</b>` : ""}${o.pickup.hold_until ? ` · collect by ${esc(String(o.pickup.hold_until).slice(0, 16))} UTC` : ""}<br><span class="pay-meta">${esc(o.pickup.point ? [o.pickup.point.address, o.pickup.point.city].filter(Boolean).join(", ") : "")}${o.pickup.point && o.pickup.point.hours ? " · " + esc(o.pickup.point.hours) : ""}</span></div>` : ""}
-        <div class="ord-r"><div class="ord-status ${st[1]}">${st[0]} · ${dShort(o.eta_days || 5)}</div><a href="#" data-act="track">Track</a></div></div></div>`;
+        <div class="ord-r"><div class="ord-status ${st[1]}">${esc(st[0])}${(o.can || {}).cancel || o.late ? " · " + (o.late ? "later than expected" : "expected " + new Date(created.getTime() + (o.eta_days || 5) * 864e5).toLocaleDateString(CFG.commerce.locale)) : ""}${(o.refunds || []).length ? " · refunded " + o.refunds.map(r => esc(r.amount + " " + r.currency)).join(", ") : ""}</div>${(o.tracking || []).map(t => `<span>📦 ${esc(t.carrier || "")} <b>${esc(t.tracking_number)}</b> · ${esc(t.status || "")}</span>`).join("")}</div></div></div>`;
   }).join("");
 }
 
@@ -1079,7 +1085,7 @@ function pageCS() {
     <div class="cs-need"><h2>How may we assist?</h2><div class="cs-search"><input id="csIn" placeholder="Describe your issue" class="cs-in"><button class="cs-go" id="csGo">→</button></div></div>
     <section class="cs-faq"><h2>Answers</h2>${[
     ["Where is my order?", `Open <a href='orders.html'>${T("yourOrders")}</a> and select "Track".`],
-    ["How do returns work?", "Complimentary returns within 30 days — request one from any order."],
+    ["How do returns work?", (Number(CFG.commerce.returnDays) > 0 ? "You can return items within " + CFG.commerce.returnDays + " days" : "You can return items") + " — request it from any delivered order."],
     [`What does ${T("priorityBadge")} include?`, T("priorityPerk")],
     ["How do I change my location?", `Click "${T("deliverTo")}" in the header.`],
     ["Can I pay with a gift balance?", `Yes — top up from <a href='gift-cards.html'>Gift Cards</a>; applied automatically at checkout.`]
@@ -1317,7 +1323,7 @@ document.addEventListener("click", async e => {
   const el = e.target.closest("[data-act]");
   if (!el) return;
   const act = el.dataset.act, id = el.dataset.id;
-  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "open-review", "buy-again", "list", "rfq-open", "return-open", "coupon", "select-variant", "ugc-vote", "qna-ask", "sub-save", "mem-subscribe", "mem-cancel", "sub-skip", "sub-pause", "sub-resume", "sub-cancel", "lst-add", "alert-open", "grp-join", "au-bid", "au-buynow", "au-pay", "offer-open", "msg-open", "bk-hold", "act-do", "terms-buy", "gc-amt", "gc-occ", "gc-buy", "gc-redeem", "gc-check"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
+  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "open-review", "buy-again", "list", "rfq-open", "return-open", "order-cancel", "email-verify", "coupon", "select-variant", "ugc-vote", "qna-ask", "sub-save", "mem-subscribe", "mem-cancel", "sub-skip", "sub-pause", "sub-resume", "sub-cancel", "lst-add", "alert-open", "grp-join", "au-bid", "au-buynow", "au-pay", "offer-open", "msg-open", "bk-hold", "act-do", "terms-buy", "gc-amt", "gc-occ", "gc-buy", "gc-redeem", "gc-check"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
   try {
     switch (act) {
       case "select-variant": {
@@ -1382,8 +1388,11 @@ document.addEventListener("click", async e => {
       }
       case "return-open": {
         const num = el.dataset.num;
-        const reason = prompt("Reason for return?");
-        if (reason) { const r = await api("/returns", "POST", { order_num: num, reason }); toast("↩️ " + esc(r.ref) + " created — label emailed"); }
+        const most = Number(el.dataset.qty) || 0;
+        const qty = id && most > 1 ? prompt("How many would you like to return? (1 to " + most + ")", "1") : "1";
+        if (!qty) break;
+        const reason = prompt("Why are you returning " + (id ? "this item" : "this order") + "?");
+        if (reason) { const r = await api("/returns", "POST", id ? { order_num: num, product_id: id, qty: Number(qty), reason } : { order_num: num, reason }); toast("↩️ " + esc((r.returns || [r]).map(x => x.ref).join(", ")) + " requested — the store will tell you what happens next"); await initPage(); }
         break;
       }
       case "buy-again": {
@@ -1392,7 +1401,13 @@ document.addEventListener("click", async e => {
         if (o) { for (const it of o.items) await api("/cart", "POST", { id: it.id, qty: it.qty }); await refreshSession(); toast("◇ Reordered into your bag <a href='cart.html'>View →</a>"); }
         break;
       }
-      case "track": toast("📦 Your parcel is <b>out for delivery</b>"); break;
+      case "email-verify": { const r = await api("/auth/email/send", "POST", {}); toast(r.already ? "Your email is already confirmed" : "We sent you a confirmation link"); break; }
+      case "order-cancel": {
+        if (!confirm("Cancel order " + el.dataset.num + "? Anything you paid is refunded.")) break;
+        const r = await api("/orders/" + id + "/cancel", "POST", {});
+        toast(r.refunded > 0 ? "Order cancelled — your refund is on its way" : r.owed > 0 ? "Order cancelled — the store will refund you" : "Order cancelled");
+        await initPage(); break;
+      }
       case "lst-add": await listPicker(id); break;
       case "bk-hold": {
         if (!S.user) { openModal("authModal"); break; }

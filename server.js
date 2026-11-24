@@ -22,6 +22,7 @@ const metrics = require("./lib/metrics.js");
 const sec = require("./lib/security.js");
 sec.initDb({ get, run, all });
 const idem = require("./lib/idempotency.js");
+const mfa = require("./lib/mfa.js");
 require("./lib/modules.js").ensureBaselines();
 try { require("./lib/identity.js").ensureIdentityTemplates(); } catch (e) { console.error("identity templates seed:", e.message); }
 try { require("./lib/env.js").boot(); } catch (e) { console.error("env boot:", e.message); }
@@ -42,6 +43,7 @@ const IS_TLS = !!TLS;
 /* L9 supply chain: SRI hashes computed fresh per request (see sec.applySri) so edited assets never ship stale integrity */
 /* L8 abuse control */
 const authLimiter = sec.RateLimiter(() => sec.policy().authPerMin, () => sec.policy().authPerMin / 60);
+const registerLimiter = sec.RateLimiter(() => sec.policy().registerPerHour, () => sec.policy().registerPerHour / 3600);
 const apiLimiter = sec.RateLimiter(() => sec.policy().apiPerMin, () => sec.policy().apiPerMin / 60);
 
 function parseCookies(str) {
@@ -83,10 +85,16 @@ function getSession(req, res, url, cookies) {
     const u = get("SELECT tenant_id FROM users WHERE id=?", s.user_id);
     if (!u || u.tenant_id !== tenant.id) userTenantOk = false;
   }
-  const session = { sid, user_id: userTenantOk ? s.user_id : null, tenant, zip: st.zip, gift_balance: st.gift_balance, coupon: st.coupon || "", csrf: s.csrf };
+  const session = { sid, user_id: userTenantOk ? s.user_id : null, mfa_at: s.mfa_at || null, device: cookies[sec.DEVICE_COOKIE] || "", tenant, zip: st.zip, gift_balance: st.gift_balance, coupon: st.coupon || "", csrf: s.csrf };
   if (cookies.azp) {
     const ps = get("SELECT * FROM platform_sessions WHERE ptid=? AND expires_at > datetime('now')", cookies.azp);
-    if (ps) session.ptid = ps.ptid, session.platform_admin = get("SELECT id,name,email,role,perms FROM platform_admins WHERE id=?", ps.admin_id);
+    if (ps) {
+      session.ptid = ps.ptid;
+      const pa = get("SELECT id,name,email,role,perms FROM platform_admins WHERE id=?", ps.admin_id);
+      /* until the second factor is confirmed (or set up, where required) the session carries no platform authority */
+      const st = pa ? mfa.state("platform", pa.id, ps.mfa_at) : "ok";
+      if (st === "ok") session.platform_admin = pa; else session.platform_pending = { ...pa, mfa: st };
+    }
   }
   return session;
 }
@@ -189,7 +197,8 @@ const handler = async (req, res) => {
   try {
     if (url.pathname.startsWith("/api/")) {
       if (!apiLimiter(clientIp)) { res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "5" }); return res.end(JSON.stringify({ error: "Rate limit exceeded" })); }
-      if (/^\/api\/(auth|platform)\/login/.test(url.pathname) && !authLimiter(clientIp + ":auth")) { res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "30" }); return res.end(JSON.stringify({ error: "Too many authentication attempts — slow down" })); }
+      if (req.method === "POST" && url.pathname === "/api/auth/register" && !registerLimiter(clientIp + ":reg")) { res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "60" }); return res.end(JSON.stringify({ error: "Too many new accounts from this network — try again later" })); }
+      if (req.method === "POST" && /^\/api\/(auth\/(login|password|mfa|email|sso)|platform\/(login|mfa))/.test(url.pathname) && !authLimiter(clientIp + ":auth")) { res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "30" }); return res.end(JSON.stringify({ error: "Too many authentication attempts — slow down" })); }
       const origin = req.headers.origin || req.headers.referer;
       if (["POST", "PUT", "DELETE"].includes(req.method) && origin) {
         let oh; try { oh = new URL(origin).host; } catch (e) { oh = ""; }
@@ -290,7 +299,7 @@ const handler = async (req, res) => {
          a wrong token is a clean 401, never a crash */
       const bt = Buffer.from(bearer), tt = Buffer.from(token || "");
       const authed = (token && token.length >= 16 && bearer.length === token.length && crypto.timingSafeEqual(bt, tt))
-        || (cookies.azp && get("SELECT 1 FROM platform_sessions WHERE ptid=? AND expires_at > datetime('now')", cookies.azp));
+        || (() => { const ps = cookies.azp && get("SELECT admin_id, mfa_at FROM platform_sessions WHERE ptid=? AND expires_at > datetime('now')", cookies.azp); return !!ps && mfa.state("platform", ps.admin_id, ps.mfa_at) === "ok"; })();
       if (!authed) { res.writeHead(401, { "Content-Type": "text/plain", "WWW-Authenticate": 'Bearer realm="luxora-metrics"' }); return res.end("Unauthorized"); }
       const body = require("./lib/enterprise.js").promMetrics(metrics.snapshot(null));
       res.writeHead(200, { "Content-Type": "text/plain; version=0.0.4" });

@@ -43,7 +43,7 @@ const cleanup = () => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(
   {
     const base = sec.DEFAULT_POLICY;
     const weakening = { minPasswordLength: base.minPasswordLength - 4, requireLetterDigit: false, blockCommon: false, lockoutThreshold: base.lockoutThreshold * 10,
-      lockoutBaseSec: 1, lockoutCapSec: 1, csrfEnabled: false, hsts: false, kdfV2: { logN: base.kdfV2.logN - 3 } };
+      lockoutBaseSec: 1, lockoutCapSec: 1, csrfEnabled: false, hsts: false, platformMfaRequired: false, kdfV2: { logN: base.kdfV2.logN - 3 } };
     const breaches = sec.floorBreaches(weakening);
     ok(Object.keys(sec.FLOOR).every(k => breaches.includes(k)) && breaches.includes("kdfV2.logN"), "every floor key is detected when weakened", breaches);
     const after = sec.setPolicy(weakening);

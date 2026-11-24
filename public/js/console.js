@@ -415,6 +415,9 @@ async function boot() {
   const meUrl = storeParam ? "/api/auth/me?store=" + encodeURIComponent(storeParam) : "/api/auth/me";
   const r = await api(meUrl);
   if (r && r.money) window.LX_MONEY = r.money;
+  /* signed in, but the second factor is still to be confirmed or set up */
+  const step = r && r.mfa ? (r.mfa.platform ? ["platform", r.mfa.platform] : r.mfa.store ? ["auth", r.mfa.store] : null) : null;
+  if (step) return mfaForm(step[0], step[1]);
   if (!r || (!r.hasStore && !r.hasPlatform)) return loginForm(r);
   me.store = r.identity.store || null;
   me.platform = r.identity.platform || null;
@@ -440,6 +443,28 @@ async function boot() {
   render();
 }
 
+/* the second factor: a code from the app, or its set-up — the code is typed or the key entered by
+   hand, and the recovery codes are shown once */
+async function mfaForm(base, step) {
+  const path = "/api/" + base + "/mfa/";
+  const enrol = step === "setup" ? await api(path + "start", "POST", {}) : null;
+  $("#app").innerHTML = `<div class="p-login"><div class="p-login-box"><h1>LUXORA</h1><p>${enrol ? "Set up two-step sign-in" : "Two-step sign-in"}</p>
+    ${enrol && enrol.secret ? `<p class="hint">Add this key to your authenticator app, then enter the code it shows.</p><p><code id="mfaKey" style="word-break:break-all">${esc(enrol.secret.replace(/(.{4})/g, "$1 ").trim())}</code></p><p class="hint"><a href="${esc(enrol.uri)}">Open in my authenticator app</a></p>` : `<p class="hint">Enter the code from your authenticator app, or one of your recovery codes.</p>`}
+    <form id="mf" class="p-form"><label><span>Code</span><input id="mc" autocomplete="one-time-code" inputmode="${enrol ? "numeric" : "text"}" required autofocus></label>
+    <button class="p-btn primary" style="width:100%">${enrol ? "Turn on" : "Continue"}</button></form>
+    <p class="p-err hidden" id="mfErr" style="color:var(--p-red);font-size:13px;margin:10px 0 0"></p>
+    <p class="hint"><a href="#" id="mfOut">Sign out</a></p></div></div>`;
+  $("#mfOut").onclick = async e => { e.preventDefault(); await api("/api/auth/logout", "POST").catch(() => { }); await api("/api/platform/logout", "POST").catch(() => { }); location.href = "/console.html"; };
+  $("#mf").onsubmit = async e => {
+    e.preventDefault();
+    const r = await api(path + (enrol ? "confirm" : "verify"), "POST", { code: $("#mc").value.trim() });
+    if (!r.ok) { $("#mfErr").textContent = "⚠️ " + (r.error || "That code is not right"); $("#mfErr").classList.remove("hidden"); return; }
+    if (!r.recovery) return boot();
+    $("#app").innerHTML = `<div class="p-login"><div class="p-login-box"><h1>LUXORA</h1><p>Keep these recovery codes</p><p class="hint">Each one signs you in once if you lose your phone. They are not shown again.</p>
+      <pre style="text-align:center;line-height:1.8">${r.recovery.map(esc).join("\n")}</pre><button class="p-btn primary" id="mfDone" style="width:100%">I have saved them</button></div></div>`;
+    $("#mfDone").onclick = () => boot();
+  };
+}
 /* one sign-in for both authorities: try the platform account first, then this
    store's staff — so an operator with one email on both surfaces is in once */
 function loginForm(r) {

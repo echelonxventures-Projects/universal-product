@@ -7,7 +7,7 @@ CREATE TABLE platform_admins (
 CREATE TABLE platform_sessions (
   ptid TEXT PRIMARY KEY, admin_id INTEGER REFERENCES platform_admins(id),
   created_at TEXT NOT NULL DEFAULT (datetime('now')), expires_at TEXT NOT NULL
-, uid TEXT);
+, mfa_at TEXT, uid TEXT);
 CREATE TABLE tokens (
   token TEXT PRIMARY KEY, tenant_id INTEGER NOT NULL, user_id INTEGER NOT NULL,
   created_at TEXT NOT NULL DEFAULT (datetime('now')), expires_at TEXT NOT NULL
@@ -17,13 +17,13 @@ CREATE TABLE users (
   tenant_id INTEGER NOT NULL DEFAULT 1,
   name TEXT NOT NULL, email TEXT NOT NULL, salt TEXT NOT NULL, hash TEXT NOT NULL,
   role TEXT NOT NULL DEFAULT 'customer',
-  created_at TEXT NOT NULL DEFAULT (datetime('now')), kyc_status TEXT DEFAULT 'unverified', bnpl_eligible INTEGER DEFAULT 0, loyalty_points INTEGER DEFAULT 0, kdf_version TEXT DEFAULT 'v1', pwd_history TEXT DEFAULT '[]', staff_role TEXT DEFAULT 'owner', perms TEXT DEFAULT '{}', last_login TEXT, disabled INTEGER DEFAULT 0, uid TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), kyc_status TEXT DEFAULT 'unverified', bnpl_eligible INTEGER DEFAULT 0, loyalty_points INTEGER DEFAULT 0, kdf_version TEXT DEFAULT 'v1', pwd_history TEXT DEFAULT '[]', staff_role TEXT DEFAULT 'owner', perms TEXT DEFAULT '{}', last_login TEXT, disabled INTEGER DEFAULT 0, email_verified_at TEXT, uid TEXT,
   UNIQUE(tenant_id, email)
 );
 CREATE TABLE sessions (
   sid TEXT PRIMARY KEY, user_id INTEGER REFERENCES users(id),
   created_at TEXT NOT NULL DEFAULT (datetime('now')), expires_at TEXT NOT NULL
-, csrf TEXT, auth_at TEXT, uid TEXT);
+, csrf TEXT, auth_at TEXT, mfa_at TEXT, uid TEXT);
 CREATE TABLE sso_connections (
   tenant_id INTEGER PRIMARY KEY, provider TEXT DEFAULT 'okta', entity_id TEXT DEFAULT '',
   sso_url TEXT DEFAULT '', cert TEXT DEFAULT '', enabled INTEGER DEFAULT 0, domains TEXT DEFAULT '[]',
@@ -79,6 +79,15 @@ CREATE TABLE password_resets (
   token_hash TEXT NOT NULL UNIQUE, expires_at INTEGER NOT NULL, used_at TEXT, ip TEXT,
   created_at TEXT NOT NULL DEFAULT (datetime('now')));
 CREATE INDEX ix_pwreset_user ON password_resets(user_id, created_at);
+CREATE TABLE mfa_factors (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, scope TEXT NOT NULL, subject_id INTEGER NOT NULL,
+  secret TEXT, pending TEXT, active INTEGER NOT NULL DEFAULT 0, last_step INTEGER NOT NULL DEFAULT 0,
+  recovery TEXT NOT NULL DEFAULT '[]', confirmed_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  UNIQUE(scope, subject_id));
+CREATE TABLE email_verifications (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, user_id INTEGER NOT NULL, email TEXT NOT NULL,
+  token_hash TEXT NOT NULL UNIQUE, expires_at INTEGER NOT NULL, used_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')));
 CREATE UNIQUE INDEX ux_platform_admins_uid ON platform_admins(uid);
 CREATE TRIGGER trg_platform_admins_uid AFTER INSERT ON platform_admins
                BEGIN UPDATE platform_admins SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
