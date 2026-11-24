@@ -25,6 +25,7 @@ Per-store stock pinning so a dark store cannot oversell. Safety stock is held ba
 
 | Module | What it is |
 |---|---|
+| `lib/stock.js` | stock: what an order takes from the shelf, and what goes back. |
 | `lib/routes/inventory.js` | inventory domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the inventory domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `qcInvStatuses`
@@ -128,6 +129,19 @@ Per-store stock pinning so a dark store cannot oversell. Safety stock is held ba
 | `deleted_at` | TEXT |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 
+### `stock_moves`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `order_id` | INTEGER NOT NULL |
+| `product_id` | TEXT NOT NULL |
+| `sku_id` | INTEGER |
+| `qty` | INTEGER NOT NULL |
+| `returned` | INTEGER NOT NULL DEFAULT 0 |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
 ## API reference
 
 Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the session; mutating calls accept an `Idempotency-Key` header where noted.
@@ -149,8 +163,8 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store staff / Store administrator]) --> UI[store console]
   UI --> API[8 API routes]
-  API --> ENG[inventory.js]
-  ENG --> DB[(warehouses, inventory, serialized_items, stock_transfers, store_inventory)]
+  API --> ENG[stock.js, inventory.js]
+  ENG --> DB[(warehouses, inventory, serialized_items, stock_transfers, store_inventory, stock_moves)]
 
 ```
 

@@ -486,6 +486,11 @@ CREATE TABLE store_inventory (
   deleted_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_storeinv ON store_inventory(tenant_id, store_id, product_id);
+CREATE TABLE stock_moves (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, order_id INTEGER NOT NULL, product_id TEXT NOT NULL,
+  sku_id INTEGER, qty INTEGER NOT NULL, returned INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX ix_stock_moves_order ON stock_moves(tenant_id, order_id);
 CREATE UNIQUE INDEX ux_inventory_uid ON inventory(uid);
 CREATE TRIGGER trg_inventory_uid AFTER INSERT ON inventory
                BEGIN UPDATE inventory SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
@@ -759,7 +764,7 @@ CREATE TABLE orders (
   sub REAL, ship_fee REAL, gift_used REAL, tax REAL, total REAL,
   eta_days INTEGER DEFAULT 5, status TEXT DEFAULT 'processing',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, charges TEXT NOT NULL DEFAULT '[]', deleted_at TEXT, uid TEXT);
+, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, charges TEXT NOT NULL DEFAULT '[]', delivered_at TEXT, gift_returned REAL DEFAULT 0, email TEXT DEFAULT '', deleted_at TEXT, uid TEXT);
 CREATE TABLE order_items (
   order_id INTEGER NOT NULL, product_id TEXT NOT NULL, qty INTEGER NOT NULL, price REAL NOT NULL, sku_id INTEGER,
   terms TEXT DEFAULT '{}'
@@ -805,7 +810,7 @@ CREATE TABLE payments (
   gateway TEXT NOT NULL, method TEXT, amount REAL NOT NULL, currency TEXT,
   fee REAL DEFAULT 0, status TEXT NOT NULL DEFAULT 'initiated',
   txn_ref TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, provider_payment_id TEXT, live INTEGER DEFAULT 0, uid TEXT);
+, provider_payment_id TEXT, live INTEGER DEFAULT 0, refunded REAL DEFAULT 0, uid TEXT);
 CREATE TABLE payment_attempts (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, payment_id INTEGER NOT NULL,
   gateway TEXT, attempt INTEGER DEFAULT 1, status TEXT NOT NULL DEFAULT 'pending',
@@ -867,6 +872,12 @@ CREATE TABLE split_payments (
   settled_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_splits_tenant ON split_payments(tenant_id, status);
+CREATE TABLE payment_refunds (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, payment_id INTEGER NOT NULL, order_id INTEGER,
+  amount REAL NOT NULL, currency TEXT DEFAULT '', reason TEXT DEFAULT '', actor TEXT DEFAULT '',
+  done INTEGER NOT NULL DEFAULT 0, gateway_ref TEXT DEFAULT '', error TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX ix_payment_refunds_order ON payment_refunds(tenant_id, order_id);
 CREATE INDEX ix_payments_ref ON payments(gateway, txn_ref);
 CREATE UNIQUE INDEX ux_tenant_gateways_uid ON tenant_gateways(uid);
 CREATE TRIGGER trg_tenant_gateways_uid AFTER INSERT ON tenant_gateways

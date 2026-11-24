@@ -54,7 +54,8 @@
     },
     "idempotencyHeader": "Idempotency-Key",
     "body": {
-     "payment_intent": "{{paymentId}}"
+     "payment_intent": "{{paymentId}}",
+     "amount": "{{amountCents}}"
     },
     "idPath": "id",
     "statusPath": "status",
@@ -395,6 +396,43 @@
     "amountPath": "purchase_units.0.payments.captures.0.amount.value",
     "paymentIdPath": "purchase_units.0.payments.captures.0.id",
     "errorPath": "message"
+   },
+   "refund": {
+    "token": {
+     "url": "https://api-m.{{cfg.env}}paypal.com/v1/oauth2/token",
+     "form": true,
+     "auth": {
+      "type": "basic",
+      "user": "{{cfg.clientId}}",
+      "pass": "{{cfg.secret}}"
+     },
+     "body": {
+      "grant_type": "client_credentials"
+     },
+     "path": "access_token"
+    },
+    "method": "POST",
+    "url": "https://api-m.{{cfg.env}}paypal.com/v2/payments/captures/{{paymentId}}/refund",
+    "auth": {
+     "type": "bearer",
+     "token": "{{token}}"
+    },
+    "idempotencyHeader": "PayPal-Request-Id",
+    "body": {
+     "amount": {
+      "currency_code": "{{currency}}",
+      "value": "{{money}}"
+     }
+    },
+    "idPath": "id",
+    "statusPath": "status",
+    "statusMap": {
+     "COMPLETED": "refunded",
+     "PENDING": "refund_pending",
+     "FAILED": "failed",
+     "CANCELLED": "failed"
+    },
+    "errorPath": "message"
    }
   },
   "payment:square": {
@@ -410,7 +448,8 @@
      "amount": "{{amountCents}}",
      "currency": "{{currency}}"
     },
-    "source_id": "{{cfg.sourceId}}"
+    "source_id": "{{cfg.sourceId}}",
+    "idempotency_key": "{{idempotency}}"
    },
    "idPath": "payment.id",
    "statusPath": "payment.status",
@@ -460,6 +499,31 @@
     },
     "paymentIdPath": "payment.id",
     "amountPath": "payment.amount_money.amount",
+    "errorPath": "errors.0.detail"
+   },
+   "refund": {
+    "method": "POST",
+    "url": "https://connect.squareup.com/v2/refunds",
+    "auth": {
+     "type": "bearer",
+     "token": "{{cfg.token}}"
+    },
+    "body": {
+     "idempotency_key": "{{idempotency}}",
+     "payment_id": "{{paymentId}}",
+     "amount_money": {
+      "amount": "{{amountCents}}",
+      "currency": "{{currency}}"
+     }
+    },
+    "idPath": "refund.id",
+    "statusPath": "refund.status",
+    "statusMap": {
+     "COMPLETED": "refunded",
+     "PENDING": "refund_pending",
+     "REJECTED": "failed",
+     "FAILED": "failed"
+    },
     "errorPath": "errors.0.detail"
    }
   },
@@ -859,7 +923,7 @@
    "name": "Indonesian Rupiah",
    "symbol": "Rp",
    "decimals": 2,
-   "usd": 0.000062
+   "usd": 6.2e-05
   },
   {
    "code": "MYR",
@@ -887,7 +951,7 @@
    "name": "Vietnamese Đồng",
    "symbol": "₫",
    "decimals": 0,
-   "usd": 0.000039
+   "usd": 3.9e-05
   },
   {
    "code": "HKD",

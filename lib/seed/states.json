@@ -305,7 +305,7 @@
     },
     "rejected": {
      "tags": [
-      "terminal"
+      "terminal", "refused"
      ]
     }
    },

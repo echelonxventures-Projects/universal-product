@@ -70,6 +70,7 @@ Divide a payment across parties at order time. The parts must sum to the total, 
 
 | Module | What it is |
 |---|---|
+| `lib/refunds.js` | refunds: giving back money an order took, in whole or in part. |
 | `lib/routes/payments.js` | payments domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the payments domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `finUpiStatuses`, `finCollectStatuses`, `finQrKinds`, `finQrStatuses`, `finLinkStatuses`, `finMandateFrequencies`, `finMandateStatuses`, `finEscrowStatuses`, `finSplitStatuses`
@@ -108,6 +109,7 @@ Divide a payment across parties at order time. The parts must sum to the total, 
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 | `provider_payment_id` | TEXT |
 | `live` | INTEGER DEFAULT 0 |
+| `refunded` | REAL DEFAULT 0 |
 | `uid` | TEXT |
 
 ### `payment_attempts`
@@ -244,6 +246,23 @@ Divide a payment across parties at order time. The parts must sum to the total, 
 | `settled_at` | TEXT |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 
+### `payment_refunds`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `payment_id` | INTEGER NOT NULL |
+| `order_id` | INTEGER |
+| `amount` | REAL NOT NULL |
+| `currency` | TEXT DEFAULT '' |
+| `reason` | TEXT DEFAULT '' |
+| `actor` | TEXT DEFAULT '' |
+| `done` | INTEGER NOT NULL DEFAULT 0 |
+| `gateway_ref` | TEXT DEFAULT '' |
+| `error` | TEXT DEFAULT '' |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
 ## API reference
 
 Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the session; mutating calls accept an `Idempotency-Key` header where noted.
@@ -365,7 +384,7 @@ Actions:
 flowchart LR
   U([Shopper / Store administrator / Platform administrator / Developer]) --> UI[store console, platform console]
   UI --> API[25 API routes]
-  API --> ENG[payments.js]
+  API --> ENG[refunds.js, payments.js]
   ENG --> DB[(tenant_gateways, payments, payment_attempts, upi_handles, upi_collects, qr_codes, …)]
   ENG --> SM{{8 state machines}}
 ```

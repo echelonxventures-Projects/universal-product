@@ -211,7 +211,8 @@
     ],
     "routes": [
      "^/api/(tenancy|stores|branding|compose)(/|$)",
-     "^/api/platform/(tenants|setup|branding|tenant-entities|tenant-fields|regions|fanout)(/|$)", "^/api/admin/setup(/|$)",
+     "^/api/platform/(tenants|setup|branding|tenant-entities|tenant-fields|regions|fanout)(/|$)",
+     "^/api/admin/setup(/|$)",
      "^/api/admin/departments(/|$)"
     ],
     "machines": [
@@ -489,13 +490,16 @@
     "store_admin"
    ],
    "owns": {
-    "files": [],
+    "files": [
+     "lib/stock.js"
+    ],
     "tables": [
      "inventory",
      "warehouses",
      "stock_transfers",
      "serialized_items",
-     "store_inventory"
+     "store_inventory",
+     "stock_moves"
     ],
     "routes": [
      "^/api/admin/(inventory|warehouses|transfers|serialized)(/|$)"
@@ -630,8 +634,8 @@
      "stackingPolicies",
      "offerStatuses"
     ],
-     "screens": [
-      "pricematch",
+    "screens": [
+     "pricematch",
      "tradeins"
     ],
     "platformScreens": [
@@ -676,10 +680,10 @@
     "registries": [
      "groupCampaignStatuses"
     ],
-     "screens": [
-      "promotions",
-      "goip",
-      "groupbuy"
+    "screens": [
+     "promotions",
+     "goip",
+     "groupbuy"
     ],
     "platformScreens": [],
     "platformGroups": [],
@@ -932,7 +936,8 @@
    ],
    "owns": {
     "files": [
-     "lib/substitutions.js"
+     "lib/substitutions.js",
+     "lib/orders.js"
     ],
     "tables": [
      "orders",
@@ -1017,7 +1022,9 @@
     "developer"
    ],
    "owns": {
-    "files": [],
+    "files": [
+     "lib/refunds.js"
+    ],
     "tables": [
      "payments",
      "payment_attempts",
@@ -1028,7 +1035,8 @@
      "upi_handles",
      "mandates",
      "escrow_holds",
-     "split_payments"
+     "split_payments",
+     "payment_refunds"
     ],
     "routes": [
      "^/api/admin/(payments|gateway|gateways|notifiers)(/|$)",

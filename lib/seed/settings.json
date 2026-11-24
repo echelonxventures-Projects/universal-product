@@ -48,7 +48,8 @@
    "shipRates": "fixed",
    "parcelWeightKg": 0.5,
    "perPage": 16,
-   "cartMaxQty": 10
+   "cartMaxQty": 10,
+   "returnDays": 30
   },
   "features": {
    "reviews": true,
