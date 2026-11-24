@@ -25,6 +25,7 @@ When an item is unavailable at picking: the shopper's own choice per line — re
 
 | Module | What it is |
 |---|---|
+| `lib/invoices.js` | tax invoices and credit notes for a store's orders. |
 | `lib/orders.js` | an order after checkout: moving it on and cancelling it. |
 | `lib/substitutions.js` | Substitutions: what happens when an item is unavailable at picking. For each line, the shopper chooses a policy — a substitutionPolicies row declaring whether it allows a substitute at all, whether one is applied without asking, and whether the shopper names the item — and it rides on the bag line as its `substitute` term (lib/lineterms.js). At picking, staff either propose a substitute or mark the line unavailable. A proposal the policy accepts on its own is applied at once; otherwise the shopper accepts or rejects it. A cheaper substitute refunds the difference to the shopper's wallet; a dearer one is charged only where the store allows it; a rejected substitute or an unavailable line is refunded. Every decision is the `substitution` state machine. Capability: substitutions. |
 | `lib/routes/order.js` | order domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the order domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
@@ -74,6 +75,7 @@ When an item is unavailable at picking: the shopper's own choice per line — re
 | `delivered_at` | TEXT |
 | `gift_returned` | REAL DEFAULT 0 |
 | `email` | TEXT DEFAULT '' |
+| `buyer_tax_id` | TEXT DEFAULT '' |
 | `deleted_at` | TEXT |
 | `uid` | TEXT |
 
@@ -106,6 +108,37 @@ When an item is unavailable at picking: the shopper's own choice per line — re
 | `decided_at` | TEXT |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 
+### `invoice_documents`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `ref` | TEXT |
+| `order_id` | INTEGER |
+| `owner` | TEXT |
+| `doc_kind` | TEXT NOT NULL |
+| `invoice_number` | TEXT |
+| `place_of_supply` | TEXT |
+| `gstin` | TEXT |
+| `pan` | TEXT |
+| `taxable` | REAL |
+| `tax` | REAL |
+| `total` | REAL |
+| `currency` | TEXT |
+| `body` | TEXT |
+| `rendered` | TEXT |
+| `status` | TEXT NOT NULL DEFAULT 'generated' |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
+### `invoice_series`
+
+| Column | Type |
+|---|---|
+| `tenant_id` | INTEGER NOT NULL |
+| `series` | TEXT NOT NULL |
+| `next` | INTEGER NOT NULL DEFAULT 1 |
+
 ## API reference
 
 Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the session; mutating calls accept an `Idempotency-Key` header where noted.
@@ -117,7 +150,8 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `GET /api/admin/substitutions/:orderId` | `apiAdminSubstitutions` | — |
 | `POST /api/admin/substitutions/:orderId` | `apiAdminSubstitutionAct` | — |
 | `POST /api/orders/:id/cancel` | `apiOrderCancel` | — |
-| `POST /api/orders/:id/invoice` | `apiOrderInvoice` | — |
+| `GET /api/orders/:id/invoice` | `apiOrderInvoice` | the shopper's own invoice and credit notes for an order |
+| `GET /api/admin/orders/:id/invoice` | `apiAdminOrderInvoice` | an order's invoice and credit notes, for staff |
 | `GET /api/orders` | `apiOrders` | — |
 | `GET /api/admin/orders` | `apiAdminOrders` | — |
 | `PUT /api/admin/orders/:id/status` | `apiAdminOrderStatus` | — |
@@ -156,16 +190,16 @@ Actions: `apply` → applied · `reject` → rejected · `refund` → refunded
 
 ```mermaid
 flowchart LR
-  U([Shopper / Store staff / Store administrator]) --> UI[orders.html, store console, platform console]
-  UI --> API[9 API routes]
-  API --> ENG[orders.js, substitutions.js, order.js]
-  ENG --> DB[(orders, order_items, order_substitutions)]
+  U([Shopper / Store staff / Store administrator]) --> UI[invoice.html, orders.html, store console, platform console]
+  UI --> API[10 API routes]
+  API --> ENG[invoices.js, orders.js, substitutions.js, order.js]
+  ENG --> DB[(orders, order_items, order_substitutions, invoice_documents, invoice_series)]
   ENG --> SM{{2 state machines}}
 ```
 
 ## User interface
 
-**Pages:** `orders.html`
+**Pages:** `invoice.html`, `orders.html`
 
 **Store console:** 🧾 Orders · 🔄 Substitutions
 

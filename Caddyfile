@@ -1,0 +1,28 @@
+# TLS for the platform and every store address it has proven (docker-compose.yml runs this).
+# A certificate is requested only for an address the platform says is its own.
+{
+	email {$ACME_EMAIL}
+	on_demand_tls {
+		ask http://luxora:3000/tls-allowed
+	}
+}
+
+https:// {
+	tls {
+		on_demand
+	}
+	encode zstd gzip
+	reverse_proxy luxora:3000 {
+		header_up X-Forwarded-For {remote_host}
+		header_up X-Forwarded-Proto https
+		flush_interval -1
+	}
+	log {
+		output stdout
+		format json
+	}
+}
+
+http:// {
+	redir https://{host}{uri} 308
+}

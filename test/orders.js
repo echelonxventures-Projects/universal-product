@@ -60,6 +60,7 @@ const hook = async (type, cs, extra) => {
     const pay = num => db.get("SELECT p.* FROM payments p JOIN orders o ON o.id=p.order_id WHERE o.num=?", num);
     const paid = async (C, items) => { const r = await place(C, items, "stripe"); const p = pay(r.body.order.num); await hook("checkout.session.completed", p.txn_ref, { amount_total: Math.round(p.amount * 100) }); return r.body.order.num; };
     const [X, Y] = P;
+    await A("/api/admin/settings" + Q, "PUT", { features: { fraudScreen: false } });
 
     console.log("▸ STOCK");
     set(X, 3);
@@ -147,7 +148,27 @@ const hook = async (type, cs, extra) => {
     const stranger = await shopper();
     ok((await stranger("/api/returns" + Q, "POST", { order_num: n5 })).status === 404, "another shopper's order cannot be returned");
 
+    console.log("▸ INVOICES");
+    const IV = require("../lib/invoices.js");
+    ok(IV.yearLabel(new Date("2026-03-31T12:00:00Z"), 4) === "2526" && IV.yearLabel(new Date("2026-04-01T12:00:00Z"), 4) === "2627" && IV.yearLabel(new Date("2026-04-01"), 1) === "26", "a fiscal year starts when its rule says");
+    const unpaid = (await place(C4, [[X, 1]], "stripe")).body.order;
+    ok((await C4("/api/orders/" + row(unpaid.num).id + "/invoice" + Q)).status === 409, "an unpaid order has no invoice");
+    db.run("UPDATE orders SET state='Karnataka' WHERE num=?", n6);
+    require("../lib/settings.js").save(1, { commerce: { taxMode: "gst" }, legal: { businessName: "Acme", address: "1 MG Road", state: "karnataka", taxId: "29ABCDE1234F1Z5" } });
+    const iv = (await C4("/api/orders/" + o6.id + "/invoice" + Q)).body;
+    ok(iv.invoice && /^INV\d{4}\/00001$/.test(iv.invoice.number) && iv.invoice.taxes.map(t => t.name).join() === "CGST,SGST", "an in-state order's tax is split, under the first number of the series", iv.invoice && [iv.invoice.number, iv.invoice.taxes]);
+    const cents = n => Math.round(n * 100), sum = (xs, k) => xs.reduce((n, x) => n + cents(x[k]), 0);
+    ok(sum(iv.invoice.lines, "taxable") === cents(iv.invoice.taxable) && sum(iv.invoice.lines, "tax") === cents(iv.invoice.tax) && sum(iv.invoice.taxes, "amount") === cents(iv.invoice.tax) && cents(iv.invoice.taxable) + cents(iv.invoice.tax) === cents(iv.invoice.total) && cents(iv.invoice.total) === cents(o6.total + o6.gift_used), "to the cent: lines, tax parts and the order agree", iv.invoice);
+    ok(iv.invoice.lines[0].description !== X, "items are named, not numbered", iv.invoice.lines[0].description);
+    ok(iv.credits.length === 3 && iv.credits.every(c => c.against === iv.invoice.number && /^CRN/.test(c.number)) && Math.abs(iv.credits.reduce((n, c) => n + c.total, 0) - p6.refunded) < 0.01, "each refund has its credit note", iv.credits.map(c => [c.number, c.total]));
+    const twice = (await C4("/api/orders/" + o6.id + "/invoice" + Q)).body;
+    ok(twice.invoice.number === iv.invoice.number && twice.credits.length === 3 && db.get("SELECT COUNT(*) c FROM invoice_documents WHERE order_id=?", o6.id).c === 4, "asking again issues nothing new");
+    ok((await stranger("/api/orders/" + o6.id + "/invoice" + Q)).status === 404 && (await A("/api/admin/orders/" + o6.id + "/invoice" + Q)).status === 200, "only its buyer and the store's staff see it");
+    const iv2 = (await A("/api/admin/orders/" + row(n5).id + "/invoice" + Q)).body.invoice;
+    ok(/00002$/.test(iv2.number) && iv2.taxes.map(t => t.name).join() === "IGST", "the next order takes the next number, its tax as another state's", [iv2.number, iv2.taxes]);
+
     console.log("▸ CURRENCY");
+    require("../lib/settings.js").save(1, { commerce: { taxMode: null } });
     const cfg = (await A("/api/config" + Q)).body.commerce;
     const other = db.get("SELECT code FROM currencies WHERE code<>? AND usd>0 AND decimals=2 AND ABS(usd-1)>0.3 ORDER BY code LIMIT 1", cfg.currency).code;
     require("../lib/security.js").setPolicy({ provisioning: { currencyOverridesAllowed: true } });

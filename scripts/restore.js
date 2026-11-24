@@ -42,6 +42,17 @@ for (const [f, sum] of Object.entries(manifest.files || {})) {
   if (!fs.existsSync(p)) die("missing " + f);
   if (sha256(p) !== sum) die(f + " does not match its checksum — the backup is corrupt or was altered");
 }
+if (manifest.files && manifest.files["luxora.pgdump"]) {
+  /* a Postgres archive: restored into LX_PG_URL, all of it or none of it */
+  if (!process.env.LX_PG_URL) die("set LX_PG_URL to the database to restore into");
+  const u = new URL(process.env.LX_PG_URL);
+  console.log("restore " + path.join(dir, "luxora.pgdump") + " → postgres " + u.hostname + u.pathname + " (its present tables are replaced)");
+  if (!yes) { console.log("nothing changed — run again with --yes"); process.exit(0); }
+  require("child_process").execFileSync("pg_restore", ["--clean", "--if-exists", "--no-owner", "--single-transaction", "--dbname", u.pathname.slice(1), path.join(dir, "luxora.pgdump")],
+    { env: { ...process.env, PGHOST: u.hostname, PGPORT: u.port || "5432", PGUSER: decodeURIComponent(u.username), PGPASSWORD: decodeURIComponent(u.password) }, stdio: "inherit" });
+  if (keys) for (const f of ["master.json", "registry.json"]) if (fs.existsSync(path.join(dir, f))) { const to = path.join(DATA, f); if (fs.existsSync(to)) fs.renameSync(to, to + ".pre-restore-" + stamp()); fs.copyFileSync(path.join(dir, f), to); fs.chmodSync(to, 0o600); }
+  console.log("restored"); process.exit(0);
+}
 if (!manifest.files || !manifest.files["luxora.db"]) die("the manifest lists no database");
 const backupDb = path.join(dir, "luxora.db");
 const probe = new DatabaseSync(backupDb, { readOnly: true });

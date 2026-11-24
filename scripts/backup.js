@@ -5,6 +5,7 @@
 
    - The database is copied with SQLite's VACUUM INTO: a transactionally consistent snapshot
      taken while the server keeps running (no stop, no torn copy of a WAL-mode file).
+   - On Postgres (LX_DB_DRIVER=postgres, LX_PG_URL) it is pg_dump's archive instead, read back to prove it.
    - The keyring (data/master.json) and registry seal key (data/registry.json) are copied
      with it. Without the keyring a restored database cannot decrypt a single stored gateway
      credential, so a backup that omits it is not a backup. Treat the backup directory as
@@ -32,18 +33,34 @@ const flag = name => process.argv.includes("--" + name);
 const DB = path.resolve(process.env.LX_DB || path.join(DATA, "luxora.db"));
 const DIR = path.resolve(arg("dir", process.env.LX_BACKUP_DIR || path.join(DATA, "backups")));
 const KEEP = Math.max(1, Number(arg("keep", process.env.LX_BACKUP_KEEP || 14)) || 14);
+const PG = process.env.LX_DB_DRIVER === "postgres";
+/* a connection URL as the variables the Postgres tools read */
+function pgEnv(url) { const u = new URL(url); return { PGHOST: u.hostname, PGPORT: u.port || "5432", PGUSER: decodeURIComponent(u.username), PGPASSWORD: decodeURIComponent(u.password), PGDATABASE: u.pathname.slice(1), ...(u.searchParams.get("sslmode") ? { PGSSLMODE: u.searchParams.get("sslmode") } : {}), ...(u.searchParams.get("sslrootcert") ? { PGSSLROOTCERT: u.searchParams.get("sslrootcert") } : {}) }; }
 const KEY_FILES = ["master.json", "registry.json"];
 const sha256 = file => crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex");
 const stamp = () => new Date().toISOString().replace(/[-:]/g, "").replace(/\..+/, "").replace("T", "-");
 
 async function main() {
-  if (!fs.existsSync(DB)) throw new Error("no database at " + DB + " (set LX_DB)");
+  if (PG && !process.env.LX_PG_URL) throw new Error("LX_DB_DRIVER=postgres needs LX_PG_URL");
+  if (!PG && !fs.existsSync(DB)) throw new Error("no database at " + DB + " (set LX_DB)");
   fs.mkdirSync(DIR, { recursive: true, mode: 0o700 });
   const name = "luxora-" + stamp();
   const dest = path.join(DIR, name);
   fs.mkdirSync(dest, { mode: 0o700 });
-  const out = path.join(dest, "luxora.db");
+  const FILE = PG ? "luxora.pgdump" : "luxora.db";
+  const out = path.join(dest, FILE);
 
+  let check, counts = {};
+  const tables = ["tenants", "users", "orders", "payments", "products"];
+  if (PG) {
+    /* pg_dump takes one consistent snapshot of a running database; the archive is listed back to
+       prove it can be read. The URL goes through the environment, never the process list. */
+    const { execFileSync } = require("child_process");
+    execFileSync("pg_dump", ["--format=custom", "--no-owner", "--file", out], { env: { ...process.env, ...pgEnv(process.env.LX_PG_URL) }, stdio: ["ignore", "ignore", "pipe"] });
+    const toc = execFileSync("pg_restore", ["--list", out], { encoding: "utf8", maxBuffer: 64 * 1024 * 1024 });
+    const missing = tables.filter(t => !new RegExp("TABLE DATA \\S+ " + t + " ").test(toc));
+    check = missing.length ? "missing " + missing.join(", ") : "ok";
+  } else {
   /* VACUUM INTO writes a fresh, compacted, consistent copy; it works on a database another
      process has open and writing (it reads one snapshot) */
   const src = new DatabaseSync(DB, { readOnly: true });
@@ -52,22 +69,22 @@ async function main() {
   fs.chmodSync(out, 0o600);
 
   const copy = new DatabaseSync(out, { readOnly: true });
-  let check, counts;
   try {
     check = copy.prepare("PRAGMA integrity_check").all().map(r => Object.values(r)[0]).join("; ");
-    counts = {};
-    for (const t of ["tenants", "users", "orders", "payments", "products"]) { try { counts[t] = copy.prepare("SELECT COUNT(*) c FROM " + t).get().c; } catch (e) { } }
+    for (const t of tables) { try { counts[t] = copy.prepare("SELECT COUNT(*) c FROM " + t).get().c; } catch (e) { } }
   } finally { copy.close(); }
+  }
+  fs.chmodSync(out, 0o600);
   if (check !== "ok") throw new Error("backup failed integrity_check: " + check);
 
-  const files = { "luxora.db": sha256(out) };
+  const files = { [FILE]: sha256(out) };
   for (const k of KEY_FILES) {
     const f = path.join(DATA, k); /* the keyring always lives in data/ (lib/security.js) */
     if (fs.existsSync(f)) { fs.copyFileSync(f, path.join(dest, k)); fs.chmodSync(path.join(dest, k), 0o600); files[k] = sha256(path.join(dest, k)); }
   }
   if (!files["master.json"] && !process.env.LUXORA_MASTER_KEY)
     console.warn("  ⚠️  no data/master.json and no LUXORA_MASTER_KEY — sealed credentials in this backup will not be decryptable");
-  const manifest = { name, created_at: new Date().toISOString(), source: DB, bytes: fs.statSync(out).size, integrity: check, counts, files, node: process.version };
+  const manifest = { name, created_at: new Date().toISOString(), source: PG ? "postgres" : DB, bytes: fs.statSync(out).size, integrity: check, counts, files, node: process.version };
   fs.writeFileSync(path.join(dest, "manifest.json"), JSON.stringify(manifest, null, 2), { mode: 0o600 });
 
   /* prune: newest KEEP sets stay */

@@ -776,7 +776,7 @@ async function pageCheckout() {
       <form id="shipForm" class="co-form"><input id="coName" placeholder="Full name" required value="${esc(S.user ? S.user.name : "")}">${S.user ? "" : `<input id="coEmail" type="email" placeholder="Email (for your order confirmation)" required autocomplete="email">`}
         <input id="coAddr" placeholder="Address" required>
         <div class="co-row3"><input id="coCity" placeholder="City" required><input id="coState" placeholder="State"><input id="coZip" placeholder="ZIP" value="${esc(S.zip)}"></div>
-        <input id="coPhone" placeholder="Phone (optional)"></form></div>
+        <input id="coPhone" placeholder="Phone (optional)"><input id="coTaxId" placeholder="Business tax number for the invoice (optional)"></form></div>
     <div class="co-sec"><h3><span class="co-num">2</span> Payment method</h3>
       ${gws.map((g, i) => `<div class="pay-opt"><label><input type="radio" name="pay" value="${g.id}" ${i === 0 ? "checked" : ""}> <b>${g.emoji} ${esc(g.name)}</b> <span class="pay-meta">${esc((g.methods || []).join(" · "))}${g.mode === "sandbox" ? " · test mode" : ""}</span></label></div>`).join("")}
       ${CFG.features.giftCards && S.gift > 0 ? `<p class="pay-gift">🎁 Gift balance ${money(S.gift)} applied automatically</p>` : ""}</div>
@@ -868,7 +868,7 @@ async function pageCheckout() {
     const btn = $("#placeOrder"); btn.disabled = true; btn.textContent = "Processing…";
     try {
       const r = await api("/checkout", "POST", {
-        name: $("#coName").value, email: $("#coEmail") ? $("#coEmail").value : undefined, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value,
+        name: $("#coName").value, email: $("#coEmail") ? $("#coEmail").value : undefined, tax_id: $("#coTaxId") ? $("#coTaxId").value : undefined, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value,
         gateway: (document.querySelector('input[name=pay]:checked') || {}).value || (gws[0] || {}).id,
         method: ((gws.find(g => g.id === (document.querySelector('input[name=pay]:checked') || {}).value) || {}).methods || ["card"])[0],
         carrier: pickedCarrier(), rate_id: rateId, pickup_point: pickupPoint || undefined,
@@ -1025,7 +1025,7 @@ async function pageOrders() {
       <div><em>PLACED</em><b>${created.toLocaleDateString(CFG.commerce.locale)}</b></div>
       <div><em>TOTAL</em><b>${money(o.total)}</b></div>
       <div><em>PAYMENT</em><b>${esc(o.payment ? o.payment.gateway : o.pay_method)} · ${esc(o.payment ? o.payment.status : "")}</b></div>
-      <div class="ord-h-r"><em>ORDER #${esc(o.num)}</em><button class="btn-white" data-act="buy-again" data-num="${esc(o.num)}">Buy it again</button>${(o.can || {}).cancel ? `<button class="btn-white" data-act="order-cancel" data-id="${o.id}" data-num="${esc(o.num)}">Cancel order</button>` : ""}${(o.can || {}).return ? `<button class="btn-white" data-act="return-open" data-num="${esc(o.num)}">Return all</button>` : ""}</div></div>
+      <div class="ord-h-r"><em>ORDER #${esc(o.num)}</em><button class="btn-white" data-act="buy-again" data-num="${esc(o.num)}">Buy it again</button>${o.payment && ["captured", "succeeded", "refunded"].includes(o.payment.status) || (o.can || {}).return ? `<a class="btn-white" href="invoice.html?order=${o.id}" target="_blank" rel="noopener">Invoice</a>` : ""}${(o.can || {}).cancel ? `<button class="btn-white" data-act="order-cancel" data-id="${o.id}" data-num="${esc(o.num)}">Cancel order</button>` : ""}${(o.can || {}).return ? `<button class="btn-white" data-act="return-open" data-num="${esc(o.num)}">Return all</button>` : ""}</div></div>
       <div class="ord-body">${items.map(({ product: p, qty }) => `<div class="ord-i">${img(p, "big")}<div class="ord-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><span>${esc(p.b)}</span></div><span class="ord-i-qty">Qty: ${qty}</span>${(o.can || {}).return ? `<button class="btn-white sm" data-act="return-open" data-num="${esc(o.num)}" data-id="${p.id}" data-qty="${qty}">Return</button>` : ""}</div>`).join("")}
         <div class="ord-buy">${items.map(({ product: p }) => `<a href="${prodLink(p)}">${img(p, "tile")}</a>`).join("")}</div>
         ${o.pickup ? `<div class="ord-pk">📍 ${esc(o.pickup.point ? o.pickup.point.name : "")} · ${esc((o.pickup.state.icon ? o.pickup.state.icon + " " : "") + o.pickup.state.label)}${o.pickup.code ? ` · pickup code <b class="pk-code">${esc(o.pickup.code)}</b>` : ""}${o.pickup.hold_until ? ` · collect by ${esc(String(o.pickup.hold_until).slice(0, 16))} UTC` : ""}<br><span class="pay-meta">${esc(o.pickup.point ? [o.pickup.point.address, o.pickup.point.city].filter(Boolean).join(", ") : "")}${o.pickup.point && o.pickup.point.hours ? " · " + esc(o.pickup.point.hours) : ""}</span></div>` : ""}

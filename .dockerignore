@@ -33,3 +33,9 @@ out/
 test/
 _registry/canonical.json
 _registry/canonical.lxr
+
+# other projects kept in this repository
+related/
+.claude/
+test/
+docs/

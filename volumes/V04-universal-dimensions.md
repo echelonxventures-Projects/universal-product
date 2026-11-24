@@ -1103,11 +1103,16 @@ stateDiagram-v2
 | **Code** | `lib/global.js`, `lib/kernel-context.js`, `lib/defaults.js`, `lib/settings.js`, `lib/seed/defaults.json`, `lib/seed/settings.json` |
 | **Managed in** | `_registry/domains.json` → `D-CTX` |
 
-**Live routes (4)** — what the platform serves today for this domain:
+**Live routes (9)** — what the platform serves today for this domain:
 
 - `GET /api/admin/settings`
 - `PUT /api/admin/settings`
 - `POST /api/admin/settings/reset`
+- `GET /api/admin/addresses`
+- `POST /api/admin/addresses`
+- `POST /api/admin/addresses/:id/verify`
+- `POST /api/admin/addresses/:id/primary`
+- `DELETE /api/admin/addresses/:id`
 - `GET /api/admin/setup`
 
 <a id="ucos-ctx-000001"></a>

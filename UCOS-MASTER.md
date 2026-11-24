@@ -1281,7 +1281,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 303 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 317 files.
 
 ### C02 · Meaning
 
@@ -1421,6 +1421,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/routes/risk.js` | [Security](volumes/V07-assurance.md#d-sec) | the Risk and fraud domain's API routes and handlers |
 | `lib/routes/security.js` | [Security](volumes/V07-assurance.md#d-sec) | the Security domain's API routes and handlers |
 | `lib/seed/compliance.json` | [Compliance](volumes/V07-assurance.md#d-cmp) |  |
+| `lib/mfa.js` | [Security](volumes/V07-assurance.md#d-sec) |  |
+| `lib/session-sweep.js` | [Security](volumes/V07-assurance.md#d-sec) |  |
 
 ### C08 · Interaction
 
@@ -1502,6 +1504,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `public/js/editors.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/provisioning.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/rules-ui.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `public/js/invoice.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `lib/page-meta.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 
 ### C09 · Automation
 
@@ -1533,6 +1537,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/seed/providers.json` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/seed/ai.json` | [Agent](volumes/V09.1-automation.md#d-agt) |  |
 | `lib/seed/states.json` | [Runtime](volumes/V09.1-automation.md#d-run) |  |
+| `lib/store-domains.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
+| `lib/refunds.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 
 ### C10 · Intelligence
 
@@ -1591,6 +1597,9 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `scripts/restore.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `scripts/schema-dump.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | dumps the storage schema |
 | `scripts/size-guard.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | no file of 50 MB or more is tracked or committed (npm test, the pre-commit hook in .githooks) |
+| `lib/readiness.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `lib/ops-alerts.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `scripts/preflight.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 
 ### C12 · Business
 
@@ -1658,6 +1667,11 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/seed/coupons.json` | [Commerce](volumes/V12-business.md#d-biz) | the Coupon domain's kinds |
 | `lib/seed/vouchers.json` | [Commerce](volumes/V12-business.md#d-biz) | the Voucher domain's kinds |
 | `lib/seed/giftcards.json` | [Commerce](volumes/V12-business.md#d-biz) | the gift card's kind, hierarchy, states, occasions and sources |
+| `lib/stock.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/product-counts.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/returns.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/invoices.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/orders.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 
 ### C13 · Composition
 

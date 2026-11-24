@@ -1,6 +1,43 @@
+# LUXORA in production: the platform, a TLS proxy in front, Redis, and a nightly backup.
+#   cp .env.example .env   (fill it in)   then   docker compose up -d
+#   docker compose exec luxora node scripts/preflight.js    says what is left before real customers
+x-luxora: &luxora
+  build: .
+  init: true
+  read_only: true
+  tmpfs:
+    - /tmp
+  cap_drop:
+    - ALL
+  security_opt:
+    - no-new-privileges:true
+  restart: unless-stopped
+  logging:
+    driver: json-file
+    options: { max-size: "20m", max-file: "10" }
+
 services:
+  proxy:
+    image: caddy:2.8-alpine
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    environment:
+      - ACME_EMAIL=${ACME_EMAIL:?set ACME_EMAIL (where the certificate authority writes to you)}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      luxora:
+        condition: service_healthy
+
   redis:
-    image: redis:alpine
+    image: redis:7.4-alpine
+    restart: unless-stopped
+    command: ["redis-server", "--appendonly", "yes"]
     volumes:
       - redis_data:/data
     healthcheck:
@@ -10,39 +47,58 @@ services:
       retries: 5
 
   luxora:
-    build: .
-    init: true
-    read_only: true
-    tmpfs:
-      - /tmp
-    cap_drop:
-      - ALL
-    security_opt:
-      - no-new-privileges:true
+    <<: *luxora
     stop_grace_period: 30s
-    ports:
-      - "3000:3000"
+    # reached only through the proxy
+    expose:
+      - "3000"
     environment:
       - NODE_ENV=production
       - PORT=3000
-      # the queue/cache/ratelimit concerns all resolve LX_REDIS_URL through config.js;
-      # opting the queue in here is what makes the worker at server boot come alive
+      # one trusted proxy stands in front (2 when a CDN stands before it)
+      - LX_TRUST_PROXY=${LX_TRUST_PROXY:-1}
+      - LX_LOG=json
       - LX_QUEUE=redis
       - LX_REDIS_URL=redis://redis:6379
-      # required in production — the seed defaults below are rejected by the boot guard
       - PLATFORM_PASSWORD=${PLATFORM_PASSWORD:?set PLATFORM_PASSWORD (the platform admin's password)}
       - ADMIN_PASSWORD=${ADMIN_PASSWORD:?set ADMIN_PASSWORD (the flagship store admin's password)}
-      # 16+ chars, or /metrics answers only to a live platform session
+      - PLATFORM_EMAIL=${PLATFORM_EMAIL:?set PLATFORM_EMAIL (the platform admin's sign-in address)}
+      - ADMIN_EMAIL=${ADMIN_EMAIL:?set ADMIN_EMAIL (the flagship store admin's sign-in address)}
+      - LUXORA_PEPPER=${LUXORA_PEPPER:?set LUXORA_PEPPER (long and random; it can never be changed)}
+      - LUXORA_MASTER_KEY=${LUXORA_MASTER_KEY:-}
       - LX_METRICS_TOKEN=${LX_METRICS_TOKEN:-}
+      - LX_DB_DRIVER=${LX_DB_DRIVER:-sqlite}
+      - LX_PG_URL=${LX_PG_URL:-}
     volumes:
-      # the keyring + registry seal persist across redeployments; without this a new
-      # container cannot decrypt sealed gateway creds or verify the registry seal
+      # the database, the keyring and the registry seal persist across redeployments
       - luxora_data:/app/data
     depends_on:
       redis:
         condition: service_healthy
-    restart: unless-stopped
+
+  backup:
+    <<: *luxora
+    entrypoint: ["sh", "-c", "while true; do node scripts/backup.js || echo 'BACKUP FAILED'; sleep 86400; done"]
+    healthcheck:
+      disable: true
+    environment:
+      - LX_DB_DRIVER=${LX_DB_DRIVER:-sqlite}
+      - LX_PG_URL=${LX_PG_URL:-}
+      - LUXORA_MASTER_KEY=${LUXORA_MASTER_KEY:-}
+      - LX_BACKUP_KEEP=${LX_BACKUP_KEEP:-14}
+      - LX_BACKUP_S3_BUCKET=${LX_BACKUP_S3_BUCKET:-}
+      - LX_BACKUP_S3_REGION=${LX_BACKUP_S3_REGION:-}
+      - LX_BACKUP_S3_ENDPOINT=${LX_BACKUP_S3_ENDPOINT:-}
+      - LX_BACKUP_S3_ACCESS=${LX_BACKUP_S3_ACCESS:-}
+      - LX_BACKUP_S3_SECRET=${LX_BACKUP_S3_SECRET:-}
+    volumes:
+      - luxora_data:/app/data
+    depends_on:
+      luxora:
+        condition: service_healthy
 
 volumes:
   redis_data:
   luxora_data:
+  caddy_data:
+  caddy_config:

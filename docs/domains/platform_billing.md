@@ -127,29 +127,6 @@ What the platform charges its stores: plans, subscriptions to plans, usage meter
 | `metadata` | TEXT NOT NULL DEFAULT '{}' |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 
-### `invoice_documents`
-
-| Column | Type |
-|---|---|
-| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
-| `tenant_id` | INTEGER NOT NULL |
-| `ref` | TEXT |
-| `order_id` | INTEGER |
-| `owner` | TEXT |
-| `doc_kind` | TEXT NOT NULL |
-| `invoice_number` | TEXT |
-| `place_of_supply` | TEXT |
-| `gstin` | TEXT |
-| `pan` | TEXT |
-| `taxable` | REAL |
-| `tax` | REAL |
-| `total` | REAL |
-| `currency` | TEXT |
-| `body` | TEXT |
-| `rendered` | TEXT |
-| `status` | TEXT NOT NULL DEFAULT 'generated' |
-| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
-
 ## API reference
 
 Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the session; mutating calls accept an `Idempotency-Key` header where noted.

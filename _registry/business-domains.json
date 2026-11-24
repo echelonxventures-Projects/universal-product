@@ -313,7 +313,6 @@
      "plans",
      "invoices",
      "invoice_lines",
-     "invoice_documents",
      "credit_notes",
      "billing_events",
      "usage_events",
@@ -946,12 +945,15 @@
    "owns": {
     "files": [
      "lib/substitutions.js",
-     "lib/orders.js"
+     "lib/orders.js",
+     "lib/invoices.js"
     ],
     "tables": [
      "orders",
      "order_items",
-     "order_substitutions"
+     "order_substitutions",
+     "invoice_documents",
+     "invoice_series"
     ],
     "routes": [
      "^/api/(orders|substitutions)(/|$)",
@@ -982,7 +984,8 @@
      "Transactions"
     ],
     "pages": [
-     "orders"
+     "orders",
+     "invoice"
     ]
    }
   },
@@ -2905,14 +2908,16 @@
      "lib/logger.js",
      "lib/metrics.js",
      "lib/queue.js",
-     "lib/api.js"
+     "lib/api.js",
+     "lib/readiness.js",
+     "lib/ops-alerts.js"
     ],
     "tables": [
      "sqlite_sequence"
     ],
     "routes": [
      "^/api/(env)(/|$)",
-     "^/api/platform/(db|environments|environments-export|environments-import|runtime|queue|monitor)(/|$)",
+     "^/api/platform/(db|environments|environments-export|environments-import|runtime|readiness|queue|monitor)(/|$)",
      "^/api/admin/monitor(/|$)"
     ],
     "machines": [],

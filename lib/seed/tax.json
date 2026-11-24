@@ -44,9 +44,10 @@
    {
     "country": "IN",
     "mode": "gst",
-    "standard": 0.12,
+    "standard": 0.18,
     "reduced": 0.05,
-    "digital": 0.18
+    "digital": 0.18,
+    "note": "main rate since 22 September 2025 (5% reduced; confirm each item's rate with your accountant)"
    },
    {
     "country": "GB",
@@ -144,6 +145,67 @@
     "pattern": "^(FR)?[0-9A-Z]{2}\\d{9}$",
     "label": "Numéro TVA"
    }
+  }
+ },
+ "INVOICING": {
+  "kinds": {
+   "invoice": "tax_invoice",
+   "credit": "credit_note"
+  },
+  "default": {
+   "title": "Invoice",
+   "creditTitle": "Credit note",
+   "taxName": "Tax",
+   "numberLabel": "Tax number",
+   "codeLabel": "Code",
+   "codeField": "hs",
+   "fiscalStart": 1,
+   "prefix": {
+    "tax_invoice": "INV",
+    "credit_note": "CRN"
+   },
+   "parts": [],
+   "needs": []
+  },
+  "gst": {
+   "title": "Tax invoice",
+   "taxName": "GST",
+   "numberLabel": "GSTIN",
+   "codeLabel": "HSN/SAC",
+   "codeField": "hsn",
+   "fiscalStart": 4,
+   "needs": [
+    "businessName",
+    "address",
+    "state",
+    "taxId"
+   ],
+   "parts": [
+    {
+     "name": "CGST",
+     "share": 1,
+     "where": "same_state"
+    },
+    {
+     "name": "SGST",
+     "share": 1,
+     "where": "same_state"
+    },
+    {
+     "name": "IGST",
+     "share": 1,
+     "where": "other_state"
+    }
+   ]
+  },
+  "vat": {
+   "title": "VAT invoice",
+   "taxName": "VAT",
+   "numberLabel": "VAT number",
+   "needs": [
+    "businessName",
+    "address"
+   ]
   }
  }
 }

@@ -2,6 +2,9 @@
 # at boot (server.js says so), and package.json pins >=22.13. node:22-alpine is current 22.x.
 FROM node:22-alpine
 
+# pg_dump / pg_restore, for backups of an install on Postgres
+RUN apk add --no-cache postgresql16-client
+
 WORKDIR /app
 
 COPY package*.json ./

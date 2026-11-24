@@ -344,16 +344,6 @@ CREATE TABLE usage_events (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_usage_tenant ON usage_events(tenant_id, entity, created_at);
-CREATE TABLE invoice_documents (
-  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
-  ref TEXT, order_id INTEGER, owner TEXT,
-  doc_kind TEXT NOT NULL, invoice_number TEXT,
-  place_of_supply TEXT, gstin TEXT, pan TEXT,
-  taxable REAL, tax REAL, total REAL, currency TEXT,
-  body TEXT, rendered TEXT, status TEXT NOT NULL DEFAULT 'generated',
-  created_at TEXT NOT NULL DEFAULT (datetime('now'))
-);
-CREATE INDEX ix_invoicedocs_tenant ON invoice_documents(tenant_id, order_id, doc_kind);
 CREATE UNIQUE INDEX ux_plans_uid ON plans(uid);
 CREATE TRIGGER trg_plans_uid AFTER INSERT ON plans
                BEGIN UPDATE plans SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
@@ -778,7 +768,7 @@ CREATE TABLE orders (
   sub REAL, ship_fee REAL, gift_used REAL, tax REAL, total REAL,
   eta_days INTEGER DEFAULT 5, status TEXT DEFAULT 'processing',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, charges TEXT NOT NULL DEFAULT '[]', delivered_at TEXT, gift_returned REAL DEFAULT 0, email TEXT DEFAULT '', deleted_at TEXT, uid TEXT);
+, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, charges TEXT NOT NULL DEFAULT '[]', delivered_at TEXT, gift_returned REAL DEFAULT 0, email TEXT DEFAULT '', buyer_tax_id TEXT DEFAULT '', deleted_at TEXT, uid TEXT);
 CREATE TABLE order_items (
   order_id INTEGER NOT NULL, product_id TEXT NOT NULL, qty INTEGER NOT NULL, price REAL NOT NULL, sku_id INTEGER,
   terms TEXT DEFAULT '{}'
@@ -790,6 +780,17 @@ CREATE TABLE order_substitutions (
   status TEXT NOT NULL DEFAULT 'proposed', decided_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_order_substitutions ON order_substitutions(tenant_id, order_id);
+CREATE TABLE invoice_documents (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL,
+  ref TEXT, order_id INTEGER, owner TEXT,
+  doc_kind TEXT NOT NULL, invoice_number TEXT,
+  place_of_supply TEXT, gstin TEXT, pan TEXT,
+  taxable REAL, tax REAL, total REAL, currency TEXT,
+  body TEXT, rendered TEXT, status TEXT NOT NULL DEFAULT 'generated',
+  created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_invoicedocs_tenant ON invoice_documents(tenant_id, order_id, doc_kind);
+CREATE TABLE invoice_series (tenant_id INTEGER NOT NULL, series TEXT NOT NULL, next INTEGER NOT NULL DEFAULT 1, PRIMARY KEY (tenant_id, series));
 CREATE UNIQUE INDEX ux_orders_uid ON orders(uid);
 CREATE TRIGGER trg_orders_uid AFTER INSERT ON orders
                BEGIN UPDATE orders SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;

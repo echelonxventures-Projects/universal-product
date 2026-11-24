@@ -224,6 +224,7 @@ const handler = async (req, res) => {
   if (sec.httpsRequest(req) && sec.policy().hsts) res.setHeader("Strict-Transport-Security", "max-age=31536000; includeSubDomains");
   res.on("finish", () => {
     const tenant = res.__tenantId || 0;
+    require("./lib/ops-alerts.js").note(res.statusCode, req.method + " " + url.pathname, req.__trace);
     metrics.record(tenant, req.method, url.pathname, res.statusCode, Date.now() - t0);
     if (process.env.LX_LOG === "json") console.log(JSON.stringify({ ts: new Date().toISOString(), lvl: res.statusCode >= 500 ? "error" : "info", trace: req.__trace, tenant, method: req.method, path: url.pathname, status: res.statusCode, ms: Date.now() - t0 }));
     else console.log(`${req.method.padEnd(6)} [t${tenant}] ${url.pathname.padEnd(34)} ${res.statusCode} ${Date.now() - t0}ms ${req.__trace ? "#" + String(req.__trace).slice(0, 8) : ""}`);
@@ -311,6 +312,13 @@ const handler = async (req, res) => {
       if (t && host) lines.push("", "Sitemap: " + (sec.httpsRequest(req) ? "https" : "http") + "://" + host + "/sitemap.xml");
       res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" });
       return res.end(lines.join("\n") + "\n");
+    }
+    /* asked by the TLS proxy before it requests a certificate: only for an address that is ours */
+    if (url.pathname === "/tls-allowed") {
+      const d = String(url.searchParams.get("domain") || ""), m = masterTenant();
+      const SD = require("./lib/store-domains.js");
+      res.writeHead(d && (SD.storeFor(d) || (m && SD.clean(m.domain) === SD.clean(d))) ? 200 : 404, { "Cache-Control": "no-store" });
+      return res.end();
     }
     /* the store as an app a phone or desktop can install */
     if (url.pathname === "/manifest.webmanifest") {
@@ -438,6 +446,7 @@ setInterval(() => { try { idem.purge(); } catch (e) { } }, 3600 * 1000).unref();
 /* what has expired is cleared, and proven store addresses are looked up again */
 setInterval(() => {
   try { require("./lib/session-sweep.js").sweep(); } catch (e) { console.error("session sweep:", e.message); }
+  try { require("./lib/ops-alerts.js").checkBackups(); } catch (e) { }
   require("./lib/store-domains.js").recheck().catch(e => console.error("domain check:", e.message));
 }, 3600 * 1000).unref();
 /* live payments whose webhook never came are looked up with their gateway on a cadence */

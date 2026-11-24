@@ -36,10 +36,10 @@
 | **Contract** | [UCOS-SEC-000001 Security Runtime Architecture](#ucos-sec-000001) |
 | **Artifacts** | [UCOS-IAM-000001](#ucos-iam-000001), [UCOS-ZTA-000001](#ucos-zta-000001), [UCOS-CRY-000001](#ucos-cry-000001), [UCOS-KMS-000001](#ucos-kms-000001), [UCOS-SEC-000001](#ucos-sec-000001) |
 | **Concepts** | 285 — `node _registry/compile.js --search <words> --kind concept --owner "Security"` |
-| **Code** | `lib/security.js`, `lib/identity.js`, `lib/webauthn.js`, `lib/risk.js`, `lib/routes/risk.js`, `lib/routes/security.js` |
+| **Code** | `lib/security.js`, `lib/identity.js`, `lib/webauthn.js`, `lib/risk.js`, `lib/routes/risk.js`, `lib/routes/security.js`, `lib/mfa.js`, `lib/session-sweep.js` |
 | **Managed in** | `_registry/domains.json` → `D-SEC` |
 
-**Live routes (45)** — what the platform serves today for this domain:
+**Live routes (57)** — what the platform serves today for this domain:
 
 - `GET /api/session`
 - `POST /api/auth/register`
@@ -63,6 +63,18 @@
 - `POST /api/admin/identity-provider-types`
 - `GET /api/admin/identity-settings`
 - `PUT /api/admin/identity-settings`
+- `GET /api/auth/mfa`
+- `POST /api/auth/mfa/verify`
+- `POST /api/auth/mfa/start`
+- `POST /api/auth/mfa/confirm`
+- `POST /api/auth/mfa/remove`
+- `GET /api/platform/mfa`
+- `POST /api/platform/mfa/verify`
+- `POST /api/platform/mfa/start`
+- `POST /api/platform/mfa/confirm`
+- `POST /api/platform/mfa/remove`
+- `POST /api/auth/email/verify`
+- `POST /api/auth/email/send`
 - `POST /api/auth/password/forgot`
 - `POST /api/auth/password/reset`
 - `POST /api/auth/login-init`
