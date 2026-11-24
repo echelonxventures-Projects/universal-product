@@ -17346,6 +17346,35 @@
        ]
       }
      }
+    },
+    {
+     "key": "vocab.platform_types.astronomy",
+     "name": "astronomy",
+     "title": {
+      "en": "Astronomy and Space"
+     },
+     "data": {
+      "answers": {
+       "sellingModel": "marketplace",
+       "offerings": [
+        "education",
+        "physical",
+        "digital",
+        "course"
+       ],
+       "fulfilment": [
+        "shipped",
+        "downloaded",
+        "streamed"
+       ],
+       "features": [
+        "reviews",
+        "qna",
+        "wish_lists",
+        "product_alerts"
+       ]
+      }
+     }
     }
    ]
   },

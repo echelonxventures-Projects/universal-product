@@ -48,11 +48,56 @@
  "HOUSE_SYSTEMS": [
   {
    "key": "whole_sign",
-   "label": "Whole sign"
+   "label": "Whole sign",
+   "method": "whole_sign"
   },
   {
    "key": "equal",
-   "label": "Equal (from the ascendant)"
+   "label": "Equal (from the ascendant)",
+   "method": "equal"
+  },
+  {
+   "key": "sripati",
+   "label": "Sripati (Porphyry cusps as bhava madhya, sandhis between them)",
+   "method": "sripati",
+   "quadrant": true
+  },
+  {
+   "key": "porphyry",
+   "label": "Porphyry",
+   "method": "porphyry",
+   "quadrant": true
+  },
+  {
+   "key": "placidus",
+   "label": "Placidus",
+   "method": "placidus",
+   "quadrant": true
+  },
+  {
+   "key": "koch",
+   "label": "Koch",
+   "method": "koch",
+   "quadrant": true
+  },
+  {
+   "key": "regiomontanus",
+   "label": "Regiomontanus",
+   "method": "regiomontanus",
+   "quadrant": true
+  },
+  {
+   "key": "campanus",
+   "label": "Campanus",
+   "method": "campanus",
+   "quadrant": true
+  },
+  {
+   "key": "kp",
+   "label": "KP (Placidus cusps with sign, star, sub and sub-sub lords)",
+   "method": "placidus",
+   "quadrant": true,
+   "kpLords": true
   }
  ],
  "CHART_STYLES": [
@@ -119,10 +164,24 @@
    "key": "ketu",
    "label": "Ketu",
    "short": "Ke"
+  },
+  {
+   "key": "uranus",
+   "label": "Uranus",
+   "short": "Ur",
+   "elements": "uranus",
+   "outer": true
+  },
+  {
+   "key": "neptune",
+   "label": "Neptune",
+   "short": "Ne",
+   "elements": "neptune",
+   "outer": true
   }
  ],
  "ELEMENTS": {
-  "$comment": "JPL Keplerian elements for approximate positions of the major planets, 1800-2050 (Standish): a (au), e, I, L, long. of perihelion, long. of node (degrees), each with its rate per Julian century from J2000.",
+  "$comment": "JPL Table 1 (Standish): Keplerian elements for approximate positions of the major planets, 1800-2050: a (au), e, I, L, long. of perihelion, long. of node (degrees), each with its rate per Julian century from J2000. Used inside its interval; ELEMENTS_LONG outside it.",
   "mercury": [
    [
     0.38709927,
@@ -133,8 +192,8 @@
     48.33076593
    ],
    [
-    3.7e-7,
-    0.00001906,
+    3.7e-07,
+    1.906e-05,
     -0.00594749,
     149472.67411175,
     0.16047689,
@@ -151,8 +210,8 @@
     76.67984255
    ],
    [
-    0.0000039,
-    -0.00004107,
+    3.9e-06,
+    -4.107e-05,
     -0.0007889,
     58517.81538729,
     0.00268329,
@@ -163,14 +222,14 @@
    [
     1.00000261,
     0.01671123,
-    -0.00001531,
+    -1.531e-05,
     100.46457166,
     102.93768193,
     0
    ],
    [
-    0.00000562,
-    -0.00004392,
+    5.62e-06,
+    -4.392e-05,
     -0.01294668,
     35999.37244981,
     0.32327364,
@@ -187,8 +246,8 @@
     49.55953891
    ],
    [
-    0.00001847,
-    0.00007882,
+    1.847e-05,
+    7.882e-05,
     -0.00813131,
     19140.30268499,
     0.44441088,
@@ -1175,5 +1234,201 @@
    "same": 0,
    "different": 8
   }
- }
+ },
+ "ELEMENTS_LONG": {
+  "$comment": "JPL Table 2a/2b, https://ssd.jpl.nasa.gov/planets/approx_pos.html: elements and rates for 3000 BC - AD 3000 (mean ecliptic and equinox of J2000), and for Jupiter to Neptune the extra terms b, c, s, f added to the mean anomaly: M = L - varpi + b T^2 + c cos(f T) + s sin(f T).",
+  "validFromYear": -2999,
+  "validToYear": 3000,
+  "mercury": [
+   [
+    0.38709843,
+    0.20563661,
+    7.00559432,
+    252.25166724,
+    77.45771895,
+    48.33961819
+   ],
+   [
+    0,
+    2.123e-05,
+    -0.00590158,
+    149472.67486623,
+    0.15940013,
+    -0.12214182
+   ]
+  ],
+  "venus": [
+   [
+    0.72332102,
+    0.00676399,
+    3.39777545,
+    181.9797085,
+    131.76755713,
+    76.67261496
+   ],
+   [
+    -2.6e-07,
+    -5.107e-05,
+    0.00043494,
+    58517.8156026,
+    0.05679648,
+    -0.27274174
+   ]
+  ],
+  "earth": [
+   [
+    1.00000018,
+    0.01673163,
+    -0.00054346,
+    100.46691572,
+    102.93005885,
+    -5.11260389
+   ],
+   [
+    -3e-08,
+    -3.661e-05,
+    -0.01337178,
+    35999.37306329,
+    0.3179526,
+    -0.24123856
+   ]
+  ],
+  "mars": [
+   [
+    1.52371243,
+    0.09336511,
+    1.85181869,
+    -4.56813164,
+    -23.91744784,
+    49.71320984
+   ],
+   [
+    9.7e-07,
+    9.149e-05,
+    -0.00724757,
+    19140.29934243,
+    0.45223625,
+    -0.26852431
+   ]
+  ],
+  "jupiter": [
+   [
+    5.20248019,
+    0.0485359,
+    1.29861416,
+    34.33479152,
+    14.27495244,
+    100.29282654
+   ],
+   [
+    -2.864e-05,
+    0.00018026,
+    -0.00322699,
+    3034.90371757,
+    0.18199196,
+    0.13024619
+   ],
+   [
+    -0.00012452,
+    0.0606406,
+    -0.35635438,
+    38.35125
+   ]
+  ],
+  "saturn": [
+   [
+    9.54149883,
+    0.05550825,
+    2.49424102,
+    50.07571329,
+    92.86136063,
+    113.63998702
+   ],
+   [
+    -3.065e-05,
+    -0.00032044,
+    0.00451969,
+    1222.11494724,
+    0.54179478,
+    -0.25015002
+   ],
+   [
+    0.00025899,
+    -0.13434469,
+    0.87320147,
+    38.35125
+   ]
+  ],
+  "uranus": [
+   [
+    19.18797948,
+    0.0468574,
+    0.77298127,
+    314.20276625,
+    172.43404441,
+    73.96250215
+   ],
+   [
+    -0.00020455,
+    -1.55e-05,
+    -0.00180155,
+    428.49512595,
+    0.09266985,
+    0.05739699
+   ],
+   [
+    0.00058331,
+    -0.97731848,
+    0.17689245,
+    7.67025
+   ]
+  ],
+  "neptune": [
+   [
+    30.06952752,
+    0.00895439,
+    1.7700552,
+    304.22289287,
+    46.68158724,
+    131.78635853
+   ],
+   [
+    6.447e-05,
+    8.18e-06,
+    0.000224,
+    218.46515314,
+    0.01009938,
+    -0.00606302
+   ],
+   [
+    -0.00041348,
+    0.68346318,
+    -0.10162547,
+    7.67025
+   ]
+  ]
+ },
+ "BODY_SETS": [
+  {
+   "key": "vedic",
+   "label": "The nine grahas (Sun to Ketu)",
+   "outer": false
+  },
+  {
+   "key": "all",
+   "label": "The nine grahas with Uranus and Neptune",
+   "outer": true
+  }
+ ],
+ "CALENDARS": [
+  {
+   "key": "gregorian",
+   "label": "Gregorian (proleptic before 1582)"
+  },
+  {
+   "key": "julian",
+   "label": "Julian (most records before 1582)",
+   "julian": true
+  }
+ ]
 }

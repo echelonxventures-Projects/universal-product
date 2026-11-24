@@ -24,6 +24,23 @@ ok(near(I.planetApparent("venus", T(2448976.5)), 313.08102, 0.01), "Venus, 1992 
 { const t = tAt("2019-11-11T15:20:00Z"); ok(near(I.planetApparent("mercury", t), I.sunApparent(t), 0.05), "Mercury lines up with the Sun at its 2019 Nov 11 transit"); }
 { const t = tAt("2012-06-06T01:30:00Z"); ok(near(I.planetApparent("venus", t), I.sunApparent(t), 0.05), "Venus lines up with the Sun at its 2012 Jun 6 transit"); }
 
+console.log("▸ 3000 BC TO AD 3000 (JPL'S LONG-RANGE ELEMENTS OUTSIDE 1800-2050)");
+{
+  const sep = (iso, x, y) => { const t = tAt(iso); return Math.abs((((I.planetApparent(x, t) - I.planetApparent(y, t)) % 360) + 540) % 360 - 180); };
+  ok(sep("1623-07-16T12:00:00Z", "jupiter", "saturn") < 0.15, "the great conjunction of 1623 Jul 16", sep("1623-07-16T12:00:00Z", "jupiter", "saturn"));
+  ok(sep("2080-03-15T12:00:00Z", "jupiter", "saturn") < 0.2, "the great conjunction of 2080 Mar 15", sep("2080-03-15T12:00:00Z", "jupiter", "saturn"));
+  ok(sep("1613-01-04T00:00:00Z", "jupiter", "neptune") < 0.1, "Neptune beside Jupiter where Galileo drew it, 1613 Jan", sep("1613-01-04T00:00:00Z", "jupiter", "neptune"));
+  const js = d => { const x = astro.chart({ date: d, time: "12:00", utcOffsetMinutes: 0, latitude: 31.8, longitude: 35.2, calendar: "julian" }, { zodiac: "tropical" }); return x.bodies.find(b => b.body === "jupiter").longitude - x.bodies.find(b => b.body === "saturn").longitude; };
+  ok(js("-0006-05-22") < 0 && js("-0006-06-01") > 0, "the first great conjunction of 7 BC falls in late May (Julian calendar)", [js("-0006-05-22"), js("-0006-06-01")]);
+  ok(astro.chart({ date: "0050-06-01", time: "12:00", utcOffsetMinutes: 0, latitude: 31.8, longitude: 35.2 }, {}).instant.startsWith("0050-06-01"), "a date in year 50 stays in year 50 (not 1950)");
+  const g = astro.chart({ date: "1582-10-15", time: "12:00", utcOffsetMinutes: 0, latitude: 41.9, longitude: 12.5 }, {}).instant;
+  ok(g === astro.chart({ date: "1582-10-05", time: "12:00", utcOffsetMinutes: 0, latitude: 41.9, longitude: 12.5, calendar: "julian" }, {}).instant, "1582 Oct 5 in the Julian calendar is 1582 Oct 15 in the Gregorian");
+  const th = (fn, re) => { try { fn(); return false; } catch (e) { return re.test(e.message); } };
+  ok(th(() => astro.chart({ date: "3100-01-01", time: "12:00", utcOffsetMinutes: 0, latitude: 0, longitude: 0 }, {}), /3000 BC to AD 3000/), "a date outside 3000 BC - AD 3000 is refused, not guessed");
+  const all = astro.chart({ date: "1990-03-15", time: "11:00", timeZone: "Asia/Kolkata", latitude: 28.6, longitude: 77.2 }, { bodies: "all", zodiac: "tropical" });
+  ok(all.bodies.some(b => b.body === "uranus") && all.bodies.some(b => b.body === "neptune"), "the store may add Uranus and Neptune (Western charts)");
+}
+
 console.log("▸ THE ASCENDANT IS THE POINT OF THE ECLIPTIC RISING IN THE EAST");
 {
   let worst = 0, east = true;
@@ -43,7 +60,7 @@ console.log("▸ A CHART, FROM A BIRTH DATE, TIME AND PLACE");
 const birth = { date: "1990-03-15", time: "11:00", timeZone: "Asia/Kolkata", latitude: 28.6139, longitude: 77.2090 };
 const c = astro.chart(birth, { ayanamsa: "lahiri" });
 ok(c.instant === "1990-03-15T05:30:00.000Z", "the local time in Asia/Kolkata is read as the right instant", c.instant);
-ok(c.bodies.length === SEED.BODIES.length && c.bodies.every(b => b.longitude >= 0 && b.longitude < 360 && b.pada >= 1 && b.pada <= 4 && SEED.NAKSHATRAS.some(n => n.key === b.nakshatra)), "every body has a longitude, a sign, a nakshatra and a pada");
+ok(c.bodies.length === SEED.BODIES.filter(b => !b.outer).length && c.bodies.every(b => b.longitude >= 0 && b.longitude < 360 && b.pada >= 1 && b.pada <= 4 && SEED.NAKSHATRAS.some(n => n.key === b.nakshatra)), "every body has a longitude, a sign, a nakshatra and a pada");
 const ra = c.bodies.find(b => b.body === "rahu"), ke = c.bodies.find(b => b.body === "ketu");
 ok(near(ra.longitude, ke.longitude + 180, 0.0002), "Rahu and Ketu are exactly opposite");
 const trop = astro.chart(birth, { zodiac: "tropical" });
