@@ -312,6 +312,8 @@
     {"path": "scripts/schema-dump.js", "owner": "Persistence", "note": "dumps the storage schema"},
     {"path": "scripts/size-guard.js", "owner": "Quality", "note": "no file of 50 MB or more is tracked or committed (npm test, the pre-commit hook in .githooks)"},
   {"path":"lib/stock.js","owner":"Commerce"},
+  {"path":"lib/product-counts.js","owner":"Commerce"},
+  {"path":"lib/returns.js","owner":"Commerce"},
   {"path":"lib/refunds.js","owner":"Integration"},
   {"path":"lib/orders.js","owner":"Commerce"}
   ]

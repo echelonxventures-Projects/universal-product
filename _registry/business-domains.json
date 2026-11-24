@@ -357,7 +357,8 @@
      "lib/master-contributions.js",
      "lib/master-permissions.js",
      "lib/store-taxonomy.js",
-     "lib/store-attributes.js"
+     "lib/store-attributes.js",
+     "lib/product-counts.js"
     ],
     "tables": [
      "products",
@@ -988,7 +989,9 @@
     "store_admin"
    ],
    "owns": {
-    "files": [],
+    "files": [
+     "lib/returns.js"
+    ],
     "tables": [
      "returns",
      "disputes"

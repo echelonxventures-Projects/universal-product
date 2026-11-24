@@ -12,6 +12,7 @@ Sending something back: return requests, their inspection and refund, and paymen
 
 | Module | What it is |
 |---|---|
+| `lib/returns.js` | returns: what a shopper sends back from an order, and what they get for it. |
 | `lib/routes/returns.js` | returns domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the returns domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
@@ -92,7 +93,7 @@ Actions:
 flowchart LR
   U([Shopper / Store staff / Store administrator]) --> UI[store console]
   UI --> API[4 API routes]
-  API --> ENG[returns.js]
+  API --> ENG[returns.js, returns.js]
   ENG --> DB[(returns, disputes)]
   ENG --> SM{{2 state machines}}
 ```

@@ -1,7 +1,7 @@
 {
  "summary": {
-  "branch": 66,
-  "fallback": 82,
+  "branch": 65,
+  "fallback": 80,
   "seedConstants": {
    "count": 7,
    "lines": 222
@@ -32,7 +32,6 @@
    "lib/entity.js · orders": 1,
    "lib/gates.js · capability": 1,
    "lib/identity.js · password": 1,
-   "lib/logistics.js · restock": 1,
    "lib/mailer.js · offline": 1,
    "lib/marketplace.js · impression": 1,
    "lib/modules.js · installed": 2,
@@ -98,7 +97,6 @@
    "lib/helpdesk.js · Customer": 2,
    "lib/helpdesk.js · agent": 1,
    "lib/identity.js · customer": 1,
-   "lib/logistics.js · refund": 1,
    "lib/mailer.js · message": 3,
    "lib/mailer.js · notification": 1,
    "lib/marketplace-ext.js · refund": 1,
@@ -107,7 +105,6 @@
    "lib/offers.js · discount": 1,
    "lib/routes/affiliate.js · bank": 1,
    "lib/routes/affiliate.js · revenue": 1,
-   "lib/routes/affiliate.js · standard": 1,
    "lib/routes/analytics.js · order": 3,
    "lib/routes/compliance.js · full": 1,
    "lib/routes/identity.js · support": 1,

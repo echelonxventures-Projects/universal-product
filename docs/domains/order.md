@@ -25,7 +25,7 @@ When an item is unavailable at picking: the shopper's own choice per line — re
 
 | Module | What it is |
 |---|---|
-| `lib/orders.js` | an order after checkout: moving it on, cancelling it, returning what it held. |
+| `lib/orders.js` | an order after checkout: moving it on and cancelling it. |
 | `lib/substitutions.js` | Substitutions: what happens when an item is unavailable at picking. For each line, the shopper chooses a policy — a substitutionPolicies row declaring whether it allows a substitute at all, whether one is applied without asking, and whether the shopper names the item — and it rides on the bag line as its `substitute` term (lib/lineterms.js). At picking, staff either propose a substitute or mark the line unavailable. A proposal the policy accepts on its own is applied at once; otherwise the shopper accepts or rejects it. A cheaper substitute refunds the difference to the shopper's wallet; a dearer one is charged only where the store allows it; a rejected substitute or an unavailable line is refunded. Every decision is the `substitution` state machine. Capability: substitutions. |
 | `lib/routes/order.js` | order domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the order domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
