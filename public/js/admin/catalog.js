@@ -80,3 +80,31 @@ screen("taxonomy", { group: "Catalogue", label: "🌳 Taxonomy", order: 11, rend
 screen("attributes", { group: "Catalogue", label: "🧬 Attributes", order: 12, render: async () => await entityTable("attribute") });
 screen("gcatalog", { group: "Catalogue", label: "🌐 Global Catalog", order: 13, render: async () => await vGcatalog(), wire: async () => { wireGcatalog(); } });
 screen("mastercontrib", { group: "Catalogue", label: "🤝 Master Contributions", order: 14, render: async () => await vMasterContrib(), wire: async () => { wireMasterContrib(); } });
+
+/* ---------- size guides and pre-orders ---------- */
+async function vSizeGuides() {
+  const gate = await coGate("sizeguides");
+  if (!gate.any) return coOff("size guides", "📏 Size Guides", gate.off);
+  const d = await api("/admin/size-guides", {});
+  return `<div class="a-head"><h2>📏 Size Guides</h2><p class="a-sub">An item shows the guide that names it, else its brand's, else its department's. One row per line, cells separated by commas; the first row is the heading.</p></div>
+  <div class="a-card"><div class="p-form"><div class="row"><label><span>Name</span><input id="sgName"></label><label><span>For</span><select id="sgScope">${d.scopes.map(x => `<option>${esc(x)}</option>`).join("")}</select></label><label><span>Item id, brand or department</span><input id="sgTarget"></label></div><label><span>Table</span><textarea id="sgRows" rows="5" placeholder="Size, Chest (cm), Waist (cm)"></textarea></label><label><span>Note</span><input id="sgNote"></label><button class="p-btn primary" id="sgAdd">Add guide</button></div>
+  <div class="a-tablewrap"><table class="a-table"><thead><tr><th>guide</th><th>for</th><th>sizes</th><th></th></tr></thead><tbody>${d.guides.map(x => `<tr><td>${esc(x.name)}</td><td>${esc(x.scope)}: ${esc(x.target)}</td><td>${x.rows.length - 1}</td><td><button class="btn-white sm" data-sgdel="${x.id}">Remove</button></td></tr>`).join("") || '<tr><td colspan="4">No guides yet.</td></tr>'}</tbody></table></div></div>`;
+}
+function wireSizeGuides() {
+  const b = $("#sgAdd"); if (b) b.onclick = () => postAndRender("/admin/size-guides", { name: fieldVal("#sgName"), scope: fieldVal("#sgScope"), target: fieldVal("#sgTarget"), rows: fieldVal("#sgRows"), note: fieldVal("#sgNote") }, "POST", "Guide added");
+  $$("[data-sgdel]").forEach(x => x.onclick = async () => { try { await api("/admin/size-guides/" + x.dataset.sgdel, "DELETE"); render(); } catch (e) { toast(e.message); } });
+}
+async function vPreorders() {
+  const gate = await coGate("preorders");
+  if (!gate.any) return coOff("pre-orders", "⏳ Pre-orders", gate.off);
+  const d = await api("/admin/preorders", {});
+  return `<div class="a-head"><h2>⏳ Pre-orders</h2><p class="a-sub">Until its day an item sells from the promise, not from the shelf. On that day it sells from the shelf again.</p></div>
+  <div class="a-card"><div class="p-form"><div class="row"><label><span>Product id</span><input id="poId"></label><label><span>Ships on</span><input id="poDay" type="date"></label><label><span>Most to promise</span><input id="poMax" type="number" min="1"></label><button class="p-btn primary" id="poAdd">Save</button></div></div>
+  <div class="a-tablewrap"><table class="a-table"><thead><tr><th>item</th><th>ships on</th><th>promised</th><th></th></tr></thead><tbody>${d.preorders.map(x => `<tr><td>${esc(x.title)}</td><td>${esc(x.ships_on)}${x.open ? "" : " · now selling"}</td><td>${x.taken} / ${x.max_qty}</td><td><button class="btn-white sm" data-podel="${esc(x.product_id)}">Remove</button></td></tr>`).join("") || '<tr><td colspan="4">Nothing on pre-order.</td></tr>'}</tbody></table></div></div>`;
+}
+function wirePreorders() {
+  const b = $("#poAdd"); if (b) b.onclick = () => postAndRender("/admin/preorders", { product_id: fieldVal("#poId").trim(), ships_on: fieldVal("#poDay"), max_qty: Number(fieldVal("#poMax")) }, "POST", "Saved");
+  $$("[data-podel]").forEach(x => x.onclick = async () => { try { await api("/admin/preorders/" + encodeURIComponent(x.dataset.podel), "DELETE"); render(); } catch (e) { toast(e.message); } });
+}
+screen("sizeguides", { group: "Catalogue", label: "📏 Size Guides", order: 50, render: async () => await vSizeGuides(), wire: async () => { wireSizeGuides(); } });
+screen("preorders", { group: "Catalogue", label: "⏳ Pre-orders", order: 51, render: async () => await vPreorders(), wire: async () => { wirePreorders(); } });

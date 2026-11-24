@@ -48,14 +48,34 @@ Shoppers choose a locker, counter or store at checkout instead of a home address
 | `email_on_ready` | Email the shopper when the parcel is ready | `true` |
 | `notify_kind` | Notification kind sent when a parcel is ready | `"pickup_ready"` |
 
+### Delivery slots (`delivery_slots`)
+
+Shoppers choose the day and hours their order arrives, from the store's weekly windows. How far ahead, the cutoff and whether a choice is required are tuned here.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `days_ahead` | Days ahead a shopper may choose | `7` |
+| `cutoff_minutes` | Minutes before a window when it closes | `120` |
+| `required` | A delivery time must be chosen | `false` |
+
+### Serviceable areas (`serviceable_areas`)
+
+The postcodes a store delivers to. An order outside them is refused before anything is charged; an area may add its own fee and days.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `message` | What a shopper outside every area is told | `"We don't deliver to this postcode yet"` |
+
 ## Architecture
 
 | Module | What it is |
 |---|---|
 | `lib/carrier-easypost.js` | the EasyPost carrier adapter. EasyPost fronts USPS, UPS, FedEx, DHL and ~100 others with one API: rate a parcel, buy the chosen rate's label, and send signed tracker webhooks. LAW-015: a vendor lives in its adapter and is chosen by configuration. The shipping engine (lib/shipping.js) finds every lib/carrier-<id>.js, seeds its provider row, and rates, buys and tracks through whichever carrier a platform admin activated — it names none of them. An adapter exports: row (its shipping_providers row), quote, buy, verify and normalize. |
+| `lib/delivery-windows.js` | delivery slots: the shopper chooses the day and hours their order arrives. |
 | `lib/logistics.js` | Logistics & Supply-Chain. Fulfilment state machine, shipment tracking events, 3PL carrier abstraction (reuses the declarative provider_defs.kind=shipping specs + lib/connect.js, no per-carrier code), multi-warehouse routing, and return disposition. All configuration lives in meta_lists so new 3PLs, fulfilment states, or SLA tiers are added from Data Studio with zero code. |
 | `lib/pickup.js` | Pickup points & lockers. A store runs any number of pickup points — lockers, staffed counters, its own shops; the kinds are pickupKinds registry rows. At checkout a shopper may choose a point instead of a home address: the order is reserved a place there and given a one-time code. Staff mark the parcel arrived (the shopper is told), the shopper collects with the code, and a parcel left past its holding time expires and goes back. Every step is the pickup state machine, asked by tag (holding, collectable, expirable…) and never by a state's name; the fee, holding days, code length and lock-out are the pickup_points capability's params. |
 | `lib/qcommerce.js` | Quick-commerce engine. Dark stores, delivery slots, pincode serviceability, store-inventory pinning, a delivery-promise engine, rider dispatch batching and proof-of-delivery. |
+| `lib/serviceable-areas.js` | where a store delivers: the places it serves, named by postcode. |
 | `lib/shipping.js` | Shipping: live carrier rates, labels and tracking. A per-store parcel ledger (package_tracking) plus live carriers, each an adapter of its own (lib/carrier-<id>.js, LAW-015): rate a parcel, buy the chosen rate's label, and receive signed tracker webhooks. Credentials live sealed on the platform's shipping_providers row (configured by a platform admin); with no active carrier, quote/label still say so (501) rather than inventing data. This engine names no carrier. |
 | `lib/routes/shipping.js` | shipping domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the shipping domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
@@ -236,6 +256,44 @@ Shoppers choose a locker, counter or store at checkout instead of a home address
 | `attempts` | INTEGER NOT NULL DEFAULT 0 |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 
+### `delivery_windows`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `weekday` | INTEGER NOT NULL |
+| `starts` | TEXT NOT NULL |
+| `ends` | TEXT NOT NULL |
+| `capacity` | INTEGER NOT NULL DEFAULT 0 |
+| `fee` | REAL NOT NULL DEFAULT 0 |
+| `active` | INTEGER NOT NULL DEFAULT 1 |
+
+### `delivery_bookings`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `order_id` | INTEGER NOT NULL UNIQUE |
+| `window_id` | INTEGER NOT NULL |
+| `day` | TEXT NOT NULL |
+| `starts` | TEXT NOT NULL |
+| `ends` | TEXT NOT NULL |
+| `fee` | REAL NOT NULL DEFAULT 0 |
+
+### `serviceable_areas`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `name` | TEXT NOT NULL |
+| `postcodes` | TEXT NOT NULL |
+| `fee` | REAL NOT NULL DEFAULT 0 |
+| `extra_days` | INTEGER NOT NULL DEFAULT 0 |
+| `active` | INTEGER NOT NULL DEFAULT 1 |
+
 ### `shipping_providers`
 
 | Column | Type |
@@ -303,6 +361,14 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 
 | Method and path | Handler | What it does |
 |---|---|---|
+| `GET /api/shipping/slots` | `apiDeliverySlots` | the delivery times a shopper may choose now |
+| `GET /api/shipping/serviceable` | `apiServiceable` | whether the store delivers to a postcode |
+| `GET /api/admin/delivery-windows` | `apiAdminWindows` | the store's weekly delivery windows and what is booked |
+| `POST /api/admin/delivery-windows` | `apiAdminWindowSave` | adds or changes a delivery window |
+| `DELETE /api/admin/delivery-windows/:id` | `apiAdminWindowDelete` | removes a delivery window |
+| `GET /api/admin/serviceable-areas` | `apiAdminAreas` | the areas the store delivers to |
+| `POST /api/admin/serviceable-areas` | `apiAdminAreaSave` | adds or changes an area |
+| `DELETE /api/admin/serviceable-areas/:id` | `apiAdminAreaDelete` | removes an area |
 | `GET /api/qc/promise` | `apiQcPromise` | ---------- Quick-commerce ---------- |
 | `GET /api/qc/stores` | `apiQcStores` | — |
 | `GET /api/qc/slots` | `apiQcSlots` | — |
@@ -420,15 +486,15 @@ Actions: `arrive` → ready · `collect` → collected · `expire` → expired �
 ```mermaid
 flowchart LR
   U([Shopper / Store staff / Store administrator / Driver or rider / Platform administrator]) --> UI[store console, platform console]
-  UI --> API[32 API routes]
-  API --> ENG[carrier-easypost.js, logistics.js, pickup.js, qcommerce.js, shipping.js, shipping.js]
+  UI --> API[40 API routes]
+  API --> ENG[carrier-easypost.js, delivery-windows.js, logistics.js, pickup.js, qcommerce.js, serviceable-areas.js, shipping.js, shipping.js]
   ENG --> DB[(shipments, shipment_events, dark_stores, delivery_slots, service_areas, riders, …)]
   ENG --> SM{{7 state machines}}
 ```
 
 ## User interface
 
-**Store console:** 📮 Shipping & Tracking · 📍 Pickup Points · 🚚 Logistics & Fulfilment · ⚡ Quick-commerce
+**Store console:** 📮 Shipping & Tracking · 📍 Pickup Points · 🚚 Logistics & Fulfilment · ⚡ Quick-commerce · 🗓️ Delivery Slots · 📮 Serviceable Areas
 
 **Platform console:** 📦 Fulfilment · 📦 FBA Inbound · 🚚 Logistics · 🚛 Transportation · 📮 Shipping · 📍 Tracking · ↩️ Reverse Logistics
 

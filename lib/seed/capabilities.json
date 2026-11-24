@@ -2047,6 +2047,76 @@
      "label": "Most samples of one item a bag may hold"
     }
    }
+  },
+  {
+   "key": "delivery_slots",
+   "label": "Delivery slots",
+   "domain": "shopper",
+   "icon": "🗓️",
+   "description": "Shoppers choose the day and hours their order arrives, from the store's weekly windows. How far ahead, the cutoff and whether a choice is required are tuned here.",
+   "params": {
+    "days_ahead": {
+     "type": "number",
+     "default": 7,
+     "label": "Days ahead a shopper may choose"
+    },
+    "cutoff_minutes": {
+     "type": "number",
+     "default": 120,
+     "label": "Minutes before a window when it closes"
+    },
+    "required": {
+     "type": "bool",
+     "default": false,
+     "label": "A delivery time must be chosen"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "serviceable_areas",
+   "label": "Serviceable areas",
+   "domain": "shopper",
+   "icon": "📮",
+   "description": "The postcodes a store delivers to. An order outside them is refused before anything is charged; an area may add its own fee and days.",
+   "params": {
+    "message": {
+     "type": "text",
+     "default": "We don't deliver to this postcode yet",
+     "label": "What a shopper outside every area is told"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "size_guides",
+   "label": "Size guides",
+   "domain": "shopper",
+   "icon": "📏",
+   "description": "A table of measurements shown on an item's page, set for an item, a brand or a department.",
+   "params": {
+    "label": {
+     "type": "text",
+     "default": "Size guide",
+     "label": "What the link is called"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "preorders",
+   "label": "Pre-orders",
+   "domain": "shopper",
+   "icon": "⏳",
+   "description": "Sell an item before it can be sent: the day it ships and how many may be promised.",
+   "params": {
+    "label": {
+     "type": "text",
+     "default": "Pre-order",
+     "label": "What the button says"
+    }
+   },
+   "shopper": true
   }
  ],
  "PRESETS": [
@@ -2803,6 +2873,18 @@
   ],
   "sample_orders": [
    "samples"
+  ],
+  "delivery_slots": [
+   "deliveryslots"
+  ],
+  "serviceable_areas": [
+   "areas"
+  ],
+  "size_guides": [
+   "sizeguides"
+  ],
+  "preorders": [
+   "preorders"
   ]
  },
  "ROUTES": {
@@ -2816,6 +2898,10 @@
   "admin/ledger": "wallets",
   "admin/wallet-definitions": "wallets",
   "admin/wallet-default": "wallets",
-  "admin/gift-cards": "giftcards"
+  "admin/gift-cards": "giftcards",
+  "admin/delivery-windows": "deliveryslots",
+  "admin/serviceable-areas": "areas",
+  "admin/size-guides": "sizeguides",
+  "admin/preorders": "preorders"
  }
 }

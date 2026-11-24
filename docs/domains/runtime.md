@@ -21,10 +21,12 @@ Running the platform: environments, configuration, the database and its migratio
 | `lib/logger.js` | Structured logger (JSON in prod, plain in dev) |
 | `lib/metrics.js` | request metrics. |
 | `lib/migrate.js` | SQLite → PostgreSQL migration (B-full foundation). `plan()` reads the live SQLite schema + rows and emits a deterministic list of translated DDL + parameterized INSERT statements (unit-testable, no server). `apply()` runs them through the async Postgres wire client. uid columns become native `gen_random_uuid()` defaults (the SQLite triggers are engine-specific). This is the copy/mirror step of a cutover; the request path then runs on the synchronous Postgres bridge (LX_DB_DRIVER=postgres — see lib/pgbridge.js / lib/db.js). |
+| `lib/ops-alerts.js` | telling the people who run the platform that something is wrong: server errors coming in a burst, or no recent backup. Sent by the platform's own email sender to its admins, at most once an hour per kind. (A platform that is down cannot send: point an outside monitor at /readyz.) |
 | `lib/pg.js` | minimal Postgres wire client (zero dependencies). Frontend/backend protocol: StartupMessage + (trust \| cleartext \| MD5) auth + simple Query, parsing RowDescription/DataRow/CommandComplete/ReadyForQuery/ErrorResponse. Selected via config `db=postgres`; the app's synchronous data layer (lib/db.js) stays SQLite by design, so this powers the async surfaces (workers, exports, reporting, future async handlers) — a full sync→async app migration on Postgres is the remaining, separately-scoped step (see README). TLS is negotiated when the URL asks for it (sslmode=require/prefer/allow) so managed Postgres (RDS/Cloud SQL/Neon/Supabase) connects instead of failing plaintext. SCRAM-SHA-256 is intentionally NOT half-implemented: if a server demands it, ping() reports "auth unsupported" — set the role to md5/trust for the migration, then SCRAM for app traffic. Pure encode/parse helpers are exported and unit-tested without a live server. |
 | `lib/pgbridge.js` |  |
 | `lib/pgworker.js` |  |
 | `lib/queue.js` | Job queue (inline by default, Bull/Redis when configured) |
+| `lib/readiness.js` | what still stands between this install and real customers, read from the install itself: each check says whether it holds and, when it does not, what to do. |
 | `lib/sql.js` | SQLite→PostgreSQL SQL dialect translator (B-full foundation). The app emits a bounded, known set of SQLite idioms. This converts them to PostgreSQL so the same SQL runs on either engine; `?` placeholders become `$n`. It is pure + unit-tested — the one part of the async migration that can be validated without a live server. PRAGMA / randomblob-uuid triggers are SQLite-only and not translated (Postgres uses gen_random_uuid(); see migrate.js). |
 | `lib/routes/runtime.js` | runtime domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the runtime domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
@@ -43,6 +45,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 
 | Method and path | Handler | What it does |
 |---|---|---|
+| `GET /api/platform/readiness` | `apiPlatformReadiness` | what still stands between this install and real customers (lib/readiness.js) |
 | `GET /api/admin/monitor` | `apiAdminMonitor` | — |
 | `GET /api/platform/db` | `apiPlatformDb` | ---------- B (async dual-engine) observability ---------- |
 | `POST /api/platform/db/ping` | `apiDbPing` | — |
@@ -68,8 +71,8 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 ```mermaid
 flowchart LR
   U([Platform administrator / Developer]) --> UI[store console, platform console]
-  UI --> API[19 API routes]
-  API --> ENG[api.js, config.js, db.js, dbpool.js, enterprise.js, env.js, logger.js, metrics.js, migrate.js, pg.js, pgbridge.js, pgworker.js, queue.js, sql.js, runtime.js]
+  UI --> API[20 API routes]
+  API --> ENG[api.js, config.js, db.js, dbpool.js, enterprise.js, env.js, logger.js, metrics.js, migrate.js, ops-alerts.js, pg.js, pgbridge.js, pgworker.js, queue.js, readiness.js, sql.js, runtime.js]
   ENG --> DB[(sqlite_sequence)]
 
 ```

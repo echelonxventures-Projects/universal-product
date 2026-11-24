@@ -33,10 +33,10 @@
 | **Contract** | [UCOS-COM-000001 Universal Commerce Architecture](#ucos-com-000001) |
 | **Artifacts** | [UCOS-COM-000001](#ucos-com-000001), [UCOS-GPS-000001](#ucos-gps-000001), [UCOS-PRC-000001](#ucos-prc-000001), [UCOS-OFR-000001](#ucos-ofr-000001), [UCOS-SUB-000001](#ucos-sub-000001), [UCOS-CNT-000001](#ucos-cnt-000001), [UCOS-MKT-000001](#ucos-mkt-000001), [UCOS-INV-000001](#ucos-inv-000001), [UCOS-ORD-000001](#ucos-ord-000001), [UCOS-FUL-000001](#ucos-ful-000001) |
 | **Concepts** | 1968 — `node _registry/compile.js --search <words> --kind concept --owner "Commerce"` |
-| **Code** | `lib/trials.js`, `lib/fees.js`, `lib/tips.js`, `lib/deliverables.js`, `lib/health-records.js`, `lib/cases.js`, `lib/billing.js`, `lib/routes/offer.js`, `lib/offers.js`, `lib/grants.js`, `lib/coupons.js`, `lib/vouchers.js`, `lib/giftcards.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/lists.js`, `lib/alerts.js`, `lib/pickup.js`, `lib/richcontent.js`, `lib/brandreg.js`, `lib/lineterms.js`, `lib/options.js`, `lib/bookings.js`, `lib/astro.js`, `lib/seed/astro.json`, `lib/listings.js`, `lib/negotiation.js`, `lib/auctions.js`, `lib/conversations.js`, `lib/groupbuy.js`, `lib/routes/groupbuy.js`, `lib/routes/coupon.js`, `lib/routes/giftcard.js`, `lib/routes/advertising.js`, `lib/routes/affiliate.js`, `lib/routes/cart.js`, `lib/routes/marketplace.js`, `lib/routes/order.js`, `lib/routes/price_discovery.js`, `lib/routes/returns.js`, `lib/routes/shipping.js`, `lib/routes/subscriptions.js`, `lib/routes/trade.js`, `lib/substitutions.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/goip.json`, `lib/seed/offers.json`, `lib/seed/coupons.json`, `lib/seed/vouchers.json`, `lib/seed/giftcards.json`, `lib/stock.js`, `lib/product-counts.js`, `lib/returns.js`, `lib/invoices.js`, `lib/orders.js` |
+| **Code** | `lib/trials.js`, `lib/fees.js`, `lib/tips.js`, `lib/deliverables.js`, `lib/health-records.js`, `lib/cases.js`, `lib/billing.js`, `lib/routes/offer.js`, `lib/offers.js`, `lib/grants.js`, `lib/coupons.js`, `lib/vouchers.js`, `lib/giftcards.js`, `lib/goip.js`, `lib/shipping.js`, `lib/logistics.js`, `lib/fin.js`, `lib/fintech.js`, `lib/marketplace.js`, `lib/marketplace-ext.js`, `lib/lists.js`, `lib/alerts.js`, `lib/pickup.js`, `lib/richcontent.js`, `lib/brandreg.js`, `lib/lineterms.js`, `lib/options.js`, `lib/bookings.js`, `lib/astro.js`, `lib/seed/astro.json`, `lib/listings.js`, `lib/negotiation.js`, `lib/auctions.js`, `lib/conversations.js`, `lib/groupbuy.js`, `lib/routes/groupbuy.js`, `lib/routes/coupon.js`, `lib/routes/giftcard.js`, `lib/routes/advertising.js`, `lib/routes/affiliate.js`, `lib/routes/cart.js`, `lib/routes/marketplace.js`, `lib/routes/order.js`, `lib/routes/price_discovery.js`, `lib/routes/returns.js`, `lib/routes/shipping.js`, `lib/routes/subscriptions.js`, `lib/routes/trade.js`, `lib/substitutions.js`, `lib/affiliate.js`, `lib/trade.js`, `lib/qcommerce.js`, `lib/mobility.js`, `lib/operations.js`, `lib/recurring.js`, `lib/ugc.js`, `lib/gcatalog.js`, `lib/seed/goip.json`, `lib/seed/offers.json`, `lib/seed/coupons.json`, `lib/seed/vouchers.json`, `lib/seed/giftcards.json`, `lib/stock.js`, `lib/product-counts.js`, `lib/returns.js`, `lib/delivery-windows.js`, `lib/serviceable-areas.js`, `lib/size-guides.js`, `lib/preorders.js`, `lib/invoices.js`, `lib/orders.js` |
 | **Managed in** | `_registry/domains.json` → `D-BIZ` |
 
-**Live routes (382)** — what the platform serves today for this domain:
+**Live routes (397)** — what the platform serves today for this domain:
 
 - `GET /api/marketplace/sponsored`
 - `GET /api/marketplace/ads`
@@ -83,6 +83,13 @@
 - `DELETE /api/cart/:id`
 - `POST /api/checkout`
 - `POST /api/checkout/quote`
+- `GET /api/products/:id/size-guide`
+- `GET /api/admin/size-guides`
+- `POST /api/admin/size-guides`
+- `DELETE /api/admin/size-guides/:id`
+- `GET /api/admin/preorders`
+- `POST /api/admin/preorders`
+- `DELETE /api/admin/preorders/:id`
 - `GET /api/platform/global-products`
 - `POST /api/platform/global-products`
 - `PUT /api/platform/global-products/:id`
@@ -344,6 +351,14 @@
 - `GET /api/admin/fin/ledger`
 - `GET /api/admin/settlements`
 - `POST /api/admin/settlements/generate`
+- `GET /api/shipping/slots`
+- `GET /api/shipping/serviceable`
+- `GET /api/admin/delivery-windows`
+- `POST /api/admin/delivery-windows`
+- `DELETE /api/admin/delivery-windows/:id`
+- `GET /api/admin/serviceable-areas`
+- `POST /api/admin/serviceable-areas`
+- `DELETE /api/admin/serviceable-areas/:id`
 - `GET /api/qc/promise`
 - `GET /api/qc/stores`
 - `GET /api/qc/slots`

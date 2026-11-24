@@ -579,6 +579,11 @@ async function pageProduct() {
   catch (e) { main.innerHTML = `<div class="r-empty"><h3>Piece not found</h3><a class="btn-yellow" href="index.html">Back to ${esc(CFG.brand.name)}</a></div>`; return; }
   const { product: p, histogram, reviews, questions, related, skus, relationships } = data;
   document.title = `${p.t.slice(0, 52)} — ${CFG.brand.name}`;
+  if (atoms().size_guides) api("/products/" + encodeURIComponent(p.id) + "/size-guide").then(r => {
+    const g = r.guide, box = document.getElementById("szGuide");
+    if (!g || !box) return;
+    box.innerHTML = `<details><summary>📏 ${esc(r.label || g.name)}</summary><div style="overflow-x:auto"><table class="spec"><thead><tr>${g.rows[0].map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${g.rows.slice(1).map(x => `<tr>${x.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>${g.note ? `<p class="pay-meta">${esc(g.note)}</p>` : ""}</details>`;
+  }).catch(() => { });
   api("/viewed", "POST", { id: p.id }).then(refreshSession).catch(() => { });
   window.__rv = p;
   const f = CFG.features;
@@ -630,7 +635,7 @@ async function pageProduct() {
       <div class="buybox">
         <div class="bb-price" id="bbPrice">${priceHtml(p.p)}${isSub ? '<span class="bb-cycle">/mo</span>' : ""}</div>
         <div class="bb-del">${p.pr ? `${prioBadge()} <b>${dLong(daysP())}</b>` : `${esc(T("deliverEstimate"))} <b>${dLong(daysS())}</b>`}</div>
-        <div class="bb-stock" id="bbStock">${stockText(p.st)}</div>
+        <div class="bb-stock" id="bbStock">${stockText(p.st)}</div>${p.preorder ? `<p class="pay-meta">⏳ Pre-order — ships ${esc(new Date(p.preorder.ships_on + "T00:00:00").toLocaleDateString(CFG.commerce.locale, { day: "numeric", month: "long", year: "numeric" }))}</p>` : ""}<div id="szGuide"></div>
         ${(data.variant_groups || []).filter(g => g.options && g.options.length > 1).map(g => `<div class="bb-vg" style="margin:8px 0"><div style="font-size:12px;color:#565d64;margin-bottom:4px">${esc(g.name || g.axis)}${g.options.some(o => o.variant) ? '' : ''}</div><div style="display:flex;flex-wrap:wrap;gap:6px">${g.options.map(o => `<button class="bb-vg-opt" style="border:1px solid #d5d9d9;background:#fff;border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer" data-vggroup="${esc(g.name || g.axis)}" data-act="select-variant" data-sku="${o.id}" data-price="${o.price}" data-stock="${o.stock}" data-name="${esc(o.name || o.code)}">${esc(o.name || o.code)}</button>`).join("")}</div></div>`).join("")}
         ${p.st ? `
         ${durations ? `<label class="bb-dur">Rental period <select id="bbDur">${durations.map(d => `<option value="${d.price}">${esc(d.label)} — ${money(d.price)}</option>`).join("")}</select></label>` : ""}
@@ -784,7 +789,7 @@ async function pageCheckout() {
     <div class="co-sec"><h3><span class="co-num">3</span> Review items and shipping</h3>
       ${c.items.map(({ product: p, qty, unit }) => `<div class="co-item">${img(p, "tile")}<div class="co-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><span class="co-i-qty">Qty: ${qty}${unit < p.p ? " · volume price" : ""}</span></div><div class="co-i-price">${priceHtml(unit * qty)}</div></div>`).join("")}
       ${carriers.map((x, i) => `<div class="co-del"><label><input type="radio" name="ship" value="${x.id}" ${i === 0 ? "checked" : ""}> ${x.emoji} <b>${esc(x.name)}</b> · ${x.eta[0]}–${x.eta[1]} days · ${c.qualifies ? "Complimentary" : money(x.baseFee || cm.shipFee)}</label></div>`).join("")}
-      <div id="coRates"></div></div>
+      <div id="coRates"></div><div id="coSlots"></div></div>
   </div>
   <aside class="co-side"><div class="co-box">
     <p class="co-order">${esc(CFG.brand.name)} · Order Summary</p>
@@ -801,8 +806,15 @@ async function pageCheckout() {
   /* the summary is priced by the server — the same code that charges the order — so a live
      carrier rate, a membership's free shipping or a per-line tax rule shows before paying */
   /* a pickup point replaces the address: its fields stop being required and the point is sent */
-  let pickupPoint = "";
-  const addr = () => ({ name: $("#coName").value, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value, pickup_point: pickupPoint || undefined });
+  let pickupPoint = "", slotKey = "";
+  const addr = () => ({ name: $("#coName").value, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value, pickup_point: pickupPoint || undefined, delivery_slot: pickupPoint ? undefined : slotKey || undefined });
+  /* when the shopper would like it, where the store offers a choice */
+  if (atoms().delivery_slots) api("/shipping/slots").then(r => {
+    if (!r.slots.length) return;
+    const day = d => new Date(d + "T00:00:00").toLocaleDateString(CFG.commerce.locale, { weekday: "short", day: "numeric", month: "short" });
+    $("#coSlots").innerHTML = `<label class="pay-meta">Delivery time <select id="coSlot"><option value="">Any time</option>${r.slots.map(x => `<option value="${esc(x.key)}">${esc(day(x.day))} · ${esc(x.starts)}–${esc(x.ends)}${x.fee > 0 ? " · " + money(x.fee) : ""}${x.left != null && x.left < 4 ? " · " + x.left + " left" : ""}</option>`).join("")}</select></label>`;
+    $("#coSlot").onchange = e => { slotKey = e.target.value; recalc(); };
+  }).catch(() => { });
   const loadPoints = async () => {
     const box = $("#coPkList"); if (!box) return;
     try {
@@ -871,7 +883,7 @@ async function pageCheckout() {
         name: $("#coName").value, email: $("#coEmail") ? $("#coEmail").value : undefined, tax_id: $("#coTaxId") ? $("#coTaxId").value : undefined, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value,
         gateway: (document.querySelector('input[name=pay]:checked') || {}).value || (gws[0] || {}).id,
         method: ((gws.find(g => g.id === (document.querySelector('input[name=pay]:checked') || {}).value) || {}).methods || ["card"])[0],
-        carrier: pickedCarrier(), rate_id: rateId, pickup_point: pickupPoint || undefined,
+        carrier: pickedCarrier(), rate_id: rateId, pickup_point: pickupPoint || undefined, delivery_slot: pickupPoint ? undefined : slotKey || undefined,
         contexts: Object.fromEntries($$("[data-ctx]").filter(x => x.value).map(x => [x.dataset.ctx, x.value]))
       });
       if (r.order.payment_redirect && /^https:\/\//.test(r.order.payment_redirect)) { location.href = r.order.payment_redirect; return; }
@@ -1029,7 +1041,7 @@ async function pageOrders() {
       <div class="ord-body">${items.map(({ product: p, qty }) => `<div class="ord-i">${img(p, "big")}<div class="ord-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><span>${esc(p.b)}</span></div><span class="ord-i-qty">Qty: ${qty}</span>${(o.can || {}).return ? `<button class="btn-white sm" data-act="return-open" data-num="${esc(o.num)}" data-id="${p.id}" data-qty="${qty}">Return</button>` : ""}</div>`).join("")}
         <div class="ord-buy">${items.map(({ product: p }) => `<a href="${prodLink(p)}">${img(p, "tile")}</a>`).join("")}</div>
         ${o.pickup ? `<div class="ord-pk">📍 ${esc(o.pickup.point ? o.pickup.point.name : "")} · ${esc((o.pickup.state.icon ? o.pickup.state.icon + " " : "") + o.pickup.state.label)}${o.pickup.code ? ` · pickup code <b class="pk-code">${esc(o.pickup.code)}</b>` : ""}${o.pickup.hold_until ? ` · collect by ${esc(String(o.pickup.hold_until).slice(0, 16))} UTC` : ""}<br><span class="pay-meta">${esc(o.pickup.point ? [o.pickup.point.address, o.pickup.point.city].filter(Boolean).join(", ") : "")}${o.pickup.point && o.pickup.point.hours ? " · " + esc(o.pickup.point.hours) : ""}</span></div>` : ""}
-        <div class="ord-r"><div class="ord-status ${st[1]}">${esc(st[0])}${(o.can || {}).cancel || o.late ? " · " + (o.late ? "later than expected" : "expected " + new Date(created.getTime() + (o.eta_days || 5) * 864e5).toLocaleDateString(CFG.commerce.locale)) : ""}${(o.refunds || []).length ? " · refunded " + o.refunds.map(r => esc(r.amount + " " + r.currency)).join(", ") : ""}</div>${(o.tracking || []).map(t => `<span>📦 ${esc(t.carrier || "")} <b>${esc(t.tracking_number)}</b> · ${esc(t.status || "")}</span>`).join("")}</div></div></div>`;
+        <div class="ord-r"><div class="ord-status ${st[1]}">${esc(st[0])}${(o.can || {}).cancel || o.late ? " · " + (o.late ? "later than expected" : "expected " + new Date(created.getTime() + (o.eta_days || 5) * 864e5).toLocaleDateString(CFG.commerce.locale)) : ""}${o.slot ? " · " + esc(o.slot.day + " " + o.slot.starts + "–" + o.slot.ends) : ""}${(o.refunds || []).length ? " · refunded " + o.refunds.map(r => esc(r.amount + " " + r.currency)).join(", ") : ""}</div>${(o.tracking || []).map(t => `<span>📦 ${esc(t.carrier || "")} <b>${esc(t.tracking_number)}</b> · ${esc(t.status || "")}</span>`).join("")}</div></div></div>`;
   }).join("");
 }
 

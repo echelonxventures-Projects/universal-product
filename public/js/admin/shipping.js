@@ -146,3 +146,33 @@ screen("shipping", { group: "Orders & Fulfilment", label: "📮 Shipping & Track
 screen("pickup", { group: "Orders & Fulfilment", label: "📍 Pickup Points", order: 3, render: async () => await vPickup(), wire: async () => { wirePickup(); } });
 screen("logistics", { group: "Orders & Fulfilment", label: "🚚 Logistics & Fulfilment", order: 18, render: async () => await vLogistics() });
 screen("qcops", { group: "Business Operations", label: "⚡ Quick-commerce", order: 0, render: async () => await vQcOps(), wire: async () => { wireQcOps(); } });
+
+/* ---------- delivery slots and where the store delivers ---------- */
+const WEEKDAYS = () => Array.from({ length: 7 }, (_, i) => new Date(Date.UTC(2023, 0, 1 + i)).toLocaleDateString(undefined, { weekday: "long", timeZone: "UTC" }));
+async function vDeliverySlots() {
+  const gate = await coGate("deliveryslots");
+  if (!gate.any) return coOff("delivery slots", "🗓️ Delivery Slots", gate.off);
+  const d = await api("/admin/delivery-windows", {}), days = WEEKDAYS();
+  return `<div class="a-head"><h2>🗓️ Delivery Slots</h2><p class="a-sub">Windows repeat each week; a capacity of 0 is no limit. How far ahead shoppers may choose, the cutoff and whether a choice is required are the capability's settings.</p></div>
+  <div class="a-card"><div class="p-form"><div class="row"><label><span>Day</span><select id="dwDay">${days.map((n, i) => `<option value="${i}">${esc(n)}</option>`).join("")}</select></label><label><span>From</span><input id="dwFrom" type="time" value="09:00"></label><label><span>To</span><input id="dwTo" type="time" value="12:00"></label><label><span>Deliveries</span><input id="dwCap" type="number" min="0" value="20"></label><label><span>Fee</span><input id="dwFee" type="number" min="0" step="0.01" value="0"></label><button class="p-btn primary" id="dwAdd">Add</button></div></div>
+  <div class="a-tablewrap"><table class="a-table"><thead><tr><th>day</th><th>hours</th><th>deliveries</th><th>fee</th><th></th></tr></thead><tbody>${d.windows.map(w => `<tr><td>${esc(days[w.weekday])}</td><td>${esc(w.starts)}–${esc(w.ends)}</td><td>${w.capacity || "no limit"}</td><td>${money(w.fee)}</td><td><button class="btn-white sm" data-dwdel="${w.id}">Remove</button></td></tr>`).join("") || '<tr><td colspan="5">No windows yet.</td></tr>'}</tbody></table></div></div>
+  <div class="a-card"><h3>Booked</h3><div class="a-tablewrap"><table class="a-table"><thead><tr><th>day</th><th>hours</th><th>order</th><th>to</th><th>state</th></tr></thead><tbody>${d.schedule.map(b => `<tr><td>${esc(b.day)}</td><td>${esc(b.starts)}–${esc(b.ends)}</td><td>${esc(b.num)}</td><td>${esc([b.name, b.address, b.city, b.zip].filter(Boolean).join(", "))}</td><td>${esc(b.status)}</td></tr>`).join("") || '<tr><td colspan="5">Nothing booked.</td></tr>'}</tbody></table></div></div>`;
+}
+function wireDeliverySlots() {
+  const b = $("#dwAdd"); if (b) b.onclick = () => postAndRender("/admin/delivery-windows", { weekday: Number(fieldVal("#dwDay")), starts: fieldVal("#dwFrom"), ends: fieldVal("#dwTo"), capacity: Number(fieldVal("#dwCap")), fee: Number(fieldVal("#dwFee")) }, "POST", "Window added");
+  $$("[data-dwdel]").forEach(x => x.onclick = async () => { try { await api("/admin/delivery-windows/" + x.dataset.dwdel, "DELETE"); render(); } catch (e) { toast(e.message); } });
+}
+async function vAreas() {
+  const gate = await coGate("areas");
+  if (!gate.any) return coOff("serviceable areas", "📮 Serviceable Areas", gate.off);
+  const d = await api("/admin/serviceable-areas", {});
+  return `<div class="a-head"><h2>📮 Serviceable Areas</h2><p class="a-sub">With no area set the store delivers everywhere. List postcodes, beginnings (560*) and ranges (110001-110099), separated by spaces or commas.</p></div>
+  <div class="a-card"><div class="p-form"><div class="row"><label><span>Name</span><input id="saName"></label><label><span>Extra fee</span><input id="saFee" type="number" min="0" step="0.01" value="0"></label><label><span>Extra days</span><input id="saDays" type="number" min="0" value="0"></label></div><label><span>Postcodes</span><textarea id="saCodes" rows="3"></textarea></label><button class="p-btn primary" id="saAdd">Add area</button></div>
+  <div class="a-tablewrap"><table class="a-table"><thead><tr><th>area</th><th>postcodes</th><th>fee</th><th>days</th><th></th></tr></thead><tbody>${d.areas.map(a => `<tr><td>${esc(a.name)}</td><td>${esc(a.postcodes.length > 120 ? a.postcodes.slice(0, 120) + "…" : a.postcodes)}</td><td>${money(a.fee)}</td><td>+${a.extra_days}</td><td><button class="btn-white sm" data-sadel="${a.id}">Remove</button></td></tr>`).join("") || '<tr><td colspan="5">No areas: the store delivers everywhere.</td></tr>'}</tbody></table></div></div>`;
+}
+function wireAreas() {
+  const b = $("#saAdd"); if (b) b.onclick = () => postAndRender("/admin/serviceable-areas", { name: fieldVal("#saName"), postcodes: fieldVal("#saCodes"), fee: Number(fieldVal("#saFee")), extra_days: Number(fieldVal("#saDays")) }, "POST", "Area added");
+  $$("[data-sadel]").forEach(x => x.onclick = async () => { try { await api("/admin/serviceable-areas/" + x.dataset.sadel, "DELETE"); render(); } catch (e) { toast(e.message); } });
+}
+screen("deliveryslots", { group: "Orders & Fulfilment", label: "🗓️ Delivery Slots", order: 6, render: async () => await vDeliverySlots(), wire: async () => { wireDeliverySlots(); } });
+screen("areas", { group: "Orders & Fulfilment", label: "📮 Serviceable Areas", order: 7, render: async () => await vAreas(), wire: async () => { wireAreas(); } });

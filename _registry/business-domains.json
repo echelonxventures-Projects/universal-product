@@ -365,7 +365,9 @@
      "lib/master-permissions.js",
      "lib/store-taxonomy.js",
      "lib/store-attributes.js",
-     "lib/product-counts.js"
+     "lib/product-counts.js",
+     "lib/size-guides.js",
+     "lib/preorders.js"
     ],
     "tables": [
      "products",
@@ -375,17 +377,23 @@
      "brands",
      "taxonomy",
      "attribute_defs",
-     "relationships"
+     "relationships",
+     "size_guides",
+     "preorders"
     ],
     "routes": [
      "^/api/(products|taxonomy|tenant/(catalog|products|master))(/|$)",
      "^/api/admin/(products|skus|taxonomy|attributes|relationships)(/|$)",
-     "^/api/platform/(master|global-catalog|global-products|attributes|store-product-config)(/|$)"
+     "^/api/platform/(master|global-catalog|global-products|attributes|store-product-config)(/|$)",
+     "^/api/admin/(size-guides|preorders)(/|$)"
     ],
     "machines": [
      "contribution"
     ],
-    "capabilities": [],
+    "capabilities": [
+     "size_guides",
+     "preorders"
+    ],
     "registries": [
      "contributionStatuses"
     ],
@@ -396,7 +404,9 @@
      "taxonomy",
      "attributes",
      "gcatalog",
-     "mastercontrib"
+     "mastercontrib",
+     "sizeguides",
+     "preorders"
     ],
     "platformScreens": [
      "gcatalog",
@@ -1350,7 +1360,9 @@
      "lib/carrier-easypost.js",
      "lib/logistics.js",
      "lib/pickup.js",
-     "lib/qcommerce.js"
+     "lib/qcommerce.js",
+     "lib/delivery-windows.js",
+     "lib/serviceable-areas.js"
     ],
     "tables": [
      "shipments",
@@ -1364,12 +1376,15 @@
      "delivery_slots",
      "dispatch_runs",
      "riders",
-     "service_areas"
+     "service_areas",
+     "delivery_windows",
+     "delivery_bookings",
+     "serviceable_areas"
     ],
     "routes": [
      "^/api/(shipping|shipments|carriers|pickup|zip|qc)(/|$)",
      "^/api/qc/",
-     "^/api/admin/(shipments|pickup)(/|$)",
+     "^/api/admin/(shipments|pickup|delivery-windows|serviceable-areas)(/|$)",
      "^/api/platform/shipping(/|$)"
     ],
     "machines": [
@@ -1384,7 +1399,9 @@
     "capabilities": [
      "instant_delivery",
      "dispatch_batching",
-     "pickup_points"
+     "pickup_points",
+     "delivery_slots",
+     "serviceable_areas"
     ],
     "registries": [
      "pickupKinds",
@@ -1402,7 +1419,9 @@
      "shipping",
      "pickup",
      "logistics",
-     "qcops"
+     "qcops",
+     "deliveryslots",
+     "areas"
     ],
     "platformScreens": [],
     "platformGroups": [

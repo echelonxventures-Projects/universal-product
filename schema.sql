@@ -408,6 +408,12 @@ CREATE TABLE variant_groups (
 , deleted_at TEXT, uid TEXT);
 CREATE INDEX ix_products_tenant ON products(tenant_id, dept);
 CREATE INDEX ix_products_source_global ON products(tenant_id, source_global_id);
+CREATE TABLE size_guides (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT NOT NULL, scope TEXT NOT NULL, target TEXT NOT NULL,
+  rows TEXT NOT NULL, note TEXT NOT NULL DEFAULT '');
+CREATE TABLE preorders (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, ships_on TEXT NOT NULL,
+  max_qty INTEGER NOT NULL, taken INTEGER NOT NULL DEFAULT 0, UNIQUE(tenant_id, product_id));
 CREATE UNIQUE INDEX ux_products_uid ON products(uid);
 CREATE TRIGGER trg_products_uid AFTER INSERT ON products
                BEGIN UPDATE products SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
@@ -492,7 +498,7 @@ CREATE TABLE store_inventory (
 CREATE INDEX ix_storeinv ON store_inventory(tenant_id, store_id, product_id);
 CREATE TABLE stock_moves (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, order_id INTEGER NOT NULL, product_id TEXT NOT NULL,
-  sku_id INTEGER, qty INTEGER NOT NULL, returned INTEGER NOT NULL DEFAULT 0,
+  sku_id INTEGER, qty INTEGER NOT NULL, returned INTEGER NOT NULL DEFAULT 0, promised INTEGER NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL DEFAULT (datetime('now')));
 CREATE INDEX ix_stock_moves_order ON stock_moves(tenant_id, order_id);
 CREATE UNIQUE INDEX ux_inventory_uid ON inventory(uid);
@@ -1187,6 +1193,16 @@ CREATE TABLE pickup_reservations (
 );
 CREATE INDEX ix_pickup_res ON pickup_reservations(tenant_id, point_id, status);
 CREATE UNIQUE INDEX ux_pickup_order ON pickup_reservations(tenant_id, order_id);
+CREATE TABLE delivery_windows (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, weekday INTEGER NOT NULL, starts TEXT NOT NULL, ends TEXT NOT NULL,
+  capacity INTEGER NOT NULL DEFAULT 0, fee REAL NOT NULL DEFAULT 0, active INTEGER NOT NULL DEFAULT 1);
+CREATE TABLE delivery_bookings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, order_id INTEGER NOT NULL UNIQUE, window_id INTEGER NOT NULL,
+  day TEXT NOT NULL, starts TEXT NOT NULL, ends TEXT NOT NULL, fee REAL NOT NULL DEFAULT 0);
+CREATE INDEX ix_delivery_bookings_day ON delivery_bookings(tenant_id, window_id, day);
+CREATE TABLE serviceable_areas (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT NOT NULL, postcodes TEXT NOT NULL,
+  fee REAL NOT NULL DEFAULT 0, extra_days INTEGER NOT NULL DEFAULT 0, active INTEGER NOT NULL DEFAULT 1);
 CREATE TABLE shipping_providers (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     provider_id TEXT UNIQUE,

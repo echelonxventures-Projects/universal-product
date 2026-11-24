@@ -140,6 +140,7 @@ Per-store stock pinning so a dark store cannot oversell. Safety stock is held ba
 | `sku_id` | INTEGER |
 | `qty` | INTEGER NOT NULL |
 | `returned` | INTEGER NOT NULL DEFAULT 0 |
+| `promised` | INTEGER NOT NULL DEFAULT 0 |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 
 ## API reference

@@ -69,7 +69,7 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 | [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 7 KB |
 | [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 85 KB |
 | [V11.2](volumes/V11.2-platform.md) | C11 Platform | 2 of 2 | 3 | 6 | 40 KB |
-| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 80 KB |
+| [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 81 KB |
 | [V13](volumes/V13-composition.md) | C13 Composition | 1 of 1 | 1 | 1 | 7 KB |
 
 <a id="index"></a>
@@ -1281,7 +1281,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 317 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 321 files.
 
 ### C02 · Meaning
 
@@ -1670,6 +1670,10 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/stock.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/product-counts.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/returns.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/delivery-windows.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/serviceable-areas.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/size-guides.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/preorders.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/invoices.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/orders.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 
