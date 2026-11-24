@@ -16,6 +16,7 @@ The stores on the platform and how each is organised: creating and configuring a
 | `lib/compose.js` | ════════════════════════════════════════════════════════════════════════════ UCOS Ω∞ — THE COMPOSITION ENGINE Application = Capability Composition. NOT Application = Custom Code. ════════════════════════════════════════════════════════════════════════════ |
 | `lib/platform-discovery.js` | discovery: the capabilities a platform needs, derived from what it answered at setup (GLOBAL_MASTER.md §4, roadmap P29; owner Package). |
 | `lib/platform-setup.js` | configuring a platform by its setup steps (GLOBAL_MASTER.md §4, roadmap P29; owner Package). |
+| `lib/store-domains.js` | the addresses a store answers at. |
 | `lib/stores.js` | stores on the kernel (P09, owners Party and Relationship). |
 | `lib/tenancy.js` | universal tenancy hierarchy Platform → Tenant → Organization → Business Unit → Brand → Store → Channel. Every node is one row; the materialized `path` makes subtree queries a LIKE away, mirroring GOIP's hierarchy paths (earth.in.bihar.patna) so operators think one way. The hierarchy is also the *config cascade*: a setting resolved at a Store inherits from Store → Brand → Business Unit → Organization → Tenant → Platform, deepest wins. |
 | `lib/routes/stores.js` | stores domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the stores domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
@@ -144,12 +145,32 @@ The stores on the platform and how each is organised: creating and configuring a
 | `can_change_footer` | INTEGER NOT NULL DEFAULT 0 |
 | `can_change_nav` | INTEGER NOT NULL DEFAULT 0 |
 
+### `store_domains`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `host` | TEXT NOT NULL |
+| `token` | TEXT NOT NULL |
+| `verified_at` | TEXT |
+| `is_primary` | INTEGER NOT NULL DEFAULT 0 |
+| `checked_at` | TEXT |
+| `failing_since` | TEXT |
+| `error` | TEXT DEFAULT '' |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
 ## API reference
 
 Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the session; mutating calls accept an `Idempotency-Key` header where noted.
 
 | Method and path | Handler | What it does |
 |---|---|---|
+| `GET /api/admin/addresses` | `apiStoreAddresses` | the addresses this store answers at, with the DNS record that proves each |
+| `POST /api/admin/addresses` | `apiStoreAddressAdd` | adds an address, with the DNS record to publish |
+| `POST /api/admin/addresses/:id/verify` | `apiStoreAddressVerify` | looks the DNS record up; a proven address starts answering for this store |
+| `POST /api/admin/addresses/:id/primary` | `apiStoreAddressPrimary` | makes a proven address the one links and emails use |
+| `DELETE /api/admin/addresses/:id` | `apiStoreAddressRemove` | stops answering at an address |
 | `GET /api/stores` | `apiStores` | ---------------- public config & providers ---------------- |
 | `GET /api/platform/tenant-entities` | `apiTenantEntityList` | — |
 | `POST /api/platform/tenant-entities` | `apiTenantEntityConfig` | — |
@@ -219,15 +240,15 @@ Actions:
 ```mermaid
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[store console, platform console]
-  UI --> API[41 API routes]
-  API --> ENG[branding.js, compose.js, platform-discovery.js, platform-setup.js, stores.js, tenancy.js, stores.js]
+  UI --> API[46 API routes]
+  API --> ENG[branding.js, compose.js, platform-discovery.js, platform-setup.js, store-domains.js, stores.js, tenancy.js, stores.js]
   ENG --> DB[(tenants, tenant_state, departments, tenant_entities, tenancy_nodes, tenancy_config, …)]
   ENG --> SM{{2 state machines}}
 ```
 
 ## User interface
 
-**Store console:** 🧭 Setup Wizard · 🏢 Org Structure
+**Store console:** 🧭 Setup Wizard · 🏢 Org Structure · 🌐 Addresses
 
 **Platform console:** 🏬 Platforms & Kinds · 🏢 Companies · 🗂️ Workspaces · 🌍 Environments · 🏬 Tenants · 🏷️ Brands · Manufacturers · 🧬 Composition Engine · 🛡️ Provisioning
 

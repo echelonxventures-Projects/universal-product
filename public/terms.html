@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Terms of Use — LUXORA</title>
-<meta name="description" content="The terms that apply when you use this store and buy from it.">
+<title>Terms of Use</title>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body data-page="">
@@ -12,58 +11,32 @@
 <header id="hdr" role="banner"></header>
 <aside id="sidebar" role="complementary"></aside>
 <main id="page" role="main" class="legal-page" style="max-width:780px;margin:0 auto;padding:32px 16px;line-height:1.6">
-  <p role="note" style="border:2px solid #b45309;background:#fffbeb;color:#78350f;padding:12px 16px;border-radius:8px">
-    <strong>Template — not yet reviewed by a lawyer.</strong> Replace every part in [square brackets] and have these
-    terms checked for the countries you sell in before the store goes live.
-  </p>
-
+  <!--if-gaps--><p role="note" style="border:2px solid #b45309;background:#fffbeb;color:#78350f;padding:12px 16px;border-radius:8px">
+    <strong>Template — not yet complete.</strong> Fill in the store's legal details (Store console → Settings → Legal) and have
+    this page checked by a lawyer for the countries you sell in before the store goes live.</p><!--end-->
   <h1>Terms of Use</h1>
-  <p>Last updated: [date]</p>
-
+  <p>Last updated: {{updatedOn}}</p>
   <h2>About these terms</h2>
-  <p>These terms apply when you use this store, run by [legal name of the business], [registered address]
-    ([company / tax registration number]). By using the store or placing an order you agree to them.</p>
-
+  <p>These terms apply when you use this store, run by {{businessName}}, {{address}}<!--if taxId--> (tax registration {{taxId}})<!--end--><!--if companyId--> (company number {{companyId}})<!--end-->. By using the store or placing an order you agree to them.</p>
   <h2>Your account</h2>
-  <p>Keep your password private; you are responsible for what is done with your account. Tell us at [support email] if
-    you think someone else has used it. We may suspend an account that breaks these terms.</p>
-
+  <p>Keep your password private; you are responsible for what is done with your account. Tell us at {{supportEmail}} if you think someone else has used it. We may suspend an account that breaks these terms.</p>
   <h2>Orders and prices</h2>
-  <p>Prices are shown in [currency] and include [taxes, e.g. GST] unless stated. Your order is an offer to buy; a contract
-    is made when we confirm it by email. If a price or description is clearly wrong, or an item is out of stock, we may
-    cancel the order and refund you in full.</p>
-
+  <p>Prices are shown in {{currency}}; the tax and delivery charged are shown before you pay. Your order is an offer to buy; a contract is made when we confirm it. If a price or description is clearly wrong, or an item is out of stock, we may cancel the order and refund you in full.</p>
   <h2>Payment</h2>
-  <p>Payments are processed by [payment provider, e.g. Razorpay]. Your order is confirmed once the payment succeeds.</p>
-
-  <h2>Delivery</h2>
-  <p>We deliver to [delivery areas]. Delivery times are estimates; [delivery charges and free-delivery threshold].</p>
-
-  <h2>Returns, cancellations and refunds</h2>
-  <p>[Return window, e.g. 7 or 30 days], [items that cannot be returned], [who pays return postage]. Refunds go back to the
-    original payment method within [n] days of our receiving the return. This does not affect your rights under
-    consumer law.</p>
-
+  <p>Payments are processed by {{paymentProvider}}. Your order is confirmed once the payment succeeds, unless you pay on delivery.</p>
+  <h2>Delivery, returns and refunds</h2>
+  <p>See <a href="shipping.html">Shipping</a> and <a href="returns.html">Returns and Refunds</a>. Nothing in these terms affects your rights under consumer law.</p>
   <h2>Reviews and content you post</h2>
-  <p>Reviews must be honest and about your own experience. Do not post anything unlawful, offensive or misleading, or
-    anyone else's personal data. We may remove content that breaks these rules.</p>
-
+  <p>Reviews must be honest and about your own experience. Do not post anything unlawful, offensive or misleading, or anyone else's personal data. We may remove content that breaks these rules.</p>
   <h2>Fair use</h2>
-  <p>Do not misuse the store: no fraud, no attempts to break its security, no automated scraping, and no reselling of
-    accounts.</p>
-
+  <p>Do not misuse the store: no fraud, no attempts to break its security, no automated scraping, and no reselling of accounts.</p>
   <h2>Liability</h2>
-  <p>[Limitation of liability, written for the law that applies.] Nothing in these terms limits liability that the law
-    does not allow to be limited.</p>
-
+  <p><!--if liability-->{{liability}} <!--end-->Nothing in these terms limits liability that the law does not allow to be limited.</p>
   <h2>Governing law and disputes</h2>
-  <p>These terms are governed by the laws of [country / state]. Disputes go to the courts of [city], unless consumer law
-    gives you the right to use your local courts. [Grievance officer, if required: name and contact.]</p>
-
+  <p>These terms are governed by the laws of {{governingLaw}}.<!--if courts--> Disputes go to the courts of {{courts}}, unless consumer law gives you the right to use your local courts.<!--end--><!--if officer--> Grievance officer: {{officer}}.<!--end--></p>
   <h2>Contact</h2>
-  <p>[Support email] · [phone] · [address]</p>
-
-  <p><a href="privacy.html">Privacy Notice</a> · <a href="index.html">Back to the store</a></p>
+  <p>{{supportEmail}}<!--if phone--> · {{phone}}<!--end--> · {{address}}</p>
+  <p><a href="privacy.html">Privacy Notice</a> · <a href="returns.html">Returns and Refunds</a> · <a href="shipping.html">Shipping</a> · <a href="cookies.html">Cookies</a> · <a href="contact.html">Contact us</a> · <a href="index.html">Back to the store</a></p>
 </main>
 <footer id="ftr" role="contentinfo"></footer>
 <div id="modals"></div>

@@ -452,3 +452,25 @@ async function renderStructure() {
 }
 
 screen("structure", { group: "Team & Access", label: "🏢 Org Structure", order: 1, render: async () => await renderStructure() });
+
+/* ---------- the addresses the store answers at ---------- */
+async function vAddresses() {
+  const { addresses } = await api("/admin/addresses");
+  return `<div class="p-panel"><h2>🌐 Store addresses</h2>
+    <p class="p-tag">Use your own domain. Add it, publish the TXT record shown to prove it is yours, then point the domain at this platform (a CNAME or A record from your host).</p>
+    <div class="p-form"><div class="row"><label><span>Domain</span><input id="adHost" placeholder="shop.example.com"></label><button class="p-btn primary" id="adAdd">Add</button></div></div>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Domain</th><th>Status</th><th>DNS record</th><th></th></tr></thead><tbody>${addresses.map(a => `<tr>
+      <td><b>${esc(a.host)}</b>${a.primary ? ' <span class="badge published">main</span>' : ""}</td>
+      <td>${a.verified ? '<span class="badge published">proven</span>' : '<span class="badge draft">not proven yet</span>'}${a.error ? `<br><span class="p-tag">${esc(a.error)}</span>` : ""}</td>
+      <td><code>${esc(a.record.type)} ${esc(a.record.name)}</code><br><code style="word-break:break-all">${esc(a.record.value)}</code></td>
+      <td style="white-space:nowrap"><button class="p-btn sm" data-advfy="${a.id}">Check now</button> ${a.verified && !a.primary ? `<button class="p-btn sm" data-adpri="${a.id}">Make main</button> ` : ""}${a.primary ? "" : `<button class="p-btn sm danger" data-addel="${a.id}">✕</button>`}</td></tr>`).join("") || '<tr><td colspan="4" class="p-empty">No addresses yet</td></tr>'}</tbody></table></div></div>`;
+}
+function wireAddresses() {
+  const go = async (path, method, done) => { try { const r = await api(path, method, {}); toast(done(r)); render(); } catch (e) { toast(e.message); } };
+  $("#adAdd").onclick = async () => { try { await api("/admin/addresses", "POST", { host: $("#adHost").value }); toast("Added — publish the record shown, then check it"); render(); } catch (e) { toast(e.message); } };
+  $$("[data-advfy]").forEach(b => b.onclick = () => go("/admin/addresses/" + b.dataset.advfy + "/verify", "POST", r => r.address.verified ? "Proven — " + r.address.host + " now answers for this store" : r.address.error));
+  $$("[data-adpri]").forEach(b => b.onclick = () => go("/admin/addresses/" + b.dataset.adpri + "/primary", "POST", r => "Links and emails now use " + r.address.host));
+  $$("[data-addel]").forEach(b => b.onclick = () => { if (confirm("Stop answering at this address?")) go("/admin/addresses/" + b.dataset.addel, "DELETE", () => "Removed"); });
+}
+
+screen("addresses", { group: "Settings", label: "🌐 Addresses", order: 1, section: "settings", render: async () => await vAddresses(), wire: async () => { wireAddresses(); } });

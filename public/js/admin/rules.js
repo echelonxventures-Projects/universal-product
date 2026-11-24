@@ -4,7 +4,7 @@
 "use strict";
 
 async function vSettings() {
-  const { settings: st, countries, taxModes, currencies } = await api("/admin/settings");
+  const { settings: st, countries, taxModes, currencies, legalFields, legalGaps } = await api("/admin/settings");
   const geo = { countries, taxModes, currencies };
   const reg = await api("/meta");
   /* the feature flags ARE capability atoms — read the catalog so the settings view
@@ -51,6 +51,7 @@ async function vSettings() {
       return `<label style="display:flex;gap:8px;align-items:center" title="${esc(atom ? atom.description : "a settings row, not yet an atom")}"><input type="checkbox" data-feat="${k}" ${v ? "checked" : ""}> ${esc(atom ? atom.label : k)}${atom ? ' <span class="p-tag">atom</span>' : ""}</label>`;
     }).join("")}
     </div>${capNote ? `<p class="hint" style="grid-column:1/-1">${capNote}</p>` : ""}</div>`)}
+  ${sec("legal", "Legal", `<p class="p-tag">These fill in the privacy, terms, returns, shipping, cookies and contact pages, and tax invoices. ${(legalGaps || []).length ? "Still to fill in: <b>" + legalGaps.map(esc).join(", ") + "</b>." : "Everything required is filled in."} Have the pages checked by a lawyer.</p><div class="p-form"><div class="row">${(legalFields || []).map(f => inp("legal." + f.key, f.label + (f.required ? " *" : ""), (st.legal || {})[f.key] || "")).join("")}</div></div>`)}
   ${sec("copy", "Copy & Wording", `<div class="p-form"><div class="row">
     ${Object.entries(st.copy).slice(0, 24).map(([k, v]) => inp("copy." + k, k, v)).join("")}</div></div>`)}
   ${sec("mode", "Deployment Mode", `<div class="p-form"><div class="row">
@@ -66,7 +67,7 @@ function wireSettings() {
     $('[data-set="theme.accent"]').value = a; $('[data-set="theme.header"]').value = h;
   });
   $("#setSave").onclick = async () => {
-    const body = { brand: {}, theme: {}, commerce: {}, copy: {}, features: {} };
+    const body = { brand: {}, theme: {}, commerce: {}, copy: {}, features: {}, legal: {} };
     $$("[data-set]").forEach(i => {
       const [sec, key] = i.dataset.set.split(".");
       body[sec][key] = i.type === "number" ? Number(i.value) : i.value;

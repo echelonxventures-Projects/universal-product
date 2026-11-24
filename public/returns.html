@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Returns and Refunds</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="">
+<a class="skip-nav" href="#page">Skip to main content</a>
+<header id="hdr" role="banner"></header>
+<aside id="sidebar" role="complementary"></aside>
+<main id="page" role="main" class="legal-page" style="max-width:780px;margin:0 auto;padding:32px 16px;line-height:1.6">
+  <!--if-gaps--><p role="note" style="border:2px solid #b45309;background:#fffbeb;color:#78350f;padding:12px 16px;border-radius:8px">
+    <strong>Template — not yet complete.</strong> Fill in the store's legal details (Store console → Settings → Legal) and have
+    this page checked by a lawyer for the countries you sell in before the store goes live.</p><!--end-->
+  <h1>Returns and Refunds</h1>
+  <p>Last updated: {{updatedOn}}</p>
+  <h2>Cancelling</h2>
+  <p>You can cancel an order from <a href="orders.html">your orders</a> until it has been handed to the carrier. What you paid is refunded the way you paid it.</p>
+  <h2>Returning</h2>
+  <p><!--if returnDays-->You can ask to return an item within {{returnDays}} days of delivery, from <a href="orders.html">your orders</a>.<!--end--><!--if returnPostage--> Return postage: {{returnPostage}}.<!--end--></p>
+<!--if noReturns-->  <p>These cannot be returned: {{noReturns}}. This does not affect your rights when an item is faulty or not as described.</p>
+<!--end-->  <h2>Refunds</h2>
+  <p>We refund within {{refundDays}} days of receiving the return, to the way you paid. The refund is the item's share of what you paid, with its tax; the delivery charge is refunded only where the law or our mistake requires it.</p>
+  <h2>Help</h2>
+  <p>{{supportEmail}}<!--if phone--> · {{phone}}<!--end--></p>
+  <p><a href="privacy.html">Privacy Notice</a> · <a href="terms.html">Terms of Use</a> · <a href="shipping.html">Shipping</a> · <a href="cookies.html">Cookies</a> · <a href="contact.html">Contact us</a> · <a href="index.html">Back to the store</a></p>
+</main>
+<footer id="ftr" role="contentinfo"></footer>
+<div id="modals"></div>
+<script src="js/app.js"></script>
+</body>
+</html>

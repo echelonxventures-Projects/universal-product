@@ -65,7 +65,8 @@
     "files": [
      "lib/identity.js",
      "lib/webauthn.js",
-     "lib/mfa.js"
+     "lib/mfa.js",
+     "lib/session-sweep.js"
     ],
     "tables": [
      "users",
@@ -199,7 +200,8 @@
      "lib/platform-setup.js",
      "lib/platform-discovery.js",
      "lib/compose.js",
-     "lib/branding.js"
+     "lib/branding.js",
+     "lib/store-domains.js"
     ],
     "tables": [
      "tenants",
@@ -210,13 +212,15 @@
      "departments",
      "store_branding",
      "store_branding_perms",
-     "platform_branding"
+     "platform_branding",
+     "store_domains"
     ],
     "routes": [
      "^/api/(tenancy|stores|branding|compose)(/|$)",
      "^/api/platform/(tenants|setup|branding|tenant-entities|tenant-fields|regions|fanout)(/|$)",
      "^/api/admin/setup(/|$)",
-     "^/api/admin/departments(/|$)"
+     "^/api/admin/departments(/|$)",
+     "^/api/admin/addresses(/|$)"
     ],
     "machines": [
      "tenant",
@@ -226,7 +230,8 @@
     "registries": [],
     "screens": [
      "structure",
-     "setup"
+     "setup",
+     "addresses"
     ],
     "platformScreens": [
      "tenants",
@@ -2235,7 +2240,8 @@
    ],
    "owns": {
     "files": [
-     "lib/sitemap.js"
+     "lib/sitemap.js",
+     "lib/page-meta.js"
     ],
     "tables": [
      "sitemap_config",
@@ -2482,7 +2488,11 @@
     ],
     "pages": [
      "privacy",
-     "terms"
+     "terms",
+     "returns",
+     "shipping",
+     "cookies",
+     "contact"
     ]
    }
   },

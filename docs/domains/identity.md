@@ -14,6 +14,7 @@ Who someone is: accounts, sign-in by every method (password, one-time code, magi
 |---|---|
 | `lib/identity.js` |  |
 | `lib/mfa.js` | the second factor for people who run a platform or a store. |
+| `lib/session-sweep.js` | sign-ins and links whose time has passed are cleared (hourly, server.js). |
 | `lib/webauthn.js` | UCOS Ω∞ · WebAuthn — real assertion math, zero dependencies (node:crypto only). -------------------------------------------------------------------------- The identity engine advertises a biometric flow (WebAuthn / passkey). For a long time that was a documented stub: the "verification" checked only that an assertion HAD the two fields a real one has, and accepted anything that did — so a login method was advertised that no cryptography backed. This module is the math. |
 | `lib/routes/identity.js` | identity domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the identity domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
@@ -337,7 +338,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Guest / Shopper / Seller / Store staff / Store administrator / Platform administrator / Developer]) --> UI[reset.html, store console, platform console]
   UI --> API[63 API routes]
-  API --> ENG[identity.js, mfa.js, webauthn.js, identity.js]
+  API --> ENG[identity.js, mfa.js, session-sweep.js, webauthn.js, identity.js]
   ENG --> DB[(platform_admins, platform_sessions, tokens, users, sessions, sso_connections, …)]
 
 ```

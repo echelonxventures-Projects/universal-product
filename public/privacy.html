@@ -3,8 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Privacy Notice — LUXORA</title>
-<meta name="description" content="How this store collects, uses and protects your personal data.">
+<title>Privacy Notice</title>
 <link rel="stylesheet" href="css/styles.css">
 </head>
 <body data-page="">
@@ -12,66 +11,45 @@
 <header id="hdr" role="banner"></header>
 <aside id="sidebar" role="complementary"></aside>
 <main id="page" role="main" class="legal-page" style="max-width:780px;margin:0 auto;padding:32px 16px;line-height:1.6">
-  <p role="note" style="border:2px solid #b45309;background:#fffbeb;color:#78350f;padding:12px 16px;border-radius:8px">
-    <strong>Template — not yet reviewed by a lawyer.</strong> Replace every part in [square brackets] and have this
-    notice checked for the countries you sell in before the store goes live.
-  </p>
-
+  <!--if-gaps--><p role="note" style="border:2px solid #b45309;background:#fffbeb;color:#78350f;padding:12px 16px;border-radius:8px">
+    <strong>Template — not yet complete.</strong> Fill in the store's legal details (Store console → Settings → Legal) and have
+    this page checked by a lawyer for the countries you sell in before the store goes live.</p><!--end-->
   <h1>Privacy Notice</h1>
-  <p>Last updated: [date]</p>
-
+  <p>Last updated: {{updatedOn}}</p>
   <h2>Who we are</h2>
-  <p>This store is run by [legal name of the business], [registered address] ("we", "us"). For anything about your
-    personal data, contact us at [privacy contact email].</p>
-
+  <p>This store is run by {{businessName}}, {{address}} ("we", "us"). For anything about your personal data, contact us at {{privacyEmail}}.<!--if officer--> Our data protection / grievance officer: {{officer}}.<!--end--></p>
   <h2>What we collect</h2>
   <ul>
     <li><strong>Account details:</strong> your name, email address and password (stored only as a salted hash, never as text).</li>
-    <li><strong>Orders:</strong> what you buy, delivery name and address, phone number if you give one, and your order history.</li>
-    <li><strong>Payments:</strong> card, UPI and bank details are entered with our payment provider, [payment provider, e.g. Razorpay].
-      We receive only a payment reference and its status, never your full card number.</li>
-    <li><strong>Support:</strong> messages you send us through chat, email or SMS.</li>
+    <li><strong>Orders:</strong> what you buy, delivery name and address, email and phone number if you give them, and your order history.</li>
+    <li><strong>Payments:</strong> card, UPI and bank details are entered with our payment provider, {{paymentProvider}}. We receive only a payment reference and its status, never your full card number.</li>
+    <li><strong>Support:</strong> messages you send us.</li>
     <li><strong>Reviews:</strong> ratings and reviews you choose to publish, with the name you give.</li>
     <li><strong>Technical data:</strong> your IP address and request logs, kept for security and to prevent fraud.</li>
   </ul>
-
-  <h2>Cookies</h2>
-  <p>We use only cookies the store needs to work: a session cookie that keeps you signed in and holds your bag, a security
-    token that protects your actions from forgery, and a cookie that remembers which store you are visiting. We use
-    no advertising or third-party tracking cookies. [If you add analytics or advertising, list them here and ask for consent.]</p>
-
+  <p>The cookies we use are described on the <a href="cookies.html">Cookies</a> page.</p>
   <h2>Why we use it</h2>
   <ul>
     <li>to take, deliver and support your orders, and to process payments and refunds;</li>
     <li>to keep your account and the store secure, and to prevent fraud and abuse;</li>
-    <li>to send messages about your orders and account (password resets, order updates);</li>
+    <li>to send messages about your orders and account;</li>
     <li>to send marketing only if you agree to it — you can stop it at any time.</li>
   </ul>
-  <p>[State the legal basis for each use under the law that applies to you, for example India's Digital Personal Data
-    Protection Act, 2023 or the GDPR.]</p>
-
+  <p>{{legalBasis}}</p>
   <h2>Who we share it with</h2>
-  <p>Only the providers that help us run the store: payment ([payment provider]), delivery ([carriers]), email and SMS
-    ([email / SMS providers]) and hosting ([hosting provider]). We do not sell your personal data.</p>
-
+  <p>Only the providers that help us run the store: payment ({{paymentProvider}}), delivery ({{carriers}}), email and SMS ({{messaging}}) and hosting ({{hosting}}). We do not sell your personal data.</p>
   <h2>How long we keep it</h2>
-  <p>[Account data: until you close your account. Orders and invoices: as long as tax law requires, for example
-    [n] years. Logs: [n] days.]</p>
-
+  <p>{{retention}}</p>
   <h2>Your rights</h2>
-  <p>You can ask us to show you, correct or delete your personal data, to stop marketing, or to withdraw consent. Write to
-    [privacy contact email]; we answer within [n] days. You may also complain to [the data protection authority].</p>
-
-  <h2>Children</h2>
-  <p>The store is not meant for children under [age]. We do not knowingly collect their data.</p>
-
-  <h2>Security</h2>
+  <p>You can ask us to show you, correct, move or delete your personal data, to stop marketing, or to withdraw consent — below, or by writing to {{privacyEmail}}. We answer within {{answerDays}} days.<!--if authority--> You may also complain to {{authority}}.<!--end--></p>
+  <div id="privacyChoices"></div>
+<!--if minAge-->  <h2>Children</h2>
+  <p>The store is not meant for children under {{minAge}}. We do not knowingly collect their data.</p>
+<!--end-->  <h2>Security</h2>
   <p>Traffic is encrypted (HTTPS), passwords are hashed, and stored secrets such as payment credentials are encrypted.</p>
-
   <h2>Changes</h2>
   <p>When we change this notice we update the date above, and we tell you first if the change matters.</p>
-
-  <p><a href="terms.html">Terms of Use</a> · <a href="index.html">Back to the store</a></p>
+  <p><a href="terms.html">Terms of Use</a> · <a href="returns.html">Returns and Refunds</a> · <a href="shipping.html">Shipping</a> · <a href="cookies.html">Cookies</a> · <a href="contact.html">Contact us</a> · <a href="index.html">Back to the store</a></p>
 </main>
 <footer id="ftr" role="contentinfo"></footer>
 <div id="modals"></div>

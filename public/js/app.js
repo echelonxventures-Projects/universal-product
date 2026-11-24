@@ -178,6 +178,29 @@ function renderHeader() {
     </nav>
   </header>`;
 }
+/* said once per browser: only cookies the store needs are used, so there is nothing to consent to */
+function cookieNotice() {
+  let seen = false; try { seen = localStorage.getItem("cookie-notice") === "1"; } catch (e) { }
+  if (seen || document.getElementById("ckNote")) return;
+  const d = document.createElement("div");
+  d.id = "ckNote"; d.setAttribute("role", "region"); d.setAttribute("aria-label", "Cookies");
+  d.style.cssText = "position:fixed;left:16px;right:16px;bottom:16px;max-width:560px;margin:0 auto;background:#fff;color:#111;border:1px solid #d4d4d8;border-radius:10px;padding:12px 16px;box-shadow:0 8px 24px rgba(0,0,0,.18);display:flex;gap:12px;align-items:center;z-index:900;font-size:14px";
+  d.innerHTML = `<span style="flex:1">We use only cookies this store needs to work. <a href="cookies.html">More</a></span><button class="btn-white">OK</button>`;
+  d.querySelector("button").onclick = () => { try { localStorage.setItem("cookie-notice", "1"); } catch (e) { } d.remove(); };
+  document.body.appendChild(d);
+}
+/* a shopper's own privacy choices and requests, on the privacy notice */
+async function privacyChoices() {
+  const box = document.getElementById("privacyChoices");
+  if (!box || box.dataset.on) return; box.dataset.on = "1";
+  const c = await api("/consent").catch(() => null);
+  if (!c) return;
+  const live = p => p.granted_at && !p.withdrawn_at;
+  box.innerHTML = `<h3>Your choices</h3>${c.purposes.filter(p => !p.required).map(p => `<label style="display:block"><input type="checkbox" data-purpose="${esc(p.purpose)}" ${live(p) ? "checked" : ""}> ${esc(p.name)}</label>`).join("")}
+    <h3>Your data</h3><p>${[["access", "Send me a copy"], ["rectification", "Correct it"], ["erasure", "Delete it"]].map(x => `<button class="btn-white" data-dsr="${x[0]}">${x[1]}</button>`).join(" ")}</p><p role="status" id="dsrMsg"></p>`;
+  box.querySelectorAll("[data-purpose]").forEach(i => i.onchange = async () => { try { await api("/consent", "POST", { purpose: i.dataset.purpose, status: i.checked ? "granted" : "withdrawn" }); toast("Saved"); } catch (e) { i.checked = !i.checked; toast("⚠️ " + esc(e.message)); } });
+  box.querySelectorAll("[data-dsr]").forEach(b => b.onclick = async () => { if (!confirm(b.textContent + "?")) return; try { const r = await api("/privacy/request", "POST", { kind: b.dataset.dsr }); $("#dsrMsg").textContent = "Your request " + r.id + " has been received."; } catch (e) { $("#dsrMsg").textContent = "⚠️ " + e.message; } });
+}
 function renderFooter(stores) {
   $("#ftr").innerHTML = `
   <footer>
@@ -185,19 +208,20 @@ function renderFooter(stores) {
     <div class="f-main">
       <div class="f-brand">${wordmark()}<p>${esc(CFG.brand.tagline)}</p></div>
       <div class="f-cols">
-        <div><h4>The House</h4><a href="#">About ${esc(CFG.brand.name)}</a><a href="#">Careers</a><a href="#">Journal</a></div>
+        <div><h4>The House</h4><a href="contact.html">Contact</a><a href="shipping.html">Shipping</a><a href="returns.html">Returns &amp; Refunds</a></div>
         <div><h4>Shopping</h4>${CFG.features.deals ? `<a href="deals.html">${esc(T("dealsTitle"))}</a>` : ""}<a href="results.html?sort=new">New Season</a><a href="results.html?sort=best">Favourites</a><a href="results.html">All Departments</a></div>
         <div><h4>Services</h4>${CFG.features.giftCards ? `<a href="gift-cards.html">Gift Cards</a>` : ""}${CFG.features.registry || atoms().wish_lists ? `<a href="registry.html">${atoms().wish_lists ? "Lists" : "Registries"}</a>` : ""}${CFG.features.customerService ? `<a href="customer-service.html">Client Care</a>` : ""}<a href="orders.html">Track an Order</a></div>
-        <div><h4>Legal</h4><a href="terms.html">Conditions</a><a href="privacy.html">Privacy</a><a href="#">Accessibility</a>${S.user && S.user.role === "admin" && CFG.features.adminPortal ? `<a href="console.html?scope=store">Admin Console</a>` : ""}</div>
+        <div><h4>Legal</h4><a href="terms.html">Conditions</a><a href="privacy.html">Privacy</a><a href="cookies.html">Cookies</a>${S.user && S.user.role === "admin" && CFG.features.adminPortal ? `<a href="console.html?scope=store">Admin Console</a>` : ""}</div>
       </div>
     </div>
     <div class="f-bottom">
       ${stores && stores.length > 1 ? `<div class="f-stores">Other stores on this platform: ${stores.map(x => `<a href="/index.html?store=${x.slug}">${esc(x.name)}</a>`).join(" · ")}</div>` : ""}
       ${(CFG.languages || []).length > 1 ? `<label class="f-lang"><span class="sr-only">Language</span><select id="langSel">${CFG.languages.map(l => `<option value="${esc(l.key)}" ${l.key === CFG.lang ? "selected" : ""}>${esc(l.native)}</option>`).join("")}</select></label>` : ""}
       <p class="f-copy">${esc(T("footerNote", { year: new Date().getFullYear(), brand: CFG.brand.name }))}</p>
-      ${CFG.brand.poweredBy ? `<p class="f-powered"><a href="#">${esc(CFG.brand.poweredBy)}</a></p>` : ""}
+      ${CFG.brand.poweredBy ? `<p class="f-powered">${esc(CFG.brand.poweredBy)}</p>` : ""}
     </div>
   </footer>`;
+  cookieNotice(); privacyChoices();
   /* the shopper's language choice is remembered for a year and the page re-renders in it */
   const ls = $("#langSel");
   if (ls) ls.addEventListener("change", () => { document.cookie = "azlang=" + encodeURIComponent(ls.value) + "; path=/; max-age=31536000; samesite=lax"; location.reload(); });

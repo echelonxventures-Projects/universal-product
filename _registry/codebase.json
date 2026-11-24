@@ -315,6 +315,9 @@
   {"path":"lib/product-counts.js","owner":"Commerce"},
   {"path":"lib/returns.js","owner":"Commerce"},
   {"path":"lib/mfa.js","owner":"Security"},
+  {"path":"lib/session-sweep.js","owner":"Security"},
+  {"path":"lib/store-domains.js","owner":"Integration"},
+  {"path":"lib/page-meta.js","owner":"Experience"},
   {"path":"lib/refunds.js","owner":"Integration"},
   {"path":"lib/orders.js","owner":"Commerce"}
   ]

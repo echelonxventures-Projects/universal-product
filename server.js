@@ -16,6 +16,7 @@ const https = require("https");
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
+const zlib = require("zlib");
 const { run, get, all, masterTenant } = require("./lib/db.js");
 const api = require("./lib/api.js");
 const metrics = require("./lib/metrics.js");
@@ -33,7 +34,8 @@ const DAY = 86400;
 const MIME = {
   ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8",
   ".js": "application/javascript; charset=utf-8", ".json": "application/json; charset=utf-8",
-  ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".ico": "image/x-icon", ".txt": "text/plain; charset=utf-8"
+  ".svg": "image/svg+xml", ".png": "image/png", ".jpg": "image/jpeg", ".ico": "image/x-icon", ".txt": "text/plain; charset=utf-8",
+  ".webp": "image/webp", ".avif": "image/avif", ".gif": "image/gif", ".woff2": "font/woff2", ".mp4": "video/mp4", ".pdf": "application/pdf", ".webmanifest": "application/manifest+json; charset=utf-8"
 };
 
 /* L1 transport */
@@ -52,34 +54,42 @@ function parseCookies(str) {
   return out;
 }
 
+/* Which store a request is for: the store its host is the address of (lib/store-domains.js), else the
+   one ?store= or the cookie names, else the master's own deployment — the deployment the platform
+   itself is — never a peer the operator provisioned. */
 function resolveTenant(req, url, cookies) {
-  const host = String(req.headers.host || "").split(":")[0].toLowerCase();
-  const sub = host.includes(".") ? host.split(".")[0] : "";
-/* A bare-host request (no subdomain, no ?store=, no cookie) resolves to the
-   master's own deployment — the deployment the platform itself is — never to a
-   peer the operator provisioned. subdomain/?store=/cookie still address any
-   deployment explicitly. */
-const like = sub.replace(/[\\%_]/g, c => "\\" + c);
-let t = (sub && sub !== "www" && get("SELECT * FROM tenants WHERE domain LIKE ? ESCAPE '\\' OR slug=?", like + ".%", sub)) ||
-  (url.searchParams.get("store") && get("SELECT * FROM tenants WHERE slug=?", url.searchParams.get("store"))) ||
-  (cookies.store && get("SELECT * FROM tenants WHERE slug=?", cookies.store)) ||
-  masterTenant();
-  return t || null;
+  return require("./lib/store-domains.js").storeFor(req.headers.host)
+    || (url.searchParams.get("store") && get("SELECT * FROM tenants WHERE slug=?", url.searchParams.get("store")))
+    || (cookies.store && get("SELECT * FROM tenants WHERE slug=?", cookies.store))
+    || masterTenant() || null;
 }
 
+/* a visitor's session exists only once they come back with its cookie (or change something): the
+   first page of every crawler would otherwise leave a row behind for a month. The id is signed, so
+   only one this server gave out is ever taken up; its CSRF token follows from it. */
+const sidSig = r => sec.blindIndex(r, "session.sid").slice(0, 24);
+const newSid = () => { const r = crypto.randomBytes(24).toString("hex"); return r + "." + sidSig(r); };
+const ours = sid => { const m = /^([0-9a-f]{48})\.([0-9a-f]{24})$/.exec(sid || ""); return !!m && crypto.timingSafeEqual(Buffer.from(m[2]), Buffer.from(sidSig(m[1]))); };
+const csrfOf = sid => sec.blindIndex(sid, "session.csrf").slice(0, 32);
 function getSession(req, res, url, cookies) {
   const tenant = resolveTenant(req, url, cookies);
   if (!tenant) return null;
   let sid = cookies.azs;
   let s = sid && get("SELECT * FROM sessions WHERE sid=? AND expires_at > datetime('now')", sid);
+  let stored = !!s;
   if (!s) {
-    sid = crypto.randomBytes(24).toString("hex");
-    run("INSERT INTO sessions(sid, expires_at) VALUES(?, datetime('now','+30 days'))", sid);
-    s = get("SELECT * FROM sessions WHERE sid=?", sid);
+    const returning = ours(sid);
+    if (!returning) sid = newSid();
+    if (returning || !["GET", "HEAD"].includes(req.method)) {
+      run("INSERT OR IGNORE INTO sessions(sid, expires_at, csrf) VALUES(?, datetime('now','+30 days'), ?)", sid, csrfOf(sid));
+      s = get("SELECT * FROM sessions WHERE sid=? AND expires_at > datetime('now')", sid);
+      stored = !!s;
+    }
+    if (!s) s = { sid, user_id: null, csrf: csrfOf(sid) };
     res.appendHeader("Set-Cookie", `azs=${sid}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${30 * DAY}${sec.httpsRequest(req) ? "; Secure" : ""}`);
   }
   const st = get("SELECT * FROM tenant_state WHERE sid=? AND tenant_id=?", sid, tenant.id) || { zip: "98109", gift_balance: 0 };
-  if (!get("SELECT sid FROM tenant_state WHERE sid=? AND tenant_id=?", sid, tenant.id)) run("INSERT INTO tenant_state(sid,tenant_id) VALUES(?,?)", sid, tenant.id);
+  if (stored && !get("SELECT sid FROM tenant_state WHERE sid=? AND tenant_id=?", sid, tenant.id)) run("INSERT INTO tenant_state(sid,tenant_id) VALUES(?,?)", sid, tenant.id);
   let userTenantOk = true;
   if (s.user_id) {
     const u = get("SELECT tenant_id FROM users WHERE id=?", s.user_id);
@@ -104,29 +114,51 @@ function safeJoin(root, urlPath) {
   const p = path.normalize(path.join(root, dec));
   return p === root || p.startsWith(root + path.sep) ? p : null;
 }
-function serveStatic(req, res, pathname) {
+function serveStatic(req, res, pathname, url) {
   let file = safeJoin(PUB, pathname);
   if (!file) return notFound(res);
   if (pathname === "/" || pathname === "") file = path.join(PUB, "index.html");
   if (fs.existsSync(file) && fs.statSync(file).isDirectory()) file = path.join(file, "index.html");
   if (!fs.existsSync(file) || !fs.statSync(file).isFile()) return notFound(res);
   const ext = path.extname(file).toLowerCase();
-  const base = { "Content-Type": MIME[ext] || "application/octet-stream", "Cache-Control": ext === ".html" ? "no-cache" : "public, max-age=3600" };
+  const st = fs.statSync(file);
+  /* an address that carries the file's own version (?v=, written by applySri) never changes */
+  const versioned = /^[A-Za-z0-9]{6,}$/.test(url.searchParams.get("v") || "") && ext !== ".html";
+  const base = { "Content-Type": MIME[ext] || "application/octet-stream", "Cache-Control": ext === ".html" ? "no-cache" : versioned ? "public, max-age=31536000, immutable" : "public, max-age=3600" };
   if (ext === ".html") {
     fs.readFile(file, (err, buf) => {
       if (err) { res.writeHead(500, base); return res.end(); }
-      const html = sec.applySri(buf.toString("utf8"), PUB);
-      res.writeHead(200, base);
-      res.end(html);
+      let html = buf.toString("utf8");
+      const t = resolveTenant(req, url, parseCookies(req.headers.cookie));
+      const host = String(req.headers.host || "").replace(/[^A-Za-z0-9.:[\]-]/g, "");
+      try { html = require("./lib/page-meta.js").page(html, t, pathname || "/", url.searchParams, host ? (sec.httpsRequest(req) ? "https://" : "http://") + host : ""); } catch (e) { console.error("page meta:", e.message); }
+      send(req, res, base, Buffer.from(sec.applySri(html, PUB)), null);
     });
     return;
   }
-  if (ext === ".js" || ext === ".css") {
-    fs.readFile(file, (err, buf) => { if (err) { res.writeHead(500, base); return res.end(); } res.writeHead(200, base); res.end(buf); });
+  if (ext === ".js" || ext === ".css" || ext === ".svg" || ext === ".txt") {
+    fs.readFile(file, (err, buf) => { if (err) { res.writeHead(500, base); return res.end(); } send(req, res, base, buf, file + ":" + st.mtimeMs + ":" + st.size); });
     return;
   }
-  res.writeHead(200, base);
-  fs.createReadStream(file).pipe(res);
+  res.writeHead(200, { ...base, "Content-Length": st.size });
+  if (req.method === "HEAD") return res.end();
+  fs.createReadStream(file).on("error", () => res.destroy()).pipe(res);
+}
+/* text, with a tag the browser can ask about again (304) and compressed where it accepts that; a
+   file's compressed form is kept for as long as the file is unchanged */
+const PACKED = new Map();
+function send(req, res, headers, buf, key) {
+  const etag = '"' + crypto.createHash("sha256").update(buf).digest("base64url").slice(0, 22) + '"';
+  const h = { ...headers, ETag: etag, Vary: "Accept-Encoding" };
+  if (String(req.headers["if-none-match"] || "").split(",").some(x => x.trim().replace(/^W\//, "") === etag)) { res.writeHead(304, h); return res.end(); }
+  const accept = String(req.headers["accept-encoding"] || "");
+  const enc = buf.length < 1024 ? null : /\bbr\b/.test(accept) ? "br" : /\bgzip\b/.test(accept) ? "gzip" : null;
+  const out = (body, e) => { res.writeHead(200, { ...h, ...(e ? { "Content-Encoding": e } : {}), "Content-Length": body.length }); res.end(req.method === "HEAD" ? undefined : body); };
+  if (!enc) return out(buf);
+  const k = key && key + ":" + enc, hit = k && PACKED.get(k);
+  if (hit) return out(hit, enc);
+  const done = (err, body) => { if (err) return out(buf); if (k) { if (PACKED.size > 400) PACKED.delete(PACKED.keys().next().value); PACKED.set(k, body); } out(body, enc); };
+  if (enc === "br") zlib.brotliCompress(buf, { params: { [zlib.constants.BROTLI_PARAM_QUALITY]: key ? 9 : 4 } }, done); else zlib.gzip(buf, { level: 6 }, done);
 }
 function notFound(res) {
   res.writeHead(404, { "Content-Type": "text/html; charset=utf-8" });
@@ -159,12 +191,14 @@ function readBody(req) {
 
 /* the client address. Behind a reverse proxy (nginx, a load balancer, docker's port
    proxy) every request arrives from the proxy's own socket, so per-IP rate limits would
-   throttle all users as one. LX_TRUST_PROXY=1 tells the server a trusted proxy sits in
-   front and sets X-Forwarded-For; without it the header is attacker-controlled and ignored. */
+   throttle all users as one. LX_TRUST_PROXY is how many trusted proxies sit in
+   front (1 for one, 2 for a CDN before it); without it the header is attacker-controlled and ignored. */
 function clientIpOf(req) {
-  if (process.env.LX_TRUST_PROXY === "1") {
-    const xff = String(req.headers["x-forwarded-for"] || "").split(",")[0].trim();
-    if (xff) return xff;
+  const hops = sec.trustedHops();
+  if (hops) {
+    /* each trusted proxy appends the address it saw; whatever stands before those was written by the client */
+    const xff = String(req.headers["x-forwarded-for"] || "").split(",").map(x => x.trim()).filter(Boolean);
+    if (xff.length) return xff[Math.max(0, xff.length - hops)];
   }
   return (req.socket && req.socket.remoteAddress) || "";
 }
@@ -278,6 +312,12 @@ const handler = async (req, res) => {
       res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8", "Cache-Control": "public, max-age=3600" });
       return res.end(lines.join("\n") + "\n");
     }
+    /* the store as an app a phone or desktop can install */
+    if (url.pathname === "/manifest.webmanifest") {
+      const t = resolveTenant(req, url, cookies);
+      if (!t) { res.writeHead(404); return res.end(); }
+      return send(req, res, { "Content-Type": MIME[".webmanifest"], "Cache-Control": "public, max-age=3600" }, Buffer.from(JSON.stringify(require("./lib/page-meta.js").manifest(t))), null);
+    }
     /* readiness, for a load balancer or orchestrator: 200 only while this process can serve —
        the database answers, the master deployment exists and no shutdown has begun (a draining
        instance answers 503 so traffic moves away before it closes). /healthz is liveness only. */
@@ -309,13 +349,11 @@ const handler = async (req, res) => {
        never has to eval fetched source */
     const pm = /^\/js\/plain\/(store|platform)\.js$/.exec(url.pathname);
     if (pm) {
-      res.writeHead(200, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" });
-      return res.end(require("./lib/bundle.js").plain(pm[1], PUB));
+      return send(req, res, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" }, Buffer.from(require("./lib/bundle.js").plain(pm[1], PUB) || ""), null);
     }
     const bm = /^\/js\/bundle\/(store|platform)\.js$/.exec(url.pathname);
     if (bm) {
-      res.writeHead(200, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" });
-      return res.end(require("./lib/bundle.js").wrap(bm[1], PUB));
+      return send(req, res, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" }, Buffer.from(require("./lib/bundle.js").wrap(bm[1], PUB) || ""), null);
     }
     /* one console: the old store and platform pages open /console.html in their scope,
        keeping whatever the link carried (?store=, a hand-off ?token=, ?view=) */
@@ -327,7 +365,7 @@ const handler = async (req, res) => {
       return res.end();
     }
     if (url.searchParams.get("store") && SLUG_RE.test(url.searchParams.get("store"))) res.appendHeader("Set-Cookie", `store=${url.searchParams.get("store")}; Path=/; Max-Age=${365 * DAY}; SameSite=Lax${sec.httpsRequest(req) ? "; Secure" : ""}`);
-    serveStatic(req, res, url.pathname);
+    serveStatic(req, res, url.pathname, url);
   } catch (e) {
     console.error("FATAL", e);
     if (!res.headersSent) res.writeHead(500, { "Content-Type": "application/json" });
@@ -384,11 +422,24 @@ if (process.env.NODE_ENV === "production" && !require("./lib/mailer.js").transpo
   console.warn("  ⚠️  No email sender on the platform's own store (Store console → Payments → Email & SMS senders) — password resets and sign-in codes are only delivered for stores with their own live sender.");
 
 let shuttingDown = false;
-function shutdown(sig) { shuttingDown = true; console.log(`\n${sig} — closing`); sec.persistState(); listenServer.close(() => process.exit(0)); setTimeout(() => process.exit(0), 2000); }
+/* stop taking connections, let what is under way finish, then go (a container is given 30 s) */
+const DRAIN_MS = Number(process.env.LX_DRAIN_MS) || 20000;
+function shutdown(sig) {
+  if (shuttingDown) return; shuttingDown = true;
+  console.log(`\n${sig} — closing`); sec.persistState();
+  listenServer.close(() => process.exit(0));
+  if (listenServer.closeIdleConnections) listenServer.closeIdleConnections();
+  setTimeout(() => process.exit(0), DRAIN_MS).unref();
+}
 /* a stray rejected promise in an async handler must not take the process down (Node
    >= 15 exits on unhandled rejections); log it with enough context to fix the source */
 /* expired idempotency keys are swept hourly (they were only ever deleted lazily on lookup) */
 setInterval(() => { try { idem.purge(); } catch (e) { } }, 3600 * 1000).unref();
+/* what has expired is cleared, and proven store addresses are looked up again */
+setInterval(() => {
+  try { require("./lib/session-sweep.js").sweep(); } catch (e) { console.error("session sweep:", e.message); }
+  require("./lib/store-domains.js").recheck().catch(e => console.error("domain check:", e.message));
+}, 3600 * 1000).unref();
 /* live payments whose webhook never came are looked up with their gateway on a cadence */
 require("./lib/api.js").startPaymentSweep();
 /* shoppers' alerts are re-checked (prices also move by imports and rules, not only edits) and

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shipping</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-page="">
+<a class="skip-nav" href="#page">Skip to main content</a>
+<header id="hdr" role="banner"></header>
+<aside id="sidebar" role="complementary"></aside>
+<main id="page" role="main" class="legal-page" style="max-width:780px;margin:0 auto;padding:32px 16px;line-height:1.6">
+  <!--if-gaps--><p role="note" style="border:2px solid #b45309;background:#fffbeb;color:#78350f;padding:12px 16px;border-radius:8px">
+    <strong>Template — not yet complete.</strong> Fill in the store's legal details (Store console → Settings → Legal) and have
+    this page checked by a lawyer for the countries you sell in before the store goes live.</p><!--end-->
+  <h1>Shipping</h1>
+  <p>Last updated: {{updatedOn}}</p>
+  <h2>Where we deliver</h2>
+  <p>{{deliveryAreas}}</p>
+  <h2>Charges</h2>
+  <p>The delivery charge is shown at checkout before you pay.<!--if deliveryCharges--> {{deliveryCharges}}<!--end--></p>
+  <h2>How long it takes</h2>
+  <p><!--if deliveryTimes-->{{deliveryTimes}} <!--end-->The expected date is shown at checkout and on <a href="orders.html">your orders</a>, with the tracking number once your parcel is on its way. Delivery dates are estimates.</p>
+  <h2>Carriers</h2>
+  <p>{{carriers}}</p>
+  <p><a href="privacy.html">Privacy Notice</a> · <a href="terms.html">Terms of Use</a> · <a href="returns.html">Returns and Refunds</a> · <a href="cookies.html">Cookies</a> · <a href="contact.html">Contact us</a> · <a href="index.html">Back to the store</a></p>
+</main>
+<footer id="ftr" role="contentinfo"></footer>
+<div id="modals"></div>
+<script src="js/app.js"></script>
+</body>
+</html>
