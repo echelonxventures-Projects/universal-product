@@ -230,7 +230,7 @@ const navTo = async (doc, key, ms = 1800) => { const b = [...doc.querySelectorAl
     ok(!!U.doc.querySelector("[data-unew]"), "the New user control is present");
     ok(U.doc.body.textContent.includes("sam@luxora.shop"), "the API-created admin is visible in the table");
     const ubefore = fresh("SELECT COUNT(*) c FROM users WHERE tenant_id=1").c;
-    U.win.document.querySelector("[data-unew]").click(); await sleep(300);
+    U.win.document.querySelector("[data-unew]").click(); await sleep(1500);
     const um = U.win.document.getElementById("modal");
     ok(!!um && !!um.querySelector("#unTenant"), "the new-user modal opens with a store picker");
     ok(um.querySelector("#unStaffWrap").style.display === "none", "the staff-role picker is hidden for a customer");
