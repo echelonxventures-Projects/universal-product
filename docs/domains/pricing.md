@@ -32,7 +32,20 @@ A multiplier raised by active surge zones and by the live demand/supply ratio, c
 | `demand_supply_bps` | Points added per step (15 = +0.15%) | `15` |
 | `demand_supply_max_ratio` | The ratio assumed when no driver is idle | `3` |
 
+### Sale events (`sale_events`)
+
+A lower price for a time, on everything, a department, a brand or an item.
+
+### Club pricing (`club_pricing`)
+
+Members of a tier pay less.
+
 ## Architecture
+
+| Module | What it is |
+|---|---|
+| `lib/features/club_pricing.js` | club pricing: members of a tier pay less |
+| `lib/features/sale_events.js` | sale events: a lower price for a time, on everything, a department, a brand or an item |
 
 **Registry lists** (editable in Data Studio): `b2bSegments`
 
@@ -104,7 +117,7 @@ Actions:
 flowchart LR
   U([Store administrator / Seller]) --> UI[API]
   UI --> API[0 API routes]
-  API --> ENG[engines]
+  API --> ENG[club_pricing.js, sale_events.js]
   ENG --> DB[(price_lists, price_list_items, surge_zones)]
   ENG --> SM{{1 state machines}}
 ```

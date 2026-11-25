@@ -21,6 +21,7 @@ The 'Admin Console' link shown to a store's own staff on the storefront.
 | Module | What it is |
 |---|---|
 | `lib/capabilities.js` | The Capability Layer. -------------------------------------------------------------------------- "Configure types, standards, quality, features and functionalities of any platform or service" — this module is that statement made literal. |
+| `lib/features.js` | shopper features: the frame every feature of a store stands in. |
 | `lib/gates.js` | feature gates: an engine asks a binding point, never another engine's capability by name. Checkout does not ask "is the `wallet` module capability on?"; it asks `checkout.wallet`, and the featureGates registry row says which capability opens that point and where it comes from (`source: "module"` — an installed module's capability, through the rules engine's module.cap gate — or `"capability"` — the capability catalogue). A row may also carry the setting it reads from the providing module's config (`config`) and the message a refusal shows. Moving a feature to another module, or splitting a Pro bundle, is a row edit. An engine naming the capability it *is* (the ride engine's `ride_hailing`) is identity, not a gate, and stays as it is. |
 | `lib/modules.js` | Capability Marketplace. EVERYTHING is a product: identity, gid, geo, billing, seo, recommendations, cart, listing, checkout, tax, offers, wallet, logistics, payment rails, catalog packs, themes. Modules are catalog rows with price + manifest; manifests declare capabilities/features/ gateways/catalog actions; the platform auto-applies free baselines at provisioning ("purchase"). |
 | `lib/routes/modules.js` | modules domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the modules domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
@@ -150,12 +151,41 @@ The 'Admin Console' link shown to a store's own staff on the storefront.
 | `tenant_id` | INTEGER NOT NULL |
 | `preset_key` | TEXT NOT NULL |
 
+### `feature_rows`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `feature` | TEXT NOT NULL |
+| `data` | TEXT NOT NULL DEFAULT '{}' |
+
+### `feature_records`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `feature` | TEXT NOT NULL |
+| `owner` | TEXT NOT NULL DEFAULT '' |
+| `about` | TEXT NOT NULL DEFAULT '' |
+| `state` | TEXT NOT NULL DEFAULT '' |
+| `data` | TEXT NOT NULL DEFAULT '{}' |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
 ## API reference
 
 Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the session; mutating calls accept an `Idempotency-Key` header where noted.
 
 | Method and path | Handler | What it does |
 |---|---|---|
+| `GET /api/features` | `apiFeaturesMine` | what the shopper has of each feature: shown on their account |
+| `GET /api/features/:key` | `apiFeatureOpen` | what a feature shows anyone |
+| `POST /api/features/:key/:action` | `apiFeatureAct` | something a shopper does with a feature |
+| `GET /api/admin/features/:key` | `apiAdminFeature` | a feature's rows and records, with the fields the console asks for |
+| `POST /api/admin/features/:key` | `apiAdminFeatureSave` | adds or changes one of a feature's rows |
+| `DELETE /api/admin/features/:key/:id` | `apiAdminFeatureDelete` | removes one of a feature's rows |
+| `POST /api/admin/features/:key/:action/:id` | `apiAdminFeatureAct` | something staff do with one of a feature's records |
 | `GET /api/capabilities` | `apiCapabilities` | one read renders the entire console: the catalog (what is configurable), the archetypes, and the selected tenant's live composition |
 | `POST /api/capabilities/platform/:key` | `apiCapPlatform` | platform-level: switch a capability off for every store, or retitle it |
 | `POST /api/capabilities/enable` | `apiCapEnable` | switch a capability ON for a tenant, with optional param overrides |
@@ -196,15 +226,15 @@ Actions:
 ```mermaid
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[store console, platform console]
-  UI --> API[21 API routes]
-  API --> ENG[capabilities.js, gates.js, modules.js, modules.js]
+  UI --> API[28 API routes]
+  API --> ENG[capabilities.js, features.js, gates.js, modules.js, modules.js]
   ENG --> DB[(modules, tenant_modules, capabilities, applicability_rules, platform_capabilities, capability_values, …)]
   ENG --> SM{{1 state machines}}
 ```
 
 ## User interface
 
-**Store console:** 🧭 Availability Rules · 🧩 Modules
+**Store console:** 🧭 Availability Rules · 🧩 Modules · 🏷️ Sale events · 🎟️ Club pricing · 🎥 Live selling · 💳 Payment offers · 🗓️ Instalments without cost · 🛃 Duties at checkout · 📄 Customs declarations · 📦 Consolidated shipping · 🏭 Supplier direct · 🤝 Reseller margins · 🔗 Affiliate commissions · 🎯 Daily rewards · 🚀 Funding goals · 💺 Seat maps · 🧳 Travel itineraries · 🚗 Fitment · ⚕️ Schedule rules · 💊 Generic alternatives · 🔔 Refill reminders · 🍳 Kitchen hours · 📅 Batch expiry · 🥬 Freshness windows · ❄️ Cold chain · 🛋️ Large item delivery · 🎁 Dated delivery · ⚖️ Sell by weight
 
 **Platform console:** ⚙️ Capabilities · 🧭 Availability Rules · 🌳 Capability Tree · 🗄️ Capability Registry · 🧩 Capability Composition · 🧭 Capability Discovery · 🧩 Module Marketplace
 

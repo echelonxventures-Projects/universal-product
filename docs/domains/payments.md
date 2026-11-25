@@ -66,11 +66,21 @@ Divide a payment across parties at order time. The parts must sum to the total, 
 | `tolerance` | Rounding tolerance when comparing the split sum with the total | `0.01` |
 | `settle_immediately` | Settle the parts when the payment lands | `true` |
 
+### Payment offers (`payment_instrument_offers`)
+
+Money off for paying a certain way.
+
+### Instalments without cost (`instalments_without_cost`)
+
+The total spread over months at no interest. The plan is kept on the order and sent to the gateway.
+
 ## Architecture
 
 | Module | What it is |
 |---|---|
 | `lib/refunds.js` | refunds: giving back money an order took, in whole or in part. |
+| `lib/features/instalments_without_cost.js` | instalments without cost: the shopper spreads the total over months at no interest; the store bears it. The plan chosen is kept on the order and sent to the gateway, which collects the instalments. |
+| `lib/features/payment_instrument_offers.js` | payment offers: money off for paying a certain way |
 | `lib/routes/payments.js` | payments domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the payments domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `finUpiStatuses`, `finCollectStatuses`, `finQrKinds`, `finQrStatuses`, `finLinkStatuses`, `finMandateFrequencies`, `finMandateStatuses`, `finEscrowStatuses`, `finSplitStatuses`
@@ -384,7 +394,7 @@ Actions:
 flowchart LR
   U([Shopper / Store administrator / Platform administrator / Developer]) --> UI[store console, platform console]
   UI --> API[25 API routes]
-  API --> ENG[refunds.js, payments.js]
+  API --> ENG[refunds.js, instalments_without_cost.js, payment_instrument_offers.js, payments.js]
   ENG --> DB[(tenant_gateways, payments, payment_attempts, upi_handles, upi_collects, qr_codes, …)]
   ENG --> SM{{8 state machines}}
 ```

@@ -45,7 +45,7 @@ function artifacts() {
     const l = /^\s+\["([a-z0-9_-]+)", "/.exec(line); if (l) platformScreens.push({ key: l[1], group });
   }
   return {
-    files: fs.readdirSync(path.join(ROOT, "lib")).filter(f => f.endsWith(".js")).map(f => "lib/" + f).concat(routeFiles().slice(1)),
+    files: fs.readdirSync(path.join(ROOT, "lib")).filter(f => f.endsWith(".js")).map(f => "lib/" + f).concat(fs.existsSync(path.join(ROOT, "lib/features")) ? fs.readdirSync(path.join(ROOT, "lib/features")).filter(f => f.endsWith(".js")).map(f => "lib/features/" + f) : []).concat(routeFiles().slice(1)),
     tables: [...read("schema.sql").matchAll(/^CREATE TABLE (?:IF NOT EXISTS )?"?(\w+)/gm)].map(m => m[1]),
     routes,
     machines: J("lib/seed/states.json").stateMachines.map(m => m.key),

@@ -66,6 +66,49 @@ The postcodes a store delivers to. An order outside them is refused before anyth
 |---|---|---|
 | `message` | What a shopper outside every area is told | `"We don't deliver to this postcode yet"` |
 
+### Customs declarations (`customs_declarations`)
+
+Made from each order that goes abroad.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `reason` | Reason for export | `"sale"` |
+| `incoterms` | Terms | `"DAP"` |
+
+### Consolidated shipping (`consolidated_shipping`)
+
+An order that can leave with one the shopper has waiting, to the same address, pays no delivery.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `hours` | Hours an order may wait for another | `24` |
+
+### Cold chain (`cold_chain`)
+
+Items that must stay cold: which carriers may take them, and their temperature on the way.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `carriers` | Carrier ids that keep things cold (blank for any) | `""` |
+| `fee` | Extra fee | `0` |
+
+### Large item delivery (`large_item_delivery`)
+
+How something too big for a parcel is brought in.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `classes` | Shipping classes that are large | `"oversized white_glove heavy"` |
+
+### Dated delivery (`dated_delivery`)
+
+A gift that arrives on its day, with a message.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `min_days` | Earliest, days from now | `1` |
+| `days_ahead` | Latest, days from now | `90` |
+
 ## Architecture
 
 | Module | What it is |
@@ -77,6 +120,11 @@ The postcodes a store delivers to. An order outside them is refused before anyth
 | `lib/qcommerce.js` | Quick-commerce engine. Dark stores, delivery slots, pincode serviceability, store-inventory pinning, a delivery-promise engine, rider dispatch batching and proof-of-delivery. |
 | `lib/serviceable-areas.js` | where a store delivers: the places it serves, named by postcode. |
 | `lib/shipping.js` | Shipping: live carrier rates, labels and tracking. A per-store parcel ledger (package_tracking) plus live carriers, each an adapter of its own (lib/carrier-<id>.js, LAW-015): rate a parcel, buy the chosen rate's label, and receive signed tracker webhooks. Credentials live sealed on the platform's shipping_providers row (configured by a platform admin); with no active carrier, quote/label still say so (501) rather than inventing data. This engine names no carrier. |
+| `lib/features/cold_chain.js` | cold chain: items that must stay cold go only by carriers that keep them so, and their temperature on the way is recorded; a reading outside the range is raised at once |
+| `lib/features/consolidated_shipping.js` | consolidated shipping: an order that can leave with one the shopper already has waiting, to the same address, pays no delivery; staff see them as one parcel |
+| `lib/features/customs_declarations.js` | customs declarations: what an order going abroad contains, made from the order itself |
+| `lib/features/dated_delivery.js` | dated delivery: a gift that arrives on its day, with a message |
+| `lib/features/large_item_delivery.js` | large item delivery: what is too big for an ordinary parcel — the shopper chooses how it is brought in |
 | `lib/routes/shipping.js` | shipping domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the shipping domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `qcStoreKinds`, `qcStoreStatuses`, `qcSlotStatuses`, `qcAreaStatuses`, `qcVehicles`, `qcRiderStatuses`, `qcDispatchStatuses`, `qcDeliveryKinds`, `pickupKinds`, `pickupStatuses`
@@ -487,7 +535,7 @@ Actions: `arrive` → ready · `collect` → collected · `expire` → expired �
 flowchart LR
   U([Shopper / Store staff / Store administrator / Driver or rider / Platform administrator]) --> UI[store console, platform console]
   UI --> API[40 API routes]
-  API --> ENG[carrier-easypost.js, delivery-windows.js, logistics.js, pickup.js, qcommerce.js, serviceable-areas.js, shipping.js, shipping.js]
+  API --> ENG[carrier-easypost.js, delivery-windows.js, logistics.js, pickup.js, qcommerce.js, serviceable-areas.js, shipping.js, cold_chain.js, consolidated_shipping.js, customs_declarations.js, dated_delivery.js, large_item_delivery.js, shipping.js]
   ENG --> DB[(shipments, shipment_events, dark_stores, delivery_slots, service_areas, riders, …)]
   ENG --> SM{{7 state machines}}
 ```

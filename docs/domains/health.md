@@ -38,11 +38,39 @@ The shopper's own vault of records (a prescription, a report, a scan) beside wha
 | `vault_limit` | Most records a shopper keeps | `200` |
 | `max_share_days` | Longest a record may be shared for (days) | `90` |
 
+### Schedule rules (`schedule_rules`)
+
+What a medicine's schedule allows.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `attr` | Item fact that holds the schedule | `"schedule"` |
+| `case_kind` | Kind of case that is a prescription | `"prescription"` |
+
+### Generic alternatives (`generic_alternatives`)
+
+Cheaper medicines with the same composition.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `attrs` | Item facts that must match | `"composition strength form"` |
+
+### Refill reminders (`refill_reminders`)
+
+Told before an item runs out.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `days_before` | Days before it runs out | `3` |
+
 ## Architecture
 
 | Module | What it is |
 |---|---|
 | `lib/health-records.js` | health records: the shopper's own vault. |
+| `lib/features/generic_alternatives.js` | generic alternatives: medicines with the same composition, strength and form, cheapest first |
+| `lib/features/refill_reminders.js` | refill reminders: an item that runs out is remembered — the shopper is told before it does, and may stop it |
+| `lib/features/schedule_rules.js` | schedule rules: what a medicine's schedule allows — whether it may be sold here at all, whether it needs an approved prescription, and how much of it at once |
 | `lib/routes/health.js` | health domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the health domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
@@ -90,7 +118,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Shopper / Practitioner / Store staff / Store administrator]) --> UI[store console]
   UI --> API[5 API routes]
-  API --> ENG[health-records.js, health.js]
+  API --> ENG[health-records.js, generic_alternatives.js, refill_reminders.js, schedule_rules.js, health.js]
   ENG --> DB[(vault_records, vault_shares)]
 
 ```

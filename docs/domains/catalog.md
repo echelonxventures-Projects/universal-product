@@ -28,6 +28,14 @@ Sell an item before it can be sent: the day it ships and how many may be promise
 |---|---|---|
 | `label` | What the button says | `"Pre-order"` |
 
+### Fitment (`fitment`)
+
+Which vehicles a part fits.
+
+### Sell by weight (`sell_by_weight`)
+
+Priced per unit of weight; stock is counted in the smallest step.
+
 ## Architecture
 
 | Module | What it is |
@@ -41,6 +49,8 @@ Sell an item before it can be sent: the day it ships and how many may be promise
 | `lib/size-guides.js` | size guides: the table of measurements that helps a shopper choose a size. |
 | `lib/store-attributes.js` | a store's attribute definitions (its "columns"), as a read model of the platform master (GLOBAL_MASTER.md §1, §6; owner Registry). |
 | `lib/store-taxonomy.js` | a store's category tree, as a read model of the platform master (GLOBAL_MASTER.md §6, roadmap P27–P28; owner Semantic). |
+| `lib/features/fitment.js` | fitment: which vehicles a part fits. The shopper keeps their vehicles; a part that lists fitments says whether it fits theirs. |
+| `lib/features/sell_by_weight.js` | sell by weight: an item priced per unit of weight, bought by the amount wanted; its stock is counted in the smallest step it is sold by |
 | `lib/routes/catalog.js` | catalog domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the catalog domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `contributionStatuses`
@@ -307,7 +317,7 @@ Actions: `approve` → approved · `reject` → rejected · `withdraw` → withd
 flowchart LR
   U([Shopper / Seller / Store staff / Store administrator / Platform administrator]) --> UI[product.html, store console, platform console]
   UI --> API[54 API routes]
-  API --> ENG[gcatalog.js, master-contributions.js, master-permissions.js, platform-master.js, preorders.js, product-counts.js, size-guides.js, store-attributes.js, store-taxonomy.js, catalog.js]
+  API --> ENG[gcatalog.js, master-contributions.js, master-permissions.js, platform-master.js, preorders.js, product-counts.js, size-guides.js, store-attributes.js, store-taxonomy.js, fitment.js, sell_by_weight.js, catalog.js]
   ENG --> DB[(products, product_bullets, brands, taxonomy, attribute_defs, skus, …)]
   ENG --> SM{{1 state machines}}
 ```

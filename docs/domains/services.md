@@ -88,6 +88,18 @@ A plan covering an item for months (an extended warranty, a protection plan), so
 | `default_months` | Months a plan runs when its value names none | `12` |
 | `max_months` | Longest a plan may run (months) | `60` |
 
+### Seat maps (`seat_maps`)
+
+Numbered places. One line per row: A:1-10 or A:1-10=50 for a row with its own price.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `hold_minutes` | Minutes a seat is kept in a bag | `10` |
+
+### Travel itineraries (`travel_itineraries`)
+
+A trip sold by its start day; the order carries its plan day by day.
+
 ## Architecture
 
 | Module | What it is |
@@ -95,6 +107,8 @@ A plan covering an item for months (an extended warranty, a protection plan), so
 | `lib/astro.js` | the astrology engine: a birth chart (planetary positions, ascendant, houses, signs, nakshatras), the Vimshottari dasha periods and the panchang, from a date, time and place. |
 | `lib/bookings.js` | Bookings: appointments, rentals, stays and experiences. A bookable product names the resources that deliver it (a stylist, a room, a vehicle, a venue — bookingResourceKinds rows) and how it is booked: a bookingModes row names the engine it runs — `slots` (fixed-length appointments on a step) or `days` (a range of days or nights). Each resource keeps weekly hours in its own time zone (the store's by default, resolved by the Time domain) and a capacity. |
 | `lib/media-sessions.js` | media sessions: live audio or video between a shopper and whoever serves them (a practitioner, a consultant, a tutor, a seller), and metering them by the minute. |
+| `lib/features/seat_maps.js` | seat maps: numbered places at an event. A layout is lines like "A:1-10=50" — a row, its seats and, if not the item's own, their price. A seat is held while it is in a bag and is one shopper's once ordered; a seat can be taken by only one, whatever the timing. |
+| `lib/features/travel_itineraries.js` | travel itineraries: a trip is sold by its start day and travellers, and the order carries its plan, day by day, from that start |
 | `lib/routes/services.js` | services domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the services domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `bookingResourceKinds`, `bookingModes`, `bookingStatuses`, `mediaSessionStatuses`, `serviceVisitStatuses`, `coverPlanStatuses`
@@ -185,6 +199,18 @@ A plan covering an item for months (an extended warranty, a protection plan), so
 | `confirmed_at` | TEXT |
 | `closed_at` | TEXT |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
+### `seat_claims`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `product_id` | TEXT NOT NULL |
+| `seat` | TEXT NOT NULL |
+| `owner` | TEXT NOT NULL |
+| `order_id` | INTEGER |
+| `held_until` | INTEGER NOT NULL DEFAULT 0 |
 
 ## API reference
 
@@ -290,8 +316,8 @@ Actions: `end` → ended · `cancel` → cancelled
 flowchart LR
   U([Shopper / Practitioner / Store staff / Store administrator]) --> UI[astro.html, session.html, store console, platform console]
   UI --> API[21 API routes]
-  API --> ENG[astro.js, bookings.js, media-sessions.js, services.js]
-  ENG --> DB[(media_sessions, media_signals, booking_resources, product_bookings, bookings)]
+  API --> ENG[astro.js, bookings.js, media-sessions.js, seat_maps.js, travel_itineraries.js, services.js]
+  ENG --> DB[(media_sessions, media_signals, booking_resources, product_bookings, bookings, seat_claims)]
   ENG --> SM{{4 state machines}}
 ```
 

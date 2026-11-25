@@ -2117,6 +2117,348 @@
     }
    },
    "shopper": true
+  },
+  {
+   "key": "sale_events",
+   "label": "Sale events",
+   "domain": "shopper",
+   "icon": "🏷️",
+   "description": "A lower price for a time, on everything, a department, a brand or an item.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "club_pricing",
+   "label": "Club pricing",
+   "domain": "shopper",
+   "icon": "🎟️",
+   "description": "Members of a tier pay less.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "live_selling",
+   "label": "Live selling",
+   "domain": "shopper",
+   "icon": "🎥",
+   "description": "A show at a set time: its items are at the show's price while it is on. The stream is your own link.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "payment_instrument_offers",
+   "label": "Payment offers",
+   "domain": "shopper",
+   "icon": "💳",
+   "description": "Money off for paying a certain way.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "instalments_without_cost",
+   "label": "Instalments without cost",
+   "domain": "shopper",
+   "icon": "🗓️",
+   "description": "The total spread over months at no interest. The plan is kept on the order and sent to the gateway.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "duties_at_checkout",
+   "label": "Duties at checkout",
+   "domain": "shopper",
+   "icon": "🛃",
+   "description": "Import duty paid up front. A rate is for a country and the beginning of an item's customs code; the most particular counts.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "customs_declarations",
+   "label": "Customs declarations",
+   "domain": "shopper",
+   "icon": "📄",
+   "description": "Made from each order that goes abroad.",
+   "params": {
+    "reason": {
+     "type": "text",
+     "default": "sale",
+     "label": "Reason for export"
+    },
+    "incoterms": {
+     "type": "text",
+     "default": "DAP",
+     "label": "Terms"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "consolidated_shipping",
+   "label": "Consolidated shipping",
+   "domain": "shopper",
+   "icon": "📦",
+   "description": "An order that can leave with one the shopper has waiting, to the same address, pays no delivery.",
+   "params": {
+    "hours": {
+     "type": "number",
+     "default": 24,
+     "label": "Hours an order may wait for another"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "supplier_direct",
+   "label": "Supplier direct",
+   "domain": "shopper",
+   "icon": "🏭",
+   "description": "Items a supplier sends itself. Their part of an order goes to the supplier by email at once.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "reseller_margins",
+   "label": "Reseller margins",
+   "domain": "shopper",
+   "icon": "🤝",
+   "description": "A signed-in reseller adds a margin; it is theirs once the order is delivered.",
+   "params": {
+    "max_percent": {
+     "type": "number",
+     "default": 30,
+     "label": "Most a reseller may add (percent of the price)"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "affiliate_commissions",
+   "label": "Affiliate commissions",
+   "domain": "shopper",
+   "icon": "🔗",
+   "description": "Someone who sends a shopper (?ref=code) earns a share of what they buy.",
+   "params": {
+    "days": {
+     "type": "number",
+     "default": 30,
+     "label": "Days a visit counts"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "gamified_rewards",
+   "label": "Daily rewards",
+   "domain": "shopper",
+   "icon": "🎯",
+   "description": "A daily check-in earns a little credit, more for each day in a row.",
+   "params": {
+    "first": {
+     "type": "number",
+     "default": 0.05,
+     "label": "Credit on the first day"
+    },
+    "more": {
+     "type": "number",
+     "default": 0.05,
+     "label": "More for each day in a row"
+    },
+    "most": {
+     "type": "number",
+     "default": 0.5,
+     "label": "Most in a day"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "funding_goals",
+   "label": "Funding goals",
+   "domain": "shopper",
+   "icon": "🚀",
+   "description": "An item made only if enough is pledged in time; otherwise every pledge is refunded.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "seat_maps",
+   "label": "Seat maps",
+   "domain": "shopper",
+   "icon": "💺",
+   "description": "Numbered places. One line per row: A:1-10 or A:1-10=50 for a row with its own price.",
+   "params": {
+    "hold_minutes": {
+     "type": "number",
+     "default": 10,
+     "label": "Minutes a seat is kept in a bag"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "travel_itineraries",
+   "label": "Travel itineraries",
+   "domain": "shopper",
+   "icon": "🧳",
+   "description": "A trip sold by its start day; the order carries its plan day by day.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "fitment",
+   "label": "Fitment",
+   "domain": "shopper",
+   "icon": "🚗",
+   "description": "Which vehicles a part fits.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "schedule_rules",
+   "label": "Schedule rules",
+   "domain": "shopper",
+   "icon": "⚕️",
+   "description": "What a medicine's schedule allows.",
+   "params": {
+    "attr": {
+     "type": "text",
+     "default": "schedule",
+     "label": "Item fact that holds the schedule"
+    },
+    "case_kind": {
+     "type": "text",
+     "default": "prescription",
+     "label": "Kind of case that is a prescription"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "generic_alternatives",
+   "label": "Generic alternatives",
+   "domain": "shopper",
+   "icon": "💊",
+   "description": "Cheaper medicines with the same composition.",
+   "params": {
+    "attrs": {
+     "type": "text",
+     "default": "composition strength form",
+     "label": "Item facts that must match"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "refill_reminders",
+   "label": "Refill reminders",
+   "domain": "shopper",
+   "icon": "🔔",
+   "description": "Told before an item runs out.",
+   "params": {
+    "days_before": {
+     "type": "number",
+     "default": 3,
+     "label": "Days before it runs out"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "kitchen_hours",
+   "label": "Kitchen hours",
+   "domain": "shopper",
+   "icon": "🍳",
+   "description": "When food can be ordered, by the store's own clock.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "batch_expiry",
+   "label": "Batch expiry",
+   "domain": "shopper",
+   "icon": "📅",
+   "description": "Stock by batch: what has expired, or soon will, is not sold; the first to expire leaves first.",
+   "params": {
+    "min_days": {
+     "type": "number",
+     "default": 0,
+     "label": "Days of life an item must have left"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "freshness_windows",
+   "label": "Freshness windows",
+   "domain": "shopper",
+   "icon": "🥬",
+   "description": "Days of life an item still has when it arrives.",
+   "params": {},
+   "shopper": true
+  },
+  {
+   "key": "cold_chain",
+   "label": "Cold chain",
+   "domain": "shopper",
+   "icon": "❄️",
+   "description": "Items that must stay cold: which carriers may take them, and their temperature on the way.",
+   "params": {
+    "carriers": {
+     "type": "text",
+     "default": "",
+     "label": "Carrier ids that keep things cold (blank for any)"
+    },
+    "fee": {
+     "type": "number",
+     "default": 0,
+     "label": "Extra fee"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "large_item_delivery",
+   "label": "Large item delivery",
+   "domain": "shopper",
+   "icon": "🛋️",
+   "description": "How something too big for a parcel is brought in.",
+   "params": {
+    "classes": {
+     "type": "text",
+     "default": "oversized white_glove heavy",
+     "label": "Shipping classes that are large"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "dated_delivery",
+   "label": "Dated delivery",
+   "domain": "shopper",
+   "icon": "🎁",
+   "description": "A gift that arrives on its day, with a message.",
+   "params": {
+    "min_days": {
+     "type": "number",
+     "default": 1,
+     "label": "Earliest, days from now"
+    },
+    "days_ahead": {
+     "type": "number",
+     "default": 90,
+     "label": "Latest, days from now"
+    }
+   },
+   "shopper": true
+  },
+  {
+   "key": "sell_by_weight",
+   "label": "Sell by weight",
+   "domain": "shopper",
+   "icon": "⚖️",
+   "description": "Priced per unit of weight; stock is counted in the smallest step.",
+   "params": {},
+   "shopper": true
   }
  ],
  "PRESETS": [
@@ -2885,6 +3227,84 @@
   ],
   "preorders": [
    "preorders"
+  ],
+  "sale_events": [
+   "sale_events"
+  ],
+  "club_pricing": [
+   "club_pricing"
+  ],
+  "live_selling": [
+   "live_selling"
+  ],
+  "payment_instrument_offers": [
+   "payment_instrument_offers"
+  ],
+  "instalments_without_cost": [
+   "instalments_without_cost"
+  ],
+  "duties_at_checkout": [
+   "duties_at_checkout"
+  ],
+  "customs_declarations": [
+   "customs_declarations"
+  ],
+  "consolidated_shipping": [
+   "consolidated_shipping"
+  ],
+  "supplier_direct": [
+   "supplier_direct"
+  ],
+  "reseller_margins": [
+   "reseller_margins"
+  ],
+  "affiliate_commissions": [
+   "affiliate_commissions"
+  ],
+  "gamified_rewards": [
+   "gamified_rewards"
+  ],
+  "funding_goals": [
+   "funding_goals"
+  ],
+  "seat_maps": [
+   "seat_maps"
+  ],
+  "travel_itineraries": [
+   "travel_itineraries"
+  ],
+  "fitment": [
+   "fitment"
+  ],
+  "schedule_rules": [
+   "schedule_rules"
+  ],
+  "generic_alternatives": [
+   "generic_alternatives"
+  ],
+  "refill_reminders": [
+   "refill_reminders"
+  ],
+  "kitchen_hours": [
+   "kitchen_hours"
+  ],
+  "batch_expiry": [
+   "batch_expiry"
+  ],
+  "freshness_windows": [
+   "freshness_windows"
+  ],
+  "cold_chain": [
+   "cold_chain"
+  ],
+  "large_item_delivery": [
+   "large_item_delivery"
+  ],
+  "dated_delivery": [
+   "dated_delivery"
+  ],
+  "sell_by_weight": [
+   "sell_by_weight"
   ]
  },
  "ROUTES": {

@@ -293,6 +293,15 @@ CREATE TABLE capability_preset_assignments (
   preset_key TEXT NOT NULL,
   UNIQUE(tenant_id, preset_key)
 );
+CREATE TABLE feature_rows (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, feature TEXT NOT NULL, data TEXT NOT NULL DEFAULT '{}');
+CREATE INDEX ix_feature_rows ON feature_rows(tenant_id, feature);
+CREATE TABLE feature_records (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, feature TEXT NOT NULL, owner TEXT NOT NULL DEFAULT '',
+  about TEXT NOT NULL DEFAULT '', state TEXT NOT NULL DEFAULT '', data TEXT NOT NULL DEFAULT '{}',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')));
+CREATE INDEX ix_feature_records ON feature_records(tenant_id, feature, about);
+CREATE INDEX ix_feature_records_owner ON feature_records(tenant_id, feature, owner);
 CREATE UNIQUE INDEX ux_modules_uid ON modules(uid);
 CREATE TRIGGER trg_modules_uid AFTER INSERT ON modules
                BEGIN UPDATE modules SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
@@ -774,7 +783,7 @@ CREATE TABLE orders (
   sub REAL, ship_fee REAL, gift_used REAL, tax REAL, total REAL,
   eta_days INTEGER DEFAULT 5, status TEXT DEFAULT 'processing',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, charges TEXT NOT NULL DEFAULT '[]', delivered_at TEXT, gift_returned REAL DEFAULT 0, email TEXT DEFAULT '', buyer_tax_id TEXT DEFAULT '', deleted_at TEXT, uid TEXT);
+, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, charges TEXT NOT NULL DEFAULT '[]', delivered_at TEXT, gift_returned REAL DEFAULT 0, email TEXT DEFAULT '', country TEXT DEFAULT '', buyer_tax_id TEXT DEFAULT '', deleted_at TEXT, uid TEXT);
 CREATE TABLE order_items (
   order_id INTEGER NOT NULL, product_id TEXT NOT NULL, qty INTEGER NOT NULL, price REAL NOT NULL, sku_id INTEGER,
   terms TEXT DEFAULT '{}'
@@ -1360,6 +1369,9 @@ CREATE TABLE bookings (
 );
 CREATE INDEX ix_bookings_resource ON bookings(tenant_id, resource_id, starts_at);
 CREATE INDEX ix_bookings_owner ON bookings(tenant_id, owner);
+CREATE TABLE seat_claims (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, seat TEXT NOT NULL, owner TEXT NOT NULL,
+  order_id INTEGER, held_until INTEGER NOT NULL DEFAULT 0, UNIQUE(tenant_id, product_id, seat));
 
 -- ── digital_goods · Digital goods ────────────────────────────────────────────────────────────────
 CREATE TABLE deliverables (

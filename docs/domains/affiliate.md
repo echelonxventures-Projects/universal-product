@@ -8,11 +8,24 @@ Who brings buyers and what they earn: affiliate networks and tiers, tracked clic
 
 **Foundation domain:** Commerce · **Used by:** Partner or affiliate, Store administrator
 
+## Switches and settings
+
+Each is switched on per store under ⚙️ Capabilities; its parameters are that store's settings.
+
+### Affiliate commissions (`affiliate_commissions`)
+
+Someone who sends a shopper (?ref=code) earns a share of what they buy.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `days` | Days a visit counts | `30` |
+
 ## Architecture
 
 | Module | What it is |
 |---|---|
 | `lib/affiliate.js` | Affiliate Network Module Full-stack affiliate tracking, attribution, commissions, and payouts. Built on top of GOIP touchpoints and settlement infrastructure. Registry-driven: all rules, tiers, and networks are configurable. |
+| `lib/features/affiliate_commissions.js` | affiliate commissions: someone who sends a shopper earns a share of what they buy. The link carries the affiliate's code; the last one before the order counts; it is earned when the order is delivered and taken back if the order becomes void. Never on one's own order. |
 | `lib/routes/affiliate.js` | affiliate domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the affiliate domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
@@ -180,7 +193,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Partner or affiliate / Store administrator]) --> UI[store console]
   UI --> API[15 API routes]
-  API --> ENG[affiliate.js, affiliate.js]
+  API --> ENG[affiliate.js, affiliate_commissions.js, affiliate.js]
   ENG --> DB[(affiliate_networks, affiliates, affiliate_clicks, affiliate_conversions, commission_rules, affiliate_tiers, …)]
 
 ```

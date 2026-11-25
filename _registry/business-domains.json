@@ -258,7 +258,8 @@
     "files": [
      "lib/modules.js",
      "lib/capabilities.js",
-     "lib/gates.js"
+     "lib/gates.js",
+     "lib/features.js"
     ],
     "tables": [
      "modules",
@@ -268,11 +269,14 @@
      "capability_presets",
      "capability_preset_assignments",
      "platform_capabilities",
-     "applicability_rules"
+     "applicability_rules",
+     "feature_rows",
+     "feature_records"
     ],
     "routes": [
      "^/api/(modules|capabilities|market)(/|$)",
-     "^/api/platform/(modules|flags)(/|$)"
+     "^/api/platform/(modules|flags)(/|$)",
+     "^/api/(admin/)?features(/|$)"
     ],
     "machines": [
      "module"
@@ -283,7 +287,33 @@
     "registries": [],
     "screens": [
      "modules",
-     "applicability"
+     "applicability",
+     "sale_events",
+     "club_pricing",
+     "live_selling",
+     "payment_instrument_offers",
+     "instalments_without_cost",
+     "duties_at_checkout",
+     "customs_declarations",
+     "consolidated_shipping",
+     "supplier_direct",
+     "reseller_margins",
+     "affiliate_commissions",
+     "gamified_rewards",
+     "funding_goals",
+     "seat_maps",
+     "travel_itineraries",
+     "fitment",
+     "schedule_rules",
+     "generic_alternatives",
+     "refill_reminders",
+     "kitchen_hours",
+     "batch_expiry",
+     "freshness_windows",
+     "cold_chain",
+     "large_item_delivery",
+     "dated_delivery",
+     "sell_by_weight"
     ],
     "platformScreens": [
      "modules",
@@ -367,7 +397,9 @@
      "lib/store-attributes.js",
      "lib/product-counts.js",
      "lib/size-guides.js",
-     "lib/preorders.js"
+     "lib/preorders.js",
+     "lib/features/fitment.js",
+     "lib/features/sell_by_weight.js"
     ],
     "tables": [
      "products",
@@ -392,7 +424,9 @@
     ],
     "capabilities": [
      "size_guides",
-     "preorders"
+     "preorders",
+     "fitment",
+     "sell_by_weight"
     ],
     "registries": [
      "contributionStatuses"
@@ -509,7 +543,9 @@
    ],
    "owns": {
     "files": [
-     "lib/stock.js"
+     "lib/stock.js",
+     "lib/features/batch_expiry.js",
+     "lib/features/freshness_windows.js"
     ],
     "tables": [
      "inventory",
@@ -524,7 +560,9 @@
     ],
     "machines": [],
     "capabilities": [
-     "store_inventory"
+     "store_inventory",
+     "batch_expiry",
+     "freshness_windows"
     ],
     "registries": [
      "qcInvStatuses"
@@ -547,7 +585,10 @@
     "seller"
    ],
    "owns": {
-    "files": [],
+    "files": [
+     "lib/features/sale_events.js",
+     "lib/features/club_pricing.js"
+    ],
     "tables": [
      "price_lists",
      "price_list_items",
@@ -559,7 +600,9 @@
     ],
     "capabilities": [
      "segment_pricing",
-     "dynamic_pricing"
+     "dynamic_pricing",
+     "sale_events",
+     "club_pricing"
     ],
     "registries": [
      "b2bSegments"
@@ -679,7 +722,8 @@
    ],
    "owns": {
     "files": [
-     "lib/groupbuy.js"
+     "lib/groupbuy.js",
+     "lib/features/funding_goals.js"
     ],
     "tables": [
      "group_campaigns",
@@ -693,7 +737,8 @@
      "group_campaign"
     ],
     "capabilities": [
-     "group_buying"
+     "group_buying",
+     "funding_goals"
     ],
     "registries": [
      "groupCampaignStatuses"
@@ -830,7 +875,8 @@
    ],
    "owns": {
     "files": [
-     "lib/affiliate.js"
+     "lib/affiliate.js",
+     "lib/features/affiliate_commissions.js"
     ],
     "tables": [
      "affiliates",
@@ -845,7 +891,9 @@
      "^/api/affiliate(/|$)"
     ],
     "machines": [],
-    "capabilities": [],
+    "capabilities": [
+     "affiliate_commissions"
+    ],
     "registries": [],
     "screens": [
      "affiliate"
@@ -1047,7 +1095,9 @@
    ],
    "owns": {
     "files": [
-     "lib/refunds.js"
+     "lib/refunds.js",
+     "lib/features/payment_instrument_offers.js",
+     "lib/features/instalments_without_cost.js"
     ],
     "tables": [
      "payments",
@@ -1082,7 +1132,9 @@
      "payment_links",
      "mandates",
      "escrow",
-     "split_payments"
+     "split_payments",
+     "payment_instrument_offers",
+     "instalments_without_cost"
     ],
     "registries": [
      "finLinkStatuses",
@@ -1276,7 +1328,8 @@
    ],
    "owns": {
     "files": [
-     "lib/tax.js"
+     "lib/tax.js",
+     "lib/features/duties_at_checkout.js"
     ],
     "tables": [
      "tax_rules",
@@ -1286,7 +1339,9 @@
      "^/api/admin/tax(/|$)"
     ],
     "machines": [],
-    "capabilities": [],
+    "capabilities": [
+     "duties_at_checkout"
+    ],
     "registries": [
      "taxClasses",
      "taxRules",
@@ -1362,7 +1417,12 @@
      "lib/pickup.js",
      "lib/qcommerce.js",
      "lib/delivery-windows.js",
-     "lib/serviceable-areas.js"
+     "lib/serviceable-areas.js",
+     "lib/features/customs_declarations.js",
+     "lib/features/consolidated_shipping.js",
+     "lib/features/cold_chain.js",
+     "lib/features/large_item_delivery.js",
+     "lib/features/dated_delivery.js"
     ],
     "tables": [
      "shipments",
@@ -1401,7 +1461,12 @@
      "dispatch_batching",
      "pickup_points",
      "delivery_slots",
-     "serviceable_areas"
+     "serviceable_areas",
+     "customs_declarations",
+     "consolidated_shipping",
+     "cold_chain",
+     "large_item_delivery",
+     "dated_delivery"
     ],
     "registries": [
      "pickupKinds",
@@ -1441,7 +1506,8 @@
    ],
    "owns": {
     "files": [
-     "lib/planning.js"
+     "lib/planning.js",
+     "lib/features/supplier_direct.js"
     ],
     "tables": [
      "suppliers",
@@ -1462,7 +1528,8 @@
     ],
     "capabilities": [
      "planning",
-     "procurement"
+     "procurement",
+     "supplier_direct"
     ],
     "registries": [],
     "screens": [
@@ -1492,14 +1559,17 @@
     "files": [
      "lib/bookings.js",
      "lib/media-sessions.js",
-     "lib/astro.js"
+     "lib/astro.js",
+     "lib/features/seat_maps.js",
+     "lib/features/travel_itineraries.js"
     ],
     "tables": [
      "bookings",
      "booking_resources",
      "product_bookings",
      "media_sessions",
-     "media_signals"
+     "media_signals",
+     "seat_claims"
     ],
     "routes": [
      "^/api/(bookings|sessions|astro)(/|$)",
@@ -1518,7 +1588,9 @@
      "astro_engine",
      "installation_booking",
      "assembly_booking",
-     "extended_warranty"
+     "extended_warranty",
+     "seat_maps",
+     "travel_itineraries"
     ],
     "registries": [
      "bookingModes",
@@ -1601,7 +1673,10 @@
    ],
    "owns": {
     "files": [
-     "lib/health-records.js"
+     "lib/health-records.js",
+     "lib/features/schedule_rules.js",
+     "lib/features/generic_alternatives.js",
+     "lib/features/refill_reminders.js"
     ],
     "tables": [
      "vault_records",
@@ -1616,7 +1691,10 @@
      "prescriptions",
      "practitioner_verification",
      "lab_tests",
-     "health_records"
+     "health_records",
+     "schedule_rules",
+     "generic_alternatives",
+     "refill_reminders"
     ],
     "registries": [],
     "screens": [
@@ -1776,7 +1854,8 @@
      "lib/marketplace.js",
      "lib/marketplace-ext.js",
      "lib/listings.js",
-     "lib/brandreg.js"
+     "lib/brandreg.js",
+     "lib/features/reseller_margins.js"
     ],
     "tables": [
      "sellers",
@@ -1816,7 +1895,8 @@
      "smart_fulfilment",
      "fba_inbound",
      "peer_listings",
-     "brand_registry"
+     "brand_registry",
+     "reseller_margins"
     ],
     "registries": [
      "mktBusinessTypes",
@@ -1985,7 +2065,9 @@
    "owns": {
     "files": [
      "lib/lists.js",
-     "lib/alerts.js"
+     "lib/alerts.js",
+     "lib/features/live_selling.js",
+     "lib/features/gamified_rewards.js"
     ],
     "tables": [
      "shopper_lists",
@@ -2006,7 +2088,9 @@
      "wish_lists",
      "product_alerts",
      "registry",
-     "save_for_later"
+     "save_for_later",
+     "live_selling",
+     "gamified_rewards"
     ],
     "registries": [
      "alertKinds",
@@ -2182,7 +2266,8 @@
    "owns": {
     "files": [
      "lib/themes.js",
-     "lib/bundle.js"
+     "lib/bundle.js",
+     "lib/features/kitchen_hours.js"
     ],
     "tables": [
      "home_banners",
@@ -2195,7 +2280,9 @@
      "^/api/admin/(banners|cards)(/|$)"
     ],
     "machines": [],
-    "capabilities": [],
+    "capabilities": [
+     "kitchen_hours"
+    ],
     "registries": [],
     "screens": [
      "content",

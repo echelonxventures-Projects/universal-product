@@ -512,7 +512,31 @@ async function addWithTerms(id, terms, qty) {
   S.cartCount = c.count; if ($("#cartCount")) $("#cartCount").textContent = c.count;
   return c;
 }
+/* what the store's features say of an item (lib/features.js blocks), and what they ask to buy it */
+function renderFeatures(data) {
+  const p = data.product, box = document.getElementById("ppFeatures");
+  if (!box || !(data.features || []).length) return;
+  const money2 = x => money(x * (CFG.commerce.fx || 1));
+  box.innerHTML = data.features.map((b, n) => `<div class="bb-stock" style="margin:8px 0"><b>${b.icon} ${esc(b.title)}</b>${b.text ? `<div class="pay-meta">${esc(b.text)}</div>` : ""}
+    ${b.progress != null ? `<progress max="1" value="${b.progress}" style="width:100%"></progress>` : ""}
+    ${(b.rows || []).length ? `<details><summary>${b.rows.length} lines</summary>${b.rows.map(r => `<div class="pay-meta"><b>${esc(r[0])}</b> ${esc(r[1])}</div>`).join("")}</details>` : ""}
+    ${(b.products || []).map(x => `<div class="pay-meta"><a href="product.html?id=${encodeURIComponent(x.id)}">${esc(x.title)}</a> · ${money2(x.price)} · save ${x.saves}%</div>`).join("")}
+    ${b.link && /^https:/.test(b.link.url) ? `<a class="btn-white" href="${esc(b.link.url)}" target="_blank" rel="noopener">${esc(b.link.label)}</a>` : ""}
+    ${b.seats ? `<div id="seatBox" class="pay-meta">Loading seats…</div>` : ""}
+    ${b.term ? `<form data-term="${n}">${(b.term.fields || [{ key: b.term.field, label: b.term.label, type: "number" }]).map(f => `<label class="pay-meta">${esc(f.label)} <input name="${esc(f.key)}" type="${f.type === "date" ? "date" : f.type === "number" ? "number" : "text"}" step="${f.step || "any"}"${f.min != null ? ` min="${f.min}"` : ""}${f.max != null ? ` max="${f.max}"` : ""} value="${f.value != null ? f.value : ""}"></label>`).join(" ")}<button class="btn-yellow">Add to bag</button></form>` : ""}</div>`).join("");
+  box.querySelectorAll("[data-term]").forEach(f => f.onsubmit = async e => { e.preventDefault(); const t = data.features[Number(f.dataset.term)].term; try { await addWithTerms(p.id, { [t.key]: Object.fromEntries([...new FormData(f)]) }); toast("Added to your bag <a href='cart.html'>View →</a>"); } catch (x) { toast("⚠️ " + esc(x.message)); } });
+  if (document.getElementById("seatBox")) drawSeats(p.id);
+}
+async function drawSeats(id) {
+  const d = await api("/features/seat_maps?product=" + encodeURIComponent(id)), by = {};
+  d.seats.forEach(s => (by[s.row] = by[s.row] || []).push(s));
+  $("#seatBox").innerHTML = Object.entries(by).map(([r, ss]) => `<div><b>${esc(r)}</b> ${ss.map(s => `<button class="btn-white sm" data-seat="${esc(s.seat)}" ${s.free ? "" : "disabled"} title="${money(s.price * (CFG.commerce.fx || 1))}">${esc(s.seat)}</button>`).join(" ")}</div>`).join("");
+  $("#seatBox").querySelectorAll("[data-seat]").forEach(b => b.onclick = async () => { try { await addWithTerms(id, { seat: { seat: b.dataset.seat } }); toast("Seat " + esc(b.dataset.seat) + " is kept for you <a href='cart.html'>View →</a>"); } catch (e) { toast("⚠️ " + esc(e.message)); } drawSeats(id); });
+}
+/* someone sent this shopper (?ref=): remembered once for the visit */
+async function noteReferral() { const r = new URLSearchParams(location.search).get("ref"); if (r && atoms().affiliate_commissions) { try { await api("/features/affiliate_commissions/visit", "POST", { code: r }); } catch (e) { } } }
 function renderProductExtras(data) {
+  renderFeatures(data); noteReferral();
   const p = data.product, a = atoms(), box = $("#ppExtras");
   if (!box) return;
   const parts = [];
@@ -635,7 +659,7 @@ async function pageProduct() {
       <div class="buybox">
         <div class="bb-price" id="bbPrice">${priceHtml(p.p)}${isSub ? '<span class="bb-cycle">/mo</span>' : ""}</div>
         <div class="bb-del">${p.pr ? `${prioBadge()} <b>${dLong(daysP())}</b>` : `${esc(T("deliverEstimate"))} <b>${dLong(daysS())}</b>`}</div>
-        <div class="bb-stock" id="bbStock">${stockText(p.st)}</div>${p.preorder ? `<p class="pay-meta">⏳ Pre-order — ships ${esc(new Date(p.preorder.ships_on + "T00:00:00").toLocaleDateString(CFG.commerce.locale, { day: "numeric", month: "long", year: "numeric" }))}</p>` : ""}<div id="szGuide"></div>
+        <div class="bb-stock" id="bbStock">${stockText(p.st)}</div>${p.preorder ? `<p class="pay-meta">⏳ Pre-order — ships ${esc(new Date(p.preorder.ships_on + "T00:00:00").toLocaleDateString(CFG.commerce.locale, { day: "numeric", month: "long", year: "numeric" }))}</p>` : ""}<div id="szGuide"></div><div id="ppFeatures"></div>
         ${(data.variant_groups || []).filter(g => g.options && g.options.length > 1).map(g => `<div class="bb-vg" style="margin:8px 0"><div style="font-size:12px;color:#565d64;margin-bottom:4px">${esc(g.name || g.axis)}${g.options.some(o => o.variant) ? '' : ''}</div><div style="display:flex;flex-wrap:wrap;gap:6px">${g.options.map(o => `<button class="bb-vg-opt" style="border:1px solid #d5d9d9;background:#fff;border-radius:8px;padding:6px 10px;font-size:13px;cursor:pointer" data-vggroup="${esc(g.name || g.axis)}" data-act="select-variant" data-sku="${o.id}" data-price="${o.price}" data-stock="${o.stock}" data-name="${esc(o.name || o.code)}">${esc(o.name || o.code)}</button>`).join("")}</div></div>`).join("")}
         ${p.st ? `
         ${durations ? `<label class="bb-dur">Rental period <select id="bbDur">${durations.map(d => `<option value="${d.price}">${esc(d.label)} — ${money(d.price)}</option>`).join("")}</select></label>` : ""}
@@ -789,7 +813,7 @@ async function pageCheckout() {
     <div class="co-sec"><h3><span class="co-num">3</span> Review items and shipping</h3>
       ${c.items.map(({ product: p, qty, unit }) => `<div class="co-item">${img(p, "tile")}<div class="co-i-mid"><a href="${prodLink(p)}">${esc(p.t)}</a><span class="co-i-qty">Qty: ${qty}${unit < p.p ? " · volume price" : ""}</span></div><div class="co-i-price">${priceHtml(unit * qty)}</div></div>`).join("")}
       ${carriers.map((x, i) => `<div class="co-del"><label><input type="radio" name="ship" value="${x.id}" ${i === 0 ? "checked" : ""}> ${x.emoji} <b>${esc(x.name)}</b> · ${x.eta[0]}–${x.eta[1]} days · ${c.qualifies ? "Complimentary" : money(x.baseFee || cm.shipFee)}</label></div>`).join("")}
-      <div id="coRates"></div><div id="coSlots"></div></div>
+      <div id="coRates"></div><div id="coSlots"></div><div id="coFeatures"></div><div id="coCharges"></div><p class="pay-meta" id="coNote" role="status"></p></div>
   </div>
   <aside class="co-side"><div class="co-box">
     <p class="co-order">${esc(CFG.brand.name)} · Order Summary</p>
@@ -839,10 +863,24 @@ async function pageCheckout() {
   if ($("#coPkQ")) $("#coPkQ").addEventListener("input", () => { clearTimeout(pkTimer); pkTimer = setTimeout(loadPoints, 400); });
   const pickedCarrier = () => (document.querySelector('input[name=ship]:checked') || {}).value || (carriers[0] || {}).id || "";
   let quote = null, rateId = null, qSeq = 0;
+  const payChoice = () => { const id = (document.querySelector("input[name=pay]:checked") || {}).value || (gws[0] || {}).id; return { gateway: id, method: ((gws.find(g => g.id === id) || {}).methods || ["card"])[0] }; };
+  /* what the store's features ask at checkout, each only where it is on */
+  const val = id => { const el = document.getElementById(id); return el && el.value ? el.value : undefined; };
+  const featureChoices = () => ({ country: val("coCountry"), instalments: val("coInst"), large_option: val("coLarge"), deliver_on: val("coOn"), gift_note: val("coGiftNote") });
+  (async () => {
+    const at = atoms(), box = $("#coFeatures"), add = h => { const d = document.createElement("div"); d.innerHTML = h; box.appendChild(d); d.querySelectorAll("select,input").forEach(x => x.addEventListener("change", () => recalc())); }, get = p => api("/features/" + p).catch(() => null);
+    if (at.duties_at_checkout) { const d = await get("duties_at_checkout"); if (d && d.countries.length) add(`<label class="pay-meta">Deliver to country <select id="coCountry"><option value="${esc(d.home)}">${esc(d.home)}</option>${d.countries.filter(x => x !== d.home).map(x => `<option>${esc(x)}</option>`).join("")}</select></label>`); }
+    if (at.instalments_without_cost) { const draw = async () => { const pl = await get("instalments_without_cost?amount=" + encodeURIComponent(c.subBase || 0)), g = payChoice().gateway, ps = ((pl || {}).plans || []).filter(x => x.gateway === g), old = document.getElementById("coInstBox"); if (old) old.remove(); if (ps.length) add(`<label class="pay-meta" id="coInstBox">Pay in instalments, no interest <select id="coInst"><option value="">No</option>${ps.map(x => `<option value="${x.months}">${x.months} months</option>`).join("")}</select></label>`); }; await draw(); $$("input[name=pay]").forEach(x => x.addEventListener("change", draw)); }
+    if (at.payment_instrument_offers) { const o = await get("payment_instrument_offers"); if (o && o.offers.length) add(o.offers.map(x => `<p class="pay-meta">💳 ${esc(x.name)}</p>`).join("")); $$("input[name=pay]").forEach(x => x.addEventListener("change", () => recalc())); }
+    if (at.large_item_delivery) { const l = await get("large_item_delivery?products=" + encodeURIComponent(c.items.map(i => i.product.id).join(","))); if (l && l.needed && l.options.length) add(`<label class="pay-meta">Large item delivery <select id="coLarge"><option value="">Choose…</option>${l.options.map(x => `<option value="${x.id}">${esc(x.name)}${x.fee > 0 ? " · " + money(x.fee) : ""}</option>`).join("")}</select></label>`); }
+    if (at.dated_delivery) { const g = await get("dated_delivery"); if (g) add(`<label class="pay-meta">Deliver on <input id="coOn" type="date" min="${g.from}" max="${g.to}"></label><label class="pay-meta">Gift message <input id="coGiftNote" maxlength="300"></label>`); }
+  })();
   const recalc = async () => {
     const seq = ++qSeq;
     try {
-      const q = await api("/checkout/quote", "POST", { carrier: pickedCarrier(), rate_id: rateId, ...addr() });
+      const q = await api("/checkout/quote", "POST", { carrier: pickedCarrier(), rate_id: rateId, ...payChoice(), ...addr(), ...featureChoices() });
+      if ($("#coCharges")) $("#coCharges").innerHTML = (q.charges || []).filter(x => x.amount).map(x => `<p class="pay-meta">${esc(x.name)}: ${x.amount < 0 ? "−" : ""}${money(Math.abs(x.amount))}</p>`).join("");
+      if ($("#coNote")) $("#coNote").textContent = "";
       if (seq !== qSeq) return quote;
       quote = q; rateId = q.rate_id;
       $("#osShip").textContent = q.shipFee ? money(q.shipFee) : "Complimentary";
@@ -852,7 +890,7 @@ async function pageCheckout() {
       if (q.pickup) $("#coRates").innerHTML = `<p class="pay-meta">📍 Collect from <b>${esc(q.pickup.name)}</b>, ${esc(q.pickup.address)}${q.eta ? " · ready in about " + esc(q.eta) + " days" : ""}</p>`;
       else $("#coRates").innerHTML = q.source === "live" && q.rates.length ? `<p class="pay-meta">Live carrier rates to your address${q.free ? " — shipping is on us" : ""}:</p>` + q.rates.map(r => `<div class="co-del"><label><input type="radio" name="rate" value="${esc(r.id)}" ${r.id === q.rate_id ? "checked" : ""}> <b>${esc(r.carrier)}</b> ${esc(r.service)}${r.days ? ` · ${r.days} days` : ""} · ${money(r.price)}</label></div>`).join("") : "";
       $$('input[name="rate"]').forEach(el => el.onchange = () => { rateId = el.value; recalc(); });
-    } catch (e) { }
+    } catch (e) { if (seq === qSeq && $("#coNote")) $("#coNote").textContent = e.message; }
     return quote;
   };
   let addrTimer = null;
@@ -883,18 +921,19 @@ async function pageCheckout() {
         name: $("#coName").value, email: $("#coEmail") ? $("#coEmail").value : undefined, tax_id: $("#coTaxId") ? $("#coTaxId").value : undefined, address: $("#coAddr").value, city: $("#coCity").value, state: $("#coState").value, zip: $("#coZip").value,
         gateway: (document.querySelector('input[name=pay]:checked') || {}).value || (gws[0] || {}).id,
         method: ((gws.find(g => g.id === (document.querySelector('input[name=pay]:checked') || {}).value) || {}).methods || ["card"])[0],
-        carrier: pickedCarrier(), rate_id: rateId, pickup_point: pickupPoint || undefined, delivery_slot: pickupPoint ? undefined : slotKey || undefined,
+        ...featureChoices(), carrier: pickedCarrier(), rate_id: rateId, pickup_point: pickupPoint || undefined, delivery_slot: pickupPoint ? undefined : slotKey || undefined,
         contexts: Object.fromEntries($$("[data-ctx]").filter(x => x.value).map(x => [x.dataset.ctx, x.value]))
       });
-      if (r.order.payment_redirect && /^https:\/\//.test(r.order.payment_redirect)) { location.href = r.order.payment_redirect; return; }
+      /* the provider's page; a local stand-in only when this page itself is local */
+      const local = /^(localhost|127\.0\.0\.1|.*\.localhost)$/.test(location.hostname);
+      if (r.order.payment_redirect && (/^https:\/\//.test(r.order.payment_redirect) || (local && /^http:\/\/(localhost|127\.0\.0\.1)[:/]/.test(r.order.payment_redirect)))) { location.href = r.order.payment_redirect; return; }
       await refreshSession(); renderHeader(); wireChrome();
       main.innerHTML = `
       <div class="oco"><div class="oco-card"><div class="oco-check">✓</div><div><h2>${esc(T("orderPlaced"))}, ${esc($("#coName").value.split(" ")[0])}!</h2>
         <p>Order #<b>${r.order.num}</b> · ${esc(r.order.gateway_name)} txn <b>${esc(r.order.txn_ref)}</b> (${esc(r.order.payment_status)})</p>
         ${r.order.pickup ? `<p class="oco-sub">📍 Collect from <b>${esc(r.order.pickup.point.name)}</b>, ${esc(r.order.pickup.point.address)} — we'll tell you when it's ready. Your pickup code: <b class="pk-code">${esc(r.order.pickup.code)}</b></p>` : ""}
         <p class="oco-sub">Arriving <b>${dLong(r.order.eta)}</b> · Total <b>${money(r.order.total)}</b>${r.order.discount ? ` · saved ${money(r.order.discount)} with ${r.order.promos.map(x => esc(x.name)).join(", ")}` : ""}</p></div></div>
-        <div class="oco-card oco-track"><h3>Dispatch</h3>
-          <div class="track-steps"><span class="done">📦 Packed</span><i>—</i><span class="done">🚚 In transit</span><i>—</i><span>🏠 Out for delivery</span><i>—</i><span>✅ ${dShort(r.order.eta)}</span></div>
+        <div class="oco-card oco-track">
           <a class="btn-yellow" href="orders.html">${esc(T("yourOrders"))}</a><a class="btn-white" href="index.html">Continue</a></div></div>`;
     } catch (e) { btn.disabled = false; btn.textContent = T("placeOrder"); toast("⚠️ " + esc(e.message)); }
   };
@@ -944,13 +983,16 @@ async function activityHtml() {
   /* deliverables: whichever kinds (licence keys, lab tests, courses) the store has on */
   const dk = S.user ? ((await api("/deliverable-kinds").catch(() => ({ kinds: [] }))).kinds || []) : [];
   const anyDeliverable = dk.some(k => a[k.atom]);
-  if (!S.user || !(a.bookings || a.price_negotiation || a.auctions || a.group_buying || a.substitutions || a.try_and_buy || anyDeliverable || a.health_records || a.product_options || CFG.features.giftCards || a.wallet)) return "";
+  const fmine = await api("/features").catch(() => ({ features: [] }));
+  const anyFeature = (fmine.features || []).length > 0;
+  if (!S.user || !(anyFeature || a.bookings || a.price_negotiation || a.auctions || a.group_buying || a.substitutions || a.try_and_buy || anyDeliverable || a.health_records || a.product_options || CFG.features.giftCards || a.wallet)) return "";
   const get = (on, path) => (on ? api(path).catch(() => null) : Promise.resolve(null));
   const [bk, of, au, gr, sb, tr, dl, hr, fu, wl] = await Promise.all([get(a.bookings, "/bookings"), get(a.price_negotiation, "/price-offers"), get(a.auctions, "/auctions/mine"), get(a.group_buying, "/group-buys"), get(a.substitutions, "/substitutions"), get(a.try_and_buy, "/trials"),
     get(anyDeliverable, "/deliverables"), get(a.health_records, "/health-records"), get(a.product_options, "/options/follow-ups"), get(CFG.features.giftCards || a.wallet, "/wallets")]);
   const btn = (label, path, body, ask, more) => `<button class="btn-white" data-act="act-do" data-path="${esc(path)}" data-body='${esc(JSON.stringify(body || {}))}'${ask ? ` data-ask="${esc(ask)}"` : ""}${more && more.asks ? ` data-asks='${esc(JSON.stringify(more.asks))}'` : ""}${more && more.method ? ` data-method="${esc(more.method)}"` : ""}>${esc(label)}</button>`;
   const sec = (title, rows) => rows.length ? `<div class="act-sec"><h3>${title}</h3>${rows.join("")}</div>` : "";
   const out = [];
+  for (const f of fmine.features || []) out.push(sec(esc(f.title), f.rows.slice(0, 30).map(r => `<div class="act-row"><span>${esc(r.text)}</span>${r.chip ? `<span class="a-chip">${esc(r.chip)}</span>` : ""}${(r.actions || []).map(x => btn(x.label, x.path, x.body)).join("")}${(r.rows || []).length ? `<div>${r.rows.map(y => `<div class="pay-meta"><b>${esc(y[0])}</b> ${esc(y[1])}</div>`).join("")}</div>` : ""}</div>`)));
   if (bk) out.push(sec("📅 Bookings", bk.bookings.slice(0, 20).map(b => `<div class="act-row"><span>${esc(b.label)}</span><span class="a-chip">${esc(b.state.label)}</span>${b.cancellable ? btn("Cancel", `/bookings/${b.id}/cancel`) : ""}</div>`)));
   if (of) {
     const row = (o, mineSide) => `<div class="act-row"><span>${esc(o.product ? o.product.title : "")} · ${o.qty} × ${money(o.counter_amount != null && mineSide ? o.counter_amount : o.amount)}</span><span class="a-chip">${esc(o.state.label)}</span>

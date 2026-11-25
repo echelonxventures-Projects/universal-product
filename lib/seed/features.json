@@ -1,0 +1,734 @@
+{
+ "$comment": "What each shopper feature's rows hold and where the console shows it (lib/features.js). Its capability is in capabilities.json, its engine in lib/features/<key>.js.",
+ "FEATURES": [
+  {
+   "key": "sale_events",
+   "icon": "🏷️",
+   "title": "Sale events",
+   "help": "A lower price for a time, on everything, a department, a brand or an item.",
+   "group": "Offers",
+   "section": "sale_events",
+   "fields": [
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "starts",
+     "label": "Starts",
+     "type": "datetime",
+     "required": true
+    },
+    {
+     "key": "ends",
+     "label": "Ends",
+     "type": "datetime",
+     "required": true
+    },
+    {
+     "key": "percent",
+     "label": "Percent off",
+     "type": "number",
+     "required": true,
+     "min": 0.1,
+     "max": 95
+    },
+    {
+     "key": "target",
+     "label": "Item id, brand or department (* for everything)",
+     "type": "text",
+     "default": "*"
+    },
+    {
+     "key": "per_order",
+     "label": "Most of one item per order",
+     "type": "int",
+     "min": 1
+    }
+   ]
+  },
+  {
+   "key": "club_pricing",
+   "icon": "🎟️",
+   "title": "Club pricing",
+   "help": "Members of a tier pay less.",
+   "group": "Offers",
+   "section": "club_pricing",
+   "fields": [
+    {
+     "key": "tier",
+     "label": "Membership tier (* for any)",
+     "type": "text",
+     "default": "*"
+    },
+    {
+     "key": "percent",
+     "label": "Percent off",
+     "type": "number",
+     "required": true,
+     "min": 0.1,
+     "max": 95
+    },
+    {
+     "key": "target",
+     "label": "Item id, brand or department (* for everything)",
+     "type": "text",
+     "default": "*"
+    }
+   ]
+  },
+  {
+   "key": "live_selling",
+   "icon": "🎥",
+   "title": "Live selling",
+   "help": "A show at a set time: its items are at the show's price while it is on. The stream is your own link.",
+   "group": "Marketing",
+   "section": "live_selling",
+   "fields": [
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "starts",
+     "label": "Starts",
+     "type": "datetime",
+     "required": true
+    },
+    {
+     "key": "ends",
+     "label": "Ends",
+     "type": "datetime",
+     "required": true
+    },
+    {
+     "key": "stream",
+     "label": "Link to the stream (https)",
+     "type": "url",
+     "required": true
+    },
+    {
+     "key": "products",
+     "label": "Item ids, separated by spaces",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "percent",
+     "label": "Percent off while it is on",
+     "type": "number",
+     "min": 0,
+     "max": 95
+    }
+   ]
+  },
+  {
+   "key": "payment_instrument_offers",
+   "icon": "💳",
+   "title": "Payment offers",
+   "help": "Money off for paying a certain way.",
+   "group": "Payments & Finance",
+   "section": "payment_instrument_offers",
+   "fields": [
+    {
+     "key": "name",
+     "label": "Name",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "gateway",
+     "label": "Gateway id",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "method",
+     "label": "Method (blank for any)",
+     "type": "text"
+    },
+    {
+     "key": "percent",
+     "label": "Percent off",
+     "type": "number",
+     "required": true,
+     "min": 0.1,
+     "max": 95
+    },
+    {
+     "key": "max_off",
+     "label": "Most it takes off",
+     "type": "number",
+     "min": 0
+    },
+    {
+     "key": "min_amount",
+     "label": "Least order",
+     "type": "number",
+     "min": 0
+    }
+   ]
+  },
+  {
+   "key": "instalments_without_cost",
+   "icon": "🗓️",
+   "title": "Instalments without cost",
+   "help": "The total spread over months at no interest. The plan is kept on the order and sent to the gateway.",
+   "group": "Payments & Finance",
+   "section": "instalments_without_cost",
+   "fields": [
+    {
+     "key": "gateway",
+     "label": "Gateway id",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "months",
+     "label": "Months offered, e.g. 3, 6, 9",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "min_amount",
+     "label": "Least order",
+     "type": "number",
+     "min": 0
+    }
+   ]
+  },
+  {
+   "key": "duties_at_checkout",
+   "icon": "🛃",
+   "title": "Duties at checkout",
+   "help": "Import duty paid up front. A rate is for a country and the beginning of an item's customs code; the most particular counts.",
+   "group": "Orders & Fulfilment",
+   "section": "duties_at_checkout",
+   "fields": [
+    {
+     "key": "country",
+     "label": "Country (two letters)",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "code",
+     "label": "Customs code begins with (blank for all)",
+     "type": "text"
+    },
+    {
+     "key": "percent",
+     "label": "Percent",
+     "type": "number",
+     "required": true,
+     "min": 0,
+     "max": 500
+    },
+    {
+     "key": "threshold",
+     "label": "Only from this order value",
+     "type": "number",
+     "min": 0
+    }
+   ]
+  },
+  {
+   "key": "customs_declarations",
+   "icon": "📄",
+   "title": "Customs declarations",
+   "help": "Made from each order that goes abroad.",
+   "group": "Orders & Fulfilment",
+   "section": "customs_declarations",
+   "fields": []
+  },
+  {
+   "key": "consolidated_shipping",
+   "icon": "📦",
+   "title": "Consolidated shipping",
+   "help": "An order that can leave with one the shopper has waiting, to the same address, pays no delivery.",
+   "group": "Orders & Fulfilment",
+   "section": "consolidated_shipping",
+   "fields": []
+  },
+  {
+   "key": "supplier_direct",
+   "icon": "🏭",
+   "title": "Supplier direct",
+   "help": "Items a supplier sends itself. Their part of an order goes to the supplier by email at once.",
+   "group": "Orders & Fulfilment",
+   "section": "supplier_direct",
+   "fields": [
+    {
+     "key": "name",
+     "label": "Supplier",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "email",
+     "label": "Supplier's email",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "target",
+     "label": "Item id, brand or department (* for everything)",
+     "type": "text",
+     "default": "*"
+    },
+    {
+     "key": "days",
+     "label": "Days to leave",
+     "type": "int",
+     "min": 0,
+     "max": 90,
+     "default": 3
+    }
+   ]
+  },
+  {
+   "key": "reseller_margins",
+   "icon": "🤝",
+   "title": "Reseller margins",
+   "help": "A signed-in reseller adds a margin; it is theirs once the order is delivered.",
+   "group": "Marketing",
+   "section": "reseller_margins",
+   "fields": []
+  },
+  {
+   "key": "affiliate_commissions",
+   "icon": "🔗",
+   "title": "Affiliate commissions",
+   "help": "Someone who sends a shopper (?ref=code) earns a share of what they buy.",
+   "group": "Marketing",
+   "section": "affiliate_commissions",
+   "fields": [
+    {
+     "key": "code",
+     "label": "Code",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "email",
+     "label": "Affiliate's email",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "percent",
+     "label": "Percent of the goods",
+     "type": "number",
+     "required": true,
+     "min": 0.1,
+     "max": 60
+    }
+   ]
+  },
+  {
+   "key": "gamified_rewards",
+   "icon": "🎯",
+   "title": "Daily rewards",
+   "help": "A daily check-in earns a little credit, more for each day in a row.",
+   "group": "Marketing",
+   "section": "gamified_rewards",
+   "fields": []
+  },
+  {
+   "key": "funding_goals",
+   "icon": "🚀",
+   "title": "Funding goals",
+   "help": "An item made only if enough is pledged in time; otherwise every pledge is refunded.",
+   "group": "Offers",
+   "section": "funding_goals",
+   "fields": [
+    {
+     "key": "product_id",
+     "label": "Item",
+     "type": "product",
+     "required": true
+    },
+    {
+     "key": "goal",
+     "label": "Goal (store currency)",
+     "type": "number",
+     "required": true,
+     "min": 1
+    },
+    {
+     "key": "starts",
+     "label": "Counts from",
+     "type": "date"
+    },
+    {
+     "key": "ends",
+     "label": "Last moment",
+     "type": "datetime",
+     "required": true
+    }
+   ]
+  },
+  {
+   "key": "seat_maps",
+   "icon": "💺",
+   "title": "Seat maps",
+   "help": "Numbered places. One line per row: A:1-10 or A:1-10=50 for a row with its own price.",
+   "group": "Catalogue",
+   "section": "seat_maps",
+   "fields": [
+    {
+     "key": "product_id",
+     "label": "Event (item)",
+     "type": "product",
+     "required": true
+    },
+    {
+     "key": "venue",
+     "label": "Venue",
+     "type": "text"
+    },
+    {
+     "key": "layout",
+     "label": "Rows",
+     "type": "textarea",
+     "required": true
+    }
+   ]
+  },
+  {
+   "key": "travel_itineraries",
+   "icon": "🧳",
+   "title": "Travel itineraries",
+   "help": "A trip sold by its start day; the order carries its plan day by day.",
+   "group": "Catalogue",
+   "section": "travel_itineraries",
+   "fields": [
+    {
+     "key": "product_id",
+     "label": "Trip (item)",
+     "type": "product",
+     "required": true
+    },
+    {
+     "key": "days",
+     "label": "The plan, one line a day",
+     "type": "textarea",
+     "required": true
+    },
+    {
+     "key": "notice_days",
+     "label": "Days of notice",
+     "type": "int",
+     "min": 0,
+     "max": 365,
+     "default": 3
+    }
+   ]
+  },
+  {
+   "key": "fitment",
+   "icon": "🚗",
+   "title": "Fitment",
+   "help": "Which vehicles a part fits.",
+   "group": "Catalogue",
+   "section": "fitment",
+   "fields": [
+    {
+     "key": "product_id",
+     "label": "Part (item)",
+     "type": "product",
+     "required": true
+    },
+    {
+     "key": "make",
+     "label": "Make",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "model",
+     "label": "Model (blank for all)",
+     "type": "text"
+    },
+    {
+     "key": "from_year",
+     "label": "From year",
+     "type": "int",
+     "min": 1900,
+     "max": 2100
+    },
+    {
+     "key": "to_year",
+     "label": "To year",
+     "type": "int",
+     "min": 1900,
+     "max": 2100
+    }
+   ]
+  },
+  {
+   "key": "schedule_rules",
+   "icon": "⚕️",
+   "title": "Schedule rules",
+   "help": "What a medicine's schedule allows.",
+   "group": "Catalogue",
+   "section": "schedule_rules",
+   "fields": [
+    {
+     "key": "schedule",
+     "label": "Schedule",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "sold",
+     "label": "May be sold here",
+     "type": "bool",
+     "default": true
+    },
+    {
+     "key": "prescription",
+     "label": "Needs an approved prescription",
+     "type": "bool",
+     "default": false
+    },
+    {
+     "key": "max_qty",
+     "label": "Most per order",
+     "type": "int",
+     "min": 1
+    }
+   ]
+  },
+  {
+   "key": "generic_alternatives",
+   "icon": "💊",
+   "title": "Generic alternatives",
+   "help": "Cheaper medicines with the same composition.",
+   "group": "Catalogue",
+   "section": "generic_alternatives",
+   "fields": []
+  },
+  {
+   "key": "refill_reminders",
+   "icon": "🔔",
+   "title": "Refill reminders",
+   "help": "Told before an item runs out.",
+   "group": "Marketing",
+   "section": "refill_reminders",
+   "fields": [
+    {
+     "key": "target",
+     "label": "Item id, brand or department (* for everything)",
+     "type": "text",
+     "default": "*"
+    },
+    {
+     "key": "days",
+     "label": "Days one lasts",
+     "type": "int",
+     "required": true,
+     "min": 1,
+     "max": 730
+    }
+   ]
+  },
+  {
+   "key": "kitchen_hours",
+   "icon": "🍳",
+   "title": "Kitchen hours",
+   "help": "When food can be ordered, by the store's own clock.",
+   "group": "Catalogue",
+   "section": "kitchen_hours",
+   "fields": [
+    {
+     "key": "weekday",
+     "label": "Day",
+     "type": "weekday",
+     "required": true
+    },
+    {
+     "key": "opens",
+     "label": "Opens",
+     "type": "time",
+     "required": true
+    },
+    {
+     "key": "closes",
+     "label": "Closes (may be after midnight)",
+     "type": "time",
+     "required": true
+    },
+    {
+     "key": "target",
+     "label": "Item id, brand or department (* for everything)",
+     "type": "text",
+     "default": "*"
+    }
+   ]
+  },
+  {
+   "key": "batch_expiry",
+   "icon": "📅",
+   "title": "Batch expiry",
+   "help": "Stock by batch: what has expired, or soon will, is not sold; the first to expire leaves first.",
+   "group": "Catalogue",
+   "section": "batch_expiry",
+   "fields": []
+  },
+  {
+   "key": "freshness_windows",
+   "icon": "🥬",
+   "title": "Freshness windows",
+   "help": "Days of life an item still has when it arrives.",
+   "group": "Catalogue",
+   "section": "freshness_windows",
+   "fields": [
+    {
+     "key": "target",
+     "label": "Item id, brand or department (* for everything)",
+     "type": "text",
+     "default": "*"
+    },
+    {
+     "key": "days",
+     "label": "Days",
+     "type": "int",
+     "required": true,
+     "min": 1,
+     "max": 3650
+    },
+    {
+     "key": "note",
+     "label": "Note",
+     "type": "text"
+    }
+   ]
+  },
+  {
+   "key": "cold_chain",
+   "icon": "❄️",
+   "title": "Cold chain",
+   "help": "Items that must stay cold: which carriers may take them, and their temperature on the way.",
+   "group": "Orders & Fulfilment",
+   "section": "cold_chain",
+   "fields": [
+    {
+     "key": "target",
+     "label": "Item id, brand or department (* for everything)",
+     "type": "text",
+     "default": "*"
+    },
+    {
+     "key": "min_c",
+     "label": "Lowest °C",
+     "type": "number",
+     "required": true,
+     "min": -100,
+     "max": 60
+    },
+    {
+     "key": "max_c",
+     "label": "Highest °C",
+     "type": "number",
+     "required": true,
+     "min": -100,
+     "max": 60
+    }
+   ]
+  },
+  {
+   "key": "large_item_delivery",
+   "icon": "🛋️",
+   "title": "Large item delivery",
+   "help": "How something too big for a parcel is brought in.",
+   "group": "Orders & Fulfilment",
+   "section": "large_item_delivery",
+   "fields": [
+    {
+     "key": "name",
+     "label": "Option",
+     "type": "text",
+     "required": true
+    },
+    {
+     "key": "fee",
+     "label": "Fee",
+     "type": "number",
+     "min": 0,
+     "default": 0
+    },
+    {
+     "key": "days",
+     "label": "Extra days",
+     "type": "int",
+     "min": 0,
+     "max": 60,
+     "default": 0
+    },
+    {
+     "key": "note",
+     "label": "Note",
+     "type": "text"
+    }
+   ]
+  },
+  {
+   "key": "dated_delivery",
+   "icon": "🎁",
+   "title": "Dated delivery",
+   "help": "A gift that arrives on its day, with a message.",
+   "group": "Orders & Fulfilment",
+   "section": "dated_delivery",
+   "fields": []
+  },
+  {
+   "key": "sell_by_weight",
+   "icon": "⚖️",
+   "title": "Sell by weight",
+   "help": "Priced per unit of weight; stock is counted in the smallest step.",
+   "group": "Catalogue",
+   "section": "sell_by_weight",
+   "fields": [
+    {
+     "key": "product_id",
+     "label": "Item",
+     "type": "product",
+     "required": true
+    },
+    {
+     "key": "unit",
+     "label": "Unit",
+     "type": "text",
+     "required": true,
+     "default": "kg"
+    },
+    {
+     "key": "min",
+     "label": "Least",
+     "type": "number",
+     "required": true,
+     "min": 0.001
+    },
+    {
+     "key": "max",
+     "label": "Most",
+     "type": "number",
+     "required": true,
+     "min": 0.001
+    },
+    {
+     "key": "step",
+     "label": "Step",
+     "type": "number",
+     "required": true,
+     "min": 0.001
+    }
+   ]
+  }
+ ]
+}

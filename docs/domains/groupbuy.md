@@ -22,11 +22,16 @@ A lower price that applies when enough shoppers join before a deadline; if the g
 | `close_when_full` | A campaign closes as soon as it is full | `true` |
 | `refund_kind` | Wallet ledger kind used to refund a failed group | `"refund"` |
 
+### Funding goals (`funding_goals`)
+
+An item made only if enough is pledged in time; otherwise every pledge is refunded.
+
 ## Architecture
 
 | Module | What it is |
 |---|---|
 | `lib/groupbuy.js` | Group buying: a lower price when enough shoppers join. Staff open a campaign on a product: a group price, how many members it needs by a deadline, and how many it may take. A shopper joins by buying at the group price — the campaign rides on the bag line as its `group` term (lib/lineterms.js) — and becomes a member with that order. When the deadline passes, a campaign with enough members has succeeded and its orders go ahead; one that fell short has failed, and every member's order is cancelled and what they paid is refunded to their wallet. A full campaign may close early. The campaign's life is the `group_campaign` state machine, asked by tag (joinable, refunds_members…). Capability: group_buying. |
+| `lib/features/funding_goals.js` | funding goals: an item made only if enough is pledged in time. An order is a pledge; when the day comes and the goal is not reached, every pledge is cancelled and refunded. |
 | `lib/routes/groupbuy.js` | group buying domain routes (moved from lib/routes/offer.js; _registry/business-domains.json). Each handler answers one route of the group-buy domain: the campaigns a shopper has joined, and the staff surface that opens, settles and cancels them. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `groupCampaignStatuses`
@@ -100,7 +105,7 @@ Actions: `succeed` → succeeded · `fail` → failed · `cancel` → cancelled
 flowchart LR
   U([Shopper / Store administrator / Platform administrator]) --> UI[store console]
   UI --> API[5 API routes]
-  API --> ENG[groupbuy.js, groupbuy.js]
+  API --> ENG[groupbuy.js, funding_goals.js, groupbuy.js]
   ENG --> DB[(group_campaigns, group_members)]
   ENG --> SM{{1 state machines}}
 ```

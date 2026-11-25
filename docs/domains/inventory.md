@@ -21,11 +21,25 @@ Per-store stock pinning so a dark store cannot oversell. Safety stock is held ba
 | `reserve_at_pin` | Reserve the units when a cart is pinned to a store | `true` |
 | `consume_on_delivery` | Decrement the store's qty when a run is delivered | `true` |
 
+### Batch expiry (`batch_expiry`)
+
+Stock by batch: what has expired, or soon will, is not sold; the first to expire leaves first.
+
+| Setting | Meaning | Default |
+|---|---|---|
+| `min_days` | Days of life an item must have left | `0` |
+
+### Freshness windows (`freshness_windows`)
+
+Days of life an item still has when it arrives.
+
 ## Architecture
 
 | Module | What it is |
 |---|---|
 | `lib/stock.js` | stock: what an order takes from the shelf, and what goes back. |
+| `lib/features/batch_expiry.js` | batch expiry: stock kept by batch, each with its expiry. What has expired, or soon will, is not sold; the batch that expires first leaves first (lib/stock.js asks for the order). |
+| `lib/features/freshness_windows.js` | freshness windows: how many days of life an item still has when it arrives, promised and kept (the batches sold are chosen by batch_expiry, which reads these) |
 | `lib/routes/inventory.js` | inventory domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the inventory domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 **Registry lists** (editable in Data Studio): `qcInvStatuses`
@@ -164,7 +178,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 flowchart LR
   U([Store staff / Store administrator]) --> UI[store console]
   UI --> API[8 API routes]
-  API --> ENG[stock.js, inventory.js]
+  API --> ENG[stock.js, batch_expiry.js, freshness_windows.js, inventory.js]
   ENG --> DB[(warehouses, inventory, serialized_items, stock_transfers, store_inventory, stock_moves)]
 
 ```

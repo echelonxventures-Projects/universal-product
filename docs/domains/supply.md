@@ -25,11 +25,16 @@ Purchase requests with lines and an approval gate: below the threshold a request
 | `approval_threshold` | A request costing more than this needs an approval row (0 = no gate) | `0` |
 | `default_currency` | Currency a purchase request is estimated in | `"USD"` |
 
+### Supplier direct (`supplier_direct`)
+
+Items a supplier sends itself. Their part of an order goes to the supplier by email at once.
+
 ## Architecture
 
 | Module | What it is |
 |---|---|
 | `lib/planning.js` | Supply-chain planning (Roadmap II · domain E). Per-SKU demand forecasting from real order history (moving average + trend), reorder point / safety-stock / min-max computation with lead-time awareness from product_suppliers, and suggested purchase orders to the primary supplier. Reads existing skus/inventory/order_items/ product_suppliers — writes replenishments. Statuses & priorities are meta_lists registries (planStatuses, planPriorities) so they are editable from Data Studio. Feature-gated by settings.features.planning. |
+| `lib/features/supplier_direct.js` | supplier direct: items a supplier sends itself. Their part of an order goes to the supplier at once; the order ships when every supplier has sent theirs. |
 | `lib/routes/supply.js` | supply domain routes (moved from lib/api.js; _registry/business-domains.json). Each handler answers one route of the supply domain. What it needs from the shared HTTP kit (lib/api.js) is passed in as `kit`. |
 
 ## Data model
@@ -223,7 +228,7 @@ Actions:
 flowchart LR
   U([Store staff / Store administrator]) --> UI[store console, platform console]
   UI --> API[5 API routes]
-  API --> ENG[planning.js, supply.js]
+  API --> ENG[planning.js, supplier_direct.js, supply.js]
   ENG --> DB[(suppliers, product_suppliers, replenishments, purchase_requests, purchase_request_lines, approvals)]
   ENG --> SM{{4 state machines}}
 ```

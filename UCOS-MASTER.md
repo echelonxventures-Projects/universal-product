@@ -1282,7 +1282,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 321 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 326 files.
 
 ### C02 · Meaning
 
@@ -1601,6 +1601,9 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/readiness.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `lib/ops-alerts.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `scripts/preflight.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `scripts/sandbox.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
+| `scripts/demo.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
+| `scripts/demo-data.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
 
 ### C12 · Business
 
@@ -1671,6 +1674,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/stock.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/product-counts.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/returns.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/features.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/seed/features.json` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/delivery-windows.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/serviceable-areas.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/size-guides.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
