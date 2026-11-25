@@ -317,6 +317,7 @@
   {"path":"lib/mfa.js","owner":"Security"},
   {"path":"lib/features.js","owner":"Commerce"},
   {"path":"lib/seed/features.json","owner":"Commerce"},
+  {"path":"lib/seed/texts.json","owner":"Expression"},
   {"path":"lib/delivery-windows.js","owner":"Commerce"},
   {"path":"lib/serviceable-areas.js","owner":"Commerce"},
   {"path":"lib/size-guides.js","owner":"Commerce"},

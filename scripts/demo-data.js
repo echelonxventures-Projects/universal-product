@@ -47,6 +47,26 @@ async function prepare({ db, sec, creds, smtpPort }) {
     attempt("group buy", () => require("../lib/groupbuy.js").create(L, { product_id: phys[2].id, group_price: +(phys[2].price * 0.7).toFixed(2), min_members: 2, ends_at: day(5) }));
     attempt("fee", () => require("../lib/fees.js").saveRule(L, { code: "small-order", name: "Small order fee", amount: 2, below_amount: 20, active: true }));
   }
+  /* an example of each shopper feature (lib/features.js), in LUXORA */
+  if (!done("features")) {
+    const F = require("../lib/features.js"), iso = n => new Date(Date.now() + n * 864e5).toISOString(), P = all("SELECT id, dept, brand FROM products WHERE tenant_id=? AND type='physical' AND lifecycle='published' AND deleted_at IS NULL AND stock>20 ORDER BY id LIMIT 40", L).slice(14), put = (k, o) => attempt(k, () => F.save(L, k, o));
+    put("sale_events", { name: "Demo week", starts: iso(-1), ends: iso(7), percent: 15, target: P[0].id, per_order: 3 });
+    put("club_pricing", { tier: "*", percent: 5, target: "*" });
+    put("live_selling", { name: "Demo show", starts: iso(-0.1), ends: iso(2), stream: "https://example.com/demo-show", products: P[1].id, percent: 10 });
+    put("payment_instrument_offers", { name: "5% off with PayPal (at most 10)", gateway: "paypal", percent: 5, max_off: 10, min_amount: 20 });
+    put("instalments_without_cost", { gateway: "stripe", months: "3, 6", min_amount: 100 });
+    put("duties_at_checkout", { country: "GB", percent: 5 });
+    put("supplier_direct", { name: "Demo Supplier", email: "supplier@example.com", target: P[2].id, days: 4 });
+    put("affiliate_commissions", { code: "demo", email: "affiliate@example.com", percent: 8 });
+    put("funding_goals", { product_id: P[3].id, goal: 5000, ends: iso(20) });
+    put("seat_maps", { product_id: P[4].id, venue: "Demo Hall", layout: "A:1-10=90\nB:1-12=60\nC:1-14" });
+    put("travel_itineraries", { product_id: P[5].id, days: "Arrive and settle in\nA day in the city\nThe mountains\nHome", notice_days: 3 });
+    put("fitment", { product_id: P[6].id, make: "Honda", model: "City", from_year: 2015, to_year: 2024 });
+    put("sell_by_weight", { product_id: P[7].id, unit: "kg", min: 0.25, max: 5, step: 0.25 });
+    put("refill_reminders", { target: P[8].id, days: 30 });
+    put("freshness_windows", { target: P[9].id, days: 5, note: "Picked to order" });
+    put("large_item_delivery", { name: "To the door", fee: 0, days: 1 }); put("large_item_delivery", { name: "To the room of your choice", fee: 25, days: 2 });
+  }
   if (problems.length) console.error("demo: " + problems.join(" · "));
   return problems;
 }

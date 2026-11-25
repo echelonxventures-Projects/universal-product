@@ -892,7 +892,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-EXR-000001 Expression Architecture](#ucos-exr-000001) |
 | **Artifacts** | [UCOS-EXR-000001](#ucos-exr-000001) |
 | **Concepts** | 41 — `node _registry/compile.js --search <words> --kind concept --owner "Expression"` |
-| **Code** | `lib/expression.js`, `lib/seed/expression.json` |
+| **Code** | `lib/expression.js`, `lib/seed/expression.json`, `lib/seed/texts.json` |
 | **Managed in** | `_registry/domains.json` → `D-EXR` |
 
 **Live routes:** none yet.

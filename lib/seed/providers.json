@@ -436,6 +436,7 @@
    }
   },
   "payment:square": {
+   "incomplete": "a fixed card source stands where the shopper's own card belongs",
    "method": "POST",
    "url": "https://connect.squareup.com/v2/payments",
    "auth": {
@@ -528,6 +529,7 @@
    }
   },
   "payment:braintree": {
+   "incomplete": "no payment method of the shopper's is sent",
    "method": "POST",
    "url": "https://api.braintreegateway.com:443/merchants/{{cfg.merchantId}}/transactions",
    "auth": {

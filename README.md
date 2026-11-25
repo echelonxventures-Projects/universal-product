@@ -6,6 +6,17 @@
 
 **Nothing is a bundle.** There is no "marketplace" or "commerce" entity — those are *compositions*. The only thing that exists is a **capability atom**: one individually switchable, individually tunable function (`buy_box`, `escrow`, `reviews`, `gift_cards`, `rfq_bidding`…) declared as a row in `platform_capabilities` with typed params and the console sections it governs. A store *is* the set of atoms it switched on (`GET /api/capabilities` → `composition`). Named blends (`blend_marketplace`, `blend_quick_commerce`…) and purchasable archetypes are convenience references to atoms — never the gate. The grant engine derives the console surface from the live composition (`lib/authz.js`), so nothing is ever granted as a package. **This holds platform-wide**: the 18 former `settings.features.*` booleans (reviews, Q&A, deals, coupons, gift cards, memberships, risk screening…) are atoms in the same catalog, switched and tuned exactly the way `buy_box` is — one switch, one vocabulary, shopper-facing *and* commerce-facing alike.
 
+## On this machine, with demo credentials
+
+```bash
+npm ci
+npm run demo            # then open http://localhost:8790
+```
+
+Three stores, every account and password on the first page, every capability switched on in LUXORA, and local stand-ins
+for payments, email, SMS and carriers — no outside account. Your own database is not touched; `npm run demo -- --fresh`
+starts again. What only an outside account can supply is in `docs/EXTERNAL.md`.
+
 ## Going live
 
 1. `cp .env.example .env` and fill it in (strong passwords, `LUXORA_PEPPER`, `ACME_EMAIL`).

@@ -1282,7 +1282,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 326 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 327 files.
 
 ### C02 · Meaning
 
@@ -1354,6 +1354,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/seed/settings.json` | [Context](volumes/V04-universal-dimensions.md#d-ctx) |  |
 | `lib/seed/subdivisions.json` | [Geo](volumes/V04-universal-dimensions.md#d-geo) |  |
 | `scripts/retire-country-columns.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | drops the retired country columns on an operator's --yes, after a copy and once the kernel holds every setting |
+| `lib/seed/texts.json` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
 
 ### C05 · Structure
 
