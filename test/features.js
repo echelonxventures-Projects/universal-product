@@ -70,7 +70,9 @@ const mk = () => { const c = new Map(); return async (p, m, b) => {
     await set("instalments_without_cost"); await row("instalments_without_cost", { gateway: "cod", months: "3, 6", min_amount: 50 });
     ok((await G("/api/features/instalments_without_cost?amount=300")).body.plans.map(x => x.months).join() === "3,6", "plans are offered for the amount");
     const I1 = await guest(); ok((await buy(I1, d.id, { body: { instalments: 12 } })).status === 422, "one that is not offered is refused");
-    const i2 = await I1("/api/checkout", "POST", { ...dest, instalments: 3 }); ok(i2.status === 200 && F.records(1, "instalments_without_cost", { about: i2.body.order.num })[0].months === 3, "the one chosen is kept on the order", i2.body); await off("instalments_without_cost");
+    const i2 = await I1("/api/checkout", "POST", { ...dest, instalments: 3 }); ok(i2.status === 200 && F.records(1, "instalments_without_cost", { about: i2.body.order.num })[0].months === 3, "the one chosen is kept on the order", i2.body); 
+    const spec = require("../lib/spec.js"), RZ = require("../lib/seed/providers.json").PROVIDER_SPECS["payment:razorpay"], sent = async extra => { let b; await spec.execute(RZ, { config: { keyId: "k", keySecret: "s" }, amount: 300, currency: "INR", idempotency: "n", extra }, async (u, o) => { b = JSON.parse(o.body); return { ok: true, status: 200, json: { id: "x", status: "created" } }; }); return b; };
+    ok((await sent({ gatewayOffer: "offer_1" })).options.order.offers[0] === "offer_1" && !("options" in await sent({})), "the plan's offer reaches the gateway, and only when there is one"); await off("instalments_without_cost");
 
     console.log("▸ ABROAD");
     const e = item({ identity: { hs: "6109.10", origin: "IN" } }), e2 = item(); await set("duties_at_checkout"); await row("duties_at_checkout", { country: "GB", percent: 5 }); await row("duties_at_checkout", { country: "GB", code: "6109", percent: 12 });

@@ -17,7 +17,7 @@ CREATE TABLE users (
   tenant_id INTEGER NOT NULL DEFAULT 1,
   name TEXT NOT NULL, email TEXT NOT NULL, salt TEXT NOT NULL, hash TEXT NOT NULL,
   role TEXT NOT NULL DEFAULT 'customer',
-  created_at TEXT NOT NULL DEFAULT (datetime('now')), kyc_status TEXT DEFAULT 'unverified', bnpl_eligible INTEGER DEFAULT 0, loyalty_points INTEGER DEFAULT 0, kdf_version TEXT DEFAULT 'v1', pwd_history TEXT DEFAULT '[]', staff_role TEXT DEFAULT 'owner', perms TEXT DEFAULT '{}', last_login TEXT, disabled INTEGER DEFAULT 0, email_verified_at TEXT, uid TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), kyc_status TEXT DEFAULT 'unverified', bnpl_eligible INTEGER DEFAULT 0, loyalty_points INTEGER DEFAULT 0, kdf_version TEXT DEFAULT 'v1', pwd_history TEXT DEFAULT '[]', staff_role TEXT DEFAULT 'owner', perms TEXT DEFAULT '{}', last_login TEXT, disabled INTEGER DEFAULT 0, email_verified_at TEXT, lang TEXT, uid TEXT,
   UNIQUE(tenant_id, email)
 );
 CREATE TABLE sessions (
@@ -783,7 +783,7 @@ CREATE TABLE orders (
   sub REAL, ship_fee REAL, gift_used REAL, tax REAL, total REAL,
   eta_days INTEGER DEFAULT 5, status TEXT DEFAULT 'processing',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, charges TEXT NOT NULL DEFAULT '[]', delivered_at TEXT, gift_returned REAL DEFAULT 0, email TEXT DEFAULT '', country TEXT DEFAULT '', buyer_tax_id TEXT DEFAULT '', deleted_at TEXT, uid TEXT);
+, store_id INTEGER, slot_id INTEGER, promise_minutes INTEGER, delivery_kind TEXT DEFAULT 'standard', cancel_reason TEXT, seller_id INTEGER, escrow_ref TEXT, invoice_ref TEXT, gift_wrap INTEGER DEFAULT 0, gift_message TEXT, contexts TEXT DEFAULT '{}', currency TEXT DEFAULT '', fx REAL DEFAULT 1, trace_id TEXT, charges TEXT NOT NULL DEFAULT '[]', delivered_at TEXT, gift_returned REAL DEFAULT 0, email TEXT DEFAULT '', country TEXT DEFAULT '', buyer_tax_id TEXT DEFAULT '', lang TEXT DEFAULT '', deleted_at TEXT, uid TEXT);
 CREATE TABLE order_items (
   order_id INTEGER NOT NULL, product_id TEXT NOT NULL, qty INTEGER NOT NULL, price REAL NOT NULL, sku_id INTEGER,
   terms TEXT DEFAULT '{}'

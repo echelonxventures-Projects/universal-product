@@ -1,0 +1,67 @@
+{"$comment":"What the platform writes to a shopper, in each language (lib/letters.js). A line whose {value} is empty is left out. {store}, {num}, {link}… are filled in. Not yet reviewed by native speakers.",
+"source":"en",
+"letters":{
+"order_confirmation":{
+"en":["Order {num} confirmed — {store}","Thanks for your order, {name}.","","Order {num}","Total: {total}","Payment: {payment}","Collect from: {collect}","Your pickup code: {code}","Shipping to: {address}","Estimated delivery: {days} days","","{items}"],
+"es":["Pedido {num} confirmado — {store}","Gracias por tu pedido, {name}.","","Pedido {num}","Total: {total}","Pago: {payment}","Recoger en: {collect}","Tu código de recogida: {code}","Enviar a: {address}","Entrega estimada: {days} días","","{items}"],
+"fr":["Commande {num} confirmée — {store}","Merci pour votre commande, {name}.","","Commande {num}","Total : {total}","Paiement : {payment}","À retirer : {collect}","Votre code de retrait : {code}","Livraison à : {address}","Livraison estimée : {days} jours","","{items}"],
+"de":["Bestellung {num} bestätigt — {store}","Danke für Ihre Bestellung, {name}.","","Bestellung {num}","Gesamt: {total}","Zahlung: {payment}","Abholung: {collect}","Ihr Abholcode: {code}","Lieferung an: {address}","Voraussichtliche Lieferung: {days} Tage","","{items}"],
+"hi":["ऑर्डर {num} की पुष्टि — {store}","आपके ऑर्डर के लिए धन्यवाद, {name}।","","ऑर्डर {num}","कुल: {total}","भुगतान: {payment}","यहाँ से लें: {collect}","आपका पिकअप कोड: {code}","पता: {address}","अनुमानित डिलीवरी: {days} दिन","","{items}"],
+"ar":["تم تأكيد الطلب {num} — {store}","شكراً لطلبك، {name}.","","الطلب {num}","الإجمالي: {total}","الدفع: {payment}","الاستلام من: {collect}","رمز الاستلام: {code}","الشحن إلى: {address}","التوصيل المتوقع: {days} أيام","","{items}"]},
+"order_shipped":{
+"en":["Order {num} has shipped","Your order {num} is on its way with {carrier}.","Tracking number: {tracking}"],
+"es":["El pedido {num} ha sido enviado","Tu pedido {num} está en camino con {carrier}.","Número de seguimiento: {tracking}"],
+"fr":["Commande {num} expédiée","Votre commande {num} est en route avec {carrier}.","Numéro de suivi : {tracking}"],
+"de":["Bestellung {num} wurde versandt","Ihre Bestellung {num} ist unterwegs mit {carrier}.","Sendungsnummer: {tracking}"],
+"hi":["ऑर्डर {num} भेज दिया गया","आपका ऑर्डर {num} {carrier} के साथ रास्ते में है।","ट्रैकिंग नंबर: {tracking}"],
+"ar":["تم شحن الطلب {num}","طلبك {num} في الطريق مع {carrier}.","رقم التتبع: {tracking}"]},
+"order_moved":{
+"en":["Order {num}: {state}","Your order {num} is now: {state}."],
+"es":["Pedido {num}: {state}","Tu pedido {num} ahora está: {state}."],
+"fr":["Commande {num} : {state}","Votre commande {num} est maintenant : {state}."],
+"de":["Bestellung {num}: {state}","Ihre Bestellung {num} ist jetzt: {state}."],
+"hi":["ऑर्डर {num}: {state}","आपका ऑर्डर {num} अब: {state}।"],
+"ar":["الطلب {num}: {state}","طلبك {num} الآن: {state}."]},
+"order_cancelled":{
+"en":["Order {num} cancelled","Your order has been cancelled.","{sent} is being refunded the way you paid.","The store will refund {owed} to you.","{balance} you paid from your balance is back in your wallet."],
+"es":["Pedido {num} cancelado","Tu pedido ha sido cancelado.","Se están reembolsando {sent} por el mismo medio de pago.","La tienda te reembolsará {owed}.","{balance} que pagaste con tu saldo vuelven a tu monedero."],
+"fr":["Commande {num} annulée","Votre commande a été annulée.","{sent} sont en cours de remboursement par le même moyen.","La boutique vous remboursera {owed}.","{balance} payés avec votre solde sont de retour dans votre portefeuille."],
+"de":["Bestellung {num} storniert","Ihre Bestellung wurde storniert.","{sent} werden auf dem Zahlungsweg erstattet.","Der Shop erstattet Ihnen {owed}.","{balance} aus Ihrem Guthaben sind wieder in Ihrer Wallet."],
+"hi":["ऑर्डर {num} रद्द","आपका ऑर्डर रद्द कर दिया गया है।","{sent} उसी तरीके से लौटाया जा रहा है।","दुकान आपको {owed} लौटाएगी।","आपके बैलेंस से दिए {balance} आपके वॉलेट में वापस हैं।"],
+"ar":["تم إلغاء الطلب {num}","تم إلغاء طلبك.","يُعاد مبلغ {sent} بالطريقة التي دفعت بها.","سيعيد المتجر إليك {owed}.","عاد مبلغ {balance} المدفوع من رصيدك إلى محفظتك."]},
+"return_refunded":{
+"en":["Return {ref} refunded","{amount} has been refunded for your return."],
+"es":["Devolución {ref} reembolsada","Se han reembolsado {amount} por tu devolución."],
+"fr":["Retour {ref} remboursé","{amount} ont été remboursés pour votre retour."],
+"de":["Rücksendung {ref} erstattet","{amount} wurden für Ihre Rücksendung erstattet."],
+"hi":["वापसी {ref} का रिफ़ंड","आपकी वापसी के लिए {amount} लौटा दिए गए हैं।"],
+"ar":["تم رد مبلغ الإرجاع {ref}","تم رد {amount} مقابل إرجاعك."]},
+"return_moved":{
+"en":["Return {ref}: {state}","Your return {ref} is now: {state}."],
+"es":["Devolución {ref}: {state}","Tu devolución {ref} ahora está: {state}."],
+"fr":["Retour {ref} : {state}","Votre retour {ref} est maintenant : {state}."],
+"de":["Rücksendung {ref}: {state}","Ihre Rücksendung {ref} ist jetzt: {state}."],
+"hi":["वापसी {ref}: {state}","आपकी वापसी {ref} अब: {state}।"],
+"ar":["الإرجاع {ref}: {state}","إرجاعك {ref} الآن: {state}."]},
+"email_verify":{
+"en":["Confirm your email for {store}","Welcome to {store}.","","Confirm this is your email address: {link}","Your confirmation code is {code}","","The link works for {hours} hours. If you did not create this account, ignore this email."],
+"es":["Confirma tu correo para {store}","Te damos la bienvenida a {store}.","","Confirma que este es tu correo: {link}","Tu código de confirmación es {code}","","El enlace funciona durante {hours} horas. Si no creaste esta cuenta, ignora este correo."],
+"fr":["Confirmez votre e-mail pour {store}","Bienvenue chez {store}.","","Confirmez que c'est votre adresse : {link}","Votre code de confirmation est {code}","","Le lien est valable {hours} heures. Si vous n'avez pas créé ce compte, ignorez cet e-mail."],
+"de":["Bestätigen Sie Ihre E-Mail für {store}","Willkommen bei {store}.","","Bestätigen Sie Ihre E-Mail-Adresse: {link}","Ihr Bestätigungscode lautet {code}","","Der Link gilt {hours} Stunden. Falls Sie dieses Konto nicht erstellt haben, ignorieren Sie diese E-Mail."],
+"hi":["{store} के लिए अपना ईमेल पुष्ट करें","{store} में आपका स्वागत है।","","पुष्टि करें कि यह आपका ईमेल है: {link}","आपका पुष्टि कोड है {code}","","यह लिंक {hours} घंटे काम करेगा। यदि आपने यह खाता नहीं बनाया, तो इस ईमेल को अनदेखा करें।"],
+"ar":["أكّد بريدك في {store}","مرحباً بك في {store}.","","أكّد أن هذا بريدك: {link}","رمز التأكيد {code}","","يعمل الرابط لمدة {hours} ساعة. إذا لم تنشئ هذا الحساب فتجاهل هذه الرسالة."]},
+"password_reset":{
+"en":["Reset your {store} password","Someone asked to reset the password for {email}.","","Choose a new password here: {link}","Your reset code is {code} — enter it on the store's reset page.","","The link expires in {minutes} minutes and works once. If this wasn't you, ignore this email; your password has not changed."],
+"es":["Restablece tu contraseña de {store}","Alguien pidió restablecer la contraseña de {email}.","","Elige una nueva contraseña aquí: {link}","Tu código es {code}: introdúcelo en la página de restablecimiento.","","El enlace caduca en {minutes} minutos y funciona una vez. Si no fuiste tú, ignora este correo; tu contraseña no ha cambiado."],
+"fr":["Réinitialisez votre mot de passe {store}","Quelqu'un a demandé à réinitialiser le mot de passe de {email}.","","Choisissez un nouveau mot de passe : {link}","Votre code est {code} — saisissez-le sur la page de réinitialisation.","","Le lien expire dans {minutes} minutes et ne sert qu'une fois. Si ce n'était pas vous, ignorez cet e-mail ; votre mot de passe n'a pas changé."],
+"de":["Setzen Sie Ihr {store}-Passwort zurück","Jemand möchte das Passwort für {email} zurücksetzen.","","Wählen Sie hier ein neues Passwort: {link}","Ihr Code lautet {code} — geben Sie ihn auf der Seite zum Zurücksetzen ein.","","Der Link läuft in {minutes} Minuten ab und gilt einmal. Waren Sie das nicht, ignorieren Sie diese E-Mail; Ihr Passwort ist unverändert."],
+"hi":["अपना {store} पासवर्ड रीसेट करें","किसी ने {email} का पासवर्ड रीसेट करने को कहा।","","यहाँ नया पासवर्ड चुनें: {link}","आपका कोड {code} है — इसे रीसेट पेज पर डालें।","","लिंक {minutes} मिनट में समाप्त होगा और एक बार काम करेगा। यदि यह आप नहीं थे, तो अनदेखा करें; आपका पासवर्ड नहीं बदला है।"],
+"ar":["إعادة تعيين كلمة مرور {store}","طلب شخص ما إعادة تعيين كلمة مرور {email}.","","اختر كلمة مرور جديدة هنا: {link}","رمزك {code} — أدخله في صفحة إعادة التعيين.","","تنتهي صلاحية الرابط خلال {minutes} دقيقة ويعمل مرة واحدة. إذا لم تكن أنت فتجاهل الرسالة؛ لم تتغير كلمة مرورك."]},
+"password_changed":{
+"en":["Your {store} password was changed","The password for {email} was just reset, and every device signed in to the account was signed out.","","If this wasn't you, reset it again straight away and contact the store."],
+"es":["Tu contraseña de {store} ha cambiado","La contraseña de {email} se acaba de restablecer y se cerró la sesión en todos los dispositivos.","","Si no fuiste tú, restablécela de inmediato y contacta con la tienda."],
+"fr":["Votre mot de passe {store} a été modifié","Le mot de passe de {email} vient d'être réinitialisé et tous les appareils ont été déconnectés.","","Si ce n'était pas vous, réinitialisez-le immédiatement et contactez la boutique."],
+"de":["Ihr {store}-Passwort wurde geändert","Das Passwort für {email} wurde gerade zurückgesetzt und alle Geräte wurden abgemeldet.","","Waren Sie das nicht, setzen Sie es sofort erneut zurück und kontaktieren Sie den Shop."],
+"hi":["आपका {store} पासवर्ड बदल गया","{email} का पासवर्ड अभी रीसेट हुआ और सभी डिवाइस साइन आउट कर दिए गए।","","यदि यह आप नहीं थे, तो तुरंत फिर रीसेट करें और दुकान से संपर्क करें।"],
+"ar":["تم تغيير كلمة مرور {store}","أُعيد تعيين كلمة مرور {email} للتو وسُجّل الخروج من كل الأجهزة.","","إذا لم تكن أنت فأعد تعيينها فوراً واتصل بالمتجر."]}
+}}

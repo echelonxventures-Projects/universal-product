@@ -137,6 +137,20 @@
    "lib/sql.js scalarExtremes",
    "test/orders.js, mfa.js, web.js, fulfil.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0052",
+  "date": "2026-11-25",
+  "authorisedBy": "Platform owner",
+  "summary": "The platform whole on one machine. npm run demo runs it with demo credentials and local stand-ins for payments, email, SMS and carriers; the platform's own specs and adapters run unchanged. lib/features.js is the frame the 26 remaining shopper capabilities stand in, each declared in lib/seed/features.json with its engine in lib/features/: 33 of 33 platform types are covered. Expression: the storefront's fixed wording and the letters a shopper is sent speak five languages besides the source. A carrier's adapter declares its own setup and the console draws whichever carriers exist (GAP-31). An instalment plan's offer reaches the gateway. A provider whose protocol is not finished takes no order in production.",
+  "changes": [
+   "scripts/demo.js, demo-data.js, sandbox.js; docs/EXTERNAL.md",
+   "lib/features.js, lib/features/*.js, lib/seed/features.json",
+   "lib/letters.js, lib/seed/letters.json, lib/seed/texts.json, lib/expression.js",
+   "lib/carrier-easypost.js setup, lib/shipping.js, public/js/platform.js",
+   "lib/spec.js bodyWhen; lib/connect.js ready",
+   "test/demo.js, demo-ui.js, features.js"
+  ]
  }
   ],
   "domains": [

@@ -77,6 +77,7 @@ When an item is unavailable at picking: the shopper's own choice per line — re
 | `email` | TEXT DEFAULT '' |
 | `country` | TEXT DEFAULT '' |
 | `buyer_tax_id` | TEXT DEFAULT '' |
+| `lang` | TEXT DEFAULT '' |
 | `deleted_at` | TEXT |
 | `uid` | TEXT |
 

@@ -1135,7 +1135,7 @@ async function loadShippingProviders() {
   try {
     const res = await api("/shipping/providers");
     if (!res.providers?.length) {
-      list.innerHTML = `<p class="a-sub">No carrier is connected yet. A platform admin connects EasyPost in <b>Platform console → Platform → Extension → 🔌 Provider Registry</b>. Until then, orders ship at your flat shipping fee and labels are bought outside LUXORA.</p>`;
+      list.innerHTML = `<p class="a-sub">No carrier is connected yet. A platform admin connects one in <b>Platform console → Platform → Extension → 🔌 Provider Registry</b>. Until then, orders ship at your flat shipping fee and labels are bought outside LUXORA.</p>`;
       return;
     }
     list.innerHTML = `<div class="a-tablewrap"><table class="a-table"><thead><tr><th>Provider</th><th>Type</th><th>Status</th></tr></thead><tbody>${

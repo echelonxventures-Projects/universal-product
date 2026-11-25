@@ -138,6 +138,20 @@
     "callback_url": "{{returnUrl}}",
     "callback_method": "get"
    },
+   "bodyWhen": [
+    {
+     "needs": "gatewayOffer",
+     "body": {
+      "options": {
+       "order": {
+        "offers": [
+         "{{gatewayOffer}}"
+        ]
+       }
+      }
+     }
+    }
+   ],
    "idPath": "id",
    "statusPath": "status",
    "statusMap": {

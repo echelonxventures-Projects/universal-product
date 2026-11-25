@@ -80,11 +80,11 @@ function fakeEasyPost(url, o) {
     ok(P.st === 200, "platform admin signs in");
     P.tab.events = [];
     await open(P.tab, "/console.html?scope=platform", "providers");
-    ok(await until(P.tab, `!!document.querySelector("#carrierAccounts #epKey")`), "Provider Registry shows the EasyPost carrier account");
+    ok(await until(P.tab, `!!document.querySelector("#carrierAccounts [data-crfield=apiKey]")`), "Provider Registry shows the EasyPost carrier account");
     ok(/not connected/.test(await P.tab.eval(`document.querySelector("#carrierAccounts h2").innerText`)), "it starts out not connected");
-    ok(/\/api\/shipping\/webhook\/easypost$/.test(await P.tab.eval(`document.querySelector("#epHook").value`)), "the webhook URL to paste into EasyPost is shown");
-    await type(P.tab, "#epKey", "EZTK_ui_test_key"); await type(P.tab, "#epSecret", "ui_whsec");
-    await click(P.tab, "#epSave");
+    ok(/\/api\/shipping\/webhook\/easypost$/.test(await P.tab.eval(`document.querySelector("[data-crhook]").value`)), "the webhook URL to paste into EasyPost is shown");
+    await type(P.tab, "[data-crfield=apiKey]", "EZTK_ui_test_key"); await type(P.tab, "[data-crfield=webhookSecret]", "ui_whsec");
+    await click(P.tab, "[data-crsave]");
     ok(await until(P.tab, `/\\bconnected\\b/.test(document.querySelector("#carrierAccounts h2")?.innerText || "") && !/not connected/.test(document.querySelector("#carrierAccounts h2").innerText)`), "Save connects it and the screen says so");
     const row = ep();
     ok(row.status === "active" && !row.config.includes("EZTK_ui_test_key") && !row.config.includes("ui_whsec"), "the key and secret are stored sealed", row);
@@ -152,8 +152,8 @@ function fakeEasyPost(url, o) {
     console.log("▸ THE PLATFORM ADMIN DISCONNECTS EASYPOST");
     P.tab.events = [];
     await open(P.tab, "/console.html?scope=platform", "providers");
-    await until(P.tab, `!!document.querySelector("#epDisconnect")`);
-    await click(P.tab, "#epDisconnect");
+    await until(P.tab, `!!document.querySelector("[data-crdisconnect]")`);
+    await click(P.tab, "[data-crdisconnect]");
     ok(await until(P.tab, `/not connected/.test(document.querySelector("#carrierAccounts h2")?.innerText || "")`), "Disconnect returns the screen to not connected");
     ok(ep().status === "inactive" && ep().config === "{}", "the stored keys are deleted", ep());
     const dIssues = problems(P.tab.events);

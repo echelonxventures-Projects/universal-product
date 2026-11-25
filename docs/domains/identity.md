@@ -79,6 +79,7 @@ Who someone is: accounts, sign-in by every method (password, one-time code, magi
 | `last_login` | TEXT |
 | `disabled` | INTEGER DEFAULT 0 |
 | `email_verified_at` | TEXT |
+| `lang` | TEXT |
 | `uid` | TEXT |
 
 ### `sessions`

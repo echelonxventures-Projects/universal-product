@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0051 (2026-11-24).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0052 (2026-11-25).
 
 ## Contents
 
@@ -414,6 +414,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0049"></a>AMD-0049 | 2026-11-20 | Platform owner | Phase C, LAW-018: the consoles' own forms write no choice in place — the ratchet falls from 52 to 0. The count no longer includes value="" options (a form's "none", 26 of the 52). The 26 written-in choices now read their owners: affiliate tiers (a registry list, its default the route's fallback), import sample formats (the export registry's importable formats), capability parameter types (lib/capabilities.js PARAM_TYPES — define() validated against its own copy), identity provider flows (described in lib/seed/identity.json → FLOWS, the flows lib/identity.js dispatches), the platform's new-user roles (customerRoles, now labelled rows), the decision tester's capabilities (GOIP capabilities that declare probe, apply the probeDefault), and the setup wizard's staff roles and product types (the store's roles and the platform master's product types — the wizard offered 4 of 35). /api/meta serves the new vocabularies. The registry seed stamp moves to reg_v8 so unedited lists from an earlier seed take the new shapes. LAW-018 stays partial: an option carrying a free or paid offering is not yet modelled. |
 | <a id="amd-0050"></a>AMD-0050 | 2026-11-20 | Platform owner | Phase C, LAW-010: the two tables most written from outside their domain now have one writer each — the cross-domain-write ratchet falls from 440 to 368. The registry's lists (meta_lists, the Kernel's: 49 foreign writes) are written only through lib/registry.js ensureList (create when absent), mergeList (append the seed's missing keyed items), setList (replace, with an operator's edited stamp or a seed's origin) and dropList; eleven modules each carried their own copy of the same additive merge (recurring, helpdesk, mobility, operations, planning, marketplace, risk, ugc, fin, compliance, experiments — a LAW-002 duplicate), now one function. The platform's settings (platform_settings, Rules': 24 foreign writes) are written only through lib/settings.js setPlatform, initPlatform (write a key nobody holds) and dropPlatform; five modules' own platSet/setK/setGlobalSetting now delegate to it. Behaviour is unchanged (a merge now writes only when it adds an item). The rest of the 368 are mostly boot seeding in lib/db.js (97) and the shared kit in lib/api.js (36): each domain seeding and writing its own tables is the remaining work. |
 | <a id="amd-0051"></a>AMD-0051 | 2026-11-24 | Platform owner | Go-live hardening. Orders: checkout takes stock in one transaction or refuses; a gateway without live credentials takes no order in production; a payment is asked for in the currency shown; cancelling, a failed or late payment and a return give stock and money back once, in part or in full, and what could not be sent is recorded as owed; tax invoices and credit notes run in one series a fiscal year. Identity: platform and store admins confirm a second factor in production; a stranger's guesses lock strangers, not the owner; email addresses are confirmed. Stores: an address is proven by a DNS record and belongs to one store. Web: visitors who keep no cookie leave no row, files are compressed with ETags, pages carry their own metadata, a proxy's forged addresses are ignored, shutdown drains. Legal pages are filled from settings. Operations: a TLS proxy that asks before requesting a certificate, nightly backups on SQLite and Postgres, alerts and a readiness check. Capabilities: delivery_slots, serviceable_areas, size_guides, preorders. Postgres: MAX/MIN of several values with nested calls. |
+| <a id="amd-0052"></a>AMD-0052 | 2026-11-25 | Platform owner | The platform whole on one machine. npm run demo runs it with demo credentials and local stand-ins for payments, email, SMS and carriers; the platform's own specs and adapters run unchanged. lib/features.js is the frame the 26 remaining shopper capabilities stand in, each declared in lib/seed/features.json with its engine in lib/features/: 33 of 33 platform types are covered. Expression: the storefront's fixed wording and the letters a shopper is sent speak five languages besides the source. A carrier's adapter declares its own setup and the console draws whichever carriers exist (GAP-31). An instalment plan's offer reaches the gateway. A provider whose protocol is not finished takes no order in production. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1282,7 +1283,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 327 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 329 files.
 
 ### C02 · Meaning
 
@@ -1354,6 +1355,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/seed/settings.json` | [Context](volumes/V04-universal-dimensions.md#d-ctx) |  |
 | `lib/seed/subdivisions.json` | [Geo](volumes/V04-universal-dimensions.md#d-geo) |  |
 | `scripts/retire-country-columns.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | drops the retired country columns on an operator's --yes, after a copy and once the kernel holds every setting |
+| `lib/letters.js` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
+| `lib/seed/letters.json` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
 | `lib/seed/texts.json` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
 
 ### C05 · Structure
@@ -2348,7 +2351,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 <a id="gaps"></a>
 ### Gaps
 
-20 open, 12 closed. Every gap has one owning domain; a closed gap names the amendment that closed it (`_registry/roadmap.json` → `gaps`).
+19 open, 13 closed. Every gap has one owning domain; a closed gap names the amendment that closed it (`_registry/roadmap.json` → `gaps`).
 
 | Gap | Group | What | Owner | Status |
 |---|---|---|---|---|
@@ -2382,7 +2385,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="gap-28"></a>GAP-28 | process | Intermittent test failures: the ECONNRESET was a 5 s server keep-alive racing a reused client socket (fixed, AMD-0022); the browser check's occasional Runtime.evaluate timeout and a console render that misses its fixed wait under full-suite load remain unexplained | [Quality](volumes/V11.2-platform.md#d-qlt) | open |
 | <a id="gap-29"></a>GAP-29 | process | CI did not run on 3e67d62: GitHub refused to start the jobs because the account's payments failed or its spending limit is reached; every later commit is checked locally only until the owner fixes billing | [Operations](volumes/V11.1-platform.md#d-ops) | open |
 | <a id="gap-30"></a>GAP-30 | process | The repository sits in an iCloud-synced Desktop folder: the sync made 67 conflict copies ("canonical 2.lxr", test databases, ".luxora 2.pid"), one hung git add, and its file locking may explain the intermittent test failures (GAP-28); the repository belongs outside iCloud | [Operations](volumes/V11.1-platform.md#d-ops) | closed (AMD-0039) |
-| <a id="gap-31"></a>GAP-31 | structure | The platform console's carrier-account form is written for one carrier by name (its key formats, setup steps and webhook URL); each carrier adapter should declare its own setup and the console render whichever carriers exist | [Experience](volumes/V08-interaction.md#d-exp) | open |
+| <a id="gap-31"></a>GAP-31 | structure | The platform console's carrier-account form is written for one carrier by name (its key formats, setup steps and webhook URL); each carrier adapter should declare its own setup and the console render whichever carriers exist | [Experience](volumes/V08-interaction.md#d-exp) | closed (AMD-0052) |
 | <a id="gap-32"></a>GAP-32 | structure | Value's FX anchor is USD by design — currencies.usd holds each currency's value in USD, registry.fxTo divides through it and the platform console labels it "1 unit = USD"; Value should declare its anchor unit (any currency, or a non-Earth unit) and the browser consoles join the LAW-014 scan | [Value](volumes/V04-universal-dimensions.md#d-val) | open |
 
 ### Steps
@@ -2507,6 +2510,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0049 | amendment | Phase C, LAW-018 | [constitution](#amd-0049) |
 | AMD-0050 | amendment | Phase C, LAW-010 | [constitution](#amd-0050) |
 | AMD-0051 | amendment | Go-live hardening. Orders | [constitution](#amd-0051) |
+| AMD-0052 | amendment | The platform whole on one machine. npm run demo runs it with | [constitution](#amd-0052) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

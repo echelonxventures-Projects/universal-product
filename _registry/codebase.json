@@ -315,6 +315,8 @@
   {"path":"lib/product-counts.js","owner":"Commerce"},
   {"path":"lib/returns.js","owner":"Commerce"},
   {"path":"lib/mfa.js","owner":"Security"},
+  {"path":"lib/letters.js","owner":"Expression"},
+  {"path":"lib/seed/letters.json","owner":"Expression"},
   {"path":"lib/features.js","owner":"Commerce"},
   {"path":"lib/seed/features.json","owner":"Commerce"},
   {"path":"lib/seed/texts.json","owner":"Expression"},

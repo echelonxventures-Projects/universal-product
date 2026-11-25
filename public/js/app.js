@@ -1092,7 +1092,7 @@ async function pageOrders() {
     const created = new Date(String(o.created_at).replace(" ", "T"));
     /* the server sends how the order shows (its state machine's label, icon and tone) */
     const d = o.display || { label: o.status, icon: "", tone: "info" };
-    const st = [((d.icon ? d.icon + " " : "") + d.label), d.tone || "info"];
+    const st = [(d.icon ? d.icon + " " : "") + ((CFG.copy && CFG.copy["text:" + d.label]) || d.label), d.tone || "info"];
     return `<div class="ord"><div class="ord-h">
       <div><em>PLACED</em><b>${created.toLocaleDateString(CFG.commerce.locale)}</b></div>
       <div><em>TOTAL</em><b>${money(o.total)}</b></div>

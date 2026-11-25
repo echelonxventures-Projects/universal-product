@@ -13,6 +13,7 @@ Speaking the buyer's language: the message catalogues of every language and a st
 | Module | What it is |
 |---|---|
 | `lib/expression.js` | Expression (P12, owner Expression). |
+| `lib/letters.js` | what is written to a shopper, in the shopper's language. |
 
 ## Data model
 
@@ -47,7 +48,7 @@ Speaking the buyer's language: the message catalogues of every language and a st
 flowchart LR
   U([Store administrator / Platform administrator]) --> UI[store console, platform console]
   UI --> API[0 API routes]
-  API --> ENG[expression.js]
+  API --> ENG[expression.js, letters.js]
   ENG --> DB[(messages, localizations)]
 
 ```

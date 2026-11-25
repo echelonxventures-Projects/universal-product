@@ -2382,7 +2382,8 @@
    ],
    "owns": {
     "files": [
-     "lib/expression.js"
+     "lib/expression.js",
+     "lib/letters.js"
     ],
     "tables": [
      "messages",

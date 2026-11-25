@@ -167,6 +167,18 @@ const hook = async (type, cs, extra) => {
     const iv2 = (await A("/api/admin/orders/" + row(n5).id + "/invoice" + Q)).body.invoice;
     ok(/00002$/.test(iv2.number) && iv2.taxes.map(t => t.name).join() === "IGST", "the next order takes the next number, its tax as another state's", [iv2.number, iv2.taxes]);
 
+    console.log("▸ LETTERS");
+    const L = require("../lib/letters.js"), langs = Object.keys(L.SEED.letters.order_moved), holes = t => [...new Set((t.join("\n").match(/\{\w+\}/g) || []))].sort().join();
+    const odd = []; for (const [k, by] of Object.entries(L.SEED.letters)) for (const l of langs) if (!by[l] || holes(by[l]) !== holes(by.en) || by[l].length !== by.en.length) odd.push(k + ":" + l);
+    ok(!odd.length, "every letter says the same things in every language", odd);
+    ok(!/\{|sent/.test(L.write("order_cancelled", "en", { num: "1" }).text) && L.write("order_cancelled", "en", { num: "1" }).text === "Your order has been cancelled.", "a line with nothing to say is left out");
+    const H = await shopper(); await fetch(BASE + "/api/session"); const hi = await fetch(BASE + "/api/session"); void hi;
+    const uid = db.get("SELECT MAX(id) m FROM users").m; db.run("UPDATE users SET lang='hi' WHERE id=?", uid);
+    set(X, 10); const lo = (await place(H, [[X, 1]])).body.order.num; db.run("UPDATE users SET lang='hi' WHERE id=?", uid);
+    await H("/api/orders/" + row(lo).id + "/cancel" + Q, "POST", {});
+    ok(db.get("SELECT title t FROM notifications WHERE owner=? ORDER BY id DESC LIMIT 1", "t1:u:" + uid).t === "ऑर्डर " + lo + " रद्द", "a shopper is written to in their language", db.get("SELECT title t FROM notifications WHERE owner=? ORDER BY id DESC LIMIT 1", "t1:u:" + uid));
+    ok(/Versandt/.test(L.write("order_moved", "de", { num: "1", state: "Shipped" }).subject) && L.write("order_moved", "ja", { num: "1", state: "Shipped" }).subject === "Order 1: Shipped", "states are named in it too; a language with no letters falls back");
+
     console.log("▸ CURRENCY");
     require("../lib/settings.js").save(1, { commerce: { taxMode: null } });
     const cfg = (await A("/api/config" + Q)).body.commerce;

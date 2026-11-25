@@ -27,6 +27,7 @@ Credentials are entered in the consoles (stored encrypted), never in code. `npm 
 | Stripe, PayPal | Accounts and live keys | Store console → Payments | Local payment page |
 | SMS | Twilio account (India also needs DLT registration of sender and templates) | Email & SMS senders | Local mailbox |
 | Carrier rates and labels | EasyPost account, API key and webhook secret | Platform console → Shipping | Local carrier |
+| Instalments without cost | A no-cost EMI offer created with the gateway, and its offer id | The feature's row in the console | Recorded on the order |
 | AI assistant | An Anthropic API key and the `@anthropic-ai/sdk` package | Store console → AI | Answers from the store's own knowledge |
 | Ads (Meta, Google, TikTok, GA4) | Accounts and tokens | Store console → Marketing | Nothing is sent |
 | Single sign-on | An identity provider | Store console → Identity | Email and password |

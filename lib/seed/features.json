@@ -177,7 +177,7 @@
    "key": "instalments_without_cost",
    "icon": "🗓️",
    "title": "Instalments without cost",
-   "help": "The total spread over months at no interest. The plan is kept on the order and sent to the gateway.",
+   "help": "The total spread over months at no interest. The plan is kept on the order and, with the offer id your gateway gave you, sent to it; the gateway collects the instalments.",
    "group": "Payments & Finance",
    "section": "instalments_without_cost",
    "fields": [
@@ -198,6 +198,11 @@
      "label": "Least order",
      "type": "number",
      "min": 0
+    },
+    {
+     "key": "offer",
+     "label": "The gateway's own offer id for it",
+     "type": "text"
     }
    ]
   },
