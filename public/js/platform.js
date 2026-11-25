@@ -1166,7 +1166,7 @@ async function vProviders() {
   </div>`;
 }
 async function vGeo() {
-  const [cs, tm, pv, cy, fx, rules] = await Promise.all([api("/meta/entity/country"), api("/meta/entity/tax_mode"), api("/meta/entity/provider_availability"), api("/meta/entity/currency"), api("/platform/fx"), api("/meta/entity/taxRules")]);
+  const [cs, tm, pv, cy, fx, rules] = await Promise.all([api("/meta/entity/country"), api("/meta/entity/tax_mode"), api("/meta/entity/provider_availability"), api("/meta/entity/currency"), api("/platform/fx"), api("/meta/entity/tax_rule")]);
   P.fx = fx;
   const cnt = {}; pv.rows.forEach(r => cnt[r.provider_id] = (cnt[r.provider_id] || 0) + 1);
   /* tax is owned by the tax engine, so a country's rate is looked up from the engine's own

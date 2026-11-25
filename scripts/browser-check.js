@@ -145,6 +145,9 @@ if (require.main === module) (async () => {
         /* a view's own failure is caught and printed into the page, not thrown — so a
            missing function or a bad property read shows up only as text on screen */
         const broke = await tab.eval("(() => { const m = document.querySelector('#vBody'); const t = m ? m.innerText : ''; return /is not defined|is not a function|Cannot read propert|Unexpected token|undefined \\(reading/.test(t) ? t.trim().slice(0, 160) : '' })()").catch(() => "");
+        /* a refused or unknown request is caught too: the view is then only its ⚠️ message */
+        const refused = await tab.eval("(() => { const m = document.querySelector('#vBody'), f = m && m.children.length === 1 && m.firstElementChild; return f && f.classList.contains('p-empty') && f.innerText.trim().startsWith('⚠️') ? f.innerText.trim().slice(0, 160) : '' })()").catch(() => "");
+        if (refused) issues.unshift("view failed: " + refused);
         if (broke) issues.unshift("view failed: " + broke);
         checked++;
         report.push({ page: signIn.walk + " › " + v, who, issues });
