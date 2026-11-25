@@ -15848,6 +15848,22 @@
       "en": "Affiliate"
      },
      "data": {}
+    },
+    {
+     "key": "vocab.party_roles.partner",
+     "name": "partner",
+     "title": {
+      "en": "Partner"
+     },
+     "data": {}
+    },
+    {
+     "key": "vocab.party_roles.dealer",
+     "name": "dealer",
+     "title": {
+      "en": "Dealer"
+     },
+     "data": {}
     }
    ]
   },
@@ -17609,6 +17625,19 @@
      "data": {
       "answer": "sites",
       "from": "sites",
+      "many": true,
+      "required": false
+     }
+    },
+    {
+     "key": "vocab.blueprint_steps.records",
+     "name": "records",
+     "title": {
+      "en": "Records it keeps"
+     },
+     "data": {
+      "answer": "records",
+      "from": "recordKinds",
       "many": true,
       "required": false
      }

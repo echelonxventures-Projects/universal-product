@@ -128,6 +128,7 @@ const NAV = [
   { n: "02 · Knowledge", g: [
     { g: "Products", l: [
       ["gproducts", "🌐 Global Products", { v: "gproducts" }],
+      ["master-platform", "🧬 Master Platform", { v: "master-platform" }],
       ["master-review", "🗳️ Master Review", { v: "master-review" }],
       ["master-permissions", "🔐 Master Permissions", { v: "master-permissions" }],
       ["product-families", "👨‍👩‍👧 Product Families", { u: "product_family" }],
@@ -3046,7 +3047,7 @@ function wireG() {
   const q = $("#gQ");
   if (q) {
     let tm;
-    q.oninput = () => { clearTimeout(tm); const pos = q.selectionStart; tm = setTimeout(() => { render().then(() => { const n = $("#gQ"); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) { } } }); }, 400); };
+    q.oninput = () => { G.q = q.value; clearTimeout(tm); const pos = q.selectionStart; tm = setTimeout(() => { render().then(() => { const n = $("#gQ"); if (n) { n.focus(); try { n.setSelectionRange(pos, pos); } catch (e) { } } }); }, 400); };
     q.onkeydown = e => { if (e.key === "Enter") { clearTimeout(tm); render(); } };
   }
 }
@@ -3634,7 +3635,111 @@ async function vEntityLeaf(key, meta) {
    declaration, its lifecycle state, and its instantiated records. When a universe has
    not been instantiated, the console says so plainly and offers the instantiation path
    rather than rendering an empty table with no explanation. */
+/* a screen the master itself answers (lib/seed/screens.json): a kind of entity, a vocabulary, a
+   registry, a dataset or the screen that already shows it */
+let mScreens = null;
+async function vMasterLeaf(key, meta) {
+  mScreens = mScreens || (await api("/platform/records/screens")).screens;
+  const b = mScreens[key];
+  if (!b) return null;
+  const name = esc(meta.label.replace(/^\S+\s/, "")), icon = meta.label.match(/^\S+/)?.[0] || "◈";
+  const head = sub => `<div class="p-head"><h2>${icon} ${name}</h2><p class="p-sub">${sub}</p></div>`;
+  if (b.view && VIEWFNS[b.view]) { const home = Object.values(NAVKEY).find(n => n.res && n.res.v === b.view); return head("Answered by " + esc(home ? home.label : b.view) + ".") + await VIEWFNS[b.view](); }
+  if (b.entity) { await gMeta(); return gBar(meta.label.replace(/^\S+\s/, ""), icon, "The " + esc(b.entity) + " records of every platform.", 1) + await gTable(b.entity); }
+  if (b.registry) return head("From the platform master.") + mRegistry((await api("/platform/records/registry/" + b.registry)).rows);
+  if (b.vocabulary) {
+    const t = (await api("/platform/master/vocabulary/" + encodeURIComponent(b.vocabulary))).terms.filter(x => Object.entries(b.where || {}).every(([k, v]) => x[k] === v));
+    return head("A vocabulary of the platform master.") + mRegistry(t.map(x => ({ key: x.name, label: (x.title || {}).en || Object.values(x.title || {})[0] || x.name, owner: "", detail: x.kind || "" })));
+  }
+  if (b.kind) return head("Entities of the platform master.") + await mEntities(b.kind, b);
+  return head("Declared, not built yet.") + `<div class="p-panel"><div class="p-empty">Nothing runs here yet. It is on the roadmap of the ${esc(b.planned || "")} domain.</div></div>`;
+}
+const mRegistry = rows => `<div class="p-panel"><div class="p-scroll-x"><table class="p-table"><thead><tr><th>Key</th><th>Name</th><th>Owner</th><th>Detail</th></tr></thead><tbody>${rows.map(r => `<tr><td><code>${esc(r.key)}</code></td><td>${esc(r.label || "")}</td><td>${esc(r.owner || "")}</td><td>${esc(r.detail || "")}</td></tr>`).join("") || '<tr><td colspan="4" class="p-empty">Nothing yet</td></tr>'}</tbody></table></div></div>`;
+const mText = v => v == null ? "" : typeof v === "object" ? (v.en && Object.keys(v).length < 12 ? v.en : JSON.stringify(v)) : String(v);
+const mq = {};
+async function mEntities(kind, b) {
+  b = b || {};
+  const p = new URLSearchParams();
+  for (const k of ["hierarchy", "under"]) if (b[k]) p.set(k, b[k]);
+  if (mq[kind]) p.set("q", mq[kind]);
+  if (mAt) p.set("at", mAt);
+  if (mHidden) p.set("hidden", "1");
+  const d = await api("/platform/records/kind/" + encodeURIComponent(kind) + "?" + p), cols = d.attributes.filter(a => !["name", "title"].includes(a.key)).slice(0, 4);
+  return `<div class="p-panel" data-mkind="${esc(kind)}" data-mhier="${esc(b.hierarchy || "")}" data-munder="${esc(b.under || "")}"><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:10px"><h2 style="margin:0">${esc(d.label)}</h2><span class="p-tag">${d.total}${d.total > d.rows.length ? " (first " + d.rows.length + ")" : ""} · owner ${esc(d.owner)}</span>
+    <input class="p-search" data-mq placeholder="Search…" value="${esc(mq[kind] || "")}" style="max-width:220px"><label class="p-check"><input type="checkbox" data-mhid ${mHidden ? "checked" : ""}> <span>hidden too</span></label><span style="flex:1"></span>${d.editable ? '<button class="p-btn sm primary" data-mnew>+ New</button>' : '<span class="p-tag">changed on its owner\'s own screen</span>'}</div>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Name</th>${cols.map(c => `<th>${esc(c.label)}</th>`).join("")}<th></th></tr></thead><tbody>${d.rows.map(r => `<tr><td><b>${esc(r.title)}</b>${r.listed ? "" : ' <span class="badge inactive">hidden</span>'}</td>${cols.map(c => `<td>${esc(mText(r.attributes[c.key]).slice(0, 60))}</td>`).join("")}<td style="text-align:right"><button class="p-btn sm" data-mopen="${esc(r.uid)}">Open</button></td></tr>`).join("") || `<tr><td colspan="${cols.length + 2}" class="p-empty">None yet</td></tr>`}</tbody></table></div></div>`;
+}
+/* the platform master: how much it holds, and every kind in it */
+let mKind = "", mAt = "", mHidden = false;
+async function vMasterPlatform() {
+  const d = await api("/platform/records"), o = d.overview, n = x => esc(Number(x || 0).toLocaleString());
+  if (!mKind || !d.kinds.some(k => k.kind === mKind)) mKind = (d.kinds.find(k => k.entities) || d.kinds[0]).kind;
+  return `<div class="p-head"><h2>🧬 Master Platform</h2><p class="p-sub">One master: what exists (Registry), what it is (Entity), where and for whom it applies (Context), when (Temporal), and how it connects (Relationship). Every platform is configured from it in Platform Setup.</p></div>
+  <div class="p-cards"><div class="p-stat"><em>Registry · kinds</em><b>${n(o.kinds)}</b></div><div class="p-stat"><em>Entities</em><b>${n(o.entities)}</b></div><div class="p-stat"><em>Context · values</em><b>${n(o.context)}</b></div><div class="p-stat"><em>Temporal · events</em><b>${n(o.events.count)}</b></div><div class="p-stat"><em>Relationships</em><b>${n(o.relationships)}</b></div></div>
+  <div class="p-panel" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap"><label>Kind <select id="mKind">${d.kinds.map(k => `<option value="${esc(k.kind)}" ${k.kind === mKind ? "selected" : ""}>${esc(k.label)} · ${esc(k.kind)} (${k.entities})</option>`).join("")}</select></label>
+    <label>As it stood at <input type="datetime-local" id="mAt" value="${esc(mAt ? new Date(new Date(mAt).getTime() - new Date(mAt).getTimezoneOffset() * 60000).toISOString().slice(0, 16) : "")}"></label><span style="flex:1"></span>
+    <span class="badge ${o.events.ok ? "active" : "inactive"}">${o.events.ok ? "history verified" : "history broken at " + esc(o.events.brokenAt)}</span><button class="p-btn sm" id="mDeclare">+ New kind of record</button></div>` + await mEntities(mKind);
+}
+/* how a fact of each value type is asked for, and read from what was typed */
+const M_INPUT = { number: "number", integer: "number", instant: "datetime-local", boolean: "checkbox" };
+const M_PARSE = { number: Number, integer: Number, list: v => v.split(",").map(x => x.trim()).filter(Boolean), instant: v => new Date(v).toISOString() };
+function mForm(heading, attrs, vals, save) {
+  const mm = modal(`<div class="p-modal-head"><h3>${esc(heading)}</h3><button data-mclose>✕</button></div><div class="p-form">${attrs.map(a => a.type === "boolean" ? `<label class="p-check"><input type="checkbox" data-ma="${esc(a.key)}" ${vals[a.key] ? "checked" : ""}> <span>${esc(a.label)}</span></label>`
+    : `<label><span>${esc(a.label)}${a.required ? " *" : ""}</span><input data-ma="${esc(a.key)}" type="${M_INPUT[a.type] || "text"}" step="any" value="${esc(mText(vals[a.key]))}" placeholder="${{ list: "one, two, three", node: "identity (uid)" }[a.type] || ""}"></label>`).join("")}
+    <label><span>Effective from (now when empty)</span><input type="datetime-local" data-mfrom></label><button class="p-btn primary" data-msave>Save</button></div>`);
+  const box = mm || document.getElementById("modal");
+  box.querySelector("[data-msave]").onclick = async () => {
+    const out = {};
+    for (const a of attrs) {
+      const e = box.querySelector(`[data-ma="${a.key}"]`), v = a.type === "boolean" ? e.checked : e.value.trim();
+      if (v === "") { if (vals[a.key] != null) out[a.key] = null; continue; }
+      out[a.key] = M_PARSE[a.type] ? M_PARSE[a.type](v) : v;
+    }
+    const f = box.querySelector("[data-mfrom]").value;
+    try { await save({ attributes: out, from: f ? new Date(f).toISOString() : undefined }); box.innerHTML = ""; toast("Saved"); render(); } catch (e) { toast(e.message, "error"); }
+  };
+}
+async function mOpen(uid) {
+  const d = await api("/platform/records/entity/" + encodeURIComponent(uid) + (mAt ? "?at=" + encodeURIComponent(mAt) : "")), kv = o => Object.entries(o || {}).map(([k, v]) => `<div><span class="p-tag">${esc(k)}</span> ${esc(mText(v).slice(0, 200))}</div>`).join("") || '<span class="p-tag">—</span>';
+  const hiers = d.editable ? (await api("/platform/records")).hierarchies.filter(h => /^party\.|^org\./.test(h.key)) : [];
+  modal(`<div class="p-modal-head"><h3>${esc(d.entity.title)}</h3><button data-mclose>✕</button></div>
+    <h4>Registry</h4><div>${esc(d.registry.label)} <span class="p-tag">${esc(d.registry.kind)} · owner ${esc(d.registry.owner)} · ${esc(d.registry.namespace)}</span></div>${kv(d.registry.identifiers)}<div class="p-tag">${esc(d.entity.uid)}</div>
+    <h4>Entity <span class="badge ${esc(d.entity.state)}">${esc(d.entity.state)}</span></h4>${kv(d.entity.attributes)}
+    <h4>Context</h4>${d.context.map(c => `<div><span class="p-tag">${esc(c.namespace)}</span> ${esc(c.setting)} = <b>${esc(mText(c.value).slice(0, 80))}</b></div>`).join("") || '<span class="p-tag">no setting is assigned here</span>'}
+    <h4>Temporal</h4>${d.temporal.versions.slice(-8).map(v => `<div><span class="p-tag">${esc(v.validFrom.slice(0, 16))} → ${esc(v.validTo ? v.validTo.slice(0, 16) : "now")}${v.recordedTo ? " · superseded" : ""}</span> ${esc(JSON.stringify(v.attributes).slice(0, 140))}</div>`).join("")}
+    <h4>Relationships</h4>${d.relationship.map(r => `<div><span class="p-tag">${esc(r.label)}</span> ${r.above.map(x => "in <b>" + esc(x.title) + "</b>").join(", ")}${r.below.length ? " · holds " + r.below.slice(0, 12).map(x => esc(x.title)).join(", ") + (r.below.length > 12 ? " …" : "") : ""}</div>`).join("") || '<span class="p-tag">none</span>'}
+    ${d.editable ? `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="p-btn sm primary" data-medit>Edit</button><button class="p-btn sm" data-mhide>${d.entity.state === "active" ? "Hide" : "Show again"}</button><select data-mhsel>${hiers.map(h => `<option value="${esc(h.key)}">${esc(h.label)}</option>`).join("")}</select><input data-mparent placeholder="under: key or identity" style="max-width:200px"><button class="p-btn sm" data-mrelate>Relate</button></div>` : ""}`);
+  const box = document.getElementById("modal"), put = async b => { try { await api("/platform/records/entity/" + encodeURIComponent(uid), "PUT", b); toast("Saved"); await render(); mOpen(uid); } catch (e) { toast(e.message, "error"); } };
+  if (!d.editable || !box) return;
+  box.querySelector("[data-medit]").onclick = () => mForm("Edit " + d.entity.title, d.registry.declared, d.entity.attributes, b => api("/platform/records/entity/" + encodeURIComponent(uid), "PUT", b));
+  box.querySelector("[data-mhide]").onclick = () => put({ listed: d.entity.state !== "active" });
+  box.querySelector("[data-mrelate]").onclick = () => put({ relate: { hierarchy: box.querySelector("[data-mhsel]").value, parent: box.querySelector("[data-mparent]").value.trim() } });
+}
+function wireMaster() {
+  const k = $("#mKind"), a = $("#mAt"), dc = $("#mDeclare");
+  if (k) k.onchange = () => { mKind = k.value; render(); };
+  if (a) a.onchange = () => { mAt = a.value ? new Date(a.value).toISOString() : ""; render(); };
+  if (dc) dc.onclick = async () => {
+    const { owners, kinds } = await api("/platform/records");
+    const mm = modal(`<div class="p-modal-head"><h3>New kind of record</h3><button data-mclose>✕</button></div><div class="p-form"><label><span>Key — like clinic.ward *</span><input id="mdKey"></label><label><span>Name *</span><input id="mdLabel"></label>
+      <label><span>Owner</span><select id="mdOwner">${owners.map(o => `<option>${esc(o)}</option>`).join("")}</select></label><label><span>Extends</span><select id="mdExt"><option value="">Record</option>${kinds.filter(x => x.record).map(x => `<option value="${esc(x.kind)}">${esc(x.label)}</option>`).join("")}</select></label>
+      <label><span>Facts, one per line — key : type (text, number, integer, boolean, instant, list, node)</span><textarea id="mdAttrs" rows="4" placeholder="beds : integer"></textarea></label><button class="p-btn primary" id="mdSave">Declare</button></div>`);
+    (mm || document).querySelector("#mdSave").onclick = async () => {
+      const q = id => document.getElementById(id).value.trim();
+      const attributes = q("mdAttrs").split("\n").map(l => l.split(":").map(x => x.trim())).filter(x => x[0]).map(([key, type]) => ({ key, type: type || "text" }));
+      try { await api("/platform/records/kinds", "POST", { kind: q("mdKey"), label: q("mdLabel"), owner: q("mdOwner"), extends: q("mdExt") || undefined, attributes }); mKind = q("mdKey"); document.getElementById("modal").innerHTML = ""; toast("Declared — a platform can now be set up to keep it"); render(); } catch (e) { toast(e.message, "error"); }
+    };
+  };
+  document.querySelectorAll("[data-mopen]").forEach(b => b.onclick = () => mOpen(b.dataset.mopen));
+  document.querySelectorAll("[data-mkind]").forEach(p => {
+    const q = p.querySelector("[data-mq]"), n = p.querySelector("[data-mnew]"), hd = p.querySelector("[data-mhid]");
+    if (hd) hd.onchange = () => { mHidden = hd.checked; render(); };
+    if (q) q.onchange = () => { mq[p.dataset.mkind] = q.value; render(); };
+    if (n) n.onclick = async () => { const d = await api("/platform/records/kind/" + encodeURIComponent(p.dataset.mkind)); mForm("New " + d.label, d.attributes, {}, b => api("/platform/records/kind/" + encodeURIComponent(p.dataset.mkind), "POST", { ...b, hierarchy: p.dataset.mhier || undefined, under: p.dataset.munder || undefined })); };
+  });
+}
 async function vUniverseLeaf(key, meta) {
+  const own = await vMasterLeaf(key, meta); if (own != null) return own;
   await gMeta();
   const d = await api("/ucos/universes").catch(() => null);
   const uni = d && (d.universes || []).find(x => x.key === key || x.entity_key === key);
@@ -3658,7 +3763,10 @@ async function vUniverseLeaf(key, meta) {
       : `<div class="p-panel"><div class="p-empty">Universe entity <code>${esc(uni.entity_key)}</code> holds ${stat2(uni.records || 0)} record(s). Browse them in Data Studio.</div>
          <div style="margin-top:8px"><button class="p-btn sm primary" data-uv="${esc(uni.entity_key)}">Open in Data Studio →</button></div></div>`);
 }
-function wireLeaf() {
+function wireLeaf(key) {
+  wireMaster(); wireG();
+  const b = key && mScreens && mScreens[key];
+  if (b && b.view && WIREFNS[b.view]) WIREFNS[b.view]();
   document.querySelectorAll("[data-uv]").forEach(b => b.onclick = () => { window.__entityJump = b.dataset.uv; view = "studio"; render(); });
   const inst = document.querySelector("[data-uvinst]");
   if (inst) inst.onclick = async () => {
@@ -3827,6 +3935,7 @@ function wireCompose() {
    DOM node (the order bug that made gproducts throw on a null #gpNew). */
 const VIEWFNS = {
   dash: () => vDash(),
+  "master-platform": () => vMasterPlatform(),
   /* where, for whom and for what anything applies — the shared rules screen (js/rules-ui.js) */
   applicability: () => `<div id="rulesRoot"></div>`,
   tenants: () => vTenants(),
@@ -3913,6 +4022,7 @@ const WIREFNS = {
   dashboards: () => wireDashboards(),
   definitions: () => wireDefinitions(),
   geo: () => wireGeoFx(),
+  "master-platform": () => wireMaster(),
   "capability-tree": () => wireCapabilityTree(),
   studio: () => { wireStudio(); if (window.__studioPreset) { const b = document.querySelector("#studioLoad"); if (b) b.click(); } },
   gops: () => wireG(),
@@ -3932,7 +4042,10 @@ const WIREFNS = {
   roles: () => wireRoles(),
   users: () => { wireG(); wireUsers(); },
 };
+let gOn = "";
 async function render() {
+  /* a search belongs to the screen it was typed on */
+  if (gOn !== view) { gOn = view; G.q = ""; }
   shell('<div class="p-empty">Loading…</div>');
   const body = $("#vBody");
   try {
@@ -3948,7 +4061,7 @@ async function render() {
     const r = meta.res || {};
     if (r.v && VIEWFNS[r.v]) { body.innerHTML = await VIEWFNS[r.v](); if (WIREFNS[r.v]) WIREFNS[r.v](); }
     else if (r.e) { body.innerHTML = await vEntityLeaf(r.e, meta); wireLeaf(); }
-    else if (r.u) { body.innerHTML = await vUniverseLeaf(r.u, meta); wireLeaf(); }
+    else if (r.u) { body.innerHTML = await vUniverseLeaf(r.u, meta); wireLeaf(r.u); }
     else body.innerHTML = await vDash();
   } catch (e) { body.innerHTML = `<div class="p-empty">⚠️ ${esc(e.message)}</div>`; }
 }

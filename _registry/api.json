@@ -75,6 +75,7 @@
     {"pattern": "^/api/platform/setup(/|$)", "owner": "Package"},
     {"pattern": "^/api/sessions(/|$)", "owner": "Communication"},
     {"pattern": "^/api/astro(/|$)", "owner": "Commerce"},
+    {"pattern": "^/api/(platform|tenant)/records(/|$)", "owner": "Perspective"},
     {"pattern": "^/api/(platform|tenant)/master/permissions(/|$)", "owner": "Authority"},
     {"pattern": "^/api/(platform|tenant)/master/contributions(/|$)", "owner": "Evolution"},
     {"pattern": "^/api/(platform|tenant)/master/(tree|vocabulary|items)(/|$)", "owner": "Semantic"},

@@ -151,6 +151,20 @@
    "lib/spec.js bodyWhen; lib/connect.js ready",
    "test/demo.js, demo-ui.js, features.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0053",
+  "date": "2026-11-25",
+  "authorisedBy": "Platform owner",
+  "summary": "Everything derived from the platform master: registry, entity, context, temporal and relationship, used to configure any type of platform. Units of value are entities of the master: a currency's row is its node's read model, its class a relationship, its rate and name versions in time, and one a store trades in cannot be switched off or deleted. One surface shows the five parts of anything in the master and declares new kinds of record as data; a platform's setup chooses which records it keeps, and they are its own. The console screens that were bound to nothing show what the master already answers; seven are marked declared and not built.",
+  "changes": [
+   "lib/value-units.js, lib/seed/value.json kernel; every writer of currencies goes through it",
+   "lib/master-view.js, lib/seed/screens.json; /api/platform/records, /api/tenant/records",
+   "setup step Records it keeps; store console Records",
+   "lib/kernel.js countByKind, hierarchies, latestEvents; lib/kernel-context.js settings, assignmentsAt",
+   "public/js/platform.js: the dataset filter and search on every screen now work",
+   "test/master-view.js"
+  ]
  }
   ],
   "domains": [

@@ -234,7 +234,7 @@ flowchart LR
 
 ## User interface
 
-**Store console:** 🧭 Availability Rules · 🧩 Modules · 🏷️ Sale events · 🎟️ Club pricing · 🎥 Live selling · 💳 Payment offers · 🗓️ Instalments without cost · 🛃 Duties at checkout · 📄 Customs declarations · 📦 Consolidated shipping · 🏭 Supplier direct · 🤝 Reseller margins · 🔗 Affiliate commissions · 🎯 Daily rewards · 🚀 Funding goals · 💺 Seat maps · 🧳 Travel itineraries · 🚗 Fitment · ⚕️ Schedule rules · 💊 Generic alternatives · 🔔 Refill reminders · 🍳 Kitchen hours · 📅 Batch expiry · 🥬 Freshness windows · ❄️ Cold chain · 🛋️ Large item delivery · 🎁 Dated delivery · ⚖️ Sell by weight
+**Store console:** 🧭 Availability Rules · 🧩 Modules · 🏷️ Sale events · 🎟️ Club pricing · 🎥 Live selling · 💳 Payment offers · 🗓️ Instalments without cost · 🛃 Duties at checkout · 📄 Customs declarations · 📦 Consolidated shipping · 🏭 Supplier direct · 🤝 Reseller margins · 🔗 Affiliate commissions · 🎯 Daily rewards · 🚀 Funding goals · 💺 Seat maps · 🧳 Travel itineraries · 🚗 Fitment · ⚕️ Schedule rules · 💊 Generic alternatives · 🔔 Refill reminders · 🍳 Kitchen hours · 📅 Batch expiry · 🥬 Freshness windows · ❄️ Cold chain · 🛋️ Large item delivery · 🎁 Dated delivery · ⚖️ Sell by weight · 🗃️ Records
 
 **Platform console:** ⚙️ Capabilities · 🧭 Availability Rules · 🌳 Capability Tree · 🗄️ Capability Registry · 🧩 Capability Composition · 🧭 Capability Discovery · 🧩 Module Marketplace
 

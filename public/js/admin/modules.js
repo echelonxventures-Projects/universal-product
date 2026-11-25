@@ -73,3 +73,35 @@ screen("cold_chain", { group: "Orders & Fulfilment", label: "❄️ Cold chain",
 screen("large_item_delivery", { group: "Orders & Fulfilment", label: "🛋️ Large item delivery", order: 60, render: async () => await vFeature("large_item_delivery"), wire: async () => { await wireFeature("large_item_delivery"); } });
 screen("dated_delivery", { group: "Orders & Fulfilment", label: "🎁 Dated delivery", order: 60, render: async () => await vFeature("dated_delivery"), wire: async () => { await wireFeature("dated_delivery"); } });
 screen("sell_by_weight", { group: "Catalogue", label: "⚖️ Sell by weight", order: 60, render: async () => await vFeature("sell_by_weight"), wire: async () => { await wireFeature("sell_by_weight"); } });
+
+/* ---------- the records this platform keeps: the kinds of record its setup chose from the master ---------- */
+/* how a fact of each value type is asked for, and read from what was typed */
+const REC_INPUT = { number: "number", integer: "number", instant: "datetime-local", boolean: "checkbox" };
+const REC_PARSE = { number: Number, integer: Number, list: v => v.split(",").map(x => x.trim()).filter(Boolean), instant: v => new Date(v).toISOString() };
+let recKind = "";
+async function vRecords() {
+  const { kinds } = await api("/tenant/records");
+  const head = `<div class="a-head"><h2>🗃️ Records</h2><p class="a-sub">The kinds of record this platform keeps, chosen from the platform master in its setup.</p></div>`;
+  if (!kinds.length) return head + `<div class="a-card"><p class="a-sub">None chosen yet. A platform admin chooses them in Platform Setup → Records it keeps.</p></div>`;
+  const k = kinds.find(x => x.kind === recKind) || kinds[0]; recKind = k.kind;
+  const d = await api("/tenant/records/" + encodeURIComponent(recKind));
+  return head + `<div class="a-card"><label>Kind <select id="recKind">${kinds.map(x => `<option value="${esc(x.kind)}" ${x.kind === recKind ? "selected" : ""}>${esc(x.label)}</option>`).join("")}</select></label>
+    <div class="p-form"><div class="row">${k.attributes.map(a => `<label><span>${esc(a.label)}${a.required ? " *" : ""}</span><input data-rec="${esc(a.key)}" data-type="${esc(a.type)}" type="${REC_INPUT[a.type] || "text"}" step="any"></label>`).join("")}</div><button class="a-btn primary" id="recAdd">Add</button></div></div>
+    <div class="a-card"><div class="a-tablewrap"><table class="a-table"><thead><tr>${k.attributes.map(a => `<th>${esc(a.label)}</th>`).join("")}<th></th></tr></thead><tbody>${d.rows.map(r => `<tr>${k.attributes.map(a => `<td>${r.attributes[a.key] == null ? "—" : esc(typeof r.attributes[a.key] === "object" ? JSON.stringify(r.attributes[a.key]) : String(r.attributes[a.key]))}</td>`).join("")}<td><button class="a-btn sm" data-rechide="${esc(r.uid)}">Remove</button></td></tr>`).join("") || `<tr><td colspan="${k.attributes.length + 1}">Nothing yet</td></tr>`}</tbody></table></div></div>`;
+}
+async function wRecords() {
+  const sel = $("#recKind"), add = $("#recAdd"), base = () => "/tenant/records/" + encodeURIComponent(recKind);
+  if (sel) sel.onchange = () => { recKind = sel.value; render(); };
+  if (add) add.onclick = async () => {
+    const attributes = {};
+    $$("[data-rec]").forEach(e => {
+      const t = e.dataset.type, v = e.value.trim();
+      if (t === "boolean") attributes[e.dataset.rec] = e.checked;
+      else if (v) attributes[e.dataset.rec] = REC_PARSE[t] ? REC_PARSE[t](v) : v;
+    });
+    try { await api(base(), "POST", { attributes }); toast("Added"); render(); } catch (e) { toast(e.message); }
+  };
+  /* removed from the list; its history stays on the master */
+  $$("[data-rechide]").forEach(b => b.onclick = async () => { try { await api(base() + "/" + b.dataset.rechide, "PUT", { listed: false }); render(); } catch (e) { toast(e.message); } });
+}
+screen("records", { group: "Settings", label: "🗃️ Records", order: 3, render: async () => await vRecords(), wire: async () => await wRecords() });

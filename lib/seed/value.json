@@ -28,5 +28,13 @@
     { "code": "POINT", "name": "Reward Points", "symbol": "pt", "class": "loyalty", "decimals": 0, "usd": 0.01, "settleable": false },
     { "code": "COIN", "name": "Coins", "symbol": "¢", "class": "loyalty", "decimals": 0, "usd": 0.01, "settleable": false },
     { "code": "TOKEN", "name": "Tokens", "symbol": "tk", "class": "digital", "decimals": 0, "usd": 0, "settleable": false }
-  ]
+  ],
+  "kernel": {
+    "namespace": "platform", "actor": "value", "importActor": "value.import", "kind": "value.unit", "classKind": "value.class", "scheme": "value-unit",
+    "hierarchy": { "hierarchy": "value.classes", "owner": "Relationship", "label": "The class each unit of value is in" },
+    "kinds": [
+      { "kind": "value.class", "owner": "Value", "label": "Class of value", "root": true, "parents": [], "schemes": [], "attributes": [ { "key": "key", "type": "text", "required": true, "label": "Key" }, { "key": "name", "type": "text", "required": true, "label": "Name" } ] },
+      { "kind": "value.unit", "owner": "Value", "label": "Unit of value", "root": true, "parents": ["value.class"], "schemes": ["value-unit"], "attributes": [ { "key": "name", "type": "text", "required": true, "label": "Name" }, { "key": "symbol", "type": "text", "required": true, "label": "Symbol" }, { "key": "decimals", "type": "integer", "label": "Decimals" }, { "key": "rate", "type": "number", "label": "Value in the anchor unit" }, { "key": "settleable", "type": "boolean", "label": "Can be paid out" } ] }
+    ]
+  }
 }

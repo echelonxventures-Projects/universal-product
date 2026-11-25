@@ -313,7 +313,8 @@
      "cold_chain",
      "large_item_delivery",
      "dated_delivery",
-     "sell_by_weight"
+     "sell_by_weight",
+     "records"
     ],
     "platformScreens": [
      "modules",
@@ -623,7 +624,9 @@
     "platform_admin"
    ],
    "owns": {
-    "files": [],
+    "files": [
+     "lib/value-units.js"
+    ],
     "tables": [
      "currencies",
      "fx_rates"
@@ -2790,7 +2793,8 @@
      "lib/meta.js",
      "lib/uid.js",
      "lib/events.js",
-     "lib/global.js"
+     "lib/global.js",
+     "lib/master-view.js"
     ],
     "tables": [
      "k_assignments",
@@ -2824,7 +2828,8 @@
      "^/api/(meta|registries)(/|$)",
      "^/api/platform/(global|kinds|registries|entity-types|entity-attributes|data|universe-fields)(/|$)",
      "^/api/tenant/entity-def(/|$)",
-     "^/api/admin/(entity-meta|entity-usage)(/|$)"
+     "^/api/admin/(entity-meta|entity-usage)(/|$)",
+     "^/api/(platform|tenant)/records(/|$)"
     ],
     "machines": [],
     "capabilities": [],

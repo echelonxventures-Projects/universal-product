@@ -19,6 +19,7 @@ The foundation every domain is built on: kinds, entities, identifiers, hierarchi
 | `lib/kernel-lifecycle.js` | the kernel's change lifecycle (FOUNDATIONS K09; owner Evolution). |
 | `lib/kernel-shape.js` | the kernel's shape part (FOUNDATIONS K05; owner Geo). |
 | `lib/kernel.js` | the kernel (FOUNDATIONS K01–K12), first slice: kinds, nodes, identifiers, hierarchies, typed attributes, bi-temporal versions and the event log. |
+| `lib/master-view.js` | the platform master as one surface (owner Perspective): for anything on the kernel, its five parts together. |
 | `lib/meta.js` | Universal Commerce Meta Model registries. Everything here is DATA. Tenants may override/extend via DB (custom registries). |
 | `lib/parity-registries.js` | Universal Commerce registries. Every status, kind, type, tier and category the commerce entities reference is a row in meta_lists, editable at runtime from Data Studio. Nothing is an enum in code: add a quick-commerce store kind, a fintech payout status, a B2B document type or a buyer-claim state here (or in the console) and every dropdown, every validation option and every state machine that reads the registry follows on the next request. This is the platform's Knowledge-Once rule applied to the commerce capability set. No vendor name appears in any list — these are the platform's own vocabularies. |
 | `lib/registry.js` | runtime registry: geo (countries/currencies), tax modes, provider catalog, availability relationships and list registries. All stored in DB tables (seeded once from providers.js/meta.js constants) and editable at runtime via the entity engine. |
@@ -381,6 +382,18 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 | `PUT /api/platform/entity-types/:entity/:type_key` | `apiEntityTypeUpdate` | — |
 | `DELETE /api/platform/entity-types/:entity/:type_key` | `apiEntityTypeDelete` | — |
 | `GET /api/platform/data` | `apiPlatformDataIndex` | ---------- Global Platform: cross-tenant commerce data ---------- One generic reader serves every entity-backed store capability. The Store Console reads ONE tenant through /api/meta/entity/:key; the Platform Console reads ACROSS stores through /api/platform/data/:key. Both resolve through the same definitions, the same field whitelist and the same parameterized predicates in lib/entity.js, so a capability's data model is defined exactly once — the platform never forks a store's schema, and the store never diverges from the platform. GET /api/platform/data enumerates the served entities so the console builds its Global Operations surface from live metadata rather than a hardcoded menu (zero hard-coding). |
+| `GET /api/platform/records` | `apiMasterOverview` | the platform master: how much it holds, its kinds and what each console screen shows of it |
+| `GET /api/platform/records/screens` | `apiMasterScreens` | what each console screen shows of the master |
+| `POST /api/platform/records/kinds` | `apiMasterKindDeclare` | declares a kind of record |
+| `GET /api/platform/records/registry/:key` | `apiMasterRegistry` | one of the master's registries |
+| `GET /api/platform/records/kind/:key` | `apiMasterEntities` | the entities of a kind, as they stand now or stood at an instant |
+| `POST /api/platform/records/kind/:key` | `apiMasterRecordCreate` | adds a record |
+| `GET /api/platform/records/entity/:id` | `apiMasterEntity` | one entity: its registry, facts, context, history and relationships |
+| `PUT /api/platform/records/entity/:id` | `apiMasterRecordChange` | changes a record: its facts, a relationship, or whether it is listed |
+| `GET /api/tenant/records` | `apiStoreRecordKinds` | the kinds of record a platform keeps |
+| `GET /api/tenant/records/:kind` | `apiStoreRecords` | a platform's own records of a kind it keeps |
+| `POST /api/tenant/records/:kind` | `apiStoreRecordCreate` | adds one of a platform's own records |
+| `PUT /api/tenant/records/:kind/:id` | `apiStoreRecordChange` | changes one of a platform's own records |
 | `GET /api/platform/data/:key` | `apiPlatformDataList` | — |
 | `GET /api/platform/data/:key/def` | `apiPlatformDataDef` | — |
 | `GET /api/platform/data/:key/export` | `apiPlatformDataExport` | — |
@@ -434,8 +447,8 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 ```mermaid
 flowchart LR
   U([Platform administrator / Developer]) --> UI[store console, platform console]
-  UI --> API[68 API routes]
-  API --> ENG[entity.js, events.js, global.js, kernel-context.js, kernel-lifecycle.js, kernel-shape.js, kernel.js, meta.js, parity-registries.js, registry.js, uid.js, kernel.js]
+  UI --> API[80 API routes]
+  API --> ENG[entity.js, events.js, global.js, kernel-context.js, kernel-lifecycle.js, kernel-shape.js, kernel.js, master-view.js, meta.js, parity-registries.js, registry.js, uid.js, kernel.js]
   ENG --> DB[(meta_lists, links, context_types, entity_defs, entity_data, entity_ext, …)]
 
 ```

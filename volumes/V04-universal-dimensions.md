@@ -660,7 +660,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-VAL-000001 Value Architecture](#ucos-val-000001) |
 | **Artifacts** | [UCOS-VAL-000001](#ucos-val-000001) |
 | **Concepts** | 149 — `node _registry/compile.js --search <words> --kind concept --owner "Value"` |
-| **Code** | `lib/registry.js`, `lib/global.js`, `lib/wallet.js`, `lib/routes/currency.js`, `lib/routes/financial_services.js`, `lib/routes/platform_billing.js`, `lib/routes/settlement.js`, `lib/routes/wallet.js`, `lib/seed/wallet.json`, `lib/seed/value.json` |
+| **Code** | `lib/registry.js`, `lib/global.js`, `lib/wallet.js`, `lib/routes/currency.js`, `lib/routes/financial_services.js`, `lib/routes/platform_billing.js`, `lib/routes/settlement.js`, `lib/routes/wallet.js`, `lib/seed/wallet.json`, `lib/seed/value.json`, `lib/value-units.js` |
 | **Managed in** | `_registry/domains.json` → `D-VAL` |
 
 **Live routes (26)** — what the platform serves today for this domain:

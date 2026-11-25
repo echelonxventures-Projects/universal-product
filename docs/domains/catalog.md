@@ -328,7 +328,7 @@ flowchart LR
 
 **Store console:** 📦 Products · 🔖 SKUs & Inventory · 🏷️ Brands · 🌳 Taxonomy · 🧬 Attributes · 🌐 Global Catalog · 🤝 Master Contributions · 📏 Size Guides · ⏳ Pre-orders
 
-**Platform console:** 🌐 Global Products · 🗳️ Master Review · 🔐 Master Permissions · 👨‍👩‍👧 Product Families · 📦 Product Types · 🧬 Variants · 🧩 Attributes · 📐 Specifications · 🧺 Bundles · Kits · 📚 Collections · 🕸️ Product Graph · 🗄️ Product Registry · 📐 Entity Definitions · 📦 Catalog · SKUs · 🗂️ Industry · Categories · 🏷️ Category Tree · 🌳 Taxonomy Universe · 🚚 Suppliers · 🤝 Vendors · 🏭 Manufacturers · 🧱 Assets · 📄 Documents · 🎬 Media · 📝 Content
+**Platform console:** 🌐 Global Products · 🧬 Master Platform · 🗳️ Master Review · 🔐 Master Permissions · 👨‍👩‍👧 Product Families · 📦 Product Types · 🧬 Variants · 🧩 Attributes · 📐 Specifications · 🧺 Bundles · Kits · 📚 Collections · 🕸️ Product Graph · 🗄️ Product Registry · 📐 Entity Definitions · 📦 Catalog · SKUs · 🗂️ Industry · Categories · 🏷️ Category Tree · 🌳 Taxonomy Universe · 🚚 Suppliers · 🤝 Vendors · 🏭 Manufacturers · 🧱 Assets · 📄 Documents · 🎬 Media · 📝 Content
 
 ## User flows
 

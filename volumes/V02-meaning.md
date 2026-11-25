@@ -2493,7 +2493,7 @@ stateDiagram-v2
 | **Code** | `lib/stores.js`, `lib/tenancy.js`, `lib/routes/customers.js`, `lib/routes/stores.js`, `lib/seed/stores.json` |
 | **Managed in** | `_registry/domains.json` → `D-PTY` |
 
-**Live routes (52)** — what the platform serves today for this domain:
+**Live routes (56)** — what the platform serves today for this domain:
 
 - `GET /api/admin/staff`
 - `POST /api/admin/staff`
@@ -2526,6 +2526,10 @@ stateDiagram-v2
 - `DELETE /api/platform/admins/:id`
 - `POST /api/platform/users`
 - `GET /api/tenant/entity-def`
+- `GET /api/tenant/records`
+- `GET /api/tenant/records/:kind`
+- `POST /api/tenant/records/:kind`
+- `PUT /api/tenant/records/:kind/:id`
 - `GET /api/platform/global/tenant`
 - `PUT /api/admin/mode`
 - `GET /api/tenancy/tree`

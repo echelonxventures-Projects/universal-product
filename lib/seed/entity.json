@@ -151,6 +151,7 @@
    "noTenant": true,
    "pk": "code",
    "pkType": "text",
+   "writer": "units",
    "label": "Currencies",
    "icon": "💱",
    "perm": {
@@ -9808,7 +9809,8 @@
  },
  "WRITERS": {
   "$comment": "the modules a built-in entity may name as its writer: the owner's write path, which records the change on the kernel and writes the row in one transaction (lib/entity.js). Tenant-defined entities cannot name a writer.",
-  "places": "./places.js"
+  "places": "./places.js",
+  "units": "./value-units.js"
  },
  "LISTS": {
   "$comment": "the registry lists the entity fields choose from (lib/registry.js seeds them; an operator edits them in Data Studio)",
