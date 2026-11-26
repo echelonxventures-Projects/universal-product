@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0062 (2026-11-26).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0063 (2026-11-26).
 
 ## Contents
 
@@ -425,6 +425,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0060"></a>AMD-0060 | 2026-11-26 | Platform owner | P24 continues: orders are on the master. Every order is a commerce.order in its store's namespace with its row's identity: number, status, amounts, currency, why it was cancelled and when it was delivered are versions in time, so its status history is answerable at any instant. Its lines are the offerings bought, as they stood at checkout; the person who placed it is a relationship in the commerce.buyers hierarchy. The buyer's name, address and email are not copied: the order is kept for the law, its personal data stays under the store's retention. Every status write — the order mover, checkout, payment confirmation, shipping, pickup, group buys, quick commerce — goes through lib/order-records.js in one transaction with its row; money, stock and the status machine are unchanged. |
 | <a id="amd-0061"></a>AMD-0061 | 2026-11-26 | Platform owner | P24 continues: returns and payments are on the master, through one engine. lib/row-records.js keeps any table of business records on the kernel from a declaration in lib/seed/row-records.json — the kind, the facts kept as versions in time, and the row each belongs to — so a new table on the master is a new entry, not new code. A return and a payment each belong to their order; a payment's refunded amount over time is its refund history, including a claim handed back when the gateway refused. Every insert and status or refund write of returns and payments goes through the engine in one transaction with its row. Corrects eleven writes from AMD-0059/AMD-0060 that wrapped the database rather than the statement, so their record was taken before the write; the three engines now refuse that shape. |
 | <a id="amd-0062"></a>AMD-0062 | 2026-11-26 | Platform owner | P24 continues: invoices and support cases are on the master, as two entries of lib/seed/row-records.json — no new code beyond letting a record belong to the person its owner column names. An invoice's status (issued, overdue, paid) is a version in time; a support case keeps its reason, priority, status, assignee, response and resolution times and rating, belongs to the person who raised it, and copies neither its subject and message nor the customer's name, email or comment. Wallets and store credit were already on the kernel (the Universal Wallet). Every insert and update of both tables goes through the engine in one transaction with its row; a store's purge archives their records. |
+| <a id="amd-0063"></a>AMD-0063 | 2026-11-26 | Platform owner | The owner's requirement that the platform match at least the features and functions of Amazon-class marketplaces, Uber-class mobility, CRM, ERP and consultancy is made measurable. lib/seed/benchmarks.json lists 83 features those products are known for, each with the evidence the platform must have (a capability, a table); scripts/benchmarks.js checks the evidence against the code and reports each as present, partial (with the stated gap) or missing. At recording: 57 present, 6 partial, 20 missing — marketplace 23/24, mobility 8/14, CRM 7/13, ERP 12/20, professional services 7/12. test/benchmarks.js is a ratchet: what is present never goes down. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1293,7 +1294,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 349 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 351 files.
 
 ### C02 · Meaning
 
@@ -1406,6 +1407,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/seed/meta.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/seed/parity-registries.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
 | `lib/seed/ucos.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `lib/seed/benchmarks.json` | [Registry](volumes/V05-structure.md#d-reg) |  |
+| `scripts/benchmarks.js` | [Registry](volumes/V05-structure.md#d-reg) |  |
 
 ### C06 · Decision and Control
 
@@ -2551,6 +2554,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0060 | amendment | P24 continues | [constitution](#amd-0060) |
 | AMD-0061 | amendment | P24 continues | [constitution](#amd-0061) |
 | AMD-0062 | amendment | P24 continues | [constitution](#amd-0062) |
+| AMD-0063 | amendment | The owner's requirement that the platform match at least the | [constitution](#amd-0063) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

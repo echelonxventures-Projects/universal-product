@@ -321,6 +321,8 @@
   {"path":"lib/seed/order-records.json","owner":"Commerce"},
   {"path":"lib/row-records.js","owner":"Commerce"},
   {"path":"lib/seed/row-records.json","owner":"Commerce"},
+  {"path":"lib/seed/benchmarks.json","owner":"Registry"},
+  {"path":"scripts/benchmarks.js","owner":"Registry"},
   {"path":"lib/seed/offerings.json","owner":"Offering"},
   {"path":"lib/seed/parties.json","owner":"Party"},
   {"path":"lib/seed/console-texts.json","owner":"Expression"},

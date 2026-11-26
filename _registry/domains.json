@@ -275,6 +275,15 @@
    "lib/helpdesk.js, lib/billing.js, lib/api.js invoicePaid, lib/routes/support.js, lib/routes/modules.js, lib/db.js seeds write through it",
    "test/row-records.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0063",
+  "date": "2026-11-26",
+  "authorisedBy": "Platform owner",
+  "summary": "The owner's requirement that the platform match at least the features and functions of Amazon-class marketplaces, Uber-class mobility, CRM, ERP and consultancy is made measurable. lib/seed/benchmarks.json lists 83 features those products are known for, each with the evidence the platform must have (a capability, a table); scripts/benchmarks.js checks the evidence against the code and reports each as present, partial (with the stated gap) or missing. At recording: 57 present, 6 partial, 20 missing — marketplace 23/24, mobility 8/14, CRM 7/13, ERP 12/20, professional services 7/12. test/benchmarks.js is a ratchet: what is present never goes down.",
+  "changes": [
+   "lib/seed/benchmarks.json, scripts/benchmarks.js, test/benchmarks.js"
+  ]
  }
   ],
   "domains": [
