@@ -358,7 +358,7 @@ function shell(content) {  $("#app").innerHTML = `
     <div class="p-scrim" id="pScrim"></div>
     <main class="p-main"><div class="p-top"><button class="p-hamburger" id="pBurger" aria-label="Open navigation">☰</button><h1 id="vTitle">${NAVFLAT.find(n => n[0] === view)[1].replace(/^\S+\s/, "")}</h1><span class="spacer"></span>
       <span class="p-chip">${esc(TT.tenant.mode)}</span><span class="p-user">${esc(A.user.name)}</span>
-      <button class="p-btn sm" id="logoutBtn">Sign out</button></div>
+      <span data-lxlang></span><button class="p-btn sm" id="logoutBtn">Sign out</button></div>
       <div id="vBody">${content}</div></main>
   </div>`;
   $$(".p-nav button").forEach(b => b.onclick = () => { view = b.dataset.v; render(); });

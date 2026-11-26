@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0054 (2026-11-26).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0055 (2026-11-26).
 
 ## Contents
 
@@ -59,7 +59,7 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 | [V02](volumes/V02-meaning.md) | C02 Meaning | 1 of 1 | 5 | 13 | 89 KB |
 | [V03.1](volumes/V03.1-reality-and-reasoning.md) | C03 Reality and Reasoning | 1 of 2 | 9 | 13 | 92 KB |
 | [V03.2](volumes/V03.2-reality-and-reasoning.md) | C03 Reality and Reasoning | 2 of 2 | 1 | 3 | 21 KB |
-| [V04](volumes/V04-universal-dimensions.md) | C04 Universal Dimensions | 1 of 1 | 6 | 6 | 41 KB |
+| [V04](volumes/V04-universal-dimensions.md) | C04 Universal Dimensions | 1 of 1 | 6 | 6 | 42 KB |
 | [V05](volumes/V05-structure.md) | C05 Structure | 1 of 1 | 2 | 2 | 19 KB |
 | [V06](volumes/V06-decision-and-control.md) | C06 Decision and Control | 1 of 1 | 4 | 4 | 30 KB |
 | [V07](volumes/V07-assurance.md) | C07 Assurance | 1 of 1 | 4 | 10 | 70 KB |
@@ -417,6 +417,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0052"></a>AMD-0052 | 2026-11-25 | Platform owner | The platform whole on one machine. npm run demo runs it with demo credentials and local stand-ins for payments, email, SMS and carriers; the platform's own specs and adapters run unchanged. lib/features.js is the frame the 26 remaining shopper capabilities stand in, each declared in lib/seed/features.json with its engine in lib/features/: 33 of 33 platform types are covered. Expression: the storefront's fixed wording and the letters a shopper is sent speak five languages besides the source. A carrier's adapter declares its own setup and the console draws whichever carriers exist (GAP-31). An instalment plan's offer reaches the gateway. A provider whose protocol is not finished takes no order in production. |
 | <a id="amd-0053"></a>AMD-0053 | 2026-11-25 | Platform owner | Everything derived from the platform master: registry, entity, context, temporal and relationship, used to configure any type of platform. Units of value are entities of the master: a currency's row is its node's read model, its class a relationship, its rate and name versions in time, and one a store trades in cannot be switched off or deleted. One surface shows the five parts of anything in the master and declares new kinds of record as data; a platform's setup chooses which records it keeps, and they are its own. The console screens that were bound to nothing show what the master already answers; seven are marked declared and not built. |
 | <a id="amd-0054"></a>AMD-0054 | 2026-11-26 | Platform owner | Everything comes from the database, the schema and the backend. The consoles' menus — every screen of both consoles, where it sits, its label, what it shows, its access section and its fit to a kind of store — are rows of console_screens, seeded from lib/seed/consoles.json, edited in Data Studio and served by the backend with each console's script; the browser keeps only each screen's drawing code. The registry compiler, the grant surface, the domain map, the docs and the trace read the declaration, no longer parsing browser files. The sample catalogue the backend seeded from a browser file is the backend's own seed. |
+| <a id="amd-0055"></a>AMD-0055 | 2026-11-26 | Platform owner | The consoles' wording comes from the database. Every phrase both consoles show — 2,906, menus included — is a message in the source language (editable in Data Studio, kept across seeds) and, where translated, in Spanish, French, German, Hindi and Arabic; scripts/console-texts.js keeps the seed in step with the code and a test fails when a phrase is not in the database. The backend serves each console its words, direction and language choices with its script; a language asked for in the address is remembered. One translator (public/js/words.js) serves the storefront and both consoles. A shopper is sent only the storefront's wording. 498 phrases are translated (menus, groups, sections, common words); 2,400 are not yet. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1285,7 +1286,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 334 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 337 files.
 
 ### C02 · Meaning
 
@@ -1359,6 +1360,9 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/seed/settings.json` | [Context](volumes/V04-universal-dimensions.md#d-ctx) |  |
 | `lib/seed/subdivisions.json` | [Geo](volumes/V04-universal-dimensions.md#d-geo) |  |
 | `scripts/retire-country-columns.js` | [Geo](volumes/V04-universal-dimensions.md#d-geo) | drops the retired country columns on an operator's --yes, after a copy and once the kernel holds every setting |
+| `lib/seed/console-texts.json` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
+| `scripts/console-texts.js` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
+| `public/js/words.js` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
 | `lib/value-units.js` | [Value](volumes/V04-universal-dimensions.md#d-val) |  |
 | `lib/letters.js` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
 | `lib/seed/letters.json` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
@@ -2520,6 +2524,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0052 | amendment | The platform whole on one machine. npm run demo runs it with | [constitution](#amd-0052) |
 | AMD-0053 | amendment | Everything derived from the platform master | [constitution](#amd-0053) |
 | AMD-0054 | amendment | Everything comes from the database, the schema and the backe | [constitution](#amd-0054) |
+| AMD-0055 | amendment | The consoles' wording comes from the database. Every phrase  | [constitution](#amd-0055) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

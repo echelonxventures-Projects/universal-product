@@ -13,22 +13,9 @@ function T(key, vars) {
   if (vars) for (const [k, v] of Object.entries(vars)) t = t.split("{" + k + "}").join(v);
   return t;
 }
-/* fixed wording in the shopper's language: wherever a page shows exactly a wording the catalogue holds,
-   its translation stands instead — text, hints and labels, as each part of a page appears. A shopper's
-   or seller's own words are never in the catalogue. */
-const said = x => { const k = x.trim(), t = k && CFG && CFG.copy && CFG.copy["text:" + k]; return t ? x.replace(k, t) : x; };
-function translate(root) {
-  const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT | NodeFilter.SHOW_ELEMENT);
-  for (let n = root; n; n = w.nextNode()) {
-    if (n.nodeType === 3) { if (!/^(SCRIPT|STYLE|TEXTAREA|CODE|PRE)$/.test((n.parentNode || {}).nodeName)) { const t = said(n.nodeValue); if (t !== n.nodeValue) n.nodeValue = t; } }
-    else if (n.nodeType === 1) for (const a of ["placeholder", "title", "aria-label"]) { const v = n.getAttribute(a); if (v) { const t = said(v); if (t !== v) n.setAttribute(a, t); } }
-  }
-}
-function keepTranslated() {
-  if (!CFG.copy || !Object.keys(CFG.copy).some(k => k.startsWith("text:"))) return;
-  translate(document.body);
-  new MutationObserver(ms => { for (const m of ms) { if (m.type === "characterData") translate(m.target); else m.addedNodes.forEach(n => { if (n.nodeType === 1 || n.nodeType === 3) translate(n); }); } }).observe(document.body, { childList: true, subtree: true, characterData: true });
-}
+/* fixed wording in the shopper's language: the shared translator (js/words.js) with the catalogue the
+   backend sent (CFG.copy) */
+function keepTranslated() { lxWords(CFG.copy || {}, { lang: CFG.lang, dir: CFG.dir, languages: CFG.languages }); }
 function money(n) {
   if (S.disp) return S.disp.symbol + (+n * S.disp.fx).toLocaleString(CFG.commerce.locale, { minimumFractionDigits: S.disp.decimals, maximumFractionDigits: S.disp.decimals });
   try { return new Intl.NumberFormat(CFG.commerce.locale, { style: "currency", currency: CFG.commerce.currency, maximumFractionDigits: CFG.commerce.decimals == null ? 2 : CFG.commerce.decimals, minimumFractionDigits: CFG.commerce.decimals == null ? 2 : CFG.commerce.decimals }).format(+n); }

@@ -138,7 +138,7 @@ function shell(content) {
       ${meta ? `<span class="p-tag">${esc(meta.home)}</span>` : ""}
       <span class="p-chip">platform</span><span class="p-user">${esc(P.user.email)}</span>
       <span class="p-tag">${esc((P.user && P.user.role) || "owner")}</span>
-      <button class="p-btn sm" id="logoutBtn">Sign out</button></div>
+      <span data-lxlang></span><button class="p-btn sm" id="logoutBtn">Sign out</button></div>
       <div id="vBody">${content}</div></main>
   </div>`;
   $$(".p-nav button").forEach(b => b.onclick = () => { view = b.dataset.v; render(); });

@@ -50,6 +50,21 @@ ok(!fs.existsSync(path.join(JS, "data.js")), "no browser file holds a catalogue"
 const html = fs.readdirSync(PUB).filter(f => f.endsWith(".html")).filter(f => /src="js\/(platform|admin)\.js"/.test(fs.readFileSync(path.join(PUB, f), "utf8")));
 ok(!html.length, "every console page loads its script from the backend", html);
 
+console.log("▸ WORDING FROM THE DATABASE");
+const T = require("../scripts/console-texts.js"), EX = require("../lib/expression.js");
+const inDb = new Set(db.all("SELECT key FROM messages WHERE lang=? AND key LIKE 'text:%'", EX.SEED.sourceLanguage).map(r => r.key.slice(5)));
+const missing = [...T.found()].filter(p => !inDb.has(p));
+ok(!missing.length, "every phrase the consoles show is a message in the database (node scripts/console-texts.js --write adds new ones)", missing.slice(0, 8));
+const es = menu("platform").words, words = B.plain("platform", PUB, { lang: "es" });
+ok(/"text:Master Platform":"Plataforma maestra"/.test(words) && /lxWords\(LX_CONSOLE\.words/.test(words), "a console is served its wording in the reader's language");
+ok(JSON.parse(/^const LX_CONSOLE = (.*);$/m.exec(B.plain("platform", PUB, { lang: "ar" }))[1]).dir === "rtl", "and the direction it is written in");
+db.run("UPDATE messages SET text=? WHERE lang=? AND key=?", "Global Product Master", EX.SEED.sourceLanguage, "text:Master Platform"); EX.seed();
+ok(menu("platform").words["text:Master Platform"] === "Global Product Master" && es["text:Master Platform"] === "Master Platform", "an operator's change to the English is what the console shows, and the seed keeps it");
+const shop = EX.copyFor("en", {}, {}, "en");
+ok(!("text:Master Platform" in shop) && "text:" + Object.keys(require("../lib/seed/texts.json").texts)[0] in shop, "a shopper is sent the storefront's wording, not the consoles'");
+const seedT = T.read(), untranslated = Object.values(seedT.texts).filter(v => !v.length).length;
+console.log("  · " + untranslated + " of " + Object.keys(seedT.texts).length + " console phrases are not translated yet");
+
 /* what the browser still defines for itself (constant tables) may only shrink, until it is nothing */
 const ALL = fs.readdirSync(JS).filter(f => f.endsWith(".js")).concat(fs.readdirSync(path.join(JS, "admin")).map(f => "admin/" + f));
 const tables = ALL.reduce((n, f) => n + (fs.readFileSync(path.join(JS, f), "utf8").match(/^const [A-Z_]{3,} = [\[{]/gm) || []).length, 0);

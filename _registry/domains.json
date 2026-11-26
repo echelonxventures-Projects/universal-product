@@ -179,6 +179,19 @@
    "public/js/data.js removed; lib/seed/sample-catalogue.json",
    "test/consoles.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0055",
+  "date": "2026-11-26",
+  "authorisedBy": "Platform owner",
+  "summary": "The consoles' wording comes from the database. Every phrase both consoles show — 2,906, menus included — is a message in the source language (editable in Data Studio, kept across seeds) and, where translated, in Spanish, French, German, Hindi and Arabic; scripts/console-texts.js keeps the seed in step with the code and a test fails when a phrase is not in the database. The backend serves each console its words, direction and language choices with its script; a language asked for in the address is remembered. One translator (public/js/words.js) serves the storefront and both consoles. A shopper is sent only the storefront's wording. 498 phrases are translated (menus, groups, sections, common words); 2,400 are not yet.",
+  "changes": [
+   "lib/seed/console-texts.json, scripts/console-texts.js",
+   "lib/expression.js wording(); source-language rows for every fixed phrase",
+   "lib/bundle.js serves words, lang, dir, languages; server.js remembers ?lang",
+   "public/js/words.js shared translator and language picker; app.js uses it; 22 pages load it",
+   "test/consoles.js wording checks"
+  ]
  }
   ],
   "domains": [

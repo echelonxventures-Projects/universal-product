@@ -132,7 +132,11 @@ function serveStatic(req, res, pathname, url) {
       const t = resolveTenant(req, url, parseCookies(req.headers.cookie));
       const host = String(req.headers.host || "").replace(/[^A-Za-z0-9.:[\]-]/g, "");
       try { html = require("./lib/page-meta.js").page(html, t, pathname || "/", url.searchParams, host ? (sec.httpsRequest(req) ? "https://" : "http://") + host : ""); } catch (e) { console.error("page meta:", e.message); }
-      send(req, res, base, Buffer.from(sec.applySri(html, PUB)), null);
+      /* a language asked for in the address is remembered, so every script the page loads (a
+         console's menu and wording among them) answers in it */
+      const E = require("./lib/expression.js"), asked = url.searchParams.get(E.SEED.query);
+      const head = asked && E.speaks(asked) ? { ...base, "Set-Cookie": E.SEED.cookie + "=" + encodeURIComponent(E.base(asked)) + "; Path=/; Max-Age=31536000; SameSite=Lax" + (sec.httpsRequest(req) ? "; Secure" : "") } : base;
+      send(req, res, head, Buffer.from(sec.applySri(html, PUB)), null);
     });
     return;
   }
@@ -358,11 +362,11 @@ const handler = async (req, res) => {
        never has to eval fetched source */
     const pm = /^\/js\/plain\/(store|platform)\.js$/.exec(url.pathname);
     if (pm) {
-      return send(req, res, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" }, Buffer.from(require("./lib/bundle.js").plain(pm[1], PUB) || ""), null);
+      return send(req, res, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" }, Buffer.from(require("./lib/bundle.js").plain(pm[1], PUB, { lang: require("./lib/expression.js").pick(req, url, null).lang }) || ""), null);
     }
     const bm = /^\/js\/bundle\/(store|platform)\.js$/.exec(url.pathname);
     if (bm) {
-      return send(req, res, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" }, Buffer.from(require("./lib/bundle.js").wrap(bm[1], PUB) || ""), null);
+      return send(req, res, { "Content-Type": "application/javascript; charset=utf-8", "Cache-Control": "no-cache" }, Buffer.from(require("./lib/bundle.js").wrap(bm[1], PUB, { lang: require("./lib/expression.js").pick(req, url, null).lang }) || ""), null);
     }
     /* one console: the old store and platform pages open /console.html in their scope,
        keeping whatever the link carried (?store=, a hand-off ?token=, ?view=) */

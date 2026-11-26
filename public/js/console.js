@@ -225,7 +225,7 @@ function shell(content) {
       ${me.store && me.platform ? `<button class="p-btn sm" id="scopeBtn" title="Switch scope">⇄ ${SCOPE_LABEL[scope === "store" ? "platform" : "store"]}</button>` : ""}
       <span class="p-chip">${scope === "platform" ? "platform" : esc((me.tenant && me.tenant.mode) || "store")}</span>
       <span class="p-user">${esc(who)}</span><span class="p-tag">${esc(roleTag)}</span>
-      <button class="p-btn sm" id="logoutBtn">Sign out</button></div>
+      <span data-lxlang></span><button class="p-btn sm" id="logoutBtn">Sign out</button></div>
       <div id="vBody">${content}</div></main>
   </div>`;
   wireNav();
