@@ -16,4 +16,4 @@ async function vRisk() {
   </div>`;
 }
 
-screen("risk", { group: "Trust & Compliance", label: "🛡️ Risk & Fraud", order: 0, render: async () => await vRisk() });
+screen("risk", { render: async () => await vRisk() });

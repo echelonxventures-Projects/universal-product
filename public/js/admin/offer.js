@@ -3,5 +3,5 @@
    its wiring and its place in the Offers group of the nav. */
 "use strict";
 
-screen("pricematch", { group: "Offers", label: "🏷️ Price Match", render: vCases, wire: wireCases });
-screen("tradeins", { group: "Offers", label: "♻️ Trade-ins", render: vCases, wire: wireCases });
+screen("pricematch", { render: vCases, wire: wireCases });
+screen("tradeins", { render: vCases, wire: wireCases });

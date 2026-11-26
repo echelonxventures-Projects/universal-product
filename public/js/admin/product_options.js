@@ -3,4 +3,4 @@
    render, its wiring and its place in the nav. */
 "use strict";
 
-screen("prodoptions", { group: "Catalogue", label: "🧩 Product Options", order: 5, render: view => vProdOptions(view), wire: () => wireProdOptions() });
+screen("prodoptions", { render: view => vProdOptions(view), wire: () => wireProdOptions() });

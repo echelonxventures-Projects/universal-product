@@ -29,5 +29,5 @@ async function vDash() {
   </div>`;
 }
 
-screen("dash", { group: "Overview", label: "◈ Dashboard", order: 0, render: async () => await vDash() });
-screen("content", { group: "Storefront", label: "🖼️ Home Content", order: 0, render: async () => await entityTable("banner") + await entityTable("card") + await entityTable("department") });
+screen("dash", { render: async () => await vDash() });
+screen("content", { render: async () => await entityTable("banner") + await entityTable("card") + await entityTable("department") });

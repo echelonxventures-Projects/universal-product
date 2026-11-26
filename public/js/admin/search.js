@@ -21,4 +21,4 @@ async function vSearch() {
   </div>`;
 }
 
-screen("search", { group: "Storefront", label: "🔎 Search & Discovery", order: 1, render: async () => await vSearch() });
+screen("search", { render: async () => await vSearch() });

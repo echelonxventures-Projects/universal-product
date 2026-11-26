@@ -85,4 +85,4 @@ function wireSettings() {
   };
 }
 
-screen("settings", { group: "Settings", label: "⚙️ Settings", order: 0, render: async () => await vSettings(), wire: async () => { wireSettings(); } });
+screen("settings", { render: async () => await vSettings(), wire: async () => { wireSettings(); } });

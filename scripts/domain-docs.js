@@ -56,9 +56,8 @@ function routeTableOf(api) {
 }
 const machines = () => Object.fromEntries(J("lib/seed/states.json").stateMachines.map(m => [m.key, m]));
 const caps = () => Object.fromEntries(J("lib/seed/capabilities.json").CATALOG.map(c => [c.key, c]));
-const adminLabels = () => Object.assign(Object.fromEntries([...read("public/js/admin.js").split("const NAVFLAT")[0].matchAll(/\["([a-z_]+)", "([^"]+)"\]/g)].map(m => [m[1], m[2]])),
-  Object.fromEntries(require("./domain-map.js").domainScreens().map(x => [x.key, (new RegExp('^screen\\("' + x.key + '", \\{[^}]*label: "([^"]+)"', "m").exec(read(x.file)) || [])[1] || x.key])));
-const platformLabels = () => Object.fromEntries([...read("public/js/platform.js").matchAll(/^\s+\["([a-z0-9_-]+)", "([^"]+)"/gm)].map(m => [m[1], m[2]]));
+const adminLabels = () => Object.fromEntries(require("../lib/consoles.js").declared("store").map(r => [r.key, r.label]));
+const platformLabels = () => Object.fromEntries(require("../lib/consoles.js").declared("platform").map(r => [r.key, r.label]));
 
 /* ---------- what a person writes ---------- */
 const SRC = path.join(ROOT, "docs", "source");

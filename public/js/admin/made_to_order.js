@@ -3,5 +3,5 @@
    render, its wiring and its place in the nav. */
 "use strict";
 
-screen("proofs", { group: "Catalogue", label: "🎨 Customisation Proofs", order: 9, render: view => vProdOptions(view), wire: () => wireProdOptions() });
-screen("samples", { group: "Catalogue", label: "🧪 Sample Orders", order: 10, render: view => vProdOptions(view), wire: () => wireProdOptions() });
+screen("proofs", { render: view => vProdOptions(view), wire: () => wireProdOptions() });
+screen("samples", { render: view => vProdOptions(view), wire: () => wireProdOptions() });

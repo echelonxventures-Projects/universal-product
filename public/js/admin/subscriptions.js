@@ -24,4 +24,4 @@ async function vRetention() {
   </div>`;
 }
 
-screen("retention", { group: "Marketing & Growth", label: "🔁 Subscriptions & Members", order: 1, render: async () => await vRetention() });
+screen("retention", { render: async () => await vRetention() });

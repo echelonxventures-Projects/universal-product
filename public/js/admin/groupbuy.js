@@ -181,6 +181,6 @@ function wireOffers() {
   $("#wlGo").onclick = async () => { try { const r = await api("/wallet/ledger" + ($("#wlOwner").value ? "?owner=" + encodeURIComponent($("#wlOwner").value) : "")); $("#wlOut").innerHTML = "balance " + money(r.balance) + "<br>" + (r.entries || []).map(e2 => `${esc(e2.kind)} ${Number(e2.amount).toFixed(2)} → ${money(e2.balance_after)} · ${esc((e2.created_at || "").slice(0, 16))}`).join("<br>") || "no entries"; } catch (e) { toast(e.message); } };
 }
 
-screen("promotions", { group: "Offers", label: "🎟️ Offers", section: "offers", render: vOffers, wire: wireOffers });
-screen("goip", { group: "Offers", label: "Ω∞ GOIP", section: "offers", render: vGoip, wire: wireGoip });
-screen("groupbuy", { group: "Offers", label: "👥 Group Buying", render: vGroupBuy, wire: wireGroupBuy });
+screen("promotions", { render: vOffers, wire: wireOffers });
+screen("goip", { render: vGoip, wire: wireGoip });
+screen("groupbuy", { render: vGroupBuy, wire: wireGroupBuy });

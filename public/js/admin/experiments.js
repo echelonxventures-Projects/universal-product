@@ -12,4 +12,4 @@ async function vExperiments() {
   </div>`;
 }
 
-screen("experiments", { group: "Marketing & Growth", label: "🧪 Experiments", order: 2, render: async () => await vExperiments() });
+screen("experiments", { render: async () => await vExperiments() });

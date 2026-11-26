@@ -395,7 +395,7 @@ function closeModal() {
   if (window._modalResolve) { window._modalResolve(); window._modalResolve = null; }
 }
 
-screen("setup", { group: "Overview", label: "🧭 Setup Wizard", render: vSetup, wire: wireSetup });
+screen("setup", { render: vSetup, wire: wireSetup });
 
 async function renderStructure() {
   const r = await api("/tenancy/tree");
@@ -451,7 +451,7 @@ async function renderStructure() {
     <div id="tnModalHost" class="hidden">${newForm}</div>`;
 }
 
-screen("structure", { group: "Team & Access", label: "🏢 Org Structure", order: 1, render: async () => await renderStructure() });
+screen("structure", { render: async () => await renderStructure() });
 
 /* ---------- the addresses the store answers at ---------- */
 async function vAddresses() {
@@ -473,4 +473,4 @@ function wireAddresses() {
   $$("[data-addel]").forEach(b => b.onclick = () => { if (confirm("Stop answering at this address?")) go("/admin/addresses/" + b.dataset.addel, "DELETE", () => "Removed"); });
 }
 
-screen("addresses", { group: "Settings", label: "🌐 Addresses", order: 1, section: "settings", render: async () => await vAddresses(), wire: async () => { wireAddresses(); } });
+screen("addresses", { render: async () => await vAddresses(), wire: async () => { wireAddresses(); } });

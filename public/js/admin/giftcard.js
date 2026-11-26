@@ -29,4 +29,4 @@ function wireGiftCards() {
   };
   wireCoPosts();
 }
-screen("giftcards", { group: "Offers", label: "🎁 Gift Cards", render: vGiftCards, wire: wireGiftCards });
+screen("giftcards", { render: vGiftCards, wire: wireGiftCards });

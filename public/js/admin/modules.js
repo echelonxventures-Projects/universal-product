@@ -19,8 +19,8 @@ async function vModules() {
   }).join("")}</div>`).join("")}`;
 }
 
-screen("applicability", { group: "Settings", label: "🧭 Availability Rules", order: 1, render: async () => `<div id="rulesRoot"></div>`, wire: async () => { await LXRulesUI.mount(document.getElementById("rulesRoot"), { api, base: "/admin/rules", scope: "store" }); } });
-screen("modules", { group: "Settings", label: "🧩 Modules", order: 2, render: async () => await vModules() });
+screen("applicability", { render: async () => `<div id="rulesRoot"></div>`, wire: async () => { await LXRulesUI.mount(document.getElementById("rulesRoot"), { api, base: "/admin/rules", scope: "store" }); } });
+screen("modules", { render: async () => await vModules() });
 
 /* ---------- shopper features: one screen each, drawn from the feature's own declaration ---------- */
 const FEATURE_INPUT = {
@@ -47,32 +47,32 @@ async function wireFeature(key) {
     try { const r = await api("/admin/features/" + key + "/" + x.dataset.ftact + "/" + x.dataset.id, "POST", { value }); if (r.document) { $("#ftDoc").innerHTML = `<div class="a-card"><pre style="white-space:pre-wrap">${esc(JSON.stringify(r.document, null, 2))}</pre></div>`; return; } toast(r.outOfRange ? "⚠️ Out of range" : "Done"); render(); } catch (e) { toast(e.message); }
   });
 }
-screen("sale_events", { group: "Offers", label: "🏷️ Sale events", order: 60, render: async () => await vFeature("sale_events"), wire: async () => { await wireFeature("sale_events"); } });
-screen("club_pricing", { group: "Offers", label: "🎟️ Club pricing", order: 60, render: async () => await vFeature("club_pricing"), wire: async () => { await wireFeature("club_pricing"); } });
-screen("live_selling", { group: "Marketing", label: "🎥 Live selling", order: 60, render: async () => await vFeature("live_selling"), wire: async () => { await wireFeature("live_selling"); } });
-screen("payment_instrument_offers", { group: "Payments & Finance", label: "💳 Payment offers", order: 60, render: async () => await vFeature("payment_instrument_offers"), wire: async () => { await wireFeature("payment_instrument_offers"); } });
-screen("instalments_without_cost", { group: "Payments & Finance", label: "🗓️ Instalments without cost", order: 60, render: async () => await vFeature("instalments_without_cost"), wire: async () => { await wireFeature("instalments_without_cost"); } });
-screen("duties_at_checkout", { group: "Orders & Fulfilment", label: "🛃 Duties at checkout", order: 60, render: async () => await vFeature("duties_at_checkout"), wire: async () => { await wireFeature("duties_at_checkout"); } });
-screen("customs_declarations", { group: "Orders & Fulfilment", label: "📄 Customs declarations", order: 60, render: async () => await vFeature("customs_declarations"), wire: async () => { await wireFeature("customs_declarations"); } });
-screen("consolidated_shipping", { group: "Orders & Fulfilment", label: "📦 Consolidated shipping", order: 60, render: async () => await vFeature("consolidated_shipping"), wire: async () => { await wireFeature("consolidated_shipping"); } });
-screen("supplier_direct", { group: "Orders & Fulfilment", label: "🏭 Supplier direct", order: 60, render: async () => await vFeature("supplier_direct"), wire: async () => { await wireFeature("supplier_direct"); } });
-screen("reseller_margins", { group: "Marketing", label: "🤝 Reseller margins", order: 60, render: async () => await vFeature("reseller_margins"), wire: async () => { await wireFeature("reseller_margins"); } });
-screen("affiliate_commissions", { group: "Marketing", label: "🔗 Affiliate commissions", order: 60, render: async () => await vFeature("affiliate_commissions"), wire: async () => { await wireFeature("affiliate_commissions"); } });
-screen("gamified_rewards", { group: "Marketing", label: "🎯 Daily rewards", order: 60, render: async () => await vFeature("gamified_rewards"), wire: async () => { await wireFeature("gamified_rewards"); } });
-screen("funding_goals", { group: "Offers", label: "🚀 Funding goals", order: 60, render: async () => await vFeature("funding_goals"), wire: async () => { await wireFeature("funding_goals"); } });
-screen("seat_maps", { group: "Catalogue", label: "💺 Seat maps", order: 60, render: async () => await vFeature("seat_maps"), wire: async () => { await wireFeature("seat_maps"); } });
-screen("travel_itineraries", { group: "Catalogue", label: "🧳 Travel itineraries", order: 60, render: async () => await vFeature("travel_itineraries"), wire: async () => { await wireFeature("travel_itineraries"); } });
-screen("fitment", { group: "Catalogue", label: "🚗 Fitment", order: 60, render: async () => await vFeature("fitment"), wire: async () => { await wireFeature("fitment"); } });
-screen("schedule_rules", { group: "Catalogue", label: "⚕️ Schedule rules", order: 60, render: async () => await vFeature("schedule_rules"), wire: async () => { await wireFeature("schedule_rules"); } });
-screen("generic_alternatives", { group: "Catalogue", label: "💊 Generic alternatives", order: 60, render: async () => await vFeature("generic_alternatives"), wire: async () => { await wireFeature("generic_alternatives"); } });
-screen("refill_reminders", { group: "Marketing", label: "🔔 Refill reminders", order: 60, render: async () => await vFeature("refill_reminders"), wire: async () => { await wireFeature("refill_reminders"); } });
-screen("kitchen_hours", { group: "Catalogue", label: "🍳 Kitchen hours", order: 60, render: async () => await vFeature("kitchen_hours"), wire: async () => { await wireFeature("kitchen_hours"); } });
-screen("batch_expiry", { group: "Catalogue", label: "📅 Batch expiry", order: 60, render: async () => await vFeature("batch_expiry"), wire: async () => { await wireFeature("batch_expiry"); } });
-screen("freshness_windows", { group: "Catalogue", label: "🥬 Freshness windows", order: 60, render: async () => await vFeature("freshness_windows"), wire: async () => { await wireFeature("freshness_windows"); } });
-screen("cold_chain", { group: "Orders & Fulfilment", label: "❄️ Cold chain", order: 60, render: async () => await vFeature("cold_chain"), wire: async () => { await wireFeature("cold_chain"); } });
-screen("large_item_delivery", { group: "Orders & Fulfilment", label: "🛋️ Large item delivery", order: 60, render: async () => await vFeature("large_item_delivery"), wire: async () => { await wireFeature("large_item_delivery"); } });
-screen("dated_delivery", { group: "Orders & Fulfilment", label: "🎁 Dated delivery", order: 60, render: async () => await vFeature("dated_delivery"), wire: async () => { await wireFeature("dated_delivery"); } });
-screen("sell_by_weight", { group: "Catalogue", label: "⚖️ Sell by weight", order: 60, render: async () => await vFeature("sell_by_weight"), wire: async () => { await wireFeature("sell_by_weight"); } });
+screen("sale_events", { render: async () => await vFeature("sale_events"), wire: async () => { await wireFeature("sale_events"); } });
+screen("club_pricing", { render: async () => await vFeature("club_pricing"), wire: async () => { await wireFeature("club_pricing"); } });
+screen("live_selling", { render: async () => await vFeature("live_selling"), wire: async () => { await wireFeature("live_selling"); } });
+screen("payment_instrument_offers", { render: async () => await vFeature("payment_instrument_offers"), wire: async () => { await wireFeature("payment_instrument_offers"); } });
+screen("instalments_without_cost", { render: async () => await vFeature("instalments_without_cost"), wire: async () => { await wireFeature("instalments_without_cost"); } });
+screen("duties_at_checkout", { render: async () => await vFeature("duties_at_checkout"), wire: async () => { await wireFeature("duties_at_checkout"); } });
+screen("customs_declarations", { render: async () => await vFeature("customs_declarations"), wire: async () => { await wireFeature("customs_declarations"); } });
+screen("consolidated_shipping", { render: async () => await vFeature("consolidated_shipping"), wire: async () => { await wireFeature("consolidated_shipping"); } });
+screen("supplier_direct", { render: async () => await vFeature("supplier_direct"), wire: async () => { await wireFeature("supplier_direct"); } });
+screen("reseller_margins", { render: async () => await vFeature("reseller_margins"), wire: async () => { await wireFeature("reseller_margins"); } });
+screen("affiliate_commissions", { render: async () => await vFeature("affiliate_commissions"), wire: async () => { await wireFeature("affiliate_commissions"); } });
+screen("gamified_rewards", { render: async () => await vFeature("gamified_rewards"), wire: async () => { await wireFeature("gamified_rewards"); } });
+screen("funding_goals", { render: async () => await vFeature("funding_goals"), wire: async () => { await wireFeature("funding_goals"); } });
+screen("seat_maps", { render: async () => await vFeature("seat_maps"), wire: async () => { await wireFeature("seat_maps"); } });
+screen("travel_itineraries", { render: async () => await vFeature("travel_itineraries"), wire: async () => { await wireFeature("travel_itineraries"); } });
+screen("fitment", { render: async () => await vFeature("fitment"), wire: async () => { await wireFeature("fitment"); } });
+screen("schedule_rules", { render: async () => await vFeature("schedule_rules"), wire: async () => { await wireFeature("schedule_rules"); } });
+screen("generic_alternatives", { render: async () => await vFeature("generic_alternatives"), wire: async () => { await wireFeature("generic_alternatives"); } });
+screen("refill_reminders", { render: async () => await vFeature("refill_reminders"), wire: async () => { await wireFeature("refill_reminders"); } });
+screen("kitchen_hours", { render: async () => await vFeature("kitchen_hours"), wire: async () => { await wireFeature("kitchen_hours"); } });
+screen("batch_expiry", { render: async () => await vFeature("batch_expiry"), wire: async () => { await wireFeature("batch_expiry"); } });
+screen("freshness_windows", { render: async () => await vFeature("freshness_windows"), wire: async () => { await wireFeature("freshness_windows"); } });
+screen("cold_chain", { render: async () => await vFeature("cold_chain"), wire: async () => { await wireFeature("cold_chain"); } });
+screen("large_item_delivery", { render: async () => await vFeature("large_item_delivery"), wire: async () => { await wireFeature("large_item_delivery"); } });
+screen("dated_delivery", { render: async () => await vFeature("dated_delivery"), wire: async () => { await wireFeature("dated_delivery"); } });
+screen("sell_by_weight", { render: async () => await vFeature("sell_by_weight"), wire: async () => { await wireFeature("sell_by_weight"); } });
 
 /* ---------- the records this platform keeps: the kinds of record its setup chose from the master ---------- */
 /* how a fact of each value type is asked for, and read from what was typed */
@@ -104,4 +104,4 @@ async function wRecords() {
   /* removed from the list; its history stays on the master */
   $$("[data-rechide]").forEach(b => b.onclick = async () => { try { await api(base() + "/" + b.dataset.rechide, "PUT", { listed: false }); render(); } catch (e) { toast(e.message); } });
 }
-screen("records", { group: "Settings", label: "🗃️ Records", order: 3, render: async () => await vRecords(), wire: async () => await wRecords() });
+screen("records", { render: async () => await vRecords(), wire: async () => await wRecords() });

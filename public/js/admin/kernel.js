@@ -16,4 +16,4 @@ function wireStudio() {
   $$("[data-studio]").forEach(b => b.onclick = () => { A.studioSel = b.dataset.studio; render(); });
 }
 
-screen("studio", { group: "Settings", label: "🛠️ Data Studio", order: 3, render: async () => await vStudio(), wire: async () => { wireStudio(); } });
+screen("studio", { render: async () => await vStudio(), wire: async () => { wireStudio(); } });

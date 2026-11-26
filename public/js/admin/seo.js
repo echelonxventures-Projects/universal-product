@@ -31,4 +31,4 @@ function wireSitemap() {
   loadSitemapConfig();
 }
 
-screen("sitemap", { group: "Storefront", label: "🗺️ Sitemap & SEO", order: 2, render: async () => sitemapHtml(), wire: async () => { wireSitemap(); } });
+screen("sitemap", { render: async () => sitemapHtml(), wire: async () => { wireSitemap(); } });

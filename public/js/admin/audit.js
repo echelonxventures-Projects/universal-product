@@ -37,5 +37,5 @@ function wireAudit() {
   };
 }
 
-screen("audit", { group: "Trust & Compliance", label: "📜 Audit Trail", order: 2, render: async () => await vAudit(), wire: async () => { wireAudit(); } });
-screen("trash", { group: "Trust & Compliance", label: "🗑️ Trash & Retention", order: 3, render: async () => await vTrash(), wire: async () => { wireTrash(); } });
+screen("audit", { render: async () => await vAudit(), wire: async () => { wireAudit(); } });
+screen("trash", { render: async () => await vTrash(), wire: async () => { wireTrash(); } });

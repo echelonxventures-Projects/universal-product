@@ -80,5 +80,5 @@ async function vFleet() {
     </tr>`).join("") || `<tr><td colspan="9">No drivers yet — add one above.</td></tr>`}</tbody></table></div></div>`;
 }
 
-screen("rides", { group: "Mobility", label: "🚗 Rides & Dispatch", order: 0, render: async () => await vRides() });
-screen("fleet", { group: "Mobility", label: "🚙 Fleet & Drivers", order: 1, render: async () => await vFleet() });
+screen("rides", { render: async () => await vRides() });
+screen("fleet", { render: async () => await vFleet() });

@@ -31,4 +31,4 @@ function wireAffiliate() {
   loadAffiliates();
 }
 
-screen("affiliate", { group: "Marketing & Growth", label: "📣 Influencers & Affiliates", order: 0, render: async () => affiliateHtml(), wire: async () => { wireAffiliate(); } });
+screen("affiliate", { render: async () => affiliateHtml(), wire: async () => { wireAffiliate(); } });

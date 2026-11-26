@@ -32,4 +32,4 @@ function wireSso() {
   if ($("#trGo")) $("#trGo").onclick = async () => { try { await api("/admin/transfers", "POST", { sku_id: Number($("#trSku").value), from_warehouse: Number($("#trFrom").value), to_warehouse: Number($("#trTo").value), qty: Number($("#trQty").value) || 1 }); toast("Transferred"); render(); } catch (e) { toast(e.message); } };
 }
 
-screen("sso", { group: "Team & Access", label: "🔐 SSO & Integrations", order: 2, render: async () => await vSso(), wire: async () => { wireSso(); } });
+screen("sso", { render: async () => await vSso(), wire: async () => { wireSso(); } });

@@ -142,10 +142,10 @@ function wireShipping() {
   loadShipRates();
 }
 
-screen("shipping", { group: "Orders & Fulfilment", label: "📮 Shipping & Tracking", order: 2, render: async () => shippingHtml(), wire: async () => { wireShipping(); } });
-screen("pickup", { group: "Orders & Fulfilment", label: "📍 Pickup Points", order: 3, render: async () => await vPickup(), wire: async () => { wirePickup(); } });
-screen("logistics", { group: "Orders & Fulfilment", label: "🚚 Logistics & Fulfilment", order: 18, render: async () => await vLogistics() });
-screen("qcops", { group: "Business Operations", label: "⚡ Quick-commerce", order: 0, render: async () => await vQcOps(), wire: async () => { wireQcOps(); } });
+screen("shipping", { render: async () => shippingHtml(), wire: async () => { wireShipping(); } });
+screen("pickup", { render: async () => await vPickup(), wire: async () => { wirePickup(); } });
+screen("logistics", { render: async () => await vLogistics() });
+screen("qcops", { render: async () => await vQcOps(), wire: async () => { wireQcOps(); } });
 
 /* ---------- delivery slots and where the store delivers ---------- */
 const WEEKDAYS = () => Array.from({ length: 7 }, (_, i) => new Date(Date.UTC(2023, 0, 1 + i)).toLocaleDateString(undefined, { weekday: "long", timeZone: "UTC" }));
@@ -174,5 +174,5 @@ function wireAreas() {
   const b = $("#saAdd"); if (b) b.onclick = () => postAndRender("/admin/serviceable-areas", { name: fieldVal("#saName"), postcodes: fieldVal("#saCodes"), fee: Number(fieldVal("#saFee")), extra_days: Number(fieldVal("#saDays")) }, "POST", "Area added");
   $$("[data-sadel]").forEach(x => x.onclick = async () => { try { await api("/admin/serviceable-areas/" + x.dataset.sadel, "DELETE"); render(); } catch (e) { toast(e.message); } });
 }
-screen("deliveryslots", { group: "Orders & Fulfilment", label: "🗓️ Delivery Slots", order: 6, render: async () => await vDeliverySlots(), wire: async () => { wireDeliverySlots(); } });
-screen("areas", { group: "Orders & Fulfilment", label: "📮 Serviceable Areas", order: 7, render: async () => await vAreas(), wire: async () => { wireAreas(); } });
+screen("deliveryslots", { render: async () => await vDeliverySlots(), wire: async () => { wireDeliverySlots(); } });
+screen("areas", { render: async () => await vAreas(), wire: async () => { wireAreas(); } });

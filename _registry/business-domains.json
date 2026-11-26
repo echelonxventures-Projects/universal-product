@@ -2417,8 +2417,12 @@
     "platform_admin"
    ],
    "owns": {
-    "files": [],
-    "tables": [],
+    "files": [
+     "lib/consoles.js"
+    ],
+    "tables": [
+     "console_screens"
+    ],
     "routes": [],
     "machines": [],
     "capabilities": [],

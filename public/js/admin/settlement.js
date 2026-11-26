@@ -77,6 +77,6 @@ function wireFinOps() {
   };
 }
 
-screen("settlements", { group: "Payments & Finance", label: "🤝 Settlements", order: 2, render: async () => await entityTable("settlement") });
-screen("finance", { group: "Payments & Finance", label: "💰 Disputes & Payouts", order: 3, render: async () => await vFinance() });
-screen("finops", { group: "Business Operations", label: "💸 Fintech Ops", order: 3, render: async () => await vFinOps(), wire: async () => { wireFinOps(); } });
+screen("settlements", { render: async () => await entityTable("settlement") });
+screen("finance", { render: async () => await vFinance() });
+screen("finops", { render: async () => await vFinOps(), wire: async () => { wireFinOps(); } });

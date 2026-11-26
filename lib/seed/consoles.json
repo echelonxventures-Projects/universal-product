@@ -1,0 +1,3364 @@
+{
+ "$comment": "The consoles' menus: every screen of the platform console and the store console, where it sits, what it is called, what it shows and the access section it needs. Seeded into console_screens (lib/consoles.js); the database is what the consoles are served, and an operator edits it in Data Studio. A screen's drawing code is the only part in the browser.",
+ "platform": {
+  "sections": [
+   {
+    "section": "01 · Foundation",
+    "groups": [
+     {
+      "group": "Identity",
+      "screens": [
+       {
+        "key": "identity",
+        "label": "🔐 Identity · Auth",
+        "shows": {
+         "v": "identity"
+        }
+       },
+       {
+        "key": "identity-templates",
+        "label": "📋 Identity Templates",
+        "shows": {
+         "v": "identity-templates"
+        }
+       },
+       {
+        "key": "persons",
+        "label": "👥 Persons",
+        "shows": {
+         "u": "person"
+        }
+       },
+       {
+        "key": "organizations",
+        "label": "🏢 Organizations",
+        "shows": {
+         "u": "organization"
+        }
+       },
+       {
+        "key": "platform-setup",
+        "label": "🧭 Platform Setup",
+        "shows": {
+         "v": "platform-setup"
+        }
+       },
+       {
+        "key": "users",
+        "label": "👤 Users",
+        "shows": {
+         "v": "users",
+         "a": "users-admin"
+        }
+       },
+       {
+        "key": "permissions",
+        "label": "🔑 Permissions",
+        "shows": {
+         "u": "permission",
+         "a": "permissions-admin"
+        }
+       },
+       {
+        "key": "credentials",
+        "label": "🧷 Credentials",
+        "shows": {
+         "u": "credential_chain"
+        }
+       },
+       {
+        "key": "authentication",
+        "label": "🔓 Authentication",
+        "shows": {
+         "u": "authentication"
+        }
+       },
+       {
+        "key": "authorization",
+        "label": "🛂 Authorization",
+        "shows": {
+         "u": "authorization"
+        }
+       },
+       {
+        "key": "trust",
+        "label": "🤝 Trust",
+        "shows": {
+         "u": "trust"
+        }
+       },
+       {
+        "key": "verification",
+        "label": "✔️ Verification",
+        "shows": {
+         "u": "verification_management"
+        }
+       },
+       {
+        "key": "kyc",
+        "label": "📄 KYC",
+        "shows": {
+         "e": "kyc_profile"
+        }
+       },
+       {
+        "key": "kyb",
+        "label": "🏛️ KYB",
+        "shows": {
+         "u": "kyb"
+        }
+       },
+       {
+        "key": "identity-graph",
+        "label": "🕸️ Identity Graph",
+        "shows": {
+         "u": "identity_universe"
+        }
+       },
+       {
+        "key": "padmins",
+        "label": "🛡️ Platform Admins",
+        "shows": {
+         "v": "padmins"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Geography",
+      "screens": [
+       {
+        "key": "countries",
+        "label": "🗺️ Countries",
+        "shows": {
+         "e": "country"
+        }
+       },
+       {
+        "key": "states",
+        "label": "🏞️ States · Regions",
+        "shows": {
+         "u": "region"
+        }
+       },
+       {
+        "key": "cities",
+        "label": "🏙️ Cities",
+        "shows": {
+         "u": "city"
+        }
+       },
+       {
+        "key": "jurisdictions",
+        "label": "⚖️ Jurisdictions",
+        "shows": {
+         "u": "jurisdiction"
+        }
+       },
+       {
+        "key": "addresses",
+        "label": "📍 Addresses",
+        "shows": {
+         "e": "address"
+        }
+       },
+       {
+        "key": "geo",
+        "label": "🌍 Geo Registry · Taxes",
+        "shows": {
+         "v": "geo"
+        }
+       },
+       {
+        "key": "geography",
+        "label": "🌐 Geography Universe",
+        "shows": {
+         "u": "geography"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Temporal",
+      "screens": [
+       {
+        "key": "calendars",
+        "label": "📅 Calendars",
+        "shows": {
+         "u": "calendars"
+        }
+       },
+       {
+        "key": "schedules",
+        "label": "⏱️ Schedules",
+        "shows": {
+         "u": "schedules"
+        }
+       },
+       {
+        "key": "recurrence",
+        "label": "🔁 Recurrence",
+        "shows": {
+         "e": "recurring_cycle"
+        }
+       },
+       {
+        "key": "appointments",
+        "label": "🗓️ Appointments",
+        "shows": {
+         "u": "appointment"
+        }
+       },
+       {
+        "key": "reservations",
+        "label": "🪑 Reservations",
+        "shows": {
+         "u": "booking"
+        }
+       },
+       {
+        "key": "time-windows",
+        "label": "🪟 Time Windows",
+        "shows": {
+         "u": "time_window"
+        }
+       },
+       {
+        "key": "delivery-slots",
+        "label": "🚚 Delivery Slots",
+        "shows": {
+         "e": "delivery_slot"
+        }
+       },
+       {
+        "key": "availability",
+        "label": "🟢 Availability",
+        "shows": {
+         "u": "availability"
+        }
+       },
+       {
+        "key": "sla",
+        "label": "🛡️ SLA",
+        "shows": {
+         "u": "sla"
+        }
+       },
+       {
+        "key": "temporal",
+        "label": "⏳ Temporal Universe",
+        "shows": {
+         "u": "temporal"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Currency",
+      "screens": [
+       {
+        "key": "currencies",
+        "label": "💰 Currencies",
+        "shows": {
+         "e": "currency"
+        }
+       },
+       {
+        "key": "fx",
+        "label": "📈 Exchange Rates",
+        "shows": {
+         "v": "geo"
+        }
+       },
+       {
+        "key": "currency-universe",
+        "label": "🪙 Currency Universe",
+        "shows": {
+         "u": "currency_universe"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Localization",
+      "screens": [
+       {
+        "key": "languages",
+        "label": "🗣️ Languages",
+        "shows": {
+         "u": "language"
+        }
+       },
+       {
+        "key": "localization",
+        "label": "🌐 Localization",
+        "shows": {
+         "e": "localization"
+        }
+       },
+       {
+        "key": "translation",
+        "label": "🔤 Translation Registry",
+        "shows": {
+         "u": "translation"
+        }
+       },
+       {
+        "key": "cultural",
+        "label": "🌍 Cultural Context",
+        "shows": {
+         "u": "cultural"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "section": "02 · Knowledge",
+    "groups": [
+     {
+      "group": "Products",
+      "screens": [
+       {
+        "key": "gproducts",
+        "label": "🌐 Global Products",
+        "shows": {
+         "v": "gproducts"
+        }
+       },
+       {
+        "key": "master-platform",
+        "label": "🧬 Master Platform",
+        "shows": {
+         "v": "master-platform"
+        }
+       },
+       {
+        "key": "master-review",
+        "label": "🗳️ Master Review",
+        "shows": {
+         "v": "master-review"
+        }
+       },
+       {
+        "key": "master-permissions",
+        "label": "🔐 Master Permissions",
+        "shows": {
+         "v": "master-permissions"
+        }
+       },
+       {
+        "key": "product-families",
+        "label": "👨‍👩‍👧 Product Families",
+        "shows": {
+         "u": "product_family"
+        }
+       },
+       {
+        "key": "product-types",
+        "label": "📦 Product Types",
+        "shows": {
+         "u": "product_type"
+        }
+       },
+       {
+        "key": "variants",
+        "label": "🧬 Variants",
+        "shows": {
+         "u": "product_variants"
+        }
+       },
+       {
+        "key": "attributes",
+        "label": "🧩 Attributes",
+        "shows": {
+         "e": "attribute"
+        }
+       },
+       {
+        "key": "specifications",
+        "label": "📐 Specifications",
+        "shows": {
+         "u": "specification"
+        }
+       },
+       {
+        "key": "bundles",
+        "label": "🧺 Bundles · Kits",
+        "shows": {
+         "u": "bundle_offer"
+        }
+       },
+       {
+        "key": "collections",
+        "label": "📚 Collections",
+        "shows": {
+         "u": "collection"
+        }
+       },
+       {
+        "key": "product-graph",
+        "label": "🕸️ Product Graph",
+        "shows": {
+         "u": "product_ontology"
+        }
+       },
+       {
+        "key": "product-registry",
+        "label": "🗄️ Product Registry",
+        "shows": {
+         "u": "global_product_registry_universe"
+        }
+       },
+       {
+        "key": "definitions",
+        "label": "📐 Entity Definitions",
+        "shows": {
+         "v": "definitions"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Services",
+      "screens": [
+       {
+        "key": "global-services",
+        "label": "🌐 Global Services",
+        "shows": {
+         "u": "service"
+        }
+       },
+       {
+        "key": "service-types",
+        "label": "🛠️ Service Types",
+        "shows": {
+         "u": "service_type"
+        }
+       },
+       {
+        "key": "service-plans",
+        "label": "📜 Service Plans",
+        "shows": {
+         "u": "subscription"
+        }
+       },
+       {
+        "key": "entitlements",
+        "label": "✅ Entitlements",
+        "shows": {
+         "u": "entitlement"
+        }
+       },
+       {
+        "key": "service-registry",
+        "label": "🗄️ Service Registry",
+        "shows": {
+         "u": "global_service_registry_universe"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Catalog & Taxonomy",
+      "screens": [
+       {
+        "key": "gcatalog",
+        "label": "📦 Catalog · SKUs",
+        "shows": {
+         "v": "gcatalog"
+        }
+       },
+       {
+        "key": "taxonomy",
+        "label": "🗂️ Industry · Categories",
+        "shows": {
+         "v": "taxonomy"
+        }
+       },
+       {
+        "key": "categories",
+        "label": "🏷️ Category Tree",
+        "shows": {
+         "u": "navigational_category_hierarchy"
+        }
+       },
+       {
+        "key": "taxonomy-universe",
+        "label": "🌳 Taxonomy Universe",
+        "shows": {
+         "u": "universal_taxonomy_universe"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Provenance",
+      "screens": [
+       {
+        "key": "suppliers",
+        "label": "🚚 Suppliers",
+        "shows": {
+         "e": "supplier"
+        }
+       },
+       {
+        "key": "vendors",
+        "label": "🤝 Vendors",
+        "shows": {
+         "u": "vendor"
+        }
+       },
+       {
+        "key": "manufacturers",
+        "label": "🏭 Manufacturers",
+        "shows": {
+         "e": "brand"
+        }
+       },
+       {
+        "key": "assets",
+        "label": "🧱 Assets",
+        "shows": {
+         "u": "asset"
+        }
+       },
+       {
+        "key": "documents",
+        "label": "📄 Documents",
+        "shows": {
+         "u": "document"
+        }
+       },
+       {
+        "key": "media",
+        "label": "🎬 Media",
+        "shows": {
+         "u": "media"
+        }
+       },
+       {
+        "key": "content",
+        "label": "📝 Content",
+        "shows": {
+         "e": "banner"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Knowledge Graph",
+      "screens": [
+       {
+        "key": "knowledge-graph",
+        "label": "🕸️ Knowledge Graph",
+        "shows": {
+         "u": "knowledge_graph"
+        }
+       },
+       {
+        "key": "ontology",
+        "label": "🧠 Ontology Registry",
+        "shows": {
+         "u": "ontology"
+        }
+       },
+       {
+        "key": "semantic",
+        "label": "🔗 Semantic Registry",
+        "shows": {
+         "u": "semantic"
+        }
+       },
+       {
+        "key": "canonical-registry",
+        "label": "🗄️ Canonical Knowledge Registry",
+        "shows": {
+         "u": "universal_knowledge_graph"
+        }
+       },
+       {
+        "key": "gdata",
+        "label": "🧬 Data Explorer",
+        "shows": {
+         "v": "gdata"
+        }
+       },
+       {
+        "key": "studio",
+        "label": "🛠️ Data Studio",
+        "shows": {
+         "v": "studio"
+        }
+       },
+       {
+        "key": "registries",
+        "label": "📚 Platform Registries",
+        "shows": {
+         "v": "registries"
+        }
+       },
+       {
+        "key": "universes",
+        "label": "🧬 Universes",
+        "shows": {
+         "v": "universes"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "section": "03 · Business",
+    "groups": [
+     {
+      "group": "Parties",
+      "screens": [
+       {
+        "key": "customers",
+        "label": "🧑‍🤝‍🧑 Customers",
+        "shows": {
+         "e": "customer"
+        }
+       },
+       {
+        "key": "sellers",
+        "label": "🏪 Sellers",
+        "shows": {
+         "e": "seller"
+        }
+       },
+       {
+        "key": "buyers",
+        "label": "🛍️ Buyers",
+        "shows": {
+         "u": "buyer"
+        }
+       },
+       {
+        "key": "partners",
+        "label": "🤝 Partners",
+        "shows": {
+         "u": "partner"
+        }
+       },
+       {
+        "key": "distributors",
+        "label": "🚚 Distributors",
+        "shows": {
+         "u": "distributor"
+        }
+       },
+       {
+        "key": "dealers",
+        "label": "🏪 Dealers",
+        "shows": {
+         "u": "dealer"
+        }
+       },
+       {
+        "key": "franchises",
+        "label": "🏪 Franchises",
+        "shows": {
+         "u": "franchise"
+        }
+       },
+       {
+        "key": "workforce",
+        "label": "👷 Workforce",
+        "shows": {
+         "u": "workforce"
+        }
+       }
+      ]
+     },
+     {
+      "group": "CRM",
+      "screens": [
+       {
+        "key": "leads",
+        "label": "🎯 Leads",
+        "shows": {
+         "u": "lead"
+        }
+       },
+       {
+        "key": "opportunities",
+        "label": "💼 Opportunities",
+        "shows": {
+         "u": "opportunity"
+        }
+       },
+       {
+        "key": "accounts",
+        "label": "🗂️ Accounts",
+        "shows": {
+         "u": "crm_account"
+        }
+       },
+       {
+        "key": "contacts",
+        "label": "📇 Contacts",
+        "shows": {
+         "u": "contact"
+        }
+       },
+       {
+        "key": "activities",
+        "label": "📅 Activities",
+        "shows": {
+         "u": "activity"
+        }
+       },
+       {
+        "key": "pipelines",
+        "label": "🧩 Pipelines",
+        "shows": {
+         "u": "pipeline"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Agreements",
+      "screens": [
+       {
+        "key": "contracts",
+        "label": "📜 Contracts",
+        "shows": {
+         "e": "contract"
+        }
+       },
+       {
+        "key": "agreements",
+        "label": "✍️ Agreements",
+        "shows": {
+         "u": "agreement"
+        }
+       },
+       {
+        "key": "relationships",
+        "label": "🔗 Relationships",
+        "shows": {
+         "u": "relationship"
+        }
+       },
+       {
+        "key": "universal-links",
+        "label": "🔗 Universal Links (Primitive)",
+        "shows": {
+         "e": "link"
+        }
+       },
+       {
+        "key": "context-types",
+        "label": "🧭 Context Types (Primitive)",
+        "shows": {
+         "e": "context_type"
+        }
+       },
+       {
+        "key": "business-networks",
+        "label": "🌐 Business Networks",
+        "shows": {
+         "u": "business_network"
+        }
+       },
+       {
+        "key": "business-organizations",
+        "label": "🏢 Organizations",
+        "shows": {
+         "u": "organization",
+         "a": "organizations"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "section": "04 · Commerce",
+    "groups": [
+     {
+      "group": "Merchandising",
+      "screens": [
+       {
+        "key": "catalogs",
+        "label": "📚 Catalogs",
+        "shows": {
+         "u": "catalog"
+        }
+       },
+       {
+        "key": "pricing",
+        "label": "💲 Pricing",
+        "shows": {
+         "u": "pricing"
+        }
+       },
+       {
+        "key": "dynamic-pricing",
+        "label": "📊 Dynamic Pricing",
+        "shows": {
+         "u": "dynamic_pricing"
+        }
+       },
+       {
+        "key": "price-lists",
+        "label": "📋 Price Lists",
+        "shows": {
+         "e": "price_list"
+        }
+       },
+       {
+        "key": "merchandising",
+        "label": "🛍️ Merchandising",
+        "shows": {
+         "u": "catalog_merchandising"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Offers & Incentives",
+      "screens": [
+       {
+        "key": "goffers",
+        "label": "🏷️ Offers · Affiliates",
+        "shows": {
+         "v": "goffers"
+        }
+       },
+       {
+        "key": "loyalty",
+        "label": "⭐ Loyalty",
+        "shows": {
+         "u": "loyalty"
+        }
+       },
+       {
+        "key": "rewards",
+        "label": "🎁 Rewards",
+        "shows": {
+         "u": "reward"
+        }
+       },
+       {
+        "key": "referrals",
+        "label": "🔗 Referrals",
+        "shows": {
+         "u": "referral"
+        }
+       },
+       {
+        "key": "goffers-affiliates",
+        "label": "🏷️ Offers · Affiliates",
+        "shows": {
+         "v": "goffers",
+         "a": "goffers"
+        }
+       },
+       {
+        "key": "goip",
+        "label": "Ω∞ GOIP · Value Exchange",
+        "shows": {
+         "v": "offers"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Marketplace",
+      "screens": [
+       {
+        "key": "gmarket",
+        "label": "📣 Ads · Marketplace",
+        "shows": {
+         "v": "gmarket"
+        }
+       },
+       {
+        "key": "marketplace",
+        "label": "🛒 Marketplace",
+        "shows": {
+         "u": "marketplace"
+        }
+       },
+       {
+        "key": "advertising",
+        "label": "📢 Advertising",
+        "shows": {
+         "u": "advertising"
+        }
+       },
+       {
+        "key": "sponsored",
+        "label": "📣 Sponsored Creatives",
+        "shows": {
+         "e": "sponsored_creative"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Trade",
+      "screens": [
+       {
+        "key": "gb2b",
+        "label": "🤝 Sellers · B2B · Trade",
+        "shows": {
+         "v": "gb2b"
+        }
+       },
+       {
+        "key": "rfq",
+        "label": "📨 RFQs",
+        "shows": {
+         "e": "rfq"
+        }
+       },
+       {
+        "key": "tenders",
+        "label": "🏅 Tenders",
+        "shows": {
+         "e": "tender"
+        }
+       },
+       {
+        "key": "trade-assurance",
+        "label": "🛡️ Trade Assurance",
+        "shows": {
+         "e": "trade_assurance"
+        }
+       },
+       {
+        "key": "letters-of-credit",
+        "label": "📜 Letters of Credit",
+        "shows": {
+         "e": "letter_of_credit"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Transactions",
+      "screens": [
+       {
+        "key": "cart",
+        "label": "🛒 Cart",
+        "shows": {
+         "u": "cart"
+        }
+       },
+       {
+        "key": "checkout",
+        "label": "💳 Checkout",
+        "shows": {
+         "u": "checkout"
+        }
+       },
+       {
+        "key": "gorders",
+        "label": "🧾 Orders · Fulfilment",
+        "shows": {
+         "v": "gorders"
+        }
+       },
+       {
+        "key": "returns",
+        "label": "↩️ Returns · Exchanges",
+        "shows": {
+         "e": "ret"
+        }
+       },
+       {
+        "key": "reviews",
+        "label": "⭐ Reviews · UGC",
+        "shows": {
+         "e": "review"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Recurring",
+      "screens": [
+       {
+        "key": "memberships",
+        "label": "🎟️ Memberships",
+        "shows": {
+         "e": "membership"
+        }
+       },
+       {
+        "key": "recurring-billing",
+        "label": "♻️ Recurring Billing",
+        "shows": {
+         "u": "recurring_billing"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Platform Billing",
+      "screens": [
+       {
+        "key": "subs",
+        "label": "🔁 Subscriptions",
+        "shows": {
+         "v": "subs"
+        }
+       },
+       {
+        "key": "plans",
+        "label": "💼 Plans",
+        "shows": {
+         "v": "plans"
+        }
+       },
+       {
+        "key": "invoices",
+        "label": "🧾 Invoices",
+        "shows": {
+         "v": "invoices"
+        }
+       },
+       {
+        "key": "billing",
+        "label": "💳 Billing Ops",
+        "shows": {
+         "v": "billing"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Billing & Payment",
+      "screens": [
+       {
+        "key": "subs-plans",
+        "label": "🔁 Subscriptions",
+        "shows": {
+         "v": "subs",
+         "a": "subs"
+        }
+       },
+       {
+        "key": "payments",
+        "label": "💳 Payments",
+        "shows": {
+         "e": "payment"
+        }
+       },
+       {
+        "key": "settlements",
+        "label": "🧮 Settlements",
+        "shows": {
+         "e": "settlement"
+        }
+       },
+       {
+        "key": "escrow",
+        "label": "🔒 Escrow",
+        "shows": {
+         "e": "escrow_hold"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Settlements",
+      "screens": [
+       {
+        "key": "gfinance",
+        "label": "💸 Finance · Payments",
+        "shows": {
+         "v": "gfinance"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "section": "05 · Operations",
+    "groups": [
+     {
+      "group": "Supply",
+      "screens": [
+       {
+        "key": "inventory",
+        "label": "📦 Inventory",
+        "shows": {
+         "e": "inventory"
+        }
+       },
+       {
+        "key": "warehousing",
+        "label": "🏬 Warehousing",
+        "shows": {
+         "e": "warehouse"
+        }
+       },
+       {
+        "key": "procurement",
+        "label": "🛒 Procurement",
+        "shows": {
+         "u": "procurement"
+        }
+       },
+       {
+        "key": "stock-transfers",
+        "label": "🔀 Stock Transfers",
+        "shows": {
+         "e": "stock_transfer"
+        }
+       },
+       {
+        "key": "replenishment",
+        "label": "🔄 Replenishment",
+        "shows": {
+         "e": "replenishment"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Business Operations",
+      "screens": [
+       {
+        "key": "gops",
+        "label": "🧭 Ops Hub",
+        "shows": {
+         "v": "gops"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Fulfilment",
+      "screens": [
+       {
+        "key": "fulfilment",
+        "label": "📦 Fulfilment",
+        "shows": {
+         "e": "smart_fulfilment"
+        }
+       },
+       {
+        "key": "fba",
+        "label": "📦 FBA Inbound",
+        "shows": {
+         "e": "fba_inbound"
+        }
+       },
+       {
+        "key": "logistics",
+        "label": "🚚 Logistics",
+        "shows": {
+         "u": "logistics"
+        }
+       },
+       {
+        "key": "transportation",
+        "label": "🚛 Transportation",
+        "shows": {
+         "u": "transportation"
+        }
+       },
+       {
+        "key": "shipping",
+        "label": "📮 Shipping",
+        "shows": {
+         "e": "shipment"
+        }
+       },
+       {
+        "key": "tracking",
+        "label": "📍 Tracking",
+        "shows": {
+         "u": "tracking"
+        }
+       },
+       {
+        "key": "reverse-logistics",
+        "label": "↩️ Reverse Logistics",
+        "shows": {
+         "u": "returns"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Service Delivery",
+      "screens": [
+       {
+        "key": "field-ops",
+        "label": "🧰 Field Operations",
+        "shows": {
+         "u": "field_service_visit"
+        }
+       },
+       {
+        "key": "work-orders",
+        "label": "🔧 Work Orders",
+        "shows": {
+         "u": "work_order"
+        }
+       },
+       {
+        "key": "maintenance",
+        "label": "🛠️ Maintenance",
+        "shows": {
+         "u": "maintenance"
+        }
+       },
+       {
+        "key": "dark-stores",
+        "label": "🏬 Dark Stores",
+        "shows": {
+         "e": "dark_store"
+        }
+       },
+       {
+        "key": "dispatch",
+        "label": "⚡ Dispatch Runs",
+        "shows": {
+         "e": "dispatch_run"
+        }
+       },
+       {
+        "key": "riders",
+        "label": "🛵 Riders",
+        "shows": {
+         "e": "rider"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Support",
+      "screens": [
+       {
+        "key": "gsupport",
+        "label": "🎧 Support · SLA",
+        "shows": {
+         "v": "gsupport"
+        }
+       },
+       {
+        "key": "tickets",
+        "label": "🎫 Tickets",
+        "shows": {
+         "e": "ticket"
+        }
+       },
+       {
+        "key": "cases",
+        "label": "📋 Cases",
+        "shows": {
+         "u": "support_case"
+        }
+       },
+       {
+        "key": "incidents",
+        "label": "🚨 Incidents",
+        "shows": {
+         "u": "operational_incident"
+        }
+       },
+       {
+        "key": "qna",
+        "label": "❓ Q&A",
+        "shows": {
+         "e": "qna_question"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "section": "06 · Experience",
+    "groups": [
+     {
+      "group": "Surfaces",
+      "screens": [
+       {
+        "key": "websites",
+        "label": "🌐 Websites",
+        "shows": {
+         "u": "website"
+        }
+       },
+       {
+        "key": "mobile",
+        "label": "📱 Mobile Apps",
+        "shows": {
+         "u": "mobile_app"
+        }
+       },
+       {
+        "key": "kiosks",
+        "label": "🛎️ Kiosks · POS",
+        "shows": {
+         "u": "kiosk"
+        }
+       },
+       {
+        "key": "portals",
+        "label": "🚪 Portals",
+        "shows": {
+         "u": "portal"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Presentation",
+      "screens": [
+       {
+        "key": "gcontent",
+        "label": "🖼️ Content · UGC",
+        "shows": {
+         "v": "gcontent"
+        }
+       },
+       {
+        "key": "themes",
+        "label": "🎨 Themes",
+        "shows": {
+         "v": "themes"
+        }
+       },
+       {
+        "key": "branding",
+        "label": "🖌️ Branding",
+        "shows": {
+         "u": "brand_skin"
+        }
+       },
+       {
+        "key": "personalization",
+        "label": "🎯 Personalization",
+        "shows": {
+         "u": "personalization"
+        }
+       },
+       {
+        "key": "accessibility",
+        "label": "♿ Accessibility",
+        "shows": {
+         "u": "accessibility"
+        }
+       },
+       {
+        "key": "ui-components",
+        "label": "🧩 UI Components",
+        "shows": {
+         "u": "ui_component"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Channels",
+      "screens": [
+       {
+        "key": "channels",
+        "label": "📡 Channels",
+        "shows": {
+         "u": "channel_universe"
+        }
+       },
+       {
+        "key": "notifications",
+        "label": "🔔 Notifications",
+        "shows": {
+         "e": "notification"
+        }
+       },
+       {
+        "key": "email",
+        "label": "✉️ Email",
+        "shows": {
+         "u": "email"
+        }
+       },
+       {
+        "key": "social",
+        "label": "📱 Social",
+        "shows": {
+         "u": "social"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Journeys",
+      "screens": [
+       {
+        "key": "ux-journeys",
+        "label": "🧭 UX Journeys",
+        "shows": {
+         "u": "ux_journey"
+        }
+       },
+       {
+        "key": "customer-journeys",
+        "label": "🛤️ Customer Journeys",
+        "shows": {
+         "u": "customer_journey"
+        }
+       },
+       {
+        "key": "experience-registry",
+        "label": "🗄️ Experience Registry",
+        "shows": {
+         "u": "experience_universe"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "section": "07 · Intelligence",
+    "groups": [
+     {
+      "group": "Models & Agents",
+      "screens": [
+       {
+        "key": "ai",
+        "label": "🧠 AI · Providers & Plans",
+        "shows": {
+         "v": "ai"
+        }
+       },
+       {
+        "key": "ai-models",
+        "label": "🤖 AI Models",
+        "shows": {
+         "u": "ai_model"
+        }
+       },
+       {
+        "key": "agents",
+        "label": "🤖 Agents",
+        "shows": {
+         "u": "agent"
+        }
+       },
+       {
+        "key": "agent-teams",
+        "label": "👥 Agent Teams",
+        "shows": {
+         "u": "agent_team"
+        }
+       },
+       {
+        "key": "prompts",
+        "label": "💬 Prompt Registry",
+        "shows": {
+         "u": "prompt"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Engines",
+      "screens": [
+       {
+        "key": "reasoning",
+        "label": "🧩 Reasoning Engine",
+        "shows": {
+         "u": "reasoning"
+        }
+       },
+       {
+        "key": "recommendation",
+        "label": "🎯 Recommendation",
+        "shows": {
+         "u": "recommendation"
+        }
+       },
+       {
+        "key": "search-intel",
+        "label": "🔍 Search",
+        "shows": {
+         "u": "search"
+        }
+       },
+       {
+        "key": "personalization-intel",
+        "label": "🎯 Personalization Engine",
+        "shows": {
+         "u": "personalization_engine"
+        }
+       },
+       {
+        "key": "optimization",
+        "label": "⚙️ Optimization",
+        "shows": {
+         "u": "optimization"
+        }
+       },
+       {
+        "key": "simulation",
+        "label": "🧪 Simulation",
+        "shows": {
+         "u": "simulation"
+        }
+       },
+       {
+        "key": "forecasting",
+        "label": "📈 Forecasting",
+        "shows": {
+         "u": "forecasting"
+        }
+       },
+       {
+        "key": "digital-twins",
+        "label": "👯 Digital Twins",
+        "shows": {
+         "u": "digital_twin"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Trust Intelligence",
+      "screens": [
+       {
+        "key": "fraud",
+        "label": "🕵️ Fraud Detection",
+        "shows": {
+         "u": "fraud_detection"
+        }
+       },
+       {
+        "key": "risk-intel",
+        "label": "⚠️ Risk Engine",
+        "shows": {
+         "u": "risk"
+        }
+       },
+       {
+        "key": "knowledge-intel",
+        "label": "🧠 Knowledge Intelligence",
+        "shows": {
+         "u": "knowledge_intelligence"
+        }
+       },
+       {
+        "key": "grisk",
+        "label": "🛡️ Risk · Compliance · Trash",
+        "shows": {
+         "v": "grisk"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Autonomy",
+      "screens": [
+       {
+        "key": "autonomous-planning",
+        "label": "🗓️ Autonomous Planning",
+        "shows": {
+         "u": "autonomous_planning"
+        }
+       },
+       {
+        "key": "autonomous-execution",
+        "label": "▶️ Autonomous Execution",
+        "shows": {
+         "u": "autonomous_execution"
+        }
+       },
+       {
+        "key": "autonomous-verification",
+        "label": "✔️ Autonomous Verification",
+        "shows": {
+         "u": "autonomous_verification"
+        }
+       },
+       {
+        "key": "learning",
+        "label": "📚 Learning Engine",
+        "shows": {
+         "u": "learning"
+        }
+       },
+       {
+        "key": "evolution",
+        "label": "🧬 Evolution Engine",
+        "shows": {
+         "u": "evolution"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Analytics",
+      "screens": [
+       {
+        "key": "ganalytics",
+        "label": "📊 Analytics · A/B",
+        "shows": {
+         "v": "ganalytics"
+        }
+       },
+       {
+        "key": "experiments",
+        "label": "🧪 Experiments",
+        "shows": {
+         "e": "experiment"
+        }
+       },
+       {
+        "key": "intelligence-registry",
+        "label": "🗄️ Intelligence Registry",
+        "shows": {
+         "u": "intelligence_registry"
+        }
+       },
+       {
+        "key": "dash",
+        "label": "◈ Command",
+        "shows": {
+         "v": "dash"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "section": "08 · Governance",
+    "groups": [
+     {
+      "group": "Policy",
+      "screens": [
+       {
+        "key": "standards",
+        "label": "📏 Standards",
+        "shows": {
+         "u": "standard"
+        }
+       },
+       {
+        "key": "regulations",
+        "label": "📜 Regulations",
+        "shows": {
+         "u": "regulation"
+        }
+       },
+       {
+        "key": "rules",
+        "label": "📏 Rules",
+        "shows": {
+         "u": "rule"
+        }
+       },
+       {
+        "key": "decisions",
+        "label": "⚖️ Decisions",
+        "shows": {
+         "u": "decision"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Compliance",
+      "screens": [
+       {
+        "key": "compliance",
+        "label": "🛡️ Compliance",
+        "shows": {
+         "e": "compliance"
+        }
+       },
+       {
+        "key": "compliance-controls",
+        "label": "🛡️ Compliance Controls",
+        "shows": {
+         "e": "compliance_control"
+        }
+       },
+       {
+        "key": "certifications",
+        "label": "🏅 Certifications",
+        "shows": {
+         "u": "certification"
+        }
+       },
+       {
+        "key": "privacy",
+        "label": "🔒 Privacy",
+        "shows": {
+         "e": "consent"
+        }
+       },
+       {
+        "key": "privacy-requests",
+        "label": "📨 Privacy Requests",
+        "shows": {
+         "e": "privacy_request"
+        }
+       },
+       {
+        "key": "erasure",
+        "label": "🧹 Erasure Log",
+        "shows": {
+         "e": "erasure_log"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Risk & Security",
+      "screens": [
+       {
+        "key": "risk",
+        "label": "⚠️ Risk",
+        "shows": {
+         "e": "risk_event"
+        }
+       },
+       {
+        "key": "risk-blocks",
+        "label": "⛔ Risk Blocks",
+        "shows": {
+         "e": "risk_block"
+        }
+       },
+       {
+        "key": "security",
+        "label": "🔐 Security",
+        "shows": {
+         "u": "security"
+        }
+       },
+       {
+        "key": "controls",
+        "label": "🎛️ Controls",
+        "shows": {
+         "u": "control"
+        }
+       },
+       {
+        "key": "evidence",
+        "label": "🧾 Evidence",
+        "shows": {
+         "u": "evidence"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Oversight",
+      "screens": [
+       {
+        "key": "audit",
+        "label": "📜 Global Audit",
+        "shows": {
+         "v": "audit"
+        }
+       },
+       {
+        "key": "review-governance",
+        "label": "🔍 Reviews",
+        "shows": {
+         "u": "review_governance"
+        }
+       },
+       {
+        "key": "approvals",
+        "label": "✅ Approvals",
+        "shows": {
+         "u": "approval"
+        }
+       },
+       {
+        "key": "change-control",
+        "label": "🔄 Change Control",
+        "shows": {
+         "u": "change_control"
+        }
+       },
+       {
+        "key": "ai-governance",
+        "label": "🧠 AI Governance",
+        "shows": {
+         "u": "ai_governance"
+        }
+       },
+       {
+        "key": "agent-governance",
+        "label": "🤖 Agent Governance",
+        "shows": {
+         "u": "agent_governance"
+        }
+       },
+       {
+        "key": "governance-graph",
+        "label": "🕸️ Governance Graph",
+        "shows": {
+         "u": "governance_graph"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "section": "09 · Platform",
+    "groups": [
+     {
+      "group": "Capabilities",
+      "screens": [
+       {
+        "key": "capabilities",
+        "label": "⚙️ Capabilities",
+        "shows": {
+         "v": "capabilities"
+        }
+       },
+       {
+        "key": "applicability",
+        "label": "🧭 Availability Rules",
+        "shows": {
+         "v": "applicability"
+        }
+       },
+       {
+        "key": "capability-tree",
+        "label": "🌳 Capability Tree",
+        "shows": {
+         "v": "capability-tree"
+        }
+       },
+       {
+        "key": "capability-registry",
+        "label": "🗄️ Capability Registry",
+        "shows": {
+         "u": "capability_registry"
+        }
+       },
+       {
+        "key": "capability-composition",
+        "label": "🧩 Capability Composition",
+        "shows": {
+         "u": "capability_composition"
+        }
+       },
+       {
+        "key": "capability-discovery",
+        "label": "🧭 Capability Discovery",
+        "shows": {
+         "u": "capability_discovery"
+        }
+       },
+       {
+        "key": "modules",
+        "label": "🧩 Module Marketplace",
+        "shows": {
+         "v": "modules"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Extension",
+      "screens": [
+       {
+        "key": "providers",
+        "label": "🔌 Provider Registry",
+        "shows": {
+         "v": "providers"
+        }
+       },
+       {
+        "key": "connectors",
+        "label": "🔌 Connectors",
+        "shows": {
+         "u": "connectors"
+        }
+       },
+       {
+        "key": "integrations",
+        "label": "🔗 Integrations",
+        "shows": {
+         "u": "integration"
+        }
+       },
+       {
+        "key": "extensions",
+        "label": "🧩 Extensions",
+        "shows": {
+         "u": "extension"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Runtime",
+      "screens": [
+       {
+        "key": "runtime",
+        "label": "🧩 Runtime · Infra",
+        "shows": {
+         "v": "runtime"
+        }
+       },
+       {
+        "key": "runtime-registry",
+        "label": "🗄️ Runtime Registry",
+        "shows": {
+         "u": "runtime"
+        }
+       },
+       {
+        "key": "deployment",
+        "label": "🚀 Deployment",
+        "shows": {
+         "u": "deployment"
+        }
+       },
+       {
+        "key": "infrastructure",
+        "label": "🏗️ Infrastructure",
+        "shows": {
+         "u": "infrastructure"
+        }
+       },
+       {
+        "key": "apis",
+        "label": "🔌 APIs",
+        "shows": {
+         "u": "api_product"
+        }
+       },
+       {
+        "key": "events",
+        "label": "⚡ Events",
+        "shows": {
+         "u": "event"
+        }
+       },
+       {
+        "key": "workflows",
+        "label": "🔀 Workflows",
+        "shows": {
+         "u": "workflow"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Evolution",
+      "screens": [
+       {
+        "key": "versioning",
+        "label": "🔢 Versioning",
+        "shows": {
+         "u": "versioning"
+        }
+       },
+       {
+        "key": "migration",
+        "label": "🔀 Migration",
+        "shows": {
+         "u": "migration"
+        }
+       },
+       {
+        "key": "deprecation",
+        "label": "🗑️ Deprecation",
+        "shows": {
+         "u": "deprecation"
+        }
+       },
+       {
+        "key": "impact-analysis",
+        "label": "📊 Impact Analysis",
+        "shows": {
+         "u": "impact_analysis"
+        }
+       },
+       {
+        "key": "self-healing",
+        "label": "🩹 Self Healing",
+        "shows": {
+         "u": "self_healing"
+        }
+       },
+       {
+        "key": "self-optimization",
+        "label": "⚙️ Self Optimization",
+        "shows": {
+         "u": "self_optimization"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "section": "10 · Observability",
+    "groups": [
+     {
+      "group": "Telemetry",
+      "screens": [
+       {
+        "key": "monitor",
+        "label": "📈 Monitoring",
+        "shows": {
+         "v": "monitor"
+        }
+       },
+       {
+        "key": "metrics",
+        "label": "📊 Metrics",
+        "shows": {
+         "u": "metrics"
+        }
+       },
+       {
+        "key": "logs",
+        "label": "🪵 Logs",
+        "shows": {
+         "u": "logs"
+        }
+       },
+       {
+        "key": "traces",
+        "label": "🧵 Traces",
+        "shows": {
+         "u": "traces"
+        }
+       },
+       {
+        "key": "alerting",
+        "label": "🚨 Alerting",
+        "shows": {
+         "u": "alerting"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Health",
+      "screens": [
+       {
+        "key": "reliability",
+        "label": "🛡️ Reliability",
+        "shows": {
+         "u": "reliability"
+        }
+       },
+       {
+        "key": "health-availability",
+        "label": "🟢 Availability",
+        "shows": {
+         "u": "availability",
+         "a": "availability"
+        }
+       },
+       {
+        "key": "capacity",
+        "label": "📦 Capacity",
+        "shows": {
+         "u": "capacity"
+        }
+       },
+       {
+        "key": "performance",
+        "label": "⚡ Performance",
+        "shows": {
+         "u": "performance"
+        }
+       },
+       {
+        "key": "health",
+        "label": "💚 Health",
+        "shows": {
+         "u": "health"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Insight",
+      "screens": [
+       {
+        "key": "dashboards",
+        "label": "📊 Dashboards",
+        "shows": {
+         "v": "dashboards"
+        }
+       },
+       {
+        "key": "slo",
+        "label": "🎯 SLO · SLA",
+        "shows": {
+         "u": "slo"
+        }
+       },
+       {
+        "key": "rca",
+        "label": "🔍 Root Cause Analysis",
+        "shows": {
+         "u": "root_cause_analysis"
+        }
+       },
+       {
+        "key": "diagnostics",
+        "label": "🩺 Diagnostics",
+        "shows": {
+         "u": "diagnostics"
+        }
+       },
+       {
+        "key": "cost",
+        "label": "💸 Cost · Usage",
+        "shows": {
+         "u": "cost"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "section": "11 · Administration",
+    "groups": [
+     {
+      "group": "Tenancy",
+      "screens": [
+       {
+        "key": "tenants-admin",
+        "label": "🏬 Platforms & Kinds",
+        "shows": {
+         "v": "tenants"
+        }
+       },
+       {
+        "key": "companies",
+        "label": "🏢 Companies",
+        "shows": {
+         "u": "company"
+        }
+       },
+       {
+        "key": "workspaces",
+        "label": "🗂️ Workspaces",
+        "shows": {
+         "u": "workspace"
+        }
+       },
+       {
+        "key": "environments",
+        "label": "🌍 Environments",
+        "shows": {
+         "v": "runtime"
+        }
+       },
+       {
+        "key": "tenants",
+        "label": "🏬 Tenants",
+        "shows": {
+         "e": "tenant",
+         "a": "tenants-admin"
+        }
+       },
+       {
+        "key": "brands",
+        "label": "🏷️ Brands · Manufacturers",
+        "shows": {
+         "v": "brands"
+        }
+       },
+       {
+        "key": "compose",
+        "label": "🧬 Composition Engine",
+        "shows": {
+         "v": "compose"
+        }
+       },
+       {
+        "key": "provisioning",
+        "label": "🛡️ Provisioning",
+        "shows": {
+         "v": "provisioning"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Access",
+      "screens": [
+       {
+        "key": "users-admin",
+        "label": "👤 Users",
+        "shows": {
+         "v": "users"
+        }
+       },
+       {
+        "key": "roles-admin",
+        "label": "🎭 Roles",
+        "shows": {
+         "v": "roles"
+        }
+       },
+       {
+        "key": "permissions-admin",
+        "label": "🔑 Permissions",
+        "shows": {
+         "u": "permission"
+        }
+       },
+       {
+        "key": "licenses",
+        "label": "🪪 Licenses",
+        "shows": {
+         "u": "license"
+        }
+       },
+       {
+        "key": "gteam",
+        "label": "👥 Team · Access · Settings",
+        "shows": {
+         "v": "gteam"
+        }
+       },
+       {
+        "key": "roles",
+        "label": "🎭 Roles",
+        "shows": {
+         "v": "roles",
+         "a": "roles-admin"
+        }
+       },
+       {
+        "key": "policies",
+        "label": "🔒 Policies",
+        "shows": {
+         "v": "policies"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Configuration",
+      "screens": [
+       {
+        "key": "configurations",
+        "label": "⚙️ Configurations",
+        "shows": {
+         "u": "configuration"
+        }
+       },
+       {
+        "key": "secrets",
+        "label": "🗝️ Secrets",
+        "shows": {
+         "u": "secrets_management"
+        }
+       },
+       {
+        "key": "settings",
+        "label": "⚙️ Settings",
+        "shows": {
+         "v": "gteam",
+         "a": "gteam"
+        }
+       },
+       {
+        "key": "feature-flags",
+        "label": "🚩 Feature Flags",
+        "shows": {
+         "v": "runtime"
+        }
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "section": "12 · Architecture",
+    "groups": [
+     {
+      "group": "Constitution Ω∞",
+      "screens": [
+       {
+        "key": "ucii",
+        "label": "🌀 UCII Ω∞ Registry",
+        "shows": {
+         "v": "ucii"
+        }
+       },
+       {
+        "key": "ucos",
+        "label": "♾️ UCOS Ω∞ Constitution",
+        "shows": {
+         "v": "ucos"
+        }
+       },
+       {
+        "key": "foundations",
+        "label": "🏛️ Foundations",
+        "shows": {
+         "v": "foundations"
+        }
+       },
+       {
+        "key": "domains",
+        "label": "🔀 Domains",
+        "shows": {
+         "v": "domains"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Canonical Model",
+      "screens": [
+       {
+        "key": "canonical-objects",
+        "label": "📦 Canonical Objects",
+        "shows": {
+         "u": "canonical_object"
+        }
+       },
+       {
+        "key": "canonical-schemas",
+        "label": "📐 Canonical Schemas",
+        "shows": {
+         "u": "canonical_schema"
+        }
+       },
+       {
+        "key": "canonical-relationships",
+        "label": "🔗 Canonical Relationships",
+        "shows": {
+         "u": "canonical_relationship"
+        }
+       },
+       {
+        "key": "canonical-events",
+        "label": "⚡ Canonical Events",
+        "shows": {
+         "u": "canonical_event"
+        }
+       },
+       {
+        "key": "canonical-apis",
+        "label": "🔌 Canonical APIs",
+        "shows": {
+         "u": "canonical_api"
+        }
+       },
+       {
+        "key": "canonical-workflows",
+        "label": "🔀 Canonical Workflows",
+        "shows": {
+         "u": "canonical_workflow"
+        }
+       },
+       {
+        "key": "trace",
+        "label": "🧭 Traceability",
+        "shows": {
+         "v": "trace"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Graphs",
+      "screens": [
+       {
+        "key": "capability-graph",
+        "label": "🕸️ Capability Graph",
+        "shows": {
+         "u": "capability_graph"
+        }
+       },
+       {
+        "key": "knowledge-graph-arch",
+        "label": "🕸️ Knowledge Graph",
+        "shows": {
+         "u": "knowledge_graph",
+         "a": "knowledge-graph"
+        }
+       },
+       {
+        "key": "dependency-graph",
+        "label": "🕸️ Dependency Graph",
+        "shows": {
+         "u": "dependency_graph"
+        }
+       },
+       {
+        "key": "traceability-graph",
+        "label": "🕸️ Traceability Graph",
+        "shows": {
+         "u": "traceability_graph"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Reference",
+      "screens": [
+       {
+        "key": "reference-architecture",
+        "label": "🏛️ Reference Architecture",
+        "shows": {
+         "u": "reference_architecture"
+        }
+       },
+       {
+        "key": "security-architecture",
+        "label": "🔐 Security Architecture",
+        "shows": {
+         "u": "security_architecture"
+        }
+       },
+       {
+        "key": "data-architecture",
+        "label": "🗄️ Data Architecture",
+        "shows": {
+         "u": "data_architecture"
+        }
+       },
+       {
+        "key": "ai-architecture",
+        "label": "🧠 AI Architecture",
+        "shows": {
+         "u": "ai_architecture"
+        }
+       },
+       {
+        "key": "evolution-architecture",
+        "label": "🧬 Evolution Architecture",
+        "shows": {
+         "u": "evolution_architecture"
+        }
+       }
+      ]
+     },
+     {
+      "group": "Documentation",
+      "screens": [
+       {
+        "key": "manual",
+        "label": "📘 User Manual",
+        "shows": {
+         "v": "manual"
+        }
+       },
+       {
+        "key": "architecture",
+        "label": "🏛️ Architecture",
+        "shows": {
+         "v": "architecture"
+        }
+       }
+      ]
+     }
+    ]
+   }
+  ]
+ },
+ "store": {
+  "groups": [
+   {
+    "group": "Overview",
+    "tail": false
+   },
+   {
+    "group": "Orders & Fulfilment",
+    "tail": false
+   },
+   {
+    "group": "Catalogue",
+    "tail": false
+   },
+   {
+    "group": "Supply Chain",
+    "tail": false
+   },
+   {
+    "group": "Storefront",
+    "tail": false
+   },
+   {
+    "group": "Marketing & Growth",
+    "tail": false
+   },
+   {
+    "group": "Customer Care",
+    "tail": false
+   },
+   {
+    "group": "Sellers & B2B",
+    "tail": false
+   },
+   {
+    "group": "Payments & Finance",
+    "tail": false
+   },
+   {
+    "group": "Business Operations",
+    "tail": false
+   },
+   {
+    "group": "Mobility",
+    "tail": false
+   },
+   {
+    "group": "Team & Access",
+    "tail": false
+   },
+   {
+    "group": "Trust & Compliance",
+    "tail": false
+   },
+   {
+    "group": "Automation",
+    "tail": false
+   },
+   {
+    "group": "Settings",
+    "tail": true
+   },
+   {
+    "group": "Help",
+    "tail": true
+   }
+  ],
+  "screens": [
+   {
+    "key": "team",
+    "group": "Team & Access",
+    "label": "👥 Team & Roles",
+    "order": 0,
+    "section": "team"
+   },
+   {
+    "key": "affiliate",
+    "group": "Marketing & Growth",
+    "label": "📣 Influencers & Affiliates",
+    "order": 0
+   },
+   {
+    "key": "ai",
+    "group": "Automation",
+    "label": "🤖 AI Studio",
+    "order": 0,
+    "section": "ai"
+   },
+   {
+    "key": "analytics",
+    "group": "Overview",
+    "label": "📊 Analytics",
+    "order": 1
+   },
+   {
+    "key": "audit",
+    "group": "Trust & Compliance",
+    "label": "📜 Audit Trail",
+    "order": 2
+   },
+   {
+    "key": "trash",
+    "group": "Trust & Compliance",
+    "label": "🗑️ Trash & Retention",
+    "order": 3,
+    "section": "trash"
+   },
+   {
+    "key": "ops_hr",
+    "group": "Business Operations",
+    "label": "🧑‍💼 People & Payroll",
+    "order": 4
+   },
+   {
+    "key": "ops_mfg",
+    "group": "Business Operations",
+    "label": "🏭 Manufacturing",
+    "order": 5
+   },
+   {
+    "key": "ops_proj",
+    "group": "Business Operations",
+    "label": "📐 Projects & Approvals",
+    "order": 6
+   },
+   {
+    "key": "fees",
+    "group": "Orders & Fulfilment",
+    "label": "🧾 Service Fees",
+    "order": 9
+   },
+   {
+    "key": "tips",
+    "group": "Orders & Fulfilment",
+    "label": "💝 Tips",
+    "order": 10
+   },
+   {
+    "key": "trials",
+    "group": "Orders & Fulfilment",
+    "label": "👟 Try and Buy",
+    "order": 11
+   },
+   {
+    "key": "products",
+    "group": "Catalogue",
+    "label": "📦 Products",
+    "order": 0
+   },
+   {
+    "key": "skus",
+    "group": "Catalogue",
+    "label": "🔖 SKUs & Inventory",
+    "order": 1
+   },
+   {
+    "key": "brands",
+    "group": "Catalogue",
+    "label": "🏷️ Brands",
+    "order": 2
+   },
+   {
+    "key": "taxonomy",
+    "group": "Catalogue",
+    "label": "🌳 Taxonomy",
+    "order": 11
+   },
+   {
+    "key": "attributes",
+    "group": "Catalogue",
+    "label": "🧬 Attributes",
+    "order": 12
+   },
+   {
+    "key": "gcatalog",
+    "group": "Catalogue",
+    "label": "🌐 Global Catalog",
+    "order": 13
+   },
+   {
+    "key": "mastercontrib",
+    "group": "Catalogue",
+    "label": "🤝 Master Contributions",
+    "order": 14
+   },
+   {
+    "key": "sizeguides",
+    "group": "Catalogue",
+    "label": "📏 Size Guides",
+    "order": 50
+   },
+   {
+    "key": "preorders",
+    "group": "Catalogue",
+    "label": "⏳ Pre-orders",
+    "order": 51
+   },
+   {
+    "key": "conversations",
+    "group": "Customer Care",
+    "label": "💬 Messages",
+    "order": 1
+   },
+   {
+    "key": "compliance",
+    "group": "Trust & Compliance",
+    "label": "✅ Compliance & Certs",
+    "order": 1
+   },
+   {
+    "key": "coupons",
+    "group": "Offers",
+    "label": "🎟️ Coupons",
+    "order": null,
+    "section": "offers"
+   },
+   {
+    "key": "licencekeys",
+    "group": "Orders & Fulfilment",
+    "label": "🔑 Licence Keys",
+    "order": 12
+   },
+   {
+    "key": "courses",
+    "group": "Orders & Fulfilment",
+    "label": "🎓 Course Progress",
+    "order": 14
+   },
+   {
+    "key": "experiments",
+    "group": "Marketing & Growth",
+    "label": "🧪 Experiments",
+    "order": 2
+   },
+   {
+    "key": "giftcards",
+    "group": "Offers",
+    "label": "🎁 Gift Cards",
+    "order": null
+   },
+   {
+    "key": "promotions",
+    "group": "Offers",
+    "label": "🎟️ Offers",
+    "order": null,
+    "section": "offers"
+   },
+   {
+    "key": "goip",
+    "group": "Offers",
+    "label": "Ω∞ GOIP",
+    "order": null,
+    "section": "offers"
+   },
+   {
+    "key": "groupbuy",
+    "group": "Offers",
+    "label": "👥 Group Buying",
+    "order": null
+   },
+   {
+    "key": "prescriptions",
+    "group": "Orders & Fulfilment",
+    "label": "📄 Prescriptions",
+    "order": 6
+   },
+   {
+    "key": "credentials",
+    "group": "Orders & Fulfilment",
+    "label": "🪪 Practitioner Verification",
+    "order": 7
+   },
+   {
+    "key": "labtests",
+    "group": "Orders & Fulfilment",
+    "label": "🧫 Lab Tests",
+    "order": 13
+   },
+   {
+    "key": "healthrecords",
+    "group": "Orders & Fulfilment",
+    "label": "🩺 Health Records",
+    "order": 15
+   },
+   {
+    "key": "sso",
+    "group": "Team & Access",
+    "label": "🔐 SSO & Integrations",
+    "order": 2,
+    "section": "settings"
+   },
+   {
+    "key": "webhooks",
+    "group": "Automation",
+    "label": "🔗 Webhooks",
+    "order": 1,
+    "section": "webhooks"
+   },
+   {
+    "key": "serialized",
+    "group": "Orders & Fulfilment",
+    "label": "🔢 Serialized Items",
+    "order": 19,
+    "fit": {
+     "industries": [
+      "electronics",
+      "automotive",
+      "telecom",
+      "industrial",
+      "healthcare",
+      "pharma",
+      "defense",
+      "marine",
+      "jewellery",
+      "luxury",
+      "art"
+     ]
+    }
+   },
+   {
+    "key": "studio",
+    "group": "Settings",
+    "label": "🛠️ Data Studio",
+    "order": 3,
+    "section": "studio"
+   },
+   {
+    "key": "manual",
+    "group": "Help",
+    "label": "📘 User Manual",
+    "order": 0
+   },
+   {
+    "key": "architecture",
+    "group": "Help",
+    "label": "🏛️ Architecture",
+    "order": 1
+   },
+   {
+    "key": "localizations",
+    "group": "Storefront",
+    "label": "🌐 Localizations",
+    "order": 3
+   },
+   {
+    "key": "proofs",
+    "group": "Catalogue",
+    "label": "🎨 Customisation Proofs",
+    "order": 9
+   },
+   {
+    "key": "samples",
+    "group": "Catalogue",
+    "label": "🧪 Sample Orders",
+    "order": 10
+   },
+   {
+    "key": "brandreg",
+    "group": "Catalogue",
+    "label": "™️ Brand Registry",
+    "order": 3
+   },
+   {
+    "key": "marketplace",
+    "group": "Marketing & Growth",
+    "label": "📢 Marketplace & Ads",
+    "order": 3
+   },
+   {
+    "key": "sellers",
+    "group": "Sellers & B2B",
+    "label": "🏪 Sellers",
+    "order": 0
+   },
+   {
+    "key": "listings",
+    "group": "Sellers & B2B",
+    "label": "🏷️ Shopper Listings",
+    "order": 1
+   },
+   {
+    "key": "mktops",
+    "group": "Business Operations",
+    "label": "🏬 Marketplace Ops",
+    "order": 1
+   },
+   {
+    "key": "rides",
+    "group": "Mobility",
+    "label": "🚗 Rides & Dispatch",
+    "order": 0
+   },
+   {
+    "key": "fleet",
+    "group": "Mobility",
+    "label": "🚙 Fleet & Drivers",
+    "order": 1
+   },
+   {
+    "key": "applicability",
+    "group": "Settings",
+    "label": "🧭 Availability Rules",
+    "order": 1
+   },
+   {
+    "key": "modules",
+    "group": "Settings",
+    "label": "🧩 Modules",
+    "order": 2
+   },
+   {
+    "key": "sale_events",
+    "group": "Offers",
+    "label": "🏷️ Sale events",
+    "order": 60
+   },
+   {
+    "key": "club_pricing",
+    "group": "Offers",
+    "label": "🎟️ Club pricing",
+    "order": 60
+   },
+   {
+    "key": "live_selling",
+    "group": "Marketing",
+    "label": "🎥 Live selling",
+    "order": 60
+   },
+   {
+    "key": "payment_instrument_offers",
+    "group": "Payments & Finance",
+    "label": "💳 Payment offers",
+    "order": 60
+   },
+   {
+    "key": "instalments_without_cost",
+    "group": "Payments & Finance",
+    "label": "🗓️ Instalments without cost",
+    "order": 60
+   },
+   {
+    "key": "duties_at_checkout",
+    "group": "Orders & Fulfilment",
+    "label": "🛃 Duties at checkout",
+    "order": 60
+   },
+   {
+    "key": "customs_declarations",
+    "group": "Orders & Fulfilment",
+    "label": "📄 Customs declarations",
+    "order": 60
+   },
+   {
+    "key": "consolidated_shipping",
+    "group": "Orders & Fulfilment",
+    "label": "📦 Consolidated shipping",
+    "order": 60
+   },
+   {
+    "key": "supplier_direct",
+    "group": "Orders & Fulfilment",
+    "label": "🏭 Supplier direct",
+    "order": 60
+   },
+   {
+    "key": "reseller_margins",
+    "group": "Marketing",
+    "label": "🤝 Reseller margins",
+    "order": 60
+   },
+   {
+    "key": "affiliate_commissions",
+    "group": "Marketing",
+    "label": "🔗 Affiliate commissions",
+    "order": 60
+   },
+   {
+    "key": "gamified_rewards",
+    "group": "Marketing",
+    "label": "🎯 Daily rewards",
+    "order": 60
+   },
+   {
+    "key": "funding_goals",
+    "group": "Offers",
+    "label": "🚀 Funding goals",
+    "order": 60
+   },
+   {
+    "key": "seat_maps",
+    "group": "Catalogue",
+    "label": "💺 Seat maps",
+    "order": 60
+   },
+   {
+    "key": "travel_itineraries",
+    "group": "Catalogue",
+    "label": "🧳 Travel itineraries",
+    "order": 60
+   },
+   {
+    "key": "fitment",
+    "group": "Catalogue",
+    "label": "🚗 Fitment",
+    "order": 60
+   },
+   {
+    "key": "schedule_rules",
+    "group": "Catalogue",
+    "label": "⚕️ Schedule rules",
+    "order": 60
+   },
+   {
+    "key": "generic_alternatives",
+    "group": "Catalogue",
+    "label": "💊 Generic alternatives",
+    "order": 60
+   },
+   {
+    "key": "refill_reminders",
+    "group": "Marketing",
+    "label": "🔔 Refill reminders",
+    "order": 60
+   },
+   {
+    "key": "kitchen_hours",
+    "group": "Catalogue",
+    "label": "🍳 Kitchen hours",
+    "order": 60
+   },
+   {
+    "key": "batch_expiry",
+    "group": "Catalogue",
+    "label": "📅 Batch expiry",
+    "order": 60
+   },
+   {
+    "key": "freshness_windows",
+    "group": "Catalogue",
+    "label": "🥬 Freshness windows",
+    "order": 60
+   },
+   {
+    "key": "cold_chain",
+    "group": "Orders & Fulfilment",
+    "label": "❄️ Cold chain",
+    "order": 60
+   },
+   {
+    "key": "large_item_delivery",
+    "group": "Orders & Fulfilment",
+    "label": "🛋️ Large item delivery",
+    "order": 60
+   },
+   {
+    "key": "dated_delivery",
+    "group": "Orders & Fulfilment",
+    "label": "🎁 Dated delivery",
+    "order": 60
+   },
+   {
+    "key": "sell_by_weight",
+    "group": "Catalogue",
+    "label": "⚖️ Sell by weight",
+    "order": 60
+   },
+   {
+    "key": "records",
+    "group": "Settings",
+    "label": "🗃️ Records",
+    "order": 3
+   },
+   {
+    "key": "pricematch",
+    "group": "Offers",
+    "label": "🏷️ Price Match",
+    "order": null
+   },
+   {
+    "key": "tradeins",
+    "group": "Offers",
+    "label": "♻️ Trade-ins",
+    "order": null
+   },
+   {
+    "key": "orders",
+    "group": "Orders & Fulfilment",
+    "label": "🧾 Orders",
+    "order": 0
+   },
+   {
+    "key": "substitutions",
+    "group": "Orders & Fulfilment",
+    "label": "🔄 Substitutions",
+    "order": 5
+   },
+   {
+    "key": "payments",
+    "group": "Payments & Finance",
+    "label": "💳 Payment Gateways",
+    "order": 0
+   },
+   {
+    "key": "billing",
+    "group": "Payments & Finance",
+    "label": "🧮 Billing",
+    "order": 4
+   },
+   {
+    "key": "auctions",
+    "group": "Marketing & Growth",
+    "label": "🔨 Auctions",
+    "order": 4
+   },
+   {
+    "key": "negotiation",
+    "group": "Sellers & B2B",
+    "label": "🤝 Offers",
+    "order": 2
+   },
+   {
+    "key": "richcontent",
+    "group": "Catalogue",
+    "label": "✨ Rich Content",
+    "order": 4
+   },
+   {
+    "key": "prodoptions",
+    "group": "Catalogue",
+    "label": "🧩 Product Options",
+    "order": 5
+   },
+   {
+    "key": "returns",
+    "group": "Orders & Fulfilment",
+    "label": "↩️ Returns",
+    "order": 1
+   },
+   {
+    "key": "ugc",
+    "group": "Customer Care",
+    "label": "⭐ Reviews & Q&A",
+    "order": 2
+   },
+   {
+    "key": "risk",
+    "group": "Trust & Compliance",
+    "label": "🛡️ Risk & Fraud",
+    "order": 0
+   },
+   {
+    "key": "settings",
+    "group": "Settings",
+    "label": "⚙️ Settings",
+    "order": 0
+   },
+   {
+    "key": "monitor",
+    "group": "Overview",
+    "label": "📈 Monitor",
+    "order": 2
+   },
+   {
+    "key": "search",
+    "group": "Storefront",
+    "label": "🔎 Search & Discovery",
+    "order": 1
+   },
+   {
+    "key": "sitemap",
+    "group": "Storefront",
+    "label": "🗺️ Sitemap & SEO",
+    "order": 2
+   },
+   {
+    "key": "bookings",
+    "group": "Orders & Fulfilment",
+    "label": "📅 Bookings",
+    "order": 4
+   },
+   {
+    "key": "sessions",
+    "group": "Orders & Fulfilment",
+    "label": "🎥 Live Sessions",
+    "order": 16
+   },
+   {
+    "key": "metering",
+    "group": "Orders & Fulfilment",
+    "label": "⏱️ Per-minute Charges",
+    "order": 17
+   },
+   {
+    "key": "installations",
+    "group": "Catalogue",
+    "label": "🔧 Installations",
+    "order": 6
+   },
+   {
+    "key": "assemblies",
+    "group": "Catalogue",
+    "label": "🪛 Assembly",
+    "order": 7
+   },
+   {
+    "key": "warranties",
+    "group": "Catalogue",
+    "label": "🛡️ Extended Warranties",
+    "order": 8
+   },
+   {
+    "key": "settlements",
+    "group": "Payments & Finance",
+    "label": "🤝 Settlements",
+    "order": 2
+   },
+   {
+    "key": "finance",
+    "group": "Payments & Finance",
+    "label": "💰 Disputes & Payouts",
+    "order": 3
+   },
+   {
+    "key": "finops",
+    "group": "Business Operations",
+    "label": "💸 Fintech Ops",
+    "order": 3
+   },
+   {
+    "key": "shipping",
+    "group": "Orders & Fulfilment",
+    "label": "📮 Shipping & Tracking",
+    "order": 2
+   },
+   {
+    "key": "pickup",
+    "group": "Orders & Fulfilment",
+    "label": "📍 Pickup Points",
+    "order": 3
+   },
+   {
+    "key": "logistics",
+    "group": "Orders & Fulfilment",
+    "label": "🚚 Logistics & Fulfilment",
+    "order": 18
+   },
+   {
+    "key": "qcops",
+    "group": "Business Operations",
+    "label": "⚡ Quick-commerce",
+    "order": 0
+   },
+   {
+    "key": "deliveryslots",
+    "group": "Orders & Fulfilment",
+    "label": "🗓️ Delivery Slots",
+    "order": 6
+   },
+   {
+    "key": "areas",
+    "group": "Orders & Fulfilment",
+    "label": "📮 Serviceable Areas",
+    "order": 7
+   },
+   {
+    "key": "dash",
+    "group": "Overview",
+    "label": "◈ Dashboard",
+    "order": 0
+   },
+   {
+    "key": "content",
+    "group": "Storefront",
+    "label": "🖼️ Home Content",
+    "order": 0
+   },
+   {
+    "key": "setup",
+    "group": "Overview",
+    "label": "🧭 Setup Wizard",
+    "order": null
+   },
+   {
+    "key": "structure",
+    "group": "Team & Access",
+    "label": "🏢 Org Structure",
+    "order": 1,
+    "section": "tenancy"
+   },
+   {
+    "key": "addresses",
+    "group": "Settings",
+    "label": "🌐 Addresses",
+    "order": 1,
+    "section": "settings"
+   },
+   {
+    "key": "retention",
+    "group": "Marketing & Growth",
+    "label": "🔁 Subscriptions & Members",
+    "order": 1
+   },
+   {
+    "key": "suppliers",
+    "group": "Supply Chain",
+    "label": "🏭 Suppliers",
+    "order": 0
+   },
+   {
+    "key": "ops_proc",
+    "group": "Supply Chain",
+    "label": "🛒 Purchase Requests",
+    "order": 1
+   },
+   {
+    "key": "planning",
+    "group": "Supply Chain",
+    "label": "📈 Planning & Replenishment",
+    "order": 2,
+    "fit": {
+     "notIndustries": [
+      "digital",
+      "software",
+      "services",
+      "subscription",
+      "media",
+      "education",
+      "finance",
+      "realestate",
+      "travel",
+      "energy",
+      "telecom",
+      "gov",
+      "defense",
+      "mining"
+     ]
+    }
+   },
+   {
+    "key": "enquiries",
+    "group": "Orders & Fulfilment",
+    "label": "📨 Enquiries",
+    "order": 8
+   },
+   {
+    "key": "helpdesk",
+    "group": "Customer Care",
+    "label": "🎧 Support Helpdesk",
+    "order": 0
+   },
+   {
+    "key": "rfqs",
+    "group": "Sellers & B2B",
+    "label": "📋 RFQs",
+    "order": 3
+   },
+   {
+    "key": "contracts",
+    "group": "Sellers & B2B",
+    "label": "📝 Contracts",
+    "order": 4
+   },
+   {
+    "key": "tenders",
+    "group": "Sellers & B2B",
+    "label": "🏛️ Tenders",
+    "order": 5
+   },
+   {
+    "key": "tradeops",
+    "group": "Business Operations",
+    "label": "🚢 Trade Ops",
+    "order": 2
+   },
+   {
+    "key": "wallets",
+    "group": "Payments & Finance",
+    "label": "👛 Wallets & Ledger",
+    "order": 1
+   }
+  ],
+  "sections": {},
+  "fit": {}
+ }
+}

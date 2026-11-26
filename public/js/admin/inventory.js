@@ -14,4 +14,4 @@ async function vSerialized() {
 }
 function wireSerialized() { const g = $("#sbGo"); if (g) g.onclick = async () => { try { const r = await api("/admin/serialized/bulk", "POST", { product_id: $("#sbProd").value, count: Number($("#sbCount").value) || 1, prefix: $("#sbPrefix").value || undefined }); toast("Generated " + r.created + " serialized units"); render(); } catch (e) { toast(e.message); } }; }
 
-screen("serialized", { group: "Orders & Fulfilment", label: "🔢 Serialized Items", order: 19, render: async () => await vSerialized(), wire: async () => { wireSerialized(); } });
+screen("serialized", { render: async () => await vSerialized(), wire: async () => { wireSerialized(); } });

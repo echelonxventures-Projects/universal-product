@@ -42,6 +42,6 @@ function wireCharges() {
   wireCoPosts();
 }
 
-screen("fees", { group: "Orders & Fulfilment", label: "🧾 Service Fees", order: 9, render: async () => await vCharges(), wire: async () => { wireCharges(); } });
-screen("tips", { group: "Orders & Fulfilment", label: "💝 Tips", order: 10, render: async () => await vTips() });
-screen("trials", { group: "Orders & Fulfilment", label: "👟 Try and Buy", order: 11, render: async () => await vTrials() });
+screen("fees", { render: async () => await vCharges(), wire: async () => { wireCharges(); } });
+screen("tips", { render: async () => await vTips() });
+screen("trials", { render: async () => await vTrials() });

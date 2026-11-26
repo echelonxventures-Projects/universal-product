@@ -24,5 +24,5 @@ function wireSubstitutions() {
   $$("[data-sb-un]").forEach(b => b.onclick = () => { if (confirm("Refund this line as unavailable?")) postAndRender("/admin/substitutions/" + encodeURIComponent(oid), { product_id: b.dataset.sbUn, unavailable: true }, "POST", "Refunded"); });
 }
 
-screen("orders", { group: "Orders & Fulfilment", label: "🧾 Orders", order: 0, render: async () => { await loadSM(); return await entityTable("order", { rowExtra: r => smIs("order", r.status, "shippable") || smIs("order", r.status, "in_transit") ? `<button class="p-btn sm primary" data-act="ship-order" data-id="${esc(r.id)}" data-num="${esc(r.num)}">${smIs("order", r.status, "in_transit") ? "Label" : "Ship"}</button>` : "" }); } });
-screen("substitutions", { group: "Orders & Fulfilment", label: "🔄 Substitutions", order: 5, render: async () => await vSubstitutions(), wire: async () => { wireSubstitutions(); } });
+screen("orders", { render: async () => { await loadSM(); return await entityTable("order", { rowExtra: r => smIs("order", r.status, "shippable") || smIs("order", r.status, "in_transit") ? `<button class="p-btn sm primary" data-act="ship-order" data-id="${esc(r.id)}" data-num="${esc(r.num)}">${smIs("order", r.status, "in_transit") ? "Label" : "Ship"}</button>` : "" }); } });
+screen("substitutions", { render: async () => await vSubstitutions(), wire: async () => { wireSubstitutions(); } });

@@ -35,15 +35,8 @@ const routeFiles = () => ["lib/api.js", ...(fs.existsSync(path.join(ROOT, "lib/r
 function routesIn(file) { return [...read(file).matchAll(/\["(GET|POST|PUT|PATCH|DELETE) (\/api\/[^"]+)"/g)].map(m => m[1] + " " + m[2]); }
 function artifacts() {
   const routes = routeFiles().flatMap(routesIn);
-  const admin = read("public/js/admin.js").split("const NAVFLAT")[0];
-  const platform = read("public/js/platform.js");
-  const navStart = platform.indexOf("const NAV = ["), navEnd = platform.indexOf("\n];", navStart);
-  const platformScreens = [];
-  let group = null;
-  for (const line of platform.slice(navStart, navEnd).split("\n")) {
-    const g = /\{ g: "([^"]+)"/.exec(line); if (g) group = g[1];
-    const l = /^\s+\["([a-z0-9_-]+)", "/.exec(line); if (l) platformScreens.push({ key: l[1], group });
-  }
+  const C = require("../lib/consoles.js");
+  const platformScreens = C.declared("platform").map(r => ({ key: r.key, group: r.grp }));
   return {
     files: fs.readdirSync(path.join(ROOT, "lib")).filter(f => f.endsWith(".js")).map(f => "lib/" + f).concat(fs.existsSync(path.join(ROOT, "lib/features")) ? fs.readdirSync(path.join(ROOT, "lib/features")).filter(f => f.endsWith(".js")).map(f => "lib/features/" + f) : []).concat(routeFiles().slice(1)),
     tables: [...read("schema.sql").matchAll(/^CREATE TABLE (?:IF NOT EXISTS )?"?(\w+)/gm)].map(m => m[1]),
@@ -51,7 +44,7 @@ function artifacts() {
     machines: J("lib/seed/states.json").stateMachines.map(m => m.key),
     capabilities: J("lib/seed/capabilities.json").CATALOG.map(c => c.key),
     registries: registryLists(),
-    screens: [...admin.matchAll(/\["([a-z_]+)", "/g)].map(m => m[1]).concat(domainScreens().map(x => x.key)),
+    screens: C.declared("store").map(r => r.key).filter(k => !domainScreens().some(x => x.key === k)).concat(domainScreens().map(x => x.key)),
     platformScreens,
     pages: fs.readdirSync(path.join(ROOT, "public")).filter(f => f.endsWith(".html")).map(f => f.replace(/\.html$/, ""))
   };

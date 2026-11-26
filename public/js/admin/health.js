@@ -15,7 +15,7 @@ async function vHealthRecords() {
 }
 function wireHealthRecords() { const b = $("#hrLook"); if (b) b.onclick = () => { hrParty = fieldVal("#hrParty"); render(); }; }
 
-screen("prescriptions", { group: "Orders & Fulfilment", label: "📄 Prescriptions", order: 6, render: view => vCases(view), wire: () => wireCases() });
-screen("credentials", { group: "Orders & Fulfilment", label: "🪪 Practitioner Verification", order: 7, render: view => vCases(view), wire: () => wireCases() });
-screen("labtests", { group: "Orders & Fulfilment", label: "🧫 Lab Tests", order: 13, render: view => vDeliverables(view), wire: view => wireDeliverables(view) });
-screen("healthrecords", { group: "Orders & Fulfilment", label: "🩺 Health Records", order: 15, render: async () => await vHealthRecords(), wire: async () => { wireHealthRecords(); } });
+screen("prescriptions", { render: view => vCases(view), wire: () => wireCases() });
+screen("credentials", { render: view => vCases(view), wire: () => wireCases() });
+screen("labtests", { render: view => vDeliverables(view), wire: view => wireDeliverables(view) });
+screen("healthrecords", { render: async () => await vHealthRecords(), wire: async () => { wireHealthRecords(); } });

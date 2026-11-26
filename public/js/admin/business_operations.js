@@ -65,6 +65,6 @@ async function vOpsProj() {
     <td>${t.status !== "done" ? `<button class="btn-white sm" data-act="ops-task-done" data-id="${t.id}">Done</button> <button class="btn-white sm" data-act="ops-task-time" data-id="${t.id}">Log time</button>` : ""}</td></tr>`).join("") || `<tr><td colspan="9">No tasks yet.</td></tr>`}</tbody></table></div></div>`;
 }
 
-screen("ops_hr", { group: "Business Operations", label: "🧑‍💼 People & Payroll", order: 4, render: async () => await vOpsHR() });
-screen("ops_mfg", { group: "Business Operations", label: "🏭 Manufacturing", order: 5, render: async () => await vOpsMfg() });
-screen("ops_proj", { group: "Business Operations", label: "📐 Projects & Approvals", order: 6, render: async () => await vOpsProj() });
+screen("ops_hr", { render: async () => await vOpsHR() });
+screen("ops_mfg", { render: async () => await vOpsMfg() });
+screen("ops_proj", { render: async () => await vOpsProj() });

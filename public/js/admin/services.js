@@ -60,9 +60,9 @@ function wireBookings() {
   wireCoPosts();
 }
 
-screen("bookings", { group: "Orders & Fulfilment", label: "📅 Bookings", order: 4, render: async () => await vBookings(), wire: async () => { wireBookings(); } });
-screen("sessions", { group: "Orders & Fulfilment", label: "🎥 Live Sessions", order: 16, render: async () => await vSessions() });
-screen("metering", { group: "Orders & Fulfilment", label: "⏱️ Per-minute Charges", order: 17, render: async () => await vMetering() });
-screen("installations", { group: "Catalogue", label: "🔧 Installations", order: 6, render: view => vProdOptions(view), wire: () => wireProdOptions() });
-screen("assemblies", { group: "Catalogue", label: "🪛 Assembly", order: 7, render: view => vProdOptions(view), wire: () => wireProdOptions() });
-screen("warranties", { group: "Catalogue", label: "🛡️ Extended Warranties", order: 8, render: view => vProdOptions(view), wire: () => wireProdOptions() });
+screen("bookings", { render: async () => await vBookings(), wire: async () => { wireBookings(); } });
+screen("sessions", { render: async () => await vSessions() });
+screen("metering", { render: async () => await vMetering() });
+screen("installations", { render: view => vProdOptions(view), wire: () => wireProdOptions() });
+screen("assemblies", { render: view => vProdOptions(view), wire: () => wireProdOptions() });
+screen("warranties", { render: view => vProdOptions(view), wire: () => wireProdOptions() });

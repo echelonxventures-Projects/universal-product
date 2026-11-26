@@ -203,4 +203,4 @@ function wireKnowledge() {
   $$("[data-mcprevoke]").forEach(b => b.onclick = () => { if (confirm("Revoke this key? Clients using it stop at once.")) go(() => api(`/admin/mcp-keys/${b.dataset.mcprevoke}`, "DELETE"), "Key revoked"); });
 }
 
-screen("ai", { group: "Automation", label: "🤖 AI Studio", order: 0, render: async () => (await vAI()) + (await vKnowledgePanels()), wire: async () => { wireAI(); wireKnowledge(); } });
+screen("ai", { render: async () => (await vAI()) + (await vKnowledgePanels()), wire: async () => { wireAI(); wireKnowledge(); } });

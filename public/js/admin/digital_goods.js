@@ -3,5 +3,5 @@
    render, its wiring and its place in the nav. */
 "use strict";
 
-screen("licencekeys", { group: "Orders & Fulfilment", label: "🔑 Licence Keys", order: 12, render: view => vDeliverables(view), wire: view => wireDeliverables(view) });
-screen("courses", { group: "Orders & Fulfilment", label: "🎓 Course Progress", order: 14, render: view => vDeliverables(view), wire: view => wireDeliverables(view) });
+screen("licencekeys", { render: view => vDeliverables(view), wire: view => wireDeliverables(view) });
+screen("courses", { render: view => vDeliverables(view), wire: view => wireDeliverables(view) });

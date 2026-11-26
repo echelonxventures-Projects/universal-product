@@ -47,9 +47,9 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
     else if (b.entity) { if (!E.ENTITY_DEFS && !require("../lib/seed/entity.json").ENTITY_DEFS[b.entity]) throw new Error("no entity"); } else if (!b.view && !b.planned) throw new Error("answers nothing");
   } catch (e) { bad.push(k + ": " + e.message); }
   ok(!bad.length, "every screen's binding answers", bad);
-  const nav = fs.readFileSync(path.join(__dirname, "..", "public", "js", "platform.js"), "utf8");
+  const nav = fs.readFileSync(path.join(__dirname, "..", "public", "js", "platform.js"), "utf8"), leaves = require("../lib/consoles.js").declared("platform");
   const views = new Set([...nav.slice(nav.indexOf("const VIEWFNS")).matchAll(/^ {2}"?([\w-]+)"?: \(\) =>/gm)].map(m => m[1]));
-  const lost = Object.entries(MV.screens()).filter(([k, b]) => !nav.includes(`{ u: "${k}" }`) || (b.view && !views.has(b.view))).map(x => x[0]);
+  const lost = Object.entries(MV.screens()).filter(([k, b]) => !leaves.some(l => l.shows && l.shows.u === k) || (b.view && !views.has(b.view))).map(x => x[0]);
   ok(!lost.length, "every binding is of a screen the console has, to a view it has", lost);
 
   console.log("▸ RECORDS");

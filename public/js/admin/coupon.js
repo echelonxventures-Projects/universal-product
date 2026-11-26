@@ -50,4 +50,4 @@ function wireCoupons() {
   $$("[data-cvoid]").forEach(b => b.onclick = async () => { try { await api("/offers/coupons/" + b.dataset.cvoid, "DELETE"); toast("Voided"); render(); } catch (e) { toast(e.message); } });
 }
 
-screen("coupons", { group: "Offers", label: "🎟️ Coupons", section: "offers", render: vCoupons, wire: wireCoupons });
+screen("coupons", { render: vCoupons, wire: wireCoupons });

@@ -97,4 +97,4 @@ function wireNotifiers() {
   });
 }
 
-screen("payments", { group: "Payments & Finance", label: "💳 Payment Gateways", order: 0, render: async () => await vPayments(), wire: async () => { wirePayments(); wireNotifiers(); } });
+screen("payments", { render: async () => await vPayments(), wire: async () => { wirePayments(); wireNotifiers(); } });

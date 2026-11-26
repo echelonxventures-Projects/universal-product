@@ -18,4 +18,4 @@ async function vBilling() {
     <tbody id="invBody">${b.invoices.map(i => `<tr><td>${esc(i.number)}</td><td>${esc(i.period_start)} → ${esc(i.period_end || "")}</td><td class="num">${money(i.amount)}</td><td><span class="badge ${esc(i.status)}">${esc(i.status)}</span></td><td>${esc(i.paid_at || "—")}</td><td>${canPay && i.status !== "paid" ? `<select data-inv="${i.id}" class="p-btn sm">${gws.map(g => `<option value="${esc(g.id)}">${esc(g.name)}</option>`).join("")}</select> <button class="p-btn sm primary" data-payinv="${i.id}">Pay</button>` : ""}</td></tr>`).join("") || '<tr><td colspan="6" class="p-empty">No invoices</td></tr>'}</tbody></table></div>`;
 }
 
-screen("billing", { group: "Payments & Finance", label: "🧮 Billing", order: 4, render: async () => await vBilling() });
+screen("billing", { render: async () => await vBilling() });

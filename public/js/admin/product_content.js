@@ -50,4 +50,4 @@ function wireRichContent() {
   });
 }
 
-screen("richcontent", { group: "Catalogue", label: "✨ Rich Content", order: 4, render: async () => await vRichContent(), wire: async () => { wireRichContent(); } });
+screen("richcontent", { render: async () => await vRichContent(), wire: async () => { wireRichContent(); } });

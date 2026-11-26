@@ -2020,6 +2020,12 @@ CREATE UNIQUE INDEX ux_localizations_uid ON localizations(uid);
 CREATE TRIGGER trg_localizations_uid AFTER INSERT ON localizations
                BEGIN UPDATE localizations SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
+-- ── consoles · Consoles ──────────────────────────────────────────────────────────────────────────
+CREATE TABLE console_screens (
+    id INTEGER PRIMARY KEY AUTOINCREMENT, console TEXT NOT NULL, key TEXT NOT NULL, section TEXT, grp TEXT NOT NULL,
+    label TEXT NOT NULL, position REAL NOT NULL DEFAULT 0, shows TEXT, access TEXT NOT NULL, fit TEXT, edited INTEGER DEFAULT 0,
+    UNIQUE(console, key));
+
 -- ── analytics · Analytics and reports ────────────────────────────────────────────────────────────
 CREATE TABLE dashboards (
   id INTEGER PRIMARY KEY AUTOINCREMENT,

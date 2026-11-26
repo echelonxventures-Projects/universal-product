@@ -155,8 +155,8 @@ async function vListings() {
       <td style="white-space:nowrap">${staffVerbs.filter(a => (l.next || []).includes(a.to)).map(a => `<button class="btn-white sm" data-co-post="/admin/listings/${l.id}" data-co-body='${esc(JSON.stringify({ action: a.verb }))}' data-co-ask="Notes for the seller (optional)">${esc(a.verb)}</button>`).join(" ")}</td></tr>`).join("") || '<tr><td colspan="7">No listings.</td></tr>'}</tbody></table></div></div>`;
 }
 
-screen("brandreg", { group: "Catalogue", label: "™️ Brand Registry", order: 3, render: async () => await vBrandReg(), wire: async () => { wireBrandReg(); } });
-screen("marketplace", { group: "Marketing & Growth", label: "📢 Marketplace & Ads", order: 3, render: async () => await vMarketplace(), wire: async () => { wireMarketplace(); } });
-screen("sellers", { group: "Sellers & B2B", label: "🏪 Sellers", order: 0, render: async () => await entityTable("seller") });
-screen("listings", { group: "Sellers & B2B", label: "🏷️ Shopper Listings", order: 1, render: async () => await vListings(), wire: async () => { wireCoPosts(); } });
-screen("mktops", { group: "Business Operations", label: "🏬 Marketplace Ops", order: 1, render: async () => await vMktOps(), wire: async () => { wireMktOps(); } });
+screen("brandreg", { render: async () => await vBrandReg(), wire: async () => { wireBrandReg(); } });
+screen("marketplace", { render: async () => await vMarketplace(), wire: async () => { wireMarketplace(); } });
+screen("sellers", { render: async () => await entityTable("seller") });
+screen("listings", { render: async () => await vListings(), wire: async () => { wireCoPosts(); } });
+screen("mktops", { render: async () => await vMktOps(), wire: async () => { wireMktOps(); } });

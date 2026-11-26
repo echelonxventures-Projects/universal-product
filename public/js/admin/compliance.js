@@ -3,4 +3,4 @@
    render, its wiring and its place in the nav. */
 "use strict";
 
-screen("compliance", { group: "Trust & Compliance", label: "✅ Compliance & Certs", order: 1, render: async () => await entityTable("compliance") });
+screen("compliance", { render: async () => await entityTable("compliance") });

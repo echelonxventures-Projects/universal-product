@@ -24,5 +24,5 @@ async function vHelpdesk() {
   </div>`;
 }
 
-screen("enquiries", { group: "Orders & Fulfilment", label: "📨 Enquiries", order: 8, render: view => vCases(view), wire: () => wireCases() });
-screen("helpdesk", { group: "Customer Care", label: "🎧 Support Helpdesk", order: 0, render: async () => await vHelpdesk() });
+screen("enquiries", { render: view => vCases(view), wire: () => wireCases() });
+screen("helpdesk", { render: async () => await vHelpdesk() });

@@ -10,14 +10,36 @@ The frames every domain's screens sit in: the store console and the platform con
 
 ## Architecture
 
+| Module | What it is |
+|---|---|
+| `lib/consoles.js` | the consoles' menus, from the database (owner Experience). |
+
+## Data model
+
+### `console_screens`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `console` | TEXT NOT NULL |
+| `key` | TEXT NOT NULL |
+| `section` | TEXT |
+| `grp` | TEXT NOT NULL |
+| `label` | TEXT NOT NULL |
+| `position` | REAL NOT NULL DEFAULT 0 |
+| `shows` | TEXT |
+| `access` | TEXT NOT NULL |
+| `fit` | TEXT |
+| `edited` | INTEGER DEFAULT 0 |
+
 ## Data flow
 
 ```mermaid
 flowchart LR
   U([Store staff / Store administrator / Platform administrator]) --> UI[admin.html, platform.html]
   UI --> API[0 API routes]
-  API --> ENG[engines]
-  ENG --> DB[(kernel)]
+  API --> ENG[consoles.js]
+  ENG --> DB[(console_screens)]
 
 ```
 

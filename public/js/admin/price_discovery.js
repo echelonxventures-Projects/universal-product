@@ -32,5 +32,5 @@ function wireAuctions() {
   wireCoPosts();
 }
 
-screen("auctions", { group: "Marketing & Growth", label: "🔨 Auctions", order: 4, render: async () => await vAuctions(), wire: async () => { wireAuctions(); } });
-screen("negotiation", { group: "Sellers & B2B", label: "🤝 Offers", order: 2, render: async () => await vNegotiation(), wire: async () => { wireCoPosts(); } });
+screen("auctions", { render: async () => await vAuctions(), wire: async () => { wireAuctions(); } });
+screen("negotiation", { render: async () => await vNegotiation(), wire: async () => { wireCoPosts(); } });

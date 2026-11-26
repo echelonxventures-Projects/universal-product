@@ -31,4 +31,4 @@ function wireWebhooks() {
   if ($("#whDrain")) $("#whDrain").onclick = async () => { try { const r = await api("/admin/webhooks/drain", "POST", {}); toast((r.drained || 0) + " attempted, " + (r.remaining || 0) + " pending"); render(); } catch (e) { toast(e.message); } };
 }
 
-screen("webhooks", { group: "Automation", label: "🔗 Webhooks", order: 1, render: async () => await vWebhooks(), wire: async () => { wireWebhooks(); } });
+screen("webhooks", { render: async () => await vWebhooks(), wire: async () => { wireWebhooks(); } });

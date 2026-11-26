@@ -3,5 +3,5 @@
    render, its wiring and its place in the nav. */
 "use strict";
 
-screen("manual", { group: "Help", label: "📘 User Manual", order: 0, render: async () => { window.open("/docs/user-manual.html", "_blank"); return `<div class="p-empty">Loading…</div>`; } });
-screen("architecture", { group: "Help", label: "🏛️ Architecture", order: 1, render: async () => { window.open("/docs/architecture.html", "_blank"); return `<div class="p-empty">Loading…</div>`; } });
+screen("manual", { render: async () => { window.open("/docs/user-manual.html", "_blank"); return `<div class="p-empty">Loading…</div>`; } });
+screen("architecture", { render: async () => { window.open("/docs/architecture.html", "_blank"); return `<div class="p-empty">Loading…</div>`; } });

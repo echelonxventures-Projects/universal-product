@@ -3,4 +3,4 @@
    render, its wiring and its place in the nav. */
 "use strict";
 
-screen("localizations", { group: "Storefront", label: "🌐 Localizations", order: 3, render: async () => await entityTable("localization") });
+screen("localizations", { render: async () => await entityTable("localization") });

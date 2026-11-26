@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0053 (2026-11-25).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0054 (2026-11-26).
 
 ## Contents
 
@@ -416,6 +416,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0051"></a>AMD-0051 | 2026-11-24 | Platform owner | Go-live hardening. Orders: checkout takes stock in one transaction or refuses; a gateway without live credentials takes no order in production; a payment is asked for in the currency shown; cancelling, a failed or late payment and a return give stock and money back once, in part or in full, and what could not be sent is recorded as owed; tax invoices and credit notes run in one series a fiscal year. Identity: platform and store admins confirm a second factor in production; a stranger's guesses lock strangers, not the owner; email addresses are confirmed. Stores: an address is proven by a DNS record and belongs to one store. Web: visitors who keep no cookie leave no row, files are compressed with ETags, pages carry their own metadata, a proxy's forged addresses are ignored, shutdown drains. Legal pages are filled from settings. Operations: a TLS proxy that asks before requesting a certificate, nightly backups on SQLite and Postgres, alerts and a readiness check. Capabilities: delivery_slots, serviceable_areas, size_guides, preorders. Postgres: MAX/MIN of several values with nested calls. |
 | <a id="amd-0052"></a>AMD-0052 | 2026-11-25 | Platform owner | The platform whole on one machine. npm run demo runs it with demo credentials and local stand-ins for payments, email, SMS and carriers; the platform's own specs and adapters run unchanged. lib/features.js is the frame the 26 remaining shopper capabilities stand in, each declared in lib/seed/features.json with its engine in lib/features/: 33 of 33 platform types are covered. Expression: the storefront's fixed wording and the letters a shopper is sent speak five languages besides the source. A carrier's adapter declares its own setup and the console draws whichever carriers exist (GAP-31). An instalment plan's offer reaches the gateway. A provider whose protocol is not finished takes no order in production. |
 | <a id="amd-0053"></a>AMD-0053 | 2026-11-25 | Platform owner | Everything derived from the platform master: registry, entity, context, temporal and relationship, used to configure any type of platform. Units of value are entities of the master: a currency's row is its node's read model, its class a relationship, its rate and name versions in time, and one a store trades in cannot be switched off or deleted. One surface shows the five parts of anything in the master and declares new kinds of record as data; a platform's setup chooses which records it keeps, and they are its own. The console screens that were bound to nothing show what the master already answers; seven are marked declared and not built. |
+| <a id="amd-0054"></a>AMD-0054 | 2026-11-26 | Platform owner | Everything comes from the database, the schema and the backend. The consoles' menus — every screen of both consoles, where it sits, its label, what it shows, its access section and its fit to a kind of store — are rows of console_screens, seeded from lib/seed/consoles.json, edited in Data Studio and served by the backend with each console's script; the browser keeps only each screen's drawing code. The registry compiler, the grant surface, the domain map, the docs and the trace read the declaration, no longer parsing browser files. The sample catalogue the backend seeded from a browser file is the backend's own seed. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1284,7 +1285,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 332 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 334 files.
 
 ### C02 · Meaning
 
@@ -1509,10 +1510,11 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `public/js/app.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/console.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/platform.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
-| `public/js/data.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/editors.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/provisioning.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/rules-ui.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `lib/consoles.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `lib/seed/consoles.json` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/invoice.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `lib/page-meta.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 
@@ -1682,6 +1684,7 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/stock.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/product-counts.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/returns.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
+| `lib/seed/sample-catalogue.json` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/features.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/seed/features.json` | [Commerce](volumes/V12-business.md#d-biz) |  |
 | `lib/delivery-windows.js` | [Commerce](volumes/V12-business.md#d-biz) |  |
@@ -2516,6 +2519,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0051 | amendment | Go-live hardening. Orders | [constitution](#amd-0051) |
 | AMD-0052 | amendment | The platform whole on one machine. npm run demo runs it with | [constitution](#amd-0052) |
 | AMD-0053 | amendment | Everything derived from the platform master | [constitution](#amd-0053) |
+| AMD-0054 | amendment | Everything comes from the database, the schema and the backe | [constitution](#amd-0054) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

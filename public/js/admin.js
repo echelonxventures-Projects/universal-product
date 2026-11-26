@@ -53,24 +53,9 @@ function toast(msg) {
    store's own setup and the reference shelf. Labels are unique, so no two leaves
    read alike. Keys are unchanged — NAVSEC and canSee() still key off the flat list
    (every key is also a grant section), and NAVFLAT drives title lookup. */
-const NAV = [
-  { g: "Overview", items: [] },
-  { g: "Orders & Fulfilment", items: [] },
-  { g: "Catalogue", items: [] },
-  { g: "Supply Chain", items: [] },
-  { g: "Storefront", items: [] },
-  { g: "Marketing & Growth", items: [] },
-  { g: "Customer Care", items: [] },
-  { g: "Sellers & B2B", items: [] },
-  { g: "Payments & Finance", items: [] },
-  { g: "Business Operations", items: [] },
-  { g: "Mobility", items: [] },
-  { g: "Team & Access", items: [] },
-  { g: "Trust & Compliance", items: [] },
-  { g: "Automation", items: [] },
-  { g: "Settings", items: [], tail: true },
-  { g: "Help", items: [], tail: true }
-];
+/* the menu is the database's (console_screens, lib/consoles.js), served with this script: its groups
+   in order, and each screen's group, label, position and access section */
+const NAV = LX_CONSOLE.groups.map(g => ({ g, items: [] }));
 const NAVFLAT = NAV.flatMap(g => g.items);
 /* a domain's screens register themselves (public/js/admin/<domain>.js): what renders, what wires
    it, and where it sits — its domain's group in the nav, its label, the grant section it needs.
@@ -78,30 +63,19 @@ const NAVFLAT = NAV.flatMap(g => g.items);
 const SCREENS = {};
 function screen(key, def) {
   SCREENS[key] = def;
-  let g = NAV.find(x => x.g === def.group);
-  if (!g) { g = { g: def.group, items: [] }; const t = NAV.findIndex(x => x.tail); NAV.splice(t < 0 ? NAV.length : t, 0, g); }
-  if (!g.items.some(i => i[0] === key)) {
-    /* a screen goes back to its declared position in its group (order), else last */
-    const at = def.order == null ? -1 : g.items.findIndex(i => i[2] != null && i[2] > def.order);
-    g.items.splice(at < 0 ? g.items.length : at, 0, [key, def.label, def.order == null ? Infinity : def.order]);
+  const d = LX_CONSOLE.screens[key];
+  /* a screen the database does not list is not in the menu */
+  if (!d) return;
+  const g = NAV.find(x => x.g === d.group);
+  if (g && !g.items.some(i => i[0] === key)) {
+    const at = g.items.findIndex(i => i[2] > d.position);
+    g.items.splice(at < 0 ? g.items.length : at, 0, [key, d.label, d.position]);
   }
-  if (def.section) NAVSEC[key] = def.section;
   NAVFLAT.length = 0; NAV.flatMap(x => x.items).forEach(x => NAVFLAT.push(x));
 }
-const NAVSEC = { ai: "ai", webhooks: "webhooks", trash: "trash", team: "team", studio: "studio", sso: "settings", structure: "tenancy" };
-/* THE TENANT IS WHAT IT IS — a section is not universal. This map is the fitness of the
-   store sections that are VERTICAL FACTS about the tenant — no capability atom owns them,
-   so the tenant's own deploy MODE and INDUSTRIES govern them instead (lib/authz.js reads
-   this through the compiled canonical registry). Serial tracking belongs to tracked-goods
-   verticals; replenishment planning belongs to physical stock. Everything else that looks
-   like a console section is lit by the capability atom that governs it — the surface is a
-   shadow of the composition, declared on the atom in the catalog, never duplicated here.
-   A section absent here applies to every tenant; an entry narrows it. The console's own
-   nav never reads this directly; written as strict JSON because the compiler parses it. */
-const NAVFIT = {
-  "serialized": { "industries": ["electronics", "automotive", "telecom", "industrial", "healthcare", "pharma", "defense", "marine", "jewellery", "luxury", "art"] },
-  "planning": { "notIndustries": ["digital", "software", "services", "subscription", "media", "education", "finance", "realestate", "travel", "energy", "telecom", "gov", "defense", "mining"] }
-};
+const NAVSEC = LX_CONSOLE.sections;
+/* a store section's fitness to the tenant (its industries, its mode) is the database's too; the grant
+   surface (lib/authz.js) applies it, so the menu only ever receives what the store may open */
 const navSection = k => NAVSEC[k] || k;
 const canSee = k => { if (!A.allowed || A.allowed.includes("*")) return true; if (k === "dash") return true; return A.allowed.includes(navSection(k)); };
 let view = "dash";

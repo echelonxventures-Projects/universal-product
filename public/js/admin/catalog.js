@@ -73,13 +73,13 @@ function wireGcatalog() {
   });
 }
 
-screen("products", { group: "Catalogue", label: "📦 Products", order: 0, render: async () => await entityTable("product") });
-screen("skus", { group: "Catalogue", label: "🔖 SKUs & Inventory", order: 1, render: async () => await entityTable("sku") + await entityTable("inventory") + await entityTable("warehouse") + await entityTable("variant_group") });
-screen("brands", { group: "Catalogue", label: "🏷️ Brands", order: 2, render: async () => await entityTable("brand") });
-screen("taxonomy", { group: "Catalogue", label: "🌳 Taxonomy", order: 11, render: async () => await entityTable("taxonomy") });
-screen("attributes", { group: "Catalogue", label: "🧬 Attributes", order: 12, render: async () => await entityTable("attribute") });
-screen("gcatalog", { group: "Catalogue", label: "🌐 Global Catalog", order: 13, render: async () => await vGcatalog(), wire: async () => { wireGcatalog(); } });
-screen("mastercontrib", { group: "Catalogue", label: "🤝 Master Contributions", order: 14, render: async () => await vMasterContrib(), wire: async () => { wireMasterContrib(); } });
+screen("products", { render: async () => await entityTable("product") });
+screen("skus", { render: async () => await entityTable("sku") + await entityTable("inventory") + await entityTable("warehouse") + await entityTable("variant_group") });
+screen("brands", { render: async () => await entityTable("brand") });
+screen("taxonomy", { render: async () => await entityTable("taxonomy") });
+screen("attributes", { render: async () => await entityTable("attribute") });
+screen("gcatalog", { render: async () => await vGcatalog(), wire: async () => { wireGcatalog(); } });
+screen("mastercontrib", { render: async () => await vMasterContrib(), wire: async () => { wireMasterContrib(); } });
 
 /* ---------- size guides and pre-orders ---------- */
 async function vSizeGuides() {
@@ -106,5 +106,5 @@ function wirePreorders() {
   const b = $("#poAdd"); if (b) b.onclick = () => postAndRender("/admin/preorders", { product_id: fieldVal("#poId").trim(), ships_on: fieldVal("#poDay"), max_qty: Number(fieldVal("#poMax")) }, "POST", "Saved");
   $$("[data-podel]").forEach(x => x.onclick = async () => { try { await api("/admin/preorders/" + encodeURIComponent(x.dataset.podel), "DELETE"); render(); } catch (e) { toast(e.message); } });
 }
-screen("sizeguides", { group: "Catalogue", label: "📏 Size Guides", order: 50, render: async () => await vSizeGuides(), wire: async () => { wireSizeGuides(); } });
-screen("preorders", { group: "Catalogue", label: "⏳ Pre-orders", order: 51, render: async () => await vPreorders(), wire: async () => { wirePreorders(); } });
+screen("sizeguides", { render: async () => await vSizeGuides(), wire: async () => { wireSizeGuides(); } });
+screen("preorders", { render: async () => await vPreorders(), wire: async () => { wirePreorders(); } });

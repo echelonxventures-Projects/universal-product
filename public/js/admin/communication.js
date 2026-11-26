@@ -28,4 +28,4 @@ function wireConversations() {
   wireCoPosts();
 }
 
-screen("conversations", { group: "Customer Care", label: "💬 Messages", order: 1, render: async () => await vConversations(), wire: async () => { wireConversations(); } });
+screen("conversations", { render: async () => await vConversations(), wire: async () => { wireConversations(); } });

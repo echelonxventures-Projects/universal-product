@@ -51,6 +51,6 @@ async function vOpsProc() {
     </tr>`; }).join("") || `<tr><td colspan="7">No purchase requests yet.</td></tr>`}</tbody></table></div></div>`;
 }
 
-screen("suppliers", { group: "Supply Chain", label: "🏭 Suppliers", order: 0, render: async () => await entityTable("supplier") + await entityTable("product_supplier") });
-screen("ops_proc", { group: "Supply Chain", label: "🛒 Purchase Requests", order: 1, render: async () => await vOpsProc() });
-screen("planning", { group: "Supply Chain", label: "📈 Planning & Replenishment", order: 2, render: async () => await vPlanning() });
+screen("suppliers", { render: async () => await entityTable("supplier") + await entityTable("product_supplier") });
+screen("ops_proc", { render: async () => await vOpsProc() });
+screen("planning", { render: async () => await vPlanning() });

@@ -92,7 +92,7 @@ function wireTenders() {
   const g = $("#ntGo"); if (g) g.onclick = async () => { try { const r = await api("/admin/tenders", "POST", { title: $("#ntTitle").value, buyer_org: $("#ntOrg").value, budget: Number($("#ntBudget").value) || 0 }); toast("Tender " + r.ref); render(); } catch (e) { toast(e.message); } };
 }
 
-screen("rfqs", { group: "Sellers & B2B", label: "📋 RFQs", order: 3, render: async () => await entityTable("rfq") });
-screen("contracts", { group: "Sellers & B2B", label: "📝 Contracts", order: 4, render: async () => await vContracts(), wire: async () => { wireContracts(); } });
-screen("tenders", { group: "Sellers & B2B", label: "🏛️ Tenders", order: 5, render: async () => await vTenders(), wire: async () => { wireTenders(); } });
-screen("tradeops", { group: "Business Operations", label: "🚢 Trade Ops", order: 2, render: async () => await vTradeOps(), wire: async () => { wireTradeOps(); } });
+screen("rfqs", { render: async () => await entityTable("rfq") });
+screen("contracts", { render: async () => await vContracts(), wire: async () => { wireContracts(); } });
+screen("tenders", { render: async () => await vTenders(), wire: async () => { wireTenders(); } });
+screen("tradeops", { render: async () => await vTradeOps(), wire: async () => { wireTradeOps(); } });

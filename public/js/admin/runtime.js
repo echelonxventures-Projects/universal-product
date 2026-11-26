@@ -17,4 +17,4 @@ async function vMonitor() {
     <tbody>${m.endpoints.map(x => `<tr><td>${esc(x.endpoint)}</td><td class="num">${x.count}</td><td class="num">${x.err}</td><td class="num">${x.avgMs}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
-screen("monitor", { group: "Overview", label: "📈 Monitor", order: 2, render: async () => await vMonitor() });
+screen("monitor", { render: async () => await vMonitor() });

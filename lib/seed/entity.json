@@ -1,5 +1,71 @@
 {
  "ENTITY_DEFS": {
+  "console_screen": {
+   "table": "console_screens",
+   "noTenant": true,
+   "pk": "id",
+   "label": "Console screens",
+   "icon": "\ud83e\udded",
+   "perm": {
+    "read": [
+     "platform"
+    ],
+    "write": [
+     "platform"
+    ]
+   },
+   "platformOnly": true,
+   "editedStamp": true,
+   "fields": [
+    {
+     "key": "console",
+     "label": "Console",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "key",
+     "label": "Screen",
+     "type": "text",
+     "readonly": true,
+     "list": true
+    },
+    {
+     "key": "label",
+     "label": "Label",
+     "type": "text",
+     "required": true,
+     "list": true,
+     "display": "lead"
+    },
+    {
+     "key": "section",
+     "label": "Section",
+     "type": "text",
+     "list": true
+    },
+    {
+     "key": "grp",
+     "label": "Group",
+     "type": "text",
+     "required": true,
+     "list": true
+    },
+    {
+     "key": "position",
+     "label": "Position",
+     "type": "number",
+     "list": true
+    },
+    {
+     "key": "access",
+     "label": "Access section",
+     "type": "text",
+     "required": true
+    }
+   ]
+  },
   "country": {
    "table": "countries",
    "noTenant": true,

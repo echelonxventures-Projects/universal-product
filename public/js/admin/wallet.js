@@ -44,4 +44,4 @@ function wireWallets() {
   wireCoPosts();
 }
 
-screen("wallets", { group: "Payments & Finance", label: "👛 Wallets & Ledger", order: 1, render: async () => await vWallets(), wire: async () => { wireWallets(); } });
+screen("wallets", { render: async () => await vWallets(), wire: async () => { wireWallets(); } });

@@ -23,4 +23,4 @@ async function vUgc() {
   </div>`;
 }
 
-screen("ugc", { group: "Customer Care", label: "⭐ Reviews & Q&A", order: 2, render: async () => await vUgc() });
+screen("ugc", { render: async () => await vUgc() });

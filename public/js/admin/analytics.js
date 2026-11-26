@@ -20,4 +20,4 @@ async function vAnalytics() {
     <tbody>${a.byIndustry.map(x => `<tr><td>${esc(x.industry)}</td><td class="num">${money(x.rev)}</td></tr>`).join("") || '<tr><td colspan="2" class="p-empty">No sales yet</td></tr>'}</tbody></table></div>`;
 }
 
-screen("analytics", { group: "Overview", label: "📊 Analytics", order: 1, render: async () => await vAnalytics() });
+screen("analytics", { render: async () => await vAnalytics() });

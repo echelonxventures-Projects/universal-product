@@ -47,4 +47,4 @@ function wireTeam() {
   if (resetBtn) resetBtn.onclick = async () => { if (!confirm("Discard this store's own roles and inherit the platform default again?")) return; try { await api("/admin/roles/reset", "POST", {}); toast("Reverted to the platform default"); render(); } catch (e) { toast(e.message); } };
 }
 
-screen("team", { group: "Team & Access", label: "👥 Team & Roles", order: 0, render: async () => await vTeam(), wire: async () => { wireTeam(); } });
+screen("team", { render: async () => await vTeam(), wire: async () => { wireTeam(); } });
