@@ -317,6 +317,8 @@
   {"path":"lib/consoles.js","owner":"Experience"},
   {"path":"lib/seed/console-texts.json","owner":"Expression"},
   {"path":"scripts/console-texts.js","owner":"Expression"},
+  {"path":"scripts/test-shard.js","owner":"Quality"},
+  {"path":"scripts/test-times.json","owner":"Quality"},
   {"path":"public/js/words.js","owner":"Expression"},
   {"path":"lib/seed/sample-catalogue.json","owner":"Commerce"},
   {"path":"lib/seed/consoles.json","owner":"Experience"},

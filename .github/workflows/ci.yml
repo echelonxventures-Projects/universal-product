@@ -8,11 +8,15 @@ on:
 jobs:
   test:
     runs-on: ubuntu-24.04
-    timeout-minutes: 120
+    timeout-minutes: 45
     strategy:
+      # every shard reports, so one run shows every failure
+      fail-fast: false
       matrix:
         # 22.13 is the floor: node:sqlite is behind --experimental-sqlite before it
         node: [22.13, 22, 24]
+        # the npm test chain split four ways by each test's time (scripts/test-shard.js)
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -22,15 +26,16 @@ jobs:
       # through jsdom, a devDependency — without the install `npm test` dies on require
       - name: Install
         run: npm ci
-      - name: Syntax + E2E suite (own DB/port)
-        run: npm test
+      - name: Syntax + E2E suite, shard ${{ matrix.shard }} of 4 (own DB/port)
+        run: node scripts/test-shard.js ${{ matrix.shard }}/4
       - name: Boot smoke (fresh DB, healthz)
+        if: matrix.shard == 1
         run: |
           LX_DB=/tmp/ci.db PORT=3055 nohup node server.js >/tmp/ci.log 2>&1 &
           for i in $(seq 1 30); do sleep 1; curl -sf http://localhost:3055/healthz && break; done
           curl -sf http://localhost:3055/healthz >/dev/null && echo OK
       - name: Docker image builds
-        if: matrix.node == 22
+        if: matrix.node == 22 && matrix.shard == 1
         run: docker build -t luxora-ci .
 
   browser:
