@@ -8,6 +8,7 @@ on:
 jobs:
   test:
     runs-on: ubuntu-24.04
+    timeout-minutes: 120
     strategy:
       matrix:
         # 22.13 is the floor: node:sqlite is behind --experimental-sqlite before it
@@ -36,6 +37,7 @@ jobs:
     # every page and console section in real Chrome under the production CSP:
     # fails on a CSP violation, an uncaught exception, a console error or a failed load
     runs-on: ubuntu-24.04
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
@@ -52,6 +54,7 @@ jobs:
     # section with the server on Postgres (scripts/pg-check.js). The service authenticates with
     # SCRAM-SHA-256, Postgres's default, as managed Postgres does.
     runs-on: ubuntu-24.04
+    timeout-minutes: 45
     services:
       postgres:
         image: postgres:16
