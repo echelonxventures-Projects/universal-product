@@ -76,6 +76,20 @@ const node = (code, env) => spawnSync(process.execPath, ["-e", code], { cwd: ROO
     try { checks = JSON.parse(boot.stdout.trim().split("\n").pop()); } catch (e) { checks = [{ ok: false, n: "boot produced no result", x: (boot.stderr || "").slice(0, 600) }]; }
     for (const c of checks) step(c.ok, "Postgres: " + c.n, c.x === undefined ? null : JSON.stringify(c.x));
 
+    /* 3b · the bridge on a busy machine: a reply written before the caller begins to wait is still
+       the caller's. A copy of the bridge pauses 1 ms after each send, which on CI runners happened
+       by itself and made every such query fail as "a different request" */
+    const quick = node(`
+      const fs = require("fs"), os = require("os"), path = require("path");
+      const src = fs.readFileSync("lib/pgbridge.js", "utf8").replace("worker.postMessage({ ...payload, id });", "worker.postMessage({ ...payload, id }); { const t = Date.now() + 1; while (Date.now() < t) { } }")
+        .replace('path.join(__dirname, "pgworker.js")', JSON.stringify(path.resolve("lib/pgworker.js")));
+      const f = path.join(os.tmpdir(), "pgbridge-busy-" + process.pid + ".js"); fs.writeFileSync(f, src);
+      const b = require(f).open(${JSON.stringify(target)}, { timeoutMs: 10000 });
+      let ok = 0, bad = []; for (let i = 0; i < 500; i++) { try { if (Number(b.get("SELECT ? AS n", i).n) === i) ok++; else bad.push("wrong " + i); } catch (e) { bad.push(e.message); } }
+      b.close(); fs.rmSync(f); console.log(JSON.stringify({ ok, bad: bad.slice(0, 2) })); process.exit(0);`);
+    const qo = (() => { try { return JSON.parse(quick.stdout.trim().split("\n").pop()); } catch (e) { return { ok: 0, bad: [quick.stderr.slice(0, 300)] }; } })();
+    step(qo.ok === 500, "Postgres: a reply that comes back before the caller waits is still its own (500 of 500)", JSON.stringify(qo));
+
     /* 4 · every page and console section, with the server on Postgres */
     if (!process.argv.includes("--no-browser")) {
       const br = spawnSync(process.execPath, [path.join(ROOT, "scripts", "browser-check.js")], { cwd: ROOT, env: { ...process.env, LX_DB_DRIVER: "postgres", LX_PG_URL: target, CHECK_PORT: process.env.CHECK_PORT || "8869" }, encoding: "utf8", timeout: 1800000 });
