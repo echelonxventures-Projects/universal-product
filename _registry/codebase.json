@@ -317,6 +317,8 @@
   {"path":"lib/consoles.js","owner":"Experience"},
   {"path":"lib/parties.js","owner":"Party"},
   {"path":"lib/offerings.js","owner":"Offering"},
+  {"path":"lib/order-records.js","owner":"Commerce"},
+  {"path":"lib/seed/order-records.json","owner":"Commerce"},
   {"path":"lib/seed/offerings.json","owner":"Offering"},
   {"path":"lib/seed/parties.json","owner":"Party"},
   {"path":"lib/seed/console-texts.json","owner":"Expression"},

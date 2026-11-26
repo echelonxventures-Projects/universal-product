@@ -1010,7 +1010,8 @@
     "files": [
      "lib/substitutions.js",
      "lib/orders.js",
-     "lib/invoices.js"
+     "lib/invoices.js",
+     "lib/order-records.js"
     ],
     "tables": [
      "orders",

@@ -179,6 +179,18 @@ const hook = async (type, cs, extra) => {
     ok(db.get("SELECT title t FROM notifications WHERE owner=? ORDER BY id DESC LIMIT 1", "t1:u:" + uid).t === "ऑर्डर " + lo + " रद्द", "a shopper is written to in their language", db.get("SELECT title t FROM notifications WHERE owner=? ORDER BY id DESC LIMIT 1", "t1:u:" + uid));
     ok(/Versandt/.test(L.write("order_moved", "de", { num: "1", state: "Shipped" }).subject) && L.write("order_moved", "ja", { num: "1", state: "Shipped" }).subject === "Order 1: Shipped", "states are named in it too; a language with no letters falls back");
 
+    console.log("▸ ON THE MASTER");
+    const OR = require("../lib/order-records.js"), K = require("../lib/kernel.js");
+    const lr = row(lo), rec = OR.at(lr.id), hist = OR.statusHistory(lr.id).map(h => h.status);
+    ok(rec && K.internal.nodeRow(lr.uid).kind === "commerce.order" && rec.num === lo && rec.total === Number(lr.total), "an order is on the master with its deal", rec);
+    ok(hist[0] === hist.find(Boolean) && hist[hist.length - 1] === lr.status && hist.length >= 2, "its status history: as placed, and as it is now", hist);
+    const person = db.get("SELECT uid FROM users WHERE id=?", uid).uid;
+    ok(rec.buyer === person && OR.ordersOf(person).includes(lr.uid), "the person who placed it is a relationship");
+    const pu = db.get("SELECT uid FROM products WHERE tenant_id=1 AND id=?", X).uid;
+    ok(rec.lines.length === 1 && rec.lines[0].offering === pu && rec.lines[0].qty === 1, "its lines are the offerings bought", rec.lines);
+    ok(!db.all("SELECT attrs FROM k_versions WHERE node=?", lr.uid).some(v => /Olive Order|1 Main St|@example\.com/.test(v.attrs)), "the buyer's name, address and email are not copied onto it");
+    const seqO = K.lastSeq(); ok(OR.importRows() === 0 && K.lastSeq() === seqO, "every order is on the master, and a warm pass writes nothing");
+
     console.log("▸ CURRENCY");
     require("../lib/settings.js").save(1, { commerce: { taxMode: null } });
     const cfg = (await A("/api/config" + Q)).body.commerce;

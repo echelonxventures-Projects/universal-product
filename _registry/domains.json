@@ -240,6 +240,18 @@
    "lib/governance.js trash/restore go through an entity's writer; lib/entity.js exports writerFor",
    "test/offerings.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0060",
+  "date": "2026-11-26",
+  "authorisedBy": "Platform owner",
+  "summary": "P24 continues: orders are on the master. Every order is a commerce.order in its store's namespace with its row's identity: number, status, amounts, currency, why it was cancelled and when it was delivered are versions in time, so its status history is answerable at any instant. Its lines are the offerings bought, as they stood at checkout; the person who placed it is a relationship in the commerce.buyers hierarchy. The buyer's name, address and email are not copied: the order is kept for the law, its personal data stays under the store's retention. Every status write — the order mover, checkout, payment confirmation, shipping, pickup, group buys, quick commerce — goes through lib/order-records.js in one transaction with its row; money, stock and the status machine are unchanged.",
+  "changes": [
+   "lib/order-records.js, lib/seed/order-records.json; hierarchy commerce.buyers",
+   "lib/orders.js write and its cancel/delivered stamps; lib/api.js checkout and payment confirmation; lib/groupbuy.js, lib/pickup.js, lib/qcommerce.js, lib/routes/shipping.js status writes",
+   "boot imports orders the kernel has never seen",
+   "test/orders.js ON THE MASTER"
+  ]
  }
   ],
   "domains": [

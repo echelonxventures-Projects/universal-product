@@ -1,0 +1,19 @@
+{
+ "$comment": "Orders on the kernel (lib/order-records.js, owner Commerce): each order is a node of the commerce.order kind in its store's namespace, with the facts that make the deal — its number, status, amounts, currency, why it was cancelled and when it was delivered — as versions in time, so its status history is answerable at any instant. Its lines (the offerings bought, how many, at what price) are recorded as they were at checkout; the person who placed it is a relationship. The buyer's name, address and email stay in the orders table: an order is kept for the law, its personal data is not copied.",
+ "kind": { "kind": "commerce.order", "owner": "Commerce", "label": "Order", "root": true, "parents": ["party.person"], "schemes": [], "attributes": [
+  { "key": "num", "type": "text", "required": true, "label": "Number" },
+  { "key": "status", "type": "text", "label": "Status" },
+  { "key": "sub", "type": "number", "label": "Subtotal" },
+  { "key": "ship_fee", "type": "number", "label": "Delivery" },
+  { "key": "tax", "type": "number", "label": "Tax" },
+  { "key": "gift_used", "type": "number", "label": "Gift balance used" },
+  { "key": "total", "type": "number", "label": "Total" },
+  { "key": "currency", "type": "text", "label": "Currency" },
+  { "key": "cancel_reason", "type": "text", "label": "Why it was cancelled" },
+  { "key": "delivered_at", "type": "text", "label": "Delivered" },
+  { "key": "lines", "type": "list", "label": "Lines" } ] },
+ "facts": { "num": "text", "status": "text", "sub": "number", "ship_fee": "number", "tax": "number", "gift_used": "number", "total": "number", "currency": "text", "cancel_reason": "text", "delivered_at": "text" },
+ "hierarchy": { "hierarchy": "commerce.buyers", "owner": "Relationship", "label": "Who placed each order" },
+ "actor": "order",
+ "importActor": "order.import"
+}
