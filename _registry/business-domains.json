@@ -2757,7 +2757,8 @@
     "routes": [
      "^/api/(webhooks|providers)(/|$)",
      "^/api/admin/(webhooks|custom-providers)(/|$)",
-     "^/api/platform/custom-providers(/|$)"
+     "^/api/platform/custom-providers(/|$)",
+     "^/api/openapi\\.json$"
     ],
     "machines": [
      "webhook_delivery"

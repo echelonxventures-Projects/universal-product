@@ -109,6 +109,16 @@ function getSession(req, res, url, cookies) {
   return session;
 }
 
+/* the session a store API key stands for, or null when the request carries none */
+function keySession(req, url, cookies) {
+  const m = /^Bearer\s+(lxm_[0-9a-f]{48})$/i.exec(String(req.headers.authorization || ""));
+  if (!m || url.pathname === "/api/mcp" || cookies.azs || cookies.azp) return null;
+  const k = require("./lib/mcp.js").byKey(m[1]);
+  const tenant = k && get("SELECT * FROM tenants WHERE id=?", k.tenant_id);
+  if (!tenant) return { refused: true };
+  return { sid: "key:" + k.id, user_id: null, api_key: { id: k.id, name: k.name, role_key: k.role_key }, mfa_at: null, device: "", tenant, zip: "", gift_balance: 0, coupon: "", csrf: null };
+}
+
 function safeJoin(root, urlPath) {
   let dec; try { dec = decodeURIComponent(urlPath.split("?")[0]); } catch (e) { return null; }
   const p = path.normalize(path.join(root, dec));
@@ -244,7 +254,12 @@ const handler = async (req, res) => {
         let oh; try { oh = new URL(origin).host; } catch (e) { oh = ""; }
         if (oh && oh !== req.headers.host) { res.writeHead(403, { "Content-Type": "application/json" }); return res.end(JSON.stringify({ error: "Cross-origin mutation rejected" })); }
       }
-      const session = getSession(req, res, url, cookies);
+      /* a store's systems call the API with a store key as the Bearer token (the key an MCP client
+         uses too, lib/mcp.js): the request is that store's staff with the key's role, and carries no
+         cookie, so the cookie's CSRF guard has nothing to guard */
+      const keyed = keySession(req, url, cookies);
+      if (keyed && keyed.refused) { res.writeHead(401, { "Content-Type": "application/json", "WWW-Authenticate": 'Bearer realm="luxora"' }); return res.end(JSON.stringify({ error: "Invalid or revoked API key" })); }
+      const session = keyed || getSession(req, res, url, cookies);
       if (url.searchParams.get("store") && SLUG_RE.test(url.searchParams.get("store"))) {
         const cur = res.getHeader("Set-Cookie");
         const arr = cur ? (Array.isArray(cur) ? cur : [cur]) : [];

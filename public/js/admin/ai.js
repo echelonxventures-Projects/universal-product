@@ -150,8 +150,8 @@ async function vKnowledgePanels() {
     ${(ap.profiles || []).map(p => `<tr><td><b>${esc(p.label || p.key)}</b> <code>${esc(p.key)}</code></td><td class="p-tag">${esc((p.collections || []).join(", "))}</td><td class="p-tag">${esc((p.tools || []).join(", "))}</td><td class="p-tag">${esc(p.model)} · ${esc(p.effort)}</td>
       <td><button class="p-btn sm" data-apedit="${esc(p.key)}">Edit</button></td></tr>`).join("")}
     </tbody></table></div>
-  <div class="p-panel"><h2>🔌 MCP access</h2>
-    <p class="p-tag">Outside MCP clients (Claude Desktop, agents, partner apps) call the platform's tools at <code>${esc(origin)}/api/mcp</code> with an access key as the Bearer token. A key acts as one store role and sees only what that role may.</p>
+  <div class="p-panel"><h2>🔌 API & MCP access</h2>
+    <p class="p-tag">Your other systems — in any language — call the API (described at <code>${esc(origin)}/api/openapi.json</code>) with an access key as the Bearer token. MCP clients (Claude Desktop, agents, partner apps) call the platform's tools at <code>${esc(origin)}/api/mcp</code> with the same key. A key acts as one store role and sees only what that role may.</p>
     <table class="p-table"><thead><tr><th>Name</th><th>Role</th><th>Created</th><th>Last used</th><th></th></tr></thead><tbody>
     ${(mk.keys || []).map(k => `<tr><td>${esc(k.name)}</td><td>${esc(k.role_key)}</td><td class="p-tag">${esc(k.created_at)} · ${esc(k.created_by || "")}</td><td class="p-tag">${esc(k.last_used || "never")}</td>
       <td>${k.revoked ? '<span class="badge">revoked</span>' : `<button class="p-btn sm" data-mcprevoke="${k.id}">Revoke</button>`}</td></tr>`).join("") || '<tr><td colspan="5" class="p-empty">No keys</td></tr>'}

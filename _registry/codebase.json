@@ -318,6 +318,8 @@
   {"path":"lib/seed/console-texts.json","owner":"Expression"},
   {"path":"scripts/console-texts.js","owner":"Expression"},
   {"path":"scripts/test-shard.js","owner":"Quality"},
+  {"path":"scripts/openapi.js","owner":"Integration"},
+  {"path":"lib/seed/openapi.json","owner":"Integration"},
   {"path":"scripts/test-times.json","owner":"Quality"},
   {"path":"public/js/words.js","owner":"Expression"},
   {"path":"lib/seed/sample-catalogue.json","owner":"Commerce"},

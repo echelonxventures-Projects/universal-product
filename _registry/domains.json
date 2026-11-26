@@ -202,6 +202,18 @@
    "_registry/domains.json LAW-015 status partial, with what is missing",
    "_registry/register-baseline.json lawsNotEnforced 17"
   ]
+ },
+ {
+  "amendmentId": "AMD-0057",
+  "date": "2026-11-26",
+  "authorisedBy": "Platform owner",
+  "summary": "P19 begins: the API for any language. An OpenAPI 3.1 description of every route is generated from the route table, each handler's comment and the API register (scripts/openapi.js → docs/api/openapi.json, served at /api/openapi.json); a test fails when it differs from the code. A store's systems call the API with a store key as the Bearer token — the key an MCP client already used — acting as one staff role in its own store, recorded by name, stopped by revocation. Client libraries are generated from the description with standard tools (docs/api/README.md). CI runs the suite in four parallel shards per Node version (scripts/test-shard.js). Not yet: request and response bodies are not described field by field, and 692 routes have no written description.",
+  "changes": [
+   "scripts/openapi.js, lib/seed/openapi.json, docs/api/openapi.json, docs/api/README.md, GET /api/openapi.json",
+   "server.js keySession; lib/api.js isAdmin, staffGrant, staffRoleOf, _userRow, actor accept a store key",
+   "scripts/test-shard.js, scripts/test-times.json, .github/workflows/ci.yml",
+   "test/openapi.js"
+  ]
  }
   ],
   "domains": [

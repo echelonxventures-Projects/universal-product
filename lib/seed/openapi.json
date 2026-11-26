@@ -1,0 +1,24 @@
+{
+ "$comment": "How the API describes itself (scripts/openapi.js): its title, where it is served, the ways a caller identifies itself, and which callers each part of the API serves — the first pattern a path matches decides.",
+ "title": "LUXORA Platform API",
+ "description": "Every route the platform serves. A store's systems call the admin routes with a store API key as a Bearer token (issued in Store console → AI → API & MCP keys; it acts with one staff role). Shopper routes use the shopper's session cookie. Platform routes need a platform administrator's session. Generated from the code — see docs/api/README.md.",
+ "servers": [{ "url": "/", "description": "The platform's own address" }],
+ "untagged": "Unowned",
+ "securitySchemes": {
+  "storeKey": { "type": "http", "scheme": "bearer", "description": "A store API key (lxm_…): the store's staff, with the key's role" },
+  "session": { "type": "apiKey", "in": "cookie", "name": "azs", "description": "A shopper's or staff member's session; writes also send the azc cookie's value as the x-csrf header" },
+  "platformSession": { "type": "apiKey", "in": "cookie", "name": "azp", "description": "A platform administrator's session" }
+ },
+ "audiences": [
+  { "key": "platform", "pattern": "^/api/platform(/|$)", "security": [{ "platformSession": [] }] },
+  { "key": "store-staff", "pattern": "^/api/(admin|tenant)(/|$)", "security": [{ "storeKey": [] }, { "session": [] }] },
+  { "key": "shopper", "pattern": ".", "security": [{}, { "session": [] }] }
+ ],
+ "responses": {
+  "200": { "description": "Done; the answer as JSON" },
+  "400": { "description": "The request cannot be done as asked; the reason is in error" },
+  "401": { "description": "Not signed in, or the key is invalid or revoked" },
+  "403": { "description": "The caller's role does not reach this" },
+  "404": { "description": "Not found" }
+ }
+}

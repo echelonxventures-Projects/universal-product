@@ -25,7 +25,7 @@
     {"stepId": "P16", "title": "Communication and Notification", "domains": ["Communication", "Notification"], "status": "planned", "deliveredBy": []},
     {"stepId": "P17", "title": "Runtime workflows on today's state machines", "domains": ["Runtime"], "status": "planned", "deliveredBy": []},
     {"stepId": "P18", "title": "Search, Content and Guidance; the user manual generated", "domains": ["Search", "Content", "Guidance"], "status": "planned", "deliveredBy": []},
-    {"stepId": "P19", "title": "Integration: the generated API, connectors, webhooks", "domains": ["Integration"], "status": "planned", "deliveredBy": []},
+    {"stepId": "P19", "title": "Integration: the generated API, connectors, webhooks", "domains": ["Integration"], "status": "in-progress", "deliveredBy": ["AMD-0057"]},
     {"stepId": "P20", "title": "Insight on today's dashboards and experiments", "domains": ["Insight"], "status": "planned", "deliveredBy": []},
     {"stepId": "P21", "title": "Agent on today's AI layer", "domains": ["Agent"], "status": "planned", "deliveredBy": []},
     {"stepId": "P22", "title": "Offering and Package: configuring by selection, blueprints, overlays, the first packages", "domains": ["Offering", "Package"], "status": "planned", "deliveredBy": []},

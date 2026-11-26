@@ -164,4 +164,4 @@ if (require.main === module) {
 }
 /* routes whose handler says nothing about what it does */
 function undescribedRoutes() { return Object.values(routeTable()).filter(r => !r.note).length; }
-module.exports = { generate, completeness, authored, undescribedRoutes };
+module.exports = { generate, completeness, authored, undescribedRoutes, routeTable };

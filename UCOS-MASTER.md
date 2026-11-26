@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0056 (2026-11-26).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0057 (2026-11-26).
 
 ## Contents
 
@@ -419,6 +419,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0054"></a>AMD-0054 | 2026-11-26 | Platform owner | Everything comes from the database, the schema and the backend. The consoles' menus — every screen of both consoles, where it sits, its label, what it shows, its access section and its fit to a kind of store — are rows of console_screens, seeded from lib/seed/consoles.json, edited in Data Studio and served by the backend with each console's script; the browser keeps only each screen's drawing code. The registry compiler, the grant surface, the domain map, the docs and the trace read the declaration, no longer parsing browser files. The sample catalogue the backend seeded from a browser file is the backend's own seed. |
 | <a id="amd-0055"></a>AMD-0055 | 2026-11-26 | Platform owner | The consoles' wording comes from the database. Every phrase both consoles show — 2,906, menus included — is a message in the source language (editable in Data Studio, kept across seeds) and, where translated, in Spanish, French, German, Hindi and Arabic; scripts/console-texts.js keeps the seed in step with the code and a test fails when a phrase is not in the database. The backend serves each console its words, direction and language choices with its script; a language asked for in the address is remembered. One translator (public/js/words.js) serves the storefront and both consoles. A shopper is sent only the storefront's wording. 498 phrases are translated (menus, groups, sections, common words); 2,400 are not yet. |
 | <a id="amd-0056"></a>AMD-0056 | 2026-11-26 | Platform owner | LAW-015 Technology Agnostic is recorded as partial, not enforced. Its check proves that no module outside the adapter layer names a vendor, database or driver, and every provider is an adapter chosen by configuration; but a database is chosen for the whole platform rather than per domain or per tenant (GAP-15, P26), the platform runs on one node (GAP-22), and client integration has no published API description (P19). The baseline of laws not yet fully enforced rises from 16 to 17 to record the truth, not a regression. |
+| <a id="amd-0057"></a>AMD-0057 | 2026-11-26 | Platform owner | P19 begins: the API for any language. An OpenAPI 3.1 description of every route is generated from the route table, each handler's comment and the API register (scripts/openapi.js → docs/api/openapi.json, served at /api/openapi.json); a test fails when it differs from the code. A store's systems call the API with a store key as the Bearer token — the key an MCP client already used — acting as one staff role in its own store, recorded by name, stopped by revocation. Client libraries are generated from the description with standard tools (docs/api/README.md). CI runs the suite in four parallel shards per Node version (scripts/test-shard.js). Not yet: request and response bodies are not described field by field, and 692 routes have no written description. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1287,7 +1288,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 339 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 341 files.
 
 ### C02 · Meaning
 
@@ -1553,6 +1554,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/seed/providers.json` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/seed/ai.json` | [Agent](volumes/V09.1-automation.md#d-agt) |  |
 | `lib/seed/states.json` | [Runtime](volumes/V09.1-automation.md#d-run) |  |
+| `scripts/openapi.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
+| `lib/seed/openapi.json` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/store-domains.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 | `lib/refunds.js` | [Integration](volumes/V09.2-automation.md#d-int) |  |
 
@@ -2426,7 +2429,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p16"></a>P16 | Communication and Notification | [Communication](volumes/V08-interaction.md#d-cmn), [Notification](volumes/V08-interaction.md#d-ntf) | planned | — |
 | <a id="p17"></a>P17 | Runtime workflows on today's state machines | [Runtime](volumes/V09.1-automation.md#d-run) | planned | — |
 | <a id="p18"></a>P18 | Search, Content and Guidance; the user manual generated | [Search](volumes/V08-interaction.md#d-srh), [Content](volumes/V11.2-platform.md#d-cnt), [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
-| <a id="p19"></a>P19 | Integration: the generated API, connectors, webhooks | [Integration](volumes/V09.2-automation.md#d-int) | planned | — |
+| <a id="p19"></a>P19 | Integration: the generated API, connectors, webhooks | [Integration](volumes/V09.2-automation.md#d-int) | in-progress | [AMD-0057](#amd-0057) |
 | <a id="p20"></a>P20 | Insight on today's dashboards and experiments | [Insight](volumes/V10-intelligence.md#d-ins) | planned | — |
 | <a id="p21"></a>P21 | Agent on today's AI layer | [Agent](volumes/V09.1-automation.md#d-agt) | planned | — |
 | <a id="p22"></a>P22 | Offering and Package: configuring by selection, blueprints, overlays, the first packages | [Offering](volumes/V11.2-platform.md#d-ofg), [Package](volumes/V13-composition.md#d-pkg) | planned | — |
@@ -2529,6 +2532,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0054 | amendment | Everything comes from the database, the schema and the backe | [constitution](#amd-0054) |
 | AMD-0055 | amendment | The consoles' wording comes from the database. Every phrase  | [constitution](#amd-0055) |
 | AMD-0056 | amendment | LAW-015 Technology Agnostic is recorded as partial, not enfo | [constitution](#amd-0056) |
+| AMD-0057 | amendment | P19 begins | [constitution](#amd-0057) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

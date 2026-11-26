@@ -114,6 +114,7 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 
 | Method and path | Handler | What it does |
 |---|---|---|
+| `GET /api/openapi.json` | `apiOpenApi` | the API described for any language: OpenAPI 3.1, generated from the code (scripts/openapi.js) |
 | `GET /api/providers` | `apiProviders` | — |
 | `GET /api/admin/custom-providers` | `apiAdminCustomProviders` | — |
 | `POST /api/admin/custom-providers` | `apiAdminCustomProviderAdd` | — |
@@ -148,7 +149,7 @@ Actions:
 ```mermaid
 flowchart LR
   U([Store administrator / Platform administrator / Developer]) --> UI[store console, platform console]
-  UI --> API[14 API routes]
+  UI --> API[15 API routes]
   API --> ENG[adapters.js, connect.js, providers.js, spec.js, integration.js]
   ENG --> DB[(custom_providers, provider_defs, provider_availability, webhooks, webhook_deliveries, inbound_events)]
   ENG --> SM{{1 state machines}}
