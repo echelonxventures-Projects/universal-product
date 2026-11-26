@@ -32,7 +32,8 @@ jobs:
         if: matrix.shard == 1
         run: |
           LX_DB=/tmp/ci.db PORT=3055 nohup node server.js >/tmp/ci.log 2>&1 &
-          for i in $(seq 1 30); do sleep 1; curl -sf http://localhost:3055/healthz && break; done
+          # a fresh install seeds the whole platform before it answers: minutes on a busy runner
+          for i in $(seq 1 180); do sleep 1; curl -sf http://localhost:3055/healthz && break; done
           curl -sf http://localhost:3055/healthz >/dev/null && echo OK
       - name: Docker image builds
         if: matrix.node == 22 && matrix.shard == 1
