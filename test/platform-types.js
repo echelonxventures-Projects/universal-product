@@ -112,7 +112,7 @@ const sqlAt = ms => new Date(ms).toISOString().slice(0, 19).replace("T", " ");
       ok(sampleLine && Math.abs(sampleLine.unitBase - 2) < 0.01 && sampleLine.qty <= 2, "a sample sets the line's price and caps how many a bag holds", [s3.status, sampleLine && sampleLine.unitBase, sampleLine && sampleLine.qty]);
       const co2 = await checkout(S);
       ok(co2.status === 200, "checkout takes them", co2.body);
-      const fu = (await A("/api/admin/options/follow-ups" + Q)).body.followUps.filter(f => f.order_id === db.get("SELECT id FROM orders WHERE num=?", co2.body.order.num).id);
+      const fur = await A("/api/admin/options/follow-ups" + Q); if (!fur.body.followUps) console.log("FOLLOW-UPS", fur.status, JSON.stringify(fur.body).slice(0, 400)); const fu = fur.body.followUps.filter(f => f.order_id === db.get("SELECT id FROM orders WHERE num=?", co2.body.order.num).id);
       const visit = fu.find(f => f.group_code === "fit"), plan = fu.find(f => f.group_code === "cover"), proof = fu.find(f => f.group_code === "art");
       ok(visit && visit.state && plan.ends_at && plan.kind_row.machine !== visit.kind_row.machine && proof && proof.detail.includes("art.png"), "the order leaves a visit to book, a plan in force until its end, and a proof to send — each by its own machine", fu.map(f => [f.group_code, f.status, f.ends_at]));
       const soon = await A("/api/admin/options/follow-ups/" + visit.id + Q, "POST", { action: "schedule", scheduled_for: new Date().toISOString().slice(0, 16).replace("T", " ") });
