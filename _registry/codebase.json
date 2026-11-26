@@ -316,6 +316,8 @@
   {"path":"lib/mfa.js","owner":"Security"},
   {"path":"lib/consoles.js","owner":"Experience"},
   {"path":"lib/parties.js","owner":"Party"},
+  {"path":"lib/offerings.js","owner":"Offering"},
+  {"path":"lib/seed/offerings.json","owner":"Offering"},
   {"path":"lib/seed/parties.json","owner":"Party"},
   {"path":"lib/seed/console-texts.json","owner":"Expression"},
   {"path":"scripts/console-texts.js","owner":"Expression"},

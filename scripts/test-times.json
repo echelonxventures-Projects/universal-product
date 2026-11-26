@@ -94,6 +94,7 @@
   "node test/wizard.js": 59,
   "node test/zone-form.js": 45,
   "node test/openapi.js": 40,
-  "node test/parties.js": 25
+  "node test/parties.js": 25,
+  "node test/offerings.js": 40
  }
 }

@@ -402,7 +402,8 @@
      "lib/size-guides.js",
      "lib/preorders.js",
      "lib/features/fitment.js",
-     "lib/features/sell_by_weight.js"
+     "lib/features/sell_by_weight.js",
+     "lib/offerings.js"
     ],
     "tables": [
      "products",

@@ -1,0 +1,14 @@
+{
+ "$comment": "What a store offers, on the kernel (lib/offerings.js, owner Offering): each product of a store is an offering of the offering.listing kind in the store's namespace, with the facts that make the offer — what it is called, by whom, where it is shelved, its kind, its price and list price, and its lifecycle. Price is the store's, not the item's: the same item may be offered by many stores at many prices, and each price is a version in time. Stock and display details stay in the products table, which is otherwise the read model of the offering.",
+ "kind": { "kind": "offering.listing", "owner": "Offering", "label": "Offering", "root": true, "parents": [], "schemes": [], "attributes": [
+  { "key": "title", "type": "text", "required": true, "label": "Title" },
+  { "key": "brand", "type": "text", "label": "Brand" },
+  { "key": "dept", "type": "text", "label": "Department" },
+  { "key": "type", "type": "text", "label": "Kind of item" },
+  { "key": "price", "type": "number", "label": "Price" },
+  { "key": "list_price", "type": "number", "label": "List price" },
+  { "key": "lifecycle", "type": "text", "label": "Lifecycle" } ] },
+ "facts": { "title": "text", "brand": "text", "dept": "text", "type": "text", "price": "number", "list_price": "number", "lifecycle": "text" },
+ "actor": "offering",
+ "importActor": "offering.import"
+}

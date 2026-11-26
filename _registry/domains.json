@@ -228,6 +228,18 @@
    "lib/platform-master.js vocabulary memo; lib/kernel.js lastSeq; lib/expression.js seeds in one transaction",
    "test/parties.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0059",
+  "date": "2026-11-26",
+  "authorisedBy": "Platform owner",
+  "summary": "P24 continues: what a store offers is on the master. Every product is an offering of the offering.listing kind in its store's namespace, with its row's identity; its title, brand, department, kind, price, list price and lifecycle are versions in time, so a product's price history is answerable at any instant. Price is the store's, not the item's. Every write of a product — console, Data Studio, listings, the global catalogue, universe publishing, the AI fixer, seeding — goes through lib/offerings.js in one transaction with its row; stock and display details are not the offer. A product in the bin is hidden and restored with it (soft delete runs through an entity's writer); one deleted is archived with its history.",
+  "changes": [
+   "lib/offerings.js, lib/seed/offerings.json; product entity names the offerings writer",
+   "every products insert and update of the offer wrapped in offerings.change; deletes archive first",
+   "lib/governance.js trash/restore go through an entity's writer; lib/entity.js exports writerFor",
+   "test/offerings.js"
+  ]
  }
   ],
   "domains": [

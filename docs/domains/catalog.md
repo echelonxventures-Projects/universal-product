@@ -43,6 +43,7 @@ Priced per unit of weight; stock is counted in the smallest step.
 | `lib/gcatalog.js` | LUXORA · the global catalogue — the platform master as the platform console and the store import see it (GLOBAL_MASTER.md, P27). |
 | `lib/master-contributions.js` | contributions to the platform master and the addenda they leave (GLOBAL_MASTER.md §3, roadmap P28; owner Evolution). |
 | `lib/master-permissions.js` | permissions on the platform master (GLOBAL_MASTER.md §2, roadmap P28; owner Authority). |
+| `lib/offerings.js` | what a store offers, on the kernel (P24, owner Offering). |
 | `lib/platform-master.js` | the platform master (GLOBAL_MASTER.md, roadmap P27; owners Identity, Semantic, Registry, Relationship and Measure). |
 | `lib/preorders.js` | pre-orders: selling an item before it can be sent. |
 | `lib/product-counts.js` | an item's own count, and its variant's: the catalog's columns, changed only here. Lowering is one conditional write per row, so a count never goes below zero however many shoppers ask at once; the caller (lib/stock.js) runs it inside its transaction. |
@@ -317,7 +318,7 @@ Actions: `approve` → approved · `reject` → rejected · `withdraw` → withd
 flowchart LR
   U([Shopper / Seller / Store staff / Store administrator / Platform administrator]) --> UI[product.html, store console, platform console]
   UI --> API[54 API routes]
-  API --> ENG[gcatalog.js, master-contributions.js, master-permissions.js, platform-master.js, preorders.js, product-counts.js, size-guides.js, store-attributes.js, store-taxonomy.js, fitment.js, sell_by_weight.js, catalog.js]
+  API --> ENG[gcatalog.js, master-contributions.js, master-permissions.js, offerings.js, platform-master.js, preorders.js, product-counts.js, size-guides.js, store-attributes.js, store-taxonomy.js, fitment.js, sell_by_weight.js, catalog.js]
   ENG --> DB[(products, product_bullets, brands, taxonomy, attribute_defs, skus, …)]
   ENG --> SM{{1 state machines}}
 ```
