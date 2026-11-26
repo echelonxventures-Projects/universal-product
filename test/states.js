@@ -32,7 +32,7 @@ const mk = () => {
   require("../server.js");
   const db = require("../lib/db.js");
   console.log = silence;
-  for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
+  for (let i = 0; i < 720; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
   const st = require("../lib/states.js");
   const reg = require("../lib/registry.js");
   try {

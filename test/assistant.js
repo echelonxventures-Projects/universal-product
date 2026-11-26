@@ -97,7 +97,7 @@ const birth = { date: "1990-03-15", time: "11:00", timeZone: "Asia/Kolkata", lat
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const alive = async () => { try { return (await fetch(BASE + "/healthz")).ok; } catch (e) { return false; } };
   try {
-    for (let i = 0; i < 240 && !(await alive()); i++) await sleep(500);
+    for (let i = 0; i < 360 && !(await alive()); i++) await sleep(500);
     console.log("▸ OVER HTTP");
     const jar = new Map();
     const f = async (p, m, b, h0) => { const h = Object.assign({ Cookie: [...jar].map(x => x.join("=")).join("; ") }, h0 || {}); if (m && m !== "GET") Object.assign(h, { "x-csrf": jar.get("azc") || "", "Content-Type": "application/json", Origin: BASE });

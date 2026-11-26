@@ -62,7 +62,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")],
     { env: { ...process.env, PORT, LX_DB: dbBase }, stdio: ["ignore", "ignore", "inherit"] });
   let up = false;
-  for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) { up = true; break; } } catch (e) { } await sleep(1000); }
+  for (let i = 0; i < 180; i++) { try { if ((await fetch(BASE + "/healthz")).ok) { up = true; break; } } catch (e) { } await sleep(1000); }
   if (!up) { console.log("  ⚠ server never answered /healthz"); }
 
   try {

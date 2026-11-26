@@ -26,7 +26,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   const silence = console.log; console.log = () => { };
   require("../server.js");
   console.log = silence;
-  for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
+  for (let i = 0; i < 720; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
   const db = require("../lib/db.js");
 
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "luxora-chrome-"));

@@ -70,7 +70,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   /* first boot seeds three stores, 156 products and every registry — on a slow or network-backed
      filesystem that can take well over a minute, so wait generously rather than failing spuriously. */
   let up = false;
-  for (let i = 0; i < 120; i++) { try { const h = await fetch(BASE + "/healthz"); if (h.ok) { up = true; break; } } catch (e) { } await sleep(1000); }
+  for (let i = 0; i < 180; i++) { try { const h = await fetch(BASE + "/healthz"); if (h.ok) { up = true; break; } } catch (e) { } await sleep(1000); }
   if (!up) console.log("  ⚠ server did not answer /healthz within 120s — the run below will fail");
 
   try {

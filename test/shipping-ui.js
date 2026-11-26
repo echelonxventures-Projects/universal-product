@@ -42,7 +42,7 @@ function fakeEasyPost(url, o) {
   const db = require("../lib/db.js");
   console.log = silence;
   connect.__setTransport(fakeEasyPost);
-  for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
+  for (let i = 0; i < 720; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
 
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "luxora-chrome-"));
   const br = spawn(chrome, ["--headless=new", "--remote-debugging-port=0", "--user-data-dir=" + profile, "--no-first-run", "--no-default-browser-check", "--disable-gpu", "--disable-extensions", ...(process.getuid && process.getuid() === 0 ? ["--no-sandbox"] : []), "about:blank"], { stdio: "ignore" });

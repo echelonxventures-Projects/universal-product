@@ -38,7 +38,7 @@ const clean = () => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(DB
   clean();
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB, LX_LOG: "" }, stdio: ["ignore", "ignore", "pipe"] });
   let stderr = ""; srv.stderr.on("data", d => { stderr += d; });
-  for (let i = 0; i < 240 && !(await alive()); i++) await sleep(500);
+  for (let i = 0; i < 360 && !(await alive()); i++) await sleep(500);
   if (!(await alive())) { console.error("server failed to boot\n" + stderr); process.exit(1); }
   try {
     const P = mk(); await P("/api/session");

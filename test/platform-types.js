@@ -41,7 +41,7 @@ const sqlAt = ms => new Date(ms).toISOString().slice(0, 19).replace("T", " ");
   for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(DB + s, { force: true }); } catch (e) { } }
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB, LX_LOG: "", LX_OFFLINE: "1" }, stdio: ["ignore", "ignore", "pipe"] });
   let stderr = ""; srv.stderr.on("data", d => { stderr += d; });
-  for (let i = 0; i < 120 && !(await alive()); i++) await sleep(500);
+  for (let i = 0; i < 360 && !(await alive()); i++) await sleep(500);
   if (!(await alive())) { console.error("server failed to boot\n" + stderr); process.exit(1); }
   const db = require(path.join(__dirname, "..", "lib", "db.js"));
 

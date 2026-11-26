@@ -46,7 +46,7 @@ async function boot(port, db, extra = {}) {
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")],
     { env: { ...process.env, PORT: port, LX_DB: db, ...extra }, stdio: ["ignore", "ignore", "inherit"] });
   let up = false;
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 360; i++) {
     try { const h = await fetch(`http://localhost:${port}/healthz`); if (h.ok) { up = true; break; } } catch (e) { }
     await sleep(500);
   }

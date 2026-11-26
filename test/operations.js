@@ -131,7 +131,7 @@ const ok = (c, n, x) => { c ? (pass++, console.log("  ✓ " + n)) : (fail++, con
     return { status: r.status, body: await r.json().catch(() => ({})) };
   };
   let up = false;
-  for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) { up = true; break; } } catch (e) { } await sleep(1000); }
+  for (let i = 0; i < 180; i++) { try { if ((await fetch(BASE + "/healthz")).ok) { up = true; break; } } catch (e) { } await sleep(1000); }
   ok(up, "the server boots with the operations schema");
   if (up) {
     await api("/api/auth/login", "POST", { email: "admin@luxora.shop", password: "admin123" });

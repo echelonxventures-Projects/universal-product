@@ -77,7 +77,7 @@ const bodyOf = m => (m.data || "").split("\r\n\r\n").slice(1).join("\r\n\r\n");
   for (const k of Object.keys(env)) if (/^LX_(MAIL|SMS)_|^LX_SMTP_URL$/.test(k)) delete env[k];
   const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env, stdio: ["ignore", "ignore", "pipe"] });
   let stderr = ""; srv.stderr.on("data", d => { stderr += d; });
-  for (let i = 0; i < 120 && !(await alive()); i++) await sleep(500);
+  for (let i = 0; i < 360 && !(await alive()); i++) await sleep(500);
   if (!(await alive())) { console.error("server failed to boot\n" + stderr); process.exit(1); }
 
   try {

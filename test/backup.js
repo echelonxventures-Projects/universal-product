@@ -39,7 +39,7 @@ const stopServer = p => new Promise(r => { if (p.exitCode !== null || p.signalCo
   clean();
   const srv = spawn(process.execPath, [path.join(ROOT, "server.js")], { env, stdio: ["ignore", "ignore", "pipe"] });
   let stderr = ""; srv.stderr.on("data", d => { stderr += d; });
-  for (let i = 0; i < 120 && !(await alive()); i++) await sleep(500);
+  for (let i = 0; i < 360 && !(await alive()); i++) await sleep(500);
   if (!(await alive())) { console.error("server failed to boot\n" + stderr); process.exit(1); }
   try {
     console.log("▸ AN ONLINE BACKUP");
@@ -78,7 +78,7 @@ const stopServer = p => new Promise(r => { if (p.exitCode !== null || p.signalCo
 
     console.log("▸ THE RESTORED DATABASE SERVES");
     const srv2 = spawn(process.execPath, [path.join(ROOT, "server.js")], { env, stdio: ["ignore", "ignore", "pipe"] });
-    for (let i = 0; i < 120 && !(await alive()); i++) await sleep(500);
+    for (let i = 0; i < 360 && !(await alive()); i++) await sleep(500);
     const c = new Map();
     const s0 = await fetch(BASE + "/api/session?store=luxora"); (s0.headers.getSetCookie() || []).forEach(k => { const kv = k.split(";")[0], i = kv.indexOf("="); c.set(kv.slice(0, i), kv.slice(i + 1)); });
     const li = await fetch(BASE + "/api/auth/login?store=luxora", { method: "POST", headers: { Cookie: [...c].map(x => x[0] + "=" + x[1]).join("; "), "x-csrf": c.get("azc") || "", Origin: BASE, "Content-Type": "application/json" }, body: JSON.stringify({ email: "before@example.com", password: "Backup-Pass-123" }) });

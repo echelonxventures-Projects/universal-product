@@ -57,7 +57,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 const alive = async () => { try { return (await fetch(BASE + "/healthz")).ok; } catch (e) { return false; } };
 (async () => {
   try {
-    for (let i = 0; i < 120 && !(await alive()); i++) await sleep(500);
+    for (let i = 0; i < 360 && !(await alive()); i++) await sleep(500);
     console.log("expression — the storefront answers in the language");
     const ar = await (await fetch(BASE + "/api/config", { headers: { "accept-language": rtl.key } })).json();
     ok(ar.lang === rtl.key && ar.dir === "rtl" && ar.copy.signIn === SEED.catalogues[rtl.key].signIn, "a browser asking for a right-to-left language gets its copy and direction", { lang: ar.lang, dir: ar.dir });

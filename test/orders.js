@@ -45,7 +45,7 @@ const hook = async (type, cs, extra) => {
   const db = require("../lib/db.js"), connect = require("../lib/connect.js");
   console.log = quiet;
   connect.__setTransport(gateway);
-  for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
+  for (let i = 0; i < 720; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
   try {
     const A = mk(); await A("/api/session" + Q);
     ok((await A("/api/auth/login" + Q, "POST", { email: "admin@luxora.shop", password: "admin123" })).status === 200, "the store admin signs in");

@@ -34,7 +34,7 @@ const mk = () => {
   require("../server.js");
   const db = require("../lib/db.js");
   console.log = silence;
-  for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
+  for (let i = 0; i < 720; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
   const gw = tid => db.all("SELECT provider_id FROM tenant_gateways WHERE tenant_id=? ORDER BY provider_id", tid).map(r => r.provider_id);
   const owner = n => ({ ownerName: "Owner " + n, ownerEmail: "owner@" + n + ".test", ownerPassword: "Str0ng-" + n + "-pass" });
 

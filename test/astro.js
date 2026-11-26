@@ -123,7 +123,7 @@ ok(v.providers.some(p => p.key === "builtin") && v.ayanamsas.some(a => a.key ===
   const sleep = ms => new Promise(r => setTimeout(r, ms));
   const alive = async () => { try { return (await fetch(BASE + "/healthz")).ok; } catch (e) { return false; } };
   try {
-    for (let i = 0; i < 240 && !(await alive()); i++) await sleep(500);
+    for (let i = 0; i < 360 && !(await alive()); i++) await sleep(500);
     console.log("▸ OVER HTTP, WITH THE STORE'S OWN SETTINGS");
     const jar = new Map();
     const f = async (p, m, b) => { const h = { Cookie: [...jar].map(x => x.join("=")).join("; ") }; if (m && m !== "GET") Object.assign(h, { "x-csrf": jar.get("azc") || "", "Content-Type": "application/json", Origin: BASE });

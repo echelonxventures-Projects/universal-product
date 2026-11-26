@@ -81,7 +81,7 @@ const sessionEvent = (type, cs, extra) => ({ id: "evt_" + crypto.randomBytes(4).
   const db = require("../lib/db.js");
   console.log = silence;
   connect.__setTransport(fakeStripe);
-  for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
+  for (let i = 0; i < 720; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(250); }
 
   try {
     const A = mk(); await A("/api/session?store=luxora");

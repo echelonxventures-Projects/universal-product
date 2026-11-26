@@ -73,7 +73,7 @@ const hasLeaf = (doc, v) => [...doc.querySelectorAll(".p-nav button")].some(b =>
   for (const s of ["", "-wal", "-shm"]) { try { require("fs").rmSync(DB + s, { force: true }); } catch (e) { } }
   const boot = async () => {
     const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB }, stdio: ["ignore", "ignore", "inherit"] });
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 360; i++) {
       /* healthz answering is not proof OUR server booted: if a stale process from a killed
          run still holds PORT, the child dies on EADDRINUSE and healthz is answered by that
          stranger — and the suite would then test a server it never started. A dead child is

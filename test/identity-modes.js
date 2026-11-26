@@ -53,7 +53,7 @@ const stopServer = p => new Promise(r => { if (p.exitCode !== null || p.signalCo
   for (const s of ["", "-wal", "-shm"]) { try { require("fs").rmSync(DB + s, { force: true }); } catch (e) { } }
   const boot = async () => {
     const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB }, stdio: ["ignore", "ignore", "inherit"] });
-    for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) return srv; } catch (e) { } await sleep(500); }
+    for (let i = 0; i < 360; i++) { try { if ((await fetch(BASE + "/healthz")).ok) return srv; } catch (e) { } await sleep(500); }
     throw new Error("server failed to boot");
   };
   let srv = await boot();

@@ -94,7 +94,7 @@ const ok=(c,n,x)=>{c?(pass++,console.log("  ✓ "+n)):(fail++,console.log("  ✗
     return { status: r.status, body: await r.json().catch(() => ({})) };
   };
   let up = false;
-  for (let i = 0; i < 120; i++) {
+  for (let i = 0; i < 600; i++) {
     /* healthz answering is not proof OUR server booted: a stale process from a killed run
        holding PORT makes the child die on EADDRINUSE while healthz is answered by that
        stranger — the suite would then test a server it never started */

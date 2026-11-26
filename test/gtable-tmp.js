@@ -75,7 +75,7 @@ const click = async (doc, sel, attr) => { const b = doc.querySelector(sel); if (
   for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(DB + s, { force: true }); } catch (e) { } }
   const boot = async () => {
     const srv = spawn(process.execPath, [path.join(__dirname, "..", "server.js")], { env: { ...process.env, PORT, LX_DB: DB }, stdio: ["ignore", "ignore", "inherit"] });
-    for (let i = 0; i < 120; i++) {
+    for (let i = 0; i < 600; i++) {
       /* healthz answering is not proof OUR server booted: a stale process from a killed run
          holding PORT makes the child die on EADDRINUSE while healthz is answered by that
          stranger — the suite would then test a server it never started */
