@@ -297,7 +297,8 @@ function run(payload) {
     const docProblems = [];
     for (const f of onDiskDocs) if (!docPaths.has(f)) docProblems.push(f + " unregistered");
     for (const d of dr.documents) {
-      if (!onDiskDocs.includes(d.path)) docProblems.push(d.path + " does not exist");
+      /* a private document is kept out of the repository: a clone may lack it, but where it is, it is registered */
+      if (!onDiskDocs.includes(d.path) && !d.private) docProblems.push(d.path + " does not exist");
       if (!statuses.has(d.status) || !domNames.has(d.owner)) docProblems.push(d.path + " has an undeclared status or owner");
       if ((d.status === "superseded") !== d.path.startsWith("_superseded/")) docProblems.push(d.path + " is " + d.status + " but sits " + (d.path.startsWith("_superseded/") ? "in" : "outside") + " _superseded/");
       if (d.status === "superseded" && !d.supersededBy) docProblems.push(d.path + " names nothing that replaced it");

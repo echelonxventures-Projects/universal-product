@@ -1732,7 +1732,7 @@ Every document at the repository root and in `_superseded/` (42), with its one s
 | `GLOBAL_MASTER.md` | guidance | [Package](volumes/V13-composition.md#d-pkg) | the platform master, permissions, overlays, contributions, configuration by blueprint and discovery: the adopted design and its phases |
 | `PLATFORM_TYPES.md` | guidance | [Package](volumes/V13-composition.md#d-pkg) | every type of commerce platform: its kind, its blend and the engines it relies on |
 | `README.md` | guidance | [Guidance](volumes/V02-meaning.md#d-gdn) | the entry point: install, run, and where everything is |
-| `LUXORA-Complete-Master-Execution-Prompt.md` | guidance | [Quality](volumes/V11.2-platform.md#d-qlt) | owner-supplied implementation and conformance execution directive |
+| `LUXORA-Complete-Master-Execution-Prompt.md` | guidance | [Quality](volumes/V11.2-platform.md#d-qlt) | owner-supplied implementation and conformance execution directive; kept out of the repository (.gitignore), so a clone does not have it |
 | `USER_MANUAL.md` | guidance | [Guidance](volumes/V02-meaning.md#d-gdn) | authored manual for every role; generated from declarations in build step P18 |
 | `_superseded/BRAND_SYSTEM.md` | superseded | [Experience](volumes/V08-interaction.md#d-exp) | USER_MANUAL.md §E11 |
 | `_superseded/FLOWS.md` | superseded | [Guidance](volumes/V02-meaning.md#d-gdn) | UCOS-MASTER.md |

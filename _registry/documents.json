@@ -26,7 +26,7 @@
     {"path": "GLOBAL_MASTER.md", "status": "guidance", "owner": "Package", "note": "the platform master, permissions, overlays, contributions, configuration by blueprint and discovery: the adopted design and its phases"},
     {"path": "PLATFORM_TYPES.md", "status": "guidance", "owner": "Package", "note": "every type of commerce platform: its kind, its blend and the engines it relies on"},
      {"path": "README.md", "status": "guidance", "owner": "Guidance", "note": "the entry point: install, run, and where everything is"},
-     {"path": "LUXORA-Complete-Master-Execution-Prompt.md", "status": "guidance", "owner": "Quality", "note": "owner-supplied implementation and conformance execution directive"},
+     {"path": "LUXORA-Complete-Master-Execution-Prompt.md", "status": "guidance", "owner": "Quality", "private": true, "note": "owner-supplied implementation and conformance execution directive; kept out of the repository (.gitignore), so a clone does not have it"},
     {"path": "USER_MANUAL.md", "status": "guidance", "owner": "Guidance", "note": "authored manual for every role; generated from declarations in build step P18"},
     {"path": "_superseded/BRAND_SYSTEM.md", "status": "superseded", "owner": "Experience", "supersededBy": "USER_MANUAL.md §E11"},
     {"path": "_superseded/FLOWS.md", "status": "superseded", "owner": "Guidance", "supersededBy": "UCOS-MASTER.md"},
