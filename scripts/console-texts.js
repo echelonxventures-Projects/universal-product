@@ -1,7 +1,8 @@
 /* LUXORA Platform — the consoles' wording, kept in step with the code (owner Expression).
 
    Finds every phrase the console code shows (text between tags, placeholders, titles, labels, a
-   toast's message) and every menu label, group and section (lib/seed/consoles.json), and lists
+   toast's message), every menu label, group and section (lib/seed/consoles.json) and what the
+   capability and feature catalogues say, and lists
    each in lib/seed/console-texts.json beside its translations. The database is seeded from that
    file (lib/expression.js): each phrase is a message in the source language — what the console
    shows, editable in Data Studio — and in every language that has a translation.
@@ -29,6 +30,12 @@ function found() {
   const C = require(path.join(ROOT, "lib", "consoles.js")), out = new Set();
   for (const f of FILES()) for (const p of phrases(fs.readFileSync(path.join(JS, f), "utf8"))) out.add(p);
   for (const w of ["platform", "store"]) for (const r of C.declared(w)) for (const x of [r.label, r.grp, r.section]) if (x && strip(x)) out.add(strip(x));
+  /* what the catalogues the consoles show say: each capability's description and settings, each
+     shopper feature's help and fields */
+  const cap = require(path.join(ROOT, "lib", "seed", "capabilities.json")), fe = require(path.join(ROOT, "lib", "seed", "features.json"));
+  const say = x => { if (typeof x === "string" && x.trim() && /[a-z]{2}/.test(x)) out.add(x.trim()); };
+  for (const c of cap.CATALOG || []) { say(c.name); say(c.desc || c.description); for (const p of Object.values(c.params || {})) say(p && p.label); }
+  for (const f of fe.FEATURES || []) { say(f.title); say(f.help); for (const x of f.fields || []) say(x.label); }
   return out;
 }
 const read = () => JSON.parse(fs.readFileSync(OUT, "utf8"));
