@@ -134,12 +134,7 @@
    "fact": "currency",
    "match": "in",
    "source": "platform",
-   "derive": {
-    "table": "countries",
-    "key": "code",
-    "value": "currency",
-    "from": "country"
-   },
+   "provider": "currency",
    "overridable": true,
    "upper": true,
    "options": "rows:currencies:code:name",
