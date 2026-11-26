@@ -252,6 +252,18 @@
    "boot imports orders the kernel has never seen",
    "test/orders.js ON THE MASTER"
   ]
+ },
+ {
+  "amendmentId": "AMD-0061",
+  "date": "2026-11-26",
+  "authorisedBy": "Platform owner",
+  "summary": "P24 continues: returns and payments are on the master, through one engine. lib/row-records.js keeps any table of business records on the kernel from a declaration in lib/seed/row-records.json — the kind, the facts kept as versions in time, and the row each belongs to — so a new table on the master is a new entry, not new code. A return and a payment each belong to their order; a payment's refunded amount over time is its refund history, including a claim handed back when the gateway refused. Every insert and status or refund write of returns and payments goes through the engine in one transaction with its row. Corrects eleven writes from AMD-0059/AMD-0060 that wrapped the database rather than the statement, so their record was taken before the write; the three engines now refuse that shape.",
+  "changes": [
+   "lib/row-records.js, lib/seed/row-records.json; hierarchies commerce.order_returns, commerce.order_payments; returns rows get universal IDs (lib/uid.js)",
+   "lib/returns.js, lib/refunds.js, lib/fin.js, lib/recurring.js, lib/api.js, lib/routes/platform_billing.js, lib/routes/modules.js write through it; a store's purge archives its records",
+   "the wrapped-write shape fixed in lib/orders.js, lib/groupbuy.js, lib/pickup.js, lib/ucos-catalog.js and refused by offerings, order-records and row-records",
+   "test/orders.js: returns and payments on the master"
+  ]
  }
   ],
   "domains": [

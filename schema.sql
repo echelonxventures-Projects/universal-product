@@ -818,7 +818,7 @@ CREATE TABLE returns (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL UNIQUE,
   order_id INTEGER, product_id TEXT, qty INTEGER DEFAULT 1, reason TEXT, status TEXT DEFAULT 'requested',
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
-, deleted_at TEXT);
+, deleted_at TEXT, uid TEXT);
 CREATE TABLE disputes (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, payment_id INTEGER, order_id INTEGER,
   ref TEXT NOT NULL UNIQUE, reason TEXT, amount REAL, currency TEXT,
@@ -826,6 +826,9 @@ CREATE TABLE disputes (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX ix_disputes_state ON disputes(state, tenant_id);
+CREATE UNIQUE INDEX ux_returns_uid ON returns(uid);
+CREATE TRIGGER trg_returns_uid AFTER INSERT ON returns
+               BEGIN UPDATE returns SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
 -- ── payments · Payment gateways ──────────────────────────────────────────────────────────────────
 CREATE TABLE tenant_gateways (

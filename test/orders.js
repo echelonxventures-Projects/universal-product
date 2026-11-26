@@ -190,6 +190,12 @@ const hook = async (type, cs, extra) => {
     ok(rec.lines.length === 1 && rec.lines[0].offering === pu && rec.lines[0].qty === 1, "its lines are the offerings bought", rec.lines);
     ok(!db.all("SELECT attrs FROM k_versions WHERE node=?", lr.uid).some(v => /Olive Order|1 Main St|@example\.com/.test(v.attrs)), "the buyer's name, address and email are not copied onto it");
     const seqO = K.lastSeq(); ok(OR.importRows() === 0 && K.lastSeq() === seqO, "every order is on the master, and a warm pass writes nothing");
+    const RR = require("../lib/row-records.js"), ord6 = row(n6), ret = RR.at("return", rid), pr = pay(n6), pm = RR.at("payment", pr.id);
+    ok(ret && ret.status === "refunded" && ret.belongsTo === ord6.uid && RR.history("return", rid, "status").map(h => h.value).join() === "requested,refunded,requested,refunded", "a return is on the master, belonging to its order, with its status history — the refund the gateway refused and the one that went through", RR.history("return", rid, "status"));
+    ok(pm && pm.amount === Number(pr.amount) && pm.refunded === Number(pr.refunded) && pm.belongsTo === ord6.uid && RR.of("payment", ord6.uid).includes(pm.uid), "its payment too, belonging to the same order");
+    const refunds = RR.history("payment", pr.id, "refunded").map(h => h.value).filter(v => v != null);
+    ok(refunds.join() === [0, refunds[1], 0, refunds[1]].join() + "," + refunds.slice(4).join() && refunds.slice(3).every((v, i, a) => i === 0 || v > a[i - 1]) && refunds[refunds.length - 1] === Number(pr.refunded), "its refunded amount over time is the refund history — the claim handed back when the gateway refused, then each refund", refunds);
+    const seqR = K.lastSeq(); ok(RR.importRows() === 0 && K.lastSeq() === seqR, "every return and payment is on the master, and a warm pass writes nothing");
 
     console.log("▸ CURRENCY");
     require("../lib/settings.js").save(1, { commerce: { taxMode: null } });

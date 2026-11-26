@@ -1011,7 +1011,8 @@
      "lib/substitutions.js",
      "lib/orders.js",
      "lib/invoices.js",
-     "lib/order-records.js"
+     "lib/order-records.js",
+     "lib/row-records.js"
     ],
     "tables": [
      "orders",

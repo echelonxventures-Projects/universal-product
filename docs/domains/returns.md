@@ -31,6 +31,7 @@ Sending something back: return requests, their inspection and refund, and paymen
 | `status` | TEXT DEFAULT 'requested' |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 | `deleted_at` | TEXT |
+| `uid` | TEXT |
 
 ### `disputes`
 

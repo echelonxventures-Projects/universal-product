@@ -1,0 +1,21 @@
+{
+ "$comment": "Rows kept on the kernel by one engine (lib/row-records.js): each names its table, the kind its rows are, the facts recorded as versions in time, and the row it belongs to (a relationship). Personal data is never a fact here. A new table on the master is a new entry.",
+ "records": {
+  "return": {
+   "table": "returns", "owner": "Commerce",
+   "kind": { "kind": "commerce.return", "label": "Return", "parents": ["commerce.order"] },
+   "facts": { "ref": "text", "status": "text", "qty": "number", "reason": "text", "product_id": "text" },
+   "title": "ref",
+   "belongsTo": { "hierarchy": "commerce.order_returns", "label": "The returns of each order", "column": "order_id", "table": "orders" }
+  },
+  "payment": {
+   "table": "payments", "owner": "Commerce",
+   "kind": { "kind": "commerce.payment", "label": "Payment", "parents": ["commerce.order"] },
+   "facts": { "kind": "text", "gateway": "text", "method": "text", "amount": "number", "currency": "text", "fee": "number", "status": "text", "refunded": "number", "txn_ref": "text", "invoice_id": "text" },
+   "title": "txn_ref",
+   "belongsTo": { "hierarchy": "commerce.order_payments", "label": "The payments of each order", "column": "order_id", "table": "orders" }
+  }
+ },
+ "actor": "commerce",
+ "importActor": "commerce.import"
+}
