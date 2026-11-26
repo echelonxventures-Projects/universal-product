@@ -15,7 +15,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
   for (let i = 0; i < 1800 && !/Ctrl\+C/.test(out); i++) await sleep(100);
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "lx-chrome-"));
   const br = spawn(chrome, ["--headless=new", "--remote-debugging-port=0", "--user-data-dir=" + profile, "--no-first-run", "--disable-gpu", "about:blank"], { stdio: "ignore" });
-  let port = null; for (let i = 0; i < 100 && !port; i++) { try { port = fs.readFileSync(path.join(profile, "DevToolsActivePort"), "utf8").split("\n")[0]; } catch (e) { await sleep(100); } }
+  let port = null; for (let i = 0; i < 300 && !port; i++) { try { port = fs.readFileSync(path.join(profile, "DevToolsActivePort"), "utf8").split("\n")[0]; } catch (e) { await sleep(100); } }
   const open = async () => {
     const browser = await Tab.open((await fetch(`http://127.0.0.1:${port}/json/version`).then(r => r.json())).webSocketDebuggerUrl), { browserContextId } = await browser.send("Target.createBrowserContext"), { targetId } = await browser.send("Target.createTarget", { url: "about:blank", browserContextId });
     const tab = await Tab.open((await fetch(`http://127.0.0.1:${port}/json/list`).then(r => r.json())).find(t => t.id === targetId).webSocketDebuggerUrl);

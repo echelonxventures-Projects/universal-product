@@ -47,7 +47,7 @@ function fakeEasyPost(url, o) {
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "luxora-chrome-"));
   const br = spawn(chrome, ["--headless=new", "--remote-debugging-port=0", "--user-data-dir=" + profile, "--no-first-run", "--no-default-browser-check", "--disable-gpu", "--disable-extensions", ...(process.getuid && process.getuid() === 0 ? ["--no-sandbox"] : []), "about:blank"], { stdio: "ignore" });
   let port = null;
-  for (let i = 0; i < 100 && !port; i++) { try { port = fs.readFileSync(path.join(profile, "DevToolsActivePort"), "utf8").split("\n")[0]; } catch (e) { await sleep(100); } }
+  for (let i = 0; i < 300 && !port; i++) { try { port = fs.readFileSync(path.join(profile, "DevToolsActivePort"), "utf8").split("\n")[0]; } catch (e) { await sleep(100); } }
 
   /* a signed-in tab in its own browser context; confirm() dialogs are accepted */
   async function signedIn(login, cred) {

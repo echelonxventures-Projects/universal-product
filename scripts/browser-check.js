@@ -87,12 +87,13 @@ if (require.main === module) (async () => {
   delete env.NODE_ENV;
   const srv = spawn(process.execPath, [path.join(ROOT, "server.js")], { env, stdio: ["ignore", "ignore", "pipe"] });
   let srvErr = ""; srv.stderr.on("data", d => { srvErr += d; });
-  for (let i = 0; i < 120; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(500); }
+  /* a fresh install seeds the whole platform before it answers: on a busy CI runner that can take minutes */
+  for (let i = 0; i < 360; i++) { try { if ((await fetch(BASE + "/healthz")).ok) break; } catch (e) { } await sleep(500); }
 
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "luxora-chrome-"));
   const br = spawn(chrome, ["--headless=new", "--remote-debugging-port=0", "--user-data-dir=" + profile, "--no-first-run", "--no-default-browser-check", "--disable-gpu", "--disable-extensions", ...(process.getuid && process.getuid() === 0 ? ["--no-sandbox"] : []), "about:blank"], { stdio: "ignore" });
   let port = null;
-  for (let i = 0; i < 100 && !port; i++) { try { port = fs.readFileSync(path.join(profile, "DevToolsActivePort"), "utf8").split("\n")[0]; } catch (e) { await sleep(100); } }
+  for (let i = 0; i < 300 && !port; i++) { try { port = fs.readFileSync(path.join(profile, "DevToolsActivePort"), "utf8").split("\n")[0]; } catch (e) { await sleep(100); } }
   const done = code => { try { br.kill(); } catch (e) { } try { srv.kill("SIGTERM"); } catch (e) { }
     setTimeout(() => { for (const s of ["", "-wal", "-shm"]) { try { fs.rmSync(DB + s, { force: true }); } catch (e) { } } try { fs.rmSync(profile, { recursive: true, force: true }); } catch (e) { } process.exit(code); }, 500); };
   if (!port) { console.error("Chrome did not start its DevTools endpoint"); return done(1); }
