@@ -15864,6 +15864,22 @@
       "en": "Dealer"
      },
      "data": {}
+    },
+    {
+     "key": "vocab.party_roles.customer",
+     "name": "customer",
+     "title": {
+      "en": "Customer"
+     },
+     "data": {}
+    },
+    {
+     "key": "vocab.party_roles.staff",
+     "name": "staff",
+     "title": {
+      "en": "Staff"
+     },
+     "data": {}
     }
    ]
   },

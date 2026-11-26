@@ -1,0 +1,13 @@
+{
+ "$comment": "People on the kernel (lib/parties.js, owner Party): each account of a store is a person of the party.person kind in the store's namespace, with the facts that say who they are; their sign-in credentials stay with Security in the users table. Each person plays a role — a relationship to a term of the master's party roles. A users row is the read model of its person.",
+ "kind": { "kind": "party.person", "owner": "Party", "label": "Person", "root": true, "parents": ["master.term"], "schemes": [], "attributes": [
+  { "key": "name", "type": "text", "required": true, "label": "Name" },
+  { "key": "email", "type": "text", "sensitive": true, "label": "Email" },
+  { "key": "staff_role", "type": "text", "label": "Staff role" },
+  { "key": "disabled", "type": "boolean", "label": "Disabled" } ] },
+ "hierarchy": "party.roles",
+ "roles": { "customer": "vocab.party_roles.customer", "admin": "vocab.party_roles.staff" },
+ "facts": ["name", "email", "role", "staff_role", "disabled"],
+ "actor": "party",
+ "importActor": "party.import"
+}

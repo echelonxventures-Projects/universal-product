@@ -163,7 +163,9 @@
     "platform_admin"
    ],
    "owns": {
-    "files": [],
+    "files": [
+     "lib/parties.js"
+    ],
     "tables": [
      "addresses",
      "segment_members"

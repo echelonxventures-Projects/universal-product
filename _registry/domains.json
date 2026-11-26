@@ -214,6 +214,20 @@
    "scripts/test-shard.js, scripts/test-times.json, .github/workflows/ci.yml",
    "test/openapi.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0058",
+  "date": "2026-11-26",
+  "authorisedBy": "Platform owner",
+  "summary": "P24 begins: business data on the master, people first. Every account of a store is a person of the party.person kind in the store's namespace, with its users row's identity: name, email (sealed), staff role and whether it is disabled are versions in time, and the role it plays (customer, staff) is a relationship to a term of the master's party roles. Every change to who a person is goes through lib/parties.js, the kernel first and the row in the same transaction; credentials stay Security's in the users table. A deleted account's person is archived; an erasure request purges it, so no version of who they were remains. Also: a new install starts in about 11 s (vocabularies read once until the master changes).",
+  "changes": [
+   "lib/parties.js, lib/seed/parties.json; vocab.party_roles customer and staff",
+   "lib/db.js newUser/newUserAsync record the person; boot imports accounts the kernel has never seen",
+   "every identity update (lib/enterprise.js, lib/identity.js, routes access, stores, identity) goes through parties.set; the customer entity names the parties writer",
+   "lib/compliance.js eraseSubject purges the person",
+   "lib/platform-master.js vocabulary memo; lib/kernel.js lastSeq; lib/expression.js seeds in one transaction",
+   "test/parties.js"
+  ]
  }
   ],
   "domains": [
