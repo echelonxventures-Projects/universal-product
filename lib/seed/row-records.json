@@ -1,19 +1,112 @@
 {
- "$comment": "Rows kept on the kernel by one engine (lib/row-records.js): each names its table, the kind its rows are, the facts recorded as versions in time, and the row it belongs to (a relationship). Personal data is never a fact here. A new table on the master is a new entry.",
+ "$comment": "Rows kept on the kernel by one engine (lib/row-records.js): each names its table, the kind its rows are, the facts recorded as versions in time, and what it belongs to (a relationship): a row of another table by its id column, or the person its owner column names. Personal data is never a fact here. A new table on the master is a new entry.",
  "records": {
   "return": {
-   "table": "returns", "owner": "Commerce",
-   "kind": { "kind": "commerce.return", "label": "Return", "parents": ["commerce.order"] },
-   "facts": { "ref": "text", "status": "text", "qty": "number", "reason": "text", "product_id": "text" },
+   "table": "returns",
+   "owner": "Commerce",
+   "kind": {
+    "kind": "commerce.return",
+    "label": "Return",
+    "parents": [
+     "commerce.order"
+    ]
+   },
+   "facts": {
+    "ref": "text",
+    "status": "text",
+    "qty": "number",
+    "reason": "text",
+    "product_id": "text"
+   },
    "title": "ref",
-   "belongsTo": { "hierarchy": "commerce.order_returns", "label": "The returns of each order", "column": "order_id", "table": "orders" }
+   "belongsTo": {
+    "hierarchy": "commerce.order_returns",
+    "label": "The returns of each order",
+    "column": "order_id",
+    "table": "orders"
+   }
   },
   "payment": {
-   "table": "payments", "owner": "Commerce",
-   "kind": { "kind": "commerce.payment", "label": "Payment", "parents": ["commerce.order"] },
-   "facts": { "kind": "text", "gateway": "text", "method": "text", "amount": "number", "currency": "text", "fee": "number", "status": "text", "refunded": "number", "txn_ref": "text", "invoice_id": "text" },
+   "table": "payments",
+   "owner": "Commerce",
+   "kind": {
+    "kind": "commerce.payment",
+    "label": "Payment",
+    "parents": [
+     "commerce.order"
+    ]
+   },
+   "facts": {
+    "kind": "text",
+    "gateway": "text",
+    "method": "text",
+    "amount": "number",
+    "currency": "text",
+    "fee": "number",
+    "status": "text",
+    "refunded": "number",
+    "txn_ref": "text",
+    "invoice_id": "text"
+   },
    "title": "txn_ref",
-   "belongsTo": { "hierarchy": "commerce.order_payments", "label": "The payments of each order", "column": "order_id", "table": "orders" }
+   "belongsTo": {
+    "hierarchy": "commerce.order_payments",
+    "label": "The payments of each order",
+    "column": "order_id",
+    "table": "orders"
+   }
+  },
+  "invoice": {
+   "table": "invoices",
+   "owner": "Commerce",
+   "kind": {
+    "kind": "billing.invoice",
+    "label": "Invoice",
+    "parents": []
+   },
+   "facts": {
+    "number": "text",
+    "period_start": "text",
+    "period_end": "text",
+    "amount": "number",
+    "currency": "text",
+    "status": "text",
+    "issued_at": "text",
+    "paid_at": "text",
+    "note": "text"
+   },
+   "title": "number"
+  },
+  "ticket": {
+   "table": "tickets",
+   "owner": "Communication",
+   "kind": {
+    "kind": "support.ticket",
+    "label": "Support case",
+    "parents": [
+     "party.person"
+    ]
+   },
+   "$comment": "what the case is and how it went; the subject, message, and the customer's name and email are not copied",
+   "facts": {
+    "ref": "text",
+    "reason": "text",
+    "priority": "text",
+    "status": "text",
+    "assignee": "text",
+    "channel": "text",
+    "order_ref": "text",
+    "product_id": "text",
+    "first_response_at": "text",
+    "resolved_at": "text",
+    "csat": "number"
+   },
+   "title": "ref",
+   "belongsTo": {
+    "hierarchy": "support.person_cases",
+    "label": "The support cases each person raised",
+    "owner": "owner"
+   }
   }
  },
  "actor": "commerce",

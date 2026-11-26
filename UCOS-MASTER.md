@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0061 (2026-11-26).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0062 (2026-11-26).
 
 ## Contents
 
@@ -424,6 +424,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0059"></a>AMD-0059 | 2026-11-26 | Platform owner | P24 continues: what a store offers is on the master. Every product is an offering of the offering.listing kind in its store's namespace, with its row's identity; its title, brand, department, kind, price, list price and lifecycle are versions in time, so a product's price history is answerable at any instant. Price is the store's, not the item's. Every write of a product — console, Data Studio, listings, the global catalogue, universe publishing, the AI fixer, seeding — goes through lib/offerings.js in one transaction with its row; stock and display details are not the offer. A product in the bin is hidden and restored with it (soft delete runs through an entity's writer); one deleted is archived with its history. |
 | <a id="amd-0060"></a>AMD-0060 | 2026-11-26 | Platform owner | P24 continues: orders are on the master. Every order is a commerce.order in its store's namespace with its row's identity: number, status, amounts, currency, why it was cancelled and when it was delivered are versions in time, so its status history is answerable at any instant. Its lines are the offerings bought, as they stood at checkout; the person who placed it is a relationship in the commerce.buyers hierarchy. The buyer's name, address and email are not copied: the order is kept for the law, its personal data stays under the store's retention. Every status write — the order mover, checkout, payment confirmation, shipping, pickup, group buys, quick commerce — goes through lib/order-records.js in one transaction with its row; money, stock and the status machine are unchanged. |
 | <a id="amd-0061"></a>AMD-0061 | 2026-11-26 | Platform owner | P24 continues: returns and payments are on the master, through one engine. lib/row-records.js keeps any table of business records on the kernel from a declaration in lib/seed/row-records.json — the kind, the facts kept as versions in time, and the row each belongs to — so a new table on the master is a new entry, not new code. A return and a payment each belong to their order; a payment's refunded amount over time is its refund history, including a claim handed back when the gateway refused. Every insert and status or refund write of returns and payments goes through the engine in one transaction with its row. Corrects eleven writes from AMD-0059/AMD-0060 that wrapped the database rather than the statement, so their record was taken before the write; the three engines now refuse that shape. |
+| <a id="amd-0062"></a>AMD-0062 | 2026-11-26 | Platform owner | P24 continues: invoices and support cases are on the master, as two entries of lib/seed/row-records.json — no new code beyond letting a record belong to the person its owner column names. An invoice's status (issued, overdue, paid) is a version in time; a support case keeps its reason, priority, status, assignee, response and resolution times and rating, belongs to the person who raised it, and copies neither its subject and message nor the customer's name, email or comment. Wallets and store credit were already on the kernel (the Universal Wallet). Every insert and update of both tables goes through the engine in one transaction with its row; a store's purge archives their records. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -2446,7 +2447,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p21"></a>P21 | Agent on today's AI layer | [Agent](volumes/V09.1-automation.md#d-agt) | planned | — |
 | <a id="p22"></a>P22 | Offering and Package: configuring by selection, blueprints, overlays, the first packages | [Offering](volumes/V11.2-platform.md#d-ofg), [Package](volumes/V13-composition.md#d-pkg) | planned | — |
 | <a id="p23"></a>P23 | Operations consolidated | [Operations](volumes/V11.1-platform.md#d-ops) | planned | — |
-| <a id="p24"></a>P24 | Business entities on the kernel; engines read the resolver; stores lose their single country and currency | [Commerce](volumes/V12-business.md#d-biz) | in-progress | [AMD-0058](#amd-0058), [AMD-0059](#amd-0059), [AMD-0060](#amd-0060), [AMD-0061](#amd-0061) |
+| <a id="p24"></a>P24 | Business entities on the kernel; engines read the resolver; stores lose their single country and currency | [Commerce](volumes/V12-business.md#d-biz) | in-progress | [AMD-0058](#amd-0058), [AMD-0059](#amd-0059), [AMD-0060](#amd-0060), [AMD-0061](#amd-0061), [AMD-0062](#amd-0062) |
 | <a id="p25"></a>P25 | Launch by configuration, end to end, for a person with the manual and for an agent | [Package](volumes/V13-composition.md#d-pkg), [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
 | <a id="p26"></a>P26 | More storage adapters; moving domains between databases from the console | [Registry](volumes/V05-structure.md#d-reg) | planned | — |
 | <a id="p27"></a>P27 | The platform master: entities of every kind as rows, classified in many hierarchies, identifier schemes, attributes inherited and applicable by context, the maximum starter content; the flat global catalogue and per-platform taxonomies and attributes merged into it | [Identity](volumes/V02-meaning.md#d-idn), [Semantic](volumes/V02-meaning.md#d-sem), [Registry](volumes/V05-structure.md#d-reg), [Relationship](volumes/V05-structure.md#d-rel), [Context](volumes/V04-universal-dimensions.md#d-ctx) | planned | — |
@@ -2549,6 +2550,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0059 | amendment | P24 continues | [constitution](#amd-0059) |
 | AMD-0060 | amendment | P24 continues | [constitution](#amd-0060) |
 | AMD-0061 | amendment | P24 continues | [constitution](#amd-0061) |
+| AMD-0062 | amendment | P24 continues | [constitution](#amd-0062) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

@@ -264,6 +264,17 @@
    "the wrapped-write shape fixed in lib/orders.js, lib/groupbuy.js, lib/pickup.js, lib/ucos-catalog.js and refused by offerings, order-records and row-records",
    "test/orders.js: returns and payments on the master"
   ]
+ },
+ {
+  "amendmentId": "AMD-0062",
+  "date": "2026-11-26",
+  "authorisedBy": "Platform owner",
+  "summary": "P24 continues: invoices and support cases are on the master, as two entries of lib/seed/row-records.json — no new code beyond letting a record belong to the person its owner column names. An invoice's status (issued, overdue, paid) is a version in time; a support case keeps its reason, priority, status, assignee, response and resolution times and rating, belongs to the person who raised it, and copies neither its subject and message nor the customer's name, email or comment. Wallets and store credit were already on the kernel (the Universal Wallet). Every insert and update of both tables goes through the engine in one transaction with its row; a store's purge archives their records.",
+  "changes": [
+   "lib/seed/row-records.json: invoice, ticket; lib/row-records.js: belongsTo by owner",
+   "lib/helpdesk.js, lib/billing.js, lib/api.js invoicePaid, lib/routes/support.js, lib/routes/modules.js, lib/db.js seeds write through it",
+   "test/row-records.js"
+  ]
  }
   ],
   "domains": [
