@@ -58,6 +58,17 @@ _Not yet written._
 
 More: [Returns and refunds](../domains/returns.md)
 
+## Consultancy and professional services
+
+The work a store's people do for its clients and how it is billed: projects for a CRM company billed by time and materials, a fixed fee in instalments or not at all; a timesheet per person and week, approved by someone else and priced at each person's rate; expense claims owed and paid back and billed on; invoices to clients drafted from approved, unbilled time and expenses, each billed once, posted to the books; proposals from a deal answered from the client's private link, starting the project and winning the deal; the resource plan and utilisation.
+
+Your timesheet and expense claims are under **Business Operations → ⏱️ Consulting**, if your role
+has the consulting section. Open your week, log your time, save it and submit it by the end of the
+week. Someone else approves it. If it is sent back, the reason is shown: reopen it, correct it and
+submit it again.
+
+More: [Consultancy and professional services](../domains/consulting.md)
+
 ## Shipping and delivery
 
 Getting goods to the buyer: carriers and rates, shipments and tracking, pickup points and lockers, and fast local delivery from dark stores with slots, riders and dispatch runs.

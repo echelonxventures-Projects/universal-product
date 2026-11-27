@@ -1,6 +1,6 @@
 {
  "summary": {
-  "branch": 65,
+  "branch": 64,
   "fallback": 80,
   "seedConstants": {
    "count": 7,
@@ -59,7 +59,6 @@
    "public/js/app.js · coupon": 1,
    "public/js/app.js · rent": 2,
    "public/js/app.js · sku": 1,
-   "public/js/app.js · track": 1,
    "public/js/platform.js · bar": 1,
    "public/js/platform.js · donut": 1,
    "public/js/platform.js · installed": 1,

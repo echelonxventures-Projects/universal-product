@@ -2560,6 +2560,13 @@
     "section": "campaigns"
    },
    {
+    "key": "consulting",
+    "group": "Business Operations",
+    "label": "⏱️ Consulting",
+    "order": 7,
+    "section": "consulting"
+   },
+   {
     "key": "affiliate",
     "group": "Marketing & Growth",
     "label": "📣 Influencers & Affiliates",

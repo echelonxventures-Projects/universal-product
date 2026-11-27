@@ -278,6 +278,34 @@ has it.
 
 More: [Campaigns](../domains/campaigns.md)
 
+## Consultancy and professional services
+
+The work a store's people do for its clients and how it is billed: projects for a CRM company billed by time and materials, a fixed fee in instalments or not at all; a timesheet per person and week, approved by someone else and priced at each person's rate; expense claims owed and paid back and billed on; invoices to clients drafted from approved, unbilled time and expenses, each billed once, posted to the books; proposals from a deal answered from the client's private link, starting the project and winning the deal; the resource plan and utilisation.
+
+Open **Business Operations → ⏱️ Consulting**. Your role needs the consulting section; the Delivery
+and Finance roles have it.
+
+- **Projects**: each project with how it is billed, what is ready to bill, invoiced and paid. Open
+  one to set its billing, client, currency, rate an hour, tax and fixed fee, and a person's own rate
+  on it. **Draft an invoice** from what is ready, or bill a fixed-fee instalment. Projects
+  themselves are added under **Business Operations → Projects**, or start when a proposal is
+  accepted.
+- **People and rates**: what each person is billed at, what they cost and their hours a week.
+- **Timesheets**: choose a person and any day of the week, then **Open**. Add time, **Save the
+  week**, and **submit** it.
+- **Approvals**: weeks and expense claims waiting for you. **approve** or **reject** each one, giving
+  a reason. You cannot approve your own.
+- **Expenses**: claim an expense, then **submit** it; once approved, **reimburse** it when it is paid
+  back.
+- **Invoices**: open one to **issue** it (with an email address to send it to), record it **paid**,
+  **void** it, or print it.
+- **Proposals**: draft one from a deal, one line each as `kind | what | quantity | rate`, then
+  **send** it. You get the client's link to copy. Record an answer given another way with **accept**
+  or **decline**.
+- **Plan** and **Utilisation**: book people onto projects week by week, and see how they are used.
+
+More: [Consultancy and professional services](../domains/consulting.md)
+
 ## Settlements and payouts
 
 Paying those who are owed: seller settlements, payout batches, bank payouts, reconciliation of what the bank says against what the ledger says, and remittances.

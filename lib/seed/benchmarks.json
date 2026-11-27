@@ -54,7 +54,7 @@
    { "f": "Support cases with SLAs", "e": ["c:customer_service", "t:tickets"] },
    { "f": "Knowledge base", "e": ["t:kb_entries"] },
    { "f": "Omnichannel conversations", "e": ["c:conversations", "t:conversation_messages"] },
-   { "f": "Quotes", "e": ["t:rfq_quotes"], "gap": "quotes answer a buyer's request for quotation; a salesperson cannot send a quote from a deal" },
+   { "f": "Quotes", "e": ["t:rfq_quotes", "t:proposals", "f:lib/consulting.js", "f:test/consulting.js"] },
    { "f": "Loyalty", "e": ["c:membership"] },
    { "f": "Reports and dashboards", "e": ["t:dashboards", "t:reports"] }
   ] },
@@ -87,7 +87,7 @@
    { "f": "Engagements and contracts", "e": ["t:contracts"] },
    { "f": "Projects and tasks", "e": ["c:projects", "t:projects", "t:tasks"] },
    { "f": "Timesheets", "e": ["t:timesheets"], "gapIfMissing": "hours can be logged against a task, but not as a timesheet per person and week, approved and billed" },
-   { "f": "Time-and-materials billing", "e": ["t:timesheets", "t:invoice_documents"] },
+   { "f": "Time-and-materials billing", "e": ["t:timesheets", "t:client_invoices", "f:lib/consulting.js", "f:test/consulting.js"] },
    { "f": "Milestones and deliverables", "e": ["t:deliverables"] },
    { "f": "Paid consulting sessions by the minute", "e": ["c:per_minute_billing", "t:media_sessions"] },
    { "f": "Resource planning and utilisation", "e": ["t:resource_allocations"] },

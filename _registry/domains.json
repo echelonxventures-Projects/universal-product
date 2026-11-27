@@ -341,6 +341,19 @@
    "server.js sweep sends due campaigns; lib/tell.js exports address; lib/seed/erasure.json campaign_recipients",
    "test/campaigns.js; benchmarks 65/6/12"
   ]
+ },
+ {
+  "amendmentId": "AMD-0069",
+  "date": "2026-11-27",
+  "authorisedBy": "Platform owner",
+  "summary": "Consultancy (lib/consulting.js, lib/seed/consulting.json). Projects are records on the master under the CRM company they are for, billed by time and materials, a fixed fee in instalments, or not at all, with a project rate and a rate per person. A timesheet per person and week (timesheets, time_entries) is saved while a draft, submitted, and approved or sent back with a reason by someone other than whoever submitted it (settings consulting.selfApproval allows it); approval prices each billable hour at the person's rate on the project and every hour at their cost, adding to the tasks' logged hours and the project's spend. Expense claims are drafted, submitted, approved (the books owe the person: 6500/2100) and paid back (2100/1000), and may be billed on. Invoices to clients are drafted from a project's approved, unbilled time and expenses up to a day, or a fixed-fee instalment never above the fee left; each entry is claimed by one invoice only, so two drafts at once cannot bill it twice; issuing posts what the client owes (1100 against 4300 fees, 4310 expenses billed on, 2200 tax) and can email it; payment clears it to the bank; voiding undoes the entry and frees the time and expenses. Proposals are drafted from a deal, sent with a private link (public/proposal.html, /api/proposals/view and /answer), expire after their date (platform sweep), and when accepted — by the client typing their name, or recorded by staff — start the project for the company billed the proposal's way and win the deal at the proposal's value. The resource plan books people's weeks onto projects against their capacity; utilisation sets billable hours against capacity beside what was planned and logged. Records on the master re-place themselves when the row they belong to changes (lib/row-records.js follow). New role Delivery; Finance holds consulting (rb_v11). Benchmarks 71/4/8: consultancy 12 of 12, CRM quotes present.",
+  "changes": [
+   "lib/consulting.js, lib/seed/consulting.json, lib/routes/consulting.js, public/js/admin/consulting.js, public/proposal.html, public/js/proposal.js; business domain consulting; tables project_rates, timesheets, time_entries, expense_claims, client_invoices, client_invoice_lines, proposals, resource_allocations; projects and employees gain billing and rate columns; machines timesheet, expense_claim, client_invoice, proposal",
+   "lib/seed/row-records.json project, timesheet, expense_claim, client_invoice, proposal; lib/operations.js project writes recorded; lib/row-records.js follows a changed parent",
+   "lib/seed/books.json accounts 1100, 2100, 4300, 4310, 6500 and five rules; lib/books.js measures, health skips rules that fire only from a state",
+   "lib/authz.js Delivery role, Finance consulting, rb_v11; server.js sweep expires proposals; lib/page-meta.js proposal.html private",
+   "test/consulting.js; benchmarks 71/4/8"
+  ]
  }
   ],
   "domains": [

@@ -88,7 +88,12 @@ Projects, tasks and time-logging that accrues to a project's spend at a configur
 | `bank_account` | TEXT DEFAULT '' |
 | `tax_id` | TEXT DEFAULT '' |
 | `manager_id` | INTEGER |
+| `bill_rate` | REAL NOT NULL DEFAULT 0 |
+| `cost_rate` | REAL NOT NULL DEFAULT 0 |
+| `capacity_hours` | REAL |
 | `uid` | TEXT |
+| `/*` | lib/consulting.js: what an hour is billed and costs |
+| `and` | the hours in a week */ UNIQUE (tenant_id, code) |
 
 ### `attendance`
 
@@ -180,6 +185,13 @@ Projects, tasks and time-logging that accrues to a project's spend at a configur
 | `due_date` | TEXT |
 | `completed_at` | TEXT |
 | `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+| `company_id` | INTEGER |
+| `deal_id` | INTEGER |
+| `proposal_id` | INTEGER |
+| `/*` | the client (crm_companies) and how it was won (lib/consulting.js) */ billing TEXT NOT NULL DEFAULT 'non_billable' |
+| `currency` | TEXT DEFAULT '' |
+| `bill_rate` | REAL NOT NULL DEFAULT 0 |
+| `tax_pct` | REAL NOT NULL DEFAULT 0 |
 | `uid` | TEXT |
 
 ### `tasks`

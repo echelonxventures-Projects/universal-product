@@ -88,6 +88,12 @@
    "parent": "1"
   },
   {
+   "code": "1100",
+   "name": "Owed by clients",
+   "type": "asset",
+   "parent": "1"
+  },
+  {
    "code": "1200",
    "name": "Payments to be settled by gateways",
    "type": "asset",
@@ -126,6 +132,12 @@
   {
    "code": "2050",
    "name": "Received, not yet billed",
+   "type": "liability",
+   "parent": "2"
+  },
+  {
+   "code": "2100",
+   "name": "Expenses owed to staff",
    "type": "liability",
    "parent": "2"
   },
@@ -184,6 +196,18 @@
    "parent": "4"
   },
   {
+   "code": "4300",
+   "name": "Fees for services",
+   "type": "income",
+   "parent": "4"
+  },
+  {
+   "code": "4310",
+   "name": "Expenses billed to clients",
+   "type": "income",
+   "parent": "4"
+  },
+  {
    "code": "4900",
    "name": "Refunds given",
    "type": "income",
@@ -234,6 +258,12 @@
   {
    "code": "6400",
    "name": "Stock written off",
+   "type": "expense",
+   "parent": "6"
+  },
+  {
+   "code": "6500",
+   "name": "Staff expenses",
    "type": "expense",
    "parent": "6"
   }
@@ -495,6 +525,118 @@
      "part": "gross"
     }
    ]
+  },
+  {
+   "key": "client_invoice",
+   "label": "An invoice to a client is issued",
+   "record": "client_invoice",
+   "when": {
+    "fact": "status",
+    "into": "billed"
+   },
+   "lines": [
+    {
+     "debit": "1100",
+     "part": "gross"
+    },
+    {
+     "credit": "4300",
+     "part": "fees"
+    },
+    {
+     "credit": "4310",
+     "part": "expenses"
+    },
+    {
+     "credit": "2200",
+     "part": "tax"
+    }
+   ]
+  },
+  {
+   "key": "client_invoice_void",
+   "label": "An issued client invoice is voided",
+   "record": "client_invoice",
+   "when": {
+    "fact": "status",
+    "into": "void",
+    "from": "billed"
+   },
+   "lines": [
+    {
+     "debit": "4300",
+     "part": "fees"
+    },
+    {
+     "debit": "4310",
+     "part": "expenses"
+    },
+    {
+     "debit": "2200",
+     "part": "tax"
+    },
+    {
+     "credit": "1100",
+     "part": "gross"
+    }
+   ]
+  },
+  {
+   "key": "client_paid",
+   "label": "A client pays an invoice",
+   "record": "client_invoice",
+   "when": {
+    "fact": "status",
+    "into": "success"
+   },
+   "lines": [
+    {
+     "debit": "1000",
+     "part": "gross"
+    },
+    {
+     "credit": "1100",
+     "part": "gross"
+    }
+   ]
+  },
+  {
+   "key": "expense_claim",
+   "label": "A staff expense claim is approved",
+   "record": "expense_claim",
+   "when": {
+    "fact": "status",
+    "into": "approved"
+   },
+   "lines": [
+    {
+     "debit": "6500",
+     "part": "amount"
+    },
+    {
+     "credit": "2100",
+     "part": "amount"
+    }
+   ]
+  },
+  {
+   "key": "expense_reimbursed",
+   "label": "A staff expense claim is paid back",
+   "record": "expense_claim",
+   "when": {
+    "fact": "status",
+    "into": "success"
+   },
+   "lines": [
+    {
+     "debit": "2100",
+     "part": "amount"
+    },
+    {
+     "credit": "1000",
+     "part": "amount"
+    }
+   ]
   }
  ],
  "actor": "books",
@@ -521,6 +663,14 @@
   "supplier_bill": {
    "table": "supplier_bills",
    "measure": "bill"
+  },
+  "client_invoice": {
+   "table": "client_invoices",
+   "measure": "client_invoice"
+  },
+  "expense_claim": {
+   "table": "expense_claims",
+   "measure": "expense"
   }
  },
  "reversible": [

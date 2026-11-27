@@ -18,5 +18,5 @@
  ],
  "keep": ["orders", "order_items", "invoice_documents", "payments", "payment_refunds", "wallets", "wallet_entries", "ledger_journals", "ledger_postings",
   "mandates", "bnpl_accounts", "loans", "insurance_policies", "escrow_holds", "memberships", "recurring_schedules", "bookings", "cases", "risk_events",
-  "privacy_requests", "erasure_log", "consents"]
+  "privacy_requests", "erasure_log", "consents", "proposals", "client_invoices"]
 }

@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0068 (2026-11-27).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0069 (2026-11-27).
 
 ## Contents
 
@@ -67,7 +67,7 @@ A volume may reach 100 KB (`manifest.json` → `projection.maxVolumeBytes`). A c
 | [V09.1](volumes/V09.1-automation.md) | C09 Automation | 1 of 2 | 2 | 14 | 95 KB |
 | [V09.2](volumes/V09.2-automation.md) | C09 Automation | 2 of 2 | 1 | 1 | 8 KB |
 | [V10](volumes/V10-intelligence.md) | C10 Intelligence | 1 of 1 | 1 | 1 | 7 KB |
-| [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 85 KB |
+| [V11.1](volumes/V11.1-platform.md) | C11 Platform | 1 of 2 | 2 | 13 | 87 KB |
 | [V11.2](volumes/V11.2-platform.md) | C11 Platform | 2 of 2 | 3 | 6 | 40 KB |
 | [V12](volumes/V12-business.md) | C12 Business | 1 of 1 | 1 | 10 | 82 KB |
 | [V13](volumes/V13-composition.md) | C13 Composition | 1 of 1 | 1 | 1 | 7 KB |
@@ -431,6 +431,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0066"></a>AMD-0066 | 2026-11-27 | Platform owner | Stock valuation: the ERP benchmark's stock valuation gap closed. lib/valuation.js keeps what each unit on hand cost as cost layers in whole minor units — goods received add a layer at the order's price; stock counted before valuation began is given an opening cost on request (inventory against owner's capital). Each unit that leaves — sold at checkout, or written off — takes its cost by the store's method (lib/seed/valuation.json; settings commerce.stockValuation): first in, first out, or the weighted average (the layers are evened out first, shared in minor units so the total never moves). The cost posts to the books — cost of goods sold or stock written off against inventory — once per stock move; a unit that comes back returns at the cost it left at and the entry reverses. Stock with no cost is the oldest: it leaves first, at no cost, and is reported, never guessed at. The layers equal the books' inventory account to the cent (reconcile). Every stock movement in lib/stock.js (take, giveBack, writeOff) and every goods receipt carries its cost. Routes stock-value, opening-stock, valuation-method and an order's cost under the books section; the Books screen's Stock value card. |
 | <a id="amd-0067"></a>AMD-0067 | 2026-11-27 | Platform owner | Customer relationships, and erasure that works. lib/crm.js: companies (party.company, an organisation of the master — a record kind may now extend a master kind without redefining it), contacts (belonging to their company, linked to their shopper account by email), deals (commerce.deal, under their company) through the store's pipeline (lib/seed/crm.json, or the store's own stages in settings crm.stages; a stage with open deals cannot be removed) to won or lost (crm_deal machine), a weighted forecast by month and currency, activities (calls, meetings, emails, tasks, notes) on a timeline and an agenda, a deal from a shopper's enquiry, and one view of a customer. Each is a record on the master; who a contact is and what was said stay in the tables. Erasure (lib/compliance.js eraseSubject) is rewritten from data (lib/seed/erasure.json): it removed only the account and consents, because it looked people up by email in tables keyed by owner or user id (addresses, reviews, questions, support cases) and swallowed the errors. It now finds a person by email, owner key and user id, clears every table listed, keeps what the law requires, reports anything it could not clear, and erases a person who has placed orders — which failed since AMD-0060 — by detaching what is kept from the erased person on the master (kernel-lifecycle purge detach, recorded in the tombstone). Routes /api/admin/crm/* under a crm section (Growth writes, Support reads; store roles rb_v9); the CRM screen. Benchmarks 65/5/13. |
 | <a id="amd-0068"></a>AMD-0068 | 2026-11-27 | Platform owner | Campaigns (lib/campaigns.js): email, SMS or in-app messages to every customer, a segment, every CRM contact or one company's people (lib/seed/campaigns.json). Only people with a live marketing consent are reached (lib/compliance.js mayProcess) — checked when the list is built and again right before each message; a preview shows who would be reached and who skipped and why. Every message carries the person's own unsubscribe link, a public route that withdraws their consent and confirms it. Recipients are claimed before their message, so several servers never send one person the same campaign; an interrupted send is marked, never repeated. Campaigns are drafted, scheduled (sent by the platform's sweep), sent in batches, cancelled (campaign machine), and are records on the master; messages and recipients stay in the tables, erased with the person. The benchmark marks campaigns partial: automated journeys and open or click tracking are not built. Routes /api/admin/campaigns/* under a campaigns section the Growth role holds (rb_v10), /api/campaigns/unsubscribe; the Campaigns screen. |
+| <a id="amd-0069"></a>AMD-0069 | 2026-11-27 | Platform owner | Consultancy (lib/consulting.js, lib/seed/consulting.json). Projects are records on the master under the CRM company they are for, billed by time and materials, a fixed fee in instalments, or not at all, with a project rate and a rate per person. A timesheet per person and week (timesheets, time_entries) is saved while a draft, submitted, and approved or sent back with a reason by someone other than whoever submitted it (settings consulting.selfApproval allows it); approval prices each billable hour at the person's rate on the project and every hour at their cost, adding to the tasks' logged hours and the project's spend. Expense claims are drafted, submitted, approved (the books owe the person: 6500/2100) and paid back (2100/1000), and may be billed on. Invoices to clients are drafted from a project's approved, unbilled time and expenses up to a day, or a fixed-fee instalment never above the fee left; each entry is claimed by one invoice only, so two drafts at once cannot bill it twice; issuing posts what the client owes (1100 against 4300 fees, 4310 expenses billed on, 2200 tax) and can email it; payment clears it to the bank; voiding undoes the entry and frees the time and expenses. Proposals are drafted from a deal, sent with a private link (public/proposal.html, /api/proposals/view and /answer), expire after their date (platform sweep), and when accepted — by the client typing their name, or recorded by staff — start the project for the company billed the proposal's way and win the deal at the proposal's value. The resource plan books people's weeks onto projects against their capacity; utilisation sets billable hours against capacity beside what was planned and logged. Records on the master re-place themselves when the row they belong to changes (lib/row-records.js follow). New role Delivery; Finance holds consulting (rb_v11). Benchmarks 71/4/8: consultancy 12 of 12, CRM quotes present. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1299,7 +1300,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 370 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 375 files.
 
 ### C02 · Meaning
 
@@ -1647,6 +1648,11 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `scripts/schema-dump.js` | [Persistence](volumes/V11.1-platform.md#d-prs) | dumps the storage schema |
 | `scripts/size-guard.js` | [Quality](volumes/V11.2-platform.md#d-qlt) | no file of 50 MB or more is tracked or committed (npm test, the pre-commit hook in .githooks) |
 | `lib/offerings.js` | [Offering](volumes/V11.2-platform.md#d-ofg) |  |
+| `lib/consulting.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `lib/seed/consulting.json` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `lib/routes/consulting.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `public/js/admin/consulting.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
+| `public/js/proposal.js` | [Operations](volumes/V11.1-platform.md#d-ops) |  |
 | `lib/seed/offerings.json` | [Offering](volumes/V11.2-platform.md#d-ofg) |  |
 | `scripts/test-shard.js` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
 | `scripts/test-times.json` | [Quality](volumes/V11.2-platform.md#d-qlt) |  |
@@ -2474,7 +2480,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p21"></a>P21 | Agent on today's AI layer | [Agent](volumes/V09.1-automation.md#d-agt) | planned | — |
 | <a id="p22"></a>P22 | Offering and Package: configuring by selection, blueprints, overlays, the first packages | [Offering](volumes/V11.2-platform.md#d-ofg), [Package](volumes/V13-composition.md#d-pkg) | planned | — |
 | <a id="p23"></a>P23 | Operations consolidated | [Operations](volumes/V11.1-platform.md#d-ops) | planned | — |
-| <a id="p24"></a>P24 | Business entities on the kernel; engines read the resolver; stores lose their single country and currency | [Commerce](volumes/V12-business.md#d-biz) | in-progress | [AMD-0058](#amd-0058), [AMD-0059](#amd-0059), [AMD-0060](#amd-0060), [AMD-0061](#amd-0061), [AMD-0062](#amd-0062), [AMD-0064](#amd-0064), [AMD-0065](#amd-0065), [AMD-0066](#amd-0066), [AMD-0067](#amd-0067), [AMD-0068](#amd-0068) |
+| <a id="p24"></a>P24 | Business entities on the kernel; engines read the resolver; stores lose their single country and currency | [Commerce](volumes/V12-business.md#d-biz) | in-progress | [AMD-0058](#amd-0058), [AMD-0059](#amd-0059), [AMD-0060](#amd-0060), [AMD-0061](#amd-0061), [AMD-0062](#amd-0062), [AMD-0064](#amd-0064), [AMD-0065](#amd-0065), [AMD-0066](#amd-0066), [AMD-0067](#amd-0067), [AMD-0068](#amd-0068), [AMD-0069](#amd-0069) |
 | <a id="p25"></a>P25 | Launch by configuration, end to end, for a person with the manual and for an agent | [Package](volumes/V13-composition.md#d-pkg), [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
 | <a id="p26"></a>P26 | More storage adapters; moving domains between databases from the console | [Registry](volumes/V05-structure.md#d-reg) | planned | — |
 | <a id="p27"></a>P27 | The platform master: entities of every kind as rows, classified in many hierarchies, identifier schemes, attributes inherited and applicable by context, the maximum starter content; the flat global catalogue and per-platform taxonomies and attributes merged into it | [Identity](volumes/V02-meaning.md#d-idn), [Semantic](volumes/V02-meaning.md#d-sem), [Registry](volumes/V05-structure.md#d-reg), [Relationship](volumes/V05-structure.md#d-rel), [Context](volumes/V04-universal-dimensions.md#d-ctx) | planned | — |
@@ -2584,6 +2590,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0066 | amendment | Stock valuation | [constitution](#amd-0066) |
 | AMD-0067 | amendment | Customer relationships, and erasure that works. lib/crm.js | [constitution](#amd-0067) |
 | AMD-0068 | amendment | Campaigns (lib/campaigns.js) | [constitution](#amd-0068) |
+| AMD-0069 | amendment | Consultancy (lib/consulting.js, lib/seed/consulting.json). P | [constitution](#amd-0069) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

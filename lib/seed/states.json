@@ -4300,6 +4300,265 @@
      ]
     }
    }
+  },
+  {
+   "key": "timesheet",
+   "name": "Timesheet",
+   "column": "status",
+   "initial": "draft",
+   "states": [
+    "draft",
+    "submitted",
+    "approved",
+    "rejected"
+   ],
+   "transitions": {
+    "draft": [
+     "submitted"
+    ],
+    "submitted": [
+     "approved",
+     "rejected"
+    ],
+    "rejected": [
+     "draft"
+    ]
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable"
+     ]
+    },
+    "submitted": {
+     "tags": [
+      "pending"
+     ],
+     "stamps": [
+      "submitted_at"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "approved",
+      "terminal"
+     ],
+     "stamps": [
+      "approved_at"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "rejected"
+     ]
+    }
+   }
+  },
+  {
+   "key": "expense_claim",
+   "name": "Expense claim",
+   "column": "status",
+   "initial": "draft",
+   "states": [
+    "draft",
+    "submitted",
+    "approved",
+    "rejected",
+    "reimbursed"
+   ],
+   "transitions": {
+    "draft": [
+     "submitted"
+    ],
+    "submitted": [
+     "approved",
+     "rejected"
+    ],
+    "rejected": [
+     "draft"
+    ],
+    "approved": [
+     "reimbursed"
+    ]
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable"
+     ]
+    },
+    "submitted": {
+     "tags": [
+      "pending"
+     ],
+     "stamps": [
+      "submitted_at"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "approved",
+      "payable"
+     ],
+     "stamps": [
+      "approved_at"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "rejected"
+     ]
+    },
+    "reimbursed": {
+     "tags": [
+      "approved",
+      "success",
+      "terminal"
+     ],
+     "stamps": [
+      "paid_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "client_invoice",
+   "name": "Client invoice",
+   "column": "status",
+   "initial": "draft",
+   "states": [
+    "draft",
+    "issued",
+    "paid",
+    "void"
+   ],
+   "transitions": {
+    "draft": [
+     "issued",
+     "void"
+    ],
+    "issued": [
+     "paid",
+     "void"
+    ]
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable"
+     ]
+    },
+    "issued": {
+     "tags": [
+      "billed",
+      "receivable"
+     ],
+     "stamps": [
+      "issued_at"
+     ]
+    },
+    "paid": {
+     "tags": [
+      "billed",
+      "success",
+      "terminal"
+     ],
+     "stamps": [
+      "paid_at"
+     ]
+    },
+    "void": {
+     "tags": [
+      "void",
+      "terminal"
+     ],
+     "stamps": [
+      "voided_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "proposal",
+   "name": "Proposal",
+   "column": "status",
+   "initial": "draft",
+   "states": [
+    "draft",
+    "sent",
+    "accepted",
+    "declined",
+    "expired",
+    "withdrawn"
+   ],
+   "transitions": {
+    "draft": [
+     "sent",
+     "withdrawn"
+    ],
+    "sent": [
+     "accepted",
+     "declined",
+     "expired",
+     "withdrawn"
+    ],
+    "declined": [
+     "draft"
+    ],
+    "expired": [
+     "draft"
+    ],
+    "withdrawn": [
+     "draft"
+    ]
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable"
+     ]
+    },
+    "sent": {
+     "tags": [
+      "awaiting"
+     ],
+     "stamps": [
+      "sent_at"
+     ]
+    },
+    "accepted": {
+     "tags": [
+      "accepted",
+      "answered",
+      "terminal"
+     ],
+     "stamps": [
+      "answered_at"
+     ]
+    },
+    "declined": {
+     "tags": [
+      "declined",
+      "answered",
+      "closed"
+     ],
+     "stamps": [
+      "answered_at"
+     ]
+    },
+    "expired": {
+     "tags": [
+      "expired",
+      "closed"
+     ]
+    },
+    "withdrawn": {
+     "tags": [
+      "withdrawn",
+      "closed"
+     ]
+    }
+   }
   }
  ]
 }

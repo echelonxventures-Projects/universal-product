@@ -303,6 +303,152 @@
     "failed": "number"
    },
    "title": "ref"
+  },
+  "project": {
+   "table": "projects",
+   "owner": "Operations",
+   "kind": {
+    "kind": "operations.project",
+    "label": "Project",
+    "parents": [
+     "party.company"
+    ]
+   },
+   "$comment": "an engagement: how it is billed, its budget and what it has cost; who works on it stays in the tables",
+   "facts": {
+    "code": "text",
+    "name": "text",
+    "status": "text",
+    "billing": "text",
+    "currency": "text",
+    "budget": "number",
+    "spent": "number",
+    "start_date": "text",
+    "due_date": "text"
+   },
+   "title": "code",
+   "belongsTo": {
+    "hierarchy": "operations.company_projects",
+    "label": "The projects done for each company",
+    "column": "company_id",
+    "table": "crm_companies"
+   }
+  },
+  "timesheet": {
+   "table": "timesheets",
+   "owner": "Operations",
+   "kind": {
+    "kind": "operations.timesheet",
+    "label": "Timesheet",
+    "parents": []
+   },
+   "$comment": "one person's week: its hours and where it stands; what was done each day stays in the tables",
+   "facts": {
+    "ref": "text",
+    "employee_id": "text",
+    "week": "text",
+    "status": "text",
+    "hours": "number",
+    "billable_hours": "number",
+    "submitted_at": "text",
+    "approved_at": "text"
+   },
+   "title": "ref"
+  },
+  "expense_claim": {
+   "table": "expense_claims",
+   "owner": "Operations",
+   "kind": {
+    "kind": "operations.expense_claim",
+    "label": "Expense claim",
+    "parents": [
+     "operations.project"
+    ]
+   },
+   "facts": {
+    "ref": "text",
+    "employee_id": "text",
+    "category": "text",
+    "date": "text",
+    "amount": "number",
+    "currency": "text",
+    "billable": "number",
+    "status": "text",
+    "approved_at": "text",
+    "paid_at": "text",
+    "invoice_id": "text"
+   },
+   "title": "ref",
+   "belongsTo": {
+    "hierarchy": "operations.project_expenses",
+    "label": "The expense claims of each project",
+    "column": "project_id",
+    "table": "projects"
+   }
+  },
+  "client_invoice": {
+   "table": "client_invoices",
+   "owner": "Commerce",
+   "kind": {
+    "kind": "billing.client_invoice",
+    "label": "Client invoice",
+    "parents": [
+     "operations.project"
+    ]
+   },
+   "facts": {
+    "ref": "text",
+    "currency": "text",
+    "fees": "number",
+    "expenses": "number",
+    "tax": "number",
+    "gross": "number",
+    "status": "text",
+    "issued_at": "text",
+    "due_at": "text",
+    "paid_at": "text",
+    "voided_at": "text"
+   },
+   "title": "ref",
+   "belongsTo": {
+    "hierarchy": "billing.project_invoices",
+    "label": "The invoices of each project",
+    "column": "project_id",
+    "table": "projects"
+   }
+  },
+  "proposal": {
+   "table": "proposals",
+   "owner": "Commerce",
+   "kind": {
+    "kind": "commerce.proposal",
+    "label": "Proposal",
+    "parents": [
+     "commerce.deal"
+    ]
+   },
+   "$comment": "what was offered, for how much and until when, and the answer; who answered stays in the table",
+   "facts": {
+    "ref": "text",
+    "title": "text",
+    "currency": "text",
+    "billing": "text",
+    "net": "number",
+    "tax": "number",
+    "total": "number",
+    "valid_until": "text",
+    "status": "text",
+    "sent_at": "text",
+    "answered_at": "text",
+    "project_id": "text"
+   },
+   "title": "ref",
+   "belongsTo": {
+    "hierarchy": "commerce.deal_proposals",
+    "label": "The proposals of each deal",
+    "column": "deal_id",
+    "table": "crm_deals"
+   }
   }
  },
  "actor": "commerce",

@@ -1080,6 +1080,73 @@ CREATE UNIQUE INDEX ux_campaigns_uid ON campaigns(uid);
 CREATE TRIGGER trg_campaigns_uid AFTER INSERT ON campaigns
                BEGIN UPDATE campaigns SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
+-- ── consulting · Consultancy and professional services ───────────────────────────────────────────
+CREATE TABLE project_rates (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, project_id INTEGER NOT NULL, employee_id INTEGER NOT NULL, rate REAL NOT NULL,
+  UNIQUE (project_id, employee_id)
+);
+CREATE TABLE timesheets (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, employee_id INTEGER NOT NULL, week TEXT NOT NULL, status TEXT NOT NULL,
+  hours REAL NOT NULL DEFAULT 0, billable_hours REAL NOT NULL DEFAULT 0, submitted_by TEXT DEFAULT '', submitted_at TEXT, approved_by TEXT DEFAULT '', approved_at TEXT,
+  rejected_reason TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT,
+  UNIQUE (tenant_id, employee_id, week), UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_timesheets ON timesheets(tenant_id, status, week);
+CREATE TABLE time_entries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, timesheet_id INTEGER NOT NULL, employee_id INTEGER NOT NULL, project_id INTEGER NOT NULL,
+  task_id INTEGER, date TEXT NOT NULL, hours REAL NOT NULL, billable INTEGER NOT NULL DEFAULT 0, note TEXT DEFAULT '',
+  rate REAL, cost_rate REAL, currency TEXT DEFAULT '', invoice_id INTEGER
+);
+CREATE INDEX ix_time_entries ON time_entries(tenant_id, project_id, invoice_id);
+CREATE INDEX ix_time_entries_sheet ON time_entries(timesheet_id);
+CREATE TABLE expense_claims (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, employee_id INTEGER NOT NULL, project_id INTEGER,
+  date TEXT NOT NULL, category TEXT NOT NULL, description TEXT NOT NULL, amount REAL NOT NULL, currency TEXT NOT NULL, billable INTEGER NOT NULL DEFAULT 0,
+  receipt_ref TEXT DEFAULT '', status TEXT NOT NULL, submitted_by TEXT DEFAULT '', submitted_at TEXT, approved_by TEXT DEFAULT '', approved_at TEXT,
+  rejected_reason TEXT DEFAULT '', paid_at TEXT, invoice_id INTEGER, created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT,
+  UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_expense_claims ON expense_claims(tenant_id, status, project_id);
+CREATE TABLE client_invoices (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, project_id INTEGER NOT NULL, company_id INTEGER, currency TEXT NOT NULL,
+  period_to TEXT, fees REAL NOT NULL DEFAULT 0, expenses REAL NOT NULL DEFAULT 0, tax_pct REAL NOT NULL DEFAULT 0, tax REAL NOT NULL DEFAULT 0, gross REAL NOT NULL DEFAULT 0,
+  status TEXT NOT NULL, issued_at TEXT, due_at TEXT, paid_at TEXT, voided_at TEXT, void_reason TEXT DEFAULT '', sent_to TEXT DEFAULT '', note TEXT DEFAULT '',
+  created_by TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT,
+  UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_client_invoices ON client_invoices(tenant_id, project_id, status);
+CREATE TABLE client_invoice_lines (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, invoice_id INTEGER NOT NULL, kind TEXT NOT NULL, description TEXT NOT NULL, qty REAL NOT NULL DEFAULT 1,
+  rate REAL NOT NULL DEFAULT 0, amount REAL NOT NULL
+);
+CREATE INDEX ix_client_invoice_lines ON client_invoice_lines(invoice_id);
+CREATE TABLE proposals (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, deal_id INTEGER, company_id INTEGER, contact_id INTEGER,
+  title TEXT NOT NULL, intro TEXT DEFAULT '', currency TEXT NOT NULL, billing TEXT NOT NULL, lines TEXT NOT NULL DEFAULT '[]',
+  net REAL NOT NULL DEFAULT 0, tax_pct REAL NOT NULL DEFAULT 0, tax REAL NOT NULL DEFAULT 0, total REAL NOT NULL DEFAULT 0, valid_until TEXT,
+  status TEXT NOT NULL, token TEXT UNIQUE, sent_at TEXT, sent_to TEXT DEFAULT '', answered_at TEXT, answered_by TEXT DEFAULT '', decline_reason TEXT DEFAULT '',
+  project_id INTEGER, created_by TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT,
+  UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_proposals ON proposals(tenant_id, status, deal_id);
+CREATE TABLE resource_allocations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, employee_id INTEGER NOT NULL, project_id INTEGER NOT NULL, week TEXT NOT NULL, hours REAL NOT NULL,
+  UNIQUE (tenant_id, employee_id, project_id, week)
+);
+CREATE INDEX ix_resource_allocations ON resource_allocations(tenant_id, week);
+CREATE UNIQUE INDEX ux_timesheets_uid ON timesheets(uid);
+CREATE TRIGGER trg_timesheets_uid AFTER INSERT ON timesheets
+               BEGIN UPDATE timesheets SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_expense_claims_uid ON expense_claims(uid);
+CREATE TRIGGER trg_expense_claims_uid AFTER INSERT ON expense_claims
+               BEGIN UPDATE expense_claims SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_client_invoices_uid ON client_invoices(uid);
+CREATE TRIGGER trg_client_invoices_uid AFTER INSERT ON client_invoices
+               BEGIN UPDATE client_invoices SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_proposals_uid ON proposals(uid);
+CREATE TRIGGER trg_proposals_uid AFTER INSERT ON proposals
+               BEGIN UPDATE proposals SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+
 -- ── settlement · Settlements and payouts ─────────────────────────────────────────────────────────
 CREATE TABLE settlements (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL UNIQUE,
@@ -1590,7 +1657,8 @@ CREATE TABLE employees (
   joined_at TEXT NOT NULL DEFAULT (datetime('now')), exited_at TEXT,
   base_salary REAL NOT NULL DEFAULT 0, pay_frequency TEXT NOT NULL DEFAULT 'monthly',
   bank_account TEXT DEFAULT '', tax_id TEXT DEFAULT '',
-  manager_id INTEGER, uid TEXT,
+  manager_id INTEGER,
+  bill_rate REAL NOT NULL DEFAULT 0, cost_rate REAL NOT NULL DEFAULT 0, capacity_hours REAL, uid TEXT,   /* lib/consulting.js: what an hour is billed and costs, and the hours in a week */
   UNIQUE (tenant_id, code)
 );
 CREATE INDEX ix_employees ON employees(tenant_id, status, department);
@@ -1640,7 +1708,9 @@ CREATE TABLE projects (
   owner TEXT, client TEXT DEFAULT '',
   budget REAL NOT NULL DEFAULT 0, spent REAL NOT NULL DEFAULT 0,
   start_date TEXT, due_date TEXT, completed_at TEXT,
-  created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')),
+  company_id INTEGER, deal_id INTEGER, proposal_id INTEGER,   /* the client (crm_companies) and how it was won (lib/consulting.js) */
+  billing TEXT NOT NULL DEFAULT 'non_billable', currency TEXT DEFAULT '', bill_rate REAL NOT NULL DEFAULT 0, tax_pct REAL NOT NULL DEFAULT 0, uid TEXT,
   UNIQUE (tenant_id, code)
 );
 CREATE INDEX ix_projects ON projects(tenant_id, status);

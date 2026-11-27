@@ -1,0 +1,73 @@
+{
+ "$comment": "Consultancy and professional services (lib/consulting.js): what timesheets, expense claims, client invoices billed by time, proposals and the resource plan need that is policy rather than code. A week starts on Monday; a day holds at most maxHoursPerDay. Whoever submitted a timesheet or claim does not approve it unless the store allows self-approval (settings consulting.selfApproval). A project is billed by time and materials, at a fixed fee in instalments, or not at all; its people's rates come from the project's own rate for them, then the project's rate, then their own. The machines and records it moves are named here once.",
+ "refs": {
+  "timesheet": "TS",
+  "expense_claim": "EXP",
+  "client_invoice": "CINV",
+  "proposal": "PROP"
+ },
+ "maxHoursPerDay": 24,
+ "defaultCapacityHours": 40,
+ "selfApproval": false,
+ "invoiceTermsDays": 30,
+ "proposalValidDays": 30,
+ "dealStageOnSend": "proposal",
+ "planWeeks": 6,
+ "billing": {
+  "time_materials": { "label": "Time and materials", "billable": true, "byHour": true, "byInstalment": false, "expenses": true },
+  "fixed": { "label": "Fixed fee", "billable": false, "byHour": false, "byInstalment": true, "expenses": true },
+  "non_billable": { "label": "Not billed", "billable": false, "byHour": false, "byInstalment": false, "expenses": false }
+ },
+ "defaultProposalBilling": "time_materials",
+ "lineKinds": {
+  "time": { "label": "Time", "unit": "hours", "hourly": true },
+  "fixed": { "label": "Fixed fee", "unit": "", "instalment": true },
+  "expense": { "label": "Expenses", "unit": "", "expense": true }
+ },
+ "endNotes": {
+  "expired": "This proposal has expired.",
+  "declined": "This proposal was declined.",
+  "withdrawn": "This proposal is no longer open."
+ },
+ "$actions": "what each action on the console screen needs: a reason asked for, a field sent with it, another route it goes to with a body, and whether it is the main one",
+ "actions": {
+  "save": { "hidden": true },
+  "submit": { "primary": true },
+  "approve": { "primary": true },
+  "reject": { "ask": "Why is it sent back?" },
+  "reopen": {},
+  "reimburse": {},
+  "issue": { "primary": true, "field": "send_to" },
+  "pay": {},
+  "void": { "ask": "Why is it voided?", "optional": true },
+  "send": { "primary": true, "link": true },
+  "accept": { "route": "answer", "body": { "accept": true } },
+  "decline": { "route": "answer", "body": { "accept": false }, "ask": "Why did they decline?", "optional": true },
+  "withdraw": {},
+  "redraft": {}
+ },
+ "expenseCategories": [
+  { "key": "travel", "label": "Travel" },
+  { "key": "lodging", "label": "Lodging" },
+  { "key": "meals", "label": "Meals" },
+  { "key": "software", "label": "Software and services" },
+  { "key": "materials", "label": "Materials" },
+  { "key": "other", "label": "Other" }
+ ],
+ "actor": "consulting",
+ "machines": {
+  "timesheet": "timesheet",
+  "expense": "expense_claim",
+  "invoice": "client_invoice",
+  "proposal": "proposal",
+  "project": "project",
+  "deal": "crm_deal"
+ },
+ "records": {
+  "project": "project",
+  "timesheet": "timesheet",
+  "expense": "expense_claim",
+  "invoice": "client_invoice",
+  "proposal": "proposal"
+ }
+}
