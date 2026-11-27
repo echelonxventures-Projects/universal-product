@@ -2490,10 +2490,10 @@ stateDiagram-v2
 | **Contract** | [UCOS-PTY-000001 Party Architecture](#ucos-pty-000001) |
 | **Artifacts** | [UCOS-PTY-000001](#ucos-pty-000001) |
 | **Concepts** | 267 — `node _registry/compile.js --search <words> --kind concept --owner "Party"` |
-| **Code** | `lib/stores.js`, `lib/tenancy.js`, `lib/routes/customers.js`, `lib/routes/stores.js`, `lib/seed/stores.json`, `lib/parties.js`, `lib/seed/parties.json` |
+| **Code** | `lib/stores.js`, `lib/tenancy.js`, `lib/routes/customers.js`, `lib/routes/stores.js`, `lib/seed/stores.json`, `lib/parties.js`, `lib/crm.js`, `lib/seed/crm.json`, `lib/routes/crm.js`, `public/js/admin/crm.js`, `lib/seed/parties.json` |
 | **Managed in** | `_registry/domains.json` → `D-PTY` |
 
-**Live routes (56)** — what the platform serves today for this domain:
+**Live routes (77)** — what the platform serves today for this domain:
 
 - `GET /api/admin/staff`
 - `POST /api/admin/staff`
@@ -2507,6 +2507,27 @@ stateDiagram-v2
 - `GET /api/tenant/products`
 - `GET /api/tenant/catalog/importable`
 - `POST /api/tenant/catalog/import`
+- `GET /api/admin/crm/companies`
+- `POST /api/admin/crm/companies`
+- `GET /api/admin/crm/companies/:id`
+- `PUT /api/admin/crm/companies/:id`
+- `GET /api/admin/crm/contacts`
+- `POST /api/admin/crm/contacts`
+- `PUT /api/admin/crm/contacts/:id`
+- `GET /api/admin/crm/pipeline`
+- `GET /api/admin/crm/forecast`
+- `GET /api/admin/crm/stages`
+- `PUT /api/admin/crm/stages`
+- `POST /api/admin/crm/deals`
+- `GET /api/admin/crm/deals/:id`
+- `PUT /api/admin/crm/deals/:id`
+- `POST /api/admin/crm/deals/:id/won`
+- `POST /api/admin/crm/deals/:id/lost`
+- `POST /api/admin/crm/deals/:id/reopen`
+- `POST /api/admin/crm/activities`
+- `POST /api/admin/crm/activities/:id/done`
+- `GET /api/admin/crm/agenda`
+- `GET /api/admin/crm/people/:id`
 - `GET /api/addresses`
 - `POST /api/addresses`
 - `PUT /api/addresses/:id`

@@ -1,0 +1,16 @@
+{
+ "$comment": "Customer relationships (lib/crm.js): the pipeline a deal moves through — each open stage with the chance a deal there is won, used for the forecast — and the kinds of activity a team records. A store sets its own stages (settings crm.stages); won and lost are the deal's state, not stages.",
+ "stages": [
+  { "key": "qualify", "label": "Qualify", "probability": 10 },
+  { "key": "meeting", "label": "Meeting held", "probability": 25 },
+  { "key": "proposal", "label": "Proposal sent", "probability": 50 },
+  { "key": "negotiation", "label": "Negotiation", "probability": 75 }
+ ],
+ "activityKinds": [
+  { "key": "call", "label": "Call", "icon": "📞" }, { "key": "meeting", "label": "Meeting", "icon": "🤝" },
+  { "key": "email", "label": "Email", "icon": "✉️" }, { "key": "task", "label": "Task", "icon": "✅" }, { "key": "note", "label": "Note", "icon": "📝" }
+ ],
+ "refPrefix": "DEAL",
+ "machines": { "deal": "crm_deal" },
+ "records": { "company": "crm_company", "contact": "crm_contact", "deal": "crm_deal", "activity": "crm_activity" }
+}

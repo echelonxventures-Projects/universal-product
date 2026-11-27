@@ -183,6 +183,103 @@
     "column": "po_id",
     "table": "purchase_orders"
    }
+  },
+  "crm_company": {
+   "table": "crm_companies",
+   "owner": "Party",
+   "kind": {
+    "kind": "party.company",
+    "label": "Company",
+    "extends": "party.organisation",
+    "parents": []
+   },
+   "facts": {
+    "name": "text",
+    "domain": "text",
+    "industry": "text",
+    "size": "text",
+    "country": "text",
+    "owner_staff": "text"
+   },
+   "title": "name",
+   "$comment": "a company a store sells to is an organisation of the master (party.organisation), with what a sales team keeps about it"
+  },
+  "crm_contact": {
+   "table": "crm_contacts",
+   "owner": "Party",
+   "kind": {
+    "kind": "party.contact",
+    "label": "Contact",
+    "parents": [
+     "party.company"
+    ]
+   },
+   "$comment": "who the contact is (name, email, phone) stays in the table, erasable; the master knows the contact, their title and their company",
+   "facts": {
+    "title": "text",
+    "user_id": "text"
+   },
+   "title": "title",
+   "belongsTo": {
+    "hierarchy": "party.company_contacts",
+    "label": "The people at each company",
+    "column": "company_id",
+    "table": "crm_companies"
+   }
+  },
+  "crm_deal": {
+   "table": "crm_deals",
+   "owner": "Commerce",
+   "kind": {
+    "kind": "commerce.deal",
+    "label": "Deal",
+    "parents": [
+     "party.company"
+    ]
+   },
+   "facts": {
+    "ref": "text",
+    "amount": "number",
+    "currency": "text",
+    "stage": "text",
+    "probability": "number",
+    "status": "text",
+    "expected_close": "text",
+    "owner_staff": "text",
+    "lost_reason": "text"
+   },
+   "title": "ref",
+   "belongsTo": {
+    "hierarchy": "commerce.company_deals",
+    "label": "The deals with each company",
+    "column": "company_id",
+    "table": "crm_companies"
+   }
+  },
+  "crm_activity": {
+   "table": "crm_activities",
+   "owner": "Communication",
+   "kind": {
+    "kind": "communication.activity",
+    "label": "Activity",
+    "parents": [
+     "commerce.deal"
+    ]
+   },
+   "$comment": "what was done and when; what was said stays in the table",
+   "facts": {
+    "kind": "text",
+    "due_at": "text",
+    "done_at": "text",
+    "owner_staff": "text"
+   },
+   "title": "kind",
+   "belongsTo": {
+    "hierarchy": "communication.deal_activities",
+    "label": "What was done on each deal",
+    "column": "deal_id",
+    "table": "crm_deals"
+   }
   }
  },
  "actor": "commerce",

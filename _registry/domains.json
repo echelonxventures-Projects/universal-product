@@ -319,6 +319,17 @@
    "lib/routes/books.js stock-value, opening-stock, valuation-method, orders/:id/cost; public/js/admin/books.js",
    "test/valuation.js; benchmarks 61/6/16"
   ]
+ },
+ {
+  "amendmentId": "AMD-0067",
+  "date": "2026-11-27",
+  "authorisedBy": "Platform owner",
+  "summary": "Customer relationships, and erasure that works. lib/crm.js: companies (party.company, an organisation of the master — a record kind may now extend a master kind without redefining it), contacts (belonging to their company, linked to their shopper account by email), deals (commerce.deal, under their company) through the store's pipeline (lib/seed/crm.json, or the store's own stages in settings crm.stages; a stage with open deals cannot be removed) to won or lost (crm_deal machine), a weighted forecast by month and currency, activities (calls, meetings, emails, tasks, notes) on a timeline and an agenda, a deal from a shopper's enquiry, and one view of a customer. Each is a record on the master; who a contact is and what was said stay in the tables. Erasure (lib/compliance.js eraseSubject) is rewritten from data (lib/seed/erasure.json): it removed only the account and consents, because it looked people up by email in tables keyed by owner or user id (addresses, reviews, questions, support cases) and swallowed the errors. It now finds a person by email, owner key and user id, clears every table listed, keeps what the law requires, reports anything it could not clear, and erases a person who has placed orders — which failed since AMD-0060 — by detaching what is kept from the erased person on the master (kernel-lifecycle purge detach, recorded in the tombstone). Routes /api/admin/crm/* under a crm section (Growth writes, Support reads; store roles rb_v9); the CRM screen. Benchmarks 65/5/13.",
+  "changes": [
+   "lib/crm.js, lib/seed/crm.json, lib/routes/crm.js, public/js/admin/crm.js; business domain crm; tables crm_companies, crm_contacts, crm_deals, crm_activities; machine crm_deal",
+   "lib/seed/erasure.json; lib/compliance.js eraseSubject; lib/kernel-lifecycle.js purge { detach }; lib/parties.js erase detaches",
+   "test/crm.js"
+  ]
  }
   ],
   "domains": [

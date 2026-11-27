@@ -1023,6 +1023,44 @@ CREATE UNIQUE INDEX ux_supplier_bills_uid ON supplier_bills(uid);
 CREATE TRIGGER trg_supplier_bills_uid AFTER INSERT ON supplier_bills
                BEGIN UPDATE supplier_bills SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
+-- ── crm · Customer relationships ─────────────────────────────────────────────────────────────────
+CREATE TABLE crm_companies (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, name TEXT NOT NULL, domain TEXT DEFAULT '', industry TEXT DEFAULT '',
+  size TEXT DEFAULT '', country TEXT DEFAULT '', tax_id TEXT DEFAULT '', owner_staff TEXT DEFAULT '', note TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), deleted_at TEXT, uid TEXT
+);
+CREATE INDEX ix_crm_companies ON crm_companies(tenant_id, name);
+CREATE TABLE crm_contacts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, company_id INTEGER, user_id INTEGER, name TEXT NOT NULL,
+  email TEXT DEFAULT '', phone TEXT DEFAULT '', title TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now')), deleted_at TEXT, uid TEXT
+);
+CREATE INDEX ix_crm_contacts ON crm_contacts(tenant_id, email);
+CREATE TABLE crm_deals (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, title TEXT NOT NULL, company_id INTEGER, contact_id INTEGER,
+  case_id INTEGER, amount REAL NOT NULL DEFAULT 0, currency TEXT NOT NULL, stage TEXT NOT NULL, probability INTEGER NOT NULL DEFAULT 0,
+  status TEXT NOT NULL, expected_close TEXT, owner_staff TEXT DEFAULT '', lost_reason TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), closed_at TEXT, uid TEXT, UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_crm_deals ON crm_deals(tenant_id, status, stage);
+CREATE TABLE crm_activities (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, kind TEXT NOT NULL, subject TEXT NOT NULL, body TEXT DEFAULT '',
+  company_id INTEGER, contact_id INTEGER, deal_id INTEGER, due_at TEXT, done_at TEXT, outcome TEXT DEFAULT '', owner_staff TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT
+);
+CREATE INDEX ix_crm_activities ON crm_activities(tenant_id, deal_id, contact_id, company_id);
+CREATE UNIQUE INDEX ux_crm_companies_uid ON crm_companies(uid);
+CREATE TRIGGER trg_crm_companies_uid AFTER INSERT ON crm_companies
+               BEGIN UPDATE crm_companies SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_crm_contacts_uid ON crm_contacts(uid);
+CREATE TRIGGER trg_crm_contacts_uid AFTER INSERT ON crm_contacts
+               BEGIN UPDATE crm_contacts SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_crm_deals_uid ON crm_deals(uid);
+CREATE TRIGGER trg_crm_deals_uid AFTER INSERT ON crm_deals
+               BEGIN UPDATE crm_deals SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_crm_activities_uid ON crm_activities(uid);
+CREATE TRIGGER trg_crm_activities_uid AFTER INSERT ON crm_activities
+               BEGIN UPDATE crm_activities SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+
 -- ── settlement · Settlements and payouts ─────────────────────────────────────────────────────────
 CREATE TABLE settlements (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL UNIQUE,

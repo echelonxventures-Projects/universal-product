@@ -245,6 +245,23 @@ role has it.
 
 More: [Purchasing](../domains/purchasing.md)
 
+## Customer relationships
+
+The companies a store sells to and the people there, deals through the store's own pipeline to won or lost with a weighted forecast, the calls, meetings, emails, tasks and notes on a timeline, and one view of each customer — orders, spend, returns, support cases, wallet, segments, deals and activities.
+
+Open **Customer Care → 🤝 CRM**. Your role needs the crm section: the Growth role can change it,
+Support can read it.
+
+- **Pipeline**: open a deal, move it between stages with the stage list on its card, and mark it
+  **Won** or **Lost** (with the reason). **Open** shows its timeline.
+- **Companies** and **Contacts**: add them; open a company to see its people, deals and timeline,
+  and record an activity. A contact with a shopper account has **Customer view**.
+- **Agenda**: what is still to do, by due date. **Forecast**: the pipeline by month.
+- To set your own stages, use `PUT /api/admin/crm/stages`; your CRM or sales tools can use every
+  `/api/admin/crm/…` route with a store API key — see `docs/api/README.md`.
+
+More: [Customer relationships](../domains/crm.md)
+
 ## Settlements and payouts
 
 Paying those who are owed: seller settlements, payout batches, bank payouts, reconciliation of what the bank says against what the ledger says, and remittances.

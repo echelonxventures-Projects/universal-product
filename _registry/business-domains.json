@@ -1284,6 +1284,41 @@
    }
   },
   {
+   "key": "crm",
+   "name": "Customer relationships",
+   "foundation": "Party",
+   "purpose": "The companies a store sells to and the people there, deals through the store's own pipeline to won or lost with a weighted forecast, the calls, meetings, emails, tasks and notes on a timeline, and one view of each customer — orders, spend, returns, support cases, wallet, segments, deals and activities.",
+   "users": [
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/crm.js",
+     "lib/routes/crm.js"
+    ],
+    "tables": [
+     "crm_companies",
+     "crm_contacts",
+     "crm_deals",
+     "crm_activities"
+    ],
+    "routes": [
+     "^/api/admin/crm(/|$)"
+    ],
+    "machines": [
+     "crm_deal"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "crm"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
    "key": "settlement",
    "name": "Settlements and payouts",
    "foundation": "Value",

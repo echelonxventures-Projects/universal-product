@@ -44,11 +44,11 @@
    { "f": "Promotions", "e": ["c:coupons"] }
   ] },
   { "key": "crm", "title": "Customer relationship management (CRM)", "features": [
-   { "f": "Customer record (one view of a person)", "e": ["t:users", "t:k_nodes"], "gap": "the person is on the master with their orders, cases and payments; no single customer-360 screen yet" },
-   { "f": "Companies (accounts) and their contacts", "e": ["t:crm_accounts"] },
+   { "f": "Customer record (one view of a person)", "e": ["t:users", "t:k_nodes", "f:lib/crm.js", "f:test/crm.js"] },
+   { "f": "Companies (accounts) and their contacts", "e": ["t:crm_companies", "t:crm_contacts", "f:test/crm.js"] },
    { "f": "Leads and enquiries to won or lost", "e": ["c:lead_capture"] },
-   { "f": "Deal pipeline with stages and forecast", "e": ["t:crm_deals"] },
-   { "f": "Activities: calls, meetings, follow-ups on a timeline", "e": ["t:crm_activities"] },
+   { "f": "Deal pipeline with stages and forecast", "e": ["t:crm_deals", "f:test/crm.js"] },
+   { "f": "Activities: calls, meetings, follow-ups on a timeline", "e": ["t:crm_activities", "f:test/crm.js"] },
    { "f": "Segments", "e": ["t:segment_members"] },
    { "f": "Email and message campaigns, marketing automation", "e": ["t:campaigns"] },
    { "f": "Support cases with SLAs", "e": ["c:customer_service", "t:tickets"] },

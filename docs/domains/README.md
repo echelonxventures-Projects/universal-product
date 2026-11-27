@@ -30,6 +30,7 @@ Every artifact the platform is built from — a code file, a table, an API route
 | [Wallets](wallet.md) | Value | Shopper, Seller, Store administrator, Platform administrator | complete |
 | [Books](books.md) | Value | Store administrator | complete |
 | [Purchasing](purchasing.md) | Commerce | Store administrator | complete |
+| [Customer relationships](crm.md) | Party | Store administrator | complete |
 | [Settlements and payouts](settlement.md) | Value | Seller, Store administrator, Platform administrator | 4 sections to write |
 | [Financial services](financial_services.md) | Value | Shopper, Store administrator | 3 sections to write |
 | [Tax](tax.md) | Rule | Store administrator, Platform administrator | 3 sections to write |

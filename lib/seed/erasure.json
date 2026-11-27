@@ -1,0 +1,21 @@
+{
+ "$comment": "What erasing a person removes, and what it keeps (lib/compliance.js eraseSubject). A person is found by their email, by their owner key in a store (t<store>:u:<id>) or by their user id; each table says which. Kept are the records the law or a legitimate interest obliges a store to hold — orders, invoices, payments, wallets and their ledger, credit and insurance, contracts, bookings, cases a regulator may ask for, fraud records, and the privacy requests themselves; the person's identity on them stays under the store's retention. Every table erasure touches is listed here, so a new table holding personal data is a new line, and a table that cannot be cleared is reported, never skipped silently.",
+ "erase": [
+  { "table": "sessions", "by": "user_id" }, { "table": "tokens", "by": "user_id" }, { "table": "user_identity_methods", "by": "user_id" },
+  { "table": "identity_otps", "by": "user_id" }, { "table": "identity_magic_links", "by": "user_id" }, { "table": "identity_biometric_challenges", "by": "user_id" },
+  { "table": "password_resets", "by": "user_id" }, { "table": "email_verifications", "by": "user_id" }, { "table": "dashboard_prefs", "by": "user_id" },
+  { "table": "reviews", "by": "user_id" },
+  { "table": "addresses", "by": "owner" }, { "table": "segment_members", "by": "owner" }, { "table": "cart_items", "by": "owner" },
+  { "table": "saved_items", "by": "owner" }, { "table": "view_history", "by": "owner" }, { "table": "compare_lists", "by": "owner" },
+  { "table": "shopper_lists", "by": "owner" }, { "table": "product_watches", "by": "owner" }, { "table": "gift_registries", "by": "owner" },
+  { "table": "ugc_votes", "by": "owner" }, { "table": "qna_questions", "by": "owner" }, { "table": "qna_answers", "by": "owner" },
+  { "table": "notifications", "by": "owner" }, { "table": "option_follow_ups", "by": "owner" },
+  { "table": "ticket_notes", "by": "ticket" },
+  { "table": "tickets", "by": "owner", "orEmail": "owner_email", "record": "ticket" },
+  { "table": "crm_activities", "by": "contact", "record": "crm_activity" },
+  { "table": "crm_contacts", "by": "email", "column": "email", "record": "crm_contact" }
+ ],
+ "keep": ["orders", "order_items", "invoice_documents", "payments", "payment_refunds", "wallets", "wallet_entries", "ledger_journals", "ledger_postings",
+  "mandates", "bnpl_accounts", "loans", "insurance_policies", "escrow_holds", "memberships", "recurring_schedules", "bookings", "cases", "risk_events",
+  "privacy_requests", "erasure_log", "consents"]
+}

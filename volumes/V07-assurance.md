@@ -1573,7 +1573,7 @@ stateDiagram-v2
 | **Contract** | [UCOS-CMP-000001 Compliance Architecture](#ucos-cmp-000001) |
 | **Artifacts** | [UCOS-DSP-000001](#ucos-dsp-000001), [UCOS-CNS-000001](#ucos-cns-000001), [UCOS-CMP-000001](#ucos-cmp-000001) |
 | **Concepts** | 211 — `node _registry/compile.js --search <words> --kind concept --owner "Compliance"` |
-| **Code** | `lib/compliance.js`, `lib/routes/compliance.js`, `lib/seed/compliance.json` |
+| **Code** | `lib/compliance.js`, `lib/routes/compliance.js`, `lib/seed/compliance.json`, `lib/seed/erasure.json` |
 | **Managed in** | `_registry/domains.json` → `D-CMP` |
 
 **Live routes (12)** — what the platform serves today for this domain:

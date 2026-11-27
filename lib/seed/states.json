@@ -4186,6 +4186,52 @@
      ]
     }
    }
+  },
+  {
+   "key": "crm_deal",
+   "name": "Deal",
+   "column": "status",
+   "initial": "open",
+   "states": [
+    "open",
+    "won",
+    "lost"
+   ],
+   "transitions": {
+    "open": [
+     "won",
+     "lost"
+    ],
+    "lost": [
+     "open"
+    ]
+   },
+   "meta": {
+    "open": {
+     "tags": [
+      "open"
+     ]
+    },
+    "won": {
+     "tags": [
+      "won",
+      "closed",
+      "terminal"
+     ],
+     "stamps": [
+      "closed_at"
+     ]
+    },
+    "lost": {
+     "tags": [
+      "lost",
+      "closed"
+     ],
+     "stamps": [
+      "closed_at"
+     ]
+    }
+   }
   }
  ]
 }

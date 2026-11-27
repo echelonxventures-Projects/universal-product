@@ -2675,6 +2675,13 @@
     "order": 51
    },
    {
+    "key": "crm",
+    "group": "Customer Care",
+    "label": "🤝 CRM",
+    "order": 0,
+    "section": "crm"
+   },
+   {
     "key": "conversations",
     "group": "Customer Care",
     "label": "💬 Messages",
