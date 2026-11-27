@@ -12,7 +12,7 @@ ok(all.every(f => f.f && Array.isArray(f.e) && f.e.length && f.e.every(e => /^[c
 ok(new Set(B.benchmarks.map(b => b.key)).size === B.benchmarks.length, "each benchmark once");
 const out = M.measure(), present = out.reduce((a, b) => a + b.present, 0), missing = out.reduce((a, b) => a + b.missing, 0);
 /* the ratchet: raise these as features are built, never lower them */
-const FLOOR = { present: 58, missingAtMost: 19 };
+const FLOOR = { present: 60, missingAtMost: 17 };
 ok(present >= FLOOR.present, `at least ${FLOOR.present} features are present`, present);
 ok(missing <= FLOOR.missingAtMost, `at most ${FLOOR.missingAtMost} are missing`, missing);
 console.log(`\n${passed} passed, ${failed} failed`); process.exit(failed ? 1 : 0);

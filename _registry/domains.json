@@ -296,6 +296,17 @@
    "lib/authz.js Finance role holds books; lib/api.js admin/books → books; consoles.json Books screen; console wording in five languages",
    "test/books.js; test/orders.js THE BOOKS; benchmarks: general ledger present (58/6/19)"
   ]
+ },
+ {
+  "amendmentId": "AMD-0065",
+  "date": "2026-11-27",
+  "authorisedBy": "Platform owner",
+  "summary": "Purchasing: two more ERP benchmark gaps closed (purchase orders with goods receipt; supplier bills). lib/purchasing.js: a purchase order to a supplier — on its own or from an approved purchase request, which follows it to ordered and received — the goods received against it into a warehouse batch (lot, batch, expiry; never more than ordered), and the supplier's bill, once per supplier invoice number, matched against what was received and not yet billed: within the tolerance (lib/seed/purchasing.json) it is approved and owed; beyond it, held until released with a reason. Each is a record on the master and moves through its state machine (purchase_order, goods_receipt, supplier_bill); the screen and the API offer only the actions a state allows. The books post each step — stock against received-not-billed, the bill against it with tax to reclaim and any purchase price difference, payment from the bank, a void undone — through rules in lib/seed/books.json; a rule may now require the state it moves from. stock.receive raises the product, variant and warehouse batch together. Routes /api/admin/purchasing/* under a purchasing section the Finance role holds (store roles rb_v8); the store console's Purchasing screen.",
+  "changes": [
+   "lib/purchasing.js, lib/seed/purchasing.json, lib/routes/purchasing.js, public/js/admin/purchasing.js; business domain purchasing; tables purchase_orders, purchase_order_lines, goods_receipts, goods_receipt_lines, supplier_bills",
+   "lib/stock.js receive; lib/books.js receipt and bill measures, when.from; accounts 1400, 2050, 5100",
+   "test/purchasing.js; benchmarks 60/6/17"
+  ]
  }
   ],
   "domains": [

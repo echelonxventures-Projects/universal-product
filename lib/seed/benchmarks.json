@@ -61,9 +61,9 @@
   { "key": "erp", "title": "Enterprise resource planning (ERP)", "features": [
    { "f": "General ledger and chart of accounts", "e": ["f:lib/books.js", "f:test/books.js"] },
    { "f": "Customer invoices (receivables)", "e": ["t:invoice_documents", "t:invoice_series"] },
-   { "f": "Supplier bills (payables)", "e": ["t:supplier_bills"] },
+   { "f": "Supplier bills (payables)", "e": ["t:supplier_bills", "f:test/purchasing.js"] },
    { "f": "Purchase requests with approval", "e": ["c:procurement", "t:purchase_requests"] },
-   { "f": "Purchase orders to suppliers and goods receipt", "e": ["t:purchase_orders", "t:goods_receipts"] },
+   { "f": "Purchase orders to suppliers and goods receipt", "e": ["t:purchase_orders", "t:goods_receipts", "f:test/purchasing.js"] },
    { "f": "Suppliers", "e": ["t:suppliers", "t:product_suppliers"] },
    { "f": "Inventory across warehouses, transfers", "e": ["t:warehouses", "t:inventory", "t:stock_transfers"] },
    { "f": "Stock valuation (FIFO, average cost)", "e": ["t:stock_valuations"] },

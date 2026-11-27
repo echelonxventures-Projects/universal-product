@@ -963,6 +963,52 @@ CREATE UNIQUE INDEX ux_wallet_entries_uid ON wallet_entries(uid);
 CREATE TRIGGER trg_wallet_entries_uid AFTER INSERT ON wallet_entries
                BEGIN UPDATE wallet_entries SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
+-- ── purchasing · Purchasing ──────────────────────────────────────────────────────────────────────
+CREATE TABLE purchase_orders (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL,
+  supplier_id INTEGER NOT NULL, warehouse_id INTEGER, request_id INTEGER, currency TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'draft', total REAL NOT NULL DEFAULT 0, expected_at TEXT, note TEXT DEFAULT '',
+  created_by TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now')), sent_at TEXT, closed_at TEXT, uid TEXT,
+  UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_po ON purchase_orders(tenant_id, status);
+CREATE TABLE purchase_order_lines (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, po_id INTEGER NOT NULL,
+  product_id TEXT NOT NULL, sku_id INTEGER, qty INTEGER NOT NULL, unit_cost REAL NOT NULL,
+  received INTEGER NOT NULL DEFAULT 0, billed REAL NOT NULL DEFAULT 0
+);
+CREATE INDEX ix_pol ON purchase_order_lines(po_id);
+CREATE TABLE goods_receipts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, po_id INTEGER NOT NULL,
+  warehouse_id INTEGER, currency TEXT NOT NULL, value REAL NOT NULL DEFAULT 0, status TEXT NOT NULL DEFAULT 'posted',
+  note TEXT DEFAULT '', received_by TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT,
+  UNIQUE (tenant_id, ref)
+);
+CREATE TABLE goods_receipt_lines (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, receipt_id INTEGER NOT NULL, po_line_id INTEGER NOT NULL,
+  product_id TEXT NOT NULL, sku_id INTEGER, qty INTEGER NOT NULL, unit_cost REAL NOT NULL,
+  lot TEXT DEFAULT '', batch TEXT DEFAULT '', expiry TEXT DEFAULT ''
+);
+CREATE INDEX ix_grl ON goods_receipt_lines(receipt_id);
+CREATE TABLE supplier_bills (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, supplier_id INTEGER NOT NULL,
+  po_id INTEGER, supplier_ref TEXT DEFAULT '', currency TEXT NOT NULL,
+  net REAL NOT NULL, tax REAL NOT NULL DEFAULT 0, gross REAL NOT NULL, matched REAL NOT NULL DEFAULT 0, variance REAL NOT NULL DEFAULT 0,
+  status TEXT NOT NULL, hold_reason TEXT DEFAULT '', due_at TEXT, paid_at TEXT, released_by TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT,
+  UNIQUE (tenant_id, ref), UNIQUE (tenant_id, supplier_id, supplier_ref)
+);
+CREATE INDEX ix_sbill ON supplier_bills(tenant_id, status);
+CREATE UNIQUE INDEX ux_purchase_orders_uid ON purchase_orders(uid);
+CREATE TRIGGER trg_purchase_orders_uid AFTER INSERT ON purchase_orders
+               BEGIN UPDATE purchase_orders SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_goods_receipts_uid ON goods_receipts(uid);
+CREATE TRIGGER trg_goods_receipts_uid AFTER INSERT ON goods_receipts
+               BEGIN UPDATE goods_receipts SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_supplier_bills_uid ON supplier_bills(uid);
+CREATE TRIGGER trg_supplier_bills_uid AFTER INSERT ON supplier_bills
+               BEGIN UPDATE supplier_bills SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+
 -- ── settlement · Settlements and payouts ─────────────────────────────────────────────────────────
 CREATE TABLE settlements (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL UNIQUE,

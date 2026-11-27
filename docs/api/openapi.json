@@ -9305,6 +9305,630 @@
     "x-audience": "store-staff"
    }
   },
+  "/api/admin/purchasing/bills": {
+   "get": {
+    "operationId": "apiSupplierBills",
+    "summary": "The store's supplier bills, newest first;",
+    "tags": [
+     "Commerce"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   },
+   "post": {
+    "operationId": "apiSupplierBillCreate",
+    "summary": "Records a supplier's bill against an order: `po_id`, `supplier_ref` (their invoice number, once per supplier), `net`, `tax`, `due_at`.",
+    "description": "Records a supplier's bill against an order: `po_id`, `supplier_ref` (their invoice number, once per supplier), `net`, `tax`, `due_at`. Matched against what was received and not yet billed: within the tolerance it is approved and owed; beyond it, held.",
+    "tags": [
+     "Commerce"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/purchasing/bills/{id}/pay": {
+   "post": {
+    "operationId": "apiSupplierBillPay",
+    "summary": "Marks an approved bill paid: the books clear what is owed from the bank.",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/purchasing/bills/{id}/release": {
+   "post": {
+    "operationId": "apiSupplierBillRelease",
+    "summary": "Releases a held bill with a `reason`: it is approved and owed, its difference a purchase price difference.",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/purchasing/bills/{id}/void": {
+   "post": {
+    "operationId": "apiSupplierBillVoid",
+    "summary": "Voids a bill;",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/purchasing/orders": {
+   "get": {
+    "operationId": "apiPurchaseOrders",
+    "summary": "The store's purchase orders, newest first, each with its supplier;",
+    "tags": [
+     "Commerce"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   },
+   "post": {
+    "operationId": "apiPurchaseOrderCreate",
+    "summary": "Drafts a purchase order: `supplier_id`, `warehouse_id`, an approved `request_id` if it fills one, `currency` (the supplier's by default) and `lines` of `{ produc",
+    "description": "Drafts a purchase order: `supplier_id`, `warehouse_id`, an approved `request_id` if it fills one, `currency` (the supplier's by default) and `lines` of `{ product_id, sku_id, qty, unit_cost }`.",
+    "tags": [
+     "Commerce"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/purchasing/orders/{id}": {
+   "get": {
+    "operationId": "apiPurchaseOrder",
+    "summary": "One purchase order: its lines (ordered, received, still to come), its receipts, its bills, and the value received and not yet billed.",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/purchasing/orders/{id}/cancel": {
+   "post": {
+    "operationId": "apiPurchaseOrderCancel",
+    "summary": "Cancels an order nothing has been received against.",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/purchasing/orders/{id}/close": {
+   "post": {
+    "operationId": "apiPurchaseOrderClose",
+    "summary": "Closes an order: what has not arrived will not be received.",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/purchasing/orders/{id}/receive": {
+   "post": {
+    "operationId": "apiPurchaseReceive",
+    "summary": "Records goods received against an order: `warehouse_id` and `lines` of `{ line_id, qty, lot, batch, expiry }`.",
+    "description": "Records goods received against an order: `warehouse_id` and `lines` of `{ line_id, qty, lot, batch, expiry }`. The stock counts and the warehouse batch go up, and the books record the stock as received and not yet billed.",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/purchasing/orders/{id}/send": {
+   "post": {
+    "operationId": "apiPurchaseOrderSend",
+    "summary": "Sends a drafted order to the supplier;",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/purchasing/payables": {
+   "get": {
+    "operationId": "apiPayables",
+    "summary": "What is owed to each supplier, by how overdue it is.",
+    "tags": [
+     "Commerce"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
   "/api/admin/qna/{id}/moderate": {
    "put": {
     "operationId": "apiQnaModerate",

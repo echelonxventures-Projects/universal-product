@@ -3207,6 +3207,13 @@
     "section": "books"
    },
    {
+    "key": "purchasing",
+    "group": "Payments & Finance",
+    "label": "🧾 Purchasing",
+    "order": 5,
+    "section": "purchasing"
+   },
+   {
     "key": "finops",
     "group": "Business Operations",
     "label": "💸 Fintech Ops",

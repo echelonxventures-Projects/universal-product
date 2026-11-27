@@ -1242,6 +1242,44 @@
    }
   },
   {
+   "key": "purchasing",
+   "name": "Purchasing",
+   "foundation": "Commerce",
+   "purpose": "Buying from suppliers: purchase orders (from an approved purchase request or on their own), the goods received against them into a warehouse batch, and suppliers' bills matched against what was received — held beyond the tolerance, approved, paid or voided — each posting to the store's books.",
+   "users": [
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/purchasing.js",
+     "lib/routes/purchasing.js"
+    ],
+    "tables": [
+     "purchase_orders",
+     "purchase_order_lines",
+     "goods_receipts",
+     "goods_receipt_lines",
+     "supplier_bills"
+    ],
+    "routes": [
+     "^/api/admin/purchasing(/|$)"
+    ],
+    "machines": [
+     "purchase_order",
+     "goods_receipt",
+     "supplier_bill"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "purchasing"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
    "key": "settlement",
    "name": "Settlements and payouts",
    "foundation": "Value",

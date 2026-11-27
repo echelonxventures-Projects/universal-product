@@ -100,6 +100,12 @@
    "parent": "1"
   },
   {
+   "code": "1400",
+   "name": "Tax to reclaim",
+   "type": "asset",
+   "parent": "1"
+  },
+  {
    "code": "1500",
    "name": "Fixed assets",
    "type": "asset",
@@ -114,6 +120,12 @@
   {
    "code": "2000",
    "name": "Owed to suppliers",
+   "type": "liability",
+   "parent": "2"
+  },
+  {
+   "code": "2050",
+   "name": "Received, not yet billed",
    "type": "liability",
    "parent": "2"
   },
@@ -186,6 +198,12 @@
   {
    "code": "5000",
    "name": "Cost of goods sold",
+   "type": "expense",
+   "parent": "5"
+  },
+  {
+   "code": "5100",
+   "name": "Purchase price differences",
    "type": "expense",
    "parent": "5"
   },
@@ -378,6 +396,99 @@
      "part": "invoiced"
     }
    ]
+  },
+  {
+   "key": "goods_received",
+   "label": "Goods are received from a supplier",
+   "record": "goods_receipt",
+   "when": {
+    "fact": "status",
+    "into": "posted"
+   },
+   "lines": [
+    {
+     "debit": "1300",
+     "part": "received"
+    },
+    {
+     "credit": "2050",
+     "part": "received"
+    }
+   ]
+  },
+  {
+   "key": "supplier_bill",
+   "label": "A supplier's bill is approved",
+   "record": "supplier_bill",
+   "when": {
+    "fact": "status",
+    "into": "approved"
+   },
+   "lines": [
+    {
+     "debit": "2050",
+     "part": "matched"
+    },
+    {
+     "debit": "5100",
+     "part": "variance"
+    },
+    {
+     "debit": "1400",
+     "part": "tax"
+    },
+    {
+     "credit": "2000",
+     "part": "gross"
+    }
+   ]
+  },
+  {
+   "key": "supplier_bill_void",
+   "label": "An approved supplier bill is voided",
+   "record": "supplier_bill",
+   "when": {
+    "fact": "status",
+    "into": "void",
+    "from": "approved"
+   },
+   "lines": [
+    {
+     "debit": "2000",
+     "part": "gross"
+    },
+    {
+     "credit": "2050",
+     "part": "matched"
+    },
+    {
+     "credit": "5100",
+     "part": "variance"
+    },
+    {
+     "credit": "1400",
+     "part": "tax"
+    }
+   ]
+  },
+  {
+   "key": "supplier_paid",
+   "label": "A supplier's bill is paid",
+   "record": "supplier_bill",
+   "when": {
+    "fact": "status",
+    "into": "success"
+   },
+   "lines": [
+    {
+     "debit": "2000",
+     "part": "gross"
+    },
+    {
+     "credit": "1000",
+     "part": "gross"
+    }
+   ]
   }
  ],
  "actor": "books",
@@ -396,6 +507,14 @@
   "invoice": {
    "table": "invoices",
    "measure": "invoice"
+  },
+  "goods_receipt": {
+   "table": "goods_receipts",
+   "measure": "receipt"
+  },
+  "supplier_bill": {
+   "table": "supplier_bills",
+   "measure": "bill"
   }
  },
  "reversible": [

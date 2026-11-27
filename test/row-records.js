@@ -14,7 +14,7 @@ let passed = 0, failed = 0;
 const ok = (c, n, x) => { c ? (passed++, console.log("  ✓ " + n)) : (failed++, console.log("  ✗ " + n + (x !== undefined ? " → " + JSON.stringify(x).slice(0, 300) : ""))); };
 try {
   console.log("▸ DECLARED AS DATA");
-  ok(Object.keys(RR.SEED.records).sort().join() === "invoice,payment,return,ticket", "each table on the master is an entry of lib/seed/row-records.json");
+  ok(["goods_receipt", "invoice", "payment", "purchase_order", "return", "supplier_bill", "ticket"].every(k => RR.SEED.records[k]) && Object.values(RR.SEED.records).every(r => r.table && r.kind && r.facts), "each table on the master is an entry of lib/seed/row-records.json", Object.keys(RR.SEED.records));
   for (const [name, sp] of Object.entries(RR.SEED.records)) {
     const rows = db.all(`SELECT id, uid, tenant_id FROM ${sp.table}`);
     ok(rows.every(r => K.internal.nodeRow(r.uid) && K.internal.nodeRow(r.uid).kind === sp.kind.kind && K.internal.nodeRow(r.uid).namespace === "tenant:" + r.tenant_id), `every ${name} row is a ${sp.kind.kind} in its store's namespace (${rows.length})`);

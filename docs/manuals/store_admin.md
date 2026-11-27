@@ -221,6 +221,27 @@ Open **Payments & Finance → 📒 Books**. Your role needs the books section; t
 
 More: [Books](../domains/books.md)
 
+## Purchasing
+
+Buying from suppliers: purchase orders (from an approved purchase request or on their own), the goods received against them into a warehouse batch, and suppliers' bills matched against what was received — held beyond the tolerance, approved, paid or voided — each posting to the store's books.
+
+Open **Payments & Finance → 🧾 Purchasing**. Your role needs the purchasing section; the Finance
+role has it.
+
+- **New purchase order**: choose the supplier and the warehouse, the item, the quantity and the
+  unit cost, then **Draft the order**. Open it and **Send to supplier**.
+- **Record goods received**: open the order, set how many of each line arrived (the rest is
+  pre-filled), the warehouse, lot and expiry, and record it. Stock goes up immediately.
+- **Record the bill**: enter the supplier's invoice number, the net and the tax. If it differs from
+  what was received by more than the tolerance it is held: check it, then **Release** it with the
+  reason, or **Void** it.
+- **Mark paid** when the supplier has been paid. **Owed to suppliers** shows what is due and how
+  late, per supplier.
+- Your purchasing or ERP system can do the same through `/api/admin/purchasing/…` with a store API
+  key with the Finance role — see `docs/api/README.md`.
+
+More: [Purchasing](../domains/purchasing.md)
+
 ## Settlements and payouts
 
 Paying those who are owed: seller settlements, payout batches, bank payouts, reconciliation of what the bank says against what the ledger says, and remittances.

@@ -305,7 +305,8 @@
     },
     "rejected": {
      "tags": [
-      "terminal", "refused"
+      "terminal",
+      "refused"
      ]
     }
    },
@@ -510,6 +511,11 @@
     "submitted": {
      "tags": [
       "creatable"
+     ]
+    },
+    "ordered": {
+     "tags": [
+      "placed"
      ]
     }
    },
@@ -4035,6 +4041,148 @@
       {
        "col": "decided_at"
       }
+     ]
+    }
+   }
+  },
+  {
+   "key": "purchase_order",
+   "name": "Purchase order",
+   "column": "status",
+   "initial": "draft",
+   "states": [
+    "draft",
+    "sent",
+    "partly_received",
+    "received",
+    "closed",
+    "cancelled"
+   ],
+   "transitions": {
+    "draft": [
+     "sent",
+     "cancelled"
+    ],
+    "sent": [
+     "partly_received",
+     "received",
+     "cancelled"
+    ],
+    "partly_received": [
+     "partly_received",
+     "received",
+     "closed"
+    ],
+    "received": [
+     "closed"
+    ]
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable"
+     ]
+    },
+    "sent": {
+     "tags": [
+      "receivable"
+     ],
+     "stamps": [
+      "sent_at"
+     ]
+    },
+    "partly_received": {
+     "tags": [
+      "receivable",
+      "partial"
+     ]
+    },
+    "received": {
+     "tags": [
+      "success"
+     ]
+    },
+    "closed": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      "closed_at"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "terminal",
+      "void"
+     ]
+    }
+   }
+  },
+  {
+   "key": "goods_receipt",
+   "name": "Goods receipt",
+   "column": "status",
+   "initial": "posted",
+   "free": true,
+   "states": [
+    "posted"
+   ],
+   "meta": {
+    "posted": {
+     "tags": [
+      "posted",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "supplier_bill",
+   "name": "Supplier bill",
+   "column": "status",
+   "initial": "open",
+   "states": [
+    "held",
+    "open",
+    "paid",
+    "void"
+   ],
+   "transitions": {
+    "held": [
+     "open",
+     "void"
+    ],
+    "open": [
+     "paid",
+     "void"
+    ]
+   },
+   "meta": {
+    "held": {
+     "tags": [
+      "held"
+     ]
+    },
+    "open": {
+     "tags": [
+      "approved",
+      "payable"
+     ]
+    },
+    "paid": {
+     "tags": [
+      "approved",
+      "success",
+      "terminal"
+     ],
+     "stamps": [
+      "paid_at"
+     ]
+    },
+    "void": {
+     "tags": [
+      "void",
+      "terminal"
      ]
     }
    }

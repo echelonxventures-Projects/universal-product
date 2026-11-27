@@ -1,0 +1,24 @@
+{
+ "$comment": "Purchasing (lib/purchasing.js): what an order to a supplier, a receipt of goods and a supplier's bill need that is policy rather than code. A bill whose net differs from the value of what was received and not yet billed by more than the tolerance is held until someone with the purchasing grant releases it, saying why. The machines and records it moves are named here once.",
+ "refs": {
+  "purchase_order": "PO",
+  "goods_receipt": "GRN",
+  "supplier_bill": "BILL"
+ },
+ "matchTolerancePct": 2,
+ "paymentTermsDays": {
+  "net7": 7,
+  "net15": 15,
+  "net30": 30,
+  "net45": 45,
+  "net60": 60,
+  "due_on_receipt": 0
+ },
+ "actor": "purchasing",
+ "machines": {
+  "order": "purchase_order",
+  "receipt": "goods_receipt",
+  "bill": "supplier_bill",
+  "request": "purchase_request"
+ }
+}

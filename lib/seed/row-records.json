@@ -107,6 +107,82 @@
     "label": "The support cases each person raised",
     "owner": "owner"
    }
+  },
+  "purchase_order": {
+   "table": "purchase_orders",
+   "owner": "Commerce",
+   "kind": {
+    "kind": "supply.purchase_order",
+    "label": "Purchase order",
+    "parents": []
+   },
+   "facts": {
+    "ref": "text",
+    "supplier_id": "text",
+    "warehouse_id": "text",
+    "currency": "text",
+    "status": "text",
+    "total": "number",
+    "expected_at": "text"
+   },
+   "title": "ref"
+  },
+  "goods_receipt": {
+   "table": "goods_receipts",
+   "owner": "Commerce",
+   "kind": {
+    "kind": "supply.goods_receipt",
+    "label": "Goods receipt",
+    "parents": [
+     "supply.purchase_order"
+    ]
+   },
+   "facts": {
+    "ref": "text",
+    "warehouse_id": "text",
+    "currency": "text",
+    "value": "number",
+    "status": "text"
+   },
+   "title": "ref",
+   "belongsTo": {
+    "hierarchy": "supply.order_receipts",
+    "label": "The goods received against each purchase order",
+    "column": "po_id",
+    "table": "purchase_orders"
+   }
+  },
+  "supplier_bill": {
+   "table": "supplier_bills",
+   "owner": "Commerce",
+   "kind": {
+    "kind": "supply.supplier_bill",
+    "label": "Supplier bill",
+    "parents": [
+     "supply.purchase_order"
+    ]
+   },
+   "facts": {
+    "ref": "text",
+    "supplier_id": "text",
+    "supplier_ref": "text",
+    "currency": "text",
+    "net": "number",
+    "tax": "number",
+    "gross": "number",
+    "matched": "number",
+    "variance": "number",
+    "status": "text",
+    "due_at": "text",
+    "paid_at": "text"
+   },
+   "title": "ref",
+   "belongsTo": {
+    "hierarchy": "supply.order_bills",
+    "label": "The supplier bills of each purchase order",
+    "column": "po_id",
+    "table": "purchase_orders"
+   }
   }
  },
  "actor": "commerce",
