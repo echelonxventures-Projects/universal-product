@@ -1,0 +1,404 @@
+{
+ "$comment": "A store's books (lib/books.js, owner Value): the chart of accounts every store starts from, and the rules that post business events to it. Each account is a node of the books.account kind placed in the books.chart hierarchy under its group; a store adds its own accounts in its namespace. Entries are journals of the platform's one ledger (lib/wallet.js): they balance in every currency, are written to the kernel's hash-chained log first, cannot be edited or deleted, and are corrected only by a linked reversal. A rule names the record and the change that triggers it and the accounts each part of the amount goes to; the parts are computed in lib/books.js by the measure its record's source names. Each type names its normal side and where it shows: the balance sheet (assets, liabilities, equity) or profit and loss (income, expense).",
+ "kind": {
+  "kind": "books.account",
+  "owner": "Value",
+  "label": "Account",
+  "root": true,
+  "parents": [
+   "books.account"
+  ],
+  "schemes": [
+   "books-account"
+  ],
+  "attributes": [
+   {
+    "key": "code",
+    "type": "text",
+    "required": true,
+    "label": "Code"
+   },
+   {
+    "key": "name",
+    "type": "text",
+    "required": true,
+    "label": "Name"
+   },
+   {
+    "key": "type",
+    "type": "text",
+    "required": true,
+    "label": "Type"
+   },
+   {
+    "key": "group",
+    "type": "boolean",
+    "label": "Group of accounts"
+   }
+  ]
+ },
+ "hierarchy": {
+  "hierarchy": "books.chart",
+  "owner": "Value",
+  "label": "Chart of accounts"
+ },
+ "types": {
+  "asset": {
+   "label": "Asset",
+   "normal": "debit",
+   "statement": "balance",
+   "side": "assets"
+  },
+  "liability": {
+   "label": "Liability",
+   "normal": "credit",
+   "statement": "balance",
+   "side": "liabilities"
+  },
+  "equity": {
+   "label": "Equity",
+   "normal": "credit",
+   "statement": "balance",
+   "side": "equity"
+  },
+  "income": {
+   "label": "Income",
+   "normal": "credit",
+   "statement": "profit",
+   "side": "income"
+  },
+  "expense": {
+   "label": "Expense",
+   "normal": "debit",
+   "statement": "profit",
+   "side": "expense"
+  }
+ },
+ "chart": [
+  {
+   "code": "1",
+   "name": "Assets",
+   "type": "asset",
+   "group": true
+  },
+  {
+   "code": "1000",
+   "name": "Bank",
+   "type": "asset",
+   "parent": "1"
+  },
+  {
+   "code": "1200",
+   "name": "Payments to be settled by gateways",
+   "type": "asset",
+   "parent": "1"
+  },
+  {
+   "code": "1300",
+   "name": "Inventory",
+   "type": "asset",
+   "parent": "1"
+  },
+  {
+   "code": "1500",
+   "name": "Fixed assets",
+   "type": "asset",
+   "parent": "1"
+  },
+  {
+   "code": "2",
+   "name": "Liabilities",
+   "type": "liability",
+   "group": true
+  },
+  {
+   "code": "2000",
+   "name": "Owed to suppliers",
+   "type": "liability",
+   "parent": "2"
+  },
+  {
+   "code": "2200",
+   "name": "Tax collected",
+   "type": "liability",
+   "parent": "2"
+  },
+  {
+   "code": "2300",
+   "name": "Store credit and gift balances held",
+   "type": "liability",
+   "parent": "2"
+  },
+  {
+   "code": "3",
+   "name": "Equity",
+   "type": "equity",
+   "group": true
+  },
+  {
+   "code": "3000",
+   "name": "Owner's capital",
+   "type": "equity",
+   "parent": "3"
+  },
+  {
+   "code": "3900",
+   "name": "Retained earnings",
+   "type": "equity",
+   "parent": "3"
+  },
+  {
+   "code": "4",
+   "name": "Income",
+   "type": "income",
+   "group": true
+  },
+  {
+   "code": "4000",
+   "name": "Sales",
+   "type": "income",
+   "parent": "4"
+  },
+  {
+   "code": "4100",
+   "name": "Delivery charged",
+   "type": "income",
+   "parent": "4"
+  },
+  {
+   "code": "4200",
+   "name": "Membership income",
+   "type": "income",
+   "parent": "4"
+  },
+  {
+   "code": "4900",
+   "name": "Refunds given",
+   "type": "income",
+   "parent": "4"
+  },
+  {
+   "code": "5",
+   "name": "Cost of sales",
+   "type": "expense",
+   "group": true
+  },
+  {
+   "code": "5000",
+   "name": "Cost of goods sold",
+   "type": "expense",
+   "parent": "5"
+  },
+  {
+   "code": "6",
+   "name": "Expenses",
+   "type": "expense",
+   "group": true
+  },
+  {
+   "code": "6100",
+   "name": "Payment gateway fees",
+   "type": "expense",
+   "parent": "6"
+  },
+  {
+   "code": "6200",
+   "name": "Platform fees",
+   "type": "expense",
+   "parent": "6"
+  },
+  {
+   "code": "6300",
+   "name": "Chargebacks lost",
+   "type": "expense",
+   "parent": "6"
+  }
+ ],
+ "rules": [
+  {
+   "key": "sale",
+   "label": "A shopper's payment is captured",
+   "record": "payment",
+   "where": {
+    "kind": "order"
+   },
+   "when": {
+    "fact": "status",
+    "into": "settled"
+   },
+   "lines": [
+    {
+     "debit": "1200",
+     "part": "paid"
+    },
+    {
+     "debit": "2300",
+     "part": "credit_used"
+    },
+    {
+     "credit": "2200",
+     "part": "tax"
+    },
+    {
+     "credit": "4100",
+     "part": "delivery"
+    },
+    {
+     "credit": "4000",
+     "part": "sales"
+    }
+   ]
+  },
+  {
+   "key": "gateway_fee",
+   "label": "The gateway's fee on it",
+   "record": "payment",
+   "where": {
+    "kind": "order"
+   },
+   "when": {
+    "fact": "status",
+    "into": "settled"
+   },
+   "lines": [
+    {
+     "debit": "6100",
+     "part": "fee"
+    },
+    {
+     "credit": "1200",
+     "part": "fee"
+    }
+   ]
+  },
+  {
+   "key": "refund",
+   "label": "Money is refunded to the shopper",
+   "record": "payment",
+   "where": {
+    "kind": "order"
+   },
+   "when": {
+    "fact": "refunded",
+    "changes": true
+   },
+   "lines": [
+    {
+     "debit": "4900",
+     "part": "refund_net"
+    },
+    {
+     "debit": "2200",
+     "part": "refund_tax"
+    },
+    {
+     "credit": "1200",
+     "part": "refund"
+    }
+   ]
+  },
+  {
+   "key": "chargeback",
+   "label": "A chargeback is lost",
+   "record": "payment",
+   "where": {
+    "kind": "order"
+   },
+   "when": {
+    "fact": "status",
+    "into": "lost"
+   },
+   "lines": [
+    {
+     "debit": "6300",
+     "part": "unrefunded"
+    },
+    {
+     "credit": "1200",
+     "part": "unrefunded"
+    }
+   ]
+  },
+  {
+   "key": "membership",
+   "label": "A membership is paid from store credit",
+   "record": "payment",
+   "where": {
+    "kind": "membership"
+   },
+   "when": {
+    "fact": "status",
+    "into": "settled"
+   },
+   "lines": [
+    {
+     "debit": "2300",
+     "part": "paid"
+    },
+    {
+     "credit": "4200",
+     "part": "paid"
+    }
+   ]
+  },
+  {
+   "key": "platform_bill",
+   "label": "The platform bills the store",
+   "record": "invoice",
+   "when": {
+    "fact": "status",
+    "into": "open"
+   },
+   "lines": [
+    {
+     "debit": "6200",
+     "part": "invoiced"
+    },
+    {
+     "credit": "2000",
+     "part": "invoiced"
+    }
+   ]
+  },
+  {
+   "key": "platform_bill_paid",
+   "label": "The store pays the platform's bill",
+   "record": "invoice",
+   "when": {
+    "fact": "status",
+    "into": "success"
+   },
+   "lines": [
+    {
+     "debit": "2000",
+     "part": "invoiced"
+    },
+    {
+     "credit": "1000",
+     "part": "invoiced"
+    }
+   ]
+  }
+ ],
+ "actor": "books",
+ "importActor": "books.import",
+ "sources": {
+  "payment": {
+   "table": "payments",
+   "measure": "payment",
+   "everPaid": [
+    "settled",
+    "reversed",
+    "lost"
+   ],
+   "firstState": "settled"
+  },
+  "invoice": {
+   "table": "invoices",
+   "measure": "invoice"
+  }
+ },
+ "reversible": [
+  "manual"
+ ]
+}

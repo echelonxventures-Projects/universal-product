@@ -280,9 +280,21 @@
   "amendmentId": "AMD-0063",
   "date": "2026-11-26",
   "authorisedBy": "Platform owner",
-  "summary": "The owner's requirement that the platform match at least the features and functions of Amazon-class marketplaces, Uber-class mobility, CRM, ERP and consultancy is made measurable. lib/seed/benchmarks.json lists 83 features those products are known for, each with the evidence the platform must have (a capability, a table); scripts/benchmarks.js checks the evidence against the code and reports each as present, partial (with the stated gap) or missing. At recording: 57 present, 6 partial, 20 missing — marketplace 23/24, mobility 8/14, CRM 7/13, ERP 12/20, professional services 7/12. test/benchmarks.js is a ratchet: what is present never goes down.",
+  "summary": "The owner's requirement that the platform match at least the features and functions of the leading general marketplaces, ride-hailing platforms, CRM and ERP suites and consultancy platforms is made measurable. lib/seed/benchmarks.json lists 83 features those products are known for, each with the evidence the platform must have (a capability, a table); scripts/benchmarks.js checks the evidence against the code and reports each as present, partial (with the stated gap) or missing. At recording: 57 present, 6 partial, 20 missing — marketplace 23/24, mobility 8/14, CRM 7/13, ERP 12/20, professional services 7/12. test/benchmarks.js is a ratchet: what is present never goes down.",
   "changes": [
    "lib/seed/benchmarks.json, scripts/benchmarks.js, test/benchmarks.js"
+  ]
+ },
+ {
+  "amendmentId": "AMD-0064",
+  "date": "2026-11-27",
+  "authorisedBy": "Platform owner",
+  "summary": "A store's books: the first ERP benchmark gap (AMD-0063) closed. The chart of accounts is on the kernel — every account a books.account node in the books.chart hierarchy, coded per chart through the books-account identifier scheme; a store adds its own accounts in its namespace. Entries are journals of the platform's one ledger (lib/wallet.js writeJournal): balanced in every currency, written to the hash-chained log first, immutable, corrected only by a linked reversal. Business events post themselves through rules in lib/seed/books.json — a captured sale (sales, delivery, tax, store credit used, gateway fee), each refund (with the tax given back), a lost chargeback, a membership paid from store credit, the platform's bill to the store and its payment — triggered by lib/row-records.js listeners in the same transaction as the write, idempotent, and never blocking a sale: what cannot be posted is reported by health(). Trial balance, profit and loss, balance sheet and account ledgers per currency over any period; an accountant posts and reverses entries. Routes /api/admin/books/* under a new books section the Finance role holds (store roles rb_v7); the store console's Books screen.",
+  "changes": [
+   "lib/books.js, lib/seed/books.json, lib/routes/books.js, public/js/admin/books.js; business domain books",
+   "lib/wallet.js exports writeJournal; lib/row-records.js on(name, listener)",
+   "lib/authz.js Finance role holds books; lib/api.js admin/books → books; consoles.json Books screen; console wording in five languages",
+   "test/books.js; test/orders.js THE BOOKS; benchmarks: general ledger present (58/6/19)"
   ]
  }
   ],

@@ -8,7 +8,7 @@ const ROOT = path.join(__dirname, "..");
 const B = require(path.join(ROOT, "lib", "seed", "benchmarks.json"));
 const CAPS = new Set(require(path.join(ROOT, "lib", "seed", "capabilities.json")).CATALOG.map(c => c.key));
 const TABLES = new Set([...fs.readFileSync(path.join(ROOT, "schema.sql"), "utf8").matchAll(/CREATE TABLE (?:IF NOT EXISTS )?([a-z_0-9]+)/g)].map(m => m[1]));
-const has = e => e.startsWith("c:") ? CAPS.has(e.slice(2)) : e.startsWith("t:") ? TABLES.has(e.slice(2)) : false;
+const has = e => e.startsWith("c:") ? CAPS.has(e.slice(2)) : e.startsWith("t:") ? TABLES.has(e.slice(2)) : e.startsWith("f:") ? fs.existsSync(path.join(ROOT, e.slice(2))) : false;
 function measure() {
   return B.benchmarks.map(b => {
     const features = b.features.map(x => {

@@ -200,6 +200,27 @@ Value a party holds: wallets of any definition, the ledger every movement is pos
 
 More: [Wallets](../domains/wallet.md)
 
+## Books
+
+A store's accounts: the chart of accounts on the kernel, entries posted to the platform's one ledger — automatically from payments, refunds, chargebacks and invoices, or by an accountant — and the trial balance, profit and loss, balance sheet and account ledgers read from them.
+
+Open **Payments & Finance → 📒 Books**. Your role needs the books section; the Finance role has it.
+
+- **Profit and loss** shows income, expenses and profit; **Balance sheet** shows what the store has
+  against what it owes and its equity; **Trial balance** shows every account's debits and credits.
+  Each currency the store trades in has its own statements. Add `from` and `to` (or `at` for the
+  balance sheet) to the API call for a period.
+- **Post an entry**: choose the account to debit and the account to credit, the amount, and what it
+  is for. Entries that do not balance are refused.
+- **Reverse** an entry you posted, saying why. It can be reversed once.
+- **Chart of accounts**: every store starts from the platform's chart. Add your own account under a
+  group; it takes the group's type and only your store sees it. Codes are never reused.
+- Your accounting system can read the same figures with a store API key with the Finance role:
+  `GET /api/admin/books/trial-balance`, `/profit-and-loss`, `/balance-sheet`, `/entries` — see
+  `docs/api/README.md`.
+
+More: [Books](../domains/books.md)
+
 ## Settlements and payouts
 
 Paying those who are owed: seller settlements, payout batches, bank payouts, reconciliation of what the bank says against what the ledger says, and remittances.

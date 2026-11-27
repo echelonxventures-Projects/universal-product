@@ -1214,6 +1214,34 @@
    }
   },
   {
+   "key": "books",
+   "name": "Books",
+   "foundation": "Value",
+   "purpose": "A store's accounts: the chart of accounts on the kernel, entries posted to the platform's one ledger — automatically from payments, refunds, chargebacks and invoices, or by an accountant — and the trial balance, profit and loss, balance sheet and account ledgers read from them.",
+   "users": [
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/books.js",
+     "lib/routes/books.js"
+    ],
+    "tables": [],
+    "routes": [
+     "^/api/admin/books(/|$)"
+    ],
+    "machines": [],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "books"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
    "key": "settlement",
    "name": "Settlements and payouts",
    "foundation": "Value",

@@ -3200,6 +3200,13 @@
     "order": 3
    },
    {
+    "key": "books",
+    "group": "Payments & Finance",
+    "label": "📒 Books",
+    "order": 4,
+    "section": "books"
+   },
+   {
     "key": "finops",
     "group": "Business Operations",
     "label": "💸 Fintech Ops",

@@ -660,11 +660,21 @@ stateDiagram-v2
 | **Contract** | [UCOS-VAL-000001 Value Architecture](#ucos-val-000001) |
 | **Artifacts** | [UCOS-VAL-000001](#ucos-val-000001) |
 | **Concepts** | 149 — `node _registry/compile.js --search <words> --kind concept --owner "Value"` |
-| **Code** | `lib/registry.js`, `lib/global.js`, `lib/wallet.js`, `lib/routes/currency.js`, `lib/routes/financial_services.js`, `lib/routes/platform_billing.js`, `lib/routes/settlement.js`, `lib/routes/wallet.js`, `lib/seed/wallet.json`, `lib/seed/value.json`, `lib/value-units.js` |
+| **Code** | `lib/registry.js`, `lib/global.js`, `lib/wallet.js`, `lib/routes/currency.js`, `lib/routes/financial_services.js`, `lib/routes/platform_billing.js`, `lib/routes/settlement.js`, `lib/routes/wallet.js`, `lib/seed/wallet.json`, `lib/seed/value.json`, `lib/books.js`, `lib/seed/books.json`, `lib/routes/books.js`, `public/js/admin/books.js`, `lib/value-units.js` |
 | **Managed in** | `_registry/domains.json` → `D-VAL` |
 
-**Live routes (26)** — what the platform serves today for this domain:
+**Live routes (36)** — what the platform serves today for this domain:
 
+- `GET /api/admin/books/accounts`
+- `POST /api/admin/books/accounts`
+- `GET /api/admin/books/entries`
+- `POST /api/admin/books/entries`
+- `POST /api/admin/books/entries/:id/reverse`
+- `GET /api/admin/books/trial-balance`
+- `GET /api/admin/books/profit-and-loss`
+- `GET /api/admin/books/balance-sheet`
+- `GET /api/admin/books/accounts/:id/ledger`
+- `GET /api/admin/books/health`
 - `GET /api/fx`
 - `GET /api/platform/fx`
 - `POST /api/platform/fx/rates`

@@ -197,6 +197,18 @@ const hook = async (type, cs, extra) => {
     ok(refunds.join() === [0, refunds[1], 0, refunds[1]].join() + "," + refunds.slice(4).join() && refunds.slice(3).every((v, i, a) => i === 0 || v > a[i - 1]) && refunds[refunds.length - 1] === Number(pr.refunded), "its refunded amount over time is the refund history — the claim handed back when the gateway refused, then each refund", refunds);
     const seqR = K.lastSeq(); ok(RR.importRows() === 0 && K.lastSeq() === seqR, "every return and payment is on the master, and a warm pass writes nothing");
 
+    console.log("▸ THE BOOKS");
+    const tbr = await A("/api/admin/books/trial-balance" + Q);
+    const tbc = (tbr.body.trialBalance || []).find(t => t.rows.some(r => r.account === "4000"));
+    ok(tbr.status === 200 && tbc && Math.abs(tbc.debit - tbc.credit) < 1e-6 && tbc.rows.find(r => r.account === "4900").debit > 0, "the store's sales and refunds are in its books, and the trial balance balances", tbc && [tbc.debit, tbc.credit]);
+    const bh = await A("/api/admin/books/health" + Q);
+    ok(bh.status === 200 && !bh.body.missing.length && !bh.body.unbalanced.length && !bh.body.drift.length, "every payment has its entries, each balances and matches the log", bh.body);
+    await A("/api/admin/staff" + Q, "POST", { name: "Bo Books", email: "bo" + crypto.randomBytes(3).toString("hex") + "@luxora.shop", staff_role: "support", password: "Support-Pass-123" });
+    const SB = mk(); await SB("/api/session" + Q);
+    const bo = db.get("SELECT email FROM users WHERE name='Bo Books' ORDER BY id DESC LIMIT 1").email;
+    await SB("/api/auth/login" + Q, "POST", { email: bo, password: "Support-Pass-123" });
+    ok((await SB("/api/admin/books/trial-balance" + Q)).status === 403 && (await SB("/api/admin/books/entries" + Q, "POST", { memo: "x", lines: [] })).status === 403, "a role without finance access can neither read nor post to the books");
+
     console.log("▸ CURRENCY");
     require("../lib/settings.js").save(1, { commerce: { taxMode: null } });
     const cfg = (await A("/api/config" + Q)).body.commerce;

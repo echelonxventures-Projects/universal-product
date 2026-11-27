@@ -1,7 +1,7 @@
 {
- "$comment": "What 'all types of platform' is measured against (scripts/benchmarks.js). Each benchmark lists the features its reference products are known for, with the evidence the platform must have for each: a capability of lib/seed/capabilities.json, a table of schema.sql. A feature is present when all its evidence exists, partial when it exists but 'gap' says what the reference product does beyond it, missing when evidence does not exist. Evidence is checked against the code, so this file cannot claim what is not built.",
+ "$comment": "What 'all types of platform' is measured against (scripts/benchmarks.js). Each benchmark lists the features its reference products are known for, with the evidence the platform must have for each: a capability of lib/seed/capabilities.json (c:), a table of schema.sql (t:), or an engine and its test (f:, a file of the repository). A feature is present when all its evidence exists, partial when it exists but 'gap' says what the reference product does beyond it, missing when evidence does not exist. Evidence is checked against the code, so this file cannot claim what is not built.",
  "benchmarks": [
-  { "key": "marketplace", "title": "Marketplace (Amazon-class)", "features": [
+  { "key": "marketplace", "title": "General everything-store marketplace", "features": [
    { "f": "Catalogue, search and filters", "e": ["t:products", "t:taxonomy"] },
    { "f": "Variants and product options", "e": ["c:product_options", "t:skus", "t:variant_groups"] },
    { "f": "Reviews and questions & answers", "e": ["c:reviews", "c:qna"] },
@@ -27,7 +27,7 @@
    { "f": "Live selling", "e": ["c:live_selling"] },
    { "f": "Shopping assistant (AI)", "e": ["c:ai_assistant"] }
   ] },
-  { "key": "mobility", "title": "Mobility (Uber-class)", "features": [
+  { "key": "mobility", "title": "Ride-hailing and on-demand mobility", "features": [
    { "f": "Ride request to completion, with fares and cancellation fees", "e": ["c:ride_hailing", "t:rides"] },
    { "f": "Dispatch to the nearest driver", "e": ["c:dispatch"] },
    { "f": "Surge pricing", "e": ["c:dynamic_pricing", "t:surge_zones"] },
@@ -43,7 +43,7 @@
    { "f": "Food and parcel delivery on the same fleet", "e": ["c:instant_delivery", "t:dispatch_runs"] },
    { "f": "Promotions", "e": ["c:coupons"] }
   ] },
-  { "key": "crm", "title": "CRM (Salesforce/HubSpot-class)", "features": [
+  { "key": "crm", "title": "Customer relationship management (CRM)", "features": [
    { "f": "Customer record (one view of a person)", "e": ["t:users", "t:k_nodes"], "gap": "the person is on the master with their orders, cases and payments; no single customer-360 screen yet" },
    { "f": "Companies (accounts) and their contacts", "e": ["t:crm_accounts"] },
    { "f": "Leads and enquiries to won or lost", "e": ["c:lead_capture"] },
@@ -58,8 +58,8 @@
    { "f": "Loyalty", "e": ["c:membership"] },
    { "f": "Reports and dashboards", "e": ["t:dashboards", "t:reports"] }
   ] },
-  { "key": "erp", "title": "ERP (SAP/Odoo-class)", "features": [
-   { "f": "General ledger and chart of accounts", "e": ["t:gl_accounts"] },
+  { "key": "erp", "title": "Enterprise resource planning (ERP)", "features": [
+   { "f": "General ledger and chart of accounts", "e": ["f:lib/books.js", "f:test/books.js"] },
    { "f": "Customer invoices (receivables)", "e": ["t:invoice_documents", "t:invoice_series"] },
    { "f": "Supplier bills (payables)", "e": ["t:supplier_bills"] },
    { "f": "Purchase requests with approval", "e": ["c:procurement", "t:purchase_requests"] },
