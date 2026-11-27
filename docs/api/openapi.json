@@ -1962,10 +1962,137 @@
     "x-audience": "store-staff"
    }
   },
+  "/api/admin/books/opening-stock": {
+   "post": {
+    "operationId": "apiBooksOpeningStock",
+    "summary": "Gives stock counted before valuation began its opening cost: `product_id` (or `sku_id`), `unit_cost`, `currency`.",
+    "description": "Gives stock counted before valuation began its opening cost: `product_id` (or `sku_id`), `unit_cost`, `currency`. The books record it as inventory brought in by the owner.",
+    "tags": [
+     "Value"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/books/orders/{id}/cost": {
+   "get": {
+    "operationId": "apiBooksOrderCost",
+    "summary": "What an order's goods cost, per currency — its cost of goods sold, less anything that came back.",
+    "tags": [
+     "Value"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
   "/api/admin/books/profit-and-loss": {
    "get": {
     "operationId": "apiBooksProfitAndLoss",
     "summary": "Profit and loss per currency over `from`–`to`: income, expenses and the profit.",
+    "tags": [
+     "Value"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/books/stock-value": {
+   "get": {
+    "operationId": "apiBooksStockValue",
+    "summary": "What the stock on hand is worth, per item and currency, under the store's method (fifo or average);",
+    "description": "What the stock on hand is worth, per item and currency, under the store's method (fifo or average); the units with no cost yet; and the stock value against the books' inventory account.",
     "tags": [
      "Value"
     ],
@@ -2004,6 +2131,51 @@
     "tags": [
      "Value"
     ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/books/valuation-method": {
+   "post": {
+    "operationId": "apiBooksValuationMethod",
+    "summary": "Chooses how the store values stock: `method` is fifo or average.",
+    "tags": [
+     "Value"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
     "responses": {
      "200": {
       "description": "Done; the answer as JSON"

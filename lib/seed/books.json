@@ -230,6 +230,12 @@
    "name": "Chargebacks lost",
    "type": "expense",
    "parent": "6"
+  },
+  {
+   "code": "6400",
+   "name": "Stock written off",
+   "type": "expense",
+   "parent": "6"
   }
  ],
  "rules": [

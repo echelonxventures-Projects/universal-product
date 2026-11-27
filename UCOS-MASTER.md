@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0065 (2026-11-27).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0066 (2026-11-27).
 
 ## Contents
 
@@ -428,6 +428,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0063"></a>AMD-0063 | 2026-11-26 | Platform owner | The owner's requirement that the platform match at least the features and functions of the leading general marketplaces, ride-hailing platforms, CRM and ERP suites and consultancy platforms is made measurable. lib/seed/benchmarks.json lists 83 features those products are known for, each with the evidence the platform must have (a capability, a table); scripts/benchmarks.js checks the evidence against the code and reports each as present, partial (with the stated gap) or missing. At recording: 57 present, 6 partial, 20 missing — marketplace 23/24, mobility 8/14, CRM 7/13, ERP 12/20, professional services 7/12. test/benchmarks.js is a ratchet: what is present never goes down. |
 | <a id="amd-0064"></a>AMD-0064 | 2026-11-27 | Platform owner | A store's books: the first ERP benchmark gap (AMD-0063) closed. The chart of accounts is on the kernel — every account a books.account node in the books.chart hierarchy, coded per chart through the books-account identifier scheme; a store adds its own accounts in its namespace. Entries are journals of the platform's one ledger (lib/wallet.js writeJournal): balanced in every currency, written to the hash-chained log first, immutable, corrected only by a linked reversal. Business events post themselves through rules in lib/seed/books.json — a captured sale (sales, delivery, tax, store credit used, gateway fee), each refund (with the tax given back), a lost chargeback, a membership paid from store credit, the platform's bill to the store and its payment — triggered by lib/row-records.js listeners in the same transaction as the write, idempotent, and never blocking a sale: what cannot be posted is reported by health(). Trial balance, profit and loss, balance sheet and account ledgers per currency over any period; an accountant posts and reverses entries. Routes /api/admin/books/* under a new books section the Finance role holds (store roles rb_v7); the store console's Books screen. |
 | <a id="amd-0065"></a>AMD-0065 | 2026-11-27 | Platform owner | Purchasing: two more ERP benchmark gaps closed (purchase orders with goods receipt; supplier bills). lib/purchasing.js: a purchase order to a supplier — on its own or from an approved purchase request, which follows it to ordered and received — the goods received against it into a warehouse batch (lot, batch, expiry; never more than ordered), and the supplier's bill, once per supplier invoice number, matched against what was received and not yet billed: within the tolerance (lib/seed/purchasing.json) it is approved and owed; beyond it, held until released with a reason. Each is a record on the master and moves through its state machine (purchase_order, goods_receipt, supplier_bill); the screen and the API offer only the actions a state allows. The books post each step — stock against received-not-billed, the bill against it with tax to reclaim and any purchase price difference, payment from the bank, a void undone — through rules in lib/seed/books.json; a rule may now require the state it moves from. stock.receive raises the product, variant and warehouse batch together. Routes /api/admin/purchasing/* under a purchasing section the Finance role holds (store roles rb_v8); the store console's Purchasing screen. |
+| <a id="amd-0066"></a>AMD-0066 | 2026-11-27 | Platform owner | Stock valuation: the ERP benchmark's stock valuation gap closed. lib/valuation.js keeps what each unit on hand cost as cost layers in whole minor units — goods received add a layer at the order's price; stock counted before valuation began is given an opening cost on request (inventory against owner's capital). Each unit that leaves — sold at checkout, or written off — takes its cost by the store's method (lib/seed/valuation.json; settings commerce.stockValuation): first in, first out, or the weighted average (the layers are evened out first, shared in minor units so the total never moves). The cost posts to the books — cost of goods sold or stock written off against inventory — once per stock move; a unit that comes back returns at the cost it left at and the entry reverses. Stock with no cost is the oldest: it leaves first, at no cost, and is reported, never guessed at. The layers equal the books' inventory account to the cent (reconcile). Every stock movement in lib/stock.js (take, giveBack, writeOff) and every goods receipt carries its cost. Routes stock-value, opening-stock, valuation-method and an order's cost under the books section; the Books screen's Stock value card. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1296,7 +1297,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 359 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 361 files.
 
 ### C02 · Meaning
 
@@ -1376,6 +1377,8 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `lib/seed/books.json` | [Value](volumes/V04-universal-dimensions.md#d-val) |  |
 | `lib/routes/books.js` | [Value](volumes/V04-universal-dimensions.md#d-val) |  |
 | `public/js/admin/books.js` | [Value](volumes/V04-universal-dimensions.md#d-val) |  |
+| `lib/valuation.js` | [Value](volumes/V04-universal-dimensions.md#d-val) |  |
+| `lib/seed/valuation.json` | [Value](volumes/V04-universal-dimensions.md#d-val) |  |
 | `lib/seed/console-texts.json` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
 | `scripts/console-texts.js` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
 | `public/js/words.js` | [Expression](volumes/V04-universal-dimensions.md#d-exr) |  |
@@ -2460,7 +2463,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p21"></a>P21 | Agent on today's AI layer | [Agent](volumes/V09.1-automation.md#d-agt) | planned | — |
 | <a id="p22"></a>P22 | Offering and Package: configuring by selection, blueprints, overlays, the first packages | [Offering](volumes/V11.2-platform.md#d-ofg), [Package](volumes/V13-composition.md#d-pkg) | planned | — |
 | <a id="p23"></a>P23 | Operations consolidated | [Operations](volumes/V11.1-platform.md#d-ops) | planned | — |
-| <a id="p24"></a>P24 | Business entities on the kernel; engines read the resolver; stores lose their single country and currency | [Commerce](volumes/V12-business.md#d-biz) | in-progress | [AMD-0058](#amd-0058), [AMD-0059](#amd-0059), [AMD-0060](#amd-0060), [AMD-0061](#amd-0061), [AMD-0062](#amd-0062), [AMD-0064](#amd-0064), [AMD-0065](#amd-0065) |
+| <a id="p24"></a>P24 | Business entities on the kernel; engines read the resolver; stores lose their single country and currency | [Commerce](volumes/V12-business.md#d-biz) | in-progress | [AMD-0058](#amd-0058), [AMD-0059](#amd-0059), [AMD-0060](#amd-0060), [AMD-0061](#amd-0061), [AMD-0062](#amd-0062), [AMD-0064](#amd-0064), [AMD-0065](#amd-0065), [AMD-0066](#amd-0066) |
 | <a id="p25"></a>P25 | Launch by configuration, end to end, for a person with the manual and for an agent | [Package](volumes/V13-composition.md#d-pkg), [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
 | <a id="p26"></a>P26 | More storage adapters; moving domains between databases from the console | [Registry](volumes/V05-structure.md#d-reg) | planned | — |
 | <a id="p27"></a>P27 | The platform master: entities of every kind as rows, classified in many hierarchies, identifier schemes, attributes inherited and applicable by context, the maximum starter content; the flat global catalogue and per-platform taxonomies and attributes merged into it | [Identity](volumes/V02-meaning.md#d-idn), [Semantic](volumes/V02-meaning.md#d-sem), [Registry](volumes/V05-structure.md#d-reg), [Relationship](volumes/V05-structure.md#d-rel), [Context](volumes/V04-universal-dimensions.md#d-ctx) | planned | — |
@@ -2567,6 +2570,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0063 | amendment | The owner's requirement that the platform match at least the | [constitution](#amd-0063) |
 | AMD-0064 | amendment | A store's books | [constitution](#amd-0064) |
 | AMD-0065 | amendment | Purchasing | [constitution](#amd-0065) |
+| AMD-0066 | amendment | Stock valuation | [constitution](#amd-0066) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

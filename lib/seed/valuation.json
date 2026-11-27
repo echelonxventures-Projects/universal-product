@@ -1,0 +1,6 @@
+{
+ "$comment": "Stock valuation (lib/valuation.js): the methods a store chooses between (settings commerce.stockValuation) and the accounts each movement of valued stock posts to. fifo: a unit that leaves takes the cost of the oldest units on hand. average: every unit on hand of an item carries the same cost — the layers are evened out before each issue — so a unit that leaves takes the weighted average.",
+ "methods": ["fifo", "average"],
+ "accounts": { "inventory": "1300", "cogs": "5000", "writeOff": "6400", "opening": "3000" },
+ "labels": { "cogs": "Cost of what was sold", "cogs_back": "Cost of what came back", "write_off": "Stock written off", "opening": "Stock on hand given its opening cost" }
+}

@@ -307,6 +307,18 @@
    "lib/stock.js receive; lib/books.js receipt and bill measures, when.from; accounts 1400, 2050, 5100",
    "test/purchasing.js; benchmarks 60/6/17"
   ]
+ },
+ {
+  "amendmentId": "AMD-0066",
+  "date": "2026-11-27",
+  "authorisedBy": "Platform owner",
+  "summary": "Stock valuation: the ERP benchmark's stock valuation gap closed. lib/valuation.js keeps what each unit on hand cost as cost layers in whole minor units — goods received add a layer at the order's price; stock counted before valuation began is given an opening cost on request (inventory against owner's capital). Each unit that leaves — sold at checkout, or written off — takes its cost by the store's method (lib/seed/valuation.json; settings commerce.stockValuation): first in, first out, or the weighted average (the layers are evened out first, shared in minor units so the total never moves). The cost posts to the books — cost of goods sold or stock written off against inventory — once per stock move; a unit that comes back returns at the cost it left at and the entry reverses. Stock with no cost is the oldest: it leaves first, at no cost, and is reported, never guessed at. The layers equal the books' inventory account to the cent (reconcile). Every stock movement in lib/stock.js (take, giveBack, writeOff) and every goods receipt carries its cost. Routes stock-value, opening-stock, valuation-method and an order's cost under the books section; the Books screen's Stock value card.",
+  "changes": [
+   "lib/valuation.js, lib/seed/valuation.json; tables cost_layers, cost_issues; account 6400; settings commerce.stockValuation",
+   "lib/stock.js take/giveBack/writeOff and lib/purchasing.js receive carry cost",
+   "lib/routes/books.js stock-value, opening-stock, valuation-method, orders/:id/cost; public/js/admin/books.js",
+   "test/valuation.js; benchmarks 61/6/16"
+  ]
  }
   ],
   "domains": [

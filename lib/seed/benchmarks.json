@@ -66,7 +66,7 @@
    { "f": "Purchase orders to suppliers and goods receipt", "e": ["t:purchase_orders", "t:goods_receipts", "f:test/purchasing.js"] },
    { "f": "Suppliers", "e": ["t:suppliers", "t:product_suppliers"] },
    { "f": "Inventory across warehouses, transfers", "e": ["t:warehouses", "t:inventory", "t:stock_transfers"] },
-   { "f": "Stock valuation (FIFO, average cost)", "e": ["t:stock_valuations"] },
+   { "f": "Stock valuation (FIFO, average cost)", "e": ["t:cost_layers", "f:lib/valuation.js", "f:test/valuation.js"] },
    { "f": "Demand planning and replenishment", "e": ["c:planning", "t:replenishments"] },
    { "f": "Manufacturing: bills of materials and work orders", "e": ["c:manufacturing", "t:work_orders"] },
    { "f": "Material requirements planning (MRP)", "e": ["t:mrp_runs"] },

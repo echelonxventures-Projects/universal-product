@@ -963,6 +963,20 @@ CREATE UNIQUE INDEX ux_wallet_entries_uid ON wallet_entries(uid);
 CREATE TRIGGER trg_wallet_entries_uid AFTER INSERT ON wallet_entries
                BEGIN UPDATE wallet_entries SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
+-- ── books · Books ────────────────────────────────────────────────────────────────────────────────
+CREATE TABLE cost_layers (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, sku_id INTEGER,
+  currency TEXT NOT NULL, qty INTEGER NOT NULL, remaining INTEGER NOT NULL, value_minor INTEGER NOT NULL,
+  source TEXT NOT NULL, ref TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_cost_layers ON cost_layers(tenant_id, product_id, sku_id, remaining);
+CREATE TABLE cost_issues (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, layer_id INTEGER, move_id INTEGER, kind TEXT NOT NULL,
+  product_id TEXT NOT NULL, sku_id INTEGER, currency TEXT, qty INTEGER NOT NULL, value_minor INTEGER NOT NULL DEFAULT 0,
+  returned INTEGER NOT NULL DEFAULT 0, ref TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_cost_issues_move ON cost_issues(move_id);
+
 -- ── purchasing · Purchasing ──────────────────────────────────────────────────────────────────────
 CREATE TABLE purchase_orders (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL,

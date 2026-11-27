@@ -202,7 +202,7 @@ More: [Wallets](../domains/wallet.md)
 
 ## Books
 
-A store's accounts: the chart of accounts on the kernel, entries posted to the platform's one ledger — automatically from payments, refunds, chargebacks and invoices, or by an accountant — and the trial balance, profit and loss, balance sheet and account ledgers read from them.
+A store's accounts: the chart of accounts on the kernel, entries posted to the platform's one ledger — automatically from payments, refunds, chargebacks and invoices, or by an accountant — and the trial balance, profit and loss, balance sheet and account ledgers read from them; and what the stock on hand is worth — cost layers from goods received, each unit that leaves costed first-in-first-out or at the weighted average, posted as cost of goods sold.
 
 Open **Payments & Finance → 📒 Books**. Your role needs the books section; the Finance role has it.
 
@@ -213,6 +213,9 @@ Open **Payments & Finance → 📒 Books**. Your role needs the books section; t
 - **Post an entry**: choose the account to debit and the account to credit, the amount, and what it
   is for. Entries that do not balance are refused.
 - **Reverse** an entry you posted, saying why. It can be reversed once.
+- **Stock value** shows what the stock on hand is worth and whether it matches the books. Choose
+  *First in, first out* or *Weighted average*; stock already on hand keeps its cost. Give items
+  with no cost yet their opening unit cost.
 - **Chart of accounts**: every store starts from the platform's chart. Add your own account under a
   group; it takes the group's type and only your store sees it. Codes are never reused.
 - Your accounting system can read the same figures with a store API key with the Finance role:

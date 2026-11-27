@@ -4,7 +4,7 @@
 
 ## Overview
 
-A store's accounts: the chart of accounts on the kernel, entries posted to the platform's one ledger — automatically from payments, refunds, chargebacks and invoices, or by an accountant — and the trial balance, profit and loss, balance sheet and account ledgers read from them.
+A store's accounts: the chart of accounts on the kernel, entries posted to the platform's one ledger — automatically from payments, refunds, chargebacks and invoices, or by an accountant — and the trial balance, profit and loss, balance sheet and account ledgers read from them; and what the stock on hand is worth — cost layers from goods received, each unit that leaves costed first-in-first-out or at the weighted average, posted as cost of goods sold.
 
 **Foundation domain:** Value · **Used by:** Store administrator
 
@@ -13,7 +13,44 @@ A store's accounts: the chart of accounts on the kernel, entries posted to the p
 | Module | What it is |
 |---|---|
 | `lib/books.js` | a store's books (owner Value). |
+| `lib/valuation.js` | stock valuation (owner Value). |
 | `lib/routes/books.js` | books domain routes (lib/books.js; _registry/business-domains.json). A store's chart of accounts, its entries, and the reports read from them. Every route belongs to the store's books section (the Finance role holds it): a role reads them with a books read grant, and posts or reverses an entry, or adds an account, with a books write grant. |
+
+## Data model
+
+### `cost_layers`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `product_id` | TEXT NOT NULL |
+| `sku_id` | INTEGER |
+| `currency` | TEXT NOT NULL |
+| `qty` | INTEGER NOT NULL |
+| `remaining` | INTEGER NOT NULL |
+| `value_minor` | INTEGER NOT NULL |
+| `source` | TEXT NOT NULL |
+| `ref` | TEXT DEFAULT '' |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
+
+### `cost_issues`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY AUTOINCREMENT |
+| `tenant_id` | INTEGER NOT NULL |
+| `layer_id` | INTEGER |
+| `move_id` | INTEGER |
+| `kind` | TEXT NOT NULL |
+| `product_id` | TEXT NOT NULL |
+| `sku_id` | INTEGER |
+| `currency` | TEXT |
+| `qty` | INTEGER NOT NULL |
+| `value_minor` | INTEGER NOT NULL DEFAULT 0 |
+| `returned` | INTEGER NOT NULL DEFAULT 0 |
+| `ref` | TEXT DEFAULT '' |
+| `created_at` | TEXT NOT NULL DEFAULT (datetime('now')) |
 
 ## API reference
 
@@ -21,6 +58,10 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 
 | Method and path | Handler | What it does |
 |---|---|---|
+| `GET /api/admin/books/stock-value` | `apiBooksStockValue` | What the stock on hand is worth, per item and currency, under the store's method (fifo or average); the units with no cost yet; and the stock value against the books' inventory account. |
+| `POST /api/admin/books/opening-stock` | `apiBooksOpeningStock` | Gives stock counted before valuation began its opening cost: `product_id` (or `sku_id`), `unit_cost`, `currency`. The books record it as inventory brought in by the owner. |
+| `POST /api/admin/books/valuation-method` | `apiBooksValuationMethod` | Chooses how the store values stock: `method` is fifo or average. What is on hand keeps its cost; from the next movement on, units leave by the new method. |
+| `GET /api/admin/books/orders/:id/cost` | `apiBooksOrderCost` | What an order's goods cost, per currency — its cost of goods sold, less anything that came back. |
 | `GET /api/admin/books/accounts` | `apiBooksAccounts` | The store's chart of accounts — the platform's accounts and the store's own, each with its group and type — and the account types. |
 | `POST /api/admin/books/accounts` | `apiBooksAccountAdd` | Adds one of the store's own accounts under a group (`parent`, `code`, `name`); it takes the group's type. |
 | `GET /api/admin/books/entries` | `apiBooksEntries` | The latest entries, newest first, with their lines; `from`, `to` and `ref` (the record an entry came from) narrow them. |
@@ -37,9 +78,9 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 ```mermaid
 flowchart LR
   U([Store administrator]) --> UI[store console]
-  UI --> API[10 API routes]
-  API --> ENG[books.js, books.js]
-  ENG --> DB[(kernel)]
+  UI --> API[14 API routes]
+  API --> ENG[books.js, valuation.js, books.js]
+  ENG --> DB[(cost_layers, cost_issues)]
 
 ```
 
@@ -67,6 +108,16 @@ against *Owed to suppliers*); paying it clears what is owed from the *Bank*.
 **Money reaching the bank.** When a gateway pays out to the store's bank, the accountant posts it:
 *Bank* against *Payments to be settled by gateways*.
 
+**What stock is worth.** Goods received from a supplier carry the order's price as their cost.
+When units leave — sold, or written off — they take their cost by the store's method: the oldest
+first (*first in, first out*), or the *weighted average* of what is on hand. A sale posts that cost
+as *Cost of goods sold* against *Inventory*; a write-off as *Stock written off*. A unit that comes
+back — a cancelled order, a returned item put back on the shelf — returns at the cost it left at.
+Stock counted before valuation began has no cost: it is the oldest, leaves first at no cost, and
+is listed until the store gives it an opening cost (recorded as inventory brought in by the
+owner). The stock value always equals the books' *Inventory* account, unless someone posts to it
+by hand — the Books screen says so when they differ.
+
 **Corrections.** Nothing posted is ever edited or deleted. An accountant's own entry is corrected
 by reversing it — a mirror entry, linked to it, allowed once, with the reason. An entry a sale or
 refund posted is corrected by the business event that undoes it, never by hand.
@@ -89,6 +140,9 @@ Open **Payments & Finance → 📒 Books**. Your role needs the books section; t
 - **Post an entry**: choose the account to debit and the account to credit, the amount, and what it
   is for. Entries that do not balance are refused.
 - **Reverse** an entry you posted, saying why. It can be reversed once.
+- **Stock value** shows what the stock on hand is worth and whether it matches the books. Choose
+  *First in, first out* or *Weighted average*; stock already on hand keeps its cost. Give items
+  with no cost yet their opening unit cost.
 - **Chart of accounts**: every store starts from the platform's chart. Add your own account under a
   group; it takes the group's type and only your store sees it. Codes are never reused.
 - Your accounting system can read the same figures with a store API key with the Finance role:

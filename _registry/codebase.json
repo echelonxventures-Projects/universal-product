@@ -330,6 +330,8 @@
   {"path":"lib/seed/purchasing.json","owner":"Commerce"},
   {"path":"lib/routes/purchasing.js","owner":"Commerce"},
   {"path":"public/js/admin/purchasing.js","owner":"Commerce"},
+  {"path":"lib/valuation.js","owner":"Value"},
+  {"path":"lib/seed/valuation.json","owner":"Value"},
   {"path":"scripts/benchmarks.js","owner":"Registry"},
   {"path":"lib/seed/offerings.json","owner":"Offering"},
   {"path":"lib/seed/parties.json","owner":"Party"},

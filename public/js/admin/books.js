@@ -6,8 +6,8 @@
 
 let booksTab = "pl";
 async function vBooks() {
-  const [acc, tb, pl, bs, en, h] = await Promise.all([api("/admin/books/accounts"), api("/admin/books/trial-balance"), api("/admin/books/profit-and-loss"),
-    api("/admin/books/balance-sheet"), api("/admin/books/entries", { limit: 30 }), api("/admin/books/health")]);
+  const [acc, tb, pl, bs, en, h, sv] = await Promise.all([api("/admin/books/accounts"), api("/admin/books/trial-balance"), api("/admin/books/profit-and-loss"),
+    api("/admin/books/balance-sheet"), api("/admin/books/entries", { limit: 30 }), api("/admin/books/health"), api("/admin/books/stock-value")]);
   const amt = (v, c) => `${money(v)} <span class="a-sub">${esc(c)}</span>`;
   const lines = (rows, c) => rows.map(r => `<tr><td><code>${esc(r.account)}</code></td><td>${esc(r.name)}</td><td style="text-align:right">${amt(r.balance, c)}</td></tr>`).join("");
   /* the statement sections come from the server (each account type's side) */
@@ -32,6 +32,15 @@ async function vBooks() {
     <p class="a-sub">${healthy ? '<span class="a-chip">✓ every payment and invoice is in the books</span>' : `<span class="p-tag">${esc(h.missing.length)} not yet in the books</span>`}</p></div>
   <div style="display:flex;gap:8px;margin-bottom:12px">${[["pl", "Profit and loss"], ["bs", "Balance sheet"], ["tb", "Trial balance"]].map(([k, l]) => `<button class="p-btn sm${booksTab === k ? " primary" : ""}" data-books-tab="${k}">${l}</button>`).join("")}</div>
   ${reports || '<div class="a-card"><p class="a-sub">Nothing has been posted yet.</p></div>'}
+  <div class="a-card"><h3>Stock value</h3>
+    <p class="a-sub">${Object.entries(sv.totals).map(([c, v]) => `<span class="a-chip">${money(v)} ${esc(c)}</span>`).join(" ") || `<span>No stock has a cost yet.</span>`}
+      ${sv.reconcile.every(r => Math.abs(r.difference) < 0.005) ? '<span class="a-chip">✓ matches the books</span>' : sv.reconcile.filter(r => Math.abs(r.difference) >= 0.005).map(r => `<span class="p-tag">${esc(r.currency)}: the books differ by ${money(r.difference)}</span>`).join(" ")}
+      ${sv.unvaluedUnits ? `<span class="p-tag">${esc(sv.unvaluedUnits)} units have no cost yet</span>` : ""}</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end">
+      <label><span>Method</span><select id="bkMethod"><option value="${esc(sv.methods[0])}"${sv.method === sv.methods[0] ? " selected" : ""}>First in, first out</option><option value="${esc(sv.methods[1])}"${sv.method === sv.methods[1] ? " selected" : ""}>Weighted average</option></select></label>
+      <button class="p-btn sm" id="bkMethodSave">Use this method</button></div>
+    ${sv.unvalued.length ? `<div class="a-tablewrap" style="margin-top:8px"><table class="a-table"><thead><tr><th>Item with no cost</th><th>Units</th><th>Opening unit cost</th><th></th></tr></thead><tbody>
+      ${sv.unvalued.slice(0, 25).map(u => `<tr><td><code>${esc(u.product_id)}</code></td><td>${u.qty}</td><td><input type="number" step="0.01" min="0" data-bk-open="${u.sku_id}" style="width:100px"></td><td><button class="p-btn sm" data-bk-open-go="${u.sku_id}">Give it this cost</button></td></tr>`).join("")}</tbody></table></div>` : ""}</div>
   <div class="a-card"><h3>Latest entries</h3>
     <div class="a-tablewrap"><table class="a-table"><thead><tr><th>#</th><th>What</th><th>Lines</th><th>When</th><th></th></tr></thead><tbody>
     ${en.entries.map(e => `<tr><td>${e.id}</td><td>${esc(e.memo || e.op)}${e.reverses ? ` <span class="a-chip">reverses #${e.reverses}</span>` : ""}</td>
@@ -62,6 +71,11 @@ function wireBooks() {
     const amount = Number($("#bkAmt").value);
     try { await api("/admin/books/entries", "POST", { memo: $("#bkMemo").value, lines: [{ account: $("#bkDr").value, debit: amount }, { account: $("#bkCr").value, credit: amount }] }); toast("Posted"); render(); } catch (e) { toast(e.message); }
   };
+  const ms = $("#bkMethodSave"); if (ms) ms.onclick = async () => { try { await api("/admin/books/valuation-method", "POST", { method: $("#bkMethod").value }); toast("Saved"); render(); } catch (e) { toast(e.message); } };
+  document.querySelectorAll("[data-bk-open-go]").forEach(b => b.onclick = async () => {
+    const id = b.dataset.bkOpenGo, cost = document.querySelector(`[data-bk-open="${id}"]`).value;
+    try { await api("/admin/books/opening-stock", "POST", { sku_id: Number(id), unit_cost: cost === "" ? "" : Number(cost) }); toast("Valued"); render(); } catch (e) { toast(e.message); }
+  });
   const add = $("#bkAdd"); if (add) add.onclick = async () => {
     try { await api("/admin/books/accounts", "POST", { parent: $("#bkGrp").value, code: $("#bkCode").value, name: $("#bkName").value }); toast("Account added"); render(); } catch (e) { toast(e.message); }
   };

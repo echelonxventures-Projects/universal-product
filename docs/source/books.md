@@ -20,6 +20,16 @@ against *Owed to suppliers*); paying it clears what is owed from the *Bank*.
 **Money reaching the bank.** When a gateway pays out to the store's bank, the accountant posts it:
 *Bank* against *Payments to be settled by gateways*.
 
+**What stock is worth.** Goods received from a supplier carry the order's price as their cost.
+When units leave — sold, or written off — they take their cost by the store's method: the oldest
+first (*first in, first out*), or the *weighted average* of what is on hand. A sale posts that cost
+as *Cost of goods sold* against *Inventory*; a write-off as *Stock written off*. A unit that comes
+back — a cancelled order, a returned item put back on the shelf — returns at the cost it left at.
+Stock counted before valuation began has no cost: it is the oldest, leaves first at no cost, and
+is listed until the store gives it an opening cost (recorded as inventory brought in by the
+owner). The stock value always equals the books' *Inventory* account, unless someone posts to it
+by hand — the Books screen says so when they differ.
+
 **Corrections.** Nothing posted is ever edited or deleted. An accountant's own entry is corrected
 by reversing it — a mirror entry, linked to it, allowed once, with the reason. An entry a sale or
 refund posted is corrected by the business event that undoes it, never by hand.
@@ -40,6 +50,9 @@ Open **Payments & Finance → 📒 Books**. Your role needs the books section; t
 - **Post an entry**: choose the account to debit and the account to credit, the amount, and what it
   is for. Entries that do not balance are refused.
 - **Reverse** an entry you posted, saying why. It can be reversed once.
+- **Stock value** shows what the stock on hand is worth and whether it matches the books. Choose
+  *First in, first out* or *Weighted average*; stock already on hand keeps its cost. Give items
+  with no cost yet their opening unit cost.
 - **Chart of accounts**: every store starts from the platform's chart. Add your own account under a
   group; it takes the group's type and only your store sees it. Codes are never reused.
 - Your accounting system can read the same figures with a store API key with the Finance role:
