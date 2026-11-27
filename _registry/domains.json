@@ -330,6 +330,17 @@
    "lib/seed/erasure.json; lib/compliance.js eraseSubject; lib/kernel-lifecycle.js purge { detach }; lib/parties.js erase detaches",
    "test/crm.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0068",
+  "date": "2026-11-27",
+  "authorisedBy": "Platform owner",
+  "summary": "Campaigns (lib/campaigns.js): email, SMS or in-app messages to every customer, a segment, every CRM contact or one company's people (lib/seed/campaigns.json). Only people with a live marketing consent are reached (lib/compliance.js mayProcess) — checked when the list is built and again right before each message; a preview shows who would be reached and who skipped and why. Every message carries the person's own unsubscribe link, a public route that withdraws their consent and confirms it. Recipients are claimed before their message, so several servers never send one person the same campaign; an interrupted send is marked, never repeated. Campaigns are drafted, scheduled (sent by the platform's sweep), sent in batches, cancelled (campaign machine), and are records on the master; messages and recipients stay in the tables, erased with the person. The benchmark marks campaigns partial: automated journeys and open or click tracking are not built. Routes /api/admin/campaigns/* under a campaigns section the Growth role holds (rb_v10), /api/campaigns/unsubscribe; the Campaigns screen.",
+  "changes": [
+   "lib/campaigns.js, lib/seed/campaigns.json, lib/routes/campaigns.js, public/js/admin/campaigns.js; business domain campaigns; tables campaigns, campaign_recipients; machine campaign; notification kind campaign",
+   "server.js sweep sends due campaigns; lib/tell.js exports address; lib/seed/erasure.json campaign_recipients",
+   "test/campaigns.js; benchmarks 65/6/12"
+  ]
  }
   ],
   "domains": [

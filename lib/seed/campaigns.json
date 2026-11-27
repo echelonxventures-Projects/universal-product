@@ -1,0 +1,52 @@
+{
+ "$comment": "Campaigns (lib/campaigns.js): the audiences a store sends to, the channels it sends on, and the policy every send follows. A campaign is sent only to people with a live grant for its purpose (lib/compliance.js mayProcess) — checked when the list is built and again just before each message — and every message carries a link that withdraws that grant. In-app messages reach shoppers' accounts; email and SMS go through the store's notification gateway (lib/mailer.js).",
+ "audiences": {
+  "customers": {
+   "label": "Every customer"
+  },
+  "segment": {
+   "label": "A segment",
+   "needs": "segment"
+  },
+  "contacts": {
+   "label": "Every CRM contact"
+  },
+  "company": {
+   "label": "The contacts at a company",
+   "needs": "company_id",
+   "in": "crm_companies"
+  }
+ },
+ "channels": {
+  "email": {
+   "address": "email",
+   "subject": true,
+   "via": "gateway"
+  },
+  "sms": {
+   "address": "phone",
+   "subject": false,
+   "via": "gateway"
+  },
+  "in_app": {
+   "address": "owner",
+   "subject": true,
+   "via": "account"
+  }
+ },
+ "purpose": "marketing",
+ "batch": 200,
+ "maxRecipients": 100000,
+ "interruptedAfterMinutes": 30,
+ "recipient": {
+  "queued": "queued",
+  "sending": "sending",
+  "sent": "sent",
+  "skipped": "skipped",
+  "failed": "failed"
+ },
+ "unsubscribeLine": "To stop these messages: ",
+ "refPrefix": "CMP",
+ "machine": "campaign",
+ "record": "campaign"
+}

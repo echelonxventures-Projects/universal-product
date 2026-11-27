@@ -280,6 +280,29 @@
     "column": "deal_id",
     "table": "crm_deals"
    }
+  },
+  "campaign": {
+   "table": "campaigns",
+   "owner": "Communication",
+   "kind": {
+    "kind": "communication.campaign",
+    "label": "Campaign",
+    "parents": []
+   },
+   "$comment": "what was sent, to how many, and when; the message and the people it went to stay in the tables",
+   "facts": {
+    "ref": "text",
+    "name": "text",
+    "channel": "text",
+    "purpose": "text",
+    "status": "text",
+    "scheduled_at": "text",
+    "finished_at": "text",
+    "sent": "number",
+    "skipped": "number",
+    "failed": "number"
+   },
+   "title": "ref"
   }
  },
  "actor": "commerce",

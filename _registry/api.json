@@ -31,6 +31,7 @@
     {"pattern": "^/api/admin/books(/|$)", "owner": "Value"},
     {"pattern": "^/api/admin/purchasing(/|$)", "owner": "Commerce"},
     {"pattern": "^/api/admin/crm(/|$)", "owner": "Party"},
+    {"pattern": "^/api/(admin/campaigns|campaigns)(/|$)", "owner": "Communication"},
     {"pattern": "^/api/(auth|session|scim)(/|$)", "owner": "Security"},
     {"pattern": "^/api/platform/(login|mfa|logout|me|keys|security|identity-templates)(/|$)", "owner": "Security"},
     {"pattern": "^/api/admin/(sso|scim|identity-providers|identity-provider-types|identity-settings|risk)(/|$)", "owner": "Security"},

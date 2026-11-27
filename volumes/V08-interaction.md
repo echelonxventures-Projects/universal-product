@@ -270,11 +270,19 @@ stateDiagram-v2
 | **Contract** | [UCOS-CMN-000001 Communication Architecture](#ucos-cmn-000001) |
 | **Artifacts** | [UCOS-CMN-000001](#ucos-cmn-000001) |
 | **Concepts** | 117 — `node _registry/compile.js --search <words> --kind concept --owner "Communication"` |
-| **Code** | `lib/media-sessions.js`, `lib/mailer.js`, `lib/helpdesk.js`, `lib/routes/communication.js`, `lib/routes/support.js` |
+| **Code** | `lib/media-sessions.js`, `lib/mailer.js`, `lib/helpdesk.js`, `lib/routes/communication.js`, `lib/routes/support.js`, `lib/campaigns.js`, `lib/seed/campaigns.json`, `lib/routes/campaigns.js`, `public/js/admin/campaigns.js` |
 | **Managed in** | `_registry/domains.json` → `D-CMN` |
 
-**Live routes (22)** — what the platform serves today for this domain:
+**Live routes (30)** — what the platform serves today for this domain:
 
+- `GET /api/admin/campaigns`
+- `POST /api/admin/campaigns`
+- `GET /api/admin/campaigns/:id`
+- `GET /api/admin/campaigns/:id/preview`
+- `POST /api/admin/campaigns/:id/send`
+- `POST /api/admin/campaigns/:id/schedule`
+- `POST /api/admin/campaigns/:id/cancel`
+- `GET /api/campaigns/unsubscribe`
 - `GET /api/sessions`
 - `POST /api/sessions`
 - `POST /api/sessions/:id/join`

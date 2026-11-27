@@ -1319,6 +1319,41 @@
    }
   },
   {
+   "key": "campaigns",
+   "name": "Campaigns",
+   "foundation": "Communication",
+   "purpose": "Email, SMS and in-app messages to a store's customers, a segment, its CRM contacts or a company's people — only to those with a live marketing consent, checked when the list is built and again before each message — with an unsubscribe link in every one, sent once per person even by several servers, scheduled or sent now, and counted.",
+   "users": [
+    "store_admin",
+    "shopper"
+   ],
+   "owns": {
+    "files": [
+     "lib/campaigns.js",
+     "lib/routes/campaigns.js"
+    ],
+    "tables": [
+     "campaigns",
+     "campaign_recipients"
+    ],
+    "routes": [
+     "^/api/admin/campaigns(/|$)",
+     "^/api/campaigns(/|$)"
+    ],
+    "machines": [
+     "campaign"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "campaigns"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
    "key": "settlement",
    "name": "Settlements and payouts",
    "foundation": "Value",

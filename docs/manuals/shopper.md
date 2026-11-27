@@ -123,6 +123,15 @@ Value a party holds: wallets of any definition, the ledger every movement is pos
 
 More: [Wallets](../domains/wallet.md)
 
+## Campaigns
+
+Email, SMS and in-app messages to a store's customers, a segment, its CRM contacts or a company's people — only to those with a live marketing consent, checked when the list is built and again before each message — with an unsubscribe link in every one, sent once per person even by several servers, scheduled or sent now, and counted.
+
+Every marketing message from a store has a link at the end. Opening it stops that store's marketing
+messages to you; you can turn them back on in your account's privacy settings.
+
+More: [Campaigns](../domains/campaigns.md)
+
 ## Financial services
 
 Financial products sold to buyers: bill payments, recharges, insurance, and credit — pay later and loans with their instalments.

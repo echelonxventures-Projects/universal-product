@@ -1061,6 +1061,25 @@ CREATE UNIQUE INDEX ux_crm_activities_uid ON crm_activities(uid);
 CREATE TRIGGER trg_crm_activities_uid AFTER INSERT ON crm_activities
                BEGIN UPDATE crm_activities SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
+-- ── campaigns · Campaigns ────────────────────────────────────────────────────────────────────────
+CREATE TABLE campaigns (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, name TEXT NOT NULL, channel TEXT NOT NULL,
+  subject TEXT NOT NULL DEFAULT '', body TEXT NOT NULL, audience TEXT NOT NULL DEFAULT '{}', purpose TEXT NOT NULL, status TEXT NOT NULL,
+  scheduled_at TEXT, started_at TEXT, finished_at TEXT, link_base TEXT DEFAULT '', created_by TEXT DEFAULT '',
+  sent INTEGER NOT NULL DEFAULT 0, skipped INTEGER NOT NULL DEFAULT 0, failed INTEGER NOT NULL DEFAULT 0,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT, UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_campaigns ON campaigns(tenant_id, status);
+CREATE TABLE campaign_recipients (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, campaign_id INTEGER NOT NULL, address TEXT NOT NULL, name TEXT DEFAULT '',
+  owner TEXT DEFAULT '', token TEXT NOT NULL UNIQUE, status TEXT NOT NULL, reason TEXT DEFAULT '', claimed_at TEXT, sent_at TEXT, unsubscribed_at TEXT,
+  UNIQUE (campaign_id, address)
+);
+CREATE INDEX ix_campaign_recipients ON campaign_recipients(campaign_id, status);
+CREATE UNIQUE INDEX ux_campaigns_uid ON campaigns(uid);
+CREATE TRIGGER trg_campaigns_uid AFTER INSERT ON campaigns
+               BEGIN UPDATE campaigns SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+
 -- ── settlement · Settlements and payouts ─────────────────────────────────────────────────────────
 CREATE TABLE settlements (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL UNIQUE,

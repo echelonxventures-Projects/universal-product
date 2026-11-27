@@ -668,6 +668,7 @@
   "shopNotifKinds": {
    "label": "Shop · Notification kinds",
    "items": [
+    "campaign",
     "order_placed",
     "order_paid",
     "order_shipped",

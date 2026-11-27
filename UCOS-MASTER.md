@@ -1,6 +1,6 @@
 # UCOS Ω∞ — Master Document
 
-**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0067 (2026-11-27).
+**Projected from** `_registry/` (the single source of truth). Never edit this file or a volume: change the registry, then run `npm run registry`. Last amendment: AMD-0068 (2026-11-27).
 
 ## Contents
 
@@ -430,6 +430,7 @@ Ready-made, editable compositions of domains. Volume: [V13](volumes/V13-composit
 | <a id="amd-0065"></a>AMD-0065 | 2026-11-27 | Platform owner | Purchasing: two more ERP benchmark gaps closed (purchase orders with goods receipt; supplier bills). lib/purchasing.js: a purchase order to a supplier — on its own or from an approved purchase request, which follows it to ordered and received — the goods received against it into a warehouse batch (lot, batch, expiry; never more than ordered), and the supplier's bill, once per supplier invoice number, matched against what was received and not yet billed: within the tolerance (lib/seed/purchasing.json) it is approved and owed; beyond it, held until released with a reason. Each is a record on the master and moves through its state machine (purchase_order, goods_receipt, supplier_bill); the screen and the API offer only the actions a state allows. The books post each step — stock against received-not-billed, the bill against it with tax to reclaim and any purchase price difference, payment from the bank, a void undone — through rules in lib/seed/books.json; a rule may now require the state it moves from. stock.receive raises the product, variant and warehouse batch together. Routes /api/admin/purchasing/* under a purchasing section the Finance role holds (store roles rb_v8); the store console's Purchasing screen. |
 | <a id="amd-0066"></a>AMD-0066 | 2026-11-27 | Platform owner | Stock valuation: the ERP benchmark's stock valuation gap closed. lib/valuation.js keeps what each unit on hand cost as cost layers in whole minor units — goods received add a layer at the order's price; stock counted before valuation began is given an opening cost on request (inventory against owner's capital). Each unit that leaves — sold at checkout, or written off — takes its cost by the store's method (lib/seed/valuation.json; settings commerce.stockValuation): first in, first out, or the weighted average (the layers are evened out first, shared in minor units so the total never moves). The cost posts to the books — cost of goods sold or stock written off against inventory — once per stock move; a unit that comes back returns at the cost it left at and the entry reverses. Stock with no cost is the oldest: it leaves first, at no cost, and is reported, never guessed at. The layers equal the books' inventory account to the cent (reconcile). Every stock movement in lib/stock.js (take, giveBack, writeOff) and every goods receipt carries its cost. Routes stock-value, opening-stock, valuation-method and an order's cost under the books section; the Books screen's Stock value card. |
 | <a id="amd-0067"></a>AMD-0067 | 2026-11-27 | Platform owner | Customer relationships, and erasure that works. lib/crm.js: companies (party.company, an organisation of the master — a record kind may now extend a master kind without redefining it), contacts (belonging to their company, linked to their shopper account by email), deals (commerce.deal, under their company) through the store's pipeline (lib/seed/crm.json, or the store's own stages in settings crm.stages; a stage with open deals cannot be removed) to won or lost (crm_deal machine), a weighted forecast by month and currency, activities (calls, meetings, emails, tasks, notes) on a timeline and an agenda, a deal from a shopper's enquiry, and one view of a customer. Each is a record on the master; who a contact is and what was said stay in the tables. Erasure (lib/compliance.js eraseSubject) is rewritten from data (lib/seed/erasure.json): it removed only the account and consents, because it looked people up by email in tables keyed by owner or user id (addresses, reviews, questions, support cases) and swallowed the errors. It now finds a person by email, owner key and user id, clears every table listed, keeps what the law requires, reports anything it could not clear, and erases a person who has placed orders — which failed since AMD-0060 — by detaching what is kept from the erased person on the master (kernel-lifecycle purge detach, recorded in the tombstone). Routes /api/admin/crm/* under a crm section (Growth writes, Support reads; store roles rb_v9); the CRM screen. Benchmarks 65/5/13. |
+| <a id="amd-0068"></a>AMD-0068 | 2026-11-27 | Platform owner | Campaigns (lib/campaigns.js): email, SMS or in-app messages to every customer, a segment, every CRM contact or one company's people (lib/seed/campaigns.json). Only people with a live marketing consent are reached (lib/compliance.js mayProcess) — checked when the list is built and again right before each message; a preview shows who would be reached and who skipped and why. Every message carries the person's own unsubscribe link, a public route that withdraws their consent and confirms it. Recipients are claimed before their message, so several servers never send one person the same campaign; an interrupted send is marked, never repeated. Campaigns are drafted, scheduled (sent by the platform's sweep), sent in batches, cancelled (campaign machine), and are records on the master; messages and recipients stay in the tables, erased with the person. The benchmark marks campaigns partial: automated journeys and open or click tracking are not built. Routes /api/admin/campaigns/* under a campaigns section the Growth role holds (rb_v10), /api/campaigns/unsubscribe; the Campaigns screen. |
 
 <a id="kernel"></a>
 ## 5. Kernel
@@ -1298,7 +1299,7 @@ Every primitive and term, once, with its single owner.
 <a id="code-map"></a>
 ## 8. Code and document map
 
-Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 366 files.
+Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, `public/js/admin/*.js`, `public/js/*.js`, `public/docs/*`, `scripts/*` and the single domain that owns it. A file that mixes concerns is split into parts, each with one owner. 370 files.
 
 ### C02 · Meaning
 
@@ -1545,6 +1546,10 @@ Every file under `server.js`, `lib/*.js`, `lib/seed/*.json`, `lib/routes/*.js`, 
 | `public/js/provisioning.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/rules-ui.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `lib/consoles.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
+| `lib/campaigns.js` | [Communication](volumes/V08-interaction.md#d-cmn) |  |
+| `lib/seed/campaigns.json` | [Communication](volumes/V08-interaction.md#d-cmn) |  |
+| `lib/routes/campaigns.js` | [Communication](volumes/V08-interaction.md#d-cmn) |  |
+| `public/js/admin/campaigns.js` | [Communication](volumes/V08-interaction.md#d-cmn) |  |
 | `lib/seed/consoles.json` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `public/js/invoice.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
 | `lib/page-meta.js` | [Experience](volumes/V08-interaction.md#d-exp) |  |
@@ -2469,7 +2474,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | <a id="p21"></a>P21 | Agent on today's AI layer | [Agent](volumes/V09.1-automation.md#d-agt) | planned | — |
 | <a id="p22"></a>P22 | Offering and Package: configuring by selection, blueprints, overlays, the first packages | [Offering](volumes/V11.2-platform.md#d-ofg), [Package](volumes/V13-composition.md#d-pkg) | planned | — |
 | <a id="p23"></a>P23 | Operations consolidated | [Operations](volumes/V11.1-platform.md#d-ops) | planned | — |
-| <a id="p24"></a>P24 | Business entities on the kernel; engines read the resolver; stores lose their single country and currency | [Commerce](volumes/V12-business.md#d-biz) | in-progress | [AMD-0058](#amd-0058), [AMD-0059](#amd-0059), [AMD-0060](#amd-0060), [AMD-0061](#amd-0061), [AMD-0062](#amd-0062), [AMD-0064](#amd-0064), [AMD-0065](#amd-0065), [AMD-0066](#amd-0066), [AMD-0067](#amd-0067) |
+| <a id="p24"></a>P24 | Business entities on the kernel; engines read the resolver; stores lose their single country and currency | [Commerce](volumes/V12-business.md#d-biz) | in-progress | [AMD-0058](#amd-0058), [AMD-0059](#amd-0059), [AMD-0060](#amd-0060), [AMD-0061](#amd-0061), [AMD-0062](#amd-0062), [AMD-0064](#amd-0064), [AMD-0065](#amd-0065), [AMD-0066](#amd-0066), [AMD-0067](#amd-0067), [AMD-0068](#amd-0068) |
 | <a id="p25"></a>P25 | Launch by configuration, end to end, for a person with the manual and for an agent | [Package](volumes/V13-composition.md#d-pkg), [Guidance](volumes/V02-meaning.md#d-gdn) | planned | — |
 | <a id="p26"></a>P26 | More storage adapters; moving domains between databases from the console | [Registry](volumes/V05-structure.md#d-reg) | planned | — |
 | <a id="p27"></a>P27 | The platform master: entities of every kind as rows, classified in many hierarchies, identifier schemes, attributes inherited and applicable by context, the maximum starter content; the flat global catalogue and per-platform taxonomies and attributes merged into it | [Identity](volumes/V02-meaning.md#d-idn), [Semantic](volumes/V02-meaning.md#d-sem), [Registry](volumes/V05-structure.md#d-reg), [Relationship](volumes/V05-structure.md#d-rel), [Context](volumes/V04-universal-dimensions.md#d-ctx) | planned | — |
@@ -2578,6 +2583,7 @@ Derived from _registry/classification.json → containers (u:<universe key>): ea
 | AMD-0065 | amendment | Purchasing | [constitution](#amd-0065) |
 | AMD-0066 | amendment | Stock valuation | [constitution](#amd-0066) |
 | AMD-0067 | amendment | Customer relationships, and erasure that works. lib/crm.js | [constitution](#amd-0067) |
+| AMD-0068 | amendment | Campaigns (lib/campaigns.js) | [constitution](#amd-0068) |
 | C01 | category | Constitution | [V01](volumes/V01-constitution.md) |
 | C02 | category | Meaning | [V02](volumes/V02-meaning.md) |
 | C03 | category | Reality and Reasoning | [V03.1](volumes/V03.1-reality-and-reasoning.md), [V03.2](volumes/V03.2-reality-and-reasoning.md) |

@@ -262,6 +262,22 @@ Support can read it.
 
 More: [Customer relationships](../domains/crm.md)
 
+## Campaigns
+
+Email, SMS and in-app messages to a store's customers, a segment, its CRM contacts or a company's people — only to those with a live marketing consent, checked when the list is built and again before each message — with an unsubscribe link in every one, sent once per person even by several servers, scheduled or sent now, and counted.
+
+Open **Marketing & Growth → 📣 Campaigns**. Your role needs the campaigns section; the Growth role
+has it.
+
+- **New campaign**: name it, choose the channel and audience (and the segment or company), write the
+  subject and message, then **Draft the campaign**.
+- Open it to see how many it would reach and who it would skip, then **Send now** or **Schedule**.
+- Afterwards it shows how many were sent, skipped, failed and unsubscribed, and why.
+- Email and SMS go through your notification gateway (**Payments & notifications**); without one
+  they are counted as failed.
+
+More: [Campaigns](../domains/campaigns.md)
+
 ## Settlements and payouts
 
 Paying those who are owed: seller settlements, payout batches, bank payouts, reconciliation of what the bank says against what the ledger says, and remittances.

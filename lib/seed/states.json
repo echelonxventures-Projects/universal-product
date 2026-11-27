@@ -4232,6 +4232,74 @@
      ]
     }
    }
+  },
+  {
+   "key": "campaign",
+   "name": "Campaign",
+   "column": "status",
+   "initial": "draft",
+   "states": [
+    "draft",
+    "scheduled",
+    "sending",
+    "sent",
+    "cancelled"
+   ],
+   "transitions": {
+    "draft": [
+     "scheduled",
+     "sending",
+     "cancelled"
+    ],
+    "scheduled": [
+     "sending",
+     "draft",
+     "cancelled"
+    ],
+    "sending": [
+     "sent",
+     "cancelled"
+    ]
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable"
+     ]
+    },
+    "scheduled": {
+     "tags": [
+      "due",
+      "editable"
+     ]
+    },
+    "sending": {
+     "tags": [
+      "active"
+     ],
+     "stamps": [
+      "started_at"
+     ]
+    },
+    "sent": {
+     "tags": [
+      "done",
+      "terminal"
+     ],
+     "stamps": [
+      "finished_at"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "void",
+      "terminal"
+     ],
+     "stamps": [
+      "finished_at"
+     ]
+    }
+   }
   }
  ]
 }

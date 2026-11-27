@@ -2553,6 +2553,13 @@
     "section": "team"
    },
    {
+    "key": "campaigns",
+    "group": "Marketing & Growth",
+    "label": "📣 Campaigns",
+    "order": 0,
+    "section": "campaigns"
+   },
+   {
     "key": "affiliate",
     "group": "Marketing & Growth",
     "label": "📣 Influencers & Affiliates",
