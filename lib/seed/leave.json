@@ -1,0 +1,14 @@
+{
+ "$comment": "Leave (lib/leave.js): the kinds of leave a store's people take, how many days a year each gives and how many carry into the next, and how an approved day shows in attendance — paid leave as leave, unpaid as absent, so payroll pays or deducts it. A day of leave is a working day of the week; a store sets its own working days and kinds in settings leave.workingDays and leave.types. A person's own allowance for a year overrides the kind's. Whoever asked for leave, or the person it is for, does not approve it.",
+ "types": [
+  { "key": "annual", "label": "Annual leave", "daysPerYear": 20, "carryOver": 5, "paid": true, "attendance": "leave" },
+  { "key": "sick", "label": "Sick leave", "daysPerYear": 10, "carryOver": 0, "paid": true, "attendance": "leave" },
+  { "key": "parental", "label": "Parental leave", "daysPerYear": 60, "carryOver": 0, "paid": true, "attendance": "leave" },
+  { "key": "unpaid", "label": "Unpaid leave", "daysPerYear": null, "carryOver": 0, "paid": false, "attendance": "absent" }
+ ],
+ "workingDays": [1, 2, 3, 4, 5],
+ "maxDaysPerRequest": 120,
+ "ref": "LV",
+ "machine": "leave_request",
+ "record": "leave_request"
+}

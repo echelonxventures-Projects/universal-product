@@ -1401,6 +1401,142 @@
    }
   },
   {
+   "key": "leave",
+   "name": "Leave",
+   "foundation": "Operations",
+   "purpose": "Time away a store's people ask for: kinds of leave with yearly allowances and carry-over, requests counted in working days, refused when they overlap or ask for more than is left, approved by someone other than the person, shown in attendance as paid or unpaid for payroll, taken off the resource plan, and cancelled before they start.",
+   "users": [
+    "store_admin",
+    "store_staff"
+   ],
+   "owns": {
+    "files": [
+     "lib/leave.js",
+     "lib/routes/leave.js"
+    ],
+    "tables": [
+     "leave_requests",
+     "leave_allowances"
+    ],
+    "routes": [
+     "^/api/admin/leave(/|$)"
+    ],
+    "machines": [
+     "leave_request"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "leave"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "assets",
+   "name": "Fixed assets",
+   "foundation": "Value",
+   "purpose": "What a store owns and uses for years: bought onto the books from the bank or on credit, depreciated month by month once — straight line or declining balance — to its residual value, posted as each month ends, sold or written off with the gain or loss posted, with its whole schedule and the register's totals.",
+   "users": [
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/assets.js",
+     "lib/routes/assets.js"
+    ],
+    "tables": [
+     "fixed_assets",
+     "depreciation_entries"
+    ],
+    "routes": [
+     "^/api/admin/assets(/|$)"
+    ],
+    "machines": [
+     "fixed_asset"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "fixed_assets"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "budgets",
+   "name": "Budgets",
+   "foundation": "Value",
+   "purpose": "A year's plan per income and expense account of the books, month by month in one currency, set by month or spread from a year's amount or from last year's actuals, approved once per year and currency, and set against the books to date with what is off plan flagged.",
+   "users": [
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/budgets.js",
+     "lib/routes/budgets.js"
+    ],
+    "tables": [
+     "budgets",
+     "budget_lines"
+    ],
+    "routes": [
+     "^/api/admin/budgets(/|$)"
+    ],
+    "machines": [
+     "budget"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "budgets"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
+   "key": "mrp",
+   "name": "Material requirements planning",
+   "foundation": "Commerce",
+   "purpose": "What to make and buy, and by when: bills of materials to any depth without cycles, a master schedule of what must be ready, netting level by level against stock, open purchase and work orders and safety stock, lead times and lateness, and suggestions turned once into draft purchase orders per supplier and planned work orders.",
+   "users": [
+    "store_admin"
+   ],
+   "owns": {
+    "files": [
+     "lib/mrp.js",
+     "lib/routes/mrp.js"
+    ],
+    "tables": [
+     "boms",
+     "mrp_items",
+     "mrp_demand",
+     "mrp_runs",
+     "mrp_suggestions"
+    ],
+    "routes": [
+     "^/api/admin/mrp(/|$)"
+    ],
+    "machines": [
+     "mrp_suggestion"
+    ],
+    "capabilities": [],
+    "registries": [],
+    "screens": [
+     "mrp"
+    ],
+    "platformScreens": [],
+    "platformGroups": [],
+    "pages": []
+   }
+  },
+  {
    "key": "settlement",
    "name": "Settlements and payouts",
    "foundation": "Value",

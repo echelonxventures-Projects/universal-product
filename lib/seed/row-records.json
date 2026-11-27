@@ -449,6 +449,71 @@
     "column": "deal_id",
     "table": "crm_deals"
    }
+  },
+  "leave_request": {
+   "table": "leave_requests",
+   "owner": "Operations",
+   "kind": {
+    "kind": "operations.leave_request",
+    "label": "Leave request",
+    "parents": []
+   },
+   "$comment": "who is away, of what kind, from when to when and how it was decided; why stays in the table",
+   "facts": {
+    "ref": "text",
+    "employee_id": "text",
+    "type": "text",
+    "from_date": "text",
+    "to_date": "text",
+    "days": "number",
+    "status": "text",
+    "decided_at": "text"
+   },
+   "title": "ref"
+  },
+  "fixed_asset": {
+   "table": "fixed_assets",
+   "owner": "Value",
+   "kind": {
+    "kind": "value.fixed_asset",
+    "label": "Fixed asset",
+    "parents": []
+   },
+   "facts": {
+    "ref": "text",
+    "name": "text",
+    "category": "text",
+    "method": "text",
+    "currency": "text",
+    "cost": "number",
+    "residual": "number",
+    "life_months": "number",
+    "in_service": "text",
+    "accumulated": "number",
+    "status": "text",
+    "disposed_at": "text",
+    "proceeds": "number"
+   },
+   "title": "ref"
+  },
+  "budget": {
+   "table": "budgets",
+   "owner": "Value",
+   "kind": {
+    "kind": "value.budget",
+    "label": "Budget",
+    "parents": []
+   },
+   "facts": {
+    "ref": "text",
+    "name": "text",
+    "year": "number",
+    "currency": "text",
+    "status": "text",
+    "total": "number",
+    "approved_at": "text"
+   },
+   "title": "ref"
   }
  },
  "actor": "commerce",

@@ -118,6 +118,12 @@
    "parent": "1"
   },
   {
+   "code": "1510",
+   "name": "Depreciation to date",
+   "type": "asset",
+   "parent": "1"
+  },
+  {
    "code": "2",
    "name": "Liabilities",
    "type": "liability",
@@ -214,6 +220,12 @@
    "parent": "4"
   },
   {
+   "code": "4950",
+   "name": "Gains or losses on assets sold",
+   "type": "income",
+   "parent": "4"
+  },
+  {
    "code": "5",
    "name": "Cost of sales",
    "type": "expense",
@@ -264,6 +276,12 @@
   {
    "code": "6500",
    "name": "Staff expenses",
+   "type": "expense",
+   "parent": "6"
+  },
+  {
+   "code": "6600",
+   "name": "Depreciation",
    "type": "expense",
    "parent": "6"
   }

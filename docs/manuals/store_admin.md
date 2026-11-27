@@ -306,6 +306,68 @@ and Finance roles have it.
 
 More: [Consultancy and professional services](../domains/consulting.md)
 
+## Leave
+
+Time away a store's people ask for: kinds of leave with yearly allowances and carry-over, requests counted in working days, refused when they overlap or ask for more than is left, approved by someone other than the person, shown in attendance as paid or unpaid for payroll, taken off the resource plan, and cancelled before they start.
+
+Open **Business Operations → 🌴 Leave**. Your role needs the leave section; the People and Delivery
+roles have it.
+
+- **Ask for leave**: choose the person, the kind and the dates, then **Ask**. **Show balance** shows
+  what they are entitled to, carried in, have taken, are waiting for and have left.
+- **Requests**: **approve** or **reject** each one, giving a reason to reject. You cannot approve
+  your own. **cancel** withdraws a request, or approved leave that has not started.
+- **Who is away**: everyone away on each working day for the next four weeks; a question mark means
+  not yet approved.
+
+More: [Leave](../domains/leave.md)
+
+## Fixed assets
+
+What a store owns and uses for years: bought onto the books from the bank or on credit, depreciated month by month once — straight line or declining balance — to its residual value, posted as each month ends, sold or written off with the gain or loss posted, with its whole schedule and the register's totals.
+
+Open **Payments & Finance → 🏷️ Fixed Assets**. Your role needs the fixed assets section; the Finance
+role has it.
+
+- **Register an asset**: name, category, cost, residual value, life (left empty, the category's),
+  method, the day it was bought and how it was paid.
+- **Depreciation**: choose a month and **Post depreciation**. Months already posted are left alone.
+- Open an asset to see every month of its schedule, posted or to come, and to **Sell or write off**
+  it, saying why.
+- The register shows each asset's cost, depreciation to date and book value, with totals by category.
+
+More: [Fixed assets](../domains/assets.md)
+
+## Budgets
+
+A year's plan per income and expense account of the books, month by month in one currency, set by month or spread from a year's amount or from last year's actuals, approved once per year and currency, and set against the books to date with what is off plan flagged.
+
+Open **Payments & Finance → 🎯 Budgets**. Your role needs the budgets section; the Finance role has
+it.
+
+- **New budget**: name it, choose the year (and currency), then **Draft**.
+- Open it to set an account's amount for the year (**Set, spread evenly**) or **Fill** it from a
+  year's actuals with an uplift, then **Approve**.
+- The report below shows each account against the books, and flags what is off plan.
+
+More: [Budgets](../domains/budgets.md)
+
+## Material requirements planning
+
+What to make and buy, and by when: bills of materials to any depth without cycles, a master schedule of what must be ready, netting level by level against stock, open purchase and work orders and safety stock, lead times and lateness, and suggestions turned once into draft purchase orders per supplier and planned work orders.
+
+Open **Business Operations → 🏭 Planning (MRP)**. Your role needs the mrp section; the Planning role
+has it.
+
+- **Bill of materials**: type the item's code and **Show**. Write one component a line as
+  `item code | quantity | % lost`, then **Save the bill**.
+- **Planning for an item**: its lead time, safety stock and smallest lot.
+- **What must be ready**: add what must be ready by when.
+- **Plan**: **Run planning**, check what it suggests, dismiss what you will not do, then **Make the
+  orders**. Purchase orders are drafts to check and send under Purchasing.
+
+More: [Material requirements planning](../domains/mrp.md)
+
 ## Settlements and payouts
 
 Paying those who are owed: seller settlements, payout batches, bank payouts, reconciliation of what the bank says against what the ledger says, and remittances.

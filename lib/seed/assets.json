@@ -1,0 +1,23 @@
+{
+ "$comment": "Fixed assets (lib/assets.js): the categories a store's assets fall into with their usual useful life, the ways an asset is depreciated, and the accounts each part posts to (lib/seed/books.json). An asset is bought from the bank or on credit from a supplier; it depreciates month by month from the month it comes into service, never below its residual value, posted when a month ends; selling or writing it off depreciates it to that month, takes its cost and depreciation off the books and posts the gain or loss. Straight line spreads the depreciable amount evenly; declining balance charges a fixed share of what is left (the factor over the life), switching to straight line when that charges more.",
+ "categories": [
+  { "key": "it", "label": "Computers and IT", "lifeMonths": 36 },
+  { "key": "furniture", "label": "Furniture and fittings", "lifeMonths": 84 },
+  { "key": "vehicles", "label": "Vehicles", "lifeMonths": 60 },
+  { "key": "machinery", "label": "Plant and machinery", "lifeMonths": 120 },
+  { "key": "buildings", "label": "Buildings", "lifeMonths": 480 },
+  { "key": "intangible", "label": "Software and intangibles", "lifeMonths": 36 }
+ ],
+ "methods": {
+  "straight_line": { "label": "Straight line" },
+  "declining_balance": { "label": "Declining balance", "factor": 2 }
+ },
+ "paidFrom": {
+  "bank": { "label": "Paid from the bank", "account": "1000" },
+  "supplier": { "label": "Bought on credit", "account": "2000" }
+ },
+ "accounts": { "cost": "1500", "accumulated": "1510", "depreciation": "6600", "disposal": "4950", "cash": "1000" },
+ "ref": "FA",
+ "machine": "fixed_asset",
+ "record": "fixed_asset"
+}

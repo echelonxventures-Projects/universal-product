@@ -33,6 +33,10 @@ Every artifact the platform is built from — a code file, a table, an API route
 | [Customer relationships](crm.md) | Party | Store administrator | complete |
 | [Campaigns](campaigns.md) | Communication | Store administrator, Shopper | complete |
 | [Consultancy and professional services](consulting.md) | Operations | Store administrator, Store staff, Guest | complete |
+| [Leave](leave.md) | Operations | Store administrator, Store staff | complete |
+| [Fixed assets](assets.md) | Value | Store administrator | complete |
+| [Budgets](budgets.md) | Value | Store administrator | complete |
+| [Material requirements planning](mrp.md) | Commerce | Store administrator | complete |
 | [Settlements and payouts](settlement.md) | Value | Seller, Store administrator, Platform administrator | 4 sections to write |
 | [Financial services](financial_services.md) | Value | Shopper, Store administrator | 3 sections to write |
 | [Tax](tax.md) | Rule | Store administrator, Platform administrator | 3 sections to write |

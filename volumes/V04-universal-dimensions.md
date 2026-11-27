@@ -660,11 +660,16 @@ stateDiagram-v2
 | **Contract** | [UCOS-VAL-000001 Value Architecture](#ucos-val-000001) |
 | **Artifacts** | [UCOS-VAL-000001](#ucos-val-000001) |
 | **Concepts** | 149 — `node _registry/compile.js --search <words> --kind concept --owner "Value"` |
-| **Code** | `lib/registry.js`, `lib/global.js`, `lib/wallet.js`, `lib/routes/currency.js`, `lib/routes/financial_services.js`, `lib/routes/platform_billing.js`, `lib/routes/settlement.js`, `lib/routes/wallet.js`, `lib/seed/wallet.json`, `lib/seed/value.json`, `lib/books.js`, `lib/seed/books.json`, `lib/routes/books.js`, `public/js/admin/books.js`, `lib/valuation.js`, `lib/seed/valuation.json`, `lib/value-units.js` |
+| **Code** | `lib/registry.js`, `lib/global.js`, `lib/wallet.js`, `lib/routes/currency.js`, `lib/routes/financial_services.js`, `lib/routes/platform_billing.js`, `lib/routes/settlement.js`, `lib/routes/wallet.js`, `lib/seed/wallet.json`, `lib/seed/value.json`, `lib/books.js`, `lib/seed/books.json`, `lib/routes/books.js`, `public/js/admin/books.js`, `lib/valuation.js`, `lib/seed/valuation.json`, `lib/assets.js`, `lib/seed/assets.json`, `lib/routes/assets.js`, `public/js/admin/assets.js`, `lib/budgets.js`, `lib/seed/budgets.json`, `lib/routes/budgets.js`, `public/js/admin/budgets.js`, `lib/value-units.js` |
 | **Managed in** | `_registry/domains.json` → `D-VAL` |
 
-**Live routes (40)** — what the platform serves today for this domain:
+**Live routes (54)** — what the platform serves today for this domain:
 
+- `GET /api/admin/assets`
+- `POST /api/admin/assets`
+- `POST /api/admin/assets/depreciate`
+- `GET /api/admin/assets/:id`
+- `POST /api/admin/assets/:id/dispose`
 - `GET /api/admin/books/stock-value`
 - `POST /api/admin/books/opening-stock`
 - `POST /api/admin/books/valuation-method`
@@ -679,6 +684,15 @@ stateDiagram-v2
 - `GET /api/admin/books/balance-sheet`
 - `GET /api/admin/books/accounts/:id/ledger`
 - `GET /api/admin/books/health`
+- `GET /api/admin/budgets`
+- `POST /api/admin/budgets`
+- `GET /api/admin/budgets/:id`
+- `PUT /api/admin/budgets/:id/lines`
+- `POST /api/admin/budgets/:id/from-actuals`
+- `POST /api/admin/budgets/:id/approve`
+- `POST /api/admin/budgets/:id/reopen`
+- `POST /api/admin/budgets/:id/close`
+- `GET /api/admin/budgets/:id/report`
 - `GET /api/fx`
 - `GET /api/platform/fx`
 - `POST /api/platform/fx/rates`

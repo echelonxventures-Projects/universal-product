@@ -1,0 +1,9 @@
+{
+ "$comment": "Budgets (lib/budgets.js): a year's plan per account of the books (lib/books.js), month by month, in one currency, set against what the books actually show. A budget is drafted, approved (one approved budget per year and currency) and closed. A line is set month by month, or as a year's amount spread evenly; a draft can start from last year's actuals with an uplift. Over budget means an expense above, or income below, what was planned to date; the tolerance is how far a line may stray before it is flagged.",
+ "tolerancePct": 5,
+ "$earns": "the normal side of an account that earns (income): below budget is off plan for it, above budget for the rest",
+ "earns": "credit",
+ "ref": "BUD",
+ "machine": "budget",
+ "record": "budget"
+}

@@ -1147,6 +1147,79 @@ CREATE UNIQUE INDEX ux_proposals_uid ON proposals(uid);
 CREATE TRIGGER trg_proposals_uid AFTER INSERT ON proposals
                BEGIN UPDATE proposals SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
+-- ── leave · Leave ────────────────────────────────────────────────────────────────────────────────
+CREATE TABLE leave_requests (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, employee_id INTEGER NOT NULL, type TEXT NOT NULL,
+  from_date TEXT NOT NULL, to_date TEXT NOT NULL, half_day INTEGER NOT NULL DEFAULT 0, days REAL NOT NULL, reason TEXT DEFAULT '', status TEXT NOT NULL,
+  submitted_by TEXT DEFAULT '', decided_by TEXT DEFAULT '', decided_at TEXT, decision_note TEXT DEFAULT '', cancelled_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT, UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_leave_requests ON leave_requests(tenant_id, employee_id, status, from_date);
+CREATE TABLE leave_allowances (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, employee_id INTEGER NOT NULL, year INTEGER NOT NULL, type TEXT NOT NULL, days REAL NOT NULL,
+  UNIQUE (tenant_id, employee_id, year, type)
+);
+CREATE UNIQUE INDEX ux_leave_requests_uid ON leave_requests(uid);
+CREATE TRIGGER trg_leave_requests_uid AFTER INSERT ON leave_requests
+               BEGIN UPDATE leave_requests SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+
+-- ── assets · Fixed assets ────────────────────────────────────────────────────────────────────────
+CREATE TABLE fixed_assets (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, name TEXT NOT NULL, category TEXT NOT NULL, method TEXT NOT NULL,
+  currency TEXT NOT NULL, cost REAL NOT NULL, residual REAL NOT NULL DEFAULT 0, life_months INTEGER NOT NULL, acquired_on TEXT NOT NULL, in_service TEXT NOT NULL,
+  paid_from TEXT NOT NULL, supplier_id INTEGER, serial TEXT DEFAULT '', location TEXT DEFAULT '', accumulated REAL NOT NULL DEFAULT 0, last_period TEXT,
+  status TEXT NOT NULL, disposed_at TEXT, disposal_date TEXT, proceeds REAL, disposal_reason TEXT DEFAULT '', created_by TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT, UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_fixed_assets ON fixed_assets(tenant_id, status);
+CREATE TABLE depreciation_entries (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, asset_id INTEGER NOT NULL, period TEXT NOT NULL, amount REAL NOT NULL, journal_id INTEGER,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (asset_id, period)
+);
+CREATE UNIQUE INDEX ux_fixed_assets_uid ON fixed_assets(uid);
+CREATE TRIGGER trg_fixed_assets_uid AFTER INSERT ON fixed_assets
+               BEGIN UPDATE fixed_assets SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+
+-- ── budgets · Budgets ────────────────────────────────────────────────────────────────────────────
+CREATE TABLE budgets (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, name TEXT NOT NULL, year INTEGER NOT NULL, currency TEXT NOT NULL,
+  status TEXT NOT NULL, total REAL NOT NULL DEFAULT 0, note TEXT DEFAULT '', created_by TEXT DEFAULT '', approved_by TEXT DEFAULT '', approved_at TEXT, closed_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT, UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_budgets ON budgets(tenant_id, year, status);
+CREATE TABLE budget_lines (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, budget_id INTEGER NOT NULL, account TEXT NOT NULL, month INTEGER NOT NULL, amount REAL NOT NULL,
+  UNIQUE (budget_id, account, month)
+);
+CREATE UNIQUE INDEX ux_budgets_uid ON budgets(uid);
+CREATE TRIGGER trg_budgets_uid AFTER INSERT ON budgets
+               BEGIN UPDATE budgets SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+
+-- ── mrp · Material requirements planning ─────────────────────────────────────────────────────────
+CREATE TABLE boms (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, component_id TEXT NOT NULL, qty REAL NOT NULL, scrap_pct REAL NOT NULL DEFAULT 0,
+  UNIQUE (tenant_id, product_id, component_id)
+);
+CREATE TABLE mrp_items (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, lead_days INTEGER, safety_stock INTEGER NOT NULL DEFAULT 0, min_lot INTEGER NOT NULL DEFAULT 1,
+  UNIQUE (tenant_id, product_id)
+);
+CREATE TABLE mrp_demand (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, product_id TEXT NOT NULL, qty INTEGER NOT NULL, due_date TEXT NOT NULL, note TEXT DEFAULT '',
+  created_by TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_mrp_demand ON mrp_demand(tenant_id, due_date);
+CREATE TABLE mrp_runs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, horizon_days INTEGER NOT NULL, through TEXT NOT NULL,
+  suggestions INTEGER NOT NULL DEFAULT 0, late INTEGER NOT NULL DEFAULT 0, ran_by TEXT DEFAULT '', ran_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (tenant_id, ref)
+);
+CREATE TABLE mrp_suggestions (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, run_id INTEGER NOT NULL, product_id TEXT NOT NULL, action TEXT NOT NULL, level INTEGER NOT NULL DEFAULT 0,
+  qty INTEGER NOT NULL, gross INTEGER NOT NULL DEFAULT 0, available INTEGER NOT NULL DEFAULT 0, incoming INTEGER NOT NULL DEFAULT 0, safety INTEGER NOT NULL DEFAULT 0,
+  need_by TEXT, order_by TEXT, late INTEGER NOT NULL DEFAULT 0, supplier_id INTEGER, unit_cost REAL, status TEXT NOT NULL, made_ref TEXT DEFAULT ''
+);
+CREATE INDEX ix_mrp_suggestions ON mrp_suggestions(tenant_id, run_id, status);
+
 -- ── settlement · Settlements and payouts ─────────────────────────────────────────────────────────
 CREATE TABLE settlements (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL UNIQUE,

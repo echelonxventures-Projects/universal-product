@@ -4559,6 +4559,197 @@
      ]
     }
    }
+  },
+  {
+   "key": "leave_request",
+   "name": "Leave request",
+   "column": "status",
+   "initial": "submitted",
+   "states": [
+    "submitted",
+    "approved",
+    "rejected",
+    "cancelled"
+   ],
+   "transitions": {
+    "submitted": [
+     "approved",
+     "rejected",
+     "cancelled"
+    ],
+    "approved": [
+     "cancelled"
+    ]
+   },
+   "meta": {
+    "submitted": {
+     "tags": [
+      "pending",
+      "counts"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "approved",
+      "counts",
+      "taken"
+     ],
+     "stamps": [
+      "decided_at"
+     ]
+    },
+    "rejected": {
+     "tags": [
+      "rejected",
+      "terminal"
+     ],
+     "stamps": [
+      "decided_at"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "cancelled",
+      "terminal"
+     ],
+     "stamps": [
+      "cancelled_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "fixed_asset",
+   "name": "Fixed asset",
+   "column": "status",
+   "initial": "active",
+   "states": [
+    "active",
+    "disposed",
+    "written_off"
+   ],
+   "transitions": {
+    "active": [
+     "disposed",
+     "written_off"
+    ]
+   },
+   "meta": {
+    "active": {
+     "tags": [
+      "in_use",
+      "depreciating"
+     ]
+    },
+    "disposed": {
+     "tags": [
+      "gone",
+      "sold",
+      "terminal"
+     ],
+     "stamps": [
+      "disposed_at"
+     ]
+    },
+    "written_off": {
+     "tags": [
+      "gone",
+      "terminal"
+     ],
+     "stamps": [
+      "disposed_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "budget",
+   "name": "Budget",
+   "column": "status",
+   "initial": "draft",
+   "states": [
+    "draft",
+    "approved",
+    "closed"
+   ],
+   "transitions": {
+    "draft": [
+     "approved"
+    ],
+    "approved": [
+     "closed",
+     "draft"
+    ]
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "approved",
+      "live"
+     ],
+     "stamps": [
+      "approved_at"
+     ]
+    },
+    "closed": {
+     "tags": [
+      "closed",
+      "terminal"
+     ],
+     "stamps": [
+      "closed_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "mrp_suggestion",
+   "name": "Planning suggestion",
+   "column": "status",
+   "initial": "suggested",
+   "states": [
+    "suggested",
+    "converted",
+    "dismissed",
+    "superseded"
+   ],
+   "transitions": {
+    "suggested": [
+     "converted",
+     "dismissed",
+     "superseded"
+    ]
+   },
+   "meta": {
+    "suggested": {
+     "tags": [
+      "open"
+     ]
+    },
+    "converted": {
+     "tags": [
+      "converted",
+      "terminal"
+     ]
+    },
+    "dismissed": {
+     "tags": [
+      "dismissed",
+      "terminal"
+     ]
+    },
+    "superseded": {
+     "tags": [
+      "superseded",
+      "terminal"
+     ]
+    }
+   }
   }
  ]
 }

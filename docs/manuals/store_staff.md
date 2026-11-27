@@ -69,6 +69,15 @@ submit it again.
 
 More: [Consultancy and professional services](../domains/consulting.md)
 
+## Leave
+
+Time away a store's people ask for: kinds of leave with yearly allowances and carry-over, requests counted in working days, refused when they overlap or ask for more than is left, approved by someone other than the person, shown in attendance as paid or unpaid for payroll, taken off the resource plan, and cancelled before they start.
+
+If your role has the leave section, ask for your own leave under **Business Operations → 🌴 Leave**.
+Someone else approves it. You can cancel it until it starts.
+
+More: [Leave](../domains/leave.md)
+
 ## Shipping and delivery
 
 Getting goods to the buyer: carriers and rates, shipments and tracking, pickup points and lockers, and fast local delivery from dark stores with slots, riders and dispatch runs.

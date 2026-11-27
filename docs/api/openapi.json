@@ -733,6 +733,232 @@
     "x-audience": "store-staff"
    }
   },
+  "/api/admin/assets": {
+   "get": {
+    "operationId": "apiAssets",
+    "summary": "The asset register: each asset with its cost, depreciation to date and book value;",
+    "description": "The asset register: each asset with its cost, depreciation to date and book value; `category` and `status` narrow it; with totals by category, and the categories, methods and ways of paying.",
+    "tags": [
+     "Value"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   },
+   "post": {
+    "operationId": "apiAssetRegister",
+    "summary": "Registers an asset: `name`, `category`, `cost`, `residual`, `life_months`, `method`, `acquired_on`, `in_service`, `paid_from` (bank or supplier), `supplier_id`, ",
+    "description": "Registers an asset: `name`, `category`, `cost`, `residual`, `life_months`, `method`, `acquired_on`, `in_service`, `paid_from` (bank or supplier), `supplier_id`, `currency`, `serial`, `location`. Its cost goes on the books.",
+    "tags": [
+     "Value"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/assets/{id}": {
+   "get": {
+    "operationId": "apiAsset",
+    "summary": "One asset, with every month of its depreciation, posted or to come.",
+    "tags": [
+     "Value"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/assets/{id}/dispose": {
+   "post": {
+    "operationId": "apiAssetDispose",
+    "summary": "Sells (`proceeds`) or writes off (`write_off`) an asset on a `date`, saying why (`reason`): depreciated to that month, taken off the books, the gain or loss post",
+    "description": "Sells (`proceeds`) or writes off (`write_off`) an asset on a `date`, saying why (`reason`): depreciated to that month, taken off the books, the gain or loss posted.",
+    "tags": [
+     "Value"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/assets/depreciate": {
+   "post": {
+    "operationId": "apiAssetsDepreciate",
+    "summary": "Posts depreciation for every asset up to a month (`through`, YYYY-MM;",
+    "tags": [
+     "Value"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
   "/api/admin/attributes": {
    "get": {
     "operationId": "apiAdminAttributes",
@@ -2411,6 +2637,449 @@
       }
      }
     },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/budgets": {
+   "get": {
+    "operationId": "apiBudgets",
+    "summary": "The store's budgets, latest year first, and the accounts a budget can plan.",
+    "tags": [
+     "Value"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   },
+   "post": {
+    "operationId": "apiBudgetCreate",
+    "summary": "Drafts a budget: `name`, `year`, `currency`.",
+    "tags": [
+     "Value"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/budgets/{id}": {
+   "get": {
+    "operationId": "apiBudget",
+    "summary": "One budget with its lines, account by account and month by month.",
+    "tags": [
+     "Value"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/budgets/{id}/approve": {
+   "post": {
+    "operationId": "apiBudgetApprove",
+    "summary": "Approves a draft: one approved budget per year and currency.",
+    "tags": [
+     "Value"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/budgets/{id}/close": {
+   "post": {
+    "operationId": "apiBudgetClose",
+    "summary": "Closes an approved budget.",
+    "tags": [
+     "Value"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/budgets/{id}/from-actuals": {
+   "post": {
+    "operationId": "apiBudgetFromActuals",
+    "summary": "Fills a draft from a `year` of the books' actual figures, raised by `uplift_pct`.",
+    "tags": [
+     "Value"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/budgets/{id}/lines": {
+   "put": {
+    "operationId": "apiBudgetLines",
+    "summary": "Sets a draft's `lines`: `{ account, month, amount }`, or `{ account, annual }` spread evenly;",
+    "tags": [
+     "Value"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/budgets/{id}/reopen": {
+   "post": {
+    "operationId": "apiBudgetReopen",
+    "summary": "Reopens an approved budget as a draft.",
+    "tags": [
+     "Value"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/budgets/{id}/report": {
+   "get": {
+    "operationId": "apiBudgetReport",
+    "summary": "The budget against the books through a month (`through`, 1–12): each account month by month and to date, its variance, and whether it is off plan.",
+    "tags": [
+     "Value"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
     "responses": {
      "200": {
       "description": "Done; the answer as JSON"
@@ -8945,6 +9614,382 @@
     "x-audience": "store-staff"
    }
   },
+  "/api/admin/leave": {
+   "get": {
+    "operationId": "apiLeave",
+    "summary": "Leave requests, latest first;",
+    "tags": [
+     "Operations"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   },
+   "post": {
+    "operationId": "apiLeaveRequest",
+    "summary": "Asks for leave: `employee_id`, `type`, `from_date`, `to_date`, `half_day`, `reason`.",
+    "tags": [
+     "Operations"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/leave/{id}/approve": {
+   "post": {
+    "operationId": "apiLeaveApprove",
+    "summary": "Approves a request — not by the person it is for or whoever asked: each working day shows in attendance, paid or unpaid.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/leave/{id}/cancel": {
+   "post": {
+    "operationId": "apiLeaveCancel",
+    "summary": "Cancels a request not yet decided, or approved leave not yet started: its days come back.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/leave/{id}/reject": {
+   "post": {
+    "operationId": "apiLeaveReject",
+    "summary": "Turns a request down with a `note` saying why.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/leave/calendar": {
+   "get": {
+    "operationId": "apiLeaveCalendar",
+    "summary": "Who is away on each working day from `from` to `to`.",
+    "tags": [
+     "Operations"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/leave/people/{id}": {
+   "get": {
+    "operationId": "apiLeaveBalance",
+    "summary": "A person's leave for a `year`: each kind's entitlement, what is carried in, taken, waiting and left.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   },
+   "put": {
+    "operationId": "apiLeaveAllowance",
+    "summary": "Sets a person's own allowance of a kind for a year: `year`, `type`, `days` (null removes it).",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
   "/api/admin/ledger/verify": {
    "get": {
     "operationId": "apiAdminLedgerVerify",
@@ -9885,6 +10930,430 @@
     "tags": [
      "Operations"
     ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/mrp": {
+   "get": {
+    "operationId": "apiMrp",
+    "summary": "Planning at a glance: the latest run and its suggestions, the master schedule, and the items with a bill of materials.",
+    "tags": [
+     "Commerce"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/mrp/boms/{id}": {
+   "get": {
+    "operationId": "apiMrpBom",
+    "summary": "An item's bill of materials, with each component's own beneath it.",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   },
+   "put": {
+    "operationId": "apiMrpBomSet",
+    "summary": "Replaces an item's bill of materials: `components` `[{ component_id, qty, scrap_pct }]` (empty removes it).",
+    "description": "Replaces an item's bill of materials: `components` `[{ component_id, qty, scrap_pct }]` (empty removes it). A component is never the item itself, or anything made from it.",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/mrp/convert": {
+   "post": {
+    "operationId": "apiMrpConvert",
+    "summary": "Turns suggestions (`ids`, or every open one of the latest run) into draft purchase orders, one per supplier, and planned work orders.",
+    "tags": [
+     "Commerce"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/mrp/demand": {
+   "post": {
+    "operationId": "apiMrpDemandAdd",
+    "summary": "Adds to the master schedule: `product_id`, `qty`, `due_date`, `note`.",
+    "tags": [
+     "Commerce"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/mrp/demand/{id}": {
+   "delete": {
+    "operationId": "apiMrpDemandRemove",
+    "summary": "Removes a line of the master schedule.",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/mrp/items/{id}": {
+   "put": {
+    "operationId": "apiMrpItem",
+    "summary": "Sets an item's planning: `lead_days` (null takes its supplier's or the default), `safety_stock`, `min_lot`.",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/mrp/run": {
+   "post": {
+    "operationId": "apiMrpRun",
+    "summary": "Runs planning over `horizon_days`: what to make and buy, how many, by when, and what is late.",
+    "tags": [
+     "Commerce"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/mrp/suggestions/{id}/dismiss": {
+   "post": {
+    "operationId": "apiMrpDismiss",
+    "summary": "Dismisses one suggestion.",
+    "tags": [
+     "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
     "responses": {
      "200": {
       "description": "Done; the answer as JSON"

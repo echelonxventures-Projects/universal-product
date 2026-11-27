@@ -26,7 +26,7 @@ const row = (tb, code) => (tb.rows || []).find(r => r.account === code) || { deb
     console.log("▸ THE CHART OF ACCOUNTS");
     const chart = B.accounts(t1);
     ok(B.SEED.chart.every(a => chart.some(c => c.code === a.code && c.type === a.type)), "every store starts from the platform's chart", chart.length);
-    ok(chart.filter(a => a.parent === "4").map(a => a.code).join() === "4000,4100,4200,4300,4310,4900" && K.internal.nodeRow(chart.find(a => a.code === "4000").uid).kind === "books.account", "each account is on the kernel, under its group");
+    ok(chart.filter(a => a.parent === "4").map(a => a.code).join() === "4000,4100,4200,4300,4310,4900,4950" && K.internal.nodeRow(chart.find(a => a.code === "4000").uid).kind === "books.account", "each account is on the kernel, under its group");
     const mine = B.define(t1, { code: "6150", name: "Couriers", parent: "6" }, "test");
     ok(mine.type === "expense" && mine.own && B.accounts(t1).some(a => a.code === "6150") && !B.accounts(t2).some(a => a.code === "6150"), "a store adds its own account, taking its group's type; other stores do not see it");
     ok(throws(() => B.define(t1, { code: "6150", name: "Again", parent: "6" }), /already exists/) && throws(() => B.define(t1, { code: "4000", name: "Sales again", parent: "4" }), /already exists/), "an account code is not used twice");

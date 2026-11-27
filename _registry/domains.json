@@ -354,6 +354,18 @@
    "lib/authz.js Delivery role, Finance consulting, rb_v11; server.js sweep expires proposals; lib/page-meta.js proposal.html private",
    "test/consulting.js; benchmarks 71/4/8"
   ]
+ },
+ {
+  "amendmentId": "AMD-0070",
+  "date": "2026-11-27",
+  "authorisedBy": "Platform owner",
+  "summary": "The ERP gaps. Leave (lib/leave.js, lib/seed/leave.json): kinds of leave with yearly allowances, carry-over and a person's own allowance; requests counted in the store's working days, refused when they overlap or ask for more than is left; approved by someone other than the person or whoever asked; approved days written to attendance as paid leave or unpaid absence, which payroll already reads; leave not yet started cancelled with its days back; approved leave taken off the consulting resource plan and utilisation. Fixed assets (lib/assets.js, lib/seed/assets.json): registered onto the books (1500 against the bank or 2000), depreciated month by month once (depreciation_entries; 6600 against 1510) straight line or declining balance to the residual value, by staff up to a month or by the platform sweep as each month ends; sold or written off with depreciation to that month and the gain or loss on 4950; the schedule and register totals. Budgets (lib/budgets.js): a year per income and expense account month by month, set by month, spread from a year's amount or filled from a year's actuals with an uplift; one approved budget per year and currency; reported against the books to date with what is off plan beyond the tolerance. Material requirements planning (lib/mrp.js, lib/seed/mrp.json): bills of materials to any depth, refused when they would make a cycle; item lead times, safety stock and smallest lots; a master schedule; runs that net demand and open work orders' needs against stock and open purchase and work orders level by level, with need and order-by dates and lateness; suggestions turned once (claimed first) into draft purchase orders per supplier and planned work orders carrying their components. Leave requests, assets and budgets are records on the master. Roles People and Planning; Finance holds fixed assets and budgets (rb_v12). Benchmarks: ERP 20 of 20.",
+  "changes": [
+   "lib/leave.js, lib/assets.js, lib/budgets.js, lib/mrp.js with seeds, routes and console screens; business domains leave, assets, budgets, mrp; tables leave_requests, leave_allowances, fixed_assets, depreciation_entries, budgets, budget_lines, boms, mrp_items, mrp_demand, mrp_runs, mrp_suggestions; machines leave_request, fixed_asset, budget, mrp_suggestion",
+   "lib/seed/books.json accounts 1510, 4950, 6600; lib/seed/row-records.json leave_request, fixed_asset, budget; lib/consulting.js capacity less approved leave",
+   "lib/authz.js People and Planning roles, rb_v12; server.js sweep depreciates assets",
+   "test/erp.js"
+  ]
  }
   ],
   "domains": [

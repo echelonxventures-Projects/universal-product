@@ -2567,6 +2567,34 @@
     "section": "consulting"
    },
    {
+    "key": "leave",
+    "group": "Business Operations",
+    "label": "🌴 Leave",
+    "order": 8,
+    "section": "leave"
+   },
+   {
+    "key": "mrp",
+    "group": "Business Operations",
+    "label": "🏭 Planning (MRP)",
+    "order": 9,
+    "section": "mrp"
+   },
+   {
+    "key": "fixed_assets",
+    "group": "Payments & Finance",
+    "label": "🏷️ Fixed Assets",
+    "order": 20,
+    "section": "fixed_assets"
+   },
+   {
+    "key": "budgets",
+    "group": "Payments & Finance",
+    "label": "🎯 Budgets",
+    "order": 21,
+    "section": "budgets"
+   },
+   {
     "key": "affiliate",
     "group": "Marketing & Growth",
     "label": "📣 Influencers & Affiliates",

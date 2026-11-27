@@ -1,0 +1,10 @@
+{
+ "$comment": "Material requirements planning (lib/mrp.js): what to make and buy, and by when. Demand is the master schedule (what must be ready by a date) and the components that open work orders still need; supply is what is in stock, what open purchase orders and work orders will bring, less each item's safety stock. A finished item with a bill of materials is made — its net requirement becomes a planned work order and is exploded into its components, level by level; an item without one is bought from its primary supplier. Each suggestion says when it must be ordered or started, from the item's lead time, and is late when that date has passed. Suggestions become draft purchase orders (one per supplier) or planned work orders.",
+ "horizonDays": 60,
+ "defaultBuyLeadDays": 7,
+ "defaultMakeLeadDays": 3,
+ "maxLevels": 20,
+ "actions": { "make": { "label": "Make" }, "buy": { "label": "Buy" } },
+ "machines": { "suggestion": "mrp_suggestion", "purchaseOrder": "purchase_order", "workOrder": "work_order" },
+ "ref": "MRP"
+}
