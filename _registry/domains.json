@@ -393,6 +393,19 @@
    "lib/seed/erasure.json journey rows; lib/seed/settings.json campaigns and journeys; server.js sweep sends due journey steps",
    "test/journeys.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0073",
+  "date": "2026-11-28",
+  "authorisedBy": "Platform owner",
+  "summary": "Recommendations learnt from browsing and purchases (lib/recommendations.js, lib/seed/recommendations.json). Products viewed in the same visit (within a day) and bought in the same order, or by the same customer within 30 days, become pairs whose weight halves every 60 days; a pair counts once it has been seen together enough times, and is scored against how popular each product is alone, so a best-seller does not crowd everything out. Pairs and counts name no person. A product page shows what is bought together (where the store set no bundle of its own), what was viewed with it and what is like it by category, brand and price (so a new product has suggestions); the home page shows picks for the shopper, each with its reason (because you viewed, bought or have in the cart), spread over departments, filled from what is popular in the departments they look at, then what they viewed recently and what is popular now; the cart shows what goes with it. What a shopper views in the visit always shapes their picks; a signed-in shopper's past orders do only with a live grant for analytics and personalisation (held under their account or their email), or, where the store sets basis optout, until they withdraw it; the home page offers the grant. View pairs are learnt as views happen, purchase pairs as orders are placed, and both rebuilt in full by the nightly sweep. Every shelf is counted shown, clicked (a product opened from it) and bought (an order of it within 7 days of the click, kept with a guest who signs in), with revenue. A store switches shelves off, blocks or lifts products, and sets the basis, the half-life, the most from one department and the shelf size on the Recommendations screen, which also shows what has been learnt and previews what a customer or a product page would get. Erasure removes a person's shelf clicks. Benchmarks: marketplace recommendations present; 83 of 83.",
+  "changes": [
+   "lib/recommendations.js, lib/seed/recommendations.json; tables rec_pairs, rec_items, rec_clicks, rec_stats, rec_runs",
+   "lib/routes/search.js /api/recs, /api/recs/shown and /api/admin/recommendations/*; /api/recommend answers from the learnt model; the Recommendations console screen under a recommendations section the Catalog and Growth roles hold (rb_v14)",
+   "lib/routes/engagement.js learns each view and counts a shelf click; lib/api.js emitEvent tells recommendations of orders and mergeOwner keeps a guest's clicks; public/js/app.js the learnt shelves on the home, product and cart pages, each reporting what it showed",
+   "lib/seed/erasure.json rec_clicks; lib/seed/settings.json recommendations and the shelf texts; lib/seed/expression.json their translations; server.js sweep rebuilds the purchase pairs",
+   "test/recommendations.js"
+  ]
  }
   ],
   "domains": [

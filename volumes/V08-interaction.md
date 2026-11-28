@@ -731,14 +731,20 @@ stateDiagram-v2
 | **Contract** | [UCOS-SRC-000001 Search Architecture](#ucos-src-000001) |
 | **Artifacts** | [UCOS-SRC-000001](#ucos-src-000001) |
 | **Concepts** | 99 — `node _registry/compile.js --search <words> --kind concept --owner "Search"` |
-| **Code** | `lib/search.js`, `lib/routes/search.js` |
+| **Code** | `lib/search.js`, `lib/recommendations.js`, `lib/seed/recommendations.json`, `lib/routes/search.js` |
 | **Managed in** | `_registry/domains.json` → `D-SRH` |
 
-**Live routes (5)** — what the platform serves today for this domain:
+**Live routes (11)** — what the platform serves today for this domain:
 
 - `GET /api/search`
 - `GET /api/suggest`
 - `GET /api/recommend`
+- `GET /api/recs`
+- `POST /api/recs/shown`
+- `GET /api/admin/recommendations`
+- `PUT /api/admin/recommendations`
+- `POST /api/admin/recommendations/train`
+- `GET /api/admin/recommendations/preview`
 - `GET /api/reco/:id`
 - `GET /api/facets`
 

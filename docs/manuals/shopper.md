@@ -260,9 +260,11 @@ More: [Storefront and content](../domains/storefront.md)
 
 ## Search and discovery
 
-Finding things: search, suggestions and facets, and recommendations.
+Finding things: search, suggestions and facets, and recommendations learnt from what shoppers view and buy together — bought together, viewed with this and like this on a product page, picks for each shopper with the reason for each, viewed recently and popular now on the home page, what goes with the cart — with a shopper's past orders used only on the store's basis, products blocked or lifted, and every shelf counted shown, clicked and bought.
 
-_Not yet written._
+Your picks on the home page say why each was chosen. If you are signed in, the home page asks whether
+your past orders may shape them. **Yes, use my orders** turns that on. You can turn it off on the
+privacy page under **Analytics & personalization**. What you view in a visit always shapes the picks.
 
 More: [Search and discovery](../domains/search.md)
 

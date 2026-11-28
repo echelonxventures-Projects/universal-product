@@ -59,7 +59,7 @@
     {"pattern": "^/api/(themes|branding|sitemap|sitemap\\.xml|seo|config|hint)(/|$)", "owner": "Experience"},
     {"pattern": "^/api/platform/(branding|branding-permissions|hint)(/|$)", "owner": "Experience"},
     {"pattern": "^/api/admin/(banners|cards)(/|$)", "owner": "Experience"},
-    {"pattern": "^/api/(search|suggest|facets|reco|recommend)(/|$)", "owner": "Search"},
+    {"pattern": "^/api/(search|suggest|facets|reco|recommend|recs|admin/recommendations)(/|$)", "owner": "Search"},
     {"pattern": "^/api/(helpdesk|support)(/|$)", "owner": "Communication"},
     {"pattern": "^/api/admin/helpdesk(/|$)", "owner": "Communication"},
     {"pattern": "^/api/notifications(/|$)", "owner": "Notification"},

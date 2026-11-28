@@ -2567,6 +2567,13 @@
     "section": "campaigns"
    },
    {
+    "key": "recommendations",
+    "group": "Storefront",
+    "label": "🎯 Recommendations",
+    "order": 1,
+    "section": "recommendations"
+   },
+   {
     "key": "consulting",
     "group": "Business Operations",
     "label": "⏱️ Consulting",

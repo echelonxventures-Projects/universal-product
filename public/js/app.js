@@ -306,11 +306,14 @@ function card(p) {
     </div>
   </div>`;
 }
-function carousel(title, items) {
+/* o.slot names a learnt shelf (lib/recommendations.js): each product opened from it says so (rf), and
+   o.why shows each pick's reason under it */
+function carousel(title, items, o) {
   if (!items || !items.length) return "";
-  return `<section class="h-carousel"><h2>${esc(title)}</h2>
+  o = o || {};
+  return `<section class="h-carousel"${o.slot ? ` data-rec-slot="${esc(o.slot)}" data-rec-n="${items.length}"` : ""}><h2>${esc(title)}</h2>${o.sub || ""}
     <div class="hc-outer"><button class="hc-arrow" data-dir="-1">‹</button>
-      <div class="hc-track">${items.map(p => `<a class="hc-item" href="${prodLink(p)}">${img(p, "big")}<div class="hc-name">${esc(p.t)}</div>${rated(p) ? `<div class="hc-rate">${starsHtml(p.r)}<b>${p.r}</b></div>` : ""}<div class="hc-price">${priceHtml(p.p)}</div>${p.pr ? `<div class="hc-prio">${prioBadge()}</div>` : ""}</a>`).join("")}</div>
+      <div class="hc-track">${items.map(p => `<a class="hc-item" href="${prodLink(p)}${o.slot ? "&rf=" + encodeURIComponent(o.slot) : ""}"${p.why ? ` title="${esc(p.why)}"` : ""}>${img(p, "big")}<div class="hc-name">${esc(p.t)}</div>${o.why && p.why ? `<div class="hc-why">${esc(p.why)}</div>` : ""}${rated(p) ? `<div class="hc-rate">${starsHtml(p.r)}<b>${p.r}</b></div>` : ""}<div class="hc-price">${priceHtml(p.p)}</div>${p.pr ? `<div class="hc-prio">${prioBadge()}</div>` : ""}</a>`).join("")}</div>
       <button class="hc-arrow" data-dir="1">›</button></div></section>`;
 }
 
@@ -318,7 +321,7 @@ function carousel(title, items) {
 async function pageHome() {
   const main = $("#page");
   main.innerHTML = `<div class="loading">Composing…</div>`;
-  const [res, tax] = await Promise.all([api("/products?limit=200"), api("/taxonomy")]);
+  const [res, tax, recs] = await Promise.all([api("/products?limit=200"), api("/taxonomy"), api("/recs?page=home").catch(() => null)]);
   const all = res.items;
   /* a store with nothing on its shelf and no banners yet says so, instead of showing empty
      carousels and arrows (a new live store starts this way, before the owner adds products) */
@@ -333,8 +336,9 @@ async function pageHome() {
   const best = all.filter(p => p.fl.includes("bs")).slice(0, 12);
   const rated = [...all].sort((a, b) => b.r - a.r).slice(0, 12);
   const fresh = all.filter(p => p.fl.includes("new")).slice(0, 12);
-  const viewed = S.viewed.map(id => all.find(p => p.id === id)).filter(Boolean);
-  const related = viewed.length ? all.filter(p => p.d === viewed[0].d && !S.viewed.includes(p.id)).slice(0, 12) : [];
+  const rc = recs || { for_you: [], recent: [], trending: [] };
+  /* a signed-in shopper whose past orders do not shape their picks yet is asked, once per visit to the home page */
+  const askOrders = rc.ask && rc.for_you.length ? `<p class="rec-sub">${esc(T("recPersonalOff"))} <button class="btn-white sm" data-act="rec-personal" data-purpose="${esc(rc.purpose || "")}">${esc(T("recPersonalOn"))}</button></p>` : "";
 
   const banners = CFG.home.banners.map((b, i) => `
     <a class="banner ${i === 0 ? "banner-active" : ""}" href="results.html?dept=${esc(b.dept)}${f.deals ? "&deal=1" : ""}" style="--bh:${b.hue}">
@@ -352,15 +356,17 @@ async function pageHome() {
   <div class="hero-cards">${cards}</div>
   ${industries.length ? `<nav class="cat-rail">${industries.map(n => `<a href="results.html?node=${n.id}"><span>${n.icon || "🏷️"}</span>${esc(n.name)}</a>`).join("")}</nav>` : ""}
   <section class="prio-strip"><span class="ps-badge">✦ ${esc(T("priorityBadge"))}</span> ${esc(T("priorityPerk"))}</section>
-  ${related.length ? carousel(T("relatedTitle"), related) : ""}
+  ${carousel(T("recForYou"), rc.for_you, { slot: "for_you", why: true, sub: askOrders })}
+  ${carousel(T("recRecent"), rc.recent, { slot: "recent" })}
   ${f.deals ? carousel(T("dealsTitle"), deals) : ""}
   ${carousel(T("bestSellers"), best)}
+  ${carousel(T("recTrending"), rc.trending, { slot: "trending" })}
   <section class="signin-strip"><div><b>${S.user ? "Welcome back, " + esc(S.user.name.split(" ")[0]) : "The personal atelier"}</b>
     <div>${S.user ? "Your selections, saved across devices." : "Sign in for curated picks and faster checkout."}</div>
     <div class="si-btns">${S.user ? `<a class="btn-yellow" href="orders.html">${esc(T("yourOrders"))}</a>` : `<button class="btn-yellow" data-act="signin-open">${esc(T("signIn"))}</button><button class="btn-white" data-act="signin-open">Create account</button>`}</div></div></section>
   ${carousel(T("topRated"), rated)}
   ${carousel(T("newArrivals"), fresh.length ? fresh : best)}`;
-  wireCarousels();
+  wireCarousels(); recShown();
   let bi = 0; const bN = $$(".banner").length;
   const bGo = n => { $$(".banner").forEach((el, i) => el.classList.toggle("banner-active", i === n)); bi = n; };
   if (bN) { $("#bPrev").onclick = () => bGo((bi - 1 + bN) % bN); $("#bNext").onclick = () => bGo((bi + 1) % bN); setInterval(() => bGo((bi + 1) % bN), 5000); }
@@ -615,7 +621,7 @@ async function pageProduct() {
     if (!g || !box) return;
     box.innerHTML = `<details><summary>📏 ${esc(r.label || g.name)}</summary><div style="overflow-x:auto"><table class="spec"><thead><tr>${g.rows[0].map(c => `<th>${esc(c)}</th>`).join("")}</tr></thead><tbody>${g.rows.slice(1).map(x => `<tr>${x.map(c => `<td>${esc(c)}</td>`).join("")}</tr>`).join("")}</tbody></table></div>${g.note ? `<p class="pay-meta">${esc(g.note)}</p>` : ""}</details>`;
   }).catch(() => { });
-  api("/viewed", "POST", { id: p.id }).then(refreshSession).catch(() => { });
+  api("/viewed", "POST", { id: p.id, rf: params().get("rf") || undefined }).then(refreshSession).catch(() => { });
   window.__rv = p;
   const f = CFG.features;
   const subDisc = (CFG.retention && CFG.retention.subDiscount) || 10;
@@ -718,9 +724,20 @@ async function pageProduct() {
           </div>`).join("") : '<p class="a-sub">No questions yet. Ask the first question above.</p>'}</div>` : ""}
     </div>
     ${relGroups.accessory || relGroups.compatible ? carousel("Accessories & Compatibility", relGroups.accessory || relGroups.compatible) : ""}
-    ${related.length ? carousel(T("relatedTitle"), related.slice(0, 10)) : ""}
+    <div id="recShelves">${related.length ? carousel(T("relatedTitle"), related.slice(0, 10)) : ""}</div>
   </div>`;
   wireCarousels();
+  /* the learnt shelves: bought together (where the store set no bundle of its own), viewed with it, and like it */
+  api("/recs?page=product&id=" + encodeURIComponent(p.id)).then(r => {
+    const box = document.getElementById("recShelves"); if (!box) return;
+    const fbt = !(relGroups.bundle || relGroups.cross_sell || relGroups.upsell) && r.bought_together.length && p.st ? `<section class="pp-fbt" data-rec-slot="bought_together" data-rec-n="${r.bought_together.length}"><h3>${esc(T("fbtTitle"))}</h3><div class="fbt-row">
+      <label><input type="checkbox" checked disabled> ${img(p, "fbt")}</label>${r.bought_together.map(x => `<span class="fbt-plus">+</span><a href="${prodLink(x)}&rf=bought_together" title="${esc(x.why || "")}">${img(x, "fbt")}</a>`).join("")}
+      <div class="fbt-sum"><div>${r.bought_together.map(x => `<div>${esc(x.t.slice(0, 48))} <span>${priceHtml(x.p)}</span></div>`).join("")}</div>
+        <div class="fbt-total">Total: <b>${money(p.p + r.bought_together.reduce((n, x) => n + x.p, 0))}</b>
+          <button class="btn-yellow" data-act="add-all" data-ids="${[p.id, ...r.bought_together.map(x => x.id)].join(",")}">${esc(T("addToCart"))}</button></div></div></div></section>` : "";
+    box.innerHTML = fbt + carousel(T("recAlsoViewed"), r.also_viewed, { slot: "also_viewed" }) + (r.similar.length ? carousel(T("relatedTitle"), r.similar, { slot: "similar" }) : (related.length ? carousel(T("relatedTitle"), related.slice(0, 10)) : ""));
+    wireCarousels(); recShown();
+  }).catch(() => { });
   renderProductExtras(data);
   const z = document.getElementById("ppZip");
   if (z) z.onclick = e => { e.preventDefault(); openModal("zipModal"); };
@@ -781,8 +798,8 @@ async function pageCart() {
     <a href="checkout.html" class="btn-yellow w100">${esc(T("proceedCheckout"))}</a>
     ${f.giftCards && S.gift > 0 ? `<p class="cs-gift">🎁 ${esc(T("giftBalanceLabel"))}: ${money(S.gift)}</p>` : ""}
   </div></div></aside></div>
-  <div class="cart-recos">${carousel(T("relatedTitle"), (await api("/products?sort=best&limit=12")).items)}</div>`;
-  wireCarousels();
+  <div class="cart-recos">${carousel(T("recGoesWith"), ((await api("/recs?page=cart").catch(() => null)) || { goes_with: [] }).goes_with, { slot: "goes_with" })}</div>`;
+  wireCarousels(); recShown();
   $$(".ci-qty").forEach(sel => sel.onchange = async () => { applyCart(await api("/cart", "PUT", { id: sel.dataset.id, line: sel.dataset.line, qty: Number(sel.value) })); });
   $$("[data-act='tip']").forEach(b => b.onclick = async () => { try { applyCart(await api("/cart/tip", "POST", { amount: Number(b.dataset.amt) })); } catch (e) { toast(e.message); } });
   /* a substitution choice is a line term: the line is re-added with it, and the old one removed */
@@ -1318,6 +1335,12 @@ function registryIntro() {
 }
 
 function applyCart(c) { S.cartCount = c.count; S.cartSub = c.sub; const b = $("#cartCount"); if (b) b.textContent = c.count; pageCart(); }
+/* what the learnt shelves on this page showed, counted once per page */
+function recShown() {
+  const slots = {};
+  $$("[data-rec-slot]:not([data-rec-told])").forEach(el => { el.dataset.recTold = "1"; slots[el.dataset.recSlot] = (slots[el.dataset.recSlot] || 0) + Number(el.dataset.recN || 0); });
+  if (Object.keys(slots).length) api("/recs/shown", "POST", { slots }).catch(() => { });
+}
 function wireCarousels() { $$(".hc-arrow").forEach(a => a.onclick = () => a.closest(".hc-outer").querySelector(".hc-track").scrollBy({ left: 520 * Number(a.dataset.dir), behavior: "smooth" })); }
 
 /* ============ chrome wiring ============ */
@@ -1409,9 +1432,14 @@ document.addEventListener("click", async e => {
   const el = e.target.closest("[data-act]");
   if (!el) return;
   const act = el.dataset.act, id = el.dataset.id;
-  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "open-review", "buy-again", "list", "rfq-open", "return-open", "order-cancel", "email-verify", "coupon", "select-variant", "ugc-vote", "qna-ask", "sub-save", "mem-subscribe", "mem-cancel", "sub-skip", "sub-pause", "sub-resume", "sub-cancel", "lst-add", "alert-open", "grp-join", "au-bid", "au-buynow", "au-pay", "offer-open", "msg-open", "bk-hold", "act-do", "terms-buy", "gc-amt", "gc-occ", "gc-buy", "gc-redeem", "gc-check"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
+  if (["add", "buy-now", "add-all", "logout", "signin-open", "save-later", "cart-remove", "move-cart", "unsave", "open-review", "buy-again", "list", "rfq-open", "return-open", "order-cancel", "email-verify", "coupon", "select-variant", "ugc-vote", "qna-ask", "sub-save", "mem-subscribe", "mem-cancel", "sub-skip", "sub-pause", "sub-resume", "sub-cancel", "lst-add", "alert-open", "grp-join", "au-bid", "au-buynow", "au-pay", "offer-open", "msg-open", "bk-hold", "act-do", "terms-buy", "gc-amt", "gc-occ", "gc-buy", "gc-redeem", "gc-check", "rec-personal"].includes(act)) { e.preventDefault(); e.stopPropagation(); }
   try {
     switch (act) {
+      /* the shopper lets their past orders shape their picks: a grant for the purpose recommendations use */
+      case "rec-personal": {
+        await api("/consent", "POST", { purpose: el.dataset.purpose, status: "granted" });
+        toast("✓"); pageHome(); break;
+      }
       case "select-variant": {
         const grp = el.dataset.vggroup;
         document.querySelectorAll(".bb-vg-opt").forEach(b => { if (b.dataset.vggroup === grp) { b.style.borderColor = "#d5d9d9"; b.style.fontWeight = ""; } });

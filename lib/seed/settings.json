@@ -133,6 +133,13 @@
    "dealsTitle": "The Edit — Limited Offers",
    "relatedTitle": "You May Also Admire",
    "fbtTitle": "Completes the Look",
+   "recForYou": "Picks for you",
+   "recRecent": "Viewed recently",
+   "recTrending": "Popular now",
+   "recAlsoViewed": "Viewed with this",
+   "recGoesWith": "Goes with your cart",
+   "recPersonalOff": "These picks come from what you are looking at now. Let your past orders shape them too?",
+   "recPersonalOn": "Yes, use my orders",
    "reviewsTitle": "Owner Reviews",
    "qnaTitle": "Customer Questions & Answers",
    "writeReview": "Write a review",
@@ -186,7 +193,8 @@
   "leave": {},
   "trips": {},
   "campaigns": {},
-  "journeys": {}
+  "journeys": {},
+  "recommendations": {}
  },
  "LEGAL_FIELDS": [
   {

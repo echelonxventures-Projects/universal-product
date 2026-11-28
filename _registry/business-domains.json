@@ -2669,7 +2669,7 @@
    "key": "search",
    "name": "Search and discovery",
    "foundation": "Search",
-   "purpose": "Finding things: search, suggestions and facets, and recommendations.",
+   "purpose": "Finding things: search, suggestions and facets, and recommendations learnt from what shoppers view and buy together — bought together, viewed with this and like this on a product page, picks for each shopper with the reason for each, viewed recently and popular now on the home page, what goes with the cart — with a shopper's past orders used only on the store's basis, products blocked or lifted, and every shelf counted shown, clicked and bought.",
    "users": [
     "guest",
     "shopper",
@@ -2677,11 +2677,19 @@
    ],
    "owns": {
     "files": [
-     "lib/search.js"
+     "lib/search.js",
+     "lib/recommendations.js"
     ],
-    "tables": [],
+    "tables": [
+     "rec_pairs",
+     "rec_items",
+     "rec_clicks",
+     "rec_stats",
+     "rec_runs"
+    ],
     "routes": [
-     "^/api/(search|suggest|facets|reco|recommend|hint)(/|$)",
+     "^/api/(search|suggest|facets|reco|recommend|recs|hint)(/|$)",
+     "^/api/admin/recommendations(/|$)",
      "^/api/platform/hint(/|$)"
     ],
     "machines": [],
@@ -2690,7 +2698,8 @@
     ],
     "registries": [],
     "screens": [
-     "search"
+     "search",
+     "recommendations"
     ],
     "platformScreens": [],
     "platformGroups": [],

@@ -55,9 +55,10 @@ More: [Storefront and content](../domains/storefront.md)
 
 ## Search and discovery
 
-Finding things: search, suggestions and facets, and recommendations.
+Finding things: search, suggestions and facets, and recommendations learnt from what shoppers view and buy together — bought together, viewed with this and like this on a product page, picks for each shopper with the reason for each, viewed recently and popular now on the home page, what goes with the cart — with a shopper's past orders used only on the store's basis, products blocked or lifted, and every shelf counted shown, clicked and bought.
 
-_Not yet written._
+Product pages show what is often bought together, what others viewed with it and what is like it.
+The home page suggests products from what you are looking at in this visit.
 
 More: [Search and discovery](../domains/search.md)
 

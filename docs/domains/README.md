@@ -57,7 +57,7 @@ Every artifact the platform is built from — a code file, a table, an API route
 | [Messages and notifications](communication.md) | Communication | Shopper, Seller, Store staff, Store administrator | 5 sections to write |
 | [Customer support](support.md) | Communication | Shopper, Store staff, Store administrator | 4 sections to write |
 | [Storefront and content](storefront.md) | Experience | Guest, Shopper, Store administrator | 4 sections to write |
-| [Search and discovery](search.md) | Search | Guest, Shopper, Store administrator | 4 sections to write |
+| [Search and discovery](search.md) | Search | Guest, Shopper, Store administrator | complete |
 | [Search engine optimisation](seo.md) | Experience | Store administrator | 2 sections to write |
 | [Languages and localisation](localisation.md) | Expression | Store administrator, Platform administrator | 3 sections to write |
 | [Consoles](consoles.md) | Experience | Store staff, Store administrator, Platform administrator | 4 sections to write |

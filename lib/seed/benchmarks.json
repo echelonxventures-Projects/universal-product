@@ -13,7 +13,7 @@
    { "f": "Deals, sale events and countdowns", "e": ["c:deals", "c:sale_events", "c:countdown"] },
    { "f": "Coupons and gift cards", "e": ["c:coupons", "c:gift_cards"] },
    { "f": "Wish lists and gift registries", "e": ["c:wish_lists", "t:gift_registries"] },
-   { "f": "Recommendations", "e": ["c:suggestions"], "gap": "rule-based suggestions; no learned personalisation from browsing and purchase history" },
+   { "f": "Recommendations", "e": ["c:suggestions", "t:rec_pairs", "f:lib/recommendations.js", "f:test/recommendations.js"] },
    { "f": "Sponsored products and ads", "e": ["c:sponsored_ads", "t:ads"] },
    { "f": "Returns and refunds", "e": ["t:returns", "t:payment_refunds"] },
    { "f": "Buyer protection (A-to-z style claims)", "e": ["c:buyer_protection", "t:buyer_claims"] },

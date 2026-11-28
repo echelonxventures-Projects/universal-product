@@ -84,6 +84,8 @@
     {"path": "lib/mailer.js", "owner": "Communication"},
     {"path": "lib/helpdesk.js", "owner": "Communication", "note": "conversations"},
     {"path": "lib/search.js", "owner": "Search"},
+    {"path": "lib/recommendations.js", "owner": "Search"},
+    {"path": "lib/seed/recommendations.json", "owner": "Search"},
     {"path": "lib/states.js", "owner": "Runtime"},
     {"path": "lib/queue.js", "parts": [{"owner": "Runtime", "part": "job semantics"}, {"owner": "Operations", "part": "queue runtime adapter"}]},
     {"path": "lib/ai.js", "owner": "Agent"},

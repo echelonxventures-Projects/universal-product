@@ -2316,6 +2316,31 @@ CREATE UNIQUE INDEX ux_home_cards_uid ON home_cards(uid);
 CREATE TRIGGER trg_home_cards_uid AFTER INSERT ON home_cards
                BEGIN UPDATE home_cards SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
+-- ── search · Search and discovery ────────────────────────────────────────────────────────────────
+CREATE TABLE rec_pairs (
+  tenant_id INTEGER NOT NULL, kind TEXT NOT NULL, a TEXT NOT NULL, b TEXT NOT NULL, weight REAL NOT NULL DEFAULT 0, n INTEGER NOT NULL DEFAULT 0, at TEXT NOT NULL,
+  PRIMARY KEY (tenant_id, kind, a, b)
+);
+CREATE INDEX ix_rec_pairs ON rec_pairs(tenant_id, kind, a, weight);
+CREATE TABLE rec_items (
+  tenant_id INTEGER NOT NULL, kind TEXT NOT NULL, product_id TEXT NOT NULL, weight REAL NOT NULL DEFAULT 0, at TEXT NOT NULL,
+  PRIMARY KEY (tenant_id, kind, product_id)
+);
+CREATE INDEX ix_rec_items ON rec_items(tenant_id, kind, weight);
+CREATE TABLE rec_clicks (
+  tenant_id INTEGER NOT NULL, owner TEXT NOT NULL, product_id TEXT NOT NULL, slot TEXT NOT NULL, at TEXT NOT NULL,
+  PRIMARY KEY (tenant_id, owner, product_id)
+);
+CREATE TABLE rec_stats (
+  tenant_id INTEGER NOT NULL, day TEXT NOT NULL, slot TEXT NOT NULL, shown INTEGER NOT NULL DEFAULT 0, clicked INTEGER NOT NULL DEFAULT 0,
+  bought INTEGER NOT NULL DEFAULT 0, revenue REAL NOT NULL DEFAULT 0, PRIMARY KEY (tenant_id, day, slot)
+);
+CREATE TABLE rec_runs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, at TEXT NOT NULL, orders INTEGER NOT NULL DEFAULT 0,
+  pairs INTEGER NOT NULL DEFAULT 0, products INTEGER NOT NULL DEFAULT 0, ms INTEGER NOT NULL DEFAULT 0
+);
+CREATE INDEX ix_rec_runs ON rec_runs(tenant_id, id);
+
 -- ── seo · Search engine optimisation ─────────────────────────────────────────────────────────────
 CREATE TABLE sitemap_config (
     id INTEGER PRIMARY KEY AUTOINCREMENT,

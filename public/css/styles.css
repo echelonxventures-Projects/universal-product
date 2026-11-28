@@ -645,3 +645,6 @@ body { font-family: var(--font-body); }
 .ride-map-drop { fill: #b91c1c; stroke: #fff; stroke-width: 2; }
 .ride-map-car { fill: #1d4ed8; stroke: #fff; stroke-width: 2; }
 .ride-map figcaption { font-size: 13px; color: #52525b; }
+/* learnt shelves (lib/recommendations.js): each pick's reason, and the question whether past orders may shape them */
+.hc-why { font-size: 12px; color: #565959; margin-top: 2px; height: 32px; overflow: hidden; }
+.rec-sub { margin: -4px 0 8px; font-size: 13px; color: #565959; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }

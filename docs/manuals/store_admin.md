@@ -548,9 +548,26 @@ More: [Storefront and content](../domains/storefront.md)
 
 ## Search and discovery
 
-Finding things: search, suggestions and facets, and recommendations.
+Finding things: search, suggestions and facets, and recommendations learnt from what shoppers view and buy together — bought together, viewed with this and like this on a product page, picks for each shopper with the reason for each, viewed recently and popular now on the home page, what goes with the cart — with a shopper's past orders used only on the store's basis, products blocked or lifted, and every shelf counted shown, clicked and bought.
 
-_Not yet written._
+Open **Storefront → 🎯 Recommendations**. Your role needs the recommendations section; the Catalog and
+Growth roles have it.
+
+- **What has been learnt** shows the pairs bought and viewed together, and how many products have
+  partners. It also lists the last rebuilds. **Rebuild from orders now** rebuilds without waiting for
+  the night.
+- **Shelves** lists each shelf's last 30 days: shown, clicked, click rate, bought, the share of clicks
+  that became orders, and revenue. Untick a shelf to switch it off.
+- **Settings**:
+  - whether past orders shape picks only with the shopper's grant (the default) or unless they
+    withdraw it;
+  - how fast a signal fades;
+  - the most products from one department;
+  - the products on a shelf;
+  - how many days a click counts toward an order;
+  - products never to recommend, and products to lift, as product ids.
+- **Preview**: enter a customer's email to see their picks with the reason and score for each, or a
+  product id to see that page's shelves.
 
 More: [Search and discovery](../domains/search.md)
 
