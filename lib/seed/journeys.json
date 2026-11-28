@@ -1,0 +1,21 @@
+{
+ "$comment": "Journeys (lib/journeys.js): messages sent on their own when something happens — someone creates an account, orders, has an order delivered, or leaves a cart — or to an audience enrolled by hand, as a series of steps each waiting a while after the one before. Each step goes by email, SMS or a note in the shopper's account (the channels of lib/seed/campaigns.json), only to people with a live grant for marketing (checked when they enter and again before each message), and carries the unsubscribe link; withdrawing stops every journey for that person. An event a journey names as its exit takes the person out (an order ends an abandoned-cart journey). Nobody gets more than maxPerDay journey messages in a day; a message over the cap waits for the next day. Opens (email) and clicks (every channel) are counted by lib/campaigns.js track. A store sets its own values in settings journeys.<key>.",
+ "triggers": {
+  "customer.created": { "label": "Someone creates an account", "person": "user" },
+  "order.created": { "label": "Someone places an order", "person": "order" },
+  "order.delivered": { "label": "An order is delivered", "person": "order" },
+  "cart.abandoned": { "label": "Someone leaves items in their cart", "person": "owner", "computed": true },
+  "audience": { "label": "People enrolled by hand from an audience", "person": "audience", "manual": true }
+ },
+ "exits": ["order.created", "order.paid", "order.delivered", "customer.created"],
+ "abandonAfterMinutes": 120,
+ "maxSteps": 10,
+ "maxWaitDays": 90,
+ "maxPerDay": 3,
+ "batch": 200,
+ "maxEnrol": 100000,
+ "refPrefix": "JRN",
+ "machine": "journey",
+ "enrolment": "journey_enrolment",
+ "record": "journey"
+}

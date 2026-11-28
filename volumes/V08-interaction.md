@@ -270,11 +270,21 @@ stateDiagram-v2
 | **Contract** | [UCOS-CMN-000001 Communication Architecture](#ucos-cmn-000001) |
 | **Artifacts** | [UCOS-CMN-000001](#ucos-cmn-000001) |
 | **Concepts** | 117 — `node _registry/compile.js --search <words> --kind concept --owner "Communication"` |
-| **Code** | `lib/media-sessions.js`, `lib/mailer.js`, `lib/helpdesk.js`, `lib/routes/communication.js`, `lib/routes/support.js`, `lib/campaigns.js`, `lib/seed/campaigns.json`, `lib/routes/campaigns.js`, `public/js/admin/campaigns.js` |
+| **Code** | `lib/media-sessions.js`, `lib/mailer.js`, `lib/helpdesk.js`, `lib/routes/communication.js`, `lib/routes/support.js`, `lib/campaigns.js`, `lib/seed/campaigns.json`, `lib/routes/campaigns.js`, `public/js/admin/campaigns.js`, `lib/journeys.js`, `lib/seed/journeys.json` |
 | **Managed in** | `_registry/domains.json` → `D-CMN` |
 
-**Live routes (30)** — what the platform serves today for this domain:
+**Live routes (40)** — what the platform serves today for this domain:
 
+- `GET /api/admin/journeys`
+- `POST /api/admin/journeys`
+- `POST /api/admin/journeys/run`
+- `GET /api/admin/journeys/:id`
+- `PUT /api/admin/journeys/:id`
+- `POST /api/admin/journeys/:id/start`
+- `POST /api/admin/journeys/:id/pause`
+- `POST /api/admin/journeys/:id/end`
+- `POST /api/admin/journeys/:id/enrol`
+- `GET /api/m`
 - `GET /api/admin/campaigns`
 - `POST /api/admin/campaigns`
 - `GET /api/admin/campaigns/:id`

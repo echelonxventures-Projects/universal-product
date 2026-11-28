@@ -264,7 +264,7 @@ More: [Customer relationships](../domains/crm.md)
 
 ## Campaigns
 
-Email, SMS and in-app messages to a store's customers, a segment, its CRM contacts or a company's people — only to those with a live marketing consent, checked when the list is built and again before each message — with an unsubscribe link in every one, sent once per person even by several servers, scheduled or sent now, and counted.
+Email, SMS and in-app messages to a store's customers, a segment, its CRM contacts or a company's people — only to those with a live marketing consent, checked when the list is built and again before each message — with an unsubscribe link in every one, sent once per person even by several servers, scheduled or sent now, and counted; journeys — messages sent on their own when someone creates an account, orders, has an order delivered or leaves a cart, or to an audience enrolled by hand, step by step, with exits, a daily cap and unsubscribing from every journey at once; opens and clicks of every message.
 
 Open **Marketing & Growth → 📣 Campaigns**. Your role needs the campaigns section; the Growth role
 has it.
@@ -275,6 +275,16 @@ has it.
 - Afterwards it shows how many were sent, skipped, failed and unsubscribed, and why.
 - Email and SMS go through your notification gateway (**Payments & notifications**); without one
   they are counted as failed.
+
+Open **Marketing & Growth → 🧭 Journeys** for journeys:
+
+- **New journey**: name it, choose what starts it and what ends it early, add steps with their wait,
+  channel, subject and message, then **Draft the journey**. **Start** it to let people in.
+- Open a journey to see each step's sends, opens, clicks and unsubscribes, and who is in it.
+- **Pause** stops sending and entering; a paused journey can be changed and started again. **End for
+  good** stops everyone in it.
+- A journey started "by hand" takes an audience: choose it and **Enrol them**.
+- **Send what is due now** sends due steps at once; otherwise the platform sends them on its cycle.
 
 More: [Campaigns](../domains/campaigns.md)
 

@@ -125,10 +125,11 @@ More: [Wallets](../domains/wallet.md)
 
 ## Campaigns
 
-Email, SMS and in-app messages to a store's customers, a segment, its CRM contacts or a company's people — only to those with a live marketing consent, checked when the list is built and again before each message — with an unsubscribe link in every one, sent once per person even by several servers, scheduled or sent now, and counted.
+Email, SMS and in-app messages to a store's customers, a segment, its CRM contacts or a company's people — only to those with a live marketing consent, checked when the list is built and again before each message — with an unsubscribe link in every one, sent once per person even by several servers, scheduled or sent now, and counted; journeys — messages sent on their own when someone creates an account, orders, has an order delivered or leaves a cart, or to an audience enrolled by hand, step by step, with exits, a daily cap and unsubscribing from every journey at once; opens and clicks of every message.
 
 Every marketing message from a store has a link at the end. Opening it stops that store's marketing
-messages to you; you can turn them back on in your account's privacy settings.
+messages to you, including any series you are in; you can turn them back on in your account's
+privacy settings. When you create an account you choose whether to get offers and news.
 
 More: [Campaigns](../domains/campaigns.md)
 

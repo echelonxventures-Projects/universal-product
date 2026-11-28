@@ -9614,6 +9614,449 @@
     "x-audience": "store-staff"
    }
   },
+  "/api/admin/journeys": {
+   "get": {
+    "operationId": "apiJourneys",
+    "summary": "The store's journeys, newest first, each with who entered, is in it, finished or left, and each step's sends, opens, clicks and unsubscribes;",
+    "description": "The store's journeys, newest first, each with who entered, is in it, finished or left, and each step's sends, opens, clicks and unsubscribes; and the triggers, exits and channels a journey can use.",
+    "tags": [
+     "Communication"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   },
+   "post": {
+    "operationId": "apiJourneyCreate",
+    "summary": "Drafts a journey: `name`, `trigger` (what starts it), `steps` `[{ wait_minutes, channel, subject?, body }]`, `exit_on` (events that take a person out), `reenter`",
+    "description": "Drafts a journey: `name`, `trigger` (what starts it), `steps` `[{ wait_minutes, channel, subject?, body }]`, `exit_on` (events that take a person out), `reenter` (each time, not once), `segment` (only its members).",
+    "tags": [
+     "Communication"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/journeys/{id}": {
+   "get": {
+    "operationId": "apiJourney",
+    "summary": "One journey with its steps and their numbers, and the people in it (`status` narrows them).",
+    "tags": [
+     "Communication"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   },
+   "put": {
+    "operationId": "apiJourneyUpdate",
+    "summary": "Changes a draft or paused journey: any of `name`, `trigger`, `steps`, `exit_on`, `reenter`, `segment`.",
+    "tags": [
+     "Communication"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/journeys/{id}/end": {
+   "post": {
+    "operationId": "apiJourneyEnd",
+    "summary": "Ends a journey for good: whoever is in it gets nothing more.",
+    "tags": [
+     "Communication"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/journeys/{id}/enrol": {
+   "post": {
+    "operationId": "apiJourneyEnrol",
+    "summary": "Enrols an `audience` (as campaigns name them) in a live journey that people enter by hand;",
+    "tags": [
+     "Communication"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/journeys/{id}/pause": {
+   "post": {
+    "operationId": "apiJourneyPause",
+    "summary": "Pauses a journey: nobody enters and nothing is sent until it is started again.",
+    "tags": [
+     "Communication"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/journeys/{id}/start": {
+   "post": {
+    "operationId": "apiJourneyStart",
+    "summary": "Starts (or resumes) a journey: from now, the people it names enter it.",
+    "tags": [
+     "Communication"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/journeys/run": {
+   "post": {
+    "operationId": "apiJourneysRun",
+    "summary": "Sends the journey steps that are due now, and enters people who left their carts.",
+    "tags": [
+     "Communication"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
   "/api/admin/leave": {
    "get": {
     "operationId": "apiLeave",
@@ -29019,6 +29462,40 @@
     "summary": "apiListsFind",
     "tags": [
      "Commerce"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/m": {
+   "get": {
+    "operationId": "apiTrack",
+    "summary": "A tracked link in a message (`t`, the message's own token): `o=1` counts an open and answers a one-pixel image;",
+    "description": "A tracked link in a message (`t`, the message's own token): `o=1` counts an open and answers a one-pixel image; `n` counts a click on the message's n-th link and sends the reader on to it. Needs no sign-in.",
+    "tags": [
+     "Communication"
     ],
     "responses": {
      "200": {

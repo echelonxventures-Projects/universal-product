@@ -1073,12 +1073,39 @@ CREATE INDEX ix_campaigns ON campaigns(tenant_id, status);
 CREATE TABLE campaign_recipients (
   id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, campaign_id INTEGER NOT NULL, address TEXT NOT NULL, name TEXT DEFAULT '',
   owner TEXT DEFAULT '', token TEXT NOT NULL UNIQUE, status TEXT NOT NULL, reason TEXT DEFAULT '', claimed_at TEXT, sent_at TEXT, unsubscribed_at TEXT,
+  opened_at TEXT, clicked_at TEXT, opens INTEGER NOT NULL DEFAULT 0, clicks INTEGER NOT NULL DEFAULT 0,   /* counted by lib/campaigns.js track */
   UNIQUE (campaign_id, address)
 );
 CREATE INDEX ix_campaign_recipients ON campaign_recipients(campaign_id, status);
+CREATE TABLE journeys (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, name TEXT NOT NULL, trigger_on TEXT NOT NULL,
+  steps TEXT NOT NULL DEFAULT '[]', exit_on TEXT NOT NULL DEFAULT '[]', reenter INTEGER NOT NULL DEFAULT 0, segment TEXT DEFAULT '',
+  purpose TEXT NOT NULL, status TEXT NOT NULL, link_base TEXT DEFAULT '', created_by TEXT DEFAULT '', started_at TEXT, ended_at TEXT,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT, UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_journeys ON journeys(tenant_id, status, trigger_on);
+CREATE TABLE journey_enrolments (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, journey_id INTEGER NOT NULL, person TEXT NOT NULL,
+  owner TEXT DEFAULT '', email TEXT DEFAULT '', phone TEXT DEFAULT '', name TEXT DEFAULT '', enrol_key TEXT NOT NULL,
+  step INTEGER NOT NULL DEFAULT 0, next_at TEXT, status TEXT NOT NULL, reason TEXT DEFAULT '', source TEXT DEFAULT '',
+  entered_at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (journey_id, person, enrol_key)
+);
+CREATE INDEX ix_journey_enrolments ON journey_enrolments(tenant_id, status, next_at);
+CREATE INDEX ix_journey_enrolments_person ON journey_enrolments(tenant_id, person);
+CREATE TABLE journey_messages (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, journey_id INTEGER NOT NULL, enrolment_id INTEGER NOT NULL, step INTEGER NOT NULL,
+  channel TEXT NOT NULL, person TEXT NOT NULL, address TEXT DEFAULT '', token TEXT NOT NULL UNIQUE, links TEXT NOT NULL DEFAULT '[]',
+  status TEXT NOT NULL, reason TEXT DEFAULT '', sent_at TEXT, opened_at TEXT, clicked_at TEXT, opens INTEGER NOT NULL DEFAULT 0, clicks INTEGER NOT NULL DEFAULT 0,
+  unsubscribed_at TEXT, created_at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_journey_messages ON journey_messages(journey_id, step);
+CREATE INDEX ix_journey_messages_person ON journey_messages(tenant_id, person, sent_at);
 CREATE UNIQUE INDEX ux_campaigns_uid ON campaigns(uid);
 CREATE TRIGGER trg_campaigns_uid AFTER INSERT ON campaigns
                BEGIN UPDATE campaigns SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_journeys_uid ON journeys(uid);
+CREATE TRIGGER trg_journeys_uid AFTER INSERT ON journeys
+               BEGIN UPDATE journeys SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
 -- ── consulting · Consultancy and professional services ───────────────────────────────────────────
 CREATE TABLE project_rates (

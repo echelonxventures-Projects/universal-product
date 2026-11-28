@@ -1,5 +1,5 @@
 {
- "$comment": "Campaigns (lib/campaigns.js): the audiences a store sends to, the channels it sends on, and the policy every send follows. A campaign is sent only to people with a live grant for its purpose (lib/compliance.js mayProcess) — checked when the list is built and again just before each message — and every message carries a link that withdraws that grant. In-app messages reach shoppers' accounts; email and SMS go through the store's notification gateway (lib/mailer.js).",
+ "$comment": "Campaigns (lib/campaigns.js): the audiences a store sends to, the channels it sends on, and the policy every send follows. A campaign is sent only to people with a live grant for its purpose (lib/compliance.js mayProcess) — checked when the list is built and again just before each message — and every message carries a link that withdraws that grant. In-app messages reach shoppers' accounts; email and SMS go through the store's notification gateway (lib/mailer.js). Links in a message are tracked (a click counts, then goes on to the link) and an email carries a one-pixel image that counts the open; a store turns either off in settings campaigns.tracking.",
  "audiences": {
   "customers": {
    "label": "Every customer"
@@ -48,5 +48,10 @@
  "unsubscribeLine": "To stop these messages: ",
  "refPrefix": "CMP",
  "machine": "campaign",
- "record": "campaign"
+ "record": "campaign",
+ "tracking": {
+  "opens": true,
+  "clicks": true
+ },
+ "htmlChannel": "email"
 }

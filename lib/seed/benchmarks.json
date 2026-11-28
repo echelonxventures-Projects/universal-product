@@ -50,7 +50,7 @@
    { "f": "Deal pipeline with stages and forecast", "e": ["t:crm_deals", "f:test/crm.js"] },
    { "f": "Activities: calls, meetings, follow-ups on a timeline", "e": ["t:crm_activities", "f:test/crm.js"] },
    { "f": "Segments", "e": ["t:segment_members"] },
-   { "f": "Email and message campaigns, marketing automation", "e": ["t:campaigns", "f:test/campaigns.js"], "gap": "campaigns to an audience, consented and scheduled; no automated journeys (a message triggered by an event or a delay) and no open or click tracking yet" },
+   { "f": "Email and message campaigns, marketing automation", "e": ["t:campaigns", "t:journeys", "f:lib/journeys.js", "f:test/journeys.js"] },
    { "f": "Support cases with SLAs", "e": ["c:customer_service", "t:tickets"] },
    { "f": "Knowledge base", "e": ["t:kb_entries"] },
    { "f": "Omnichannel conversations", "e": ["c:conversations", "t:conversation_messages"] },

@@ -257,6 +257,7 @@ function renderModals() {
         <input id="authName" placeholder="Your name" class="hidden">
         <input id="authEmail" type="email" placeholder="Email" required>
         <input id="authPass" type="password" placeholder="Password" required minlength="6">
+        <label class="m-help hidden" id="authOptRow"><input type="checkbox" id="authOpt"> Send me offers and news (you can stop them at any time)</label>
         <button class="btn-yellow w100" id="authSubmit">${esc(T("signIn"))}</button>
         <p class="m-help auth-forgot"><a href="reset.html">Forgot your password?</a></p>
         <div class="m-or"><span>or</span></div>
@@ -1366,7 +1367,7 @@ function wireChrome() {
     try {
       const payload = { email: $("#authEmail").value.trim(), password: $("#authPass").value };
       let r;
-      if (authMode === "register") { payload.name = $("#authName").value.trim(); r = await api("/auth/register", "POST", payload); }
+      if (authMode === "register") { payload.name = $("#authName").value.trim(); payload.marketing = $("#authOpt").checked; r = await api("/auth/register", "POST", payload); }
       else r = await api("/auth/login", "POST", payload);
       S.user = r.user; updateChrome(); closeModal();
       toast(`✦ Welcome, <b>${esc(r.user.name.split(" ")[0])}</b>`);
@@ -1378,6 +1379,7 @@ function wireChrome() {
     $("#authTitle").textContent = authMode === "login" ? T("signIn") : "Create account";
     $("#authSubmit").textContent = authMode === "login" ? T("signIn") : "Create account";
     $("#authName").classList.toggle("hidden", authMode === "login");
+    $("#authOptRow").classList.toggle("hidden", authMode === "login");
     b.textContent = authMode === "login" ? "Create an account" : "I already have an account";
   });
   $("#rvStars").querySelectorAll("span").forEach(s => s.onclick = () => {

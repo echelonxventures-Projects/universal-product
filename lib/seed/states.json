@@ -4940,6 +4940,102 @@
      ]
     }
    }
+  },
+  {
+   "key": "journey",
+   "name": "Journey",
+   "column": "status",
+   "initial": "draft",
+   "states": [
+    "draft",
+    "live",
+    "paused",
+    "ended"
+   ],
+   "transitions": {
+    "draft": [
+     "live",
+     "ended"
+    ],
+    "live": [
+     "paused",
+     "ended"
+    ],
+    "paused": [
+     "live",
+     "ended"
+    ]
+   },
+   "meta": {
+    "draft": {
+     "tags": [
+      "editable",
+      "startable"
+     ]
+    },
+    "live": {
+     "tags": [
+      "live"
+     ],
+     "stamps": [
+      {
+       "col": "started_at",
+       "once": true
+      }
+     ]
+    },
+    "paused": {
+     "tags": [
+      "editable",
+      "startable",
+      "paused"
+     ]
+    },
+    "ended": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      "ended_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "journey_enrolment",
+   "name": "Person in a journey",
+   "column": "status",
+   "initial": "active",
+   "states": [
+    "active",
+    "done",
+    "stopped"
+   ],
+   "transitions": {
+    "active": [
+     "done",
+     "stopped"
+    ]
+   },
+   "meta": {
+    "active": {
+     "tags": [
+      "active"
+     ]
+    },
+    "done": {
+     "tags": [
+      "done",
+      "terminal"
+     ]
+    },
+    "stopped": {
+     "tags": [
+      "stopped",
+      "terminal"
+     ]
+    }
+   }
   }
  ]
 }

@@ -380,6 +380,19 @@
    "lib/authz.js Dispatch & Safety role, rb_v13; lib/security.js geolocation for the store's own pages; server.js sweep dispatches bookings",
    "test/trips.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0072",
+  "date": "2026-11-28",
+  "authorisedBy": "Platform owner",
+  "summary": "Campaign journeys and message tracking (lib/journeys.js, lib/seed/journeys.json). A journey is a series of messages a store sends on its own when someone creates an account, places an order, has an order delivered or leaves items in their cart, or to an audience enrolled by hand; each step waits after the one before and goes by email, SMS or the shopper's account. A person enters once, or each time when the journey says so, only with a live grant for marketing, checked again before each message; a segment can narrow who enters; an event the journey names as its exit takes the person out (an order ends an abandoned-cart journey); nobody gets more than the daily cap; every message carries the unsubscribe link, which withdraws marketing and stops every journey for that person. Each enrolment is claimed before its step is sent. Journeys are drafted, started, paused, changed while paused, and ended, through their machine, and are records on the master. Opens and clicks: links in every campaign and journey message go out as tracked links that count the click and send the reader on only to a link the message carried; an email goes with an HTML part carrying the open pixel where the transport sends HTML (SMTP sends multipart/alternative); a store turns either off in settings campaigns.tracking. Sign-up offers an opt-in to marketing, recorded as consent; an account created is an event. Erasure removes a person's journey rows. Benchmarks: CRM 13 of 13.",
+  "changes": [
+   "lib/journeys.js, lib/seed/journeys.json; lib/routes/campaigns.js journey routes and the tracked-link route /api/m; the Journeys console screen; tables journeys, journey_enrolments, journey_messages; campaign_recipients gain opens and clicks; machines journey, journey_enrolment; record journey",
+   "lib/campaigns.js composes every message (tracked links, the HTML part, the open pixel) and counts opens and clicks; lib/mailer.js passes HTML and SMTP sends multipart/alternative",
+   "lib/api.js emitEvent tells journeys; lib/routes/identity.js emits customer.created and records the sign-up opt-in; public/js/app.js the opt-in box",
+   "lib/seed/erasure.json journey rows; lib/seed/settings.json campaigns and journeys; server.js sweep sends due journey steps",
+   "test/journeys.js"
+  ]
  }
   ],
   "domains": [

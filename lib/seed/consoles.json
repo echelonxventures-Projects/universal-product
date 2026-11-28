@@ -2560,6 +2560,13 @@
     "section": "campaigns"
    },
    {
+    "key": "journeys",
+    "group": "Marketing & Growth",
+    "label": "🧭 Journeys",
+    "order": 1,
+    "section": "campaigns"
+   },
+   {
     "key": "consulting",
     "group": "Business Operations",
     "label": "⏱️ Consulting",

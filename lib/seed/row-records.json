@@ -578,6 +578,26 @@
     "paid_at": "text"
    },
    "title": "ref"
+  },
+  "journey": {
+   "table": "journeys",
+   "owner": "Communication",
+   "kind": {
+    "kind": "communication.journey",
+    "label": "Journey",
+    "parents": []
+   },
+   "$comment": "what starts a journey, when it ran and how it ended; its steps, the people in it and what they were sent stay in the tables",
+   "facts": {
+    "ref": "text",
+    "name": "text",
+    "trigger_on": "text",
+    "purpose": "text",
+    "status": "text",
+    "started_at": "text",
+    "ended_at": "text"
+   },
+   "title": "ref"
   }
  },
  "actor": "commerce",

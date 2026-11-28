@@ -14,7 +14,9 @@
   { "table": "tickets", "by": "owner", "orEmail": "owner_email", "record": "ticket" },
   { "table": "crm_activities", "by": "contact", "record": "crm_activity" },
   { "table": "crm_contacts", "by": "email", "column": "email", "record": "crm_contact" },
-  { "table": "campaign_recipients", "by": "email", "column": "address" }
+  { "table": "campaign_recipients", "by": "email", "column": "address" },
+  { "table": "journey_enrolments", "by": "email", "column": "email" },
+  { "table": "journey_messages", "by": "email", "column": "person" }
  ],
  "keep": ["orders", "order_items", "invoice_documents", "payments", "payment_refunds", "wallets", "wallet_entries", "ledger_journals", "ledger_postings",
   "mandates", "bnpl_accounts", "loans", "insurance_policies", "escrow_holds", "memberships", "recurring_schedules", "bookings", "cases", "risk_events",
