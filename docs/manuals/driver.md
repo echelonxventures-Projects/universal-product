@@ -12,9 +12,13 @@ More: [Shipping and delivery](../domains/shipping.md)
 
 ## Mobility
 
-Moving people: rides requested and dispatched, drivers and their vehicles, and fleets.
+Moving people: rides asked for now, booked for later or shared, and dispatched to the nearest driver by their live position; drivers and their vehicles; the rating both ways; safety — a trip shared by a private link, the emergency button, incidents handled by the store; and what each driver earns trip by trip and is paid.
 
-_Not yet written._
+Open **Drive** from the footer and sign in with the email the store has for you. **Go online** and
+allow the page to use your position; riders see you on their map and you are matched to rides near
+you. Each ride shows the next step (arrived, start the trip, drop off). Rate your riders afterwards.
+**🚨 Emergency** alerts the store at once. **Earnings** shows each trip's fare, the platform's share,
+tips and what you keep, and your payouts.
 
 More: [Mobility](../domains/mobility.md)
 

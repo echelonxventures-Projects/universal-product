@@ -2925,6 +2925,12 @@
     "order": 1
    },
    {
+    "key": "trips",
+    "group": "Mobility",
+    "label": "🛡️ Trips, Safety & Pay",
+    "order": 2
+   },
+   {
     "key": "applicability",
     "group": "Settings",
     "label": "🧭 Availability Rules",

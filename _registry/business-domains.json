@@ -2075,29 +2075,44 @@
    "key": "mobility",
    "name": "Mobility",
    "foundation": "Operations",
-   "purpose": "Moving people: rides requested and dispatched, drivers and their vehicles, and fleets.",
+   "purpose": "Moving people: rides asked for now, booked for later or shared, and dispatched to the nearest driver by their live position; drivers and their vehicles; the rating both ways; safety — a trip shared by a private link, the emergency button, incidents handled by the store; and what each driver earns trip by trip and is paid.",
    "users": [
-    "shopper",
     "driver",
-    "store_admin"
+    "guest",
+    "shopper",
+    "store_admin",
+    "store_staff"
    ],
    "owns": {
     "files": [
-     "lib/mobility.js"
+     "lib/mobility.js",
+     "lib/trips.js"
     ],
     "tables": [
      "rides",
      "ride_events",
      "drivers",
-     "vehicles"
+     "vehicles",
+     "ride_ratings",
+     "ride_schedules",
+     "ride_pools",
+     "ride_locations",
+     "ride_safety_events",
+     "driver_payouts"
     ],
     "routes": [
-     "^/api/admin/mobility(/|$)"
+     "^/api/admin/mobility(/|$)",
+     "^/api/admin/trips(/|$)",
+     "^/api/(rides|drive|trips)(/|$)"
     ],
     "machines": [
      "ride",
      "driver",
-     "vehicle"
+     "vehicle",
+     "ride_schedule",
+     "ride_pool",
+     "ride_safety",
+     "driver_payout"
     ],
     "capabilities": [
      "ride_hailing",
@@ -2107,11 +2122,16 @@
     "registries": [],
     "screens": [
      "rides",
-     "fleet"
+     "fleet",
+     "trips"
     ],
     "platformScreens": [],
     "platformGroups": [],
-    "pages": []
+    "pages": [
+     "drive",
+     "ride",
+     "trip"
+    ]
    }
   },
   {

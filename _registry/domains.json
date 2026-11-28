@@ -366,6 +366,20 @@
    "lib/authz.js People and Planning roles, rb_v12; server.js sweep depreciates assets",
    "test/erp.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0071",
+  "date": "2026-11-28",
+  "authorisedBy": "Platform owner",
+  "summary": "The mobility gaps (lib/trips.js, lib/seed/trips.json). The rating both ways: a rider rates the driver and a driver the rider, 1 to 5 stars with the tags offered, once per side within a window; a driver's rating is the average of their recent ratings, and one whose average falls below the fleet's minimum to dispatch is held out of dispatch until the store clears them; a rider's rating comes from their drivers. Rides booked for later: between a lead time and a horizon, with an estimate, cancelled free while waiting, dispatched as the rider's ride shortly before the time, and marked missed rather than sent late. Shared rides: riders of the same kind of car picked up and dropped near each other share one driver at a discount until someone is on board or the pool's time is up; the driver stays busy until the last rider is dropped. The live position: the driver's phone reports where it is; dispatch matches the nearest driver by it; each ride keeps its track; a finished trip's distance and time come from the track. Safety: a private link to a ride's progress for whoever the rider sends it to, closed a while after the ride; the emergency button for riders and drivers, alerting the store's notifiers at once with the position and giving the local emergency number; incidents and lost items reported after a trip; reports acknowledged and resolved in the console. Tips on a finished ride. What each driver earns trip by trip (fare less the platform's share, plus tips), payouts taking every unpaid trip up to a day, approved by someone other than whoever made them and paid, on the books (5200 against 2150, then 2150 against the bank). Rides waiting for a driver are given one when a driver comes free. The rider's page (ride.html), the driver's page (drive.html) and the shared trip's page (trip.html); bookings, safety reports and payouts are records on the master. Role Dispatch & Safety; Finance holds driver payouts (rb_v13). The store's pages may ask for the device's position. Benchmarks: mobility 14 of 14.",
+  "changes": [
+   "lib/trips.js, lib/seed/trips.json; lib/routes/mobility.js trips, rider, driver and shared-trip routes; public/ride.html, public/drive.html, public/trip.html, public/js/rides.js, public/js/trip.js; the Trips, Safety & Pay console screen",
+   "tables ride_ratings, ride_schedules, ride_pools, ride_locations, ride_safety_events, driver_payouts; rides and drivers gain rider, pool, booking, tip, share, payout, position and rating columns; machines ride_schedule, ride_pool, ride_safety, driver_payout; ride states carry their words",
+   "lib/mobility.js dispatch by the driver's live position and the review hold; a shared ride's fare; a driver freed only when no other ride of theirs is under way; ride moves guarded and in one transaction; a trip measured from its track",
+   "lib/seed/books.json accounts 2150, 5200 and the driver payout rules; lib/seed/row-records.json ride_schedule, ride_safety_event, driver_payout; lib/seed/settings.json leave and trips",
+   "lib/authz.js Dispatch & Safety role, rb_v13; lib/security.js geolocation for the store's own pages; server.js sweep dispatches bookings",
+   "test/trips.js"
+  ]
  }
   ],
   "domains": [

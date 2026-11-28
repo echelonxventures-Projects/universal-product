@@ -622,3 +622,26 @@ body { font-family: var(--font-body); }
 .msg.mine { justify-self: end; background: var(--accent-soft); }
 .msg p { margin: 0 0 2px; white-space: pre-wrap; }
 @media (max-width: 720px) { .msg { max-width: 92%; } }
+/* rides (public/js/rides.js, public/js/trip.js): the rider's, the driver's and the shared trip's pages */
+.ride-wrap { max-width: 720px; margin: 0 auto; padding: 16px; }
+.ride-card { border: 1px solid #d4d4d8; border-radius: 10px; padding: 16px; margin: 0 0 16px; background: #fff; }
+.ride-card h2 { margin: 0 0 8px; font-size: 20px; }
+.ride-form { display: grid; gap: 10px; }
+.ride-form label { display: grid; gap: 4px; }
+.ride-form .ride-check { display: flex; gap: 8px; align-items: center; }
+.ride-row, .ride-past { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; padding: 10px 0; border-top: 1px solid #eee; }
+.ride-past > div:first-child { flex: 1 1 260px; }
+.ride-actions { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.ride-sos { background: #b91c1c; color: #fff; border: 0; border-radius: 8px; padding: 10px 16px; font-weight: 700; cursor: pointer; }
+.ride-sos:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 2px; }
+.ride-plate { font-family: ui-monospace, monospace; letter-spacing: .05em; }
+.ride-stars, .ride-tags { border: 0; padding: 0; margin: 0 0 8px; display: flex; gap: 10px; flex-wrap: wrap; }
+.ride-stars legend, .ride-tags legend { font-weight: 600; margin-bottom: 4px; }
+.ride-map { margin: 8px 0; }
+.ride-map svg { width: 100%; max-width: 420px; height: auto; border-radius: 8px; display: block; }
+.ride-map-bg { fill: #eef2f7; }
+.ride-map-track { fill: none; stroke: #1d4ed8; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; opacity: .7; }
+.ride-map-pick { fill: #15803d; stroke: #fff; stroke-width: 2; }
+.ride-map-drop { fill: #b91c1c; stroke: #fff; stroke-width: 2; }
+.ride-map-car { fill: #1d4ed8; stroke: #fff; stroke-width: 2; }
+.ride-map figcaption { font-size: 13px; color: #52525b; }

@@ -334,7 +334,8 @@
      ],
      "stamps": [
       "accepted_at"
-     ]
+     ],
+     "label": "Driver on the way"
     },
     "arrived": {
      "tags": [
@@ -342,7 +343,8 @@
      ],
      "stamps": [
       "arrived_at"
-     ]
+     ],
+     "label": "Driver is at the pickup"
     },
     "trip_start": {
      "tags": [
@@ -351,7 +353,8 @@
      ],
      "stamps": [
       "started_at"
-     ]
+     ],
+     "label": "On the trip"
     },
     "completed": {
      "tags": [
@@ -362,7 +365,8 @@
      ],
      "stamps": [
       "completed_at"
-     ]
+     ],
+     "label": "Arrived"
     },
     "cancelled": {
      "tags": [
@@ -372,13 +376,15 @@
      ],
      "stamps": [
       "cancelled_at"
-     ]
+     ],
+     "label": "Cancelled"
     },
     "requested": {
      "tags": [
       "open",
       "active"
-     ]
+     ],
+     "label": "Finding a driver"
     }
    },
    "on": {
@@ -4747,6 +4753,190 @@
      "tags": [
       "superseded",
       "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "ride_schedule",
+   "name": "Ride booked for later",
+   "column": "status",
+   "initial": "scheduled",
+   "states": [
+    "scheduled",
+    "dispatched",
+    "cancelled",
+    "missed"
+   ],
+   "transitions": {
+    "scheduled": [
+     "dispatched",
+     "cancelled",
+     "missed"
+    ]
+   },
+   "meta": {
+    "scheduled": {
+     "tags": [
+      "waiting"
+     ]
+    },
+    "dispatched": {
+     "tags": [
+      "dispatched",
+      "terminal"
+     ],
+     "stamps": [
+      "dispatched_at"
+     ]
+    },
+    "cancelled": {
+     "tags": [
+      "cancelled",
+      "terminal"
+     ],
+     "stamps": [
+      "cancelled_at"
+     ]
+    },
+    "missed": {
+     "tags": [
+      "missed",
+      "terminal"
+     ]
+    }
+   }
+  },
+  {
+   "key": "ride_pool",
+   "name": "Shared ride",
+   "column": "status",
+   "initial": "forming",
+   "states": [
+    "forming",
+    "closed"
+   ],
+   "transitions": {
+    "forming": [
+     "closed"
+    ]
+   },
+   "meta": {
+    "forming": {
+     "tags": [
+      "joinable"
+     ]
+    },
+    "closed": {
+     "tags": [
+      "terminal"
+     ],
+     "stamps": [
+      "closed_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "ride_safety",
+   "name": "Safety report",
+   "column": "status",
+   "initial": "open",
+   "states": [
+    "open",
+    "acknowledged",
+    "resolved"
+   ],
+   "transitions": {
+    "open": [
+     "acknowledged",
+     "resolved"
+    ],
+    "acknowledged": [
+     "resolved"
+    ]
+   },
+   "meta": {
+    "open": {
+     "tags": [
+      "open",
+      "unhandled"
+     ]
+    },
+    "acknowledged": {
+     "tags": [
+      "open",
+      "handling"
+     ],
+     "stamps": [
+      "acknowledged_at"
+     ]
+    },
+    "resolved": {
+     "tags": [
+      "resolved",
+      "terminal"
+     ],
+     "stamps": [
+      "resolved_at"
+     ]
+    }
+   }
+  },
+  {
+   "key": "driver_payout",
+   "name": "Driver payout",
+   "column": "status",
+   "initial": "pending",
+   "states": [
+    "pending",
+    "approved",
+    "paid",
+    "void"
+   ],
+   "transitions": {
+    "pending": [
+     "approved",
+     "void"
+    ],
+    "approved": [
+     "paid",
+     "void"
+    ]
+   },
+   "meta": {
+    "pending": {
+     "tags": [
+      "editable",
+      "holds"
+     ]
+    },
+    "approved": {
+     "tags": [
+      "owed",
+      "holds"
+     ],
+     "stamps": [
+      "approved_at"
+     ]
+    },
+    "paid": {
+     "tags": [
+      "success",
+      "terminal",
+      "holds"
+     ],
+     "stamps": [
+      "paid_at"
+     ]
+    },
+    "void": {
+     "tags": [
+      "void",
+      "terminal"
+     ],
+     "stamps": [
+      "voided_at"
      ]
     }
    }

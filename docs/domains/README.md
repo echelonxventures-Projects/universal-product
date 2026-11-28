@@ -47,7 +47,7 @@ Every artifact the platform is built from — a code file, a table, an API route
 | [Digital goods](digital_goods.md) | Offering | Shopper, Store administrator | 3 sections to write |
 | [Health and pharmacy](health.md) | Offering | Shopper, Practitioner, Store staff, Store administrator | 5 sections to write |
 | [Made to order](made_to_order.md) | Offering | Shopper, Store administrator | 3 sections to write |
-| [Mobility](mobility.md) | Operations | Shopper, Driver or rider, Store administrator | 4 sections to write |
+| [Mobility](mobility.md) | Operations | Driver or rider, Guest, Shopper, Store administrator, Store staff | complete |
 | [Business operations](business_operations.md) | Operations | Store staff, Store administrator | 3 sections to write |
 | [Marketplace](marketplace.md) | Commerce | Seller, Shopper, Store staff, Store administrator, Platform administrator | 6 sections to write |
 | [Negotiation and auctions](price_discovery.md) | Commerce | Shopper, Seller, Store administrator | 4 sections to write |

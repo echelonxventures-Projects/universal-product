@@ -28,6 +28,15 @@ press **Decline**, giving a reason if you like. You can answer once, before the 
 
 More: [Consultancy and professional services](../domains/consulting.md)
 
+## Mobility
+
+Moving people: rides asked for now, booked for later or shared, and dispatched to the nearest driver by their live position; drivers and their vehicles; the rating both ways; safety — a trip shared by a private link, the emergency button, incidents handled by the store; and what each driver earns trip by trip and is paid.
+
+Someone who was sent a ride's link sees its progress, the driver's first name, the car and the map,
+without signing in. The link stops working a while after the ride ends.
+
+More: [Mobility](../domains/mobility.md)
+
 ## Lists, alerts and history
 
 What a shopper keeps and watches: wish lists and gift registries, saved and compared items, price and stock alerts, and what they viewed.

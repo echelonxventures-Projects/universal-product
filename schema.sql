@@ -1665,7 +1665,9 @@ CREATE TABLE drivers (
   rides_cancelled INTEGER NOT NULL DEFAULT 0, earnings REAL NOT NULL DEFAULT 0,
   city_latency REAL DEFAULT 0,                  /* last reported distance from the city centre, km */
   joined_at TEXT NOT NULL DEFAULT (datetime('now')),
-  deactivated_at TEXT, uid TEXT,
+  deactivated_at TEXT,
+  last_lat REAL, last_lng REAL, last_at TEXT,      /* lib/trips.js: where the driver last reported being */
+  rating_count INTEGER NOT NULL DEFAULT 0, review INTEGER NOT NULL DEFAULT 0, uid TEXT,   /* ratings counted; held for review below the floor */
   UNIQUE (tenant_id, email)
 );
 CREATE INDEX ix_drivers ON drivers(tenant_id, status, vehicle_kind);
@@ -1682,7 +1684,10 @@ CREATE TABLE rides (
   payment_method TEXT DEFAULT 'cash',           /* cash | wallet | card | upi */
   rating INTEGER, note TEXT DEFAULT '',
   requested_at TEXT NOT NULL DEFAULT (datetime('now')),
-  accepted_at TEXT, arrived_at TEXT, started_at TEXT, completed_at TEXT, cancelled_at TEXT
+  accepted_at TEXT, arrived_at TEXT, started_at TEXT, completed_at TEXT, cancelled_at TEXT,
+  user_id INTEGER, seats INTEGER NOT NULL DEFAULT 1, pool_id INTEGER, schedule_id INTEGER,   /* lib/trips.js: the signed-in rider, seats, a shared ride, a booking for later */
+  tip REAL NOT NULL DEFAULT 0, take REAL NOT NULL DEFAULT 0, payout_id INTEGER,              /* the tip from the rider, the platform share of the fare, the payout that paid the driver */
+  share_token TEXT, share_until TEXT                                                        /* a trip shared with someone, readable until then */
 , uid TEXT);
 CREATE INDEX ix_rides ON rides(tenant_id, status, requested_at);
 CREATE INDEX ix_rides_driver ON rides(driver_id, status);
@@ -1701,6 +1706,51 @@ CREATE TABLE vehicles (
   created_at TEXT NOT NULL DEFAULT (datetime('now'))
 , uid TEXT);
 CREATE INDEX ix_vehicles ON vehicles(tenant_id, status, kind);
+CREATE TABLE ride_ratings (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ride_id INTEGER NOT NULL,
+  by_role TEXT NOT NULL,                     /* rider (rates the driver) | driver (rates the rider) */
+  driver_id INTEGER, user_id INTEGER, stars INTEGER NOT NULL, tags TEXT NOT NULL DEFAULT '[]', comment TEXT DEFAULT '',
+  at TEXT NOT NULL DEFAULT (datetime('now')), UNIQUE (ride_id, by_role)
+);
+CREATE INDEX ix_ride_ratings ON ride_ratings(tenant_id, by_role, driver_id, user_id, at);
+CREATE TABLE ride_schedules (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, user_id INTEGER,
+  rider TEXT DEFAULT '', rider_phone TEXT DEFAULT '', pickup TEXT NOT NULL, dropoff TEXT NOT NULL,
+  pickup_lat REAL, pickup_lng REAL, dropoff_lat REAL, dropoff_lng REAL,
+  vehicle_kind TEXT NOT NULL, payment_method TEXT DEFAULT 'cash', seats INTEGER NOT NULL DEFAULT 1,
+  pickup_at TEXT NOT NULL, estimate REAL NOT NULL DEFAULT 0, status TEXT NOT NULL, ride_id INTEGER,
+  note TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now')), dispatched_at TEXT, cancelled_at TEXT,
+  uid TEXT, UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_ride_schedules ON ride_schedules(tenant_id, status, pickup_at);
+CREATE TABLE ride_pools (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, vehicle_kind TEXT NOT NULL, driver_id INTEGER,
+  capacity INTEGER NOT NULL, seats_taken INTEGER NOT NULL DEFAULT 0, status TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), closes_at TEXT NOT NULL, closed_at TEXT
+);
+CREATE INDEX ix_ride_pools ON ride_pools(tenant_id, status, vehicle_kind);
+CREATE TABLE ride_locations (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, driver_id INTEGER NOT NULL, ride_id INTEGER,
+  lat REAL NOT NULL, lng REAL NOT NULL, at TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX ix_ride_locations ON ride_locations(ride_id, id);
+CREATE INDEX ix_ride_locations_driver ON ride_locations(tenant_id, driver_id, id);
+CREATE TABLE ride_safety_events (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, ride_id INTEGER, kind TEXT NOT NULL,
+  by_role TEXT NOT NULL, by_who TEXT DEFAULT '', lat REAL, lng REAL, note TEXT DEFAULT '', status TEXT NOT NULL,
+  handled_by TEXT DEFAULT '', outcome TEXT DEFAULT '', created_at TEXT NOT NULL DEFAULT (datetime('now')), acknowledged_at TEXT, resolved_at TEXT,
+  uid TEXT, UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_ride_safety ON ride_safety_events(tenant_id, status, created_at);
+CREATE TABLE driver_payouts (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, tenant_id INTEGER NOT NULL, ref TEXT NOT NULL, driver_id INTEGER NOT NULL, currency TEXT NOT NULL,
+  through TEXT NOT NULL, trips INTEGER NOT NULL DEFAULT 0, fares REAL NOT NULL DEFAULT 0, take REAL NOT NULL DEFAULT 0, tips REAL NOT NULL DEFAULT 0, net REAL NOT NULL DEFAULT 0,
+  status TEXT NOT NULL, created_by TEXT DEFAULT '', approved_by TEXT DEFAULT '', approved_at TEXT, paid_at TEXT, voided_at TEXT, pay_ref TEXT DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT (datetime('now')), uid TEXT, UNIQUE (tenant_id, ref)
+);
+CREATE INDEX ix_driver_payouts ON driver_payouts(tenant_id, driver_id, status);
+CREATE INDEX ix_rides_user ON rides(tenant_id, user_id, requested_at);
+CREATE INDEX ix_rides_share ON rides(share_token);
 CREATE UNIQUE INDEX ux_rides_uid ON rides(uid);
 CREATE TRIGGER trg_rides_uid AFTER INSERT ON rides
                BEGIN UPDATE rides SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
@@ -1713,6 +1763,15 @@ CREATE TRIGGER trg_drivers_uid AFTER INSERT ON drivers
 CREATE UNIQUE INDEX ux_vehicles_uid ON vehicles(uid);
 CREATE TRIGGER trg_vehicles_uid AFTER INSERT ON vehicles
                BEGIN UPDATE vehicles SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_ride_schedules_uid ON ride_schedules(uid);
+CREATE TRIGGER trg_ride_schedules_uid AFTER INSERT ON ride_schedules
+               BEGIN UPDATE ride_schedules SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_ride_safety_events_uid ON ride_safety_events(uid);
+CREATE TRIGGER trg_ride_safety_events_uid AFTER INSERT ON ride_safety_events
+               BEGIN UPDATE ride_safety_events SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
+CREATE UNIQUE INDEX ux_driver_payouts_uid ON driver_payouts(uid);
+CREATE TRIGGER trg_driver_payouts_uid AFTER INSERT ON driver_payouts
+               BEGIN UPDATE driver_payouts SET uid = lower(hex(randomblob(4))||'-'||hex(randomblob(2))||'-4'||substr(hex(randomblob(2)),2)||'-'||substr('89ab',abs(random())%4+1,1)||substr(hex(randomblob(2)),2)||'-'||hex(randomblob(6))) WHERE rowid = NEW.rowid; END;
 
 -- ── business_operations · Business operations ────────────────────────────────────────────────────
 CREATE TABLE workflows (

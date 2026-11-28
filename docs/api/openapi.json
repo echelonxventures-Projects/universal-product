@@ -18218,6 +18218,685 @@
     "x-audience": "store-staff"
    }
   },
+  "/api/admin/trips": {
+   "get": {
+    "operationId": "apiTrips",
+    "summary": "Safety reports (open emergencies first), rides booked for later and waiting, shared rides forming, drivers held for review and recent ratings, what each driver i",
+    "description": "Safety reports (open emergencies first), rides booked for later and waiting, shared rides forming, drivers held for review and recent ratings, what each driver is owed, payouts, the places riders pick from, the local emergency number and the policy.",
+    "tags": [
+     "Operations"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/bookings/{id}/cancel": {
+   "post": {
+    "operationId": "apiTripBookingCancel",
+    "summary": "Cancels a ride a rider booked for later that is still waiting.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/drivers/{id}/clear-review": {
+   "post": {
+    "operationId": "apiTripDriverClear",
+    "summary": "Lets a driver held for review drive again.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/drivers/{id}/statement": {
+   "get": {
+    "operationId": "apiTripDriverStatement",
+    "summary": "A driver's earnings statement: each trip's fare, the platform's share, the tip and what they keep, between `from` and `to` (days).",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/payouts": {
+   "get": {
+    "operationId": "apiTripPayouts",
+    "summary": "Payouts, newest first;",
+    "tags": [
+     "Operations"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   },
+   "post": {
+    "operationId": "apiTripPayoutCreate",
+    "summary": "Makes a payout of everything a driver (`driver_id`) earned up to `through` (a day;",
+    "tags": [
+     "Operations"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/payouts/{id}": {
+   "get": {
+    "operationId": "apiTripPayout",
+    "summary": "One payout and the trips it pays.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/payouts/{id}/approve": {
+   "post": {
+    "operationId": "apiTripPayoutApprove",
+    "summary": "Approves a pending payout — not by whoever made it: the books owe it to the driver.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/payouts/{id}/pay": {
+   "post": {
+    "operationId": "apiTripPayoutPay",
+    "summary": "Records an approved payout as paid (`pay_ref`, the bank's reference): the books pay it from the bank.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/payouts/{id}/void": {
+   "post": {
+    "operationId": "apiTripPayoutVoid",
+    "summary": "Voids a payout not yet paid: its trips are free to be paid again.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/places": {
+   "put": {
+    "operationId": "apiTripPlaces",
+    "summary": "Replaces the places riders pick from: `places` `[{ name, lat, lng }]`.",
+    "tags": [
+     "Operations"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/safety/{id}/acknowledge": {
+   "post": {
+    "operationId": "apiTripSafetyAck",
+    "summary": "Takes an open emergency or report: whoever acknowledges it is handling it.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/safety/{id}/resolve": {
+   "post": {
+    "operationId": "apiTripSafetyResolve",
+    "summary": "Closes a report with its `outcome`.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
+  "/api/admin/trips/sweep": {
+   "post": {
+    "operationId": "apiTripSweep",
+    "summary": "Dispatches bookings that are due and gives waiting rides a driver, now.",
+    "tags": [
+     "Operations"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "storeKey": []
+     },
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "store-staff"
+   }
+  },
   "/api/admin/ugc/queue": {
    "get": {
     "operationId": "apiAdminUgcQueue",
@@ -23977,6 +24656,318 @@
     "summary": "apiDeliverableStep",
     "tags": [
      "Commerce"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/drive": {
+   "get": {
+    "operationId": "apiDrive",
+    "summary": "The driver's state, rating, rides under way (riders' first names and ratings, the next step), recent rides, today's earnings, rating tags and the emergency numbe",
+    "description": "The driver's state, rating, rides under way (riders' first names and ratings, the next step), recent rides, today's earnings, rating tags and the emergency number.",
+    "tags": [
+     "Operations"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/drive/earnings": {
+   "get": {
+    "operationId": "apiDriveEarnings",
+    "summary": "The driver's earnings statement between `from` and `to` (days), and their payouts.",
+    "tags": [
+     "Operations"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/drive/online": {
+   "post": {
+    "operationId": "apiDriveOnline",
+    "summary": "Goes online (`online: true`) — and takes a ride that is waiting — or offline.",
+    "tags": [
+     "Operations"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/drive/position": {
+   "post": {
+    "operationId": "apiDrivePosition",
+    "summary": "Reports where the driver is: `lat`, `lng`.",
+    "tags": [
+     "Operations"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/drive/rides/{id}/move": {
+   "post": {
+    "operationId": "apiDriveMove",
+    "summary": "Moves the driver's ride to its next step (`to`), or cancels it.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/drive/rides/{id}/rate": {
+   "post": {
+    "operationId": "apiDriveRate",
+    "summary": "Rates the rider of a finished ride: `stars`, `tags`, `comment`.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/drive/rides/{id}/safety": {
+   "post": {
+    "operationId": "apiDriveSafety",
+    "summary": "Raises an emergency or reports an incident on the driver's ride;",
+    "tags": [
+     "Operations"
     ],
     "parameters": [
      {
@@ -39652,6 +40643,530 @@
     "x-audience": "shopper"
    }
   },
+  "/api/rides": {
+   "get": {
+    "operationId": "apiRides",
+    "summary": "The rider's rides under way (with the driver's live position), rides booked for later, past rides, their rating, the vehicle kinds, shared-ride kinds and discoun",
+    "description": "The rider's rides under way (with the driver's live position), rides booked for later, past rides, their rating, the vehicle kinds, shared-ride kinds and discount, the store's places, rating tags, tips offered and the emergency number.",
+    "tags": [
+     "Operations"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   },
+   "post": {
+    "operationId": "apiRideRequest",
+    "summary": "Asks for a ride now: `pickup`, `dropoff` (words), their `_lat`/`_lng`, `vehicle_kind`, `seats`, `payment_method`, `rider_phone`;",
+    "description": "Asks for a ride now: `pickup`, `dropoff` (words), their `_lat`/`_lng`, `vehicle_kind`, `seats`, `payment_method`, `rider_phone`; `pool: true` shares it with riders going the same way.",
+    "tags": [
+     "Operations"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/rides/{id}": {
+   "get": {
+    "operationId": "apiRideGet",
+    "summary": "One of the rider's rides: its state, driver and car, the live position and track, ratings, and what may be done now.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/rides/{id}/cancel": {
+   "post": {
+    "operationId": "apiRideCancel",
+    "summary": "Cancels the rider's ride before the trip starts;",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/rides/{id}/rate": {
+   "post": {
+    "operationId": "apiRideRate",
+    "summary": "Rates the driver of a finished ride: `stars` 1–5, `tags`, `comment`.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/rides/{id}/safety": {
+   "post": {
+    "operationId": "apiRideSafety",
+    "summary": "Raises an emergency (`kind: \"sos\"`) or reports an incident or a lost item (`kind`, `note`) on the rider's ride, with where they are (`lat`, `lng`);",
+    "description": "Raises an emergency (`kind: \"sos\"`) or reports an incident or a lost item (`kind`, `note`) on the rider's ride, with where they are (`lat`, `lng`); an emergency alerts the store at once.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/rides/{id}/share": {
+   "post": {
+    "operationId": "apiRideShare",
+    "summary": "A private link to the ride's progress for the rider to send to someone.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/rides/{id}/tip": {
+   "post": {
+    "operationId": "apiRideTip",
+    "summary": "Tips the driver of a finished ride: `amount`.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/rides/bookings": {
+   "post": {
+    "operationId": "apiRideBook",
+    "summary": "Books a ride for later: as asking for one now, with `pickup_at` (a time).",
+    "tags": [
+     "Operations"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/rides/bookings/{id}/cancel": {
+   "post": {
+    "operationId": "apiRideBookCancel",
+    "summary": "Cancels the rider's booking while it is still waiting.",
+    "tags": [
+     "Operations"
+    ],
+    "parameters": [
+     {
+      "name": "id",
+      "in": "path",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/rides/estimate": {
+   "post": {
+    "operationId": "apiRideEstimate",
+    "summary": "What a ride would cost: `pickup_lat`, `pickup_lng`, `dropoff_lat`, `dropoff_lng`, `vehicle_kind`, `pool`.",
+    "tags": [
+     "Operations"
+    ],
+    "requestBody": {
+     "required": false,
+     "content": {
+      "application/json": {
+       "schema": {
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
   "/api/rules/check": {
    "post": {
     "operationId": "apiRulesCheck",
@@ -43586,6 +45101,39 @@
       }
      }
     },
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {},
+     {
+      "session": []
+     }
+    ],
+    "x-audience": "shopper"
+   }
+  },
+  "/api/trips/shared": {
+   "get": {
+    "operationId": "apiTripShared",
+    "summary": "The ride's progress, the driver's first name, the car and the live position, for whoever the rider sent the link to;",
+    "tags": [
+     "Operations"
+    ],
     "responses": {
      "200": {
       "description": "Done; the answer as JSON"

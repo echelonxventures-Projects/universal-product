@@ -110,6 +110,15 @@ _Not yet written._
 
 More: [Health and pharmacy](../domains/health.md)
 
+## Mobility
+
+Moving people: rides asked for now, booked for later or shared, and dispatched to the nearest driver by their live position; drivers and their vehicles; the rating both ways; safety — a trip shared by a private link, the emergency button, incidents handled by the store; and what each driver earns trip by trip and is paid.
+
+With the Dispatch & Safety role, handle safety reports, bookings and drivers to review as above.
+With the Finance role, make, approve and pay driver payouts. You cannot approve a payout you made.
+
+More: [Mobility](../domains/mobility.md)
+
 ## Business operations
 
 Running the business behind the store: people and payroll, manufacturing work orders, and projects with their tasks.

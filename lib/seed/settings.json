@@ -182,7 +182,9 @@
    "profiles": {}
   },
   "crm": {},
-  "consulting": {}
+  "consulting": {},
+  "leave": {},
+  "trips": {}
  },
  "LEGAL_FIELDS": [
   {

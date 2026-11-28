@@ -1,0 +1,119 @@
+{
+ "$comment": "Trips (lib/trips.js): what happens around a ride — the two-way rating, rides booked for later, shared rides, safety (a trip shared with someone, the emergency button, incidents), the driver's live position and the trip's track, and what each driver earns trip by trip and is paid. The fares themselves are the ride_hailing capability's params (lib/mobility.js); a tip is offered as the tips capability offers it. A store sets its own values in settings trips.<key>. A booking is cancelled free while it waits; once dispatched it is a ride and the ride's cancellation fees apply. A driver is held for review below the fleet's minimum rating to dispatch (fleet_management), or below rating.reviewBelow when fleet management is off.",
+ "sides": {
+  "rider": "rider",
+  "driver": "driver"
+ },
+ "rating": {
+  "windowDays": 7,
+  "averageOver": 100,
+  "minToJudge": 5,
+  "reviewBelow": 4.2,
+  "riderTags": [
+   "Clean car",
+   "Safe driving",
+   "Friendly",
+   "Knew the way",
+   "On time"
+  ],
+  "driverTags": [
+   "Polite",
+   "On time at pickup",
+   "Respectful",
+   "Left the car tidy"
+  ],
+  "lowTags": [
+   "Late",
+   "Unsafe driving",
+   "Rude",
+   "Dirty car",
+   "Wrong route"
+  ]
+ },
+ "schedule": {
+  "minLeadMinutes": 30,
+  "maxDaysAhead": 30,
+  "dispatchLeadMinutes": 15,
+  "missedAfterMinutes": 30
+ },
+ "pool": {
+  "discountPct": 25,
+  "pickupWithinKm": 2,
+  "dropoffWithinKm": 3,
+  "openMinutes": 10,
+  "maxSeatsPerRider": 2,
+  "kinds": [
+   "car",
+   "suv",
+   "van"
+  ]
+ },
+ "route": {
+  "roadFactor": 1.3,
+  "kmPerHour": 25
+ },
+ "tracking": {
+  "minSecondsBetween": 3,
+  "staleMinutes": 10,
+  "trackPoints": 500
+ },
+ "share": {
+  "hoursAfter": 2
+ },
+ "safety": {
+  "kinds": [
+   {
+    "key": "sos",
+    "label": "Emergency",
+    "urgent": true
+   },
+   {
+    "key": "incident",
+    "label": "Something went wrong on a trip",
+    "urgent": false
+   },
+   {
+    "key": "lost_item",
+    "label": "Something was left in the car",
+    "urgent": false
+   }
+  ],
+  "emergencyNumbers": {
+   "US": "911",
+   "CA": "911",
+   "MX": "911",
+   "GB": "999",
+   "IE": "112",
+   "IN": "112",
+   "AU": "000",
+   "NZ": "111",
+   "AE": "999",
+   "SA": "911",
+   "SG": "999",
+   "MY": "999",
+   "JP": "110",
+   "ZA": "10111",
+   "BR": "190",
+   "DE": "112",
+   "FR": "112",
+   "ES": "112",
+   "IT": "112",
+   "NL": "112"
+  },
+  "emergencyDefault": "112"
+ },
+ "payout": {
+  "ref": "DPO"
+ },
+ "machines": {
+  "schedule": "ride_schedule",
+  "pool": "ride_pool",
+  "safety": "ride_safety",
+  "payout": "driver_payout"
+ },
+ "records": {
+  "schedule": "ride_schedule",
+  "safety": "ride_safety_event",
+  "payout": "driver_payout"
+ }
+}

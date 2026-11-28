@@ -478,7 +478,7 @@ require("./lib/api.js").startPaymentSweep();
   const t = setTimeout(() => {
     /* each engine with a clock: alerts re-checked, pickup parcels and booking holds expired,
        offers expired, auctions opened and closed, group buys settled, sellers' proceeds released */
-    if (mins > 0) for (const m of ["alerts", "pickup", "bookings", "negotiation", "auctions", "groupbuy", "listings", "trials", "options", "wallet", "giftcards", "campaigns", "consulting", "assets"]) { try { const r = require("./lib/" + m + ".js").sweepAll(); if (r && r.catch) r.catch(e => console.error(m + " sweep:", e.message)); } catch (e) { } }
+    if (mins > 0) for (const m of ["alerts", "pickup", "bookings", "negotiation", "auctions", "groupbuy", "listings", "trials", "options", "wallet", "giftcards", "campaigns", "consulting", "assets", "trips"]) { try { const r = require("./lib/" + m + ".js").sweepAll(); if (r && r.catch) r.catch(e => console.error(m + " sweep:", e.message)); } catch (e) { } }
     require("./lib/features.js").sweepAll().catch(e => console.error("feature sweep:", e.message));
     shopperSweep();
   }, Math.max(1, mins > 0 ? mins : 15) * 60000);

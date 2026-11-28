@@ -514,6 +514,70 @@
     "approved_at": "text"
    },
    "title": "ref"
+  },
+  "ride_schedule": {
+   "table": "ride_schedules",
+   "owner": "Operations",
+   "kind": {
+    "kind": "operations.ride_schedule",
+    "label": "Ride booked for later",
+    "parents": []
+   },
+   "$comment": "a ride a rider booked for a time, and what became of it; where from and to stays in the table",
+   "facts": {
+    "ref": "text",
+    "vehicle_kind": "text",
+    "pickup_at": "text",
+    "estimate": "number",
+    "status": "text",
+    "ride_id": "number"
+   },
+   "title": "ref"
+  },
+  "ride_safety_event": {
+   "table": "ride_safety_events",
+   "owner": "Operations",
+   "kind": {
+    "kind": "operations.ride_safety_event",
+    "label": "Safety report",
+    "parents": []
+   },
+   "$comment": "an emergency raised or an incident reported on a trip, and how it was handled; what was said stays in the table",
+   "facts": {
+    "ref": "text",
+    "ride_id": "number",
+    "kind": "text",
+    "by_role": "text",
+    "status": "text",
+    "acknowledged_at": "text",
+    "resolved_at": "text"
+   },
+   "title": "ref"
+  },
+  "driver_payout": {
+   "table": "driver_payouts",
+   "owner": "Value",
+   "kind": {
+    "kind": "value.driver_payout",
+    "label": "Driver payout",
+    "parents": []
+   },
+   "$comment": "what a driver earned over their trips up to a day, and when it was approved and paid",
+   "facts": {
+    "ref": "text",
+    "driver_id": "number",
+    "currency": "text",
+    "through": "text",
+    "trips": "number",
+    "fares": "number",
+    "take": "number",
+    "tips": "number",
+    "net": "number",
+    "status": "text",
+    "approved_at": "text",
+    "paid_at": "text"
+   },
+   "title": "ref"
   }
  },
  "actor": "commerce",

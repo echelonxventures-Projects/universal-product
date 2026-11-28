@@ -82,3 +82,67 @@ async function vFleet() {
 
 screen("rides", { render: async () => await vRides() });
 screen("fleet", { render: async () => await vFleet() });
+
+/* ========== trips: safety, rides booked for later, shared rides, ratings and driver pay (lib/trips.js) ==========
+   Everything here is what the engine answered: whether a report is still unhandled, whether a payout
+   may be approved or paid, who is held for review. */
+let trDriver = null;
+async function vTrips() {
+  const o = await api("/admin/trips");
+  const st = trDriver ? await api("/admin/trips/drivers/" + trDriver + "/statement").catch(() => null) : null;
+  const drivers = o.drivers.map(d => `<option value="${d.id}"${String(d.id) === String(trDriver) ? " selected" : ""}>${esc(d.name)}</option>`).join("");
+  const yesterday = new Date(Date.now() - 86400000).toISOString().slice(0, 10);
+  const where = e => e.lat != null ? `<div class="a-sub">📍 ${(+e.lat).toFixed(5)}, ${(+e.lng).toFixed(5)}</div>` : "";
+  const urgent = o.safety.filter(e => e.urgent && e.open);
+  return `<div class="a-head"><h2>🛡️ Trips, Safety &amp; Pay</h2><p class="a-sub">Emergencies and incidents riders and drivers report, rides booked for later, shared rides forming, drivers whose ratings fell below the floor (${o.policy.rating.floor}), and what each driver earned and is paid. Local emergency number: <b>${esc(o.emergency)}</b>.</p></div>
+  ${urgent.length ? `<div class="a-card" role="alert" style="border:2px solid #b91c1c"><h3>🚨 Open emergencies: ${urgent.length}</h3><p>Call the rider or driver now. If anyone is in danger, call the emergency number: <b>${esc(o.emergency)}</b></p></div>` : ""}
+  <div class="a-card"><h3>Safety reports</h3>${coTbl(["report", "ride", "what", "by", "contact", "status", ""], o.safety, e => [`<code>${esc(e.ref)}</code><div class="a-sub">${esc(e.created_at)}</div>`, `<code>${esc(e.ride_ref || "—")}</code><div class="a-sub">${esc(e.pickup || "")} → ${esc(e.dropoff || "")}</div>`,
+    `${e.urgent ? `<b>🚨 ${esc(e.label)}</b>` : esc(e.label)}${e.note ? `<div class="a-sub">${esc(e.note)}</div>` : ""}${where(e)}`, `${esc(e.by_role)}<div class="a-sub">${esc(e.by_who)}</div>`,
+    `${e.rider_phone ? "rider " + esc(e.rider_phone) : ""}${e.driver_phone ? `<div>driver ${esc(e.driver_name || "")} ${esc(e.driver_phone)}</div>` : ""}`,
+    coBadge(e.status) + (e.handled_by ? `<div class="a-sub">${esc(e.handled_by)}</div>` : "") + (e.outcome ? `<div class="a-sub">${esc(e.outcome)}</div>` : ""),
+    (e.unhandled ? `<button class="p-btn sm primary" data-tr-ack="${e.id}">I'm on it</button> ` : "") + (e.open ? `<button class="p-btn sm" data-tr-res="${e.id}">Resolve</button>` : "")], "No reports.")}</div>
+  <div class="a-cards">
+    <div class="a-card"><h3>Booked for later</h3>${coTbl(["booking", "pickup at (UTC)", "rider", "route", "kind", "estimate", ""], o.bookings, b => [`<code>${esc(b.ref)}</code>`, esc(b.pickup_at), esc(b.rider), `${esc(b.pickup)} → ${esc(b.dropoff)}`, esc(b.vehicle_kind), b.estimate ? money(b.estimate) : "—", `<button class="p-btn sm" data-tr-bc="${b.id}">Cancel</button>`], "Nothing booked.")}
+      <p><button class="p-btn sm" id="trSweep">Dispatch what is due now</button></p></div>
+    <div class="a-card"><h3>Shared rides forming</h3>${coTbl(["kind", "riders", "seats", "driver", "open until (UTC)"], o.pools, p => [esc(p.vehicle_kind), p.riders, p.seats_taken + " of " + p.capacity, esc(p.driver_name || "finding one"), esc(p.closes_at)], "None forming.")}
+      <p class="a-sub">Sharing discount: ${o.policy.pool.discountPct}% · pickups within: ${o.policy.pool.pickupWithinKm} km · drops within: ${o.policy.pool.dropoffWithinKm} km</p></div>
+  </div>
+  <div class="a-cards">
+    <div class="a-card"><h3>Drivers to review</h3>${coTbl(["driver", "rating", "ratings", "held", ""], o.review, d => [esc(d.name), (+d.rating).toFixed(2), d.rating_count, d.review ? "held out of dispatch" : "below the floor", d.review ? `<button class="p-btn sm" data-tr-clear="${d.id}">Let them drive</button>` : ""], "Nobody below the floor.")}</div>
+    <div class="a-card"><h3>Recent ratings</h3>${coTbl(["ride", "by", "stars", "tags", "comment"], o.ratings.slice(0, 30), g => [`<code>${esc(g.ref)}</code>`, esc(g.by_role) + (g.driver_name ? `<div class="a-sub">${esc(g.driver_name)}</div>` : ""), "★".repeat(g.stars), g.tags.map(x => `<span class="a-chip">${esc(x)}</span>`).join(" "), esc(g.comment || "")], "No ratings yet.")}</div>
+  </div>
+  <div class="a-card"><h3>Driver pay</h3>
+    ${coTbl(["driver", "unpaid trips", "unpaid", ""], o.unpaid, u => [esc(u.name), u.trips, money(u.net), `<button class="p-btn sm" data-tr-pay="${u.id}">Make payout</button> <button class="p-btn sm" data-tr-st="${u.id}">Statement</button>`], "Nothing unpaid.")}
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:flex-end;margin-top:8px"><label><span>Driver</span><select id="trD">${drivers}</select></label><label><span>Pay trips up to</span><input id="trThrough" type="date" value="${yesterday}"></label>
+      <button class="p-btn sm primary" id="trMake">Make payout</button><button class="p-btn sm" id="trShow">Show statement</button></div>
+    <h4 style="margin-top:12px">Payouts</h4>
+    ${coTbl(["payout", "driver", "up to", "trips", "fares", "platform", "tips", "to pay", "status", ""], o.payouts, p => [`<code>${esc(p.ref)}</code>`, esc(p.driver), esc(p.through), p.trips, money(p.fares), money(p.take), money(p.tips), `<b>${money(p.net)}</b>`,
+      coBadge(p.status) + (p.pay_ref ? `<div class="a-sub">${esc(p.pay_ref)}</div>` : ""),
+      (p.editable ? `<button class="p-btn sm primary" data-tr-po="${p.id}:approve">Approve</button> ` : "") + (p.owed ? `<button class="p-btn sm primary" data-tr-po="${p.id}:pay">Mark paid</button> ` : "") + (p.open ? `<button class="p-btn sm" data-tr-po="${p.id}:void">Void</button>` : "")], "No payouts yet.")}</div>
+  ${st ? `<div class="a-card"><h3>Statement</h3><div class="a-stats">${[["Trips", st.statement.totals.trips], ["Fares", money(st.statement.totals.fares)], ["Platform", money(st.statement.totals.take)], ["Tips", money(st.statement.totals.tips)], ["Earned", money(st.statement.totals.net)], ["Unpaid", money(st.statement.unpaid.net)]].map(([k, v]) => `<div><b>${v}</b><span>${k}</span></div>`).join("")}</div>
+    ${coTbl(["ride", "when", "route", "fare", "platform", "tip", "earned", "paid by"], st.statement.trips, x => [`<code>${esc(x.ref)}</code>${x.pool ? ` <span class="a-chip">shared</span>` : ""}${x.cancelled ? ` <span class="a-chip">cancellation fee</span>` : ""}`, esc(x.at), `${esc(x.pickup)} → ${esc(x.dropoff)}`, money(x.fare), money(x.take), money(x.tip), `<b>${money(x.net)}</b>`, x.payout ? `<code>${esc(x.payout)}</code>` : "unpaid"], "No trips.")}</div>` : ""}
+  <div class="a-card"><h3>Places riders pick from</h3><p class="a-sub">Named places offered when a rider asks for a ride — one per line: <code>name, latitude, longitude</code>.</p>
+    <textarea id="trPlaces" rows="5" style="width:100%">${esc(o.places.map(p => `${p.name}, ${p.lat}, ${p.lng}`).join("\n"))}</textarea><p><button class="p-btn sm primary" id="trSavePlaces">Save places</button></p></div>`;
+}
+function wireTrips() {
+  const go = async (fn, msg) => { try { await fn(); if (msg) toast(msg); render(); } catch (e) { toast(e.message); } };
+  const on = (sel, fn) => document.querySelectorAll(sel).forEach(x => x.onclick = () => fn(x));
+  on("[data-tr-ack]", x => go(() => api(`/admin/trips/safety/${x.dataset.trAck}/acknowledge`, "POST", {}), "You are handling it"));
+  on("[data-tr-res]", x => { const outcome = prompt("How was it resolved?"); if (outcome) go(() => api(`/admin/trips/safety/${x.dataset.trRes}/resolve`, "POST", { outcome }), "Resolved"); });
+  on("[data-tr-bc]", x => { if (confirm("Cancel this booking?")) go(() => api(`/admin/trips/bookings/${x.dataset.trBc}/cancel`, "POST", {}), "Cancelled"); });
+  on("[data-tr-clear]", x => go(() => api(`/admin/trips/drivers/${x.dataset.trClear}/clear-review`, "POST", {}), "They can drive again"));
+  on("[data-tr-st]", x => { trDriver = x.dataset.trSt; render(); });
+  on("[data-tr-pay]", x => go(() => api("/admin/trips/payouts", "POST", { driver_id: Number(x.dataset.trPay), through: $("#trThrough").value }), "Payout made"));
+  on("[data-tr-po]", x => { const [id, act] = x.dataset.trPo.split(":"), body = {};
+    if (x.dataset.trPo.endsWith(":pay")) { const r = prompt("The bank's reference for this payment (optional)"); if (r === null) return; body.pay_ref = r; }
+    go(() => api(`/admin/trips/payouts/${id}/${act}`, "POST", body), "Done"); });
+  const b = (id, fn) => { const e = $(id); if (e) e.onclick = fn; };
+  b("#trSweep", () => go(() => api("/admin/trips/sweep", "POST", {}), "Dispatched what was due"));
+  b("#trMake", () => go(() => api("/admin/trips/payouts", "POST", { driver_id: Number($("#trD").value), through: $("#trThrough").value }), "Payout made"));
+  b("#trShow", () => { trDriver = $("#trD").value; render(); });
+  b("#trSavePlaces", () => {
+    const places = $("#trPlaces").value.split("\n").map(l => l.trim()).filter(Boolean).map(l => { const p = l.split(","); const lng = p.pop(), lat = p.pop(); return { name: p.join(",").trim(), lat: Number(lat), lng: Number(lng) }; });
+    go(() => api("/admin/trips/places", "PUT", { places }), "Places saved");
+  });
+}
+screen("trips", { render: async () => await vTrips(), wire: wireTrips });

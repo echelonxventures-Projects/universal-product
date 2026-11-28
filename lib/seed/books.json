@@ -148,6 +148,12 @@
    "parent": "2"
   },
   {
+   "code": "2150",
+   "name": "Owed to drivers",
+   "type": "liability",
+   "parent": "2"
+  },
+  {
    "code": "2200",
    "name": "Tax collected",
    "type": "liability",
@@ -240,6 +246,12 @@
   {
    "code": "5100",
    "name": "Purchase price differences",
+   "type": "expense",
+   "parent": "5"
+  },
+  {
+   "code": "5200",
+   "name": "Driver earnings",
    "type": "expense",
    "parent": "5"
   },
@@ -655,6 +667,64 @@
      "part": "amount"
     }
    ]
+  },
+  {
+   "key": "driver_payout",
+   "label": "A driver's earnings are approved for payout",
+   "record": "driver_payout",
+   "when": {
+    "fact": "status",
+    "into": "owed"
+   },
+   "lines": [
+    {
+     "debit": "5200",
+     "part": "net"
+    },
+    {
+     "credit": "2150",
+     "part": "net"
+    }
+   ]
+  },
+  {
+   "key": "driver_paid",
+   "label": "A driver is paid",
+   "record": "driver_payout",
+   "when": {
+    "fact": "status",
+    "into": "success"
+   },
+   "lines": [
+    {
+     "debit": "2150",
+     "part": "net"
+    },
+    {
+     "credit": "1000",
+     "part": "net"
+    }
+   ]
+  },
+  {
+   "key": "driver_payout_void",
+   "label": "An approved driver payout is voided",
+   "record": "driver_payout",
+   "when": {
+    "fact": "status",
+    "into": "void",
+    "from": "owed"
+   },
+   "lines": [
+    {
+     "debit": "2150",
+     "part": "net"
+    },
+    {
+     "credit": "5200",
+     "part": "net"
+    }
+   ]
   }
  ],
  "actor": "books",
@@ -689,6 +759,10 @@
   "expense_claim": {
    "table": "expense_claims",
    "measure": "expense"
+  },
+  "driver_payout": {
+   "table": "driver_payouts",
+   "measure": "driver_payout"
   }
  },
  "reversible": [

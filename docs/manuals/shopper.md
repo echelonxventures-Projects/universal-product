@@ -190,9 +190,14 @@ More: [Made to order](../domains/made_to_order.md)
 
 ## Mobility
 
-Moving people: rides requested and dispatched, drivers and their vehicles, and fleets.
+Moving people: rides asked for now, booked for later or shared, and dispatched to the nearest driver by their live position; drivers and their vehicles; the rating both ways; safety — a trip shared by a private link, the emergency button, incidents handled by the store; and what each driver earns trip by trip and is paid.
 
-_Not yet written._
+Open **Rides** from the footer and sign in. Type where from and where to, or use your location or a
+named place; **See the price**, then **Ask for a ride**. Tick **Share the ride** to pay less, or
+**Book for later** to choose a time. While the ride is under way you see your driver, their car's
+plate and the map. **Share my trip** gives you a link to send to someone you trust. **🚨 Emergency**
+alerts the store at once; call the number shown if you are in danger. Afterwards, rate your driver,
+add a tip, or report a problem.
 
 More: [Mobility](../domains/mobility.md)
 

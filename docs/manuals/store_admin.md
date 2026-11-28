@@ -450,9 +450,25 @@ More: [Made to order](../domains/made_to_order.md)
 
 ## Mobility
 
-Moving people: rides requested and dispatched, drivers and their vehicles, and fleets.
+Moving people: rides asked for now, booked for later or shared, and dispatched to the nearest driver by their live position; drivers and their vehicles; the rating both ways; safety — a trip shared by a private link, the emergency button, incidents handled by the store; and what each driver earns trip by trip and is paid.
 
-_Not yet written._
+Open **Mobility**. Your role needs the rides, fleet or trips section; the Dispatch & Safety role has
+all three, and Finance has trips for driver pay.
+
+- **🚗 Rides & Dispatch** and **🚙 Fleet & Drivers**: rides, surge zones, drivers and vehicles. A
+  driver signs in to the driver's page with the email you give them here.
+- **🛡️ Trips, Safety & Pay**:
+  - **Safety reports**: open emergencies are shown first, in red. **I'm on it** takes one;
+    **Resolve** closes it with what happened. Call the emergency number shown if anyone is in
+    danger.
+  - **Booked for later** and **Shared rides forming**: what is coming up. **Dispatch what is due
+    now** sends due bookings at once.
+  - **Drivers to review**: drivers whose ratings fell below the floor. **Let them drive** clears the
+    hold once you have spoken to them.
+  - **Driver pay**: **Make payout** for a driver up to a day, **Approve** (not your own), then **Mark
+    paid** with the bank's reference. **Void** frees an unpaid payout's trips. **Statement** shows
+    each trip.
+  - **Places riders pick from**: one per line, `name, latitude, longitude`.
 
 More: [Mobility](../domains/mobility.md)
 

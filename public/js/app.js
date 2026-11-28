@@ -162,6 +162,7 @@ function renderHeader() {
               ${CFG.features.customerService ? `<a href="customer-service.html">Client Care</a>` : ""}
               ${atoms().peer_listings ? `<a href="sell.html">Sell an item</a>` : ""}
               ${atoms().conversations ? `<a href="messages.html">Messages</a>` : ""}
+              ${CFG.rides ? `<a href="ride.html">Rides</a><a href="drive.html">Drive</a>` : ""}
               ${u && u.role === "admin" && CFG.features.adminPortal ? `<a href="console.html?scope=store" class="adm-link">⬡ Admin Console</a>` : ""}</div>
           </div>
           <p class="hmenu-foot">${u ? "Signed in as <b>" + esc(u.email) + "</b>" : "New here? <a href='#' data-act='signin-open'>Create an account.</a>"}</p>
@@ -1683,6 +1684,8 @@ async function initPage() {
     /* each page of the storefront is its own entry: the page key the HTML declares picks it */
     const PAGES = { home: pageHome, results: pageResults, product: pageProduct, cart: pageCart, checkout: pageCheckout, orders: pageOrders,
       deals: pageDeals, gift: pageGift, cs: pageCS, registry: pageRegistry, reset: pageReset, sell: pageSell, messages: pageMessages, session: pageSession };
+    /* pages kept in their own file (public/js/rides.js) add themselves to the table */
+    Object.assign(PAGES, window.LX_PAGES || {});
     if (PAGES[p]) await PAGES[p]();
   } catch (e) {
     console.error(e);
