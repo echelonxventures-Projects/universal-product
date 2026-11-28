@@ -270,16 +270,21 @@ const handler = async (req, res) => {
       res.__tenantId = session.tenant.id;
       if (!sec.checkTenant(session.tenant.id)) { res.writeHead(429, { "Content-Type": "application/json", "Retry-After": "5" }); return res.end(JSON.stringify({ error: "Rate limit exceeded for your store" })); }
       /* L2: CSRF double-submit for cookie-carrying mutations. The azc cookie is
-         re-sent on EVERY response, not just when the token is first minted: the
-         console reads it from document.cookie on each POST, so a page loaded from
-         a warm session that never received it would send an empty x-csrf and every
-         write would 403 (the session cookie itself is HttpOnly, so it cannot serve
-         as the source of the token). */
+         sent with any response to a request that did not carry this session's token,
+         not just when the token is first minted: the console reads it from
+         document.cookie on each POST, so a page loaded from a warm session that never
+         received it would send an empty x-csrf and every write would 403 (the session
+         cookie itself is HttpOnly, so it cannot serve as the source of the token). */
       if (!session.csrf) {
         session.csrf = sec.csrfToken();
         run("UPDATE sessions SET csrf=? WHERE sid=?", session.csrf, session.sid);
       }
-      res.appendHeader("Set-Cookie", `azc=${session.csrf}; Path=/; SameSite=Lax; Max-Age=2592000${sec.httpsRequest(req) ? "; Secure" : ""}`);
+      /* re-sent whenever the request did not carry this session's token (a warm session that never got
+         it). Not re-sent to a request that carried it: a first visit sends several requests before it
+         has a cookie, each is given its own session with its own token, and re-sending the token of the
+         session a late request carried could leave the browser holding one session's cookie beside
+         another session's token, refusing the first form it sends. */
+      if (cookies.azc !== session.csrf) res.appendHeader("Set-Cookie", `azc=${session.csrf}; Path=/; SameSite=Lax; Max-Age=2592000${sec.httpsRequest(req) ? "; Secure" : ""}`);
       if (sec.policy().csrfEnabled && ["POST", "PUT", "DELETE"].includes(req.method) && cookies.azs && !sec.csrfOk({ headers: { "x-csrf": req.headers["x-csrf"] || req.headers["x-csrf-token"] } }, session)) {
         res.writeHead(403, { "Content-Type": "application/json" }); return res.end(JSON.stringify({ error: "Missing or invalid CSRF token" }));
       }

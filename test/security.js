@@ -559,6 +559,21 @@ const raw = (text) => new Promise((resolve) => {
       ok(r.status === 200 && j.ready === true, "a booted server is ready", { status: r.status, j });
       ok(r.headers.get("cache-control") === "no-store", "readiness is never cached");
     }
+    console.log("\n▸ L2 · A FIRST VISIT'S REQUESTS AT ONCE NEVER LEAVE A MISMATCHED PAIR");
+    {
+      /* a first visit sends several requests before it has a cookie: each gets its own session */
+      const pair = r => Object.fromEntries((r.headers.getSetCookie ? r.headers.getSetCookie() : []).map(k => k.split(";")[0]).map(kv => [kv.slice(0, kv.indexOf("=")), kv.slice(kv.indexOf("=") + 1)]));
+      const [r1, r2] = await Promise.all([fetch(BASE + "/api/session"), fetch(BASE + "/api/config")]);
+      const p1 = pair(r1), p2 = pair(r2);
+      ok(p1.azs && p2.azs && p1.azs !== p2.azs && p1.azc && p2.azc, "each cookieless request is given its own session and its token");
+      /* the browser kept the second pair; a request it sent earlier with the first pair answers late */
+      const late = await fetch(BASE + "/api/stores", { headers: { Cookie: `azs=${p1.azs}; azc=${p1.azc}` } });
+      ok(!pair(late).azc, "a request that carried its session's token is not sent the token again, so it cannot overwrite the pair kept", pair(late));
+      const post = await fetch(BASE + "/api/viewed", { method: "POST", headers: { Cookie: `azs=${p2.azs}; azc=${p2.azc}`, "x-csrf": p2.azc, Origin: BASE, "Content-Type": "application/json" }, body: JSON.stringify({ id: "x" }) });
+      ok(post.status !== 403, "the pair kept is accepted for a write", post.status);
+      const healed = await fetch(BASE + "/api/session", { headers: { Cookie: `azs=${p2.azs}; azc=${p1.azc}` } });
+      ok(pair(healed).azc === p2.azc, "a mismatched pair is mended on the next response", pair(healed));
+    }
   } catch (e) {
     failed++; console.log("  ✗ suite crashed: " + (e && e.stack || e) + (e && e.cause ? "\n    cause: " + (e.cause.stack || e.cause) : ""));
     /* what the server said before it went away */

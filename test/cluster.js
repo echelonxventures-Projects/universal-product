@@ -11,6 +11,9 @@ const wipe = () => { for (const s of ["", "-wal", "-shm"]) try { fs.rmSync(TMP +
 wipe(); process.env.LX_DB = TMP;
 const KEY = crypto.randomBytes(32).toString("hex");
 process.env.LUXORA_MASTER_KEY = KEY;
+/* this test rotates the key: its keyring lives in its own directory, never the one other test runs read */
+const DATA = fs.mkdtempSync(path.join(os.tmpdir(), "cluster-data-"));
+process.env.LX_DATA_DIR = DATA;
 const log = console.log; console.log = () => { };
 const db = require("../lib/db.js");
 console.log = log;
@@ -139,7 +142,7 @@ const other = (code, env) => {
     ok(!db.all("SELECT id FROM cluster_nodes WHERE seen_at>?", Date.now() - 45000).length, "both leave the list when they stop");
   } catch (e) { failed++; console.log("  ✗ threw: " + (e.stack || e.message)); }
   console.log(`\n${passed} passed, ${failed} failed`);
-  wipe();
+  wipe(); try { fs.rmSync(DATA, { recursive: true, force: true }); } catch (e) { }
   process.exit(failed ? 1 : 0);
 })();
 function throws(fn) { try { fn(); return false; } catch (e) { return true; } }

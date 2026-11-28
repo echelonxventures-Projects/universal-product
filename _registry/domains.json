@@ -419,6 +419,16 @@
    "lib/readiness.js what more than one server needs; lib/governance.js a retention setting drops the settings cache; README.md how to run more than one server",
    "test/cluster.js"
   ]
+ },
+ {
+  "amendmentId": "AMD-0075",
+  "date": "2026-11-28",
+  "authorisedBy": "Platform owner",
+  "summary": "A first visit's first form is no longer refused. A page's first requests go out together before the browser has a cookie, and each is given its own session with its own token. The token cookie used to be re-sent with every response, so a late response could leave the browser holding one session's cookie beside another session's token, and its first write was refused as a forged request (seen as astro.js failing about three runs in four). The token is now sent only to a request that did not carry this session's token: a matching pair is never overwritten, a missing or mismatched one is mended by the next response, and the session cookie is untouched, so a sign-in in flight is not undone.",
+  "changes": [
+   "server.js sends the token cookie only to a request without this session's token",
+   "test/security.js a first visit's requests at once never leave a mismatched pair"
+  ]
  }
   ],
   "domains": [
