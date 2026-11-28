@@ -4,7 +4,7 @@
 
 ## Overview
 
-Running the platform: environments, configuration, the database and its migrations, queues, monitoring, metrics, logs, backup and restore.
+Running the platform: environments, configuration, the database and its migrations, queues, monitoring, metrics, logs, backup and restore; and running it on more than one server — the servers alive and their versions, jobs on a clock run on one of them per period, locks across servers, caches kept in step, the keyring every server shares, and sign-in failures counted for all.
 
 **Foundation domain:** Operations · **Used by:** Platform administrator, Developer
 
@@ -13,6 +13,7 @@ Running the platform: environments, configuration, the database and its migratio
 | Module | What it is |
 |---|---|
 | `lib/api.js` | REST API: multi-tenant, pluggable providers, billing, audit, monitoring |
+| `lib/cluster.js` | running on more than one server (lib/seed/cluster.json). |
 | `lib/config.js` | runtime configuration spine. Every infra choice (cache, queue, storage, rate-limit backend, session, outbound mode) is resolved here from DATA ONLY: safe in-process defaults → editable `platform_settings.runtime` (Platform → Runtime) → env override. lib/adapters.js implements the selectable backends, so switching a concern to Redis/S3/a worker/HTTP hook is a config change, not a code change. The DB is intentionally kept as the SQLite default with an interface-isolated seam (see db.js run/all/get); `db` is exposed here as a configured concern so the shape is uniform, but only the sqlite driver is wired (selecting postgres reports "not provisioned" rather than lying). |
 | `lib/db.js` | multi-tenant SQLite layer (node:sqlite, zero deps) |
 | `lib/dbpool.js` | async dual-engine data pool (B-full foundation). One async facade over the data layer, driver-selected by config (`db`: sqlite\|postgres): - sqlite: the existing synchronous DB (lib/db.js), wrapped as promises (default; no behavior change) - postgres: SQL is dialect-translated (lib/sql.js) and executed via the wire client (lib/pg.js) The synchronous request path still uses lib/db.js directly today; this pool is the target all data access converges onto during the cutover (see the runbook). Not wired into routes yet — it is the mechanism, tested in isolation, that makes B-full mechanical rather than a rewrite-by-hand. |
@@ -39,13 +40,60 @@ Running the platform: environments, configuration, the database and its migratio
 | `name` |  |
 | `seq` |  |
 
+### `cluster_nodes`
+
+| Column | Type |
+|---|---|
+| `id` | TEXT PRIMARY KEY |
+| `host` | TEXT NOT NULL DEFAULT '' |
+| `pid` | INTEGER NOT NULL DEFAULT 0 |
+| `version` | TEXT NOT NULL DEFAULT '' |
+| `started_at` | INTEGER NOT NULL |
+| `seen_at` | INTEGER NOT NULL |
+
+### `cluster_leases`
+
+| Column | Type |
+|---|---|
+| `name` | TEXT PRIMARY KEY |
+| `holder` | TEXT NOT NULL |
+| `until` | INTEGER NOT NULL |
+| `taken_at` | INTEGER NOT NULL |
+
+### `cluster_epochs`
+
+| Column | Type |
+|---|---|
+| `name` | TEXT PRIMARY KEY |
+| `n` | INTEGER NOT NULL DEFAULT 0 |
+| `at` | INTEGER NOT NULL |
+
+### `cluster_keyring`
+
+| Column | Type |
+|---|---|
+| `id` | INTEGER PRIMARY KEY |
+| `sealed` | TEXT NOT NULL |
+| `current` | TEXT NOT NULL |
+| `at` | INTEGER NOT NULL |
+
+### `login_attempts`
+
+| Column | Type |
+|---|---|
+| `key` | TEXT PRIMARY KEY |
+| `fails` | INTEGER NOT NULL DEFAULT 0 |
+| `until` | INTEGER NOT NULL DEFAULT 0 |
+| `at` | INTEGER NOT NULL |
+
 ## API reference
 
 Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the session; mutating calls accept an `Idempotency-Key` header where noted.
 
 | Method and path | Handler | What it does |
 |---|---|---|
-| `GET /api/platform/readiness` | `apiPlatformReadiness` | what still stands between this install and real customers (lib/readiness.js) |
+| `GET /api/platform/readiness` | `apiPlatformReadiness` | — |
+| `GET /api/platform/cluster` | `apiPlatformCluster` | the servers sharing this database, which runs which version, the leases held now and the caches kept in step (lib/cluster.js) |
 | `GET /api/admin/monitor` | `apiAdminMonitor` | — |
 | `GET /api/platform/db` | `apiPlatformDb` | ---------- B (async dual-engine) observability ---------- |
 | `POST /api/platform/db/ping` | `apiDbPing` | — |
@@ -71,9 +119,9 @@ Every call is JSON over HTTPS; store calls carry the store (`?store=`) and the s
 ```mermaid
 flowchart LR
   U([Platform administrator / Developer]) --> UI[store console, platform console]
-  UI --> API[20 API routes]
-  API --> ENG[api.js, config.js, db.js, dbpool.js, enterprise.js, env.js, logger.js, metrics.js, migrate.js, ops-alerts.js, pg.js, pgbridge.js, pgworker.js, queue.js, readiness.js, sql.js, runtime.js]
-  ENG --> DB[(sqlite_sequence)]
+  UI --> API[21 API routes]
+  API --> ENG[api.js, cluster.js, config.js, db.js, dbpool.js, enterprise.js, env.js, logger.js, metrics.js, migrate.js, ops-alerts.js, pg.js, pgbridge.js, pgworker.js, queue.js, readiness.js, sql.js, runtime.js]
+  ENG --> DB[(sqlite_sequence, cluster_nodes, cluster_leases, cluster_epochs, cluster_keyring, login_attempts)]
 
 ```
 

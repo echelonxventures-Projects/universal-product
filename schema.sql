@@ -3041,3 +3041,19 @@ CREATE INDEX ix_ucos_record_tr_entity ON ucos_record_transitions(entity_key, rec
 
 -- ── runtime · Runtime and operations ─────────────────────────────────────────────────────────────
 CREATE TABLE sqlite_sequence(name,seq);
+CREATE TABLE cluster_nodes (
+  id TEXT PRIMARY KEY, host TEXT NOT NULL DEFAULT '', pid INTEGER NOT NULL DEFAULT 0, version TEXT NOT NULL DEFAULT '',
+  started_at INTEGER NOT NULL, seen_at INTEGER NOT NULL
+);
+CREATE TABLE cluster_leases (
+  name TEXT PRIMARY KEY, holder TEXT NOT NULL, until INTEGER NOT NULL, taken_at INTEGER NOT NULL
+);
+CREATE TABLE cluster_epochs (
+  name TEXT PRIMARY KEY, n INTEGER NOT NULL DEFAULT 0, at INTEGER NOT NULL
+);
+CREATE TABLE cluster_keyring (
+  id INTEGER PRIMARY KEY, sealed TEXT NOT NULL, current TEXT NOT NULL, at INTEGER NOT NULL
+);
+CREATE TABLE login_attempts (
+  key TEXT PRIMARY KEY, fails INTEGER NOT NULL DEFAULT 0, until INTEGER NOT NULL DEFAULT 0, at INTEGER NOT NULL
+);

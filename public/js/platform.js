@@ -2457,7 +2457,7 @@ function wireDomains() {
   });
 }
 async function vRuntime() {
-  const d = await api("/platform/runtime"); const [eNv, fL] = await Promise.all([api("/platform/environments"), api("/platform/flags")]);
+  const d = await api("/platform/runtime"); const [eNv, fL, cl] = await Promise.all([api("/platform/environments"), api("/platform/flags"), api("/platform/cluster").catch(() => null)]);
   const rt = d.runtime, cat = d.catalog, active = d.active;
   const concerns = Object.keys(cat.catalog);
   const envRows = (eNv.environments || []).map(e => `<tr><td><b>${esc(e.label)}</b>${e.active ? ' <span class="badge published">ACTIVE</span>' : ""}<br><code>${esc(e.name)}</code></td><td>${esc(e.region || "—")}</td><td class="p-tag">${e.tenants && e.tenants.length ? e.tenants.join(",") : "base"}</td><td>${(e.flags || []).length ? e.flags.map(f => `<code>${esc(f)}</code>`).join(" ") : "—"}</td><td class="p-tag">${Object.entries(e.runtime || {}).map(([k, v]) => `${k}:${v.driver}`).join(" ") || "defaults"}</td>
@@ -2466,6 +2466,9 @@ async function vRuntime() {
   return `<div class="p-panel"><h2>🧩 Runtime · Infra</h2>
     <p style="color:var(--p-muted);font-size:13px;margin:0 0 12px">Every backend is a <b>config choice</b>. Define unlimited <b>named environments</b> (bundles of driver choices + secrets + feature flags), activate one to swap the whole topology, or set <code>LX_ENV=prod</code> at boot.</p>
     ${d.offline ? '<p class="badge processing" style="display:inline-block;padding:6px 10px;border-radius:8px;margin-bottom:8px">LX_OFFLINE=1 — outbound forced to simulated</p>' : ""}
+    ${cl ? `<h3>Servers</h3><p class="p-tag">The servers sharing this database. Jobs on a clock run on one of them per period; a change one server makes to settings, the search index, the keyring or the drivers reaches the others within seconds.${cl.versions.length > 1 ? ` <b>${cl.versions.length} versions are running — finish the rollout.</b>` : ""}</p>
+    <div class="p-scroll-x"><table class="p-table"><thead><tr><th>Server</th><th>Version</th><th>Started</th><th>Last heard</th></tr></thead><tbody>${cl.nodes.map(n => `<tr><td><code>${esc(n.id)}</code>${n.self ? ` <span class="badge published">${esc("this one")}</span>` : ""}</td><td><code>${esc(n.version)}</code></td><td>${esc(n.startedAt.slice(0, 19).replace("T", " "))}</td><td>${esc(n.seenAt.slice(11, 19))}</td></tr>`).join("")}</tbody></table></div>
+    ${cl.leases.length ? `<p class="p-tag">Held now: ${cl.leases.map(l => `<code>${esc(l.name)}</code> by ${esc(l.holder.split(":").slice(0, 2).join(":"))}`).join(" · ")}</p>` : ""}` : ""}
     <h3>Environments</h3>
     ${envRows ? `<div class="p-scroll-x"><table class="p-table"><thead><tr><th>Environment</th><th>Region</th><th>Tenants</th><th>Flags</th><th>Runtime overlay</th><th></th></tr></thead><tbody>${envRows}</tbody></table></div>` : '<p class="p-tag">No environments yet — the base runtime below is active.</p>'}
     <div class="p-panel" style="margin-top:10px"><b>New environment</b>

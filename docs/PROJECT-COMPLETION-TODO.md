@@ -362,7 +362,7 @@ in `test/wallet.js` — and Wallets is the one domain whose document is complete
 | GAP-29 | GitHub refused to start the CI jobs because the account's payments failed or its spending limit was reached. Every commit since is checked locally only. | Fix the billing or the spending limit, then run the full matrix (Node 22.13 / 22 / 24, plus the browser and Postgres jobs) on `main`. |
 | GAP-23 | CI moved to the actions' Node 24 runtime (`checkout@v5`, `setup-node@v5`) on `ubuntu-24.04`; unverified until CI can run again. | Verified by the CI run above. |
 | GAP-28 | Intermittent failures: the `ECONNRESET` was a 5 s keep-alive racing a reused socket (fixed, AMD-0022); the browser check's `Runtime.evaluate` timeout and a console render that misses its fixed wait under load remain unexplained. | Fix the remaining two. Move the repo out of iCloud first and re-measure — file locking is a candidate cause. |
-| GAP-22 | Stripe and EasyPost have never been run against real sandboxes; deployment is a single node. | Run both against their sandboxes; then document the multi-node deployment path (the AMD-0022 keep-alive fix assumes a load balancer is already there). |
+| GAP-22 | Stripe and EasyPost have never been run against real sandboxes. Running on more than one server is built (AMD-0074, README → More than one server). | Run both against their sandboxes. |
 
 ### 6.2 Truth and data
 
@@ -448,7 +448,7 @@ is the gate and it already runs: 7/32 → 32/32. Route P31, P32 and `GLOBAL_MAST
 The 208 sections, the 722 route descriptions, and then `USER_MANUAL.md` generated and checked. Phase 8.
 
 **Phase G — the operational end.**
-Stripe and EasyPost against real sandboxes (GAP-22). Multi-node deployment. The remaining P26, P30 work.
+Stripe and EasyPost against real sandboxes (GAP-22). The remaining P26, P30 work.
 
 **Phase H — the long tail.**
 The hard-coding ratchet to zero. The 375 low-confidence classification calls. The 285 placeholder markers.

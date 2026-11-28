@@ -32703,6 +32703,38 @@
     "x-audience": "platform"
    }
   },
+  "/api/platform/cluster": {
+   "get": {
+    "operationId": "apiPlatformCluster",
+    "summary": "The servers sharing this database, which runs which version, the leases held now and the caches kept in step (lib/cluster.js)",
+    "tags": [
+     "Operations"
+    ],
+    "responses": {
+     "200": {
+      "description": "Done; the answer as JSON"
+     },
+     "400": {
+      "description": "The request cannot be done as asked; the reason is in error"
+     },
+     "401": {
+      "description": "Not signed in, or the key is invalid or revoked"
+     },
+     "403": {
+      "description": "The caller's role does not reach this"
+     },
+     "404": {
+      "description": "Not found"
+     }
+    },
+    "security": [
+     {
+      "platformSession": []
+     }
+    ],
+    "x-audience": "platform"
+   }
+  },
   "/api/platform/config": {
    "get": {
     "operationId": "apiPlatformConfigGet",
@@ -37302,7 +37334,7 @@
   "/api/platform/readiness": {
    "get": {
     "operationId": "apiPlatformReadiness",
-    "summary": "What still stands between this install and real customers (lib/readiness.js)",
+    "summary": "apiPlatformReadiness",
     "tags": [
      "Operations"
     ],

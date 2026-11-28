@@ -454,7 +454,7 @@ let shuttingDown = false;
 const DRAIN_MS = Number(process.env.LX_DRAIN_MS) || 20000;
 function shutdown(sig) {
   if (shuttingDown) return; shuttingDown = true;
-  console.log(`\n${sig} — closing`); sec.persistState();
+  console.log(`\n${sig} — closing`); sec.persistState(); CL.stop();
   listenServer.close(() => process.exit(0));
   if (listenServer.closeIdleConnections) listenServer.closeIdleConnections();
   setTimeout(() => process.exit(0), DRAIN_MS).unref();
@@ -462,13 +462,17 @@ function shutdown(sig) {
 /* a stray rejected promise in an async handler must not take the process down (Node
    >= 15 exits on unhandled rejections); log it with enough context to fix the source */
 /* expired idempotency keys are swept hourly (they were only ever deleted lazily on lookup) */
-setInterval(() => { try { idem.purge(); } catch (e) { } }, 3600 * 1000).unref();
+/* each job on a clock runs on one server of several per period (lib/cluster.js once) */
+const CL = require("./lib/cluster.js");
+setInterval(() => { try { CL.once("idempotency", 3600 * 1000, () => idem.purge()); } catch (e) { } }, 3600 * 1000).unref();
 /* what has expired is cleared, and proven store addresses are looked up again */
-setInterval(() => {
+setInterval(() => CL.once("hourly", 3600 * 1000, () => {
   try { require("./lib/session-sweep.js").sweep(); } catch (e) { console.error("session sweep:", e.message); }
   try { require("./lib/ops-alerts.js").checkBackups(); } catch (e) { }
+  /* sign-in failures not seen for a day are forgotten */
+  try { run("DELETE FROM login_attempts WHERE at<? AND until<?", Date.now() - 86400000, Date.now()); } catch (e) { }
   require("./lib/store-domains.js").recheck().catch(e => console.error("domain check:", e.message));
-}, 3600 * 1000).unref();
+}), 3600 * 1000).unref();
 /* live payments whose webhook never came are looked up with their gateway on a cadence */
 require("./lib/api.js").startPaymentSweep();
 /* shoppers' alerts are re-checked (prices also move by imports and rules, not only edits) and
@@ -478,8 +482,8 @@ require("./lib/api.js").startPaymentSweep();
   const t = setTimeout(() => {
     /* each engine with a clock: alerts re-checked, pickup parcels and booking holds expired,
        offers expired, auctions opened and closed, group buys settled, sellers' proceeds released */
-    if (mins > 0) for (const m of ["alerts", "pickup", "bookings", "negotiation", "auctions", "groupbuy", "listings", "trials", "options", "wallet", "giftcards", "campaigns", "consulting", "assets", "trips", "journeys", "recommendations"]) { try { const r = require("./lib/" + m + ".js").sweepAll(); if (r && r.catch) r.catch(e => console.error(m + " sweep:", e.message)); } catch (e) { } }
-    require("./lib/features.js").sweepAll().catch(e => console.error("feature sweep:", e.message));
+    if (mins > 0) CL.once("shoppers", mins * 60000, () => { for (const m of ["alerts", "pickup", "bookings", "negotiation", "auctions", "groupbuy", "listings", "trials", "options", "wallet", "giftcards", "campaigns", "consulting", "assets", "trips", "journeys", "recommendations"]) { try { const r = require("./lib/" + m + ".js").sweepAll(); if (r && r.catch) r.catch(e => console.error(m + " sweep:", e.message)); } catch (e) { } }
+    require("./lib/features.js").sweepAll().catch(e => console.error("feature sweep:", e.message)); });
     shopperSweep();
   }, Math.max(1, mins > 0 ? mins : 15) * 60000);
   if (t.unref) t.unref();
@@ -487,7 +491,7 @@ require("./lib/api.js").startPaymentSweep();
 /* platform setup answers given for a later minute are applied when that minute comes */
 (function setupSweep() {
   const SU = require("./lib/platform-setup.js");
-  const t = setTimeout(() => { try { SU.sweepAll(); } catch (e) { console.error("setup sweep:", e.message); } setupSweep(); }, SU.resolutionMs());
+  const t = setTimeout(() => { try { CL.once("setup", SU.resolutionMs(), () => SU.sweepAll()); } catch (e) { console.error("setup sweep:", e.message); } setupSweep(); }, SU.resolutionMs());
   if (t.unref) t.unref();
 })();
 process.on("unhandledRejection", (e) => { console.error("unhandledRejection:", e && e.stack || e); });
@@ -495,6 +499,8 @@ process.on("SIGINT", () => shutdown("SIGINT"));
 process.on("SIGTERM", () => shutdown("SIGTERM"));
 
 listenServer.listen(PORT, () => {
+  /* this server joins the others sharing the database (lib/cluster.js) */
+  CL.start();
   const tenants = all("SELECT slug FROM tenants");
   const master = masterTenant();
   const fixtures = tenants.filter(t => !master || t.slug !== master.slug);

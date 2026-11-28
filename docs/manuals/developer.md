@@ -52,7 +52,7 @@ More: [Platform knowledge](../domains/knowledge.md)
 
 ## Runtime and operations
 
-Running the platform: environments, configuration, the database and its migrations, queues, monitoring, metrics, logs, backup and restore.
+Running the platform: environments, configuration, the database and its migrations, queues, monitoring, metrics, logs, backup and restore; and running it on more than one server — the servers alive and their versions, jobs on a clock run on one of them per period, locks across servers, caches kept in step, the keyring every server shares, and sign-in failures counted for all.
 
 _Not yet written._
 

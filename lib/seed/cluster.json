@@ -1,0 +1,9 @@
+{
+ "$comment": "Running on more than one server (lib/cluster.js). Every server process registers itself and says it is alive every heartbeatSeconds; one not heard from for deadAfterSeconds is no longer counted, and its row is forgotten after forgetAfterHours. A job on a clock (the sweeps) runs on one server per period, the one that takes its lease; a lock (one checkout per bag) holds across servers until released or until lockSeconds pass. A cache a server drops because something changed (a store's settings, its search index, the keyring, the platform's infrastructure drivers) is dropped on every server within epochPollMs. Rate limits are shared out between the live servers.",
+ "heartbeatSeconds": 10,
+ "deadAfterSeconds": 45,
+ "forgetAfterHours": 24,
+ "epochPollMs": 2000,
+ "lockSeconds": 120,
+ "caches": ["settings", "search", "keyring", "runtime"]
+}

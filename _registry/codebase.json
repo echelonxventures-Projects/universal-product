@@ -395,6 +395,8 @@
   {"path":"lib/size-guides.js","owner":"Commerce"},
   {"path":"lib/preorders.js","owner":"Commerce"},
   {"path":"lib/readiness.js","owner":"Operations"},
+  {"path":"lib/cluster.js","owner":"Operations"},
+  {"path":"lib/seed/cluster.json","owner":"Operations"},
   {"path":"lib/ops-alerts.js","owner":"Operations"},
   {"path":"scripts/preflight.js","owner":"Operations"},
   {"path":"scripts/sandbox.js","owner":"Quality"},

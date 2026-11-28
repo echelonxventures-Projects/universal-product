@@ -63,6 +63,26 @@ A production boot with no email sender on the platform's own store logs a warnin
 
 **Backups.** `npm run backup` (`node scripts/backup.js`) takes a consistent snapshot while the server runs (SQLite `VACUUM INTO`), together with `data/master.json` / `data/registry.json`. Without the keyring, a restored database cannot decrypt any stored gateway credential. Each set is integrity-checked, checksummed and owner-only (0700/0600); `--keep` / `LX_BACKUP_KEEP` (default 14) prunes old sets, and `LX_BACKUP_S3_BUCKET` / `_ACCESS` / `_SECRET` (+ `_REGION`, `_ENDPOINT` for R2/MinIO/B2) also uploads every set off the machine. `systemd/luxora-backup.{service,timer}` runs it nightly; with Docker, `docker compose exec luxora node scripts/backup.js`. To restore, stop the server and run `node scripts/restore.js data/backups/<set>`: it prints the plan, verifies checksums and integrity, and with `--yes` moves the current database aside (never deleting it) before restoring. Add `--keys` on a new machine to restore the keyring too.
 
+**More than one server.** Several server processes can serve one platform behind a load balancer. They share one database and coordinate through it, so nothing else needs to run (`lib/cluster.js`):
+
+- Every server registers itself and checks in every 10 seconds. *Platform console → Runtime → Servers* lists them with the version each runs, and `GET /api/platform/cluster` returns the same.
+- Each job on a clock runs on one server per period, whichever takes that period's lease. This covers the sweeps, payment reconciliation, the hourly clean-up and the scheduled setup answers.
+- One checkout per bag holds across all the servers.
+- When a server drops a cached copy because something changed (a store's settings, its search index, the infrastructure drivers or the keyring), the other servers drop theirs within about 2 seconds.
+- Failed sign-ins are counted in the database, so a guesser locked out on one server is locked out on all of them.
+- Each server applies its share of the rate limits.
+- Both hash chains (the event log and the audit log) take a lock before adding a link, so two servers never build on the same last link.
+
+To run several servers:
+
+1. Run them all on Postgres (`LX_DB_DRIVER=postgres`, `LX_PG_URL`). The embedded database serves processes on one machine only.
+2. Give every server the same `LUXORA_MASTER_KEY` and `LUXORA_PEPPER`. The keyring a rotation makes is kept in the database, sealed with that key, so every server reads the same versions. A server started with a different key refuses to start.
+3. Set file storage to s3 (or a webhook) in *Platform → Runtime*, so a file one server writes can be read by the others.
+4. Start the first server alone, so it creates and seeds the database; then start the rest.
+5. Roll out a new version server by server. Readiness warns while more than one version is running.
+
+The readiness checks (`GET /api/platform/readiness`) list these requirements, and they become required once a second server is running.
+
 **Browser check.** `npm run check:browser` boots a throwaway server and drives headless Chrome over the DevTools protocol through every storefront page and every section of the store and platform consoles, signed out and signed in. It fails on any CSP violation, uncaught exception, console error or failed script/stylesheet load (`CHROME_PATH` picks the binary). It then clicks through the shipping screens against a stand-in EasyPost (`test/shipping-ui.js`): connecting the carrier account, saving a ship-from address, shipping an order and disconnecting. CI runs it on every push.
 
 ```bash
